@@ -1,0 +1,10 @@
+{
+  "title": "showRatio",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showRatio :: Ratio -> String\nconst showRatio = nd =>\n    nd.n.toString() + '/' + nd.d.toString();"
+    }
+  ]
+}

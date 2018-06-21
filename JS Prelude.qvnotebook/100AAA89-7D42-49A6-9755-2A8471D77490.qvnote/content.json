@@ -1,0 +1,10 @@
+{
+  "title": "appendFileMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// appendFileMay :: FilePath -> String -> Maybe IO FilePath\nconst appendFileMay = (strPath, txt) => {\n    const\n        oFullPath = ObjC.wrap(strPath)\n        .stringByStandardizingPath,\n        strFullPath = ObjC.unwrap(oFullPath),\n        ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n            ref[0] === 0 ? (() => {\n                const // Not a directory\n                    oData = ObjC.wrap(txt)\n                    .dataUsingEncoding($.NSUTF8StringEncoding),\n                    h = $.NSFileHandle\n                    .fileHandleForWritingAtPath(oFullPath);\n                return (\n                    h.seekToEndOfFile, // Effect, and\n                    h.writeData(oData),\n                    h.closeFile, {\n                        Nothing: false,\n                        Just: strFullPath\n                    } // value.\n                );\n            })() : Nothing()\n            // Text appending to directory is undefined\n        ) : doesDirectoryExist(takeDirectory(strFullPath)) ? (\n            writeFile(oFullPath, txt), // Effect, and\n            Just(strFullPath) // value\n        ) : Nothing();\n};"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "setCurrentDirectory",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// setCurrentDirectory :: String -> IO ()\nconst setCurrentDirectory = strPath =>\n    $.NSFileManager.defaultManager\n    .changeCurrentDirectoryPath(\n        ObjC.wrap(strPath)\n        .stringByStandardizingPath\n    );"
+    }
+  ]
+}

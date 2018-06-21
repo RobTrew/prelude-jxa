@@ -1,0 +1,10 @@
+{
+  "title": "headMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    xs.length > 0 ? Just(xs[0]) : Nothing();"
+    }
+  ]
+}

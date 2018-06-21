@@ -1,0 +1,10 @@
+{
+  "title": "Tuple",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Tuple (,) :: a -> b -> (a, b)\nconst Tuple = (a, b) => ({\n  type: 'Tuple',\n  '0': a,\n  '1': b,\n  length: 2\n});"
+    }
+  ]
+}

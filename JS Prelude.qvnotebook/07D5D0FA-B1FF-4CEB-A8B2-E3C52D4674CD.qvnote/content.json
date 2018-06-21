@@ -1,0 +1,10 @@
+{
+  "title": "tail",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// tail :: [a] -> [a]\nconst tail = xs => xs.length > 0 ? xs.slice(1) : [];"
+    }
+  ]
+}

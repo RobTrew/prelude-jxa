@@ -1,0 +1,10 @@
+{
+  "title": "thenList (>>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// thenList (>>) :: [a] -> [b] -> [b]\nconst thenList = (xs, ys) =>\n    concatMap(_ => ys, xs);"
+    }
+  ]
+}

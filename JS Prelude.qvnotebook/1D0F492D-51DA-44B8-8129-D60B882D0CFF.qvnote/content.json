@@ -1,0 +1,10 @@
+{
+  "title": "foldl",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = (f, a, xs) => xs.reduce(f, a);"
+    }
+  ]
+}

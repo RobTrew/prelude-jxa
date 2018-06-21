@@ -1,0 +1,10 @@
+{
+  "title": "pi",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// pi :: Float\nconst pi = Math.PI;"
+    }
+  ]
+}

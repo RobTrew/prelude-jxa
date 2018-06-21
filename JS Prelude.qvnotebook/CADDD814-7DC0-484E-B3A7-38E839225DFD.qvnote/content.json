@@ -1,0 +1,10 @@
+{
+  "title": "partitionEithers",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// partitionEithers :: [Either a b] -> ([a], [b])\nconst partitionEithers = xs =>\n    xs.reduce((a, x) =>\n        x.Left !== undefined ? (\n            Tuple(a[0].concat(x.Left), a[1])\n        ) : Tuple(a[0], a[1].concat(x.Right)),\n        Tuple([], [])\n    );"
+    }
+  ]
+}

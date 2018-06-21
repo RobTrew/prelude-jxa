@@ -1,0 +1,10 @@
+{
+  "title": "foldr1",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = (f, xs) =>\n    xs.length > 0 ? init(xs)\n    .reduceRight(f, last(xs)) : [];"
+    }
+  ]
+}

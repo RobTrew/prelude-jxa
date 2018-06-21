@@ -1,0 +1,10 @@
+{
+  "title": "findIndex",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// findIndex :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndex = (p, xs) => {\n    const i = xs.findIndex(p);\n    return -1 !== i ? (\n        Just(i)\n    ) : Nothing();\n};"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "scanl",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = (f, startValue, xs) =>\n    xs.reduce((a, x) => {\n        const v = f(a[0], x);\n        return Tuple(v, a[1].concat(v));\n    }, Tuple(startValue, [startValue]))[1];"
+    }
+  ]
+}

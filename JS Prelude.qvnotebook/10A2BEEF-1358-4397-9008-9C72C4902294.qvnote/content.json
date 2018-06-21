@@ -1,0 +1,10 @@
+{
+  "title": "argvLength",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// argvLength :: Function -> Int\nconst argvLength = f => f.length;"
+    }
+  ]
+}

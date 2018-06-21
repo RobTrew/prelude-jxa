@@ -1,0 +1,10 @@
+{
+  "title": "isUpper",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    /[A-Z]/.test(c);"
+    }
+  ]
+}

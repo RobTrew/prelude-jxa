@@ -1,0 +1,15 @@
+{
+  "title": "range",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// The list of values in the subrange defined by a bounding pair.\n\n// range([0, 2]) -> [0,1,2]\n// range([[0,0], [2,2]]) \n//  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]\n// range([[0,0,0],[1,1,1]])\n//  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// range :: Ix a => (a, a) -> [a]\nfunction range() {\n    const\n        args = Array.from(arguments),\n        ab = args.length !== 1 ? (\n            args\n        ) : args[0],\n        [as, bs] = [ab[0], ab[1]].map(\n            x => Array.isArray(x) ? (\n                x\n            ) : (x.type !== undefined) &&\n            (x.type.startsWith('Tuple')) ? (\n                listFromTuple(x)\n            ) : [x]\n        ),\n        an = as.length;\n    return (an === bs.length) ? (\n        an > 1 ? (\n            sequenceAList(as.map((_, i) => enumFromTo(as[i], bs[i])))\n        ) : enumFromTo(as[0], bs[0])\n    ) : [];\n};"
+    }
+  ]
+}

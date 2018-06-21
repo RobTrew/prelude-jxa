@@ -1,0 +1,10 @@
+{
+  "title": "levelNodes",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// levelNodes :: Tree a -> [[Tree a]]\nconst levelNodes = tree =>\n  iterateUntil(\n    xs => xs.length < 1,\n    xs => concatMap(x => x.nest, xs), [tree]\n  );"
+    }
+  ]
+}

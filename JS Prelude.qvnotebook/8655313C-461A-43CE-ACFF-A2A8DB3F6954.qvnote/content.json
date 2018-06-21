@@ -1,0 +1,10 @@
+{
+  "title": "apTuple (<*>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = (tf, tx) =>\n    Tuple(\n        mappend(tf[0], tx[0]),\n        tf[1](tx[1])\n    );"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "isChar",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isChar :: a -> Bool\nconst isChar = x =>\n    typeof x === 'string' && x.length === 1;"
+    }
+  ]
+}

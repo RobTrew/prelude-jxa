@@ -1,0 +1,10 @@
+{
+  "title": "liftA2LR",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c\nconst liftA2LR = (f, a, b) =>\n    a.Right !== undefined ? (\n        b.Right !== undefined ? (\n            Right(f(a.Right, b.Right))\n        ) : b\n    ) : a;"
+    }
+  ]
+}

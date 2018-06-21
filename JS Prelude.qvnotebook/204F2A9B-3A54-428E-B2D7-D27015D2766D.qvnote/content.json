@@ -1,0 +1,10 @@
+{
+  "title": "intToDigit",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// intToDigit :: Int -> Char\nconst intToDigit = n =>\n    n >= 0 && n < 16 ? (\n        '0123456789ABCDEF'.charAt(n)\n    ) : '?';"
+    }
+  ]
+}

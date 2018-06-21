@@ -1,0 +1,10 @@
+{
+  "title": "not",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// not :: Bool -> Bool\nconst not = b => !b;"
+    }
+  ]
+}

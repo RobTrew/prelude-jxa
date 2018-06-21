@@ -1,0 +1,10 @@
+{
+  "title": "chunksOf",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = (n, xs) =>\n    xs.reduce((a, _, i, xs) =>\n        i % n ? a : a.concat([xs.slice(i, i + n)]), []);"
+    }
+  ]
+}

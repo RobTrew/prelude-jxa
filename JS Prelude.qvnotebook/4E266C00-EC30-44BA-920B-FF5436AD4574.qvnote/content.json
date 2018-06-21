@@ -1,0 +1,10 @@
+{
+  "title": "maximumMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => (x > a ? x : a), xs[0]))\n    ) : Nothing();"
+    }
+  ]
+}

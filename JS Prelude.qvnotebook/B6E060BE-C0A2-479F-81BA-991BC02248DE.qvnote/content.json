@@ -1,0 +1,10 @@
+{
+  "title": "last",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// last :: [a] -> a\nconst last = xs => xs.length ? xs.slice(-1)[0] : undefined;"
+    }
+  ]
+}

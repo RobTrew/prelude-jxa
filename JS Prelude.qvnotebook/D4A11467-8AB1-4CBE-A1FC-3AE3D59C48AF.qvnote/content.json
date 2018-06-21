@@ -1,0 +1,10 @@
+{
+  "title": "sequenceAList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// sequenceAList :: Applicative f => [f a] -> f [a]\nconst sequenceAList = us =>\n    us.length > 0 ? (\n        us.reduceRight(\n            (v, u) => ap(fmap(x => xs => [x, ...xs], u), v),\n            pureT(us[0])([])\n        )\n    ) : us;"
+    }
+  ]
+}

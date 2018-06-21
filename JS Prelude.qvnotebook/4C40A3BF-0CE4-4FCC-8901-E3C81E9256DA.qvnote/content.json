@@ -1,0 +1,15 @@
+{
+  "title": "kleisliCompose (>=>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Kleisli composition LR"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)\nconst kleisliCompose = (f, g) =>\n    x => bind(f(x), g);"
+    }
+  ]
+}

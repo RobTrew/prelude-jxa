@@ -1,0 +1,15 @@
+{
+  "title": "takeDropCycle",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// take N Members of an infinite cycle of xs, starting from index I"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// takeDropCycle :: Int -> [a] -> [a]\nconst takeDropCycle = (n, i, xs) => {\n    const\n        lng = xs.length,\n        m = n + i;\n    return drop(i,\n        take(m,\n            (lng >= m ? xs : concat(replicate(Math.ceil(m / lng), xs)))\n        )\n    );\n};"
+    }
+  ]
+}

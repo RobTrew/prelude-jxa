@@ -1,0 +1,15 @@
+{
+  "title": "liftA2",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Lift a binary function to actions.\n// liftA2 f a b = fmap f a <*> b"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = (f, a, b) =>\n    Array.isArray(a) ? (\n        liftA2List(f, a, b)\n    ) : (t => Boolean(t) ? (\n        t === 'Either' ? (\n            liftA2LR(f, a, b)\n        ) : t === 'Maybe' ? (\n            liftA2Maybe(f, a, b)\n        ) : t === 'Tuple' ? (\n            liftA2Tuple(f, a, b)\n        ) : undefined\n    ) : undefined)(a.type);"
+    }
+  ]
+}

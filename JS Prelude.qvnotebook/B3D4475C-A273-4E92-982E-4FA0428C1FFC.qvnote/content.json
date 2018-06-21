@@ -1,0 +1,10 @@
+{
+  "title": "quot",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// quot :: Int -> Int -> Int\nconst quot = (n, m) => Math.floor(n / m);"
+    }
+  ]
+}

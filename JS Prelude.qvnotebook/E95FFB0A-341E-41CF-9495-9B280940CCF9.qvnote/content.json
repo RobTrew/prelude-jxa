@@ -1,0 +1,10 @@
+{
+  "title": "reverse",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    typeof xs === 'string' ? (\n        xs.split('')\n        .reverse()\n        .join('')\n    ) : xs.slice(0)\n    .reverse();"
+    }
+  ]
+}

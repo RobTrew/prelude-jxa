@@ -1,0 +1,10 @@
+{
+  "title": "mean",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mean :: [Num] -> Num\nconst mean = xs =>\n  xs.reduce((a, x) => a + x, 0) / xs.length;"
+    }
+  ]
+}

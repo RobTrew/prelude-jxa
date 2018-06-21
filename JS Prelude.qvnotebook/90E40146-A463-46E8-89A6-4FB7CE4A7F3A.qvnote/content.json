@@ -1,0 +1,10 @@
+{
+  "title": "assocs",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// assocs :: Map k a -> [(k, a)]\nconst assocs = m =>\n    Object.keys(m).sort().map(k => Tuple(k, m[k]));"
+    }
+  ]
+}

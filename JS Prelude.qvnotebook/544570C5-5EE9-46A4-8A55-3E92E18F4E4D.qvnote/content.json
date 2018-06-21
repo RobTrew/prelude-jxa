@@ -1,0 +1,10 @@
+{
+  "title": "lastMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs => xs.length > 0 ? (\n    Just(xs.slice(-1)[0])\n) : Nothing();"
+    }
+  ]
+}

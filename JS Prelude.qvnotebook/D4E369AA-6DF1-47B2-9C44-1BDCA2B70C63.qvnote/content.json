@@ -1,0 +1,10 @@
+{
+  "title": "zip",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = (xs, ys) =>\n    xs.slice(0, Math.min(xs.length, ys.length))\n    .map((x, i) => Tuple(x, ys[i]));"
+    }
+  ]
+}

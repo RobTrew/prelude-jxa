@@ -1,0 +1,10 @@
+{
+  "title": "elemIndices",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// elemIndices :: Eq a => a -> [a] -> [Int]\nconst elemIndices = (x, xs) =>\n    concatMap((y, i) => y === x ? (\n        [i]\n    ) : [], xs);"
+    }
+  ]
+}

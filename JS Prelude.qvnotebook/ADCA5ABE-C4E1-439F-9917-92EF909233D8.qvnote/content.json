@@ -1,0 +1,10 @@
+{
+  "title": "isNull",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isNull :: [a] -> Bool\n// isNull :: String -> Bool\nconst isNull = xs =>\n    Array.isArray(xs) || typeof xs === 'string' ? (\n        xs.length < 1\n    ) : undefined;"
+    }
+  ]
+}

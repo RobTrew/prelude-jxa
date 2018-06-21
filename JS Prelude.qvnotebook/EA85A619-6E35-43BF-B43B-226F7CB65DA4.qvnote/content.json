@@ -1,0 +1,10 @@
+{
+  "title": "subtract",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// subtract :: Num -> Num -> Num\nconst subtract = (x, y) => y - x;"
+    }
+  ]
+}

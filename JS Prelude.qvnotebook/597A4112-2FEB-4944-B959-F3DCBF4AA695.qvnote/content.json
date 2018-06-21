@@ -1,0 +1,10 @@
+{
+  "title": "regexMatches",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// regexMatches :: String -> String -> [[String]]\nconst regexMatches = (strRgx, strHay) => {\n    const rgx = new RegExp(strRgx, 'g');\n    let m = rgx.exec(strHay),\n        xs = [];\n    while (m)(xs.push(m), m = rgx.exec(strHay));\n    return xs;\n};"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "foldlTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// foldlTree :: (b -> a -> b) -> b -> Tree a -> b\nconst foldlTree = (f, acc, node) => {\n  const go = (a, x) =>\n    x.nest.reduce(go, f(a, x));\n  return go(acc, node);\n};"
+    }
+  ]
+}

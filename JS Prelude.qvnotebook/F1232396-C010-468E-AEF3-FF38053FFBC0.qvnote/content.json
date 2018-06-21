@@ -1,0 +1,10 @@
+{
+  "title": "words",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// words :: String -> [String]\nconst words = s => s.split(/\\s+/);"
+    }
+  ]
+}

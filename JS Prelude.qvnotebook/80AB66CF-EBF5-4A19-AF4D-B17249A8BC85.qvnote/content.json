@@ -1,0 +1,10 @@
+{
+  "title": "product",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// product :: [Num] -> Num\nconst product = xs => xs.reduce((a, x) => a * x, 1);"
+    }
+  ]
+}

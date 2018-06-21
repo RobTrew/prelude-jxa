@@ -1,0 +1,10 @@
+{
+  "title": "mappendComparing",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)\nconst mappendComparing = fs =>\n    (x, y) => fs.reduce(\n        (ordr, f) => ordr || compare(f(x), f(y)),\n        0\n    );"
+    }
+  ]
+}

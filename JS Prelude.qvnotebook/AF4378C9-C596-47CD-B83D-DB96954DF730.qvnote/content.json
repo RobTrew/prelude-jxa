@@ -1,0 +1,15 @@
+{
+  "title": "splitFileName",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Split a filename into directory and file. combine is the inverse."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// splitFileName :: FilePath -> (String, String)\nconst splitFileName = strPath =>\n    strPath !== '' ? (\n        strPath[strPath.length - 1] !== '/' ? (() => {\n            const\n                xs = strPath.split('/'),\n                stem = xs.slice(0, -1);\n            return stem.length > 0 ? (\n                Tuple(stem.join('/') + '/', xs.slice(-1)[0])\n            ) : Tuple('./', xs.slice(-1)[0]);\n        })() : Tuple(strPath, '')\n    ) : Tuple('./', '');"
+    }
+  ]
+}

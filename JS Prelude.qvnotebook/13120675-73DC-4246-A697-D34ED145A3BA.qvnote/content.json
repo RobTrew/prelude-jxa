@@ -1,0 +1,10 @@
+{
+  "title": "TupleN",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// TupleN :: a -> b ...  -> (a, b ... )\nfunction TupleN() {\n    const\n        args = Array.from(arguments),\n        lng = args.length;\n    return lng > 1 ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 'Tuple' + (lng > 2 ? lng.toString() : ''),\n            length: lng\n        })\n    ) : args[0];\n};"
+    }
+  ]
+}

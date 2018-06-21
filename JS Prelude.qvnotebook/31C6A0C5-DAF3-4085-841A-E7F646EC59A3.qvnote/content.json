@@ -1,0 +1,15 @@
+{
+  "title": "mapAccumL",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// 'The mapAccumL function behaves like a combination of map and foldl; \n// it applies a function to each element of a list, passing an accumulating \n// parameter from left to right, and returning a final value of this \n// accumulator together with the new list.' (See Hoogle)"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumL = (f, acc, xs) =>\n    xs.reduce((a, x, i) => {\n        const pair = f(a[0], x, i);\n        return Tuple(pair[0], a[1].concat(pair[1]));\n    }, Tuple(acc, []));"
+    }
+  ]
+}

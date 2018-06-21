@@ -1,0 +1,10 @@
+{
+  "title": "read",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// read :: Read a => String -> a\nconst read = JSON.parse;"
+    }
+  ]
+}

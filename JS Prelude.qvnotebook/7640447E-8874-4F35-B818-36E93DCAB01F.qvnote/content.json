@@ -1,0 +1,10 @@
+{
+  "title": "justifyLeft",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// justifyLeft :: Int -> Char -> String -> String\nconst justifyLeft = (n, cFiller, strText) =>\n    n > strText.length ? (\n        (strText + cFiller.repeat(n))\n        .substr(0, n)\n    ) : strText;"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "abs",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// | Absolute value."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// abs :: Num -> Num\nconst abs = Math.abs;"
+    }
+  ]
+}

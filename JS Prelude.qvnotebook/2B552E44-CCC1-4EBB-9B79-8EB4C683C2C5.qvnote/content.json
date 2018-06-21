@@ -1,0 +1,10 @@
+{
+  "title": "notElem",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// notElem :: Eq a => a -> [a] -> Bool\nconst notElem = (x, xs) => xs.indexOf(x) === -1;"
+    }
+  ]
+}

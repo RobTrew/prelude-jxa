@@ -1,0 +1,10 @@
+{
+  "title": "isSuffixOf",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = (suffix, main) =>\n    main.indexOf(suffix) === main.length - suffix.length;"
+    }
+  ]
+}

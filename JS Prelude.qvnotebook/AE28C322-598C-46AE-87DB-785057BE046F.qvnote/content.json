@@ -1,0 +1,10 @@
+{
+  "title": "EQ",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// EQ :: Ordering\nconst EQ = {\n  type: 'Ordering',\n  value: 0\n};"
+    }
+  ]
+}

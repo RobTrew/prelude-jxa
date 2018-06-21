@@ -1,0 +1,15 @@
+{
+  "title": "partition",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// partition :: Predicate -> List -> (Matches, nonMatches)"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = (p, xs) =>\n    xs.reduce(\n        (a, x) =>\n        p(x) ? (\n            Tuple(a[0].concat(x), a[1])\n        ) : Tuple(a[0], a[1].concat(x)),\n        Tuple([], [])\n    );"
+    }
+  ]
+}

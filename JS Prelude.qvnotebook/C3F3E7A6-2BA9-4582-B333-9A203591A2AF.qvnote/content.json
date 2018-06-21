@@ -1,0 +1,10 @@
+{
+  "title": "enumFromThenTo",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// enumFromThenTo :: Enum a => a -> a -> a -> [a]\nconst enumFromThenTo = (x1, x2, y) =>\n    (typeof x1 !== 'number' ? (\n        enumFromThenToChar\n    ) : enumFromThenToInt)\n    .apply(null, [x1, x2, y]);"
+    }
+  ]
+}

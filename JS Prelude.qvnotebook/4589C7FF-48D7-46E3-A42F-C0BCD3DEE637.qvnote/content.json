@@ -1,0 +1,10 @@
+{
+  "title": "deleteMap",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// deleteMap :: k -> Dict -> Dict\nconst deleteMap = (k, dct) =>\n    (delete dct[k], dct);"
+    }
+  ]
+}

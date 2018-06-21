@@ -1,0 +1,10 @@
+{
+  "title": "elem",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = (x, xs) => xs.includes(x);"
+    }
+  ]
+}

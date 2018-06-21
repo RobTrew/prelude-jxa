@@ -1,0 +1,10 @@
+{
+  "title": "intersectBy",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst intersectBy = (eq, xs, ys) => {\n    const ceq = curry(eq);\n    return (xs.length > 0 && ys.length > 0) ?\n    xs.filter(x => ys.some(ceq(x))) : [];\n};"
+    }
+  ]
+}

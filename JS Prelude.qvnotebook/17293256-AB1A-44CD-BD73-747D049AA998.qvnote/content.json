@@ -1,0 +1,10 @@
+{
+  "title": "plus",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// plus :: Num -> Num -> Num\nconst plus = (a, b) => a + b;"
+    }
+  ]
+}

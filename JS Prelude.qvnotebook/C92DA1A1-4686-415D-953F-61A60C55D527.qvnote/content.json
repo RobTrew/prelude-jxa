@@ -1,0 +1,10 @@
+{
+  "title": "drop",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// drop :: Int -> [a] -> [a]\n// drop :: Int -> String -> String\nconst drop = (n, xs) => xs.slice(n);"
+    }
+  ]
+}

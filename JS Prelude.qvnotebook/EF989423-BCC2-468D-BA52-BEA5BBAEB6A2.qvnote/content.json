@@ -1,0 +1,15 @@
+{
+  "title": "takeCycle",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// First n members of an infinite cycle of xs"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = (n, xs) => {\n  const lng = xs.length;\n  return (lng >= n ? xs : concat(replicate(Math.ceil(n / lng), xs)))\n  .slice(0, n)\n};"
+    }
+  ]
+}

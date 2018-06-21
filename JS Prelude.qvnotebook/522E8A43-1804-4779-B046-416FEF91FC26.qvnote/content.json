@@ -1,0 +1,15 @@
+{
+  "title": "isSortedBy",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// The 'isSortedBy' function returns true iff the predicate returns true\n// for all adjacent pairs of elements in the list."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isSortedBy :: (a -> a -> Bool) -> [a] -> Bool\nconst isSortedBy = (cmp, xs) =>\n    xs.length < 2 || all(x => x < 1, zipWith(cmp, xs, tail(xs)));"
+    }
+  ]
+}

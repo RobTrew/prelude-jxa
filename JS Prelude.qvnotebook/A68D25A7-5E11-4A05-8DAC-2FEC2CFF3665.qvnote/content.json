@@ -1,0 +1,10 @@
+{
+  "title": "flatten",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// flatten :: NestedList a -> [a]\nconst flatten = t =>\n    Array.isArray(t) ? (\n        [].concat.apply([], t.map(flatten))\n    ): t;"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "showUndefined",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showUndefined :: () -> String\nconst showUndefined = () => '(⊥)';"
+    }
+  ]
+}

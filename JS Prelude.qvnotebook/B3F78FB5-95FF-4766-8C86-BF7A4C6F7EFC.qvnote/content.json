@@ -1,0 +1,10 @@
+{
+  "title": "showDict",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showDict :: Dict -> String\nconst showDict = show;"
+    }
+  ]
+}

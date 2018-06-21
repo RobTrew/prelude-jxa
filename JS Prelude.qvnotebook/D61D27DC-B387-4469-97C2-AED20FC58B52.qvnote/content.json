@@ -1,0 +1,10 @@
+{
+  "title": "lefts",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// lefts :: [Either a b] -> [a]\nconst lefts = xs =>\n    concatMap(\n        x => x.type === 'Either' && x.Left !== undefined ? (\n            [x.Left]\n        ) : [], xs\n    );"
+    }
+  ]
+}

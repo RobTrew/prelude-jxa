@@ -1,0 +1,10 @@
+{
+  "title": "stripEnd",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// stripEnd :: String -> String\nconst stripEnd = s => dropWhileEnd(isSpace, s);"
+    }
+  ]
+}

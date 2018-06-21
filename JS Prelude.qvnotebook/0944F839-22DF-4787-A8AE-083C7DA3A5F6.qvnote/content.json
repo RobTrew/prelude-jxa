@@ -1,0 +1,15 @@
+{
+  "title": "fromRight",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// | Return the contents of a 'Right'-value or a default value otherwise."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fromRight :: b -> Either a b -> b\nconst fromRight = (def, lr) =>\n  isRight(lr) ? lr.Right : def;"
+    }
+  ]
+}

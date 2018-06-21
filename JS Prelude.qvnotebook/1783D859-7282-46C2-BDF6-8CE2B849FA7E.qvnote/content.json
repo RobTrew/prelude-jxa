@@ -1,0 +1,15 @@
+{
+  "title": "curry",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Flexibly handles two or more arguments, applying\n// the function directly if the argument array is complete,\n// or recursing with a concatenation of any existing and\n// newly supplied arguments, if gaps remain."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// curry :: ((a, b) -> c) -> a -> b -> c\nconst curry = (f, ...args) => {\n    const go = xs => xs.length >= f.length ? (\n        f.apply(null, xs)\n    ) : function () {\n        return go(xs.concat(Array.from(arguments)));\n    };\n    return go(args);\n};"
+    }
+  ]
+}

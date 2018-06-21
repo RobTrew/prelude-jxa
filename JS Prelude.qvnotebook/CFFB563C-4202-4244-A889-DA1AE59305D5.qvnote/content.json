@@ -1,0 +1,10 @@
+{
+  "title": "zipWith3",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]\nconst zipWith3 = (f, xs, ys, zs) =>\n    Array.from({\n        length: Math.min(xs.length, ys.length, zs.length)\n    }, (_, i) => f(xs[i], ys[i], zs[i]));"
+    }
+  ]
+}

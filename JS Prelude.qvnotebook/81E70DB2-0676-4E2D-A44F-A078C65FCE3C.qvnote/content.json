@@ -1,0 +1,10 @@
+{
+  "title": "stripStart",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// stripStart :: String -> String\nconst stripStart = s => dropWhile(isSpace, s);"
+    }
+  ]
+}

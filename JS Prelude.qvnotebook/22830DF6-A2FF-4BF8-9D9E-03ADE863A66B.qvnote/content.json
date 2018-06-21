@@ -1,0 +1,15 @@
+{
+  "title": "outdented",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// All lines in the string outdented by the same amount\n// (just enough to ensure that the least indented lines \n//  have no remaining indent)\n// All relative indents are left unchanged"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// outdented :: String -> String\nconst outdented = s => {\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy( // size of minimum indent\n            comparing(length),\n            map(txt => rgx.exec(txt)[0], xs)\n        ));\n    return unlines(map(curry(drop)(n), xs));\n};"
+    }
+  ]
+}

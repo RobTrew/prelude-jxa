@@ -1,0 +1,10 @@
+{
+  "title": "readFile",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// readFile :: FilePath -> IO String\nconst readFile = strPath => {\n    const\n        error = $(),\n        str = ObjC.unwrap(\n            $.NSString.stringWithContentsOfFileEncodingError(\n                $(strPath)\n                .stringByStandardizingPath,\n                $.NSUTF8StringEncoding,\n                error\n            )\n        );\n    return Boolean(error.code) ? (\n        ObjC.unwrap(error.localizedDescription)\n    ) : str;\n};"
+    }
+  ]
+}

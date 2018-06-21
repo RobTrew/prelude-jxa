@@ -1,0 +1,10 @@
+{
+  "title": "unlines",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unlines :: [String] -> String\nconst unlines = xs => xs.join('\\n');"
+    }
+  ]
+}

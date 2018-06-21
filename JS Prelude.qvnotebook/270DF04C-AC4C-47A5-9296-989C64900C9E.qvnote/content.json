@@ -1,0 +1,15 @@
+{
+  "title": "maybe",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Default value (v) if m.Nothing, or f(m.Just)"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = (v, f, m) =>\n    m.Nothing ? v : f(m.Just);"
+    }
+  ]
+}

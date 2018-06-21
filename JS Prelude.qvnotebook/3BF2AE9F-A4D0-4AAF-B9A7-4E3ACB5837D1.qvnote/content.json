@@ -1,0 +1,10 @@
+{
+  "title": "composeListRL",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// composeListRL :: [(a -> a)] -> (a -> a)\nconst composeListRL = fs =>\n    x => fs.reduceRight((a, f) => f(a), x, fs);"
+    }
+  ]
+}

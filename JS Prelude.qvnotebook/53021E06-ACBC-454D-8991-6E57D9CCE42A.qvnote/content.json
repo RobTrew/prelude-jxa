@@ -1,0 +1,10 @@
+{
+  "title": "negate",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// negate :: Num -> Num\nconst negate = n => -n;"
+    }
+  ]
+}

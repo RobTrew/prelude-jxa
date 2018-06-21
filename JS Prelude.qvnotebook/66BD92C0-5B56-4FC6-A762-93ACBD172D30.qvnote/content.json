@@ -1,0 +1,10 @@
+{
+  "title": "compose",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// compose :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (f, g) => x => f(g(x));"
+    }
+  ]
+}

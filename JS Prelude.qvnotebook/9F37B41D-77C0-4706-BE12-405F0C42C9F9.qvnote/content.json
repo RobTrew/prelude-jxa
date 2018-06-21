@@ -1,0 +1,10 @@
+{
+  "title": "div",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// div :: Int -> Int -> Int\nconst div = (x, y) => Math.floor(x / y);"
+    }
+  ]
+}

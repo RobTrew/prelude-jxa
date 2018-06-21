@@ -1,0 +1,10 @@
+{
+  "title": "filter",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// filter :: (a -> Bool) -> [a] -> [a]\nconst filter = (f, xs) => xs.filter(f);"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "showIntAtBase",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String\nconst showIntAtBase = (base, toChr, n, rs) => {\n    const showIt = ([n, d], r) => {\n        const r_ = toChr(d) + r;\n        return n !== 0 ? (\n            showIt(quotRem(n, base), r_)\n        ) : r_;\n    };\n    return base <= 1 ? (\n        'error: showIntAtBase applied to unsupported base'\n    ) : n < 0 ? (\n        'error: showIntAtBase applied to negative number'\n    ) : showIt(quotRem(n, base), rs);\n};"
+    }
+  ]
+}

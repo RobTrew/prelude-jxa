@@ -1,0 +1,10 @@
+{
+  "title": "min",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// min :: Ord a => a -> a -> a\nconst min = (a, b) => b < a ? b : a;"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "curry2",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Simpler 2 argument only version of curry"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// curry2 :: ((a, b) -> c) -> a -> b -> c\nconst curry2 = f => a => b => f(a, b);"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "mapAccumR",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// 'The mapAccumR function behaves like a combination of map and foldr; \n// it applies a function to each element of a list, passing an accumulating \n// parameter from right to left, and returning a final value of this \n// accumulator together with the new list.' (See Hoogle)"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumR = (f, acc, xs) =>\n    xs.reduceRight((a, x, i) => {\n        const pair = f(a[0], x, i);\n        return Tuple(pair[0],\n            [pair[1]].concat(a[1])\n        );\n    }, Tuple(acc, []));"
+    }
+  ]
+}

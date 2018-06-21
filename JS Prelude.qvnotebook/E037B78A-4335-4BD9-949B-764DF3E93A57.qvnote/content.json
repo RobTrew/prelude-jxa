@@ -1,0 +1,10 @@
+{
+  "title": "fileStatus",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n  const\n    error = $(),\n    dct = $.NSFileManager.defaultManager\n    .attributesOfItemAtPathError(fp, error).js;\n  return dct !== undefined ? (\n    Right(dct)\n  ) : Left(ObjC.unwrap(error.localizedDescription));\n};"
+    }
+  ]
+}

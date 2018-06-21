@@ -1,0 +1,10 @@
+{
+  "title": "elems",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// elems :: Dict -> [a]\nconst elems = Object.values;"
+    }
+  ]
+}

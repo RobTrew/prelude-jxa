@@ -1,0 +1,10 @@
+{
+  "title": "enumFromToInt",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// enumFromToInt :: Int -> Int -> [Int]\nconst enumFromToInt = (m, n) =>\n    m <= n ? iterateUntil(\n        x => n <= x,\n        x => 1 + x,\n        m\n    ) : [];"
+    }
+  ]
+}

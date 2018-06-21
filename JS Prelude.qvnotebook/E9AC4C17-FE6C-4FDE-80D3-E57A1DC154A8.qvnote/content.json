@@ -1,0 +1,10 @@
+{
+  "title": "strip",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// strip :: String -> String\nconst strip = s => s.trim();"
+    }
+  ]
+}

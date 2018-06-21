@@ -1,0 +1,10 @@
+{
+  "title": "raise",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// raise :: Num -> Int -> Num\nconst raise = (n, e) => Math.pow(n, e);"
+    }
+  ]
+}

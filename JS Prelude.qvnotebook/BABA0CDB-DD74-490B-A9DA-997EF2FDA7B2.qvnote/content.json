@@ -1,0 +1,15 @@
+{
+  "title": "mapMaybe",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// The mapMaybe function is a version of map which can throw out\n// elements. In particular, the functional argument returns\n// something of type Maybe b. If this is Nothing, no element is\n// added on to the result list. If it just Just b, then b is\n// included in the result list."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = (mf, xs) =>\n    concatMap(compose(mf, maybeToList), xs);"
+    }
+  ]
+}

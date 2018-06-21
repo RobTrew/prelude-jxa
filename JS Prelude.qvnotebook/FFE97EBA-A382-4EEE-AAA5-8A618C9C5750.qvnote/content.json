@@ -1,0 +1,10 @@
+{
+  "title": "max",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// max :: Ord a => a -> a -> a\nconst max = (a, b) => b > a ? b : a;"
+    }
+  ]
+}

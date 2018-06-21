@@ -1,0 +1,15 @@
+{
+  "title": "traverseList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// - Map each element of a structure to an action,\n// - evaluate these actions from left to right,\n// - and collect the results.\n\n// traverse :: (Traversable t, Applicative f) => (a -> f b) -> t a -> f (t b)\n// traverse_ f = foldr cons_f (pure [])\n//   where cons_f x a = ((:) <$> (f x)) <*> a"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)\nconst traverseList = (f, xs) =>\n    sequenceAList(fmap(f, xs));"
+    }
+  ]
+}

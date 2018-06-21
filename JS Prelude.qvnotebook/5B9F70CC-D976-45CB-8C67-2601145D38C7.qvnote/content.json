@@ -1,0 +1,10 @@
+{
+  "title": "scanr",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// scanr :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanr = (f, startValue, xs) =>\n    xs.reduceRight((a, x) => {\n        const v = f(a.acc, x);\n        return {\n            acc: v,\n            scan: [v].concat(a.scan)\n        };\n    }, {\n        acc: startValue,\n        scan: [startValue]\n    })\n    .scan;"
+    }
+  ]
+}

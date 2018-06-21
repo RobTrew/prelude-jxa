@@ -1,0 +1,10 @@
+{
+  "title": "cartesianProduct",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// cartesianProduct :: [a] -> [b] -> [(a, b)]\nconst cartesianProduct = (xs, ys) =>\n    concatMap((x => concatMap(y => [\n        [Tuple(x, y)]\n    ], ys)), xs);"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "randomRInt",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// randomRInt :: Int -> Int -> Int\nconst randomRInt = (low, high) =>\n    low + Math.floor(\n        (Math.random() * ((high - low) + 1))\n    );"
+    }
+  ]
+}

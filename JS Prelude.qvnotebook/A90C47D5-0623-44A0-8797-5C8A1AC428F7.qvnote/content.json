@@ -1,0 +1,10 @@
+{
+  "title": "unzip",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    xys.reduce(\n        (a, x) => Tuple.apply(null, [0, 1].map(\n            i => a[i].concat(x[i])\n        )),\n        Tuple([], [])\n    );"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "minimumByMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = (f, xs) =>\n    xs.reduce((a, x) => a.Nothing ? Just(x) : (\n        f(x, a.Just) < 0 ? Just(x) : a\n    ), Nothing());"
+    }
+  ]
+}

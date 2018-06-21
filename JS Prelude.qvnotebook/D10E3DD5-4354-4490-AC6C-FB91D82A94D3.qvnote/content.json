@@ -1,0 +1,10 @@
+{
+  "title": "getCurrentDirectory",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// getCurrentDirectory :: IO FilePath\nconst getCurrentDirectory = () =>\n    ObjC.unwrap($.NSFileManager.defaultManager.currentDirectoryPath);"
+    }
+  ]
+}

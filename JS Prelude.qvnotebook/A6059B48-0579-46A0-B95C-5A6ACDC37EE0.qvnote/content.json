@@ -1,0 +1,10 @@
+{
+  "title": "isDigit",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isDigit :: Char -> Bool\nconst isDigit = c => {\n  const n = ord(c);\n  return n >= 48 && n <= 57;\n};"
+    }
+  ]
+}

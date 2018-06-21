@@ -1,0 +1,10 @@
+{
+  "title": "enumFromThenToInt",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// enumFromThenToInt :: Int -> Int -> Int -> [Int]\nconst enumFromThenToInt = (x1, x2, y) => {\n    const d = x2 - x1;\n    return Array.from({\n        length: Math.floor(y - x2) / d + 2\n    }, (_, i) => x1 + (d * i));\n};"
+    }
+  ]
+}

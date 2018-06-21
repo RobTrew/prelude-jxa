@@ -1,0 +1,15 @@
+{
+  "title": "scanr1",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// scanr1 is a variant of scanr that has no starting value argument"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = (f, xs) =>\n    xs.length > 0 ? scanr(f, xs.slice(-1)[0], xs.slice(0, -1)) : [];"
+    }
+  ]
+}

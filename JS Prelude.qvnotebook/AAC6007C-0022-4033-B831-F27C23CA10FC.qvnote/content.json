@@ -1,0 +1,10 @@
+{
+  "title": "insertBy",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = (cmp, x, ys) => {\n    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};\n    return ys.slice(0, i)\n        .concat(x)\n        .concat(ys.slice(i));\n};"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "drawTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// drawTree :: Tree String -> String\nconst drawTree = tree =>\n    unlines(draw(tree));"
+    }
+  ]
+}

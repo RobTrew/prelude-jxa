@@ -1,0 +1,10 @@
+{
+  "title": "Nothing",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Nothing :: () -> Nothing\nconst Nothing = () => ({\n    type: 'Maybe',\n    Nothing: true,\n});"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "sum",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// sum :: [Num] -> Num\nconst sum = xs => xs.reduce((a, x) => a + x, 0);"
+    }
+  ]
+}

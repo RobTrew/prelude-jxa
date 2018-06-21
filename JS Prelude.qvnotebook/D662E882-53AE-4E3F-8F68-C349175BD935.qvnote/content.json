@@ -1,0 +1,10 @@
+{
+  "title": "lines",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// lines :: String -> [String]\nconst lines = s => s.split(/[\\r\\n]/);"
+    }
+  ]
+}

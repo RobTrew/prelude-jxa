@@ -1,0 +1,10 @@
+{
+  "title": "writeFile",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// writeFile :: FilePath -> String -> IO ()\nconst writeFile = (strPath, strText) =>\n    $.NSString.alloc.initWithUTF8String(strText)\n    .writeToFileAtomicallyEncodingError(\n        $(strPath)\n        .stringByStandardizingPath, false,\n        $.NSUTF8StringEncoding, null\n    );"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "bindMay (>>=)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = (mb, mf) =>\n    mb.Nothing ? mb : mf(mb.Just);"
+    }
+  ]
+}

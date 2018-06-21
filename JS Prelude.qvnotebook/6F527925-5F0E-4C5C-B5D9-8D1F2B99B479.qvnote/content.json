@@ -1,0 +1,10 @@
+{
+  "title": "replicate",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// replicate :: Int -> a -> [a]\nconst replicate = (n, x) =>\n    Array.from({\n        length: n\n    }, () => x);"
+    }
+  ]
+}

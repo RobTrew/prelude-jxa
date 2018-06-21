@@ -1,0 +1,10 @@
+{
+  "title": "liftMmay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)\nconst liftMmay = f =>\n    mb => mb.Nothing ? mb : {\n        Nothing: false,\n        Just: f(mb.Just)\n    };"
+    }
+  ]
+}

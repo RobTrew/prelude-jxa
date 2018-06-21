@@ -1,0 +1,10 @@
+{
+  "title": "pureMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// pureMay :: a -> Maybe a\nconst pureMay = x => Just(x);"
+    }
+  ]
+}

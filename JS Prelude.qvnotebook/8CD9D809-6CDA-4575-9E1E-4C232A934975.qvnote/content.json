@@ -1,0 +1,10 @@
+{
+  "title": "appendFile",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = (strPath, txt) => {\n    const\n        oFullPath = ObjC.wrap(strPath)\n        .stringByStandardizingPath,\n        ref = Ref();\n  \n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n            ref[0] === 0 ? (() => {\n                const // Not a directory\n                    oData = ObjC.wrap(txt)\n                    .dataUsingEncoding($.NSUTF8StringEncoding),\n                    h = $.NSFileHandle.fileHandleForWritingAtPath(\n                        oFullPath\n                    );\n                return (\n                    h.seekToEndOfFile, // Effect, and\n                    h.writeData(oData),\n                    h.closeFile,\n                    true // value.\n                );\n            })() : false // Text appending to directory is undefined\n        ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(strPath))) ? (\n            writeFile(oFullPath, txt), // Effect, and\n            true // value.\n        ) : false;\n};"
+    }
+  ]
+}

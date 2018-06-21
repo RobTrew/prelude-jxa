@@ -1,0 +1,10 @@
+{
+  "title": "Ratio",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Ratio :: Int -> Int -> Ratio\nconst Ratio = (n, d) => ({\n    type: 'Ratio',\n    'n': n, // numerator\n    'd': d // denominator\n});"
+    }
+  ]
+}

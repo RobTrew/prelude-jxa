@@ -1,0 +1,10 @@
+{
+  "title": "newUUID",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// newUUID :: () -> IO UUID String\nconst newUUID = () =>\n    ObjC.unwrap($.NSUUID.UUID.UUIDString);"
+    }
+  ]
+}

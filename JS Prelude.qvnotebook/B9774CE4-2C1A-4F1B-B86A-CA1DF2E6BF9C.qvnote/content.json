@@ -1,0 +1,10 @@
+{
+  "title": "snd",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// snd :: (a, b) -> b\nconst snd = tpl => tpl[1];"
+    }
+  ]
+}

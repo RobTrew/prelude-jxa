@@ -1,0 +1,10 @@
+{
+  "title": "lookup",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// lookup :: Eq a => a -> Container -> Maybe b\nconst lookup = (k, m) =>\n    (Array.isArray(m) ? (\n        lookupTuples\n    ) : lookupDict)(k, m);"
+    }
+  ]
+}

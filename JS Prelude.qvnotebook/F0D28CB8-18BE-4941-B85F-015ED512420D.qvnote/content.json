@@ -1,0 +1,10 @@
+{
+  "title": "map",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// map :: (a -> b) -> [a] -> [b]\nconst map = (f, xs) => xs.map(f);"
+    }
+  ]
+}

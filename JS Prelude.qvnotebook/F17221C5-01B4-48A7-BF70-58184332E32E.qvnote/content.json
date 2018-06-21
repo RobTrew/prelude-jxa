@@ -1,0 +1,10 @@
+{
+  "title": "succ",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// succ :: Enum a => a -> a\nconst succ = x =>\n    isChar(x) ? (\n        chr(ord(x) + 1)\n    ) : isNaN(x) ? (\n        undefined\n    ) : x + 1;"
+    }
+  ]
+}

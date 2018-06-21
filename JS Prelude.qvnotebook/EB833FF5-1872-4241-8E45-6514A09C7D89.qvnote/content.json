@@ -1,0 +1,15 @@
+{
+  "title": "replicateM",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Instance for lists (arrays) only here"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = (n, xs) => {\n    const loop = x => x <= 0 ? [\n        []\n    ] : liftA2(cons, xs, loop(x - 1));\n    return loop(n);\n};"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "then (>>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// then (>>) :: Monad m => m a -> m b -> m b\nconst then = (ma, mb) =>\n    (Array.isArray(ma) ? (\n        thenList\n    ) : isMaybe(ma) ? (\n        thenMay\n    ) : thenIO)\n    .apply(null, [ma, mb]);"
+    }
+  ]
+}

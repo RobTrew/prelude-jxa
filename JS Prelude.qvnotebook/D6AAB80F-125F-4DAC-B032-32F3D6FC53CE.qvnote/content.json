@@ -1,0 +1,10 @@
+{
+  "title": "intersect",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = (xs, ys) => \n  xs.filter(x => ys.indexOf(x) !== -1);"
+    }
+  ]
+}

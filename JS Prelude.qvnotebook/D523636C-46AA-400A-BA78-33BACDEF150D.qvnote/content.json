@@ -1,0 +1,10 @@
+{
+  "title": "writeFileMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// writeFileMay :: FilePath -> String -> Maybe FilePath\nconst writeFileMay = (strPath, strText) => {\n    const\n        e = $(),\n        fullPath = $(strPath)\n        .stringByStandardizingPath;\n    return $.NSString.alloc.initWithUTF8String(strText)\n        .writeToFileAtomicallyEncodingError(\n            fullPath, false,\n            $.NSUTF8StringEncoding, e\n        ) ? (\n            Just(ObjC.unwrap(fullPath))\n        ) : Nothing();\n};"
+    }
+  ]
+}

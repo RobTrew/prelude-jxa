@@ -1,0 +1,10 @@
+{
+  "title": "showOrdering",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    e.value > 0 ? (\n        'GT'\n    ) : e.value < 0 ? (\n        'LT'\n    ) : 'EQ';"
+    }
+  ]
+}

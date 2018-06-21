@@ -1,0 +1,10 @@
+{
+  "title": "dropAround",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// dropAround :: (Char -> Bool) -> String -> String\nconst dropAround = (p, s) => dropWhile(p, dropWhileEnd(p, s));"
+    }
+  ]
+}

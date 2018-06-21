@@ -1,0 +1,10 @@
+{
+  "title": "concatMap",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = (f, xs) => [].concat.apply([], xs.map(f));"
+    }
+  ]
+}

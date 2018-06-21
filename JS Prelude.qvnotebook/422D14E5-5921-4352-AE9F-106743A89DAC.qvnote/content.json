@@ -1,0 +1,10 @@
+{
+  "title": "fmapTuple (<$>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)\nconst fmapTuple = (f, tpl) =>\n    Tuple(tpl[0], f(tpl[1]));"
+    }
+  ]
+}

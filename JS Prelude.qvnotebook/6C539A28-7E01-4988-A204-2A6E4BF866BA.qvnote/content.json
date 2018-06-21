@@ -1,0 +1,10 @@
+{
+  "title": "catMaybes",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// catMaybes :: [Maybe a] -> [a]\nconst catMaybes = mbs =>\n    concatMap(m => m.Nothing ? [] : [m.Just], mbs);"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "fromMaybe",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fromMaybe :: a -> Maybe a -> a\nconst fromMaybe = (def, mb) => mb.Nothing ? def : mb.Just;"
+    }
+  ]
+}

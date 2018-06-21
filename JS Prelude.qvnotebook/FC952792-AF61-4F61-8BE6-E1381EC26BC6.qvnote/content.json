@@ -1,0 +1,10 @@
+{
+  "title": "either",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = (lf, rf, e) =>\n    e.type === 'Either' ? (\n        e.Left !== undefined ? (\n            lf(e.Left)\n        ) : rf(e.Right)\n    ) : undefined;"
+    }
+  ]
+}

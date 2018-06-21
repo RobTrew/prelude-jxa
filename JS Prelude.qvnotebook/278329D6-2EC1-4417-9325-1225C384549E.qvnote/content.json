@@ -1,0 +1,15 @@
+{
+  "title": "unfoldr",
+  "cells": [
+    {
+      "type": "code",
+      "language": "applescript",
+      "data": "// The 'unfoldr' function is a \\`dual\\' to 'foldr': while 'foldr'\n// reduces a list to a summary value, 'unfoldr' builds a list from\n// a seed value.  The function takes the element and returns 'Nothing'\n// if it is done producing the list or returns 'Just' @(a,b)@, in which\n// case, @a@ is a prepended to the list and @b@ is used as the next\n// element in a recursive call.\n//\n// unfoldr(b => b === 0 ? Nothing() : Just(Tuple(b, b - 1)), 10);\n// --> [10,9,8,7,6,5,4,3,2,1]\n\n// (x => Maybe [value, remainder] -> initial value -> values"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unfoldr :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldr = (f, v) => {\n    let xs = [];\n    return (\n        until(\n            mb => mb.Nothing,\n            mb => (\n                xs.push(mb.Just[0]),\n                f(mb.Just[1])\n            ), Just(Tuple(v, v))\n        ),\n        xs.slice(1)\n    );\n};"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "filePathTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// filePathTree :: filePath -> [Tree String] -> Tree filePath\nconst filePathTree = (fpAnchor, trees) => {\n    const go = fp => tree => {\n        const path = `${fp}/${tree.root}`;\n        return Node(\n            path,\n            tree.nest.map(go(path))\n        );\n    };\n    return Node(fpAnchor, trees.map(go(fpAnchor)));\n};"
+    }
+  ]
+}

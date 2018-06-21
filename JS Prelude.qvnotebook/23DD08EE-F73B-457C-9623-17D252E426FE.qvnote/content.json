@@ -1,0 +1,10 @@
+{
+  "title": "break",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = (p, xs) => {\n  for (var i = 0, lng = xs.length; (i < lng) && !p(xs[i]); i++) {};\n  return Tuple(xs.slice(0, i), xs.slice(i));\n};"
+    }
+  ]
+}

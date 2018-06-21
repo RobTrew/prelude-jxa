@@ -1,0 +1,10 @@
+{
+  "title": "keys",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// keys :: Dict -> [String]\nconst keys = dct => Object.keys(dct);"
+    }
+  ]
+}

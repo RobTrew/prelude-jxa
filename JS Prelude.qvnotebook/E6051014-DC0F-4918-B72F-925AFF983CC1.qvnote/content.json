@@ -1,0 +1,10 @@
+{
+  "title": "pureList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// pureList :: a -> [a]\nconst pureList = x => [x];"
+    }
+  ]
+}

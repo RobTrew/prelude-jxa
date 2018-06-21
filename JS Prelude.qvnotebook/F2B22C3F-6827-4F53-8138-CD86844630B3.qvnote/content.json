@@ -1,0 +1,10 @@
+{
+  "title": "GT",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// GT :: Ordering\nconst GT = {\n    type: 'Ordering',\n    value: 1\n};"
+    }
+  ]
+}

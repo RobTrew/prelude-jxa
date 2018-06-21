@@ -1,0 +1,10 @@
+{
+  "title": "mapAccumL_Tree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)\nconst mapAccumL_Tree = (f, acc, tree) => {\n    const go = (a, x) => {\n        const\n            pair = f(a, x.root),\n            tpl = mapAccumL(go, pair[0], x.nest);\n        return Tuple(tpl[0], Node(pair[1], tpl[1]));\n    };\n    return go(acc, tree);\n};"
+    }
+  ]
+}

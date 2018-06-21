@@ -1,0 +1,10 @@
+{
+  "title": "liftA2Tuple",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)\nconst liftA2Tuple = (f, a, b) =>\n    Tuple(mappend(a[0], b[0]), f(a[1], b[1]));"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "exp",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// exp :: Float -> Float\nconst exp = n => Math.exp(n);"
+    }
+  ]
+}

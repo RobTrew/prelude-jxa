@@ -1,0 +1,10 @@
+{
+  "title": "pureTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// pureTree :: a -> Tree a\nconst pureTree = x => Node(x, []);"
+    }
+  ]
+}

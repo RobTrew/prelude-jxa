@@ -1,0 +1,10 @@
+{
+  "title": "pred",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// pred :: Enum a => a -> a\nconst pred = x =>\n    isChar(x) ? (\n        chr(ord(x) - 1)\n    ) : isNaN(x) ? (\n        undefined\n    ) : x - 1;"
+    }
+  ]
+}

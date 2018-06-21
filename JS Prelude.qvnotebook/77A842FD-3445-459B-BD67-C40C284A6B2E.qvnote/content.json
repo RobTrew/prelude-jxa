@@ -1,0 +1,10 @@
+{
+  "title": "isSubsequenceOf",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = (xs, ys) => {\n    const iss = (a, b) =>\n        a.length > 0 ? (\n            b.length > 0 ? (\n                iss((a[0] === b[0] ? a.slice(1) : a), b.slice(1))\n            ) : false\n        ) : true;\n    return iss.apply(\n        null, 'string' === typeof xs ? [\n            xs.split(''), ys.split('')\n        ] : [xs, ys]\n    );\n};"
+    }
+  ]
+}

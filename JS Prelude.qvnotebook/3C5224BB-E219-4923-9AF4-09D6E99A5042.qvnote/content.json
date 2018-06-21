@@ -1,0 +1,10 @@
+{
+  "title": "swap",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// swap :: (a, b) -> (b, a)\nconst swap = ab =>\n    Tuple(ab[1], ab[0]);"
+    }
+  ]
+}

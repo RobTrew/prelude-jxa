@@ -1,0 +1,10 @@
+{
+  "title": "pureT",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// pureT :: f a -> (a -> f a)\nconst pureT = x =>\n    Array.isArray(x) ? (\n        pureList\n    ) : (() => {\n        const t = x.type;\n        return t !== undefined ? (\n            t === 'Either' ? (\n                pureLR\n            ) : t === 'Maybe' ? (\n                pureMay\n            ) : t === 'Tree' ? (\n                pureTree\n            ) : t === 'Tuple' ? (\n                pureTuple\n            ) : pureList\n        ) : pureList;\n    })();"
+    }
+  ]
+}

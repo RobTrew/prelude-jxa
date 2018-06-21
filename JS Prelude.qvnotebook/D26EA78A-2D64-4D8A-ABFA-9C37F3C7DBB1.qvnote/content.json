@@ -1,0 +1,15 @@
+{
+  "title": "listToMaybe",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// The listToMaybe function returns Nothing on \n// an empty list or Just the head of the list."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    xs.length > 0 ? (\n        Just(xs[0])\n    ) : Nothing();"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Node",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Node :: a -> [Tree a] -> Tree a\nconst Node = (v, xs) => ({\n    type: 'Node',\n    root: v, // any type of value (but must be consistent across tree)\n    nest: xs || []\n});"
+    }
+  ]
+}

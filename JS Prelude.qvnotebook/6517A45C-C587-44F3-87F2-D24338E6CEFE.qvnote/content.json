@@ -1,0 +1,10 @@
+{
+  "title": "splitOn",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// splitOn :: String -> String -> [String]\n// splitOn :: a -> [a] -> [[a]]\nconst splitOn = (needle, haystack) =>\n    typeof haystack === 'string' ? (\n        haystack.split(needle)\n    ) : (() => {\n        const tpl = haystack.reduce(\n            (a, x) => needle === x ? Tuple(\n                a[0].concat([a[1]]), []\n            ) : Tuple(a[0], a[1].concat(x)),\n            Tuple([], [])\n        );\n        return tpl[0].concat([tpl[1]]);\n    })();"
+    }
+  ]
+}

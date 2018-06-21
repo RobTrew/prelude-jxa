@@ -1,0 +1,10 @@
+{
+  "title": "ord",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// ord :: Char -> Int\nconst ord = c => c.codePointAt(0);"
+    }
+  ]
+}

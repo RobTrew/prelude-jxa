@@ -1,0 +1,10 @@
+{
+  "title": "chr",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// chr :: Int -> Char\nconst chr = String.fromCodePoint;"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "append (++)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// append (++) :: [a] -> [a] -> [a]\n// append (++) :: String -> String -> String\nconst append = (xs, ys) => xs.concat(ys);"
+    }
+  ]
+}

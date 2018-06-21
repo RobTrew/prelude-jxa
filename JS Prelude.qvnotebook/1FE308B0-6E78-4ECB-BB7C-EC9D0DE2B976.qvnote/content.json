@@ -1,0 +1,10 @@
+{
+  "title": "isSpace",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isSpace :: Char -> Bool\nconst isSpace = c => /\\s/.test(c);"
+    }
+  ]
+}

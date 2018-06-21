@@ -1,0 +1,10 @@
+{
+  "title": "enumFromThenToChar",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// enumFromThenToChar :: Char -> Char -> Char -> [Char]\nconst enumFromThenToChar = (x1, x2, y) => {\n    const [i1, i2, iY] = Array.from([x1, x2, y])\n        .map(x => x.charCodeAt(0)),\n        d = i2 - i1;\n    return Array.from({\n        length: (Math.floor(iY - i2) / d) + 2\n    }, (_, i) => String.fromCodePoint(i1 + (d * i)));\n};"
+    }
+  ]
+}

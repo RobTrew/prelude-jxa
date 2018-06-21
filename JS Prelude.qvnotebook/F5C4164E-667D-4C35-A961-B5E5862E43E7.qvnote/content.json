@@ -1,0 +1,10 @@
+{
+  "title": "filePath",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// filePath :: String -> FilePath\nconst filePath = s =>\n    ObjC.unwrap(ObjC.wrap(s)\n        .stringByStandardizingPath);"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "apMaybe (<*>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Maybe f applied to Maybe x, deriving a Maybe y"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// apMaybe (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMaybe = (mf, mx) =>\n    mf.Nothing || mx.Nothing ? (\n        Nothing()\n    ) : Just(mf.Just(mx.Just));"
+    }
+  ]
+}

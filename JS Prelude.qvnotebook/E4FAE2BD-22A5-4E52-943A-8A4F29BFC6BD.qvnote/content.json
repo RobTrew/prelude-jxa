@@ -1,0 +1,10 @@
+{
+  "title": "intersectionBy",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectionBy = (eq, xs) =>\n    foldr1(((a, x) => intersectBy(eq, a, x)), xs);"
+    }
+  ]
+}

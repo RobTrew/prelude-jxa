@@ -1,0 +1,10 @@
+{
+  "title": "fmapTree (<$>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = (f, tree) => {\n    const go = node => Node(\n        f(node.root),\n        node.nest.map(go)\n    );\n    return go(tree);\n};"
+    }
+  ]
+}

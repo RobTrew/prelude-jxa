@@ -1,0 +1,10 @@
+{
+  "title": "iterateUntil",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = (p, f, x) => {\n    const vs = [x];\n    let h = x;\n    while (!p(h))(h = f(h), vs.push(h));\n    return vs;\n};"
+    }
+  ]
+}

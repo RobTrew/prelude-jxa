@@ -1,0 +1,10 @@
+{
+  "title": "head",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// head :: [a] -> a\nconst head = xs => xs.length ? xs[0] : undefined;"
+    }
+  ]
+}

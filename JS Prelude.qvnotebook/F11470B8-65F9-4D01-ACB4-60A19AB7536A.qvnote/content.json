@@ -1,0 +1,10 @@
+{
+  "title": "mappendOrdering (<>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mappendOrdering (<>) :: Ordering -> Ordering -> Ordering\nconst mappendOrdering = (a, b) => eqOrdering(EQ, a) ? b : a;"
+    }
+  ]
+}

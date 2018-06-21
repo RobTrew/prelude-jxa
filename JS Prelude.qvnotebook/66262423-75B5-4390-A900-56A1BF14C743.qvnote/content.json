@@ -1,0 +1,10 @@
+{
+  "title": "bind (>>=)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = (m, mf) =>\n    (Array.isArray(m) ? (\n        bindList\n    ) : (() => {\n        const t = m.type;\n        return t === 'Either' ? (\n            bindEither\n        ) : t === 'Maybe' ? (\n            bindMaybe\n        ) : t === 'Tuple' ? (\n            bindTuple\n        ) : x => Left('No bind instance found for type: ' + t);\n    })()(m, mf));"
+    }
+  ]
+}

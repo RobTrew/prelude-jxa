@@ -1,0 +1,10 @@
+{
+  "title": "listFromTuple",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// listFromTuple (a, a ...) -> [a]\nconst listFromTuple = tpl =>\n    Object.keys(tpl)\n    .sort()\n    .reduce(\n        (a, k) => k !== 'type' ? (\n            a.concat(tpl[k])\n        ) : a, []\n    );"
+    }
+  ]
+}

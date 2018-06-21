@@ -1,0 +1,10 @@
+{
+  "title": "rotate",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// rotate :: Int -> [a] -> [a]\nconst rotate = (n, xs) => {\n    const lng = xs.length;\n    return lng > 0 ? takeDropCycle(lng, n, xs) : [];\n};"
+    }
+  ]
+}

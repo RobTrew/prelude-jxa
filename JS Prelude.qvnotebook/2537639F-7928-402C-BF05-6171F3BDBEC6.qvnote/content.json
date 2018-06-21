@@ -1,0 +1,15 @@
+{
+  "title": "unfoldl",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// (x => Maybe [value, remainder] -> initial value -> values"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unfoldl :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldl = (f, v) => {\n    let xs = [];\n    return (\n        until(\n            mb => mb.Nothing,\n            mb => (\n                xs = [mb.Just[1]].concat(xs),\n                f(mb.Just[1])\n            ), Just(Tuple(v, v))\n        ),\n        xs.slice(1)\n    );\n};"
+    }
+  ]
+}

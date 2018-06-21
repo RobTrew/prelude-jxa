@@ -1,0 +1,10 @@
+{
+  "title": "chars",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// chars :: String -> [Char]\nconst chars = s => s.split('');"
+    }
+  ]
+}

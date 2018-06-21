@@ -1,0 +1,15 @@
+{
+  "title": "unfoldTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// | Build a tree from a seed value"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unfoldTree :: (b -> (a, [b])) -> b -> Tree a\nconst unfoldTree = (f, b) => {\n    const tpl = f(b);\n    return Node(tpl[0], unfoldForest(f, tpl[1]));\n};"
+    }
+  ]
+}

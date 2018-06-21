@@ -1,0 +1,10 @@
+{
+  "title": "Left",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Left :: a -> Either a b\nconst Left = x => ({\n    type: 'Either',\n    Left: x\n});"
+    }
+  ]
+}

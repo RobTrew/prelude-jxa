@@ -1,0 +1,10 @@
+{
+  "title": "Ordering",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Ordering :: Int -> Ordering\nconst Ordering = e =>\n    ({\n        type: 'Ordering',\n        value: (e > 0 ? 1 : e < 0 ? -1 : 0)\n    });"
+    }
+  ]
+}

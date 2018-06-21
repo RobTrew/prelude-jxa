@@ -1,0 +1,10 @@
+{
+  "title": "toUpper",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// toUpper :: String -> String\nconst toUpper = s => s.toUpperCase();"
+    }
+  ]
+}

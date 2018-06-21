@@ -1,0 +1,10 @@
+{
+  "title": "cons",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// cons :: a -> [a] -> [a]\nconst cons = (x, xs) =>  [x].concat(xs);"
+    }
+  ]
+}

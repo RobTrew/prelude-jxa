@@ -1,0 +1,10 @@
+{
+  "title": "flip",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = f => (a, b) => f.apply(null, [b, a]);"
+    }
+  ]
+}

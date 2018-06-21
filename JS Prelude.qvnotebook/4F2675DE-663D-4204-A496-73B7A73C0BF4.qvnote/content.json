@@ -1,0 +1,10 @@
+{
+  "title": "group",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// group :: Eq a => [a] -> [[a]]\nconst group = xs => groupBy((a, b) => a === b, xs);"
+    }
+  ]
+}

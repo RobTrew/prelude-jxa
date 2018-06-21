@@ -1,0 +1,10 @@
+{
+  "title": "elemIndex",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = (x, xs) => {\n    const i = xs.indexOf(x);\n    return {\n        Nothing: i === -1,\n        Just: i\n    };\n};"
+    }
+  ]
+}

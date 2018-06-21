@@ -1,0 +1,10 @@
+{
+  "title": "odd",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// odd :: Int -> Bool\nconst odd = n => !even(n);"
+    }
+  ]
+}

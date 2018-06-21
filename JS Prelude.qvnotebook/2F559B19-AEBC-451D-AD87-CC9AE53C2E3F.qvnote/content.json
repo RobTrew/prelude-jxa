@@ -1,0 +1,10 @@
+{
+  "title": "treeLeaves",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// treeLeaves :: Node -> [Node]\nconst treeLeaves = oNode => {\n  const nest = oNode.nest;\n  return nest.length > 0 ? (\n    concatMap(treeLeaves, nest)\n  ) : [oNode];\n};"
+    }
+  ]
+}

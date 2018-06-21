@@ -1,0 +1,10 @@
+{
+  "title": "sort",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// sort :: Ord a => [a] -> [a]\nconst sort = xs => xs.slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));"
+    }
+  ]
+}

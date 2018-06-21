@@ -1,0 +1,10 @@
+{
+  "title": "mappendMaybe (<>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = (a, b) =>\n    a.Nothing ? b : b.Nothing ? a :\n    Just(mappend(a.Just, b.Just));"
+    }
+  ]
+}

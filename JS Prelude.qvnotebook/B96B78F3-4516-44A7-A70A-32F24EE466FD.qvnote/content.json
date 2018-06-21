@@ -1,0 +1,10 @@
+{
+  "title": "show",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = (x, n) => {\n    const\n        e = typeof x !== 'function' ? (\n            x\n        ) : {\n            type: 'Function',\n            f: x\n        };\n    return JSON.stringify(e, (_, v) => {\n        const\n            f = (v !== null && v !== undefined) ? (() => {\n                const t = v.type;\n                return t === 'Either' ? (\n                    showLR\n                ) : t === 'Function' ? (\n                    dct => 'λ' + dct.f.toString()\n                ) : t === 'Maybe' ? (\n                    showMaybe\n                ) : t === 'Ordering' ? (\n                    showOrdering\n                ) : t === 'Ratio' ? (\n                    showRatio\n                ) : t === 'Tuple' ? (\n                    showTuple\n                ) : t === 'Tuple3' ? (\n                    showTuple3\n                ) : t === 'Tuple4' ? (\n                    showTuple4\n                ) : undefined;\n            })() : showUndefined;\n        return Boolean(f) ? (\n            f(v)\n        ) : typeof v !== 'string' ? (\n            v\n        ) : \"'\" + v + \"'\";\n    }, n)\n};"
+    }
+  ]
+}

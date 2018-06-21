@@ -1,0 +1,10 @@
+{
+  "title": "stripPrefix",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]\nconst stripPrefix = (pfx, s) => {\n    const\n        blnString = typeof pfx === 'string',\n        [xs, ys] = blnString ? (\n            [pfx.split(''), s.split('')]\n        ) : [pfx, s];\n    const\n        sp_ = (xs, ys) => xs.length === 0 ? (\n            Just(blnString ? ys.join('') : ys)\n        ) : (ys.length === 0 || xs[0] !== ys[0]) ? (\n            Nothing()\n        ) : sp_(xs.slice(1), ys.slice(1));\n    return sp_(xs, ys);\n};"
+    }
+  ]
+}

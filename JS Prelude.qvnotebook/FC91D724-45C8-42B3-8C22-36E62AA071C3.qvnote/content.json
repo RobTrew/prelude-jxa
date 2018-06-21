@@ -1,0 +1,10 @@
+{
+  "title": "or",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// or :: [Bool] -> Bool\nconst or = xs => {\n    let i = xs.length;\n    while (i--)\n        if (xs[i]) return true;\n    return false;\n};"
+    }
+  ]
+}

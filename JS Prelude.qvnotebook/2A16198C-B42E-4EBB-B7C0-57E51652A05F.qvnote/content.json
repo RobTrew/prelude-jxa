@@ -1,0 +1,15 @@
+{
+  "title": "snoc",
+  "cells": [
+    {
+      "type": "code",
+      "language": "applescript",
+      "data": "// Mirror image of cons\n// New copy of the list, with an atom added at the end"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// snoc :: [a] -> a -> [a]\nconst snoc = (xs, x) => xs.concat(x);"
+    }
+  ]
+}

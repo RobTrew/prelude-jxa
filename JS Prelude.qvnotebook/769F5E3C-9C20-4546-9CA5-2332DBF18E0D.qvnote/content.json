@@ -1,0 +1,15 @@
+{
+  "title": "fanArrow (&&&)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Compose a function from a simple value to a tuple of\n// the separate outputs of two different functions"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))\nconst fanArrow = (f, g) => x => Tuple(f(x), g(x));"
+    }
+  ]
+}

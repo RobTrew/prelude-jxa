@@ -1,0 +1,10 @@
+{
+  "title": "getDirectoryContents",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// getDirectoryContents :: FilePath -> IO [FilePath]\nconst getDirectoryContents = strPath =>\n    ObjC.deepUnwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(strPath)\n            .stringByStandardizingPath, null\n        )\n    );"
+    }
+  ]
+}

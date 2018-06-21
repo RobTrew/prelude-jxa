@@ -1,0 +1,10 @@
+{
+  "title": "floor",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// floor :: Num -> Int\nconst floor = x => {\n    const\n      nr = properFraction(x),\n      n = nr[0];\n    return nr[1] < 0 ? n - 1 : n;\n};"
+    }
+  ]
+}

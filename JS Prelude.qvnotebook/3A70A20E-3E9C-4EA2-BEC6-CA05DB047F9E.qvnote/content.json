@@ -1,0 +1,10 @@
+{
+  "title": "isInfixOf",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isInfixOf :: Eq a => [a] -> [a] -> Bool\n// isInfixOf :: String -> String -> Bool\nconst isInfixOf = (needle, haystack) =>\n    haystack.includes(needle);"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "apLR (<*>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = (flr, lr) => {\n    const pf = isRight(flr);\n    return pf && isRight(lr) ? (\n        Right(flr.Right(lr.Right))\n    ) : (pf ? lr : flr);\n};"
+    }
+  ]
+}

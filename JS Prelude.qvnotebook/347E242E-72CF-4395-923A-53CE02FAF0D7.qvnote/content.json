@@ -1,0 +1,10 @@
+{
+  "title": "union",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// union :: [a] -> [a] -> [a]\nconst union = (xs, ys) =>\n  unionBy((a, b) => a === b, xs, ys);"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "uncurry",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Converts a function of more than one argument\n// to a function on Tuple type (Tuple ... TupleN)\n// or array which contains those arguments.\n// This implementation uses the fact that the Tuple\n// constructors create an object with a private .length property"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f => args => f.apply(null, args);"
+    }
+  ]
+}

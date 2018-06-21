@@ -1,0 +1,15 @@
+{
+  "title": "delete",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// xs with first instance of x (if any) removed"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = (x, xs) =>\n    xs.length > 0 ? (\n        (x === xs[0]) ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(delete_(x, xs.slice(1)))\n    ) : [];"
+    }
+  ]
+}

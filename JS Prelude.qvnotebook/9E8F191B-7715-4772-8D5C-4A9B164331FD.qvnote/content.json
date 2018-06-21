@@ -1,0 +1,10 @@
+{
+  "title": "fmap (<$>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = (f, fa) => {\n    const t = fa.type;\n    return (t !== undefined ? (\n        t === 'Either' ? (\n            fmapLR\n        ) : t === 'Maybe' ? (\n            fmapMay\n        ) : t === 'Node' ? (\n            fmapTree\n        ) : fmapTuple\n    ) : map)(f, fa);\n};"
+    }
+  ]
+}

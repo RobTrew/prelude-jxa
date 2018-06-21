@@ -1,0 +1,10 @@
+{
+  "title": "showHex",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showHex :: Int -> String\nconst showHex = n =>\n    showIntAtBase(16, intToDigit, n, '');"
+    }
+  ]
+}

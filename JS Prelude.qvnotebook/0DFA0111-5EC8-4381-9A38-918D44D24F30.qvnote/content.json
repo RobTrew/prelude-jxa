@@ -1,0 +1,10 @@
+{
+  "title": "isRight",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isRight :: Either a b -> Bool\nconst isRight = lr =>\n  (typeof lr !== 'undefined') && \n  lr.type === 'Either' && lr.Right !== undefined;"
+    }
+  ]
+}

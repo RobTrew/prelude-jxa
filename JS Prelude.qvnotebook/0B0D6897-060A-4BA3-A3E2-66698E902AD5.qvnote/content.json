@@ -1,0 +1,10 @@
+{
+  "title": "showTuple4",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showTuple4 :: Tuple4 -> String\nconst showTuple4 = tpl =>\n    '(' + [0, 1, 2, 3].map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';"
+    }
+  ]
+}

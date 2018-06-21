@@ -1,0 +1,15 @@
+{
+  "title": "ceiling",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// The least integer not less than x"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// ceiling :: Num -> Int\nconst ceiling = x => {\n    const\n      nr = properFraction(x),\n      n = nr[0]\n    return nr[1] > 0 ? n + 1 : n;\n};"
+    }
+  ]
+}

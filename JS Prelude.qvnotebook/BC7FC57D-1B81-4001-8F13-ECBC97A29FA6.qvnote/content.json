@@ -1,0 +1,10 @@
+{
+  "title": "permutations",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// permutations :: [a] -> [[a]]\nconst permutations = xs =>\n    xs.length ? concatMap(x => concatMap(ys => [\n            [x].concat(ys)\n        ],\n        permutations(delete_(x, xs))), xs) : [\n        []\n    ];"
+    }
+  ]
+}

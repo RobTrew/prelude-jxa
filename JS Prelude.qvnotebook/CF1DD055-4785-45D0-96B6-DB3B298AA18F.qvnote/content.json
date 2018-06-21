@@ -1,0 +1,15 @@
+{
+  "title": "center",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Size of space -> filler Char -> String -> Centered String"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// center :: Int -> Char -> String -> String\nconst center = (n, c, s) => {\n  const\n    qr = quotRem(n - s.length, 2),\n    q = qr[0];\n  return replicateString(q, c) +\n    s + replicateString(q + qr[1], c);\n};"
+    }
+  ]
+}

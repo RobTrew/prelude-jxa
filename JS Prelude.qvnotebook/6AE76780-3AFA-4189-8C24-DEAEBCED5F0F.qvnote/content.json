@@ -1,0 +1,10 @@
+{
+  "title": "getFinderDirectory",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// getFinderDirectory :: IO FilePath\nconst getFinderDirectory = () =>\n    Application('Finder')\n    .insertionLocation()\n    .url()\n    .slice(7);"
+    }
+  ]
+}

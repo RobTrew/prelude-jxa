@@ -1,0 +1,10 @@
+{
+  "title": "truncate",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// truncate :: Num -> Int\nconst truncate = x => {\n    const [m, _] = properFraction(x);\n    return m;\n};"
+    }
+  ]
+}

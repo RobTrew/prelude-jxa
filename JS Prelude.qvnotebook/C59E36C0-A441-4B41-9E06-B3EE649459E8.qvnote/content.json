@@ -1,0 +1,10 @@
+{
+  "title": "unionBy",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst unionBy = (fnEq, xs, ys) => {\n    const sx = nubBy(fnEq, xs);\n    return sx.concat(\n        sx.reduce(\n            (a, x) => deleteBy(fnEq, x, a),\n            nubBy(fnEq, ys)\n        )\n    );\n};"
+    }
+  ]
+}

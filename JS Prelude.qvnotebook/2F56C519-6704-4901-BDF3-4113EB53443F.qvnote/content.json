@@ -1,0 +1,10 @@
+{
+  "title": "doesFileExist",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// doesFileExist :: FilePath -> IO Bool\nconst doesFileExist = strPath => {\n    const ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(strPath)\n            .stringByStandardizingPath, ref\n        ) && ref[0] !== 1;\n};"
+    }
+  ]
+}

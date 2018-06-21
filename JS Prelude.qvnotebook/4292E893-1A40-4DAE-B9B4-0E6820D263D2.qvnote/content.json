@@ -1,0 +1,15 @@
+{
+  "title": "unsnoc",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// If the list is empty returns Nothing, otherwise returns \n// Just the init and the last."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    xs.length > 0 ? (\n        Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))\n    ) : Nothing();"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "fst",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fst :: (a, b) -> a\nconst fst = tpl => tpl[0];"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "takeWhile",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// takeWhile :: (a -> Bool) -> [a] -> [a]\nconst takeWhile = (p, xs) => {\n    let i = 0;\n    const lng = xs.length;\n    while ((i < lng) && p(xs[i])) (i = i + 1);\n    return xs.slice(0, i);\n};"
+    }
+  ]
+}

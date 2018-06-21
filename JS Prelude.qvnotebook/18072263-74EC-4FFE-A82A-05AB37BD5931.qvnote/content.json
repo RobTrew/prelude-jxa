@@ -1,0 +1,10 @@
+{
+  "title": "log",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// log :: Float -> Float\nconst log = n => Math.log(n);"
+    }
+  ]
+}

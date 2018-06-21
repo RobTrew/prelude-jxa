@@ -1,0 +1,10 @@
+{
+  "title": "intercalateS",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// intercalateS :: String -> [String] -> String\nconst intercalateS = (s, xs) =>\n    xs.join(s);"
+    }
+  ]
+}

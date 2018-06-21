@@ -1,0 +1,15 @@
+{
+  "title": "mReturn",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Not required in JS, which has first functions by default\n// Included for comparison with AS, which can only obtain\n// first class functions by lifting 'handlers' into 'scripts'\n// as anonymous |λ|() functions.\n\n// Here Just an alternative name for id."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mReturn :: First-class m => (a -> b) -> m (a -> b)\nconst mReturn = id;"
+    }
+  ]
+}

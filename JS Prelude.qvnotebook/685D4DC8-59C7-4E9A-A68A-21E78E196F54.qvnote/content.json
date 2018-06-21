@@ -1,0 +1,10 @@
+{
+  "title": "levels",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    map(xs => map(x => x.root, xs),\n        iterateUntil(\n            xs => xs.length < 1,\n            xs => concatMap(x => x.nest, xs), [tree]\n        )\n    );"
+    }
+  ]
+}

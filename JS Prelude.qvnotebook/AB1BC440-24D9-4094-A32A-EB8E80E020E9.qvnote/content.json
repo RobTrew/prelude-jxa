@@ -1,0 +1,10 @@
+{
+  "title": "showList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showList :: [a] -> String\nconst showList = show;"
+    }
+  ]
+}

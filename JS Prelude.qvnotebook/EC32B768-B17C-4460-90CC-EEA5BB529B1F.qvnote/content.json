@@ -1,0 +1,10 @@
+{
+  "title": "indented",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// indented :: String -> String -> String\nconst indented = (strIndent, s) =>\n    unlines(map(\n        x => x !== '' ? strIndent + x : x,\n        lines(s)\n    ));"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "bindList (>>=)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// bindList (>>=) :: [a] -> (a -> [b]) -> [b]\nconst bindList = (xs, mf) => \n  [].concat.apply([], xs.map(mf));"
+    }
+  ]
+}

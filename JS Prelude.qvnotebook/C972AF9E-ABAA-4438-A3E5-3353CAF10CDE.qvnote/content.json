@@ -1,0 +1,10 @@
+{
+  "title": "apply ($)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// apply ($) :: (a -> b) -> a -> b\nconst apply = (f, x) => f(x);"
+    }
+  ]
+}

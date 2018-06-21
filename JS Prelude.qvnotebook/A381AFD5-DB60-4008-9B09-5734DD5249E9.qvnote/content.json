@@ -1,0 +1,15 @@
+{
+  "title": "takeIterate",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// takeIterate n f x == [x, f x, f (f x), ...]"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// takeIterate :: Int -> (a -> a) -> a -> [a]\nconst takeIterate = (n, f, x) =>\n    snd(mapAccumL((a, _, i) => {\n        const v = i !== 0 ? f(a) : x;\n        return [v, v];\n    }, x, Array.from({\n        length: n\n    })));"
+    }
+  ]
+}

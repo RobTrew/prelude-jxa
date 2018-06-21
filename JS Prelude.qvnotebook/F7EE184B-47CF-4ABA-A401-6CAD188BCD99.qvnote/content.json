@@ -1,0 +1,10 @@
+{
+  "title": "nubBy",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = (p, xs) => {\n    const go = xs => xs.length > 0 ? (() => {\n        const x = xs[0];\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !p(x, y))\n            )\n        )\n    })() : [];\n    return go(xs);\n};"
+    }
+  ]
+}

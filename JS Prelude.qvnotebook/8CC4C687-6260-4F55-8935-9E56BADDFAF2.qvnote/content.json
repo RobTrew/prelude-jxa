@@ -1,0 +1,10 @@
+{
+  "title": "length",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// length :: [a] -> Int\nconst length = xs => xs.length;"
+    }
+  ]
+}

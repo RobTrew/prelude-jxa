@@ -1,0 +1,10 @@
+{
+  "title": "jsonLog",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// jsonLog :: a -> IO ()\nconst jsonLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );"
+    }
+  ]
+}

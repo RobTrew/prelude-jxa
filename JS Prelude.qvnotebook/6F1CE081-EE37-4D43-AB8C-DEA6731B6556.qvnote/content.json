@@ -1,0 +1,10 @@
+{
+  "title": "recip",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// recip :: Num -> Num\nconst recip = n =>\n    n !== 0 ? (1 / n) : undefined;"
+    }
+  ]
+}

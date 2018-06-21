@@ -1,0 +1,10 @@
+{
+  "title": "rem",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// rem :: Int -> Int -> Int\nconst rem = (n, m) => n % m;"
+    }
+  ]
+}

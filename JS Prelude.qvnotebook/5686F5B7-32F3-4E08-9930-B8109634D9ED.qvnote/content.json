@@ -1,0 +1,10 @@
+{
+  "title": "isLower",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isLower :: Char -> Bool\nconst isLower = c =>\n    /[a-z]/.test(c);"
+    }
+  ]
+}

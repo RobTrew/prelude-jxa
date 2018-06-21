@@ -1,0 +1,10 @@
+{
+  "title": "showBinary",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showBinary :: Int -> String\nconst showBinary = n => {\n    const binaryChar = n => n !== 0 ? '1' : '0';\n    return showIntAtBase(2, binaryChar, n, '');\n};"
+    }
+  ]
+}

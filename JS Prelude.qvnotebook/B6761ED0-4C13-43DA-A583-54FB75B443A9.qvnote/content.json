@@ -1,0 +1,10 @@
+{
+  "title": "nub",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// nub :: [a] -> [a]\nconst nub = xs => nubBy((a, b) => a === b, xs);"
+    }
+  ]
+}

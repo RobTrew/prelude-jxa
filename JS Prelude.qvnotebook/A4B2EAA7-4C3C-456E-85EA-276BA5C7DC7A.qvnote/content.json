@@ -1,0 +1,15 @@
+{
+  "title": "mapKeys",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// A function mapped over the keys of a record"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mapKeys :: (Key -> Key) -> IntMap a -> IntMap a\nconst mapKeys = (f, dct) =>\n    mapFromList(\n        map(\n            kv => [f(read(kv[0])), kv[1]],\n            zip(keys(dct), elems(dct))\n        )\n    );"
+    }
+  ]
+}

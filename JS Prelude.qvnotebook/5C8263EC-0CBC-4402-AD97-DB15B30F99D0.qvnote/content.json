@@ -1,0 +1,15 @@
+{
+  "title": "approxRatio",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Epsilon -> Real -> Ratio"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// approxRatio :: Real -> Real -> Ratio\nconst approxRatio = (eps, n) => {\n    const\n        gcde = (e, x, y) => {\n            const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));\n            return _gcd(Math.abs(x), Math.abs(y));\n        },\n        c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);\n    return Ratio(\n        Math.floor(n / c), // numerator\n        Math.floor(1 / c) // denominator\n    );\n};"
+    }
+  ]
+}

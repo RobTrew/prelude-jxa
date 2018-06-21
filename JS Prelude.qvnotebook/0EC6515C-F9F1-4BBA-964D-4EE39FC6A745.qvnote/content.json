@@ -1,0 +1,15 @@
+{
+  "title": "firstArrow",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Lift a simple function to one which applies to a tuple, \n// transforming only the first item of the tuple"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// firstArrow :: (a -> b) -> ((a, c) -> (b, c))\nconst firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);"
+    }
+  ]
+}

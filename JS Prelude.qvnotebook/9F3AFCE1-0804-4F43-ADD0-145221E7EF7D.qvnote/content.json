@@ -1,0 +1,15 @@
+{
+  "title": "ap (<*>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Applies wrapped functions to wrapped values, \n// for example applying a list of functions to a list of values\n// or applying Just(f) to Just(x), Right(f) to Right(x), etc"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = (mf, mx) => {\n    const t = mx.type;\n    return (t !== undefined ? (\n        t === 'Either' ? (\n            apEither\n        ) : t === 'Maybe' ? (\n            apMaybe\n        ) : t === 'Node' ? (\n            apTree\n        ) : apTuple\n    ) : apList)(mf, mx);\n};"
+    }
+  ]
+}

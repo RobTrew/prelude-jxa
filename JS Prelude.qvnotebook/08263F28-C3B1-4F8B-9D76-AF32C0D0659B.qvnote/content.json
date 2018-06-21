@@ -1,0 +1,10 @@
+{
+  "title": "mappend (<>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = (a, b) => {\n    const t = a.type;\n    return (Boolean(t) ? (\n        t === 'Maybe' ? (\n            mappendMaybe\n        ) : t === 'Ordering' ? (\n            mappendOrdering\n        ) : mappendTuple\n    ) : append)(a, b);\n};"
+    }
+  ]
+}

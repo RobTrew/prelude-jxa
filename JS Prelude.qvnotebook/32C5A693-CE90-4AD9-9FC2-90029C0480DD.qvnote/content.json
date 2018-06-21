@@ -1,0 +1,10 @@
+{
+  "title": "tails",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// tails :: [a] -> [[a]]\nconst tails = xs => {\n    const xs_ = typeof xs === 'string' ? xs.split('') : xs;\n    return xs_.map((_, i) => xs_.slice(i))\n        .concat([\n            []\n        ]);\n};"
+    }
+  ]
+}

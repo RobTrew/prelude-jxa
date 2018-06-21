@@ -1,0 +1,10 @@
+{
+  "title": "mod",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mod :: Int -> Int -> Int\nconst mod = (n, d) => n % d;"
+    }
+  ]
+}

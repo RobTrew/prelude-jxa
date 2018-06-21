@@ -1,0 +1,10 @@
+{
+  "title": "gcd",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// gcd :: Int -> Int -> Int\nconst gcd = (x, y) => {\n    const _gcd = (a, b) => (b === 0 ? a : _gcd(b, a % b));\n    return _gcd(Math.abs(x), Math.abs(y));\n};"
+    }
+  ]
+}

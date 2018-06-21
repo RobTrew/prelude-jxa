@@ -1,0 +1,10 @@
+{
+  "title": "drawForest",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// drawForest :: Forest String -> String\nconst drawForest = trees =>\n    trees.map(drawTree).join('\\n');"
+    }
+  ]
+}

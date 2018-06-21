@@ -1,0 +1,15 @@
+{
+  "title": "sortOn",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Sort a list by comparing the results of a key function applied to each\n// element. sortOn f is equivalent to sortBy (comparing f), but has the\n// performance advantage of only evaluating f once for each element in\n// the input list. This is called the decorate-sort-undecorate paradigm,\n// or Schwartzian transform.\n// Elements are arranged from from lowest to highest."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = (f, xs) => {\n    // Functions and matching bools derived from argument f\n    // which may be a single key function, or a list of key functions\n    // each of which may or may not be followed by a direction bool.\n    const fsbs = unzip(\n            flatten([f])\n            .reduceRight((a, x) =>\n                typeof x === 'boolean' ? {\n                    asc: x,\n                    fbs: a.fbs\n                } : {\n                    asc: true,\n                    fbs: [\n                        [x, a.asc]\n                    ].concat(a.fbs)\n                }, {\n                    asc: true,\n                    fbs: []\n                })\n            .fbs\n        ),\n        [fs, bs] = [fsbs[0], fsbs[1]],\n        iLast = fs.length;\n    // decorate-sort-undecorate\n    return sortBy(mappendComparing_(\n            // functions that access pre-calculated values\n            // by position in the decorated ('Schwartzian')\n            // version of xs\n            zip(fs.map((_, i) => x => x[i]), bs)\n        ), xs.map( // xs decorated with precalculated values\n            x => fs.reduceRight(\n                (a, g) => [g(x)].concat(a), [\n                    x\n                ])))\n        .map(x => x[iLast]); // undecorated version of data, post sort.\n};"
+    }
+  ]
+}

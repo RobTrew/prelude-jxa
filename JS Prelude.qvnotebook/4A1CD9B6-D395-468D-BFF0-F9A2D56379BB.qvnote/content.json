@@ -1,0 +1,10 @@
+{
+  "title": "typeName",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n    return t === 'object' ? (\n        Array.isArray(v) ? (\n            'List'\n        ) : v !== null ? (\n            v.type || 'Dict'\n        ) : 'Bottom'\n    ) : {\n        'boolean': 'Bool',\n        'number' : 'Num',\n        'string' : 'String'\n    }[t] || 'Bottom';\n};"
+    }
+  ]
+}

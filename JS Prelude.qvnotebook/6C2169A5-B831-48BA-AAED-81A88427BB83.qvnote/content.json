@@ -1,0 +1,15 @@
+{
+  "title": "maximumByMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "//Ordering: (LT|EQ|GT):\n//  GT: 1 (or other positive n)\n//\tEQ: 0\n//  LT: -1 (or other negative n) "
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = (f, xs) =>\n    xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0]))\n    ) : Nothing();"
+    }
+  ]
+}

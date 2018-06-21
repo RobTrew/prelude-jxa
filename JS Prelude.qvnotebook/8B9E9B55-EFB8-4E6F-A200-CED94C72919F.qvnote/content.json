@@ -1,0 +1,10 @@
+{
+  "title": "take",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// take :: Int -> [a] -> [a]\nconst take = (n, xs) => xs.slice(0, n);"
+    }
+  ]
+}

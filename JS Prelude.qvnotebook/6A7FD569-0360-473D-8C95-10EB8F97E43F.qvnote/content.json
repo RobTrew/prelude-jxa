@@ -1,0 +1,10 @@
+{
+  "title": "splitEvery",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// splitEvery :: Int -> [a] -> [[a]]\nconst splitEvery = (n, xs) => {\n    if (xs.length <= n) return [xs];\n    const [h, t] = [xs.slice(0, n), xs.slice(n)];\n    return [h].concat(splitEvery(n, t));\n};"
+    }
+  ]
+}

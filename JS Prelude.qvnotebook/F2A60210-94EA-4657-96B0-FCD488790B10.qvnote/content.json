@@ -1,0 +1,10 @@
+{
+  "title": "index (!!)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// index (!!) :: [a] -> Int -> a\nconst index = (xs, i) => xs[i];"
+    }
+  ]
+}

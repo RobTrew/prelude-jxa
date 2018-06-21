@@ -1,0 +1,10 @@
+{
+  "title": "unwrap",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// unwrap :: NSObject -> a\nconst unwrap = o => ObjC.unwrap(o);"
+    }
+  ]
+}
