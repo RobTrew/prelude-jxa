@@ -8,7 +8,7 @@ and testing a script:
 Example of a JXA script which uses imported library file(s) –
 (see the usingLibs function towards the bottom)
 
-```
+```javascript
 (() => {
     'use strict';
 
