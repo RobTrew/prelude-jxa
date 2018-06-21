@@ -1,0 +1,388 @@
+EQ :: Ordering
+GT :: Ordering
+Just :: a -> Just a
+LT :: Ordering
+Left :: a -> Either a b
+Node :: a -> [Tree a] -> Tree a
+Nothing :: () -> Nothing
+Ordering :: Int -> Ordering
+Ratio :: Int -> Int -> Ratio
+Right :: b -> Either a b
+Tuple (,) :: a -> b -> (a, b)
+TupleN :: a -> b ...  -> (a, b ... )
+abs :: Num -> Num
+all :: (a -> Bool) -> [a] -> Bool
+and :: [Bool] -> Bool
+any :: (a -> Bool) -> [a] -> Bool
+ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
+apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
+apList (<*>) :: [(a -> b)] -> [a] -> [b]
+apMaybe (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
+apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
+append (++) :: [a] -> [a] -> [a]
+appendFile :: FilePath -> String -> IO Bool
+appendFileMay :: FilePath -> String -> Maybe IO FilePath
+apply ($) :: (a -> b) -> a -> b
+approxRatio :: Real -> Real -> Ratio
+argvLength :: Function -> Int
+assocs :: Map k a -> [(k, a)]
+bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
+bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
+bindList (>>=) :: [a] -> (a -> [b]) -> [b]
+bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
+bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
+break :: (a -> Bool) -> [a] -> ([a], [a])
+breakOn :: String -> String -> (String, String)
+breakOnAll :: String -> String -> [(String, String)]
+breakOnMay :: String -> String -> Maybe (String, String)
+cartesianProduct :: [a] -> [b] -> [(a, b)]
+caseOf :: [(a -> Bool, b)] -> b -> a ->  b
+catMaybes :: [Maybe a] -> [a]
+ceiling :: Num -> Int
+center :: Int -> Char -> String -> String
+chars :: String -> [Char]
+chr :: Int -> Char
+chunksOf :: Int -> [a] -> [[a]]
+compare :: a -> a -> Ordering
+comparing :: (a -> b) -> (a -> a -> Ordering)
+compose :: (b -> c) -> (a -> b) -> a -> c
+composeListLR :: [(a -> a)] -> (a -> a)
+composeListRL :: [(a -> a)] -> (a -> a)
+concat :: [[a]] -> [a]
+concatMap :: (a -> [b]) -> [a] -> [b]
+cons :: a -> [a] -> [a]
+const_ :: a -> b -> a
+createDirectoryIfMissingLR :: Bool -> FilePath ->
+curry :: ((a, b) -> c) -> a -> b -> c
+curry2 :: ((a, b) -> c) -> a -> b -> c
+delete :: Eq a => a -> [a] -> [a]
+deleteAt :: Int -> [a] -> [a]
+deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
+deleteFirst :: a -> [a] -> [a]
+deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
+deleteMap :: k -> Dict -> Dict
+difference (\\) :: Eq a => [a] -> [a] -> [a]
+div :: Int -> Int -> Int
+doesDirectoryExist :: FilePath -> IO Bool
+doesFileExist :: FilePath -> IO Bool
+doesPathExist :: FilePath -> IO Bool
+draw :: Tree String -> [String]
+drawForest :: Forest String -> String
+drawTree :: Tree String -> String
+drop :: Int -> [a] -> [a]
+dropAround :: (Char -> Bool) -> String -> String
+dropFileName :: FilePath -> FilePath
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhileEnd :: (Char -> Bool) -> String -> String
+either :: (a -> c) -> (b -> c) -> Either a b -> c
+elem :: Eq a => a -> [a] -> Bool
+elemAtMay :: Int -> Dict -> Maybe (String, a)
+elemIndex :: Eq a => a -> [a] -> Maybe Int
+elemIndices :: Eq a => a -> [a] -> [Int]
+elems :: Dict -> [a]
+enumFromThenTo :: Enum a => a -> a -> a -> [a]
+enumFromThenToChar :: Char -> Char -> Char -> [Char]
+enumFromThenToInt :: Int -> Int -> Int -> [Int]
+enumFromTo :: Enum a => a -> a -> [a]
+enumFromToChar :: Char -> Char -> [Char]
+enumFromToInt :: Int -> Int -> [Int]
+eq (==) :: Eq a => a -> a -> Bool
+evalJSMay :: String -> Maybe a
+even :: Int -> Bool
+exp :: Float -> Float
+fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
+filePath :: String -> FilePath
+filePathTree :: filePath -> [Tree String] -> Tree filePath
+fileSize :: FilePath -> Either String Int
+fileStatus :: FilePath -> Either String Dict
+filter :: (a -> Bool) -> [a] -> [a]
+find :: (a -> Bool) -> [a] -> Maybe a
+findIndex :: (a -> Bool) -> [a] -> Maybe Int
+findIndexR :: (a -> Bool) -> [a] -> Maybe Int
+findIndices :: (a -> Bool) -> [a] -> [Int]
+firstArrow :: (a -> b) -> ((a, c) -> (b, c))
+flatten :: NestedList a -> [a]
+flip :: (a -> b -> c) -> b -> a -> c
+floor :: Num -> Int
+fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
+fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
+fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
+fmapTree :: (a -> b) -> Tree a -> Tree b
+fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
+foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
+foldTree :: (a -> [b] -> b) -> Tree a -> b
+foldl :: (a -> b -> a) -> a -> [b] -> a
+foldl1 :: (a -> a -> a) -> [a] -> a
+foldl1May :: (a -> a -> a) -> [a] -> Maybe a
+foldlTree :: (b -> a -> b) -> b -> Tree a -> b
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr1 :: (a -> a -> a) -> [a] -> a
+foldr1May :: (a -> a -> a) -> [a] -> Maybe a
+fromEnum :: Enum a => a -> Int
+fromLeft :: a -> Either a b -> a
+fromMaybe :: a -> Maybe a -> a
+fromRight :: b -> Either a b -> b
+fst :: (a, b) -> a
+gcd :: Int -> Int -> Int
+genericIndexMay :: [a] -> Int -> Maybe a
+getCurrentDirectory :: IO FilePath
+getDirectoryContents :: FilePath -> IO [FilePath]
+getFinderDirectory :: IO FilePath
+getHomeDirectory :: IO FilePath
+getTemporaryDirectory :: IO FilePath
+group :: Eq a => [a] -> [[a]]
+groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
+groupSortOn :: Ord b => (a -> b) -> [a] -> [a]
+head :: [a] -> a
+headMay :: [a] -> Maybe a
+id :: a -> a
+indented :: String -> String -> String
+index (!!) :: [a] -> Int -> a
+init :: [a] -> [a]
+initMay :: [a] -> Maybe [a]
+inits :: [a] -> [[a]]
+insert :: Ord a => a -> [a] -> [a]
+insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
+insertMap :: Dict -> String -> a -> Dict
+intToDigit :: Int -> Char
+intercalate :: [a] -> [[a]] -> [a]
+intercalateS :: String -> [String] -> String
+intersect :: (Eq a) => [a] -> [a] -> [a]
+intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
+intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]
+intersperse :: Char -> String -> String
+isAlpha::Char - > Bool
+isChar :: a -> Bool
+isDigit :: Char -> Bool
+isInfixOf :: Eq a => [a] -> [a] -> Bool
+isLeft :: Either a b -> Bool
+isLower :: Char -> Bool
+isMaybe :: a -> Bool
+isNull :: [a] -> Bool
+isPrefixOf :: [a] -> [a] -> Bool
+isRight :: Either a b -> Bool
+isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
+isSpace :: Char -> Bool
+isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
+isSuffixOf :: Eq a => [a] -> [a] -> Bool
+isUpper :: Char -> Bool
+iso8601Local :: Date -> String
+iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
+jsonLog :: a -> IO ()
+justifyLeft :: Int -> Char -> String -> String
+justifyRight :: Int -> Char -> String -> String
+keys :: Dict -> [String]
+kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
+last :: [a] -> a
+lastMay :: [a] -> Maybe a
+lcm :: Int -> Int -> Int
+lefts :: [Either a b] -> [a]
+length :: [a] -> Int
+levelNodes :: Tree a -> [[Tree a]]
+levels :: Tree a -> [[a]]
+liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
+liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
+liftA2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
+liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
+liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
+lines :: String -> [String]
+listDirectory :: FilePath -> [FilePath]
+listFromTuple (a, a ...) -> [a]
+listToMaybe :: [a] -> Maybe a
+log :: Float -> Float
+lookup :: Eq a => a -> Container -> Maybe b
+lookupDict :: a -> Dict -> Maybe b
+lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
+mReturn :: First-class m => (a -> b) -> m (a -> b)
+map :: (a -> b) -> [a] -> [b]
+mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
+mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+mapFromList :: [(k, v)] -> Dict
+mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
+mapMaybe :: (a -> Maybe b) -> [a] -> [b]
+mappend (<>) :: Monoid a => a -> a -> a
+mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)
+mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)
+mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
+mappendOrdering (<>) :: Ordering -> Ordering -> Ordering
+mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
+max :: Ord a => a -> a -> a
+maximum :: Ord a => [a] -> a
+maximumBy :: (a -> a -> Ordering) -> [a] -> a
+maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
+maximumMay :: Ord a => [a] -> Maybe a
+maybe :: b -> (a -> b) -> Maybe a -> b
+maybeToList :: Maybe a -> [a]
+mean :: [Num] -> Num
+member :: Key -> Dict -> Bool
+min :: Ord a => a -> a -> a
+minimum :: Ord a => [a] -> a
+minimumBy :: (a -> a -> Ordering) -> [a] -> a
+minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
+minimumMay :: [a] -> Maybe a
+mod :: Int -> Int -> Int
+negate :: Num -> Num
+newUUID :: () -> IO UUID String
+not :: Bool -> Bool
+notElem :: Eq a => a -> [a] -> Bool
+nub :: [a] -> [a]
+nubBy :: (a -> a -> Bool) -> [a] -> [a]
+odd :: Int -> Bool
+on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
+or :: [Bool] -> Bool
+ord :: Char -> Int
+outdented :: String -> String
+partition :: (a -> Bool) -> [a] -> ([a], [a])
+partitionEithers :: [Either a b] -> ([a], [b])
+permutations :: [a] -> [[a]]
+permutationsWithRepetition :: Int -> [a] -> [[a]]
+pi :: Float
+plus :: Num -> Num -> Num
+pred :: Enum a => a -> a
+product :: [Num] -> Num
+properFraction :: Real -> (Int, Real)
+pureLR :: a -> Either e a
+pureList :: a -> [a]
+pureMay :: a -> Maybe a
+pureT :: f a -> (a -> f a)
+pureTree :: a -> Tree a
+pureTuple :: a -> (a, a)
+quickSort :: (Ord a) => [a] -> [a]
+quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
+quot :: Int -> Int -> Int
+quotRem :: Int -> Int -> (Int, Int)
+raise :: Num -> Int -> Num
+randomRInt :: Int -> Int -> Int
+range :: Ix a => (a, a) -> [a]
+read :: Read a => String -> a
+readFile :: FilePath -> IO String
+readFileMay :: FilePath -> Maybe String
+readJSON :: String -> a
+readJSONLR :: Read a => String -> Either String a
+readMay :: Read a => String -> Maybe a
+recip :: Num -> Num
+recipMay :: Num -> Maybe Num
+regexMatches :: String -> String -> [[String]]
+rem :: Int -> Int -> Int
+removeFile :: FilePath -> Either String String
+replace :: String -> String -> String -> String
+replicate :: Int -> a -> [a]
+replicateM :: Int -> [a] -> [[a]]
+replicateString :: Int -> String -> String
+reverse :: [a] -> [a]
+rights :: [Either a b] -> [b]
+rotate :: Int -> [a] -> [a]
+round :: a -> Int
+safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
+scanl :: (b -> a -> b) -> b -> [a] -> [b]
+scanl1 :: (a -> a -> a) -> [a] -> [a]
+scanr :: (b -> a -> b) -> b -> [a] -> [b]
+scanr1 :: (a -> a -> a) -> [a] -> [a]
+secondArrow :: (a -> b) -> ((c, a) -> (c, b))
+sequenceAList :: Applicative f => [f a] -> f [a]
+setCurrentDirectory :: String -> IO ()
+show :: a -> String
+showBinary :: Int -> String
+showDate :: Date -> String
+showDict :: Dict -> String
+showHex :: Int -> String
+showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
+showJSON :: a -> String
+showLR :: Either a b -> String
+showList :: [a] -> String
+showLog :: a -> IO ()
+showMaybe :: Maybe a -> String
+showOrdering :: Ordering -> String
+showRatio :: Ratio -> String
+showTuple :: Tuple -> String
+showTuple3 :: Tuple3 -> String
+showTuple4 :: Tuple4 -> String
+showUndefined :: () -> String
+signum :: Num -> Num
+snd :: (a, b) -> b
+snoc :: [a] -> a -> [a]
+sort :: Ord a => [a] -> [a]
+sortBy :: (a -> a -> Ordering) -> [a] -> [a]
+sortOn :: Ord b => (a -> b) -> [a] -> [a]
+span :: (a -> Bool) -> [a] -> ([a],[a])
+splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
+splitAt :: Int -> [a] -> ([a],[a])
+splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
+splitEvery :: Int -> [a] -> [[a]]
+splitFileName :: FilePath -> (String, String)
+splitOn :: String -> String -> [String]
+splitRegex :: Regex -> String -> [String]
+sqrt :: Num -> Num
+sqrtMay :: Num -> Maybe Num
+strip :: String -> String
+stripEnd :: String -> String
+stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
+stripStart :: String -> String
+subsequences :: [a] -> [[a]]
+subtract :: Num -> Num -> Num
+succ :: Enum a => a -> a
+sum :: [Num] -> Num
+swap :: (a, b) -> (b, a)
+tail :: [a] -> [a]
+tailMay :: [a] -> Maybe [a]
+tails :: [a] -> [[a]]
+take :: Int -> [a] -> [a]
+takeAround :: (a -> Bool) -> [a] -> [a]
+takeBaseName :: FilePath -> String
+takeCycle :: Int -> [a] -> [a]
+takeDirectory :: FilePath -> FilePath
+takeDropCycle :: Int -> [a] -> [a]
+takeExtension :: FilePath -> String
+takeFileName :: FilePath -> FilePath
+takeIterate :: Int -> (a -> a) -> a -> [a]
+takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhileR :: (a -> Bool) -> [a] -> [a]
+tempFilePath :: String -> IO FilePath
+then (>>) :: Monad m => m a -> m b -> m b
+thenIO (>>) :: IO a -> IO b -> IO b
+thenList (>>) :: [a] -> [b] -> [b]
+thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
+toListTree :: Tree a -> [a]
+toLower :: String -> String
+toRatio :: Real -> Ratio
+toSentence :: String -> String
+toTitle :: String -> String
+toUpper :: String -> String
+transpose :: [[a]] -> [[a]]
+traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)
+treeLeaves :: Node -> [Node]
+truncate :: Num -> Int
+tupleFromArray [a] -> (a, a ...)
+typeName :: a -> String
+unQuoted :: String -> String
+uncons :: [a] -> Maybe (a, [a])
+uncurry :: (a -> b -> c) -> ((a, b) -> c)
+unfoldForest :: (b -> (a, [b])) -> [b] -> Forest
+unfoldTree :: (b -> (a, [b])) -> b -> Tree a
+unfoldl :: (b -> Maybe (a, b)) -> b -> [a]
+unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
+union :: [a] -> [a] -> [a]
+unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
+unlines :: [String] -> String
+unsnoc :: [a] -> Maybe ([a], a)
+until :: (a -> Bool) -> (a -> a) -> a -> a
+unwords :: [String] -> String
+unwrap :: NSObject -> a
+unzip :: [(a,b)] -> ([a],[b])
+unzip3 :: [(a,b,c)] -> ([a],[b],[c])
+unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
+variance :: [Num] -> Num
+words :: String -> [String]
+wrap :: a -> NSObject
+writeFile :: FilePath -> String -> IO ()
+writeFileMay :: FilePath -> String -> Maybe FilePath
+writeTempFile :: String -> String -> IO FilePath
+zip :: [a] -> [b] -> [(a, b)]
+zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
