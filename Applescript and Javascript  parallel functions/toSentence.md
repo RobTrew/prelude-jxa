@@ -1,0 +1,20 @@
+```js
+-- Sentence case - initial string capitalized and rest lowercase
+```
+
+```js
+-- toSentence :: String -> Stringon toSentence(str)	set ca to current application	if length of str > 0 then		set locale to ca's NSLocale's currentLocale()		set ws to ca's NSString		(((ws's stringWithString:(text 1 of str))'s ¬			uppercaseStringWithLocale:(locale)) as text) & ¬			((ws's stringWithString:(text 2 thru -1 of str))'s ¬				lowercaseStringWithLocale:(locale)) as text	else		str	end ifend toSentence
+```
+
+```js
+// Sentence case - initial string capitalized and rest lowercase
+```
+
+```js
+// toSentence :: String -> String
+const toSentence = s =>
+    s.length > 0 ? (
+        s[0].toUpperCase() + s.slice(1)
+        .toLowerCase()
+    ) : s;
+```

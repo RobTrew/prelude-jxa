@@ -421,7 +421,7 @@ const deleteFirstsBy = (fnEq, xs, ys) =>
 const deleteMap = (k, dct) =>
     (delete dct[k], dct);
 
-// difference (\\) :: Eq a => [a] -> [a] -> [a]
+// difference :: Eq a => [a] -> [a] -> [a]
 const difference = (xs, ys) =>
     xs.filter(x => ys.indexOf(x) === -1);
 

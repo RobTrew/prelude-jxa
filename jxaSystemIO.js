@@ -82,7 +82,7 @@ const createDirectoryIfMissingLR = (blnParents, fp) =>
                 blnParents, undefined, e
             );
         return blnOK ? (
-            Right(`Created: '${fp}'`)
+            Right(fp)
         ) : Left(e.localizedDescription);
     })();
 
