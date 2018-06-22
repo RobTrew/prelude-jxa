@@ -255,7 +255,7 @@ const writeFile = (strPath, strText) =>
         $.NSUTF8StringEncoding, null
     );
 
-// writeFileLR :: FilePath -> String -> Either String IO FilePath
+// writeFileLR :: FilePath -> Either String IO FilePath
 const writeFileLR = (strPath, strText) => {
     const
         e = $(),

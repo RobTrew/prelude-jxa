@@ -1495,6 +1495,13 @@ const minimumMay = xs =>
 // mod :: Int -> Int -> Int
 const mod = (n, d) => n % d;
 
+// modificationTime :: FilePath -> Either String Date
+const modificationTime = fp =>
+    bindLR(
+       fileStatus(fp),
+       dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
+    );
+
 // negate :: Num -> Num
 const negate = n => -n;
 

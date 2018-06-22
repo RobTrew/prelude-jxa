@@ -224,6 +224,7 @@ minimumBy :: (a -> a -> Ordering) -> [a] -> a
 minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 minimumMay :: [a] -> Maybe a
 mod :: Int -> Int -> Int
+modificationTime :: FilePath -> Either String Date
 negate :: Num -> Num
 newUUID :: () -> IO UUID String
 not :: Bool -> Bool
