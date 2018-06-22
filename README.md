@@ -6,7 +6,7 @@ jxaSystemIO.js files (c. 380 generic functions in total) when sketching out
 and testing a script:
 
 Example of a JXA script which uses imported library file(s) –
-(see the usingLibs function towards the bottom)
+(see the usingLibs function called at the end)
 
 ```javascript
 (() => {
