@@ -176,6 +176,13 @@ const listDirectory = strPath =>
 		))
 	.map(ObjC.unwrap);
 
+// modificationTime :: FilePath -> Either String Date
+const modificationTime = fp =>
+    bindLR(
+       fileStatus(fp),
+       dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
+    );
+
 // newUUID :: () -> IO UUID String
 const newUUID = () =>
     ObjC.unwrap($.NSUUID.UUID.UUIDString);
