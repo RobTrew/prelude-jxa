@@ -1,5 +1,5 @@
 # prelude-jxa
-Generic functions for macOS scripting with JavaScript for Automation – function names as in Hoogle.
+Generic functions for macOS scripting with JavaScript for Automation – function names as in [Hoogle](https://www.haskell.org/hoogle/?hoogle=concatMap).
 
 JXA is fast enough to allow for import of the whole of the jsPrelude.js and
 jxaSystemIO.js files (c. 380 generic functions in total) when sketching out
