@@ -99,12 +99,8 @@ const all = (p, xs) => xs.every(p);
 // | The conjunction of a container of Bools. 
 // True unless any contained value is false.
 // and :: [Bool] -> Bool
-const and = xs => {
-    let i = xs.length;
-    while (i--)
-        if (!xs[i]) return false;
-    return true;
-};
+const and = xs =>
+    xs.every(Boolean);
 
 // | True if any contained element satisfies the predicate.
 // any :: (a -> Bool) -> [a] -> Bool
@@ -1532,12 +1528,8 @@ const odd = n => !even(n);
 const on = (f, g) => (a, b) => f(g(a), g(b));
 
 // or :: [Bool] -> Bool
-const or = xs => {
-    let i = xs.length;
-    while (i--)
-        if (xs[i]) return true;
-    return false;
-};
+const or = xs =>
+    xs.some(Boolean);
 
 // ord :: Char -> Int
 const ord = c => c.codePointAt(0);
