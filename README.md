@@ -37,6 +37,7 @@ Example of a JXA script which uses imported library file(s) –
                             ),
                             gaps = foldl(
                                 (a, fpMD) => {
+                                    showLog('fpMD', fpMD);
                                     const fpAS = fpASFolder + fpMD;
                                     return doesFileExist(fpAS) ? (
                                         writeFile(
@@ -47,7 +48,7 @@ Example of a JXA script which uses imported library file(s) –
                                             ]).join('\n\n')
                                         ),
                                         a
-                                    ) : a.concat(fpJS)
+                                    ) : a.concat(fpMD)
                                 }, [],
                                 jxaFunctions
                             );

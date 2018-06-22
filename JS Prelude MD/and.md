@@ -5,10 +5,6 @@
 
 ```js
 // and :: [Bool] -> Bool
-const and = xs => {
-    let i = xs.length;
-    while (i--)
-        if (!xs[i]) return false;
-    return true;
-};
+const and = xs =>
+    xs.every(Boolean);
 ```
