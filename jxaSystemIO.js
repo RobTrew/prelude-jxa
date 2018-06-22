@@ -255,19 +255,19 @@ const writeFile = (strPath, strText) =>
         $.NSUTF8StringEncoding, null
     );
 
-// writeFileMay :: FilePath -> String -> Maybe FilePath
-const writeFileMay = (strPath, strText) => {
+// writeFileLR :: FilePath -> String -> Either String IO FilePath
+const writeFileLR = (strPath, strText) => {
     const
         e = $(),
-        fullPath = $(strPath)
+        fp = $(strPath)
         .stringByStandardizingPath;
     return $.NSString.alloc.initWithUTF8String(strText)
         .writeToFileAtomicallyEncodingError(
-            fullPath, false,
+            fp, false,
             $.NSUTF8StringEncoding, e
         ) ? (
-            Just(ObjC.unwrap(fullPath))
-        ) : Nothing();
+            Right(ObjC.unwrap(fp))
+        ) : Left(ObjC.unwrap(e.localizedDescription));
 };
 
 // File name template -> string data -> IO temporary path
