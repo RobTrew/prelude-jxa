@@ -1,5 +1,5 @@
 ```applescript
--- getDirectoryContents :: FilePath -> IO [FilePath]on getDirectoryContents(strPath)	set ca to current application	unwrap(ca's NSFileManager's defaultManager()'s contentsOfDirectoryAtPath:¬		unwrap(stringByStandardizingPath of wrap(strPath)) |error|:(missing value))end getDirectoryContents
+-- getDirectoryContents :: FilePath -> IO [FilePath]on getDirectoryContents(strPath)	set ca to current application	(ca's NSFileManager's defaultManager()'s ¬		contentsOfDirectoryAtPath:(stringByStandardizingPath of (¬			ca's NSString's stringWithString:(strPath))) ¬			|error|:(missing value)) as listend getDirectoryContents
 ```
 
 ```js
