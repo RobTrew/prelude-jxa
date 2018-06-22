@@ -1,0 +1,14 @@
+```js
+//Ordering: (LT|EQ|GT):
+//  GT: 1 (or other positive n)
+//	EQ: 0
+//  LT: -1 (or other negative n)
+```
+
+```js
+// minimumBy :: (a -> a -> Ordering) -> [a] -> a
+const minimumBy = (f, xs) =>
+    xs.reduce((a, x) => a === undefined ? x : (
+        f(x, a) < 0 ? x : a
+    ), undefined);
+```
