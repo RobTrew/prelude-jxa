@@ -378,7 +378,7 @@ variance :: [Num] -> Num
 words :: String -> [String]
 wrap :: a -> NSObject
 writeFile :: FilePath -> String -> IO ()
-writeFileMay :: FilePath -> String -> Maybe FilePath
+writeFileLR :: FilePath -> Either String IO FilePath
 writeTempFile :: String -> String -> IO FilePath
 zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
