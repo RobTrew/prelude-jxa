@@ -1,4 +1,4 @@
-```applescript
+```js
 // | Sign of a number.
 // The functions 'abs' and 'signum' should satisfy the law:
 //

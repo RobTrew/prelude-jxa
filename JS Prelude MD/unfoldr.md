@@ -1,4 +1,4 @@
-```applescript
+```js
 // The 'unfoldr' function is a \`dual\' to 'foldr': while 'foldr'
 // reduces a list to a summary value, 'unfoldr' builds a list from
 // a seed value.  The function takes the element and returns 'Nothing'

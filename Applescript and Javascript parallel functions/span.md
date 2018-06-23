@@ -22,7 +22,7 @@ on span(f, xs)
 end span
 ```
 
-```applescript
+```js
 // span, applied to a predicate p and a list xs, returns a tuple of xs of 
 // elements that satisfy p and second element is the remainder of the list:
 //
