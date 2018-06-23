@@ -1,4 +1,4 @@
-```js
+```applescript
 -- | Build a forest from a list of seed values
 ```
 

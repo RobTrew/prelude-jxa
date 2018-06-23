@@ -1,4 +1,4 @@
-```js
+```applescript
 -- | Build a tree from a seed value
 ```
 

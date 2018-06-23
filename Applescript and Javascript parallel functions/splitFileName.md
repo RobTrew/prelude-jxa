@@ -1,4 +1,4 @@
-```js
+```applescript
 -- Split a filename into directory and file. combine is the inverse.
 ```
 
