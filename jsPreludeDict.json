@@ -1,2667 +1,391 @@
-// JS PRELUDE – GENERIC FUNCTIONS
-
-// EQ :: Ordering
-const EQ = {
-  type: 'Ordering',
-  value: 0
-};
-
-// GT :: Ordering
-const GT = {
-    type: 'Ordering',
-    value: 1
-};
-
-// Just :: a -> Just a
-const Just = x => ({
-    type: 'Maybe',
-    Nothing: false,
-    Just: x
-});
-
-// LT :: Ordering
-const LT = {
-  type: 'Ordering',
-  value: -1
-};
-
-// Left :: a -> Either a b
-const Left = x => ({
-    type: 'Either',
-    Left: x
-});
-
-// Node :: a -> [Tree a] -> Tree a
-const Node = (v, xs) => ({
-    type: 'Node',
-    root: v, // any type of value (but must be consistent across tree)
-    nest: xs || []
-});
-
-// Nothing :: () -> Nothing
-const Nothing = () => ({
-    type: 'Maybe',
-    Nothing: true,
-});
-
-// Ordering :: Int -> Ordering
-const Ordering = e =>
-    ({
-        type: 'Ordering',
-        value: (e > 0 ? 1 : e < 0 ? -1 : 0)
-    });
-
-// Ratio :: Int -> Int -> Ratio
-const Ratio = (n, d) => ({
-    type: 'Ratio',
-    'n': n, // numerator
-    'd': d // denominator
-});
-
-// Right :: b -> Either a b
-const Right = x => ({
-    type: 'Either',
-    Right: x
-});
-
-// Tuple (,) :: a -> b -> (a, b)
-const Tuple = (a, b) => ({
-  type: 'Tuple',
-  '0': a,
-  '1': b,
-  length: 2
-});
-
-// TupleN :: a -> b ...  -> (a, b ... )
-function TupleN() {
-    const
-        args = Array.from(arguments),
-        lng = args.length;
-    return lng > 1 ? Object.assign(
-        args.reduce((a, x, i) => Object.assign(a, {
-            [i]: x
-        }), {
-            type: 'Tuple' + (lng > 2 ? lng.toString() : ''),
-            length: lng
-        })
-    ) : args[0];
-};
-
-// | Absolute value.
-// abs :: Num -> Num
-const abs = Math.abs;
-
-// Determines whether all elements of the structure 
-// satisfy the predicate.
-// all :: (a -> Bool) -> [a] -> Bool
-const all = (p, xs) => xs.every(p);
-
-// | The conjunction of a container of Bools. 
-// True unless any contained value is false.
-// and :: [Bool] -> Bool
-const and = xs =>
-    xs.every(Boolean);
-
-// | True if any contained element satisfies the predicate.
-// any :: (a -> Bool) -> [a] -> Bool
-const any = (p, xs) => xs.some(p);
-
-// Applies wrapped functions to wrapped values, 
-// for example applying a list of functions to a list of values
-// or applying Just(f) to Just(x), Right(f) to Right(x), etc
-// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
-const ap = (mf, mx) => {
-    const t = mx.type;
-    return (t !== undefined ? (
-        t === 'Either' ? (
-            apEither
-        ) : t === 'Maybe' ? (
-            apMaybe
-        ) : t === 'Node' ? (
-            apTree
-        ) : apTuple
-    ) : apList)(mf, mx);
-};
-
-// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
-const apLR = (flr, lr) => {
-    const pf = isRight(flr);
-    return pf && isRight(lr) ? (
-        Right(flr.Right(lr.Right))
-    ) : (pf ? lr : flr);
-};
-
-// e.g. [(*2),(/2), sqrt] <*> [1,2,3]
-// -->  ap([dbl, hlf, root], [1, 2, 3])
-// -->  [2,4,6,0.5,1,1.5,1,1.4142135623730951,1.7320508075688772]
-
-// Each member of a list of functions applied to each
-// of a list of arguments, deriving a list of new values.
-// apList (<*>) :: [(a -> b)] -> [a] -> [b]
-const apList = (fs, xs) => //
-    [].concat.apply([], fs.map(f => //
-        [].concat.apply([], xs.map(x => [f(x)]))));
-
-// Maybe f applied to Maybe x, deriving a Maybe y
-// apMaybe (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
-const apMaybe = (mf, mx) =>
-    mf.Nothing || mx.Nothing ? (
-        Nothing()
-    ) : Just(mf.Just(mx.Just));
-
-// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
-const apTuple = (tf, tx) =>
-    Tuple(
-        mappend(tf[0], tx[0]),
-        tf[1](tx[1])
-    );
-
-// append (++) :: [a] -> [a] -> [a]
-// append (++) :: String -> String -> String
-const append = (xs, ys) => xs.concat(ys);
-
-// apply ($) :: (a -> b) -> a -> b
-const apply = (f, x) => f(x);
-
-// Epsilon -> Real -> Ratio
-// approxRatio :: Real -> Real -> Ratio
-const approxRatio = (eps, n) => {
-    const
-        gcde = (e, x, y) => {
-            const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
-            return _gcd(Math.abs(x), Math.abs(y));
-        },
-        c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);
-    return Ratio(
-        Math.floor(n / c), // numerator
-        Math.floor(1 / c) // denominator
-    );
-};
-
-// argvLength :: Function -> Int
-const argvLength = f => f.length;
-
-// assocs :: Map k a -> [(k, a)]
-const assocs = m =>
-    Object.keys(m).sort().map(k => Tuple(k, m[k]));
-
-// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
-const bind = (m, mf) =>
-    (Array.isArray(m) ? (
-        bindList
-    ) : (() => {
-        const t = m.type;
-        return t === 'Either' ? (
-            bindEither
-        ) : t === 'Maybe' ? (
-            bindMaybe
-        ) : t === 'Tuple' ? (
-            bindTuple
-        ) : x => Left('No bind instance found for type: ' + t);
-    })()(m, mf));
-
-// bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
-const bindLR = (m, mf) =>
-    m.Right !== undefined ? (
-        mf(m.Right)
-    ) : m;
-
-// bindList (>>=) :: [a] -> (a -> [b]) -> [b]
-const bindList = (xs, mf) => 
-  [].concat.apply([], xs.map(mf));
-
-// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
-const bindMay = (mb, mf) =>
-    mb.Nothing ? mb : mf(mb.Just);
-
-// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
-const bindTuple = (tpl, f) => {
-    const t2 = f(tpl[1]);
-    return Tuple(
-        mappend(tpl[0], t2[0]),
-        t2[1]
-    );
-};
-
-// break :: (a -> Bool) -> [a] -> ([a], [a])
-const break_ = (p, xs) => {
-  for (var i = 0, lng = xs.length; (i < lng) && !p(xs[i]); i++) {};
-  return Tuple(xs.slice(0, i), xs.slice(i));
-};
-
-// Needle -> Haystack -> (prefix before match, match + rest)
-// breakOn :: String -> String -> (String, String)
-const breakOn = (pat, src) =>
-    Boolean(pat) ? (() => {
-        const xs = src.split(pat);
-        return xs.length > 1 ? Tuple(
-            xs[0], src.slice(xs[0].length)
-        ) : Tuple(src, '');
-    })() : undefined;
-
-// breakOnAll "::" ""
-// ==> []
-// breakOnAll "/" "a/b/c/"
-// ==> [("a", "/b/c/"), ("a/b", "/c/"), ("a/b/c", "/")]
-// breakOnAll :: String -> String -> [(String, String)]
-const breakOnAll = (pat, src) =>
-    pat !== '' ? (
-        src.split(pat)
-        .reduce((a, x, i, xs) =>
-            i > 0 ? (
-                a.concat([
-                    Tuple(xs.slice(0, i)
-                        .join(pat), pat + xs.slice(i)
-                        .join(pat)
-                    )
-                ])
-            ) : a, [])
-    ) : undefined;
-
-// Needle -> Haystack -> maybe (prefix before match, match + rest)
-// breakOnMay :: String -> String -> Maybe (String, String)
-const breakOnMay = (pat, src) =>
-    Boolean(pat) ? (() => {
-        const xs = src.split(pat);
-        return Just(xs.length > 1 ? Tuple(
-            xs[0], src.slice(xs[0].length)
-        ) : Tuple(src, ''));
-    })() : Nothing();
-
-// cartesianProduct :: [a] -> [b] -> [(a, b)]
-const cartesianProduct = (xs, ys) =>
-    concatMap((x => concatMap(y => [
-        [Tuple(x, y)]
-    ], ys)), xs);
-
-// List of (Predicate, value) tuples -> Default value 
-//                        -> Value to test -> Output value
-// caseOf :: [(a -> Bool, b)] -> b -> a ->  b
-const caseOf = (pvs, otherwise, x) => {
-    const mb = pvs.reduce((a, pv) =>
-        a.Nothing ? (
-            pv[0](x) ? Just(pv[1]) : a
-        ) : a, Nothing());
-    return mb.Nothing ? otherwise : mb.Just;
-};
-
-// catMaybes :: [Maybe a] -> [a]
-const catMaybes = mbs =>
-    concatMap(m => m.Nothing ? [] : [m.Just], mbs);
-
-// The least integer not less than x
-// ceiling :: Num -> Int
-const ceiling = x => {
-    const
-      nr = properFraction(x),
-      n = nr[0]
-    return nr[1] > 0 ? n + 1 : n;
-};
-
-// Size of space -> filler Char -> String -> Centered String
-// center :: Int -> Char -> String -> String
-const center = (n, c, s) => {
-  const
-    qr = quotRem(n - s.length, 2),
-    q = qr[0];
-  return replicateString(q, c) +
-    s + replicateString(q + qr[1], c);
-};
-
-// chars :: String -> [Char]
-const chars = s => s.split('');
-
-// chr :: Int -> Char
-const chr = String.fromCodePoint;
-
-// chunksOf :: Int -> [a] -> [[a]]
-const chunksOf = (n, xs) =>
-    xs.reduce((a, _, i, xs) =>
-        i % n ? a : a.concat([xs.slice(i, i + n)]), []);
-
-// compare :: a -> a -> Ordering
-const compare = (a, b) => a < b ? -1 : (a > b ? 1 : 0);
-
-// comparing :: (a -> b) -> (a -> a -> Ordering)
-const comparing = f =>
-    (x, y) => {
-        const
-            a = f(x),
-            b = f(y);
-        return a < b ? -1 : (a > b ? 1 : 0);
-    };
-
-// compose :: (b -> c) -> (a -> b) -> a -> c
-const compose = (f, g) => x => f(g(x));
-
-// composeListLR :: [(a -> a)] -> (a -> a)
-const composeListLR = fs =>
-    x => fs.reduce((a, f) => f(a), x);
-
-// composeListRL :: [(a -> a)] -> (a -> a)
-const composeListRL = fs =>
-    x => fs.reduceRight((a, f) => f(a), x, fs);
-
-// concat :: [[a]] -> [a]
-// concat :: [String] -> String
-const concat = xs =>
-    xs.length > 0 ? (() => {
-        const unit = typeof xs[0] === 'string' ? '' : [];
-        return unit.concat.apply(unit, xs);
-    })() : [];
-
-// concatMap :: (a -> [b]) -> [a] -> [b]
-const concatMap = (f, xs) => [].concat.apply([], xs.map(f));
-
-// cons :: a -> [a] -> [a]
-const cons = (x, xs) =>  [x].concat(xs);
-
-// const_ :: a -> b -> a
-const const_ = (k, _) => k;
-
-// Flexibly handles two or more arguments, applying
-// the function directly if the argument array is complete,
-// or recursing with a concatenation of any existing and
-// newly supplied arguments, if gaps remain.
-// curry :: ((a, b) -> c) -> a -> b -> c
-const curry = (f, ...args) => {
-    const go = xs => xs.length >= f.length ? (
-        f.apply(null, xs)
-    ) : function () {
-        return go(xs.concat(Array.from(arguments)));
-    };
-    return go(args);
-};
-
-// Simpler 2 argument only version of curry
-// curry2 :: ((a, b) -> c) -> a -> b -> c
-const curry2 = f => a => b => f(a, b);
-
-// xs with first instance of x (if any) removed
-// delete :: Eq a => a -> [a] -> [a]
-const delete_ = (x, xs) =>
-    xs.length > 0 ? (
-        (x === xs[0]) ? (
-            xs.slice(1)
-        ) : [xs[0]].concat(delete_(x, xs.slice(1)))
-    ) : [];
-
-// deleteAt :: Int -> [a] -> [a]
-const deleteAt = (i, xs) =>
-    xs.length >= i ? (() => {
-        const lr = splitAt(i, xs);
-        return lr[0].concat(lr[1].slice(1));
-    })() : xs;
-
-// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
-const deleteBy = (f, x, xs) =>
-    xs.length > 0 ? (
-        f(x, xs[0]) ? (
-            xs.slice(1)
-        ) : [xs[0]].concat(deleteBy(f, x, xs.slice(1)))
-    ) : [];
-
-// deleteFirst :: a -> [a] -> [a]
-const deleteFirst = (x, xs) =>
-    xs.length > 0 ? (
-        x === xs[0] ? (
-            xs.slice(1)
-        ) : [xs[0]].concat(deleteFirst(x, xs.slice(1)))
-    ) : [];
-
-// deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const deleteFirstsBy = (fnEq, xs, ys) =>
-    ys.reduce((x, y) => deleteBy(fnEq, y, x), xs);
-
-// deleteMap :: k -> Dict -> Dict
-const deleteMap = (k, dct) =>
-    (delete dct[k], dct);
-
-// difference :: Eq a => [a] -> [a] -> [a]
-const difference = (xs, ys) =>
-    xs.filter(x => ys.indexOf(x) === -1);
-
-// div :: Int -> Int -> Int
-const div = (x, y) => Math.floor(x / y);
-
-// draw :: Tree String -> [String]
-const draw = node => {
-    // shift :: String -> String -> [String] -> [String]
-    const shift = (first, other, xs) =>
-        zipWith(
-            append,
-            cons(first, replicate(xs.length - 1, other)),
-            xs
-        );
-    // drawSubTrees :: [Tree String] -> [String]
-    const drawSubTrees = xs => {
-        const lng = xs.length;
-        return lng > 0 ? (
-            lng > 1 ? append(
-                cons(
-                    '│',
-                    shift('├─ ', '│  ', draw(xs[0]))
-                ),
-                drawSubTrees(xs.slice(1))
-            ) : cons('│', shift('└─ ', '   ', draw(xs[0])))
-        ) : [];
-    };
-    return append(
-        lines(node.root),
-        drawSubTrees(node.nest)
-    );
-};
-
-// drawForest :: Forest String -> String
-const drawForest = trees =>
-    trees.map(drawTree).join('\n');
-
-// drawTree :: Tree String -> String
-const drawTree = tree =>
-    unlines(draw(tree));
-
-// drop :: Int -> [a] -> [a]
-// drop :: Int -> String -> String
-const drop = (n, xs) => xs.slice(n);
-
-// dropAround :: (Char -> Bool) -> String -> String
-const dropAround = (p, s) => dropWhile(p, dropWhileEnd(p, s));
-
-// dropFileName :: FilePath -> FilePath
-const dropFileName = strPath =>
-    strPath !== '' ? (() => {
-        const xs = (strPath.split('/'))
-            .slice(0, -1);
-        return xs.length > 0 ? (
-            xs.join('/') + '/'
-        ) : './';
-    })() : './';
-
-// dropWhile :: (a -> Bool) -> [a] -> [a]
-const dropWhile = (p, xs) => {
-  let i = 0;
-  for (let lng = xs.length;
-    (i < lng) && p(xs[i]); i++) {}
-  return xs.slice(i);
-};
-
-// dropWhileEnd :: (Char -> Bool) -> String -> String
-// dropWhileEnd :: (a -> Bool) -> [a] -> [a]
-const dropWhileEnd = (p, s) => {
-    let i = s.length;
-    while (i-- && p(s[i])) {}
-    return s.slice(0, i + 1);
-};
-
-// either :: (a -> c) -> (b -> c) -> Either a b -> c
-const either = (lf, rf, e) =>
-    e.type === 'Either' ? (
-        e.Left !== undefined ? (
-            lf(e.Left)
-        ) : rf(e.Right)
-    ) : undefined;
-
-// elem :: Eq a => a -> [a] -> Bool
-const elem = (x, xs) => xs.includes(x);
-
-// If x is a dictionary, then the Int is read as an 
-// index into the lexically sorted keys of the Dict, 
-// returning a Maybe (Key, Value) pair.
-// If x is a list, then returns a Maybe a.
-// (In either case, returns Nothing for an Int out of range)
-// elemAtMay :: Int -> Dict -> Maybe (String, a)
-// elemAtMay :: Int -> [a] -> Maybe a
-const elemAtMay = (i, x) => {
-    const
-        bln = Array.isArray(x),
-        k = bln ? i : Object.keys(x)
-        .sort()[i],
-        v = x[k];
-    return (typeof v)[0] !== 'u' ? (
-        Just(bln ? v : Tuple(k, v))
-    ) : Nothing();
-};
-
-// elemIndex :: Eq a => a -> [a] -> Maybe Int
-const elemIndex = (x, xs) => {
-    const i = xs.indexOf(x);
-    return {
-        Nothing: i === -1,
-        Just: i
-    };
-};
-
-// elemIndices :: Eq a => a -> [a] -> [Int]
-const elemIndices = (x, xs) =>
-    concatMap((y, i) => y === x ? (
-        [i]
-    ) : [], xs);
-
-// elems :: Dict -> [a]
-const elems = Object.values;
-
-// enumFromThenTo :: Enum a => a -> a -> a -> [a]
-const enumFromThenTo = (x1, x2, y) =>
-    (typeof x1 !== 'number' ? (
-        enumFromThenToChar
-    ) : enumFromThenToInt)
-    .apply(null, [x1, x2, y]);
-
-// enumFromThenToChar :: Char -> Char -> Char -> [Char]
-const enumFromThenToChar = (x1, x2, y) => {
-    const [i1, i2, iY] = Array.from([x1, x2, y])
-        .map(x => x.charCodeAt(0)),
-        d = i2 - i1;
-    return Array.from({
-        length: (Math.floor(iY - i2) / d) + 2
-    }, (_, i) => String.fromCodePoint(i1 + (d * i)));
-};
-
-// enumFromThenToInt :: Int -> Int -> Int -> [Int]
-const enumFromThenToInt = (x1, x2, y) => {
-    const d = x2 - x1;
-    return Array.from({
-        length: Math.floor(y - x2) / d + 2
-    }, (_, i) => x1 + (d * i));
-};
-
-// enumFromTo :: Enum a => a -> a -> [a]
-const enumFromTo = (m, n) =>
-    (typeof m !== 'number' ? (
-        enumFromToChar
-    ) : enumFromToInt).apply(null, [m, n]);
-
-// enumFromToChar :: Char -> Char -> [Char]
-const enumFromToChar = (m, n) => {
-    const [intM, intN] = [m, n].map(x => x.charCodeAt(0));
-    return Array.from({
-        length: Math.floor(intN - intM) + 1
-    }, (_, i) => String.fromCodePoint(intM + i));
-};
-
-// enumFromToInt :: Int -> Int -> [Int]
-const enumFromToInt = (m, n) =>
-    m <= n ? iterateUntil(
-        x => n <= x,
-        x => 1 + x,
-        m
-    ) : [];
-
-// eq (==) :: Eq a => a -> a -> Bool
-const eq = (a, b) => {
-    const t = typeof a;
-    return t !== typeof b ? (
-        false
-    ) : t !== 'object' ? (
-        a === b
-    ) : (() => {
-        const aks = Object.keys(a);
-        return aks.length !== Object.keys(b).length ? (
-            false
-        ) : aks.every(k => eq(a[k], b[k]));
-    })();
-};
-
-// evalJSMay :: String -> Maybe a
-const evalJSMay = s => {
-    try {
-        return Just(eval('(' + s + ')'))
-    } catch (e) {
-        return Nothing();
-    };
-};
-
-// even :: Int -> Bool
-const even = n => n % 2 === 0;
-
-// exp :: Float -> Float
-const exp = n => Math.exp(n);
-
-// Compose a function from a simple value to a tuple of
-// the separate outputs of two different functions
-// fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
-const fanArrow = (f, g) => x => Tuple(f(x), g(x));
-
-// filePathTree :: filePath -> [Tree String] -> Tree filePath
-const filePathTree = (fpAnchor, trees) => {
-    const go = fp => tree => {
-        const path = `${fp}/${tree.root}`;
-        return Node(
-            path,
-            tree.nest.map(go(path))
-        );
-    };
-    return Node(fpAnchor, trees.map(go(fpAnchor)));
-};
-
-// filter :: (a -> Bool) -> [a] -> [a]
-const filter = (f, xs) => xs.filter(f);
-
-// find :: (a -> Bool) -> [a] -> Maybe a
-const find = (p, xs) => {
-    for (let i = 0, lng = xs.length; i < lng; i++) {
-        let x = xs[i];
-        if (p(x)) return Just(x);
-    }
-    return Nothing();
-};
-
-// findIndex :: (a -> Bool) -> [a] -> Maybe Int
-const findIndex = (p, xs) => {
-    const i = xs.findIndex(p);
-    return -1 !== i ? (
-        Just(i)
-    ) : Nothing();
-};
-
-// findIndexR :: (a -> Bool) -> [a] -> Maybe Int
-const findIndexR = (p, xs) => {
-    const i = reverse(xs).findIndex(p);
-    return i !== -1 ? (
-        Just(xs.length - (1 + i))
-    ) : Nothing();
-};
-
-// findIndices :: (a -> Bool) -> [a] -> [Int]
-const findIndices = (p, xs) =>
-    concatMap((x, i) => p(x) ? (
-        [i]
-    ) : [], xs);
-
-// Lift a simple function to one which applies to a tuple, 
-// transforming only the first item of the tuple
-// firstArrow :: (a -> b) -> ((a, c) -> (b, c))
-const firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);
-
-// flatten :: NestedList a -> [a]
-const flatten = t =>
-    Array.isArray(t) ? (
-        [].concat.apply([], t.map(flatten))
-    ): t;
-
-// flip :: (a -> b -> c) -> b -> a -> c
-const flip = f => (a, b) => f.apply(null, [b, a]);
-
-// floor :: Num -> Int
-const floor = x => {
-    const
-      nr = properFraction(x),
-      n = nr[0];
-    return nr[1] < 0 ? n - 1 : n;
-};
-
-// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
-const fmap = (f, fa) => {
-    const t = fa.type;
-    return (t !== undefined ? (
-        t === 'Either' ? (
-            fmapLR
-        ) : t === 'Maybe' ? (
-            fmapMay
-        ) : t === 'Node' ? (
-            fmapTree
-        ) : fmapTuple
-    ) : map)(f, fa);
-};
-
-// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
-const fmapLR = (f, lr) =>
-    Object.keys(lr)
-    .includes('Right') ? (
-        Right(f(lr.Right))
-    ) : lr;
-
-// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
-const fmapMay = (f, mb) =>
-    mb.Nothing ? (
-        mb
-    ) : Just(f(mb.Just));
-
-// fmapTree :: (a -> b) -> Tree a -> Tree b
-const fmapTree = (f, tree) => {
-    const go = node => Node(
-        f(node.root),
-        node.nest.map(go)
-    );
-    return go(tree);
-};
-
-// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
-const fmapTuple = (f, tpl) =>
-    Tuple(tpl[0], f(tpl[1]));
-
-// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
-const foldMapTree = (f, node) => {
-    const go = x =>
-        x.nest.length > 0 ? mappend(
-            f(x.root),
-            foldl1(mappend, x.nest.map(go))
-        ) : f(x.root);
-    return go(node);
-};
-
-// foldTree :: (a -> [b] -> b) -> Tree a -> b
-const foldTree = (f, tree) => {
-    const go = node => f(node.root, node.nest.map(go));
-    return go(tree);
-};
-
-// foldl :: (a -> b -> a) -> a -> [b] -> a
-const foldl = (f, a, xs) => xs.reduce(f, a);
-
-// foldl1 :: (a -> a -> a) -> [a] -> a
-const foldl1 = (f, xs) =>
-    xs.length > 1 ? xs.slice(1)
-    .reduce(f, xs[0]) : xs[0];
-
-// foldl1May :: (a -> a -> a) -> [a] -> Maybe a
-const foldl1May = (f, xs) =>
-    xs.length > 0 ? (
-        Just(xs.slice(1)
-            .reduce(f, xs[0]))
-    ) : Nothing();
-
-// foldlTree :: (b -> a -> b) -> b -> Tree a -> b
-const foldlTree = (f, acc, node) => {
-  const go = (a, x) =>
-    x.nest.reduce(go, f(a, x));
-  return go(acc, node);
-};
-
-// Note that that the Haskell signature of foldr is different from that of
-// foldl - the positions of accumulator and current value are reversed
-// foldr :: (a -> b -> b) -> b -> [a] -> b
-const foldr = (f, a, xs) => xs.reduceRight(flip(f), a);
-
-// foldr1 :: (a -> a -> a) -> [a] -> a
-const foldr1 = (f, xs) =>
-    xs.length > 0 ? init(xs)
-    .reduceRight(f, last(xs)) : [];
-
-// foldr1May :: (a -> a -> a) -> [a] -> Maybe a
-const foldr1May = (f, xs) =>
-    xs.length > 0 ? (
-        Just(xs.slice(0, -1)
-            .reduceRight(f, xs.slice(-1)[0]))
-    ) : Nothing();
-
-// fromEnum :: Enum a => a -> Int
-const fromEnum = x => {
-    const type = typeof x;
-    return type === 'boolean' ? (
-        x ? 1 : 0
-    ) : type === 'string' ? x.charCodeAt(0) : x;
-};
-
-// | Return the contents of a 'Left'-value or a default value otherwise.
-// fromLeft :: a -> Either a b -> a
-const fromLeft = (def, lr) =>
-  isLeft(lr) ? lr.Left : def;
-
-// fromMaybe :: a -> Maybe a -> a
-const fromMaybe = (def, mb) => mb.Nothing ? def : mb.Just;
-
-// | Return the contents of a 'Right'-value or a default value otherwise.
-// fromRight :: b -> Either a b -> b
-const fromRight = (def, lr) =>
-  isRight(lr) ? lr.Right : def;
-
-// fst :: (a, b) -> a
-const fst = tpl => tpl[0];
-
-// gcd :: Int -> Int -> Int
-const gcd = (x, y) => {
-    const _gcd = (a, b) => (b === 0 ? a : _gcd(b, a % b));
-    return _gcd(Math.abs(x), Math.abs(y));
-};
-
-// genericIndexMay :: [a] -> Int -> Maybe a
-const genericIndexMay = (xs, i) =>
-    (i < xs.length && i >= 0) ? Just(xs[i]) : Nothing();
-
-// group :: Eq a => [a] -> [[a]]
-const group = xs => groupBy((a, b) => a === b, xs);
-
-// Typical usage: groupBy(on(eq, f), xs)
-// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = (f, xs) => {
-    const tpl = xs.slice(1)
-        .reduce((a, x) => {
-            const h = a[1].length > 0 ? a[1][0] : undefined;
-            return h !== undefined && f(h, x) ? (
-                Tuple(a[0], a[1].concat([x]))
-            ) : Tuple(a[0].concat([a[1]]), [x]);
-        }, Tuple([], xs.length > 0 ? [xs[0]] : []));
-    return tpl[0].concat([tpl[1]]);
-};
-
-// Sort and group a list by comparing the results of a key function
-// applied to each element. groupSortOn f is equivalent to
-// groupBy eq $ sortBy (comparing f),
-// but has the performance advantage of only evaluating f once for each
-// element in the input list.
-// This is a decorate-(group.sort)-undecorate pattern, as in the
-// so-called 'Schwartzian transform'.
-// Groups are arranged from from lowest to highest.
-// groupSortOn :: Ord b => (a -> b) -> [a] -> [a]
-// groupSortOn :: Ord b => [((a -> b), Bool)]  -> [a] -> [a]
-const groupSortOn = (f, xs) => {
-    // Functions and matching bools derived from argument f
-    // which is a single key function
-    const fsbs = unzip(
-            flatten([f])
-            .reduceRight((a, x) =>
-                typeof x === 'boolean' ? {
-                    asc: x,
-                    fbs: a.fbs
-                } : {
-                    asc: true,
-                    fbs: [
-                        [x, a.asc]
-                    ].concat(a.fbs)
-                }, {
-                    asc: true,
-                    fbs: []
-                })
-            .fbs
-        ),
-        [fs, bs] = [fsbs[0], fsbs[1]],
-        iLast = fs.length;
-    // decorate-sort-group-undecorate
-    return groupBy(
-            (p, q) => p[0] === q[0],
-            sortBy(
-                mappendComparing(
-                    // functions that access pre-calculated values by position
-                    // in the decorated ('Schwartzian') version of xs
-                    zip(fs.map((_, i) => x => x[i]), bs)
-                ), xs.map( // xs decorated with precalculated key function values
-                    x => fs.reduceRight(
-                        (a, g) => [g(x)].concat(a), [
-                            x
-                        ]
-                    )
-                )
-            )
-        )
-        .map(gp => gp.map(x => x[iLast])); // undecorated version of data, post sort
-};
-
-// head :: [a] -> a
-const head = xs => xs.length ? xs[0] : undefined;
-
-// headMay :: [a] -> Maybe a
-const headMay = xs =>
-    xs.length > 0 ? Just(xs[0]) : Nothing();
-
-// id :: a -> a
-const id = x => x;
-
-// indented :: String -> String -> String
-const indented = (strIndent, s) =>
-    unlines(map(
-        x => x !== '' ? strIndent + x : x,
-        lines(s)
-    ));
-
-// index (!!) :: [a] -> Int -> a
-const index = (xs, i) => xs[i];
-
-// init :: [a] -> [a]
-const init = xs => xs.length > 0 ? xs.slice(0, -1) : undefined;
-
-// initMay :: [a] -> Maybe [a]
-const initMay = xs =>
-    xs.length > 0 ? Just(xs.slice(0, -1)) : Nothing();
-
-// inits([1, 2, 3]) -> [[], [1], [1, 2], [1, 2, 3]
-// inits('abc') -> ["", "a", "ab", "abc"]
-// inits :: [a] -> [[a]]
-// inits :: String -> [String]
-const inits = xs => [
-        []
-    ]
-    .concat((typeof xs === 'string' ? xs.split('') : xs)
-        .map((_, i, lst) => lst.slice(0, i + 1)));
-
-// insert :: Ord a => a -> [a] -> [a]
-const insert = (x, ys) => {
-    const cmp = (a, b) => a < b ? -1 : (a > b ? 1 : 0);
-    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};
-    return ys.slice(0, i)
-        .concat(x)
-        .concat(ys.slice(i));
-};
-
-// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
-const insertBy = (cmp, x, ys) => {
-    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};
-    return ys.slice(0, i)
-        .concat(x)
-        .concat(ys.slice(i));
-};
-
-// insertMap :: Dict -> String -> a -> Dict
-const insertMap = (dct, k, v) =>
-  Object.assign(dct, {[k]: v});
-
-// intToDigit :: Int -> Char
-const intToDigit = n =>
-    n >= 0 && n < 16 ? (
-        '0123456789ABCDEF'.charAt(n)
-    ) : '?';
-
-// intercalate :: [a] -> [[a]] -> [a]
-// intercalate :: String -> [String] -> String
-const intercalate = (sep, xs) =>
-    xs.length > 0 && typeof sep === 'string' &&
-    typeof xs[0] === 'string' ? (
-        xs.join(sep)
-    ) : concat(intersperse(sep, xs));
-
-// intercalateS :: String -> [String] -> String
-const intercalateS = (s, xs) =>
-    xs.join(s);
-
-// intersect :: (Eq a) => [a] -> [a] -> [a]
-const intersect = (xs, ys) => 
-  xs.filter(x => ys.indexOf(x) !== -1);
-
-// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const intersectBy = (eq, xs, ys) => {
-    const ceq = curry(eq);
-    return (xs.length > 0 && ys.length > 0) ?
-    xs.filter(x => ys.some(ceq(x))) : [];
-};
-
-// intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]
-const intersectionBy = (eq, xs) =>
-    foldr1(((a, x) => intersectBy(eq, a, x)), xs);
-
-// intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
-// intersperse :: Char -> String -> String
-// intersperse :: a -> [a] -> [a]
-const intersperse = (sep, xs) => {
-    const bool = (typeof xs)[0] === 's';
-    return xs.length > 1 ? (
-        (bool ? concat : x => x)(
-            (bool ? (
-                xs.split('')
-            ) : xs)
-            .slice(1)
-            .reduce((a, x) => a.concat([sep, x]), [xs[0]])
-        )) : xs;
-};
-
-// isAlpha::Char - > Bool
-const isAlpha = c =>
-    /[A-Za-z0-9\u00C0-\u00FF]/.test(c);
-
-// isChar :: a -> Bool
-const isChar = x =>
-    typeof x === 'string' && x.length === 1;
-
-// isDigit :: Char -> Bool
-const isDigit = c => {
-  const n = ord(c);
-  return n >= 48 && n <= 57;
-};
-
-// isInfixOf :: Eq a => [a] -> [a] -> Bool
-// isInfixOf :: String -> String -> Bool
-const isInfixOf = (needle, haystack) =>
-    haystack.includes(needle);
-
-// isLeft :: Either a b -> Bool
-const isLeft = lr =>
-    lr.type === 'Either' && lr.Left !== undefined;
-
-// isLower :: Char -> Bool
-const isLower = c =>
-    /[a-z]/.test(c);
-
-// isMaybe :: a -> Bool
-const isMaybe = x =>
-    x.type === 'Maybe';
-
-// isNull :: [a] -> Bool
-// isNull :: String -> Bool
-const isNull = xs =>
-    Array.isArray(xs) || typeof xs === 'string' ? (
-        xs.length < 1
-    ) : undefined;
-
-// isPrefixOf takes two lists or strings and returns 
-// true iff the first is a prefix of the second.
-// isPrefixOf :: [a] -> [a] -> Bool
-// isPrefixOf :: String -> String -> Bool
-const isPrefixOf = (xs, ys) => {
-    const pfx = (xs, ys) => {
-        const intX = xs.length;
-        return intX > 0 ? (
-            ys.length >= intX ? xs[0] === ys[0] && pfx(
-                xs.slice(1), ys.slice(1)
-            ) : false
-        ) : true;
-    };
-    return typeof xs !== 'string' ? pfx(xs, ys) : ys.startsWith(xs);
-};
-
-// isRight :: Either a b -> Bool
-const isRight = lr =>
-  (typeof lr !== 'undefined') && 
-  lr.type === 'Either' && lr.Right !== undefined;
-
-// The 'isSortedBy' function returns true iff the predicate returns true
-// for all adjacent pairs of elements in the list.
-// isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
-const isSortedBy = (cmp, xs) =>
-    xs.length < 2 || all(x => x < 1, zipWith(cmp, xs, tail(xs)));
-
-// isSpace :: Char -> Bool
-const isSpace = c => /\s/.test(c);
-
-// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
-// isSubsequenceOf :: String -> String -> Bool
-const isSubsequenceOf = (xs, ys) => {
-    const iss = (a, b) =>
-        a.length > 0 ? (
-            b.length > 0 ? (
-                iss((a[0] === b[0] ? a.slice(1) : a), b.slice(1))
-            ) : false
-        ) : true;
-    return iss.apply(
-        null, 'string' === typeof xs ? [
-            xs.split(''), ys.split('')
-        ] : [xs, ys]
-    );
-};
-
-// isSuffixOf :: Eq a => [a] -> [a] -> Bool
-// isSuffixOf :: String -> String -> Bool
-const isSuffixOf = (suffix, main) =>
-    main.indexOf(suffix) === main.length - suffix.length;
-
-// isUpper :: Char -> Bool
-const isUpper = c =>
-    /[A-Z]/.test(c);
-
-// iso8601Local :: Date -> String
-const iso8601Local = dte =>
-    new Date(dte - (6E4 * dte.getTimezoneOffset()))
-    .toISOString();
-
-// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
-const iterateUntil = (p, f, x) => {
-    const vs = [x];
-    let h = x;
-    while (!p(h))(h = f(h), vs.push(h));
-    return vs;
-};
-
-// jsonLog :: a -> IO ()
-const jsonLog = (...args) =>
-    console.log(
-        args
-        .map(JSON.stringify)
-        .join(' -> ')
-    );
-
-// justifyLeft :: Int -> Char -> String -> String
-const justifyLeft = (n, cFiller, strText) =>
-    n > strText.length ? (
-        (strText + cFiller.repeat(n))
-        .substr(0, n)
-    ) : strText;
-
-// justifyRight :: Int -> Char -> String -> String
-const justifyRight = (n, cFiller, strText) =>
-    n > strText.length ? (
-        (cFiller.repeat(n) + strText)
-        .slice(-n)
-    ) : strText;
-
-// keys :: Dict -> [String]
-const keys = dct => Object.keys(dct);
-
-// Kleisli composition LR
-// kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
-const kleisliCompose = (f, g) =>
-    x => bind(f(x), g);
-
-// last :: [a] -> a
-const last = xs => xs.length ? xs.slice(-1)[0] : undefined;
-
-// lastMay :: [a] -> Maybe a
-const lastMay = xs => xs.length > 0 ? (
-    Just(xs.slice(-1)[0])
-) : Nothing();
-
-// lcm :: Int -> Int -> Int
-const lcm = (x, y) =>
-   ( x === 0 || y === 0) ? 0 : Math.abs(Math.floor(x / gcd(x, y)) * y);
-
-// lefts :: [Either a b] -> [a]
-const lefts = xs =>
-    concatMap(
-        x => x.type === 'Either' && x.Left !== undefined ? (
-            [x.Left]
-        ) : [], xs
-    );
-
-// length :: [a] -> Int
-const length = xs => xs.length;
-
-// levelNodes :: Tree a -> [[Tree a]]
-const levelNodes = tree =>
-  iterateUntil(
-    xs => xs.length < 1,
-    xs => concatMap(x => x.nest, xs), [tree]
-  );
-
-// levels :: Tree a -> [[a]]
-const levels = tree =>
-    map(xs => map(x => x.root, xs),
-        iterateUntil(
-            xs => xs.length < 1,
-            xs => concatMap(x => x.nest, xs), [tree]
-        )
-    );
-
-// Lift a binary function to actions.
-// liftA2 f a b = fmap f a <*> b
-// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = (f, a, b) =>
-    Array.isArray(a) ? (
-        liftA2List(f, a, b)
-    ) : (t => Boolean(t) ? (
-        t === 'Either' ? (
-            liftA2LR(f, a, b)
-        ) : t === 'Maybe' ? (
-            liftA2Maybe(f, a, b)
-        ) : t === 'Tuple' ? (
-            liftA2Tuple(f, a, b)
-        ) : undefined
-    ) : undefined)(a.type);
-
-// liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
-const liftA2LR = (f, a, b) =>
-    a.Right !== undefined ? (
-        b.Right !== undefined ? (
-            Right(f(a.Right, b.Right))
-        ) : b
-    ) : a;
-
-// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
-const liftA2List = (f, xs, ys) =>
-    concatMap(x => concatMap(y => [f(x, y)], ys), xs);
-
-// liftA2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-const liftA2Maybe = (f, a, b) =>
-    a.Nothing ? a : b.Nothing ? b : Just(f(a.Just, b.Just));
-
-// liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
-const liftA2Tuple = (f, a, b) =>
-    Tuple(mappend(a[0], b[0]), f(a[1], b[1]));
-
-// > liftM2 (+) [0,1] [0,2] = [0,2,1,3]
-// > liftM2 (+) (Just 1) Nothing = Nothing
-
-// Control.Monad : 
-// "Promote a function to a monad, scanning the monadic arguments 
-// from left to right."
-
-// Add 7, 9, or 10,  to 100 or 1000
-// liftM2(plus, [7, 9, 10], [100, 1000])
-
-// --> [107, 1007, 109, 1009, 110, 1010]
-
-// liftM2 f xs ys = [f] <*> xs <*> ys
-// liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
-const liftM2 = (f, a, b) =>
-    Array.isArray(a) ? (
-        ap(map((g => x => y => g(x, y))(f), a), b)
-    ) : Object.keys(a)
-    .indexOf('Nothing') !== -1 ? (
-        a.Nothing || b.Nothing ? a : pureMay(f(a.Just, b.Just))
-    ) : undefined;
-
-// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
-const liftMmay = f =>
-    mb => mb.Nothing ? mb : {
-        Nothing: false,
-        Just: f(mb.Just)
-    };
-
-// lines :: String -> [String]
-const lines = s => s.split(/[\r\n]/);
-
-// listFromTuple (a, a ...) -> [a]
-const listFromTuple = tpl =>
-    Object.keys(tpl)
-    .sort()
-    .reduce(
-        (a, k) => k !== 'type' ? (
-            a.concat(tpl[k])
-        ) : a, []
-    );
-
-// The listToMaybe function returns Nothing on 
-// an empty list or Just the head of the list.
-// listToMaybe :: [a] -> Maybe a
-const listToMaybe = xs =>
-    xs.length > 0 ? (
-        Just(xs[0])
-    ) : Nothing();
-
-// log :: Float -> Float
-const log = n => Math.log(n);
-
-// lookup :: Eq a => a -> Container -> Maybe b
-const lookup = (k, m) =>
-    (Array.isArray(m) ? (
-        lookupTuples
-    ) : lookupDict)(k, m);
-
-// lookupDict :: a -> Dict -> Maybe b
-const lookupDict = (k, dct) => {
-    const v = dct[k];
-    return v !== undefined ? (
-        Just(v)
-    ) : Nothing();
-};
-
-// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
-const lookupTuples = (k, kvs) =>
-    bindMay(
-        find(x => k === fst(x), kvs),
-        x => Just(snd(x))
-    );
-
-// Not required in JS, which has first functions by default
-// Included for comparison with AS, which can only obtain
-// first class functions by lifting 'handlers' into 'scripts'
-// as anonymous |λ|() functions.
-
-// Here Just an alternative name for id.
-// mReturn :: First-class m => (a -> b) -> m (a -> b)
-const mReturn = id;
-
-// map :: (a -> b) -> [a] -> [b]
-const map = (f, xs) => xs.map(f);
-
-// 'The mapAccumL function behaves like a combination of map and foldl; 
-// it applies a function to each element of a list, passing an accumulating 
-// parameter from left to right, and returning a final value of this 
-// accumulator together with the new list.' (See Hoogle)
-// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-const mapAccumL = (f, acc, xs) =>
-    xs.reduce((a, x, i) => {
-        const pair = f(a[0], x, i);
-        return Tuple(pair[0], a[1].concat(pair[1]));
-    }, Tuple(acc, []));
-
-// mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
-const mapAccumL_Tree = (f, acc, tree) => {
-    const go = (a, x) => {
-        const
-            pair = f(a, x.root),
-            tpl = mapAccumL(go, pair[0], x.nest);
-        return Tuple(tpl[0], Node(pair[1], tpl[1]));
-    };
-    return go(acc, tree);
-};
-
-// 'The mapAccumR function behaves like a combination of map and foldr; 
-// it applies a function to each element of a list, passing an accumulating 
-// parameter from right to left, and returning a final value of this 
-// accumulator together with the new list.' (See Hoogle)
-// mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-const mapAccumR = (f, acc, xs) =>
-    xs.reduceRight((a, x, i) => {
-        const pair = f(a[0], x, i);
-        return Tuple(pair[0],
-            [pair[1]].concat(a[1])
-        );
-    }, Tuple(acc, []));
-
-// mapFromList :: [(k, v)] -> Dict
-const mapFromList = kvs =>
-    kvs.reduce(
-        (a, kv) => {
-            const k = kv[0];
-            return Object.assign(a, {
-                [(typeof k === 'string' && k) || show(k)]: kv[1]
-            });
-        }, {}
-    );
-
-// A function mapped over the keys of a record
-// mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
-const mapKeys = (f, dct) =>
-    mapFromList(
-        map(
-            kv => [f(read(kv[0])), kv[1]],
-            zip(keys(dct), elems(dct))
-        )
-    );
-
-// The mapMaybe function is a version of map which can throw out
-// elements. In particular, the functional argument returns
-// something of type Maybe b. If this is Nothing, no element is
-// added on to the result list. If it just Just b, then b is
-// included in the result list.
-// mapMaybe :: (a -> Maybe b) -> [a] -> [b]
-const mapMaybe = (mf, xs) =>
-    concatMap(compose(mf, maybeToList), xs);
-
-// mappend (<>) :: Monoid a => a -> a -> a
-const mappend = (a, b) => {
-    const t = a.type;
-    return (Boolean(t) ? (
-        t === 'Maybe' ? (
-            mappendMaybe
-        ) : t === 'Ordering' ? (
-            mappendOrdering
-        ) : mappendTuple
-    ) : append)(a, b);
-};
-
-// mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)
-const mappendComparing = fs =>
-    (x, y) => fs.reduce(
-        (ordr, f) => ordr || compare(f(x), f(y)),
-        0
-    );
-
-// Expects functions in the argument list to be 
-// paired with Bools:
-//     true  -> ascending sort on that key
-//     false -> descending sort on that key
-// mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)
-const mappendComparing2 = fboolPairs =>
-    (x, y) => fboolPairs.reduce(
-        (ordr, fb) => {
-            const f = fb[0];
-            return ordr !== 0 ? (
-                ordr
-            ) : fb[1] ? (
-                compare(f(x), f(y))
-            ) : compare(f(y), f(x));
-        }, 0
-    );
-
-// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
-const mappendMaybe = (a, b) =>
-    a.Nothing ? b : b.Nothing ? a :
-    Just(mappend(a.Just, b.Just));
-
-// mappendOrdering (<>) :: Ordering -> Ordering -> Ordering
-const mappendOrdering = (a, b) => eqOrdering(EQ, a) ? b : a;
-
-// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
-const mappendTuple = (t, t2) =>
-    Tuple(mappend(t[0], t1[0]), mappend(t[1], t1[1]));
-
-// max :: Ord a => a -> a -> a
-const max = (a, b) => b > a ? b : a;
-
-// maximum :: Ord a => [a] -> a
-const maximum = xs =>
-    xs.length > 0 ? (
-        foldl1((a, x) => x > a ? x : a, xs)
-    ) : undefined;
-
-//  Ordering: (LT|EQ|GT):
-//  GT: 1 (or other positive n)
-//	EQ: 0
-//  LT: -1 (or other negative n) 
-// maximumBy :: (a -> a -> Ordering) -> [a] -> a
-const maximumBy = (f, xs) =>
-    xs.length > 0 ? (
-        xs.slice(1)
-        .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0])
-    ) : undefined;
-
-//Ordering: (LT|EQ|GT):
-//  GT: 1 (or other positive n)
-//	EQ: 0
-//  LT: -1 (or other negative n) 
-// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
-const maximumByMay = (f, xs) =>
-    xs.length > 0 ? (
-        Just(xs.slice(1)
-            .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0]))
-    ) : Nothing();
-
-// maximumMay :: Ord a => [a] -> Maybe a
-const maximumMay = xs =>
-    xs.length > 0 ? (
-        Just(xs.slice(1)
-            .reduce((a, x) => (x > a ? x : a), xs[0]))
-    ) : Nothing();
-
-// Default value (v) if m.Nothing, or f(m.Just)
-// maybe :: b -> (a -> b) -> Maybe a -> b
-const maybe = (v, f, m) =>
-    m.Nothing ? v : f(m.Just);
-
-// The maybeToList function returns an empty list when given
-// Nothing or a singleton list when not given Nothing.”
-// maybeToList :: Maybe a -> [a]
-const maybeToList = mb =>
-    mb.Nothing ? [] : [mb.Just];
-
-// mean :: [Num] -> Num
-const mean = xs =>
-  xs.reduce((a, x) => a + x, 0) / xs.length;
-
-// member :: Key -> Dict -> Bool
-const member = (k, dct) => k in dct;
-
-// min :: Ord a => a -> a -> a
-const min = (a, b) => b < a ? b : a;
-
-// minimum :: Ord a => [a] -> a
-const minimum = xs =>
-    xs.length > 0 ? (
-        foldl1((a, x) => x < a ? x : a, xs)
-    ) : undefined;
-
-//Ordering: (LT|EQ|GT):
-//  GT: 1 (or other positive n)
-//	EQ: 0
-//  LT: -1 (or other negative n)
-// minimumBy :: (a -> a -> Ordering) -> [a] -> a
-const minimumBy = (f, xs) =>
-    xs.reduce((a, x) => a === undefined ? x : (
-        f(x, a) < 0 ? x : a
-    ), undefined);
-
-// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
-const minimumByMay = (f, xs) =>
-    xs.reduce((a, x) => a.Nothing ? Just(x) : (
-        f(x, a.Just) < 0 ? Just(x) : a
-    ), Nothing());
-
-// minimumMay :: [a] -> Maybe a
-const minimumMay = xs =>
-    xs.length > 0 ? (
-        Just(xs.slice(1)
-            .reduce((a, x) => x < a ? x : a, xs[0])
-        )
-    ) : Nothing();
-
-// mod :: Int -> Int -> Int
-const mod = (n, d) => n % d;
-
-// negate :: Num -> Num
-const negate = n => -n;
-
-// not :: Bool -> Bool
-const not = b => !b;
-
-// notElem :: Eq a => a -> [a] -> Bool
-const notElem = (x, xs) => xs.indexOf(x) === -1;
-
-// nub :: [a] -> [a]
-const nub = xs => nubBy((a, b) => a === b, xs);
-
-// nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = (p, xs) => {
-    const go = xs => xs.length > 0 ? (() => {
-        const x = xs[0];
-        return [x].concat(
-            go(xs.slice(1)
-                .filter(y => !p(x, y))
-            )
-        )
-    })() : [];
-    return go(xs);
-};
-
-// odd :: Int -> Bool
-const odd = n => !even(n);
-
-// e.g. sortBy(on(compare,length), xs)
-// on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
-const on = (f, g) => (a, b) => f(g(a), g(b));
-
-// or :: [Bool] -> Bool
-const or = xs =>
-    xs.some(Boolean);
-
-// ord :: Char -> Int
-const ord = c => c.codePointAt(0);
-
-// All lines in the string outdented by the same amount
-// (just enough to ensure that the least indented lines 
-//  have no remaining indent)
-// All relative indents are left unchanged
-// outdented :: String -> String
-const outdented = s => {
-    const
-        rgx = /^ */, // Leading space characters.
-        xs = lines(s),
-        n = length(minimumBy( // size of minimum indent
-            comparing(length),
-            map(txt => rgx.exec(txt)[0], xs)
-        ));
-    return unlines(map(curry(drop)(n), xs));
-};
-
-// partition :: Predicate -> List -> (Matches, nonMatches)
-// partition :: (a -> Bool) -> [a] -> ([a], [a])
-const partition = (p, xs) =>
-    xs.reduce(
-        (a, x) =>
-        p(x) ? (
-            Tuple(a[0].concat(x), a[1])
-        ) : Tuple(a[0], a[1].concat(x)),
-        Tuple([], [])
-    );
-
-// partitionEithers :: [Either a b] -> ([a], [b])
-const partitionEithers = xs =>
-    xs.reduce((a, x) =>
-        x.Left !== undefined ? (
-            Tuple(a[0].concat(x.Left), a[1])
-        ) : Tuple(a[0], a[1].concat(x.Right)),
-        Tuple([], [])
-    );
-
-// permutations :: [a] -> [[a]]
-const permutations = xs =>
-    xs.length ? concatMap(x => concatMap(ys => [
-            [x].concat(ys)
-        ],
-        permutations(delete_(x, xs))), xs) : [
-        []
-    ];
-
-// permutationsWithRepetition :: Int -> [a] -> [[a]]
-const permutationsWithRepetition = (n, xs) =>
-    xs.length > 0 ? (
-        map(flatten, foldl1(x => cartesianProduct(xs, x), replicate(n, xs)))
-    ) : [];
-
-// pi :: Float
-const pi = Math.PI;
-
-// plus :: Num -> Num -> Num
-const plus = (a, b) => a + b;
-
-// pred :: Enum a => a -> a
-const pred = x =>
-    isChar(x) ? (
-        chr(ord(x) - 1)
-    ) : isNaN(x) ? (
-        undefined
-    ) : x - 1;
-
-// product :: [Num] -> Num
-const product = xs => xs.reduce((a, x) => a * x, 1);
-
-// properFraction :: Real -> (Int, Real)
-const properFraction = n => {
-    const i = Math.floor(n) + (n < 0 ? 1 : 0);
-    return Tuple(i, n - i);
-};
-
-// pureLR :: a -> Either e a
-const pureLR = x => Right(x);
-
-// pureList :: a -> [a]
-const pureList = x => [x];
-
-// pureMay :: a -> Maybe a
-const pureMay = x => Just(x);
-
-// pureT :: f a -> (a -> f a)
-const pureT = x =>
-    Array.isArray(x) ? (
-        pureList
-    ) : (() => {
-        const t = x.type;
-        return t !== undefined ? (
-            t === 'Either' ? (
-                pureLR
-            ) : t === 'Maybe' ? (
-                pureMay
-            ) : t === 'Tree' ? (
-                pureTree
-            ) : t === 'Tuple' ? (
-                pureTuple
-            ) : pureList
-        ) : pureList;
-    })();
-
-// pureTree :: a -> Tree a
-const pureTree = x => Node(x, []);
-
-// pureTuple :: a -> (a, a)
-const pureTuple = x => Tuple('', x);
-
-// Included only for comparison with AppleScript
-// sort and sortBy are faster and more flexible
-// quickSort :: (Ord a) => [a] -> [a]
-const quickSort = xs =>
-    xs.length > 1 ? (() => {
-        const
-            h = xs[0],
-            lessMore = partition(x => x <= h, xs.slice(1));
-        return [].concat.apply(
-            [], [quickSort(lessMore[0]), h, quickSort(lessMore[1])]
-        );
-    })() : xs;
-
-// Included only for comparison with AppleScript
-// sort and sortBy are faster and more flexible
-// quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const quickSortBy = (cmp, xs) =>
-    xs.length > 1 ? (() => {
-        const
-            h = xs[0],
-            lessMore = partition(
-                x => cmp(x, h) !== 1,
-                xs.slice(1)
-            );
-        return [].concat.apply(
-            [], [quickSortBy(cmp, lessMore[0]), h, quickSortBy(cmp, lessMore[1])]
-        );
-    })() : xs;
-
-// quot :: Int -> Int -> Int
-const quot = (n, m) => Math.floor(n / m);
-
-// quotRem :: Int -> Int -> (Int, Int)
-const quotRem = (m, n) => Tuple(Math.floor(m / n), m % n);
-
-// raise :: Num -> Int -> Num
-const raise = (n, e) => Math.pow(n, e);
-
-// randomRInt :: Int -> Int -> Int
-const randomRInt = (low, high) =>
-    low + Math.floor(
-        (Math.random() * ((high - low) + 1))
-    );
-
-// The list of values in the subrange defined by a bounding pair.
-
-// range([0, 2]) -> [0,1,2]
-// range([[0,0], [2,2]]) 
-//  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
-// range([[0,0,0],[1,1,1]])
-//  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]
-// range :: Ix a => (a, a) -> [a]
-function range() {
-    const
-        args = Array.from(arguments),
-        ab = args.length !== 1 ? (
-            args
-        ) : args[0],
-        [as, bs] = [ab[0], ab[1]].map(
-            x => Array.isArray(x) ? (
-                x
-            ) : (x.type !== undefined) &&
-            (x.type.startsWith('Tuple')) ? (
-                listFromTuple(x)
-            ) : [x]
-        ),
-        an = as.length;
-    return (an === bs.length) ? (
-        an > 1 ? (
-            sequenceAList(as.map((_, i) => enumFromTo(as[i], bs[i])))
-        ) : enumFromTo(as[0], bs[0])
-    ) : [];
-};
-
-// read :: Read a => String -> a
-const read = JSON.parse;
-
-// readJSON :: String -> a
-const readJSON = JSON.parse;
-
-// readJSONLR :: Read a => String -> Either String a
-const readJSONLR = strJSON => {
-    try {
-        return Right(JSON.parse(strJSON));
-    } catch (e) {
-        // message, line, column, stack
-        return Left(
-            'line:' + e.line +
-            ' col:' + e.column + ':\n' + e.message
-        );
-    }
-};
-
-// readMay :: Read a => String -> Maybe a
-const readMay = s => {
-    try {
-        return Just(JSON.parse(s))
-    } catch (e) {
-        return Nothing();
-    };
-};
-
-// recip :: Num -> Num
-const recip = n =>
-    n !== 0 ? (1 / n) : undefined;
-
-// recipMay :: Num -> Maybe Num
-const recipMay = n =>
-    n === 0 ? (
-        Nothing()
-    ) : Just(1 / n);
-
-// regexMatches :: String -> String -> [[String]]
-const regexMatches = (strRgx, strHay) => {
-    const rgx = new RegExp(strRgx, 'g');
-    let m = rgx.exec(strHay),
-        xs = [];
-    while (m)(xs.push(m), m = rgx.exec(strHay));
-    return xs;
-};
-
-// rem :: Int -> Int -> Int
-const rem = (n, m) => n % m;
-
-// replace :: String -> String -> String -> String
-// replace :: Regex -> String -> String -> String
-const replace = (needle, strNew, strHaystack) =>
-    strHaystack.replace(
-        typeof needle !== 'string' ? (
-            needle
-        ) : new RegExp(needle, 'g'),
-        strNew
-    );
-
-// replicate :: Int -> a -> [a]
-const replicate = (n, x) =>
-    Array.from({
-        length: n
-    }, () => x);
-
-// Instance for lists (arrays) only here
-// replicateM :: Int -> [a] -> [[a]]
-const replicateM = (n, xs) => {
-    const loop = x => x <= 0 ? [
-        []
-    ] : liftA2(cons, xs, loop(x - 1));
-    return loop(n);
-};
-
-// replicateString :: Int -> String -> String
-const replicateString = (n, s) => s.repeat(n);
-
-// reverse :: [a] -> [a]
-const reverse = xs =>
-    typeof xs === 'string' ? (
-        xs.split('')
-        .reverse()
-        .join('')
-    ) : xs.slice(0)
-    .reverse();
-
-// rights :: [Either a b] -> [b]
-const rights = xs =>
-    concatMap(
-        x => x.type === 'Either' && x.Right !== undefined ? (
-            [x.Right]
-        ) : [], xs
-    );
-
-// rotate :: Int -> [a] -> [a]
-const rotate = (n, xs) => {
-    const lng = xs.length;
-    return lng > 0 ? takeDropCycle(lng, n, xs) : [];
-};
-
-// round :: a -> Int
-const round = x => {
-    const
-        nr = properFraction(x),
-        [n, r] = [nr[0], nr[1]]
-        m = n + (r < 0 ? -1 : 1),
-        sign = signum(abs(r) - 0.5);
-    return sign === -1 ? n : (
-        sign === 0 ? (even(n) ? n : m) : (
-            sign === 1 ? m : undefined
-        )
-    );
-};
-
-// safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
-const safeMay = (p, f, x) =>
-    p(x) ? Just(f(x)) : Nothing();
-
-// scanl :: (b -> a -> b) -> b -> [a] -> [b]
-const scanl = (f, startValue, xs) =>
-    xs.reduce((a, x) => {
-        const v = f(a[0], x);
-        return Tuple(v, a[1].concat(v));
-    }, Tuple(startValue, [startValue]))[1];
-
-// scanl1 is a variant of scanl that has no starting value argument
-// scanl1 :: (a -> a -> a) -> [a] -> [a]
-const scanl1 = (f, xs) =>
-    xs.length > 0 ? scanl(f, xs[0], xs.slice(1)) : [];
-
-// scanr :: (b -> a -> b) -> b -> [a] -> [b]
-const scanr = (f, startValue, xs) =>
-    xs.reduceRight((a, x) => {
-        const v = f(a.acc, x);
-        return {
-            acc: v,
-            scan: [v].concat(a.scan)
-        };
-    }, {
-        acc: startValue,
-        scan: [startValue]
-    })
-    .scan;
-
-// scanr1 is a variant of scanr that has no starting value argument
-// scanr1 :: (a -> a -> a) -> [a] -> [a]
-const scanr1 = (f, xs) =>
-    xs.length > 0 ? scanr(f, xs.slice(-1)[0], xs.slice(0, -1)) : [];
-
-// Lift a simple function to one which applies to a tuple, 
-// transforming only the second item of the tuple
-// secondArrow :: (a -> b) -> ((c, a) -> (c, b))
-const secondArrow = f => xy => Tuple(xy[0], f(xy[1]));
-
-// sequenceAList :: Applicative f => [f a] -> f [a]
-const sequenceAList = us =>
-    us.length > 0 ? (
-        us.reduceRight(
-            (v, u) => ap(fmap(x => xs => [x, ...xs], u), v),
-            pureT(us[0])([])
-        )
-    ) : us;
-
-// show :: a -> String
-// show :: a -> Int -> Indented String
-const show = (x, n) => {
-    const
-        e = typeof x !== 'function' ? (
-            x
-        ) : {
-            type: 'Function',
-            f: x
-        };
-    return JSON.stringify(e, (_, v) => {
-        const
-            f = (v !== null && v !== undefined) ? (() => {
-                const t = v.type;
-                return t === 'Either' ? (
-                    showLR
-                ) : t === 'Function' ? (
-                    dct => 'λ' + dct.f.toString()
-                ) : t === 'Maybe' ? (
-                    showMaybe
-                ) : t === 'Ordering' ? (
-                    showOrdering
-                ) : t === 'Ratio' ? (
-                    showRatio
-                ) : t === 'Tuple' ? (
-                    showTuple
-                ) : t === 'Tuple3' ? (
-                    showTuple3
-                ) : t === 'Tuple4' ? (
-                    showTuple4
-                ) : undefined;
-            })() : showUndefined;
-        return Boolean(f) ? (
-            f(v)
-        ) : typeof v !== 'string' ? (
-            v
-        ) : "'" + v + "'";
-    }, n)
-};
-
-// showBinary :: Int -> String
-const showBinary = n => {
-    const binaryChar = n => n !== 0 ? '1' : '0';
-    return showIntAtBase(2, binaryChar, n, '');
-};
-
-// showDate :: Date -> String
-const showDate = JSON.stringify;
-
-// showDict :: Dict -> String
-const showDict = show;
-
-// showHex :: Int -> String
-const showHex = n =>
-    showIntAtBase(16, intToDigit, n, '');
-
-// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
-const showIntAtBase = (base, toChr, n, rs) => {
-    const showIt = ([n, d], r) => {
-        const r_ = toChr(d) + r;
-        return n !== 0 ? (
-            showIt(quotRem(n, base), r_)
-        ) : r_;
-    };
-    return base <= 1 ? (
-        'error: showIntAtBase applied to unsupported base'
-    ) : n < 0 ? (
-        'error: showIntAtBase applied to negative number'
-    ) : showIt(quotRem(n, base), rs);
-};
-
-// showJSON :: a -> String
-const showJSON = x => JSON.stringify(x, null, 2);
-
-// showLR :: Either a b -> String
-const showLR = lr => {
-    const k = lr.Left !== undefined ? (
-        'Left'
-    ) : 'Right';
-    return k + '(' + unQuoted(show(lr[k])) + ')';
-};
-
-// showList :: [a] -> String
-const showList = show;
-
-// showLog :: a -> IO ()
-const showLog = (...args) =>
-    console.log(
-        args
-        .map(JSON.stringify)
-        .join(' -> ')
-    );
-
-// showMaybe :: Maybe a -> String
-const showMaybe = mb =>
-    mb.Nothing ? (
-        'Nothing'
-    ) : 'Just(' + unQuoted(show(mb.Just)) + ')';
-
-// showOrdering :: Ordering -> String
-const showOrdering = e =>
-    e.value > 0 ? (
-        'GT'
-    ) : e.value < 0 ? (
-        'LT'
-    ) : 'EQ';
-
-// showRatio :: Ratio -> String
-const showRatio = nd =>
-    nd.n.toString() + '/' + nd.d.toString();
-
-// showTuple :: Tuple -> String
-const showTuple = tpl =>
-    '(' + [0, 1].map(x => unQuoted(show(tpl[x])))
-    .join(',') + ')';
-
-// showTuple3 :: Tuple3 -> String
-const showTuple3 = tpl =>
-    '(' + [0, 1, 2].map(x => unQuoted(show(tpl[x])))
-    .join(',') + ')';
-
-// showTuple4 :: Tuple4 -> String
-const showTuple4 = tpl =>
-    '(' + [0, 1, 2, 3].map(x => unQuoted(show(tpl[x])))
-    .join(',') + ')';
-
-// showUndefined :: () -> String
-const showUndefined = () => '(⊥)';
-
-// | Sign of a number.
-// The functions 'abs' and 'signum' should satisfy the law:
-//
-// > abs x * signum x == x
-//
-// For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)
-// or @1@ (positive).
-// signum :: Num -> Num
-const signum = n => n < 0 ? -1 : (n > 0 ? 1 : 0);
-
-// snd :: (a, b) -> b
-const snd = tpl => tpl[1];
-
-// Mirror image of cons
-// New copy of the list, with an atom added at the end
-// snoc :: [a] -> a -> [a]
-const snoc = (xs, x) => xs.concat(x);
-
-// sort :: Ord a => [a] -> [a]
-const sort = xs => xs.slice()
-    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));
-
-// sortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const sortBy = (f, xs) =>
-    xs.slice()
-    .sort(f);
-
-// Sort a list by comparing the results of a key function applied to each
-// element. sortOn f is equivalent to sortBy (comparing f), but has the
-// performance advantage of only evaluating f once for each element in
-// the input list. This is called the decorate-sort-undecorate paradigm,
-// or Schwartzian transform.
-// Elements are arranged from from lowest to highest.
-// sortOn :: Ord b => (a -> b) -> [a] -> [a]
-const sortOn = (f, xs) => {
-    // Functions and matching bools derived from argument f
-    // which may be a single key function, or a list of key functions
-    // each of which may or may not be followed by a direction bool.
-    const fsbs = unzip(
-            flatten([f])
-            .reduceRight((a, x) =>
-                typeof x === 'boolean' ? {
-                    asc: x,
-                    fbs: a.fbs
-                } : {
-                    asc: true,
-                    fbs: [
-                        [x, a.asc]
-                    ].concat(a.fbs)
-                }, {
-                    asc: true,
-                    fbs: []
-                })
-            .fbs
-        ),
-        [fs, bs] = [fsbs[0], fsbs[1]],
-        iLast = fs.length;
-    // decorate-sort-undecorate
-    return sortBy(mappendComparing_(
-            // functions that access pre-calculated values
-            // by position in the decorated ('Schwartzian')
-            // version of xs
-            zip(fs.map((_, i) => x => x[i]), bs)
-        ), xs.map( // xs decorated with precalculated values
-            x => fs.reduceRight(
-                (a, g) => [g(x)].concat(a), [
-                    x
-                ])))
-        .map(x => x[iLast]); // undecorated version of data, post sort.
-};
-
-// span, applied to a predicate p and a list xs, returns a tuple of xs of 
-// elements that satisfy p and second element is the remainder of the list:
-//
-// > span (< 3) [1,2,3,4,1,2,3,4] == ([1,2],[3,4,1,2,3,4])
-// > span (< 9) [1,2,3] == ([1,2,3],[])
-// > span (< 0) [1,2,3] == ([],[1,2,3])
-//
-// span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
-// span :: (a -> Bool) -> [a] -> ([a],[a])
-const span = (f, xs) =>
-    splitAt(until(
-        i => !f(xs[i]),
-        i => i + 1,
-        0
-    ), xs);
-
-// Compose a function (from a tuple to a tuple), 
-// (with separate transformations for fst and snd)
-// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
-const splitArrow = (f, g) => tpl => Tuple(f(tpl[0]), g(tpl[1]));
-
-// splitAt :: Int -> [a] -> ([a],[a])
-const splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));
-
-// Splitting not on a delimiter, but whenever the relationship between
-// two consecutive items matches a supplied predicate function
-// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
-// splitBy :: (String -> String -> Bool) -> String -> [String]
-const splitBy = (p, xs) =>
-    (xs.length < 2) ? [xs] : (() => {
-        const
-            bln = 'string' === typeof xs,
-            ys = bln ? xs.split('') : xs,
-            h = ys[0],
-            parts = ys.slice(1)
-            .reduce(([acc, active, prev], x) =>
-                p(prev, x) ? (
-                    [acc.concat([active]), [x], x]
-                ) : [acc, active.concat(x), x], [
-                    [],
-                    [h],
-                    h
-                ]);
-        return (bln ? (
-            ps => ps.map(cs => ''.concat.apply('', cs))
-        ) : x => x)(parts[0].concat([parts[1]]));
-    })();
-
-// splitEvery :: Int -> [a] -> [[a]]
-const splitEvery = (n, xs) => {
-    if (xs.length <= n) return [xs];
-    const [h, t] = [xs.slice(0, n), xs.slice(n)];
-    return [h].concat(splitEvery(n, t));
-};
-
-// Split a filename into directory and file. combine is the inverse.
-// splitFileName :: FilePath -> (String, String)
-const splitFileName = strPath =>
-    strPath !== '' ? (
-        strPath[strPath.length - 1] !== '/' ? (() => {
-            const
-                xs = strPath.split('/'),
-                stem = xs.slice(0, -1);
-            return stem.length > 0 ? (
-                Tuple(stem.join('/') + '/', xs.slice(-1)[0])
-            ) : Tuple('./', xs.slice(-1)[0]);
-        })() : Tuple(strPath, '')
-    ) : Tuple('./', '');
-
-// splitOn :: String -> String -> [String]
-// splitOn :: a -> [a] -> [[a]]
-const splitOn = (needle, haystack) =>
-    typeof haystack === 'string' ? (
-        haystack.split(needle)
-    ) : (() => {
-        const tpl = haystack.reduce(
-            (a, x) => needle === x ? Tuple(
-                a[0].concat([a[1]]), []
-            ) : Tuple(a[0], a[1].concat(x)),
-            Tuple([], [])
-        );
-        return tpl[0].concat([tpl[1]]);
-    })();
-
-// splitRegex :: Regex -> String -> [String]
-const splitRegex = (needle, haystack) =>
-    haystack.split(needle);
-
-// sqrt :: Num -> Num
-const sqrt = n =>
-    n >= 0 ? Math.sqrt(n) : undefined;
-
-// sqrtMay :: Num -> Maybe Num
-const sqrtMay = n =>
-    n < 0 ? (
-        Nothing()
-    ) : Just(Math.sqrt(n));
-
-// strip :: String -> String
-const strip = s => s.trim();
-
-// stripEnd :: String -> String
-const stripEnd = s => dropWhileEnd(isSpace, s);
-
-// stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
-const stripPrefix = (pfx, s) => {
-    const
-        blnString = typeof pfx === 'string',
-        [xs, ys] = blnString ? (
-            [pfx.split(''), s.split('')]
-        ) : [pfx, s];
-    const
-        sp_ = (xs, ys) => xs.length === 0 ? (
-            Just(blnString ? ys.join('') : ys)
-        ) : (ys.length === 0 || xs[0] !== ys[0]) ? (
-            Nothing()
-        ) : sp_(xs.slice(1), ys.slice(1));
-    return sp_(xs, ys);
-};
-
-// stripStart :: String -> String
-const stripStart = s => dropWhile(isSpace, s);
-
-// subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
-// subsequences('abc') -> ["","a","b","ab","c","ac","bc","abc"]
-// subsequences :: [a] -> [[a]]
-// subsequences :: String -> [String]
-const subsequences = xs => {
-    const
-        cons = (x, xs) => [x].concat(xs),
-        // nonEmptySubsequences :: [a] -> [[a]]
-        nonEmptySubsequences = xxs => {
-            if (xxs.length < 1) return [];
-            const [x, xs] = [xxs[0], xxs.slice(1)];
-            const f = (r, ys) => cons(ys, cons(cons(x, ys), r));
-            return cons([x], nonEmptySubsequences(xs)
-                .reduceRight(f, []));
-        };
-    return typeof xs === 'string' ? (
-        cons('', nonEmptySubsequences(xs.split(''))
-            .map(x => ''.concat.apply('', x))) // map(concat)
-    ) : cons([], nonEmptySubsequences(xs));
-};
-
-// subtract :: Num -> Num -> Num
-const subtract = (x, y) => y - x;
-
-// succ :: Enum a => a -> a
-const succ = x =>
-    isChar(x) ? (
-        chr(ord(x) + 1)
-    ) : isNaN(x) ? (
-        undefined
-    ) : x + 1;
-
-// sum :: [Num] -> Num
-const sum = xs => xs.reduce((a, x) => a + x, 0);
-
-// swap :: (a, b) -> (b, a)
-const swap = ab =>
-    Tuple(ab[1], ab[0]);
-
-// tail :: [a] -> [a]
-const tail = xs => xs.length > 0 ? xs.slice(1) : [];
-
-// tailMay :: [a] -> Maybe [a]
-const tailMay = xs =>
-    xs.length > 0 ? (
-        Just(xs.slice(1))
-    ) : Nothing();
-
-// tails :: [a] -> [[a]]
-const tails = xs => {
-    const xs_ = typeof xs === 'string' ? xs.split('') : xs;
-    return xs_.map((_, i) => xs_.slice(i))
-        .concat([
-            []
-        ]);
-};
-
-// take :: Int -> [a] -> [a]
-const take = (n, xs) => xs.slice(0, n);
-
-// takeAround :: (a -> Bool) -> [a] -> [a]
-const takeAround = (p, xs) => {
-    const ys = takeWhile(p, xs);
-    return ys.length < xs.length ? (
-        ys.concat(takeWhileR(p, xs))
-    ) : ys;
-};
-
-// takeBaseName :: FilePath -> String
-const takeBaseName = strPath =>
-  strPath !== '' ? (
-    strPath[strPath.length - 1] !== '/' ? (() => {
-      const fn = strPath.split('/').slice(-1)[0];
-      return fn.includes('.') ? (
-        fn.split('.').slice(0, -1).join('.')
-      ) : fn;
-    })() : ''
-  ) : '';
-
-// First n members of an infinite cycle of xs
-// takeCycle :: Int -> [a] -> [a]
-const takeCycle = (n, xs) => {
-  const lng = xs.length;
-  return (lng >= n ? xs : concat(replicate(Math.ceil(n / lng), xs)))
-  .slice(0, n)
-};
-
-// takeDirectory :: FilePath -> FilePath
-const takeDirectory = strPath =>
-    strPath !== '' ? (() => {
-        const xs = (strPath.split('/'))
-            .slice(0, -1);
-        return xs.length > 0 ? (
-            xs.join('/')
-        ) : '.';
-    })() : '.';
-
-// take N Members of an infinite cycle of xs, starting from index I
-// takeDropCycle :: Int -> [a] -> [a]
-const takeDropCycle = (n, i, xs) => {
-    const
-        lng = xs.length,
-        m = n + i;
-    return drop(i,
-        take(m,
-            (lng >= m ? xs : concat(replicate(Math.ceil(m / lng), xs)))
-        )
-    );
-};
-
-// takeExtension :: FilePath -> String
-const takeExtension = strPath => {
-    const
-        xs = strPath.split('.'),
-        lng = xs.length;
-    return lng > 1 ? (
-        '.' + xs[lng - 1]
-    ) : '';
-};
-
-// takeFileName :: FilePath -> FilePath
-const takeFileName = strPath =>
-    strPath !== '' ? (
-        strPath[strPath.length - 1] !== '/' ? (
-            strPath.split('/')
-            .slice(-1)[0]
-        ) : ''
-    ) : '';
-
-// takeIterate n f x == [x, f x, f (f x), ...]
-// takeIterate :: Int -> (a -> a) -> a -> [a]
-const takeIterate = (n, f, x) =>
-    snd(mapAccumL((a, _, i) => {
-        const v = i !== 0 ? f(a) : x;
-        return [v, v];
-    }, x, Array.from({
-        length: n
-    })));
-
-// takeWhile :: (a -> Bool) -> [a] -> [a]
-const takeWhile = (p, xs) => {
-    let i = 0;
-    const lng = xs.length;
-    while ((i < lng) && p(xs[i])) (i = i + 1);
-    return xs.slice(0, i);
-};
-
-// takeWhileR :: (a -> Bool) -> [a] -> [a]
-const takeWhileR = (p, xs) => {
-    let i = xs.length;
-    while (i-- && p(xs[i])) {}
-    return xs.slice(i + 1);
-};
-
-// then (>>) :: Monad m => m a -> m b -> m b
-const then = (ma, mb) =>
-    (Array.isArray(ma) ? (
-        thenList
-    ) : isMaybe(ma) ? (
-        thenMay
-    ) : thenIO)
-    .apply(null, [ma, mb]);
-
-// thenIO (>>) :: IO a -> IO b -> IO b
-const thenIO = (ma, mb) => mb;
-
-// thenList (>>) :: [a] -> [b] -> [b]
-const thenList = (xs, ys) =>
-    concatMap(_ => ys, xs);
-
-// thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
-const thenMay = (mbx, mby) =>
-    mbx.Nothing ? mbx : mby;
-
-// toListTree :: Tree a -> [a]
-const toListTree = tree => {
-    const go = x => [
-      x.root,
-      ...[].concat.apply([], x.nest.map(go))
-    ];
-    return go(tree);
-};
-
-// toLower :: String -> String
-const toLower = s => s.toLowerCase();
-
-// toRatio :: Real -> Ratio
-const toRatio = n =>
-    approxRatio(1e-12, n);
-
-// Sentence case - initial string capitalized and rest lowercase
-// toSentence :: String -> String
-const toSentence = s =>
-    s.length > 0 ? (
-        s[0].toUpperCase() + s.slice(1)
-        .toLowerCase()
-    ) : s;
-
-// NB this does not model any regional or cultural conventions.
-// It simply simply capitalizes the first character of each word.
-// toTitle :: String -> String
-const toTitle = s =>
-    regexMatches(/(\w)(\w*)(\b[\W]*|$)/g, s)
-    .map(ms => ms[1].toUpperCase() + ms[2].toLowerCase() + ms[3])
-    .join('');
-
-// toUpper :: String -> String
-const toUpper = s => s.toUpperCase();
-
-// If some of the rows are shorter than the following rows, 
-// their elements are skipped:
-// > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]
-// transpose :: [[a]] -> [[a]]
-// transpose :: [[a]] -> [[a]]
-const transpose = tbl => {
-    const
-        gaps = replicate(
-            length(maximumBy(comparing(length), tbl)), []
-        ),
-        rows = map(xs => xs.concat(gaps.slice(xs.length)), tbl);
-    return map(
-        (_, col) => concatMap(row => [row[col]], rows),
-        rows[0]
-    );
-};
-
-// - Map each element of a structure to an action,
-// - evaluate these actions from left to right,
-// - and collect the results.
-
-// traverse :: (Traversable t, Applicative f) => (a -> f b) -> t a -> f (t b)
-// traverse_ f = foldr cons_f (pure [])
-//   where cons_f x a = ((:) <$> (f x)) <*> a
-// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)
-const traverseList = (f, xs) =>
-    sequenceAList(fmap(f, xs));
-
-// treeLeaves :: Node -> [Node]
-const treeLeaves = oNode => {
-  const nest = oNode.nest;
-  return nest.length > 0 ? (
-    concatMap(treeLeaves, nest)
-  ) : [oNode];
-};
-
-// truncate :: Num -> Int
-const truncate = x => {
-    const [m, _] = properFraction(x);
-    return m;
-};
-
-// tupleFromArray [a] -> (a, a ...)
-const tupleFromArray = xs => {
-    const lng = xs.length;
-    return lng > 1 ? xs.reduce(
-        (a, x, i) => Object.assign(a, {
-            [i.toString()]: x
-        }), {
-            type: 'Tuple' + (lng > 2 ? lng.toString() : '')
-        }
-    ) : undefined;
-};
-
-// typeName :: a -> String
-const typeName = v => {
-    const t = typeof v;
-    return t === 'object' ? (
-        Array.isArray(v) ? (
-            'List'
-        ) : v !== null ? (
-            v.type || 'Dict'
-        ) : 'Bottom'
-    ) : {
-        'boolean': 'Bool',
-        'number' : 'Num',
-        'string' : 'String'
-    }[t] || 'Bottom';
-};
-
-// unQuoted :: String -> String
-const unQuoted = s =>
-    dropAround(x => 34 === x.codePointAt(0), s);
-
-// uncons :: [a] -> Maybe (a, [a])
-const uncons = xs =>
-    xs.length > 0 ? (
-        Just(Tuple(xs[0], xs.slice(1)))
-    ) : Nothing();
-
-// Converts a function of more than one argument
-// to a function on Tuple type (Tuple ... TupleN)
-// or array which contains those arguments.
-// This implementation uses the fact that the Tuple
-// constructors create an object with a private .length property
-// uncurry :: (a -> b -> c) -> ((a, b) -> c)
-const uncurry = f => args => f.apply(null, args);
-
-// | Build a forest from a list of seed values
-// unfoldForest :: (b -> (a, [b])) -> [b] -> Forest
-const unfoldForest = (f, xs) =>
-    xs.map(b => unfoldTree(f, b));
-
-// | Build a tree from a seed value
-// unfoldTree :: (b -> (a, [b])) -> b -> Tree a
-const unfoldTree = (f, b) => {
-    const tpl = f(b);
-    return Node(tpl[0], unfoldForest(f, tpl[1]));
-};
-
-// (x => Maybe [value, remainder] -> initial value -> values
-// unfoldl :: (b -> Maybe (a, b)) -> b -> [a]
-const unfoldl = (f, v) => {
-    let xs = [];
-    return (
-        until(
-            mb => mb.Nothing,
-            mb => (
-                xs = [mb.Just[1]].concat(xs),
-                f(mb.Just[1])
-            ), Just(Tuple(v, v))
-        ),
-        xs.slice(1)
-    );
-};
-
-// The 'unfoldr' function is a \`dual\' to 'foldr': while 'foldr'
-// reduces a list to a summary value, 'unfoldr' builds a list from
-// a seed value.  The function takes the element and returns 'Nothing'
-// if it is done producing the list or returns 'Just' @(a,b)@, in which
-// case, @a@ is a prepended to the list and @b@ is used as the next
-// element in a recursive call.
-//
-// unfoldr(b => b === 0 ? Nothing() : Just(Tuple(b, b - 1)), 10);
-// --> [10,9,8,7,6,5,4,3,2,1]
-
-// (x => Maybe [value, remainder] -> initial value -> values
-// unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
-const unfoldr = (f, v) => {
-    let xs = [];
-    return (
-        until(
-            mb => mb.Nothing,
-            mb => (
-                xs.push(mb.Just[0]),
-                f(mb.Just[1])
-            ), Just(Tuple(v, v))
-        ),
-        xs.slice(1)
-    );
-};
-
-// union :: [a] -> [a] -> [a]
-const union = (xs, ys) =>
-  unionBy((a, b) => a === b, xs, ys);
-
-// unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const unionBy = (fnEq, xs, ys) => {
-    const sx = nubBy(fnEq, xs);
-    return sx.concat(
-        sx.reduce(
-            (a, x) => deleteBy(fnEq, x, a),
-            nubBy(fnEq, ys)
-        )
-    );
-};
-
-// unlines :: [String] -> String
-const unlines = xs => xs.join('\n');
-
-// If the list is empty returns Nothing, otherwise returns 
-// Just the init and the last.
-// unsnoc :: [a] -> Maybe ([a], a)
-const unsnoc = xs =>
-    xs.length > 0 ? (
-        Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))
-    ) : Nothing();
-
-// until :: (a -> Bool) -> (a -> a) -> a -> a
-const until = (p, f, x) => {
-    let v = x;
-    while (!p(v)) v = f(v);
-    return v;
-};
-
-// unwords :: [String] -> String
-const unwords = xs => xs.join(' ');
-
-// unzip :: [(a,b)] -> ([a],[b])
-const unzip = xys =>
-    xys.reduce(
-        (a, x) => Tuple.apply(null, [0, 1].map(
-            i => a[i].concat(x[i])
-        )),
-        Tuple([], [])
-    );
-
-// unzip3 :: [(a,b,c)] -> ([a],[b],[c])
-const unzip3 = xyzs =>
-    xyzs.reduce(
-        (a, x) => Tuple3.apply(null, [0, 1, 2].map(
-            i => a[i].concat(x[i])
-        )),
-        Tuple3([], [], [])
-    );
-
-// unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
-const unzip4 = wxyzs =>
-    wxyzs.reduce(
-        (a, x) => Tuple4.apply(null, [0, 1, 2, 3].map(
-            i => a[i].concat(x[i])
-        )),
-        Tuple4([], [], [], [])
-    );
-
-// variance :: [Num] -> Num
-const variance = xs => {
-    const
-        lng = xs.length,
-        mean = xs.reduce((a, b) => a + b, 0) / lng;
-    return xs.reduce(
-        (a, b) => a + Math.pow(b - mean, 2),
-        0
-    ) / (lng - 1);
-};
-
-// words :: String -> [String]
-const words = s => s.split(/\s+/);
-
-// zip :: [a] -> [b] -> [(a, b)]
-const zip = (xs, ys) =>
-    xs.slice(0, Math.min(xs.length, ys.length))
-    .map((x, i) => Tuple(x, ys[i]));
-
-// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
-const zip3 = (xs, ys, zs) =>
-    xs.slice(0, Math.min(xs.length, ys.length, zs.length))
-    .map((x, i) => Tuple3(x, ys[i], zs[i]));
-
-// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
-const zip4 = (ws, xs, ys, zs) =>
-    ws.slice(0, Math.min(
-        xs.length, xs.length, ys.length, zs.length
-    ))
-    .map((w, i) => Tuple4(w, xs[i], ys[i], zs[i]));
-
-// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-const zipWith = (f, xs, ys) =>
-    Array.from({
-        length: Math.min(xs.length, ys.length)
-    }, (_, i) => f(xs[i], ys[i], i));
-
-// zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
-const zipWith3 = (f, xs, ys, zs) =>
-    Array.from({
-        length: Math.min(xs.length, ys.length, zs.length)
-    }, (_, i) => f(xs[i], ys[i], zs[i]));
-
-// zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
-const zipWith4 = (f, ws, xs, ys, zs) =>
-    Array.from({
-        length: Math.min(ws.length, xs.length, ys.length, zs.length)
-    }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));
+{
+  "EQ": "// EQ :: Ordering\nconst EQ = {\n  type: 'Ordering',\n  value: 0\n};",
+  "GT": "// GT :: Ordering\nconst GT = {\n    type: 'Ordering',\n    value: 1\n};",
+  "Just": "// Just :: a -> Just a\nconst Just = x => ({\n    type: 'Maybe',\n    Nothing: false,\n    Just: x\n});",
+  "LT": "// LT :: Ordering\nconst LT = {\n  type: 'Ordering',\n  value: -1\n};",
+  "Left": "// Left :: a -> Either a b\nconst Left = x => ({\n    type: 'Either',\n    Left: x\n});",
+  "Node": "// Node :: a -> [Tree a] -> Tree a\nconst Node = (v, xs) => ({\n    type: 'Node',\n    root: v, // any type of value (but must be consistent across tree)\n    nest: xs || []\n});",
+  "Nothing": "// Nothing :: () -> Nothing\nconst Nothing = () => ({\n    type: 'Maybe',\n    Nothing: true,\n});",
+  "Ordering": "// Ordering :: Int -> Ordering\nconst Ordering = e =>\n    ({\n        type: 'Ordering',\n        value: (e > 0 ? 1 : e < 0 ? -1 : 0)\n    });",
+  "Ratio": "// Ratio :: Int -> Int -> Ratio\nconst Ratio = (n, d) => ({\n    type: 'Ratio',\n    'n': n, // numerator\n    'd': d // denominator\n});",
+  "Right": "// Right :: b -> Either a b\nconst Right = x => ({\n    type: 'Either',\n    Right: x\n});",
+  "Tuple": "// Tuple (,) :: a -> b -> (a, b)\nconst Tuple = (a, b) => ({\n  type: 'Tuple',\n  '0': a,\n  '1': b,\n  length: 2\n});",
+  "TupleN": "// TupleN :: a -> b ...  -> (a, b ... )\nfunction TupleN() {\n    const\n        args = Array.from(arguments),\n        lng = args.length;\n    return lng > 1 ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 'Tuple' + (lng > 2 ? lng.toString() : ''),\n            length: lng\n        })\n    ) : args[0];\n};",
+  "abs": "// | Absolute value.\n\n// abs :: Num -> Num\nconst abs = Math.abs;",
+  "all": "// Determines whether all elements of the structure \n// satisfy the predicate.\n\n// all :: (a -> Bool) -> [a] -> Bool\nconst all = (p, xs) => xs.every(p);",
+  "and": "// | The conjunction of a container of Bools. \n// True unless any contained value is false.\n\n// and :: [Bool] -> Bool\nconst and = xs =>\n    xs.every(Boolean);",
+  "any": "// | True if any contained element satisfies the predicate.\n\n// any :: (a -> Bool) -> [a] -> Bool\nconst any = (p, xs) => xs.some(p);",
+  "ap (<*>)": "// Applies wrapped functions to wrapped values, \n// for example applying a list of functions to a list of values\n// or applying Just(f) to Just(x), Right(f) to Right(x), etc\n\n// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = (mf, mx) => {\n    const t = mx.type;\n    return (t !== undefined ? (\n        t === 'Either' ? (\n            apEither\n        ) : t === 'Maybe' ? (\n            apMaybe\n        ) : t === 'Node' ? (\n            apTree\n        ) : apTuple\n    ) : apList)(mf, mx);\n};",
+  "apLR (<*>)": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = (flr, lr) => {\n    const pf = isRight(flr);\n    return pf && isRight(lr) ? (\n        Right(flr.Right(lr.Right))\n    ) : (pf ? lr : flr);\n};",
+  "apList (<*>)": "// e.g. [(*2),(/2), sqrt] <*> [1,2,3]\n// -->  ap([dbl, hlf, root], [1, 2, 3])\n// -->  [2,4,6,0.5,1,1.5,1,1.4142135623730951,1.7320508075688772]\n\n// Each member of a list of functions applied to each\n// of a list of arguments, deriving a list of new values.\n\n// apList (<*>) :: [(a -> b)] -> [a] -> [b]\nconst apList = (fs, xs) => //\n    [].concat.apply([], fs.map(f => //\n        [].concat.apply([], xs.map(x => [f(x)]))));",
+  "apMaybe (<*>)": "// Maybe f applied to Maybe x, deriving a Maybe y\n\n// apMaybe (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMaybe = (mf, mx) =>\n    mf.Nothing || mx.Nothing ? (\n        Nothing()\n    ) : Just(mf.Just(mx.Just));",
+  "apTuple (<*>)": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = (tf, tx) =>\n    Tuple(\n        mappend(tf[0], tx[0]),\n        tf[1](tx[1])\n    );",
+  "append (++)": "// append (++) :: [a] -> [a] -> [a]\n// append (++) :: String -> String -> String\nconst append = (xs, ys) => xs.concat(ys);",
+  "appendFile": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = (strPath, txt) => {\n    const\n        oFullPath = ObjC.wrap(strPath)\n        .stringByStandardizingPath,\n        ref = Ref();\n  \n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n            ref[0] === 0 ? (() => {\n                const // Not a directory\n                    oData = ObjC.wrap(txt)\n                    .dataUsingEncoding($.NSUTF8StringEncoding),\n                    h = $.NSFileHandle.fileHandleForWritingAtPath(\n                        oFullPath\n                    );\n                return (\n                    h.seekToEndOfFile, // Effect, and\n                    h.writeData(oData),\n                    h.closeFile,\n                    true // value.\n                );\n            })() : false // Text appending to directory is undefined\n        ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(strPath))) ? (\n            writeFile(oFullPath, txt), // Effect, and\n            true // value.\n        ) : false;\n};",
+  "appendFileMay": "// appendFileMay :: FilePath -> String -> Maybe IO FilePath\nconst appendFileMay = (strPath, txt) => {\n    const\n        oFullPath = ObjC.wrap(strPath)\n        .stringByStandardizingPath,\n        strFullPath = ObjC.unwrap(oFullPath),\n        ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n            ref[0] === 0 ? (() => {\n                const // Not a directory\n                    oData = ObjC.wrap(txt)\n                    .dataUsingEncoding($.NSUTF8StringEncoding),\n                    h = $.NSFileHandle\n                    .fileHandleForWritingAtPath(oFullPath);\n                return (\n                    h.seekToEndOfFile, // Effect, and\n                    h.writeData(oData),\n                    h.closeFile, {\n                        Nothing: false,\n                        Just: strFullPath\n                    } // value.\n                );\n            })() : Nothing()\n            // Text appending to directory is undefined\n        ) : doesDirectoryExist(takeDirectory(strFullPath)) ? (\n            writeFile(oFullPath, txt), // Effect, and\n            Just(strFullPath) // value\n        ) : Nothing();\n};",
+  "apply ($)": "// apply ($) :: (a -> b) -> a -> b\nconst apply = (f, x) => f(x);",
+  "approxRatio": "// Epsilon -> Real -> Ratio\n\n// approxRatio :: Real -> Real -> Ratio\nconst approxRatio = (eps, n) => {\n    const\n        gcde = (e, x, y) => {\n            const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));\n            return _gcd(Math.abs(x), Math.abs(y));\n        },\n        c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);\n    return Ratio(\n        Math.floor(n / c), // numerator\n        Math.floor(1 / c) // denominator\n    );\n};",
+  "argvLength": "// argvLength :: Function -> Int\nconst argvLength = f => f.length;",
+  "assocs": "// assocs :: Map k a -> [(k, a)]\nconst assocs = m =>\n    Object.keys(m).sort().map(k => Tuple(k, m[k]));",
+  "bind (>>=)": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = (m, mf) =>\n    (Array.isArray(m) ? (\n        bindList\n    ) : (() => {\n        const t = m.type;\n        return t === 'Either' ? (\n            bindEither\n        ) : t === 'Maybe' ? (\n            bindMaybe\n        ) : t === 'Tuple' ? (\n            bindTuple\n        ) : x => Left('No bind instance found for type: ' + t);\n    })()(m, mf));",
+  "bindLR (>>=)": "// bindLR (>>=) :: Either a -> (a -> Either b) -> Either b\nconst bindLR = (m, mf) =>\n    m.Right !== undefined ? (\n        mf(m.Right)\n    ) : m;",
+  "bindList (>>=)": "// bindList (>>=) :: [a] -> (a -> [b]) -> [b]\nconst bindList = (xs, mf) => \n  [].concat.apply([], xs.map(mf));",
+  "bindMay (>>=)": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = (mb, mf) =>\n    mb.Nothing ? mb : mf(mb.Just);",
+  "bindTuple (>>=)": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = (tpl, f) => {\n    const t2 = f(tpl[1]);\n    return Tuple(\n        mappend(tpl[0], t2[0]),\n        t2[1]\n    );\n};",
+  "break": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = (p, xs) => {\n  for (var i = 0, lng = xs.length; (i < lng) && !p(xs[i]); i++) {};\n  return Tuple(xs.slice(0, i), xs.slice(i));\n};",
+  "breakOn": "// Needle -> Haystack -> (prefix before match, match + rest)\n\n// breakOn :: String -> String -> (String, String)\nconst breakOn = (pat, src) =>\n    Boolean(pat) ? (() => {\n        const xs = src.split(pat);\n        return xs.length > 1 ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src, '');\n    })() : undefined;",
+  "breakOnAll": "// breakOnAll \"::\" \"\"\n// ==> []\n// breakOnAll \"/\" \"a/b/c/\"\n// ==> [(\"a\", \"/b/c/\"), (\"a/b\", \"/c/\"), (\"a/b/c\", \"/\")]\n\n// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = (pat, src) =>\n    pat !== '' ? (\n        src.split(pat)\n        .reduce((a, x, i, xs) =>\n            i > 0 ? (\n                a.concat([\n                    Tuple(xs.slice(0, i)\n                        .join(pat), pat + xs.slice(i)\n                        .join(pat)\n                    )\n                ])\n            ) : a, [])\n    ) : undefined;",
+  "breakOnMay": "// Needle -> Haystack -> maybe (prefix before match, match + rest)\n\n// breakOnMay :: String -> String -> Maybe (String, String)\nconst breakOnMay = (pat, src) =>\n    Boolean(pat) ? (() => {\n        const xs = src.split(pat);\n        return Just(xs.length > 1 ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src, ''));\n    })() : Nothing();",
+  "cartesianProduct": "// cartesianProduct :: [a] -> [b] -> [(a, b)]\nconst cartesianProduct = (xs, ys) =>\n    concatMap((x => concatMap(y => [\n        [Tuple(x, y)]\n    ], ys)), xs);",
+  "caseOf": "// List of (Predicate, value) tuples -> Default value \n//                        -> Value to test -> Output value\n\n// caseOf :: [(a -> Bool, b)] -> b -> a ->  b\nconst caseOf = (pvs, otherwise, x) => {\n    const mb = pvs.reduce((a, pv) =>\n        a.Nothing ? (\n            pv[0](x) ? Just(pv[1]) : a\n        ) : a, Nothing());\n    return mb.Nothing ? otherwise : mb.Just;\n};",
+  "catMaybes": "// catMaybes :: [Maybe a] -> [a]\nconst catMaybes = mbs =>\n    concatMap(m => m.Nothing ? [] : [m.Just], mbs);",
+  "ceiling": "// The least integer not less than x\n\n// ceiling :: Num -> Int\nconst ceiling = x => {\n    const\n      nr = properFraction(x),\n      n = nr[0]\n    return nr[1] > 0 ? n + 1 : n;\n};",
+  "center": "// Size of space -> filler Char -> String -> Centered String\n\n// center :: Int -> Char -> String -> String\nconst center = (n, c, s) => {\n  const\n    qr = quotRem(n - s.length, 2),\n    q = qr[0];\n  return replicateString(q, c) +\n    s + replicateString(q + qr[1], c);\n};",
+  "chars": "// chars :: String -> [Char]\nconst chars = s => s.split('');",
+  "chr": "// chr :: Int -> Char\nconst chr = String.fromCodePoint;",
+  "chunksOf": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = (n, xs) =>\n    xs.reduce((a, _, i, xs) =>\n        i % n ? a : a.concat([xs.slice(i, i + n)]), []);",
+  "compare": "// compare :: a -> a -> Ordering\nconst compare = (a, b) => a < b ? -1 : (a > b ? 1 : 0);",
+  "comparing": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    (x, y) => {\n        const\n            a = f(x),\n            b = f(y);\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
+  "compose": "// compose :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (f, g) => x => f(g(x));",
+  "composeListLR": "// composeListLR :: [(a -> a)] -> (a -> a)\nconst composeListLR = fs =>\n    x => fs.reduce((a, f) => f(a), x);",
+  "composeListRL": "// composeListRL :: [(a -> a)] -> (a -> a)\nconst composeListRL = fs =>\n    x => fs.reduceRight((a, f) => f(a), x, fs);",
+  "concat": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    xs.length > 0 ? (() => {\n        const unit = typeof xs[0] === 'string' ? '' : [];\n        return unit.concat.apply(unit, xs);\n    })() : [];",
+  "concatMap": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = (f, xs) => [].concat.apply([], xs.map(f));",
+  "cons": "// cons :: a -> [a] -> [a]\nconst cons = (x, xs) =>  [x].concat(xs);",
+  "const_": "// const_ :: a -> b -> a\nconst const_ = (k, _) => k;",
+  "createDirectoryIfMissingLR": "// createDirectoryIfMissingLR :: Bool -> FilePath ->\n//      Either String String\nconst createDirectoryIfMissingLR = (blnParents, fp) =>\n    doesPathExist(fp) ? (\n        Right(`Found: '${fp}'`)\n    ) : (() => {\n        const\n            e = $(),\n            blnOK = $.NSFileManager.defaultManager[\n                'createDirectoryAtPath' +\n                'WithIntermediateDirectoriesAttributesError'\n            ]($(fp)\n                .stringByStandardizingPath,\n                blnParents, undefined, e\n            );\n        return blnOK ? (\n            Right(fp)\n        ) : Left(e.localizedDescription);\n    })();",
+  "curry": "// Flexibly handles two or more arguments, applying\n// the function directly if the argument array is complete,\n// or recursing with a concatenation of any existing and\n// newly supplied arguments, if gaps remain.\n\n// curry :: ((a, b) -> c) -> a -> b -> c\nconst curry = (f, ...args) => {\n    const go = xs => xs.length >= f.length ? (\n        f.apply(null, xs)\n    ) : function () {\n        return go(xs.concat(Array.from(arguments)));\n    };\n    return go(args);\n};",
+  "curry2": "// Simpler 2 argument only version of curry\n\n// curry2 :: ((a, b) -> c) -> a -> b -> c\nconst curry2 = f => a => b => f(a, b);",
+  "delete": "// xs with first instance of x (if any) removed\n\n// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = (x, xs) =>\n    xs.length > 0 ? (\n        (x === xs[0]) ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(delete_(x, xs.slice(1)))\n    ) : [];",
+  "deleteAt": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = (i, xs) =>\n    xs.length >= i ? (() => {\n        const lr = splitAt(i, xs);\n        return lr[0].concat(lr[1].slice(1));\n    })() : xs;",
+  "deleteBy": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = (f, x, xs) =>\n    xs.length > 0 ? (\n        f(x, xs[0]) ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(deleteBy(f, x, xs.slice(1)))\n    ) : [];",
+  "deleteFirst": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = (x, xs) =>\n    xs.length > 0 ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(deleteFirst(x, xs.slice(1)))\n    ) : [];",
+  "deleteFirstsBy": "// deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst deleteFirstsBy = (fnEq, xs, ys) =>\n    ys.reduce((x, y) => deleteBy(fnEq, y, x), xs);",
+  "deleteMap": "// deleteMap :: k -> Dict -> Dict\nconst deleteMap = (k, dct) =>\n    (delete dct[k], dct);",
+  "difference": "// difference :: Eq a => [a] -> [a] -> [a]\nconst difference = (xs, ys) =>\n    xs.filter(x => ys.indexOf(x) === -1);",
+  "div": "// div :: Int -> Int -> Int\nconst div = (x, y) => Math.floor(x / y);",
+  "doesDirectoryExist": "// doesDirectoryExist :: FilePath -> IO Bool\nconst doesDirectoryExist = strPath => {\n    const ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(strPath)\n            .stringByStandardizingPath, ref\n        ) && ref[0] === 1;\n};",
+  "doesFileExist": "// doesFileExist :: FilePath -> IO Bool\nconst doesFileExist = strPath => {\n    const ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(strPath)\n            .stringByStandardizingPath, ref\n        ) && ref[0] !== 1;\n};",
+  "doesPathExist": "// doesPathExist :: FilePath -> IO Bool\nconst doesPathExist = strPath =>\n\t$.NSFileManager.defaultManager\n\t.fileExistsAtPath(\n\t\t$(strPath).stringByStandardizingPath\n\t);",
+  "draw": "// draw :: Tree String -> [String]\nconst draw = node => {\n    // shift :: String -> String -> [String] -> [String]\n    const shift = (first, other, xs) =>\n        zipWith(\n            append,\n            cons(first, replicate(xs.length - 1, other)),\n            xs\n        );\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const lng = xs.length;\n        return lng > 0 ? (\n            lng > 1 ? append(\n                cons(\n                    '│',\n                    shift('├─ ', '│  ', draw(xs[0]))\n                ),\n                drawSubTrees(xs.slice(1))\n            ) : cons('│', shift('└─ ', '   ', draw(xs[0])))\n        ) : [];\n    };\n    return append(\n        lines(node.root),\n        drawSubTrees(node.nest)\n    );\n};",
+  "drawForest": "// drawForest :: Forest String -> String\nconst drawForest = trees =>\n    trees.map(drawTree).join('\\n');",
+  "drawTree": "// drawTree :: Tree String -> String\nconst drawTree = tree =>\n    unlines(draw(tree));",
+  "drop": "// drop :: Int -> [a] -> [a]\n// drop :: Int -> String -> String\nconst drop = (n, xs) => xs.slice(n);",
+  "dropAround": "// dropAround :: (Char -> Bool) -> String -> String\nconst dropAround = (p, s) => dropWhile(p, dropWhileEnd(p, s));",
+  "dropFileName": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = strPath =>\n    strPath !== '' ? (() => {\n        const xs = (strPath.split('/'))\n            .slice(0, -1);\n        return xs.length > 0 ? (\n            xs.join('/') + '/'\n        ) : './';\n    })() : './';",
+  "dropWhile": "// dropWhile :: (a -> Bool) -> [a] -> [a]\nconst dropWhile = (p, xs) => {\n  let i = 0;\n  for (let lng = xs.length;\n    (i < lng) && p(xs[i]); i++) {}\n  return xs.slice(i);\n};",
+  "dropWhileEnd": "// dropWhileEnd :: (Char -> Bool) -> String -> String\n// dropWhileEnd :: (a -> Bool) -> [a] -> [a]\nconst dropWhileEnd = (p, s) => {\n    let i = s.length;\n    while (i-- && p(s[i])) {}\n    return s.slice(0, i + 1);\n};",
+  "either": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = (lf, rf, e) =>\n    e.type === 'Either' ? (\n        e.Left !== undefined ? (\n            lf(e.Left)\n        ) : rf(e.Right)\n    ) : undefined;",
+  "elem": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = (x, xs) => xs.includes(x);",
+  "elemAtMay": "// If x is a dictionary, then the Int is read as an \n// index into the lexically sorted keys of the Dict, \n// returning a Maybe (Key, Value) pair.\n// If x is a list, then returns a Maybe a.\n// (In either case, returns Nothing for an Int out of range)\n\n// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = (i, x) => {\n    const\n        bln = Array.isArray(x),\n        k = bln ? i : Object.keys(x)\n        .sort()[i],\n        v = x[k];\n    return (typeof v)[0] !== 'u' ? (\n        Just(bln ? v : Tuple(k, v))\n    ) : Nothing();\n};",
+  "elemIndex": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = (x, xs) => {\n    const i = xs.indexOf(x);\n    return {\n        Nothing: i === -1,\n        Just: i\n    };\n};",
+  "elemIndices": "// elemIndices :: Eq a => a -> [a] -> [Int]\nconst elemIndices = (x, xs) =>\n    concatMap((y, i) => y === x ? (\n        [i]\n    ) : [], xs);",
+  "elems": "// elems :: Dict -> [a]\nconst elems = Object.values;",
+  "enumFromThenTo": "// enumFromThenTo :: Enum a => a -> a -> a -> [a]\nconst enumFromThenTo = (x1, x2, y) =>\n    (typeof x1 !== 'number' ? (\n        enumFromThenToChar\n    ) : enumFromThenToInt)\n    .apply(null, [x1, x2, y]);",
+  "enumFromThenToChar": "// enumFromThenToChar :: Char -> Char -> Char -> [Char]\nconst enumFromThenToChar = (x1, x2, y) => {\n    const [i1, i2, iY] = Array.from([x1, x2, y])\n        .map(x => x.charCodeAt(0)),\n        d = i2 - i1;\n    return Array.from({\n        length: (Math.floor(iY - i2) / d) + 2\n    }, (_, i) => String.fromCodePoint(i1 + (d * i)));\n};",
+  "enumFromThenToInt": "// enumFromThenToInt :: Int -> Int -> Int -> [Int]\nconst enumFromThenToInt = (x1, x2, y) => {\n    const d = x2 - x1;\n    return Array.from({\n        length: Math.floor(y - x2) / d + 2\n    }, (_, i) => x1 + (d * i));\n};",
+  "enumFromTo": "// enumFromTo :: Enum a => a -> a -> [a]\nconst enumFromTo = (m, n) =>\n    (typeof m !== 'number' ? (\n        enumFromToChar\n    ) : enumFromToInt).apply(null, [m, n]);",
+  "enumFromToChar": "// enumFromToChar :: Char -> Char -> [Char]\nconst enumFromToChar = (m, n) => {\n    const [intM, intN] = [m, n].map(x => x.charCodeAt(0));\n    return Array.from({\n        length: Math.floor(intN - intM) + 1\n    }, (_, i) => String.fromCodePoint(intM + i));\n};",
+  "enumFromToInt": "// enumFromToInt :: Int -> Int -> [Int]\nconst enumFromToInt = (m, n) =>\n    m <= n ? iterateUntil(\n        x => n <= x,\n        x => 1 + x,\n        m\n    ) : [];",
+  "eq (==)": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = (a, b) => {\n    const t = typeof a;\n    return t !== typeof b ? (\n        false\n    ) : t !== 'object' ? (\n        a === b\n    ) : (() => {\n        const aks = Object.keys(a);\n        return aks.length !== Object.keys(b).length ? (\n            false\n        ) : aks.every(k => eq(a[k], b[k]));\n    })();\n};",
+  "evalJSMay": "// evalJSMay :: String -> Maybe a\nconst evalJSMay = s => {\n    try {\n        return Just(eval('(' + s + ')'))\n    } catch (e) {\n        return Nothing();\n    };\n};",
+  "even": "// even :: Int -> Bool\nconst even = n => n % 2 === 0;",
+  "exp": "// exp :: Float -> Float\nconst exp = n => Math.exp(n);",
+  "fanArrow (&&&)": "// Compose a function from a simple value to a tuple of\n// the separate outputs of two different functions\n\n// fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))\nconst fanArrow = (f, g) => x => Tuple(f(x), g(x));",
+  "filePath": "// filePath :: String -> FilePath\nconst filePath = s =>\n    ObjC.unwrap(ObjC.wrap(s)\n        .stringByStandardizingPath);",
+  "filePathTree": "// filePathTree :: filePath -> [Tree String] -> Tree filePath\nconst filePathTree = (fpAnchor, trees) => {\n    const go = fp => tree => {\n        const path = `${fp}/${tree.root}`;\n        return Node(\n            path,\n            tree.nest.map(go(path))\n        );\n    };\n    return Node(fpAnchor, trees.map(go(fpAnchor)));\n};",
+  "fileSize": "// fileSize :: FilePath -> Either String Int\nconst fileSize = fp =>\n  bindLR(\n    fileStatus(fp),\n    dct => Right(ObjC.unwrap(dct.NSFileSize))\n  );",
+  "fileStatus": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n  const\n    error = $(),\n    dct = $.NSFileManager.defaultManager\n    .attributesOfItemAtPathError(fp, error).js;\n  return dct !== undefined ? (\n    Right(dct)\n  ) : Left(ObjC.unwrap(error.localizedDescription));\n};",
+  "filter": "// filter :: (a -> Bool) -> [a] -> [a]\nconst filter = (f, xs) => xs.filter(f);",
+  "find": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = (p, xs) => {\n    for (let i = 0, lng = xs.length; i < lng; i++) {\n        let x = xs[i];\n        if (p(x)) return Just(x);\n    }\n    return Nothing();\n};",
+  "findIndex": "// findIndex :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndex = (p, xs) => {\n    const i = xs.findIndex(p);\n    return -1 !== i ? (\n        Just(i)\n    ) : Nothing();\n};",
+  "findIndexR": "// findIndexR :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndexR = (p, xs) => {\n    const i = reverse(xs).findIndex(p);\n    return i !== -1 ? (\n        Just(xs.length - (1 + i))\n    ) : Nothing();\n};",
+  "findIndices": "// findIndices :: (a -> Bool) -> [a] -> [Int]\nconst findIndices = (p, xs) =>\n    concatMap((x, i) => p(x) ? (\n        [i]\n    ) : [], xs);",
+  "firstArrow": "// Lift a simple function to one which applies to a tuple, \n// transforming only the first item of the tuple\n\n// firstArrow :: (a -> b) -> ((a, c) -> (b, c))\nconst firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);",
+  "flatten": "// flatten :: NestedList a -> [a]\nconst flatten = t =>\n    Array.isArray(t) ? (\n        [].concat.apply([], t.map(flatten))\n    ): t;",
+  "flip": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = f => (a, b) => f.apply(null, [b, a]);",
+  "floor": "// floor :: Num -> Int\nconst floor = x => {\n    const\n      nr = properFraction(x),\n      n = nr[0];\n    return nr[1] < 0 ? n - 1 : n;\n};",
+  "fmap (<$>)": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = (f, fa) => {\n    const t = fa.type;\n    return (t !== undefined ? (\n        t === 'Either' ? (\n            fmapLR\n        ) : t === 'Maybe' ? (\n            fmapMay\n        ) : t === 'Node' ? (\n            fmapTree\n        ) : fmapTuple\n    ) : map)(f, fa);\n};",
+  "fmapLR (<$>)": "// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b\nconst fmapLR = (f, lr) =>\n    Object.keys(lr)\n    .includes('Right') ? (\n        Right(f(lr.Right))\n    ) : lr;",
+  "fmapMay (<$>)": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = (f, mb) =>\n    mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));",
+  "fmapTree (<$>)": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = (f, tree) => {\n    const go = node => Node(\n        f(node.root),\n        node.nest.map(go)\n    );\n    return go(tree);\n};",
+  "fmapTuple (<$>)": "// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)\nconst fmapTuple = (f, tpl) =>\n    Tuple(tpl[0], f(tpl[1]));",
+  "foldMapTree": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = (f, node) => {\n    const go = x =>\n        x.nest.length > 0 ? mappend(\n            f(x.root),\n            foldl1(mappend, x.nest.map(go))\n        ) : f(x.root);\n    return go(node);\n};",
+  "foldTree": "// foldTree :: (a -> [b] -> b) -> Tree a -> b\nconst foldTree = (f, tree) => {\n    const go = node => f(node.root, node.nest.map(go));\n    return go(tree);\n};",
+  "foldl": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = (f, a, xs) => xs.reduce(f, a);",
+  "foldl1": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = (f, xs) =>\n    xs.length > 1 ? xs.slice(1)\n    .reduce(f, xs[0]) : xs[0];",
+  "foldl1May": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = (f, xs) =>\n    xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce(f, xs[0]))\n    ) : Nothing();",
+  "foldlTree": "// foldlTree :: (b -> a -> b) -> b -> Tree a -> b\nconst foldlTree = (f, acc, node) => {\n  const go = (a, x) =>\n    x.nest.reduce(go, f(a, x));\n  return go(acc, node);\n};",
+  "foldr": "// Note that that the Haskell signature of foldr is different from that of\n// foldl - the positions of accumulator and current value are reversed\n\n// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = (f, a, xs) => xs.reduceRight(flip(f), a);",
+  "foldr1": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = (f, xs) =>\n    xs.length > 0 ? init(xs)\n    .reduceRight(f, last(xs)) : [];",
+  "foldr1May": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = (f, xs) =>\n    xs.length > 0 ? (\n        Just(xs.slice(0, -1)\n            .reduceRight(f, xs.slice(-1)[0]))\n    ) : Nothing();",
+  "fromEnum": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x => {\n    const type = typeof x;\n    return type === 'boolean' ? (\n        x ? 1 : 0\n    ) : type === 'string' ? x.charCodeAt(0) : x;\n};",
+  "fromLeft": "// | Return the contents of a 'Left'-value or a default value otherwise.\n\n// fromLeft :: a -> Either a b -> a\nconst fromLeft = (def, lr) =>\n  isLeft(lr) ? lr.Left : def;",
+  "fromMaybe": "// fromMaybe :: a -> Maybe a -> a\nconst fromMaybe = (def, mb) => mb.Nothing ? def : mb.Just;",
+  "fromRight": "// | Return the contents of a 'Right'-value or a default value otherwise.\n\n// fromRight :: b -> Either a b -> b\nconst fromRight = (def, lr) =>\n  isRight(lr) ? lr.Right : def;",
+  "fst": "// fst :: (a, b) -> a\nconst fst = tpl => tpl[0];",
+  "gcd": "// gcd :: Int -> Int -> Int\nconst gcd = (x, y) => {\n    const _gcd = (a, b) => (b === 0 ? a : _gcd(b, a % b));\n    return _gcd(Math.abs(x), Math.abs(y));\n};",
+  "genericIndexMay": "// genericIndexMay :: [a] -> Int -> Maybe a\nconst genericIndexMay = (xs, i) =>\n    (i < xs.length && i >= 0) ? Just(xs[i]) : Nothing();",
+  "getCurrentDirectory": "// getCurrentDirectory :: IO FilePath\nconst getCurrentDirectory = () =>\n    ObjC.unwrap($.NSFileManager.defaultManager.currentDirectoryPath);",
+  "getDirectoryContents": "// getDirectoryContents :: FilePath -> IO [FilePath]\nconst getDirectoryContents = strPath =>\n    ObjC.deepUnwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(strPath)\n            .stringByStandardizingPath, null\n        )\n    );",
+  "getFinderDirectory": "// getFinderDirectory :: IO FilePath\nconst getFinderDirectory = () =>\n    Application('Finder')\n    .insertionLocation()\n    .url()\n    .slice(7);",
+  "getHomeDirectory": "// getHomeDirectory :: IO FilePath\nconst getHomeDirectory = () =>\n    ObjC.unwrap($.NSHomeDirectory());",
+  "getTemporaryDirectory": "// getTemporaryDirectory :: IO FilePath\nconst getTemporaryDirectory = () =>\n    ObjC.unwrap($.NSTemporaryDirectory());",
+  "group": "// group :: Eq a => [a] -> [[a]]\nconst group = xs => groupBy((a, b) => a === b, xs);",
+  "groupBy": "// Typical usage: groupBy(on(eq, f), xs)\n\n// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = (f, xs) => {\n    const tpl = xs.slice(1)\n        .reduce((a, x) => {\n            const h = a[1].length > 0 ? a[1][0] : undefined;\n            return h !== undefined && f(h, x) ? (\n                Tuple(a[0], a[1].concat([x]))\n            ) : Tuple(a[0].concat([a[1]]), [x]);\n        }, Tuple([], xs.length > 0 ? [xs[0]] : []));\n    return tpl[0].concat([tpl[1]]);\n};",
+  "groupSortOn": "// Sort and group a list by comparing the results of a key function\n// applied to each element. groupSortOn f is equivalent to\n// groupBy eq $ sortBy (comparing f),\n// but has the performance advantage of only evaluating f once for each\n// element in the input list.\n// This is a decorate-(group.sort)-undecorate pattern, as in the\n// so-called 'Schwartzian transform'.\n// Groups are arranged from from lowest to highest.\n\n// groupSortOn :: Ord b => (a -> b) -> [a] -> [a]\n// groupSortOn :: Ord b => [((a -> b), Bool)]  -> [a] -> [a]\nconst groupSortOn = (f, xs) => {\n    // Functions and matching bools derived from argument f\n    // which is a single key function\n    const fsbs = unzip(\n            flatten([f])\n            .reduceRight((a, x) =>\n                typeof x === 'boolean' ? {\n                    asc: x,\n                    fbs: a.fbs\n                } : {\n                    asc: true,\n                    fbs: [\n                        [x, a.asc]\n                    ].concat(a.fbs)\n                }, {\n                    asc: true,\n                    fbs: []\n                })\n            .fbs\n        ),\n        [fs, bs] = [fsbs[0], fsbs[1]],\n        iLast = fs.length;\n    // decorate-sort-group-undecorate\n    return groupBy(\n            (p, q) => p[0] === q[0],\n            sortBy(\n                mappendComparing(\n                    // functions that access pre-calculated values by position\n                    // in the decorated ('Schwartzian') version of xs\n                    zip(fs.map((_, i) => x => x[i]), bs)\n                ), xs.map( // xs decorated with precalculated key function values\n                    x => fs.reduceRight(\n                        (a, g) => [g(x)].concat(a), [\n                            x\n                        ]\n                    )\n                )\n            )\n        )\n        .map(gp => gp.map(x => x[iLast])); // undecorated version of data, post sort\n};",
+  "head": "// head :: [a] -> a\nconst head = xs => xs.length ? xs[0] : undefined;",
+  "headMay": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    xs.length > 0 ? Just(xs[0]) : Nothing();",
+  "id": "// id :: a -> a\nconst id = x => x;",
+  "indented": "// indented :: String -> String -> String\nconst indented = (strIndent, s) =>\n    unlines(map(\n        x => x !== '' ? strIndent + x : x,\n        lines(s)\n    ));",
+  "index (!!)": "// index (!!) :: [a] -> Int -> a\nconst index = (xs, i) => xs[i];",
+  "init": "// init :: [a] -> [a]\nconst init = xs => xs.length > 0 ? xs.slice(0, -1) : undefined;",
+  "initMay": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs =>\n    xs.length > 0 ? Just(xs.slice(0, -1)) : Nothing();",
+  "inits": "// inits([1, 2, 3]) -> [[], [1], [1, 2], [1, 2, 3]\n// inits('abc') -> [\"\", \"a\", \"ab\", \"abc\"]\n\n// inits :: [a] -> [[a]]\n// inits :: String -> [String]\nconst inits = xs => [\n        []\n    ]\n    .concat((typeof xs === 'string' ? xs.split('') : xs)\n        .map((_, i, lst) => lst.slice(0, i + 1)));",
+  "insert": "// insert :: Ord a => a -> [a] -> [a]\nconst insert = (x, ys) => {\n    const cmp = (a, b) => a < b ? -1 : (a > b ? 1 : 0);\n    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};\n    return ys.slice(0, i)\n        .concat(x)\n        .concat(ys.slice(i));\n};",
+  "insertBy": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = (cmp, x, ys) => {\n    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};\n    return ys.slice(0, i)\n        .concat(x)\n        .concat(ys.slice(i));\n};",
+  "insertMap": "// insertMap :: Dict -> String -> a -> Dict\nconst insertMap = (dct, k, v) =>\n  Object.assign(dct, {[k]: v});",
+  "intToDigit": "// intToDigit :: Int -> Char\nconst intToDigit = n =>\n    n >= 0 && n < 16 ? (\n        '0123456789ABCDEF'.charAt(n)\n    ) : '?';",
+  "intercalate": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = (sep, xs) =>\n    xs.length > 0 && typeof sep === 'string' &&\n    typeof xs[0] === 'string' ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep, xs));",
+  "intercalateS": "// intercalateS :: String -> [String] -> String\nconst intercalateS = (s, xs) =>\n    xs.join(s);",
+  "intersect": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = (xs, ys) => \n  xs.filter(x => ys.indexOf(x) !== -1);",
+  "intersectBy": "// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst intersectBy = (eq, xs, ys) => {\n    const ceq = curry(eq);\n    return (xs.length > 0 && ys.length > 0) ?\n    xs.filter(x => ys.some(ceq(x))) : [];\n};",
+  "intersectionBy": "// intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectionBy = (eq, xs) =>\n    foldr1(((a, x) => intersectBy(eq, a, x)), xs);",
+  "intersperse": "// intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]\n\n// intersperse :: Char -> String -> String\n// intersperse :: a -> [a] -> [a]\nconst intersperse = (sep, xs) => {\n    const bool = (typeof xs)[0] === 's';\n    return xs.length > 1 ? (\n        (bool ? concat : x => x)(\n            (bool ? (\n                xs.split('')\n            ) : xs)\n            .slice(1)\n            .reduce((a, x) => a.concat([sep, x]), [xs[0]])\n        )) : xs;\n};",
+  "isAlpha": "// isAlpha::Char - > Bool\nconst isAlpha = c =>\n    /[A-Za-z0-9\\u00C0-\\u00FF]/.test(c);",
+  "isChar": "// isChar :: a -> Bool\nconst isChar = x =>\n    typeof x === 'string' && x.length === 1;",
+  "isDigit": "// isDigit :: Char -> Bool\nconst isDigit = c => {\n  const n = ord(c);\n  return n >= 48 && n <= 57;\n};",
+  "isInfixOf": "// isInfixOf :: Eq a => [a] -> [a] -> Bool\n// isInfixOf :: String -> String -> Bool\nconst isInfixOf = (needle, haystack) =>\n    haystack.includes(needle);",
+  "isLeft": "// isLeft :: Either a b -> Bool\nconst isLeft = lr =>\n    lr.type === 'Either' && lr.Left !== undefined;",
+  "isLower": "// isLower :: Char -> Bool\nconst isLower = c =>\n    /[a-z]/.test(c);",
+  "isMaybe": "// isMaybe :: a -> Bool\nconst isMaybe = x =>\n    x.type === 'Maybe';",
+  "isNull": "// isNull :: [a] -> Bool\n// isNull :: String -> Bool\nconst isNull = xs =>\n    Array.isArray(xs) || typeof xs === 'string' ? (\n        xs.length < 1\n    ) : undefined;",
+  "isPrefixOf": "// isPrefixOf takes two lists or strings and returns \n// true iff the first is a prefix of the second.\n\n// isPrefixOf :: [a] -> [a] -> Bool\n// isPrefixOf :: String -> String -> Bool\nconst isPrefixOf = (xs, ys) => {\n    const pfx = (xs, ys) => {\n        const intX = xs.length;\n        return intX > 0 ? (\n            ys.length >= intX ? xs[0] === ys[0] && pfx(\n                xs.slice(1), ys.slice(1)\n            ) : false\n        ) : true;\n    };\n    return typeof xs !== 'string' ? pfx(xs, ys) : ys.startsWith(xs);\n};",
+  "isRight": "// isRight :: Either a b -> Bool\nconst isRight = lr =>\n  (typeof lr !== 'undefined') && \n  lr.type === 'Either' && lr.Right !== undefined;",
+  "isSortedBy": "// The 'isSortedBy' function returns true iff the predicate returns true\n// for all adjacent pairs of elements in the list.\n\n// isSortedBy :: (a -> a -> Bool) -> [a] -> Bool\nconst isSortedBy = (cmp, xs) =>\n    xs.length < 2 || all(x => x < 1, zipWith(cmp, xs, tail(xs)));",
+  "isSpace": "// isSpace :: Char -> Bool\nconst isSpace = c => /\\s/.test(c);",
+  "isSubsequenceOf": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = (xs, ys) => {\n    const iss = (a, b) =>\n        a.length > 0 ? (\n            b.length > 0 ? (\n                iss((a[0] === b[0] ? a.slice(1) : a), b.slice(1))\n            ) : false\n        ) : true;\n    return iss.apply(\n        null, 'string' === typeof xs ? [\n            xs.split(''), ys.split('')\n        ] : [xs, ys]\n    );\n};",
+  "isSuffixOf": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = (suffix, main) =>\n    main.indexOf(suffix) === main.length - suffix.length;",
+  "isUpper": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    /[A-Z]/.test(c);",
+  "iso8601Local": "// iso8601Local :: Date -> String\nconst iso8601Local = dte =>\n    new Date(dte - (6E4 * dte.getTimezoneOffset()))\n    .toISOString();",
+  "iterateUntil": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = (p, f, x) => {\n    const vs = [x];\n    let h = x;\n    while (!p(h))(h = f(h), vs.push(h));\n    return vs;\n};",
+  "jsonLog": "// jsonLog :: a -> IO ()\nconst jsonLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",
+  "justifyLeft": "// justifyLeft :: Int -> Char -> String -> String\nconst justifyLeft = (n, cFiller, strText) =>\n    n > strText.length ? (\n        (strText + cFiller.repeat(n))\n        .substr(0, n)\n    ) : strText;",
+  "justifyRight": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = (n, cFiller, strText) =>\n    n > strText.length ? (\n        (cFiller.repeat(n) + strText)\n        .slice(-n)\n    ) : strText;",
+  "keys": "// keys :: Dict -> [String]\nconst keys = dct => Object.keys(dct);",
+  "kleisliCompose (>=>)": "// Kleisli composition LR\n\n// kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)\nconst kleisliCompose = (f, g) =>\n    x => bind(f(x), g);",
+  "last": "// last :: [a] -> a\nconst last = xs => xs.length ? xs.slice(-1)[0] : undefined;",
+  "lastMay": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs => xs.length > 0 ? (\n    Just(xs.slice(-1)[0])\n) : Nothing();",
+  "lcm": "// lcm :: Int -> Int -> Int\nconst lcm = (x, y) =>\n   ( x === 0 || y === 0) ? 0 : Math.abs(Math.floor(x / gcd(x, y)) * y);",
+  "lefts": "// lefts :: [Either a b] -> [a]\nconst lefts = xs =>\n    concatMap(\n        x => x.type === 'Either' && x.Left !== undefined ? (\n            [x.Left]\n        ) : [], xs\n    );",
+  "length": "// length :: [a] -> Int\nconst length = xs => xs.length;",
+  "levelNodes": "// levelNodes :: Tree a -> [[Tree a]]\nconst levelNodes = tree =>\n  iterateUntil(\n    xs => xs.length < 1,\n    xs => concatMap(x => x.nest, xs), [tree]\n  );",
+  "levels": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    map(xs => map(x => x.root, xs),\n        iterateUntil(\n            xs => xs.length < 1,\n            xs => concatMap(x => x.nest, xs), [tree]\n        )\n    );",
+  "liftA2": "// Lift a binary function to actions.\n// liftA2 f a b = fmap f a <*> b\n\n// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = (f, a, b) =>\n    Array.isArray(a) ? (\n        liftA2List(f, a, b)\n    ) : (t => Boolean(t) ? (\n        t === 'Either' ? (\n            liftA2LR(f, a, b)\n        ) : t === 'Maybe' ? (\n            liftA2Maybe(f, a, b)\n        ) : t === 'Tuple' ? (\n            liftA2Tuple(f, a, b)\n        ) : undefined\n    ) : undefined)(a.type);",
+  "liftA2LR": "// liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c\nconst liftA2LR = (f, a, b) =>\n    a.Right !== undefined ? (\n        b.Right !== undefined ? (\n            Right(f(a.Right, b.Right))\n        ) : b\n    ) : a;",
+  "liftA2List": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = (f, xs, ys) =>\n    concatMap(x => concatMap(y => [f(x, y)], ys), xs);",
+  "liftA2Maybe": "// liftA2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c\nconst liftA2Maybe = (f, a, b) =>\n    a.Nothing ? a : b.Nothing ? b : Just(f(a.Just, b.Just));",
+  "liftA2Tuple": "// liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)\nconst liftA2Tuple = (f, a, b) =>\n    Tuple(mappend(a[0], b[0]), f(a[1], b[1]));",
+  "liftM2": "// > liftM2 (+) [0,1] [0,2] = [0,2,1,3]\n// > liftM2 (+) (Just 1) Nothing = Nothing\n\n// Control.Monad : \n// \"Promote a function to a monad, scanning the monadic arguments \n// from left to right.\"\n\n// Add 7, 9, or 10,  to 100 or 1000\n// liftM2(plus, [7, 9, 10], [100, 1000])\n\n// --> [107, 1007, 109, 1009, 110, 1010]\n\n// liftM2 f xs ys = [f] <*> xs <*> ys\n\n// liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftM2 = (f, a, b) =>\n    Array.isArray(a) ? (\n        ap(map((g => x => y => g(x, y))(f), a), b)\n    ) : Object.keys(a)\n    .indexOf('Nothing') !== -1 ? (\n        a.Nothing || b.Nothing ? a : pureMay(f(a.Just, b.Just))\n    ) : undefined;",
+  "liftMmay": "// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)\nconst liftMmay = f =>\n    mb => mb.Nothing ? mb : {\n        Nothing: false,\n        Just: f(mb.Just)\n    };",
+  "lines": "// lines :: String -> [String]\nconst lines = s => s.split(/[\\r\\n]/);",
+  "listDirectory": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = strPath =>\n\tObjC.unwrap(\n\t\t$.NSFileManager.defaultManager\n\t\t.contentsOfDirectoryAtPathError(\n\t\t\tObjC.wrap(strPath)\n\t\t\t.stringByStandardizingPath,\n\t\t\tnull\n\t\t))\n\t.map(ObjC.unwrap);",
+  "listFromTuple": "// listFromTuple (a, a ...) -> [a]\nconst listFromTuple = tpl =>\n    Object.keys(tpl)\n    .sort()\n    .reduce(\n        (a, k) => k !== 'type' ? (\n            a.concat(tpl[k])\n        ) : a, []\n    );",
+  "listToMaybe": "// The listToMaybe function returns Nothing on \n// an empty list or Just the head of the list.\n\n// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    xs.length > 0 ? (\n        Just(xs[0])\n    ) : Nothing();",
+  "log": "// log :: Float -> Float\nconst log = n => Math.log(n);",
+  "lookup": "// lookup :: Eq a => a -> Container -> Maybe b\nconst lookup = (k, m) =>\n    (Array.isArray(m) ? (\n        lookupTuples\n    ) : lookupDict)(k, m);",
+  "lookupDict": "// lookupDict :: a -> Dict -> Maybe b\nconst lookupDict = (k, dct) => {\n    const v = dct[k];\n    return v !== undefined ? (\n        Just(v)\n    ) : Nothing();\n};",
+  "lookupTuples": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = (k, kvs) =>\n    bindMay(\n        find(x => k === fst(x), kvs),\n        x => Just(snd(x))\n    );",
+  "mReturn": "// Not required in JS, which has first functions by default\n// Included for comparison with AS, which can only obtain\n// first class functions by lifting 'handlers' into 'scripts'\n// as anonymous |λ|() functions.\n\n// Here Just an alternative name for id.\n\n// mReturn :: First-class m => (a -> b) -> m (a -> b)\nconst mReturn = id;",
+  "map": "// map :: (a -> b) -> [a] -> [b]\nconst map = (f, xs) => xs.map(f);",
+  "mapAccumL": "// 'The mapAccumL function behaves like a combination of map and foldl; \n// it applies a function to each element of a list, passing an accumulating \n// parameter from left to right, and returning a final value of this \n// accumulator together with the new list.' (See Hoogle)\n\n// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumL = (f, acc, xs) =>\n    xs.reduce((a, x, i) => {\n        const pair = f(a[0], x, i);\n        return Tuple(pair[0], a[1].concat(pair[1]));\n    }, Tuple(acc, []));",
+  "mapAccumL_Tree": "// mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)\nconst mapAccumL_Tree = (f, acc, tree) => {\n    const go = (a, x) => {\n        const\n            pair = f(a, x.root),\n            tpl = mapAccumL(go, pair[0], x.nest);\n        return Tuple(tpl[0], Node(pair[1], tpl[1]));\n    };\n    return go(acc, tree);\n};",
+  "mapAccumR": "// 'The mapAccumR function behaves like a combination of map and foldr; \n// it applies a function to each element of a list, passing an accumulating \n// parameter from right to left, and returning a final value of this \n// accumulator together with the new list.' (See Hoogle)\n\n// mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumR = (f, acc, xs) =>\n    xs.reduceRight((a, x, i) => {\n        const pair = f(a[0], x, i);\n        return Tuple(pair[0],\n            [pair[1]].concat(a[1])\n        );\n    }, Tuple(acc, []));",
+  "mapFromList": "// mapFromList :: [(k, v)] -> Dict\nconst mapFromList = kvs =>\n    kvs.reduce(\n        (a, kv) => {\n            const k = kv[0];\n            return Object.assign(a, {\n                [(typeof k === 'string' && k) || show(k)]: kv[1]\n            });\n        }, {}\n    );",
+  "mapKeys": "// A function mapped over the keys of a record\n\n// mapKeys :: (Key -> Key) -> IntMap a -> IntMap a\nconst mapKeys = (f, dct) =>\n    mapFromList(\n        map(\n            kv => [f(read(kv[0])), kv[1]],\n            zip(keys(dct), elems(dct))\n        )\n    );",
+  "mapMaybe": "// The mapMaybe function is a version of map which can throw out\n// elements. In particular, the functional argument returns\n// something of type Maybe b. If this is Nothing, no element is\n// added on to the result list. If it just Just b, then b is\n// included in the result list.\n\n// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = (mf, xs) =>\n    concatMap(compose(mf, maybeToList), xs);",
+  "mappend (<>)": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = (a, b) => {\n    const t = a.type;\n    return (Boolean(t) ? (\n        t === 'Maybe' ? (\n            mappendMaybe\n        ) : t === 'Ordering' ? (\n            mappendOrdering\n        ) : mappendTuple\n    ) : append)(a, b);\n};",
+  "mappendComparing": "// mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)\nconst mappendComparing = fs =>\n    (x, y) => fs.reduce(\n        (ordr, f) => ordr || compare(f(x), f(y)),\n        0\n    );",
+  "mappendComparing2": "// Expects functions in the argument list to be \n// paired with Bools:\n//     true  -> ascending sort on that key\n//     false -> descending sort on that key\n\n// mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)\nconst mappendComparing2 = fboolPairs =>\n    (x, y) => fboolPairs.reduce(\n        (ordr, fb) => {\n            const f = fb[0];\n            return ordr !== 0 ? (\n                ordr\n            ) : fb[1] ? (\n                compare(f(x), f(y))\n            ) : compare(f(y), f(x));\n        }, 0\n    );",
+  "mappendMaybe (<>)": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = (a, b) =>\n    a.Nothing ? b : b.Nothing ? a :\n    Just(mappend(a.Just, b.Just));",
+  "mappendOrdering (<>)": "// mappendOrdering (<>) :: Ordering -> Ordering -> Ordering\nconst mappendOrdering = (a, b) => eqOrdering(EQ, a) ? b : a;",
+  "mappendTuple (<>)": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = (t, t2) =>\n    Tuple(mappend(t[0], t1[0]), mappend(t[1], t1[1]));",
+  "max": "// max :: Ord a => a -> a -> a\nconst max = (a, b) => b > a ? b : a;",
+  "maximum": "// maximum :: Ord a => [a] -> a\nconst maximum = xs =>\n    xs.length > 0 ? (\n        foldl1((a, x) => x > a ? x : a, xs)\n    ) : undefined;",
+  "maximumBy": "//  Ordering: (LT|EQ|GT):\n//  GT: 1 (or other positive n)\n//\tEQ: 0\n//  LT: -1 (or other negative n) \n\n// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = (f, xs) =>\n    xs.length > 0 ? (\n        xs.slice(1)\n        .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0])\n    ) : undefined;",
+  "maximumByMay": "//Ordering: (LT|EQ|GT):\n//  GT: 1 (or other positive n)\n//\tEQ: 0\n//  LT: -1 (or other negative n) \n\n// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = (f, xs) =>\n    xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0]))\n    ) : Nothing();",
+  "maximumMay": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => (x > a ? x : a), xs[0]))\n    ) : Nothing();",
+  "maybe": "// Default value (v) if m.Nothing, or f(m.Just)\n\n// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = (v, f, m) =>\n    m.Nothing ? v : f(m.Just);",
+  "maybeToList": "// The maybeToList function returns an empty list when given\n// Nothing or a singleton list when not given Nothing.”\n\n// maybeToList :: Maybe a -> [a]\nconst maybeToList = mb =>\n    mb.Nothing ? [] : [mb.Just];",
+  "mean": "// mean :: [Num] -> Num\nconst mean = xs =>\n  xs.reduce((a, x) => a + x, 0) / xs.length;",
+  "member": "// member :: Key -> Dict -> Bool\nconst member = (k, dct) => k in dct;",
+  "min": "// min :: Ord a => a -> a -> a\nconst min = (a, b) => b < a ? b : a;",
+  "minimum": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    xs.length > 0 ? (\n        foldl1((a, x) => x < a ? x : a, xs)\n    ) : undefined;",
+  "minimumBy": "//Ordering: (LT|EQ|GT):\n//  GT: 1 (or other positive n)\n//\tEQ: 0\n//  LT: -1 (or other negative n)\n\n// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = (f, xs) =>\n    xs.reduce((a, x) => a === undefined ? x : (\n        f(x, a) < 0 ? x : a\n    ), undefined);",
+  "minimumByMay": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = (f, xs) =>\n    xs.reduce((a, x) => a.Nothing ? Just(x) : (\n        f(x, a.Just) < 0 ? Just(x) : a\n    ), Nothing());",
+  "minimumMay": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => x < a ? x : a, xs[0])\n        )\n    ) : Nothing();",
+  "mod": "// mod :: Int -> Int -> Int\nconst mod = (n, d) => n % d;",
+  "modificationTime": "// modificationTime :: FilePath -> Either String Date\nconst modificationTime = fp =>\n    bindLR(\n       fileStatus(fp),\n       dct => Right(ObjC.unwrap(dct.NSFileModificationDate))\n    );",
+  "negate": "// negate :: Num -> Num\nconst negate = n => -n;",
+  "newUUID": "// newUUID :: () -> IO UUID String\nconst newUUID = () =>\n    ObjC.unwrap($.NSUUID.UUID.UUIDString);",
+  "not": "// not :: Bool -> Bool\nconst not = b => !b;",
+  "notElem": "// notElem :: Eq a => a -> [a] -> Bool\nconst notElem = (x, xs) => xs.indexOf(x) === -1;",
+  "nub": "// nub :: [a] -> [a]\nconst nub = xs => nubBy((a, b) => a === b, xs);",
+  "nubBy": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = (p, xs) => {\n    const go = xs => xs.length > 0 ? (() => {\n        const x = xs[0];\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !p(x, y))\n            )\n        )\n    })() : [];\n    return go(xs);\n};",
+  "odd": "// odd :: Int -> Bool\nconst odd = n => !even(n);",
+  "on": "// e.g. sortBy(on(compare,length), xs)\n\n// on :: (b -> b -> c) -> (a -> b) -> a -> a -> c\nconst on = (f, g) => (a, b) => f(g(a), g(b));",
+  "or": "// or :: [Bool] -> Bool\nconst or = xs =>\n    xs.some(Boolean);",
+  "ord": "// ord :: Char -> Int\nconst ord = c => c.codePointAt(0);",
+  "outdented": "// All lines in the string outdented by the same amount\n// (just enough to ensure that the least indented lines \n//  have no remaining indent)\n// All relative indents are left unchanged\n\n// outdented :: String -> String\nconst outdented = s => {\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy( // size of minimum indent\n            comparing(length),\n            map(txt => rgx.exec(txt)[0], xs)\n        ));\n    return unlines(map(curry(drop)(n), xs));\n};",
+  "partition": "// partition :: Predicate -> List -> (Matches, nonMatches)\n\n// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = (p, xs) =>\n    xs.reduce(\n        (a, x) =>\n        p(x) ? (\n            Tuple(a[0].concat(x), a[1])\n        ) : Tuple(a[0], a[1].concat(x)),\n        Tuple([], [])\n    );",
+  "partitionEithers": "// partitionEithers :: [Either a b] -> ([a], [b])\nconst partitionEithers = xs =>\n    xs.reduce((a, x) =>\n        x.Left !== undefined ? (\n            Tuple(a[0].concat(x.Left), a[1])\n        ) : Tuple(a[0], a[1].concat(x.Right)),\n        Tuple([], [])\n    );",
+  "permutations": "// permutations :: [a] -> [[a]]\nconst permutations = xs =>\n    xs.length ? concatMap(x => concatMap(ys => [\n            [x].concat(ys)\n        ],\n        permutations(delete_(x, xs))), xs) : [\n        []\n    ];",
+  "permutationsWithRepetition": "// permutationsWithRepetition :: Int -> [a] -> [[a]]\nconst permutationsWithRepetition = (n, xs) =>\n    xs.length > 0 ? (\n        map(flatten, foldl1(x => cartesianProduct(xs, x), replicate(n, xs)))\n    ) : [];",
+  "pi": "// pi :: Float\nconst pi = Math.PI;",
+  "plus": "// plus :: Num -> Num -> Num\nconst plus = (a, b) => a + b;",
+  "pred": "// pred :: Enum a => a -> a\nconst pred = x =>\n    isChar(x) ? (\n        chr(ord(x) - 1)\n    ) : isNaN(x) ? (\n        undefined\n    ) : x - 1;",
+  "product": "// product :: [Num] -> Num\nconst product = xs => xs.reduce((a, x) => a * x, 1);",
+  "properFraction": "// properFraction :: Real -> (Int, Real)\nconst properFraction = n => {\n    const i = Math.floor(n) + (n < 0 ? 1 : 0);\n    return Tuple(i, n - i);\n};",
+  "pureLR": "// pureLR :: a -> Either e a\nconst pureLR = x => Right(x);",
+  "pureList": "// pureList :: a -> [a]\nconst pureList = x => [x];",
+  "pureMay": "// pureMay :: a -> Maybe a\nconst pureMay = x => Just(x);",
+  "pureT": "// pureT :: f a -> (a -> f a)\nconst pureT = x =>\n    Array.isArray(x) ? (\n        pureList\n    ) : (() => {\n        const t = x.type;\n        return t !== undefined ? (\n            t === 'Either' ? (\n                pureLR\n            ) : t === 'Maybe' ? (\n                pureMay\n            ) : t === 'Tree' ? (\n                pureTree\n            ) : t === 'Tuple' ? (\n                pureTuple\n            ) : pureList\n        ) : pureList;\n    })();",
+  "pureTree": "// pureTree :: a -> Tree a\nconst pureTree = x => Node(x, []);",
+  "pureTuple": "// pureTuple :: a -> (a, a)\nconst pureTuple = x => Tuple('', x);",
+  "quickSort": "// Included only for comparison with AppleScript\n// sort and sortBy are faster and more flexible\n\n// quickSort :: (Ord a) => [a] -> [a]\nconst quickSort = xs =>\n    xs.length > 1 ? (() => {\n        const\n            h = xs[0],\n            lessMore = partition(x => x <= h, xs.slice(1));\n        return [].concat.apply(\n            [], [quickSort(lessMore[0]), h, quickSort(lessMore[1])]\n        );\n    })() : xs;",
+  "quickSortBy": "// Included only for comparison with AppleScript\n// sort and sortBy are faster and more flexible\n\n// quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst quickSortBy = (cmp, xs) =>\n    xs.length > 1 ? (() => {\n        const\n            h = xs[0],\n            lessMore = partition(\n                x => cmp(x, h) !== 1,\n                xs.slice(1)\n            );\n        return [].concat.apply(\n            [], [quickSortBy(cmp, lessMore[0]), h, quickSortBy(cmp, lessMore[1])]\n        );\n    })() : xs;",
+  "quot": "// quot :: Int -> Int -> Int\nconst quot = (n, m) => Math.floor(n / m);",
+  "quotRem": "// quotRem :: Int -> Int -> (Int, Int)\nconst quotRem = (m, n) => Tuple(Math.floor(m / n), m % n);",
+  "raise": "// raise :: Num -> Int -> Num\nconst raise = (n, e) => Math.pow(n, e);",
+  "randomRInt": "// randomRInt :: Int -> Int -> Int\nconst randomRInt = (low, high) =>\n    low + Math.floor(\n        (Math.random() * ((high - low) + 1))\n    );",
+  "range": "// The list of values in the subrange defined by a bounding pair.\n\n// range([0, 2]) -> [0,1,2]\n// range([[0,0], [2,2]]) \n//  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]\n// range([[0,0,0],[1,1,1]])\n//  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]\n\n// range :: Ix a => (a, a) -> [a]\nfunction range() {\n    const\n        args = Array.from(arguments),\n        ab = args.length !== 1 ? (\n            args\n        ) : args[0],\n        [as, bs] = [ab[0], ab[1]].map(\n            x => Array.isArray(x) ? (\n                x\n            ) : (x.type !== undefined) &&\n            (x.type.startsWith('Tuple')) ? (\n                listFromTuple(x)\n            ) : [x]\n        ),\n        an = as.length;\n    return (an === bs.length) ? (\n        an > 1 ? (\n            sequenceAList(as.map((_, i) => enumFromTo(as[i], bs[i])))\n        ) : enumFromTo(as[0], bs[0])\n    ) : [];\n};",
+  "read": "// read :: Read a => String -> a\nconst read = JSON.parse;",
+  "readFile": "// readFile :: FilePath -> IO String\nconst readFile = strPath => {\n    const\n        error = $(),\n        str = ObjC.unwrap(\n            $.NSString.stringWithContentsOfFileEncodingError(\n                $(strPath)\n                .stringByStandardizingPath,\n                $.NSUTF8StringEncoding,\n                error\n            )\n        );\n    return Boolean(error.code) ? (\n        ObjC.unwrap(error.localizedDescription)\n    ) : str;\n};",
+  "readFileMay": "// readFileMay :: FilePath -> Maybe String\nconst readFileMay = strPath => {\n    const\n        error = $(),\n        str = ObjC.unwrap(\n            $.NSString.stringWithContentsOfFileEncodingError(\n                $(strPath)\n                .stringByStandardizingPath,\n                $.NSUTF8StringEncoding,\n                error\n            )\n        );\n    return Boolean(error.code) ? (\n        Nothing()\n    ) : Just(str);\n};",
+  "readJSON": "// readJSON :: String -> a\nconst readJSON = JSON.parse;",
+  "readJSONLR": "// readJSONLR :: Read a => String -> Either String a\nconst readJSONLR = strJSON => {\n    try {\n        return Right(JSON.parse(strJSON));\n    } catch (e) {\n        // message, line, column, stack\n        return Left(\n            'line:' + e.line +\n            ' col:' + e.column + ':\\n' + e.message\n        );\n    }\n};",
+  "readMay": "// readMay :: Read a => String -> Maybe a\nconst readMay = s => {\n    try {\n        return Just(JSON.parse(s))\n    } catch (e) {\n        return Nothing();\n    };\n};",
+  "recip": "// recip :: Num -> Num\nconst recip = n =>\n    n !== 0 ? (1 / n) : undefined;",
+  "recipMay": "// recipMay :: Num -> Maybe Num\nconst recipMay = n =>\n    n === 0 ? (\n        Nothing()\n    ) : Just(1 / n);",
+  "regexMatches": "// regexMatches :: String -> String -> [[String]]\nconst regexMatches = (strRgx, strHay) => {\n    const rgx = new RegExp(strRgx, 'g');\n    let m = rgx.exec(strHay),\n        xs = [];\n    while (m)(xs.push(m), m = rgx.exec(strHay));\n    return xs;\n};",
+  "rem": "// rem :: Int -> Int -> Int\nconst rem = (n, m) => n % m;",
+  "removeFile": "// removeFile :: FilePath -> Either String String\nconst removeFile = fp => {\n  const error = $();\n  return $.NSFileManager.defaultManager\n    .removeItemAtPathError(fp, error) ? (\n      Right('Removed: ' + fp)\n    ) : Left(ObjC.unwrap(error.localizedDescription));\n};",
+  "replace": "// replace :: String -> String -> String -> String\n// replace :: Regex -> String -> String -> String\nconst replace = (needle, strNew, strHaystack) =>\n    strHaystack.replace(\n        typeof needle !== 'string' ? (\n            needle\n        ) : new RegExp(needle, 'g'),\n        strNew\n    );",
+  "replicate": "// replicate :: Int -> a -> [a]\nconst replicate = (n, x) =>\n    Array.from({\n        length: n\n    }, () => x);",
+  "replicateM": "// Instance for lists (arrays) only here\n\n// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = (n, xs) => {\n    const loop = x => x <= 0 ? [\n        []\n    ] : liftA2(cons, xs, loop(x - 1));\n    return loop(n);\n};",
+  "replicateString": "// replicateString :: Int -> String -> String\nconst replicateString = (n, s) => s.repeat(n);",
+  "reverse": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    typeof xs === 'string' ? (\n        xs.split('')\n        .reverse()\n        .join('')\n    ) : xs.slice(0)\n    .reverse();",
+  "rights": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    concatMap(\n        x => x.type === 'Either' && x.Right !== undefined ? (\n            [x.Right]\n        ) : [], xs\n    );",
+  "rotate": "// rotate :: Int -> [a] -> [a]\nconst rotate = (n, xs) => {\n    const lng = xs.length;\n    return lng > 0 ? takeDropCycle(lng, n, xs) : [];\n};",
+  "round": "// round :: a -> Int\nconst round = x => {\n    const\n        nr = properFraction(x),\n        [n, r] = [nr[0], nr[1]]\n        m = n + (r < 0 ? -1 : 1),\n        sign = signum(abs(r) - 0.5);\n    return sign === -1 ? n : (\n        sign === 0 ? (even(n) ? n : m) : (\n            sign === 1 ? m : undefined\n        )\n    );\n};",
+  "safeMay": "// safeMay :: (a -> Bool) -> (a -> b) -> Maybe b\nconst safeMay = (p, f, x) =>\n    p(x) ? Just(f(x)) : Nothing();",
+  "scanl": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = (f, startValue, xs) =>\n    xs.reduce((a, x) => {\n        const v = f(a[0], x);\n        return Tuple(v, a[1].concat(v));\n    }, Tuple(startValue, [startValue]))[1];",
+  "scanl1": "// scanl1 is a variant of scanl that has no starting value argument\n\n// scanl1 :: (a -> a -> a) -> [a] -> [a]\nconst scanl1 = (f, xs) =>\n    xs.length > 0 ? scanl(f, xs[0], xs.slice(1)) : [];",
+  "scanr": "// scanr :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanr = (f, startValue, xs) =>\n    xs.reduceRight((a, x) => {\n        const v = f(a.acc, x);\n        return {\n            acc: v,\n            scan: [v].concat(a.scan)\n        };\n    }, {\n        acc: startValue,\n        scan: [startValue]\n    })\n    .scan;",
+  "scanr1": "// scanr1 is a variant of scanr that has no starting value argument\n\n// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = (f, xs) =>\n    xs.length > 0 ? scanr(f, xs.slice(-1)[0], xs.slice(0, -1)) : [];",
+  "secondArrow": "// Lift a simple function to one which applies to a tuple, \n// transforming only the second item of the tuple\n\n// secondArrow :: (a -> b) -> ((c, a) -> (c, b))\nconst secondArrow = f => xy => Tuple(xy[0], f(xy[1]));",
+  "sequenceAList": "// sequenceAList :: Applicative f => [f a] -> f [a]\nconst sequenceAList = us =>\n    us.length > 0 ? (\n        us.reduceRight(\n            (v, u) => ap(fmap(x => xs => [x, ...xs], u), v),\n            pureT(us[0])([])\n        )\n    ) : us;",
+  "setCurrentDirectory": "// setCurrentDirectory :: String -> IO ()\nconst setCurrentDirectory = strPath =>\n    $.NSFileManager.defaultManager\n    .changeCurrentDirectoryPath(\n        ObjC.wrap(strPath)\n        .stringByStandardizingPath\n    );",
+  "show": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = (x, n) => {\n    const\n        e = typeof x !== 'function' ? (\n            x\n        ) : {\n            type: 'Function',\n            f: x\n        };\n    return JSON.stringify(e, (_, v) => {\n        const\n            f = (v !== null && v !== undefined) ? (() => {\n                const t = v.type;\n                return t === 'Either' ? (\n                    showLR\n                ) : t === 'Function' ? (\n                    dct => 'λ' + dct.f.toString()\n                ) : t === 'Maybe' ? (\n                    showMaybe\n                ) : t === 'Ordering' ? (\n                    showOrdering\n                ) : t === 'Ratio' ? (\n                    showRatio\n                ) : t === 'Tuple' ? (\n                    showTuple\n                ) : t === 'Tuple3' ? (\n                    showTuple3\n                ) : t === 'Tuple4' ? (\n                    showTuple4\n                ) : undefined;\n            })() : showUndefined;\n        return Boolean(f) ? (\n            f(v)\n        ) : typeof v !== 'string' ? (\n            v\n        ) : \"'\" + v + \"'\";\n    }, n)\n};",
+  "showBinary": "// showBinary :: Int -> String\nconst showBinary = n => {\n    const binaryChar = n => n !== 0 ? '1' : '0';\n    return showIntAtBase(2, binaryChar, n, '');\n};",
+  "showDate": "// showDate :: Date -> String\nconst showDate = JSON.stringify;",
+  "showDict": "// showDict :: Dict -> String\nconst showDict = show;",
+  "showHex": "// showHex :: Int -> String\nconst showHex = n =>\n    showIntAtBase(16, intToDigit, n, '');",
+  "showIntAtBase": "// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String\nconst showIntAtBase = (base, toChr, n, rs) => {\n    const showIt = ([n, d], r) => {\n        const r_ = toChr(d) + r;\n        return n !== 0 ? (\n            showIt(quotRem(n, base), r_)\n        ) : r_;\n    };\n    return base <= 1 ? (\n        'error: showIntAtBase applied to unsupported base'\n    ) : n < 0 ? (\n        'error: showIntAtBase applied to negative number'\n    ) : showIt(quotRem(n, base), rs);\n};",
+  "showJSON": "// showJSON :: a -> String\nconst showJSON = x => JSON.stringify(x, null, 2);",
+  "showLR": "// showLR :: Either a b -> String\nconst showLR = lr => {\n    const k = lr.Left !== undefined ? (\n        'Left'\n    ) : 'Right';\n    return k + '(' + unQuoted(show(lr[k])) + ')';\n};",
+  "showList": "// showList :: [a] -> String\nconst showList = show;",
+  "showLog": "// showLog :: a -> IO ()\nconst showLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",
+  "showMaybe": "// showMaybe :: Maybe a -> String\nconst showMaybe = mb =>\n    mb.Nothing ? (\n        'Nothing'\n    ) : 'Just(' + unQuoted(show(mb.Just)) + ')';",
+  "showOrdering": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    e.value > 0 ? (\n        'GT'\n    ) : e.value < 0 ? (\n        'LT'\n    ) : 'EQ';",
+  "showRatio": "// showRatio :: Ratio -> String\nconst showRatio = nd =>\n    nd.n.toString() + '/' + nd.d.toString();",
+  "showTuple": "// showTuple :: Tuple -> String\nconst showTuple = tpl =>\n    '(' + [0, 1].map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
+  "showTuple3": "// showTuple3 :: Tuple3 -> String\nconst showTuple3 = tpl =>\n    '(' + [0, 1, 2].map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
+  "showTuple4": "// showTuple4 :: Tuple4 -> String\nconst showTuple4 = tpl =>\n    '(' + [0, 1, 2, 3].map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
+  "showUndefined": "// showUndefined :: () -> String\nconst showUndefined = () => '(⊥)';",
+  "signum": "// | Sign of a number.\n// The functions 'abs' and 'signum' should satisfy the law:\n//\n// > abs x * signum x == x\n//\n// For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)\n// or @1@ (positive).\n\n// signum :: Num -> Num\nconst signum = n => n < 0 ? -1 : (n > 0 ? 1 : 0);",
+  "snd": "// snd :: (a, b) -> b\nconst snd = tpl => tpl[1];",
+  "snoc": "// Mirror image of cons\n// New copy of the list, with an atom added at the end\n\n// snoc :: [a] -> a -> [a]\nconst snoc = (xs, x) => xs.concat(x);",
+  "sort": "// sort :: Ord a => [a] -> [a]\nconst sort = xs => xs.slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));",
+  "sortBy": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = (f, xs) =>\n    xs.slice()\n    .sort(f);",
+  "sortOn": "// Sort a list by comparing the results of a key function applied to each\n// element. sortOn f is equivalent to sortBy (comparing f), but has the\n// performance advantage of only evaluating f once for each element in\n// the input list. This is called the decorate-sort-undecorate paradigm,\n// or Schwartzian transform.\n// Elements are arranged from from lowest to highest.\n\n// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = (f, xs) => {\n    // Functions and matching bools derived from argument f\n    // which may be a single key function, or a list of key functions\n    // each of which may or may not be followed by a direction bool.\n    const fsbs = unzip(\n            flatten([f])\n            .reduceRight((a, x) =>\n                typeof x === 'boolean' ? {\n                    asc: x,\n                    fbs: a.fbs\n                } : {\n                    asc: true,\n                    fbs: [\n                        [x, a.asc]\n                    ].concat(a.fbs)\n                }, {\n                    asc: true,\n                    fbs: []\n                })\n            .fbs\n        ),\n        [fs, bs] = [fsbs[0], fsbs[1]],\n        iLast = fs.length;\n    // decorate-sort-undecorate\n    return sortBy(mappendComparing_(\n            // functions that access pre-calculated values\n            // by position in the decorated ('Schwartzian')\n            // version of xs\n            zip(fs.map((_, i) => x => x[i]), bs)\n        ), xs.map( // xs decorated with precalculated values\n            x => fs.reduceRight(\n                (a, g) => [g(x)].concat(a), [\n                    x\n                ])))\n        .map(x => x[iLast]); // undecorated version of data, post sort.\n};",
+  "span": "// span, applied to a predicate p and a list xs, returns a tuple of xs of \n// elements that satisfy p and second element is the remainder of the list:\n//\n// > span (< 3) [1,2,3,4,1,2,3,4] == ([1,2],[3,4,1,2,3,4])\n// > span (< 9) [1,2,3] == ([1,2,3],[])\n// > span (< 0) [1,2,3] == ([],[1,2,3])\n//\n// span p xs is equivalent to (takeWhile p xs, dropWhile p xs) \n\n// span :: (a -> Bool) -> [a] -> ([a],[a])\nconst span = (f, xs) =>\n    splitAt(until(\n        i => !f(xs[i]),\n        i => i + 1,\n        0\n    ), xs);",
+  "splitArrow (***)": "// Compose a function (from a tuple to a tuple), \n// (with separate transformations for fst and snd)\n\n// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))\nconst splitArrow = (f, g) => tpl => Tuple(f(tpl[0]), g(tpl[1]));",
+  "splitAt": "// splitAt :: Int -> [a] -> ([a],[a])\nconst splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));",
+  "splitBy": "// Splitting not on a delimiter, but whenever the relationship between\n// two consecutive items matches a supplied predicate function\n\n// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) -> String -> [String]\nconst splitBy = (p, xs) =>\n    (xs.length < 2) ? [xs] : (() => {\n        const\n            bln = 'string' === typeof xs,\n            ys = bln ? xs.split('') : xs,\n            h = ys[0],\n            parts = ys.slice(1)\n            .reduce(([acc, active, prev], x) =>\n                p(prev, x) ? (\n                    [acc.concat([active]), [x], x]\n                ) : [acc, active.concat(x), x], [\n                    [],\n                    [h],\n                    h\n                ]);\n        return (bln ? (\n            ps => ps.map(cs => ''.concat.apply('', cs))\n        ) : x => x)(parts[0].concat([parts[1]]));\n    })();",
+  "splitEvery": "// splitEvery :: Int -> [a] -> [[a]]\nconst splitEvery = (n, xs) => {\n    if (xs.length <= n) return [xs];\n    const [h, t] = [xs.slice(0, n), xs.slice(n)];\n    return [h].concat(splitEvery(n, t));\n};",
+  "splitFileName": "// Split a filename into directory and file. combine is the inverse.\n\n// splitFileName :: FilePath -> (String, String)\nconst splitFileName = strPath =>\n    strPath !== '' ? (\n        strPath[strPath.length - 1] !== '/' ? (() => {\n            const\n                xs = strPath.split('/'),\n                stem = xs.slice(0, -1);\n            return stem.length > 0 ? (\n                Tuple(stem.join('/') + '/', xs.slice(-1)[0])\n            ) : Tuple('./', xs.slice(-1)[0]);\n        })() : Tuple(strPath, '')\n    ) : Tuple('./', '');",
+  "splitOn": "// splitOn :: String -> String -> [String]\n// splitOn :: a -> [a] -> [[a]]\nconst splitOn = (needle, haystack) =>\n    typeof haystack === 'string' ? (\n        haystack.split(needle)\n    ) : (() => {\n        const tpl = haystack.reduce(\n            (a, x) => needle === x ? Tuple(\n                a[0].concat([a[1]]), []\n            ) : Tuple(a[0], a[1].concat(x)),\n            Tuple([], [])\n        );\n        return tpl[0].concat([tpl[1]]);\n    })();",
+  "splitRegex": "// splitRegex :: Regex -> String -> [String]\nconst splitRegex = (needle, haystack) =>\n    haystack.split(needle);",
+  "sqrt": "// sqrt :: Num -> Num\nconst sqrt = n =>\n    n >= 0 ? Math.sqrt(n) : undefined;",
+  "sqrtMay": "// sqrtMay :: Num -> Maybe Num\nconst sqrtMay = n =>\n    n < 0 ? (\n        Nothing()\n    ) : Just(Math.sqrt(n));",
+  "strip": "// strip :: String -> String\nconst strip = s => s.trim();",
+  "stripEnd": "// stripEnd :: String -> String\nconst stripEnd = s => dropWhileEnd(isSpace, s);",
+  "stripPrefix": "// stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]\nconst stripPrefix = (pfx, s) => {\n    const\n        blnString = typeof pfx === 'string',\n        [xs, ys] = blnString ? (\n            [pfx.split(''), s.split('')]\n        ) : [pfx, s];\n    const\n        sp_ = (xs, ys) => xs.length === 0 ? (\n            Just(blnString ? ys.join('') : ys)\n        ) : (ys.length === 0 || xs[0] !== ys[0]) ? (\n            Nothing()\n        ) : sp_(xs.slice(1), ys.slice(1));\n    return sp_(xs, ys);\n};",
+  "stripStart": "// stripStart :: String -> String\nconst stripStart = s => dropWhile(isSpace, s);",
+  "subsequences": "// subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n// subsequences('abc') -> [\"\",\"a\",\"b\",\"ab\",\"c\",\"ac\",\"bc\",\"abc\"]\n\n// subsequences :: [a] -> [[a]]\n// subsequences :: String -> [String]\nconst subsequences = xs => {\n    const\n        cons = (x, xs) => [x].concat(xs),\n        // nonEmptySubsequences :: [a] -> [[a]]\n        nonEmptySubsequences = xxs => {\n            if (xxs.length < 1) return [];\n            const [x, xs] = [xxs[0], xxs.slice(1)];\n            const f = (r, ys) => cons(ys, cons(cons(x, ys), r));\n            return cons([x], nonEmptySubsequences(xs)\n                .reduceRight(f, []));\n        };\n    return typeof xs === 'string' ? (\n        cons('', nonEmptySubsequences(xs.split(''))\n            .map(x => ''.concat.apply('', x))) // map(concat)\n    ) : cons([], nonEmptySubsequences(xs));\n};",
+  "subtract": "// subtract :: Num -> Num -> Num\nconst subtract = (x, y) => y - x;",
+  "succ": "// succ :: Enum a => a -> a\nconst succ = x =>\n    isChar(x) ? (\n        chr(ord(x) + 1)\n    ) : isNaN(x) ? (\n        undefined\n    ) : x + 1;",
+  "sum": "// sum :: [Num] -> Num\nconst sum = xs => xs.reduce((a, x) => a + x, 0);",
+  "swap": "// swap :: (a, b) -> (b, a)\nconst swap = ab =>\n    Tuple(ab[1], ab[0]);",
+  "tail": "// tail :: [a] -> [a]\nconst tail = xs => xs.length > 0 ? xs.slice(1) : [];",
+  "tailMay": "// tailMay :: [a] -> Maybe [a]\nconst tailMay = xs =>\n    xs.length > 0 ? (\n        Just(xs.slice(1))\n    ) : Nothing();",
+  "tails": "// tails :: [a] -> [[a]]\nconst tails = xs => {\n    const xs_ = typeof xs === 'string' ? xs.split('') : xs;\n    return xs_.map((_, i) => xs_.slice(i))\n        .concat([\n            []\n        ]);\n};",
+  "take": "// take :: Int -> [a] -> [a]\nconst take = (n, xs) => xs.slice(0, n);",
+  "takeAround": "// takeAround :: (a -> Bool) -> [a] -> [a]\nconst takeAround = (p, xs) => {\n    const ys = takeWhile(p, xs);\n    return ys.length < xs.length ? (\n        ys.concat(takeWhileR(p, xs))\n    ) : ys;\n};",
+  "takeBaseName": "// takeBaseName :: FilePath -> String\nconst takeBaseName = strPath =>\n  strPath !== '' ? (\n    strPath[strPath.length - 1] !== '/' ? (() => {\n      const fn = strPath.split('/').slice(-1)[0];\n      return fn.includes('.') ? (\n        fn.split('.').slice(0, -1).join('.')\n      ) : fn;\n    })() : ''\n  ) : '';",
+  "takeCycle": "// First n members of an infinite cycle of xs\n\n// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = (n, xs) => {\n  const lng = xs.length;\n  return (lng >= n ? xs : concat(replicate(Math.ceil(n / lng), xs)))\n  .slice(0, n)\n};",
+  "takeDirectory": "// takeDirectory :: FilePath -> FilePath\nconst takeDirectory = strPath =>\n    strPath !== '' ? (() => {\n        const xs = (strPath.split('/'))\n            .slice(0, -1);\n        return xs.length > 0 ? (\n            xs.join('/')\n        ) : '.';\n    })() : '.';",
+  "takeDropCycle": "// take N Members of an infinite cycle of xs, starting from index I\n\n// takeDropCycle :: Int -> [a] -> [a]\nconst takeDropCycle = (n, i, xs) => {\n    const\n        lng = xs.length,\n        m = n + i;\n    return drop(i,\n        take(m,\n            (lng >= m ? xs : concat(replicate(Math.ceil(m / lng), xs)))\n        )\n    );\n};",
+  "takeExtension": "// takeExtension :: FilePath -> String\nconst takeExtension = strPath => {\n    const\n        xs = strPath.split('.'),\n        lng = xs.length;\n    return lng > 1 ? (\n        '.' + xs[lng - 1]\n    ) : '';\n};",
+  "takeFileName": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = strPath =>\n    strPath !== '' ? (\n        strPath[strPath.length - 1] !== '/' ? (\n            strPath.split('/')\n            .slice(-1)[0]\n        ) : ''\n    ) : '';",
+  "takeIterate": "// takeIterate n f x == [x, f x, f (f x), ...]\n\n// takeIterate :: Int -> (a -> a) -> a -> [a]\nconst takeIterate = (n, f, x) =>\n    snd(mapAccumL((a, _, i) => {\n        const v = i !== 0 ? f(a) : x;\n        return [v, v];\n    }, x, Array.from({\n        length: n\n    })));",
+  "takeWhile": "// takeWhile :: (a -> Bool) -> [a] -> [a]\nconst takeWhile = (p, xs) => {\n    let i = 0;\n    const lng = xs.length;\n    while ((i < lng) && p(xs[i])) (i = i + 1);\n    return xs.slice(0, i);\n};",
+  "takeWhileR": "// takeWhileR :: (a -> Bool) -> [a] -> [a]\nconst takeWhileR = (p, xs) => {\n    let i = xs.length;\n    while (i-- && p(xs[i])) {}\n    return xs.slice(i + 1);\n};",
+  "tempFilePath": "// File name template -> temporary path\n// (Random digit sequence inserted between template base and extension)\n\n// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n    ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);",
+  "then (>>)": "// then (>>) :: Monad m => m a -> m b -> m b\nconst then = (ma, mb) =>\n    (Array.isArray(ma) ? (\n        thenList\n    ) : isMaybe(ma) ? (\n        thenMay\n    ) : thenIO)\n    .apply(null, [ma, mb]);",
+  "thenIO (>>)": "// thenIO (>>) :: IO a -> IO b -> IO b\nconst thenIO = (ma, mb) => mb;",
+  "thenList (>>)": "// thenList (>>) :: [a] -> [b] -> [b]\nconst thenList = (xs, ys) =>\n    concatMap(_ => ys, xs);",
+  "thenMay (>>)": "// thenMay (>>) :: Maybe a -> Maybe b -> Maybe b\nconst thenMay = (mbx, mby) =>\n    mbx.Nothing ? mbx : mby;",
+  "toListTree": "// toListTree :: Tree a -> [a]\nconst toListTree = tree => {\n    const go = x => [\n      x.root,\n      ...[].concat.apply([], x.nest.map(go))\n    ];\n    return go(tree);\n};",
+  "toLower": "// toLower :: String -> String\nconst toLower = s => s.toLowerCase();",
+  "toRatio": "// toRatio :: Real -> Ratio\nconst toRatio = n =>\n    approxRatio(1e-12, n);",
+  "toSentence": "// Sentence case - initial string capitalized and rest lowercase\n\n// toSentence :: String -> String\nconst toSentence = s =>\n    s.length > 0 ? (\n        s[0].toUpperCase() + s.slice(1)\n        .toLowerCase()\n    ) : s;",
+  "toTitle": "// NB this does not model any regional or cultural conventions.\n// It simply simply capitalizes the first character of each word.\n\n// toTitle :: String -> String\nconst toTitle = s =>\n    regexMatches(/(\\w)(\\w*)(\\b[\\W]*|$)/g, s)\n    .map(ms => ms[1].toUpperCase() + ms[2].toLowerCase() + ms[3])\n    .join('');",
+  "toUpper": "// toUpper :: String -> String\nconst toUpper = s => s.toUpperCase();",
+  "transpose": "// If some of the rows are shorter than the following rows, \n// their elements are skipped:\n// > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]\n// transpose :: [[a]] -> [[a]]\n\n// transpose :: [[a]] -> [[a]]\nconst transpose = tbl => {\n    const\n        gaps = replicate(\n            length(maximumBy(comparing(length), tbl)), []\n        ),\n        rows = map(xs => xs.concat(gaps.slice(xs.length)), tbl);\n    return map(\n        (_, col) => concatMap(row => [row[col]], rows),\n        rows[0]\n    );\n};",
+  "traverseList": "// - Map each element of a structure to an action,\n// - evaluate these actions from left to right,\n// - and collect the results.\n\n// traverse :: (Traversable t, Applicative f) => (a -> f b) -> t a -> f (t b)\n// traverse_ f = foldr cons_f (pure [])\n//   where cons_f x a = ((:) <$> (f x)) <*> a\n\n// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)\nconst traverseList = (f, xs) =>\n    sequenceAList(fmap(f, xs));",
+  "treeLeaves": "// treeLeaves :: Node -> [Node]\nconst treeLeaves = oNode => {\n  const nest = oNode.nest;\n  return nest.length > 0 ? (\n    concatMap(treeLeaves, nest)\n  ) : [oNode];\n};",
+  "truncate": "// truncate :: Num -> Int\nconst truncate = x => {\n    const [m, _] = properFraction(x);\n    return m;\n};",
+  "tupleFromArray": "// tupleFromArray [a] -> (a, a ...)\nconst tupleFromArray = xs => {\n    const lng = xs.length;\n    return lng > 1 ? xs.reduce(\n        (a, x, i) => Object.assign(a, {\n            [i.toString()]: x\n        }), {\n            type: 'Tuple' + (lng > 2 ? lng.toString() : '')\n        }\n    ) : undefined;\n};",
+  "typeName": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n    return t === 'object' ? (\n        Array.isArray(v) ? (\n            'List'\n        ) : v !== null ? (\n            v.type || 'Dict'\n        ) : 'Bottom'\n    ) : {\n        'boolean': 'Bool',\n        'number' : 'Num',\n        'string' : 'String'\n    }[t] || 'Bottom';\n};",
+  "unQuoted": "// unQuoted :: String -> String\nconst unQuoted = s =>\n    dropAround(x => 34 === x.codePointAt(0), s);",
+  "uncons": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs =>\n    xs.length > 0 ? (\n        Just(Tuple(xs[0], xs.slice(1)))\n    ) : Nothing();",
+  "uncurry": "// Converts a function of more than one argument\n// to a function on Tuple type (Tuple ... TupleN)\n// or array which contains those arguments.\n// This implementation uses the fact that the Tuple\n// constructors create an object with a private .length property\n\n// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f => args => f.apply(null, args);",
+  "unfoldForest": "// | Build a forest from a list of seed values\n\n// unfoldForest :: (b -> (a, [b])) -> [b] -> Forest\nconst unfoldForest = (f, xs) =>\n    xs.map(b => unfoldTree(f, b));",
+  "unfoldTree": "// | Build a tree from a seed value\n\n// unfoldTree :: (b -> (a, [b])) -> b -> Tree a\nconst unfoldTree = (f, b) => {\n    const tpl = f(b);\n    return Node(tpl[0], unfoldForest(f, tpl[1]));\n};",
+  "unfoldl": "// (x => Maybe [value, remainder] -> initial value -> values\n\n// unfoldl :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldl = (f, v) => {\n    let xs = [];\n    return (\n        until(\n            mb => mb.Nothing,\n            mb => (\n                xs = [mb.Just[1]].concat(xs),\n                f(mb.Just[1])\n            ), Just(Tuple(v, v))\n        ),\n        xs.slice(1)\n    );\n};",
+  "unfoldr": "// The 'unfoldr' function is a \\`dual\\' to 'foldr': while 'foldr'\n// reduces a list to a summary value, 'unfoldr' builds a list from\n// a seed value.  The function takes the element and returns 'Nothing'\n// if it is done producing the list or returns 'Just' @(a,b)@, in which\n// case, @a@ is a prepended to the list and @b@ is used as the next\n// element in a recursive call.\n//\n// unfoldr(b => b === 0 ? Nothing() : Just(Tuple(b, b - 1)), 10);\n// --> [10,9,8,7,6,5,4,3,2,1]\n\n// (x => Maybe [value, remainder] -> initial value -> values\n\n// unfoldr :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldr = (f, v) => {\n    let xs = [];\n    return (\n        until(\n            mb => mb.Nothing,\n            mb => (\n                xs.push(mb.Just[0]),\n                f(mb.Just[1])\n            ), Just(Tuple(v, v))\n        ),\n        xs.slice(1)\n    );\n};",
+  "union": "// union :: [a] -> [a] -> [a]\nconst union = (xs, ys) =>\n  unionBy((a, b) => a === b, xs, ys);",
+  "unionBy": "// unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst unionBy = (fnEq, xs, ys) => {\n    const sx = nubBy(fnEq, xs);\n    return sx.concat(\n        sx.reduce(\n            (a, x) => deleteBy(fnEq, x, a),\n            nubBy(fnEq, ys)\n        )\n    );\n};",
+  "unlines": "// unlines :: [String] -> String\nconst unlines = xs => xs.join('\\n');",
+  "unsnoc": "// If the list is empty returns Nothing, otherwise returns \n// Just the init and the last.\n\n// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    xs.length > 0 ? (\n        Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))\n    ) : Nothing();",
+  "until": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = (p, f, x) => {\n    let v = x;\n    while (!p(v)) v = f(v);\n    return v;\n};",
+  "unwords": "// unwords :: [String] -> String\nconst unwords = xs => xs.join(' ');",
+  "unwrap": "// unwrap :: NSObject -> a\nconst unwrap = o => ObjC.unwrap(o);",
+  "unzip": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    xys.reduce(\n        (a, x) => Tuple.apply(null, [0, 1].map(\n            i => a[i].concat(x[i])\n        )),\n        Tuple([], [])\n    );",
+  "unzip3": "// unzip3 :: [(a,b,c)] -> ([a],[b],[c])\nconst unzip3 = xyzs =>\n    xyzs.reduce(\n        (a, x) => Tuple3.apply(null, [0, 1, 2].map(\n            i => a[i].concat(x[i])\n        )),\n        Tuple3([], [], [])\n    );",
+  "unzip4": "// unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])\nconst unzip4 = wxyzs =>\n    wxyzs.reduce(\n        (a, x) => Tuple4.apply(null, [0, 1, 2, 3].map(\n            i => a[i].concat(x[i])\n        )),\n        Tuple4([], [], [], [])\n    );",
+  "variance": "// variance :: [Num] -> Num\nconst variance = xs => {\n    const\n        lng = xs.length,\n        mean = xs.reduce((a, b) => a + b, 0) / lng;\n    return xs.reduce(\n        (a, b) => a + Math.pow(b - mean, 2),\n        0\n    ) / (lng - 1);\n};",
+  "words": "// words :: String -> [String]\nconst words = s => s.split(/\\s+/);",
+  "wrap": "// wrap :: a -> NSObject\nconst wrap = v => ObjC.wrap(v);",
+  "writeFile": "// writeFile :: FilePath -> String -> IO ()\nconst writeFile = (strPath, strText) =>\n    $.NSString.alloc.initWithUTF8String(strText)\n    .writeToFileAtomicallyEncodingError(\n        $(strPath)\n        .stringByStandardizingPath, false,\n        $.NSUTF8StringEncoding, null\n    );",
+  "writeFileLR": "// writeFileLR :: FilePath -> Either String IO FilePath\nconst writeFileLR = (strPath, strText) => {\n    const\n        e = $(),\n        fp = $(strPath)\n        .stringByStandardizingPath;\n    return $.NSString.alloc.initWithUTF8String(strText)\n        .writeToFileAtomicallyEncodingError(\n            fp, false,\n            $.NSUTF8StringEncoding, e\n        ) ? (\n            Right(ObjC.unwrap(fp))\n        ) : Left(ObjC.unwrap(e.localizedDescription));\n};",
+  "writeTempFile": "// File name template -> string data -> IO temporary path\n\n// writeTempFile :: String -> String -> IO FilePath\nconst writeTempFile = (template, txt) => {\n    const\n        strPath = ObjC.unwrap($.NSTemporaryDirectory()) +\n        takeBaseName(template) + Math.random()\n        .toString()\n        .substring(3) + takeExtension(template);\n    return (writeFile(strPath, txt), strPath);\n};",
+  "zip": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = (xs, ys) =>\n    xs.slice(0, Math.min(xs.length, ys.length))\n    .map((x, i) => Tuple(x, ys[i]));",
+  "zip3": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = (xs, ys, zs) =>\n    xs.slice(0, Math.min(xs.length, ys.length, zs.length))\n    .map((x, i) => Tuple3(x, ys[i], zs[i]));",
+  "zip4": "// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]\nconst zip4 = (ws, xs, ys, zs) =>\n    ws.slice(0, Math.min(\n        xs.length, xs.length, ys.length, zs.length\n    ))\n    .map((w, i) => Tuple4(w, xs[i], ys[i], zs[i]));",
+  "zipWith": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = (f, xs, ys) =>\n    Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => f(xs[i], ys[i], i));",
+  "zipWith3": "// zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]\nconst zipWith3 = (f, xs, ys, zs) =>\n    Array.from({\n        length: Math.min(xs.length, ys.length, zs.length)\n    }, (_, i) => f(xs[i], ys[i], zs[i]));",
+  "zipWith4": "// zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]\nconst zipWith4 = (f, ws, xs, ys, zs) =>\n    Array.from({\n        length: Math.min(ws.length, xs.length, ys.length, zs.length)\n    }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));"
+}
