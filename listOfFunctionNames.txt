@@ -169,6 +169,7 @@ isUpper :: Char -> Bool
 iso8601Local :: Date -> String
 iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
 jsonLog :: a -> IO ()
+jsonParseLR :: String -> Either String a
 justifyLeft :: Int -> Char -> String -> String
 justifyRight :: Int -> Char -> String -> String
 keys :: Dict -> [String]

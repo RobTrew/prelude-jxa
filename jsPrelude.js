@@ -1107,6 +1107,15 @@ const jsonLog = (...args) =>
         .join(' -> ')
     );
 
+// jsonParseLR :: String -> Either String a
+const jsonParseLR = s => {
+    try {
+        return Right(JSON.parse(s));
+    } catch (e) {
+        return Left(`${e.message} (line:${e.line} col:${e.column})`);
+    }
+};
+
 // justifyLeft :: Int -> Char -> String -> String
 const justifyLeft = (n, cFiller, strText) =>
     n > strText.length ? (
