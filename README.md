@@ -4,9 +4,11 @@ Generic functions for:
 - **macOS** scripting with JavaScript for Automation
 - **iOS** scripting with apps like the excellent [1Writer](http://1writerapp.com/), and @agiletortoise's Drafts.
 
+## Details:
+
 - Function names are as in [Hoogle](https://www.haskell.org/hoogle/?hoogle=concatMap).
-- The 300+ functions in jsPrelude.js are generic and cross-platform (macOS, iOS etc),
-- The 20+ functions in jxaSystemIO.js are specific to macOS.
+- The 300+ functions in [jsPrelude.js](https://github.com/RobTrew/prelude-jxa/blob/master/jsPrelude.js) are generic and cross-platform (macOS, iOS etc),
+- The 20+ functions in [jxaSystemIO.js](https://github.com/RobTrew/prelude-jxa/blob/master/jxaSystemIO.js) are specific to macOS.
 
 For the purposes of sketching and testing  a script,  
 the JavaScriptCore interpreter used on macOS and iOS is fast enough
