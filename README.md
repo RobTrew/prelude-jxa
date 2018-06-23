@@ -1,12 +1,22 @@
 # prelude-jxa
-Generic functions for macOS scripting with JavaScript for Automation – function names as in [Hoogle](https://www.haskell.org/hoogle/?hoogle=concatMap).
+Generic functions for:
 
-JXA is fast enough to allow for import of the whole of the jsPrelude.js and
-jxaSystemIO.js files (c. 380 generic functions in total) when sketching out
-and testing a script:
+- **macOS** scripting with JavaScript for Automation
+- **iOS** scripting with apps like the excellent [1Writer](http://1writerapp.com/), and @agiletortoise's Drafts.
 
-Example of a JXA script which uses imported library file(s) –
-(see the usingLibs function called at the end)
+- Function names are as in [Hoogle](https://www.haskell.org/hoogle/?hoogle=concatMap).
+- The 300+ functions in jsPrelude.js are generic and cross-platform (macOS, iOS etc),
+- The 20+ functions in jxaSystemIO.js are specific to macOS.
+
+For the purposes of sketching and testing  a script,  
+the JavaScriptCore interpreter used on macOS and iOS is fast enough
+to allow for import of the whole of the jsPrelude.js file and,
+in the case of macOS, the jxaSystemIO.js file as well.
+
+(c. 380 generic and file-system functions in total)
+
+Example of a JavaScript for Automation script which uses imported library
+file(s) – (see the usingLibs function called at the end):
 
 ```javascript
 (() => {
@@ -118,8 +128,8 @@ Example of a JXA script which uses imported library file(s) –
     // MAIN ------------------------------------------------
     return usingLibs(
         [
-            '~/preludes/jsPrelude.js',
-            '~/preludes/jxaSystemIO.js'
+            '~/preludes/jsPrelude.js', // iOS and macOS
+            '~/preludes/jxaSystemIO.js' // macOS only
         ],
         main
     );
