@@ -10,13 +10,15 @@ Generic functions for:
 
 For the purposes of sketching and testing  a script,  
 the JavaScriptCore interpreter used on macOS and iOS is fast enough
-to allow for import of the whole of the jsPrelude.js file and,
-in the case of macOS, the jxaSystemIO.js file as well.
+to allow for import of the whole of the [jsPrelude.js](https://github.com/RobTrew/prelude-jxa/blob/master/jsPrelude.js) file and,
+in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jxa/blob/master/jxaSystemIO.js) file as well.
 
 (c. 380 generic and file-system functions in total)
 
 Example of a JavaScript for Automation script which uses imported library
-file(s) – (see the usingLibs function called at the end):
+file(s):
+
+(see the usingLibs function called at the end)
 
 ```javascript
 (() => {
