@@ -1180,7 +1180,7 @@ const levelNodes = tree =>
 const levels = tree =>
     map(xs => map(x => x.root, xs),
         iterateUntil(
-            xs => xs.length < 1,
+            xs => 1 > xs.length,
             xs => concatMap(x => x.nest, xs), [tree]
         )
     );
@@ -1612,6 +1612,15 @@ const pi = Math.PI;
 
 // plus :: Num -> Num -> Num
 const plus = (a, b) => a + b;
+
+// Root elements of tree flattened bottom-up
+// into a postorder list.
+// postorder :: Tree a -> [a]
+const postorder = t => {
+    const go = (xs, x) =>
+        x.nest.reduce(go, xs).concat(x.root);
+    return go([], t);
+};
 
 // pred :: Enum a => a -> a
 const pred = x =>

@@ -244,6 +244,7 @@ permutations :: [a] -> [[a]]
 permutationsWithRepetition :: Int -> [a] -> [[a]]
 pi :: Float
 plus :: Num -> Num -> Num
+postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
 product :: [Num] -> Num
 properFraction :: Real -> (Int, Real)
