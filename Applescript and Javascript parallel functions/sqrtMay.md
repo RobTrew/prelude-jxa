@@ -5,7 +5,7 @@
 ```js
 // sqrtMay :: Num -> Maybe Num
 const sqrtMay = n =>
-    n < 0 ? (
+    0 > n ? (
         Nothing()
     ) : Just(Math.sqrt(n));
 ```

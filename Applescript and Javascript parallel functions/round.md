@@ -10,9 +10,9 @@ const round = x => {
         [n, r] = [nr[0], nr[1]]
         m = n + (r < 0 ? -1 : 1),
         sign = signum(abs(r) - 0.5);
-    return sign === -1 ? n : (
-        sign === 0 ? (even(n) ? n : m) : (
-            sign === 1 ? m : undefined
+    return (-1 === sign) ? n : (
+        0 === sign ? (even(n) ? n : m) : (
+            1 === sign ? m : undefined
         )
     );
 };

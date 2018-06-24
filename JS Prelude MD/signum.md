@@ -10,5 +10,5 @@
 
 ```js
 // signum :: Num -> Num
-const signum = n => n < 0 ? -1 : (n > 0 ? 1 : 0);
+const signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);
 ```

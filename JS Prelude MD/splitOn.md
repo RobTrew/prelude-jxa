@@ -2,7 +2,7 @@
 // splitOn :: String -> String -> [String]
 // splitOn :: a -> [a] -> [[a]]
 const splitOn = (needle, haystack) =>
-    typeof haystack === 'string' ? (
+    ('string' === typeof haystack) ? (
         haystack.split(needle)
     ) : (() => {
         const tpl = haystack.reduce(

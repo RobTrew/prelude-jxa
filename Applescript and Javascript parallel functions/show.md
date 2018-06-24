@@ -7,7 +7,7 @@
 // show :: a -> Int -> Indented String
 const show = (x, n) => {
     const
-        e = typeof x !== 'function' ? (
+        e = ('function' !== typeof x) ? (
             x
         ) : {
             type: 'Function',
@@ -17,27 +17,27 @@ const show = (x, n) => {
         const
             f = (v !== null && v !== undefined) ? (() => {
                 const t = v.type;
-                return t === 'Either' ? (
+                return 'Either' === t ? (
                     showLR
-                ) : t === 'Function' ? (
+                ) : 'Function' === t ? (
                     dct => 'λ' + dct.f.toString()
-                ) : t === 'Maybe' ? (
+                ) : 'Maybe' === t ? (
                     showMaybe
-                ) : t === 'Ordering' ? (
+                ) : 'Ordering' === t ? (
                     showOrdering
-                ) : t === 'Ratio' ? (
+                ) : 'Ratio' === t ? (
                     showRatio
-                ) : t === 'Tuple' ? (
+                ) : 'Tuple' === t ? (
                     showTuple
-                ) : t === 'Tuple3' ? (
+                ) : 'Tuple3' === t ? (
                     showTuple3
-                ) : t === 'Tuple4' ? (
+                ) : 'Tuple4' === t ? (
                     showTuple4
                 ) : undefined;
             })() : showUndefined;
         return Boolean(f) ? (
             f(v)
-        ) : typeof v !== 'string' ? (
+        ) : 'string' !== typeof v ? (
             v
         ) : "'" + v + "'";
     }, n)

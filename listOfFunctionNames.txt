@@ -318,6 +318,7 @@ splitFileName :: FilePath -> (String, String)
 splitOn :: String -> String -> [String]
 splitRegex :: Regex -> String -> [String]
 sqrt :: Num -> Num
+sqrtLR :: Num -> Either String Num
 sqrtMay :: Num -> Maybe Num
 strip :: String -> String
 stripEnd :: String -> String

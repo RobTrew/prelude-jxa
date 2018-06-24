@@ -10,13 +10,13 @@ const pureT = x =>
     ) : (() => {
         const t = x.type;
         return t !== undefined ? (
-            t === 'Either' ? (
+            'Either' === t ? (
                 pureLR
-            ) : t === 'Maybe' ? (
+            ) :'Maybe' === t ? (
                 pureMay
-            ) : t === 'Tree' ? (
+            ) : 'Tree' === t ? (
                 pureTree
-            ) : t === 'Tuple' ? (
+            ) : 'Tuple' === t ? (
                 pureTuple
             ) : pureList
         ) : pureList;

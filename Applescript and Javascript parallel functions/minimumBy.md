@@ -12,7 +12,7 @@
 ```js
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = (f, xs) =>
-    xs.reduce((a, x) => a === undefined ? x : (
+    xs.reduce((a, x) => undefined === a ? x : (
         f(x, a) < 0 ? x : a
     ), undefined);
 ```

@@ -13,8 +13,8 @@
 ```js
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
-    strPath !== '' ? (
-        strPath[strPath.length - 1] !== '/' ? (() => {
+    ('' !== strPath) ? (
+         ('/' !== strPath[strPath.length - 1]) ? (() => {
             const
                 xs = strPath.split('/'),
                 stem = xs.slice(0, -1);

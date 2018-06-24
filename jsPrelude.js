@@ -1483,7 +1483,7 @@ const minimum = xs =>
 //  LT: -1 (or other negative n)
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = (f, xs) =>
-    xs.reduce((a, x) => a === undefined ? x : (
+    xs.reduce((a, x) => undefined === a ? x : (
         f(x, a) < 0 ? x : a
     ), undefined);
 
@@ -1591,7 +1591,12 @@ const permutations = xs =>
 // permutationsWithRepetition :: Int -> [a] -> [[a]]
 const permutationsWithRepetition = (n, xs) =>
     xs.length > 0 ? (
-        map(flatten, foldl1(x => cartesianProduct(xs, x), replicate(n, xs)))
+        map(flatten,
+            foldl1(
+                x => cartesianProduct(xs, x),
+                replicate(n, xs)
+            )
+        )
     ) : [];
 
 // pi :: Float
@@ -1633,13 +1638,13 @@ const pureT = x =>
     ) : (() => {
         const t = x.type;
         return t !== undefined ? (
-            t === 'Either' ? (
+            'Either' === t ? (
                 pureLR
-            ) : t === 'Maybe' ? (
+            ) :'Maybe' === t ? (
                 pureMay
-            ) : t === 'Tree' ? (
+            ) : 'Tree' === t ? (
                 pureTree
-            ) : t === 'Tuple' ? (
+            ) : 'Tuple' === t ? (
                 pureTuple
             ) : pureList
         ) : pureList;
@@ -1759,7 +1764,7 @@ const recip = n =>
 
 // recipMay :: Num -> Maybe Num
 const recipMay = n =>
-    n === 0 ? (
+    0 === n ? (
         Nothing()
     ) : Just(1 / n);
 
@@ -1815,7 +1820,7 @@ const reverse = xs =>
 // rights :: [Either a b] -> [b]
 const rights = xs =>
     concatMap(
-        x => x.type === 'Either' && x.Right !== undefined ? (
+        x => ('Either' === x.type) && (undefined !== x.Right) ? (
             [x.Right]
         ) : [], xs
     );
@@ -1833,9 +1838,9 @@ const round = x => {
         [n, r] = [nr[0], nr[1]]
         m = n + (r < 0 ? -1 : 1),
         sign = signum(abs(r) - 0.5);
-    return sign === -1 ? n : (
-        sign === 0 ? (even(n) ? n : m) : (
-            sign === 1 ? m : undefined
+    return (-1 === sign) ? n : (
+        0 === sign ? (even(n) ? n : m) : (
+            1 === sign ? m : undefined
         )
     );
 };
@@ -1893,7 +1898,7 @@ const sequenceAList = us =>
 // show :: a -> Int -> Indented String
 const show = (x, n) => {
     const
-        e = typeof x !== 'function' ? (
+        e = ('function' !== typeof x) ? (
             x
         ) : {
             type: 'Function',
@@ -1903,27 +1908,27 @@ const show = (x, n) => {
         const
             f = (v !== null && v !== undefined) ? (() => {
                 const t = v.type;
-                return t === 'Either' ? (
+                return 'Either' === t ? (
                     showLR
-                ) : t === 'Function' ? (
+                ) : 'Function' === t ? (
                     dct => 'λ' + dct.f.toString()
-                ) : t === 'Maybe' ? (
+                ) : 'Maybe' === t ? (
                     showMaybe
-                ) : t === 'Ordering' ? (
+                ) : 'Ordering' === t ? (
                     showOrdering
-                ) : t === 'Ratio' ? (
+                ) : 'Ratio' === t ? (
                     showRatio
-                ) : t === 'Tuple' ? (
+                ) : 'Tuple' === t ? (
                     showTuple
-                ) : t === 'Tuple3' ? (
+                ) : 'Tuple3' === t ? (
                     showTuple3
-                ) : t === 'Tuple4' ? (
+                ) : 'Tuple4' === t ? (
                     showTuple4
                 ) : undefined;
             })() : showUndefined;
         return Boolean(f) ? (
             f(v)
-        ) : typeof v !== 'string' ? (
+        ) : 'string' !== typeof v ? (
             v
         ) : "'" + v + "'";
     }, n)
@@ -1931,7 +1936,7 @@ const show = (x, n) => {
 
 // showBinary :: Int -> String
 const showBinary = n => {
-    const binaryChar = n => n !== 0 ? '1' : '0';
+    const binaryChar = n => 0 !== n ? '1' : '0';
     return showIntAtBase(2, binaryChar, n, '');
 };
 
@@ -1949,13 +1954,13 @@ const showHex = n =>
 const showIntAtBase = (base, toChr, n, rs) => {
     const showIt = ([n, d], r) => {
         const r_ = toChr(d) + r;
-        return n !== 0 ? (
+        return 0 !== n ? (
             showIt(quotRem(n, base), r_)
         ) : r_;
     };
-    return base <= 1 ? (
+    return 1 >= base ? (
         'error: showIntAtBase applied to unsupported base'
-    ) : n < 0 ? (
+    ) : 0 > n ? (
         'error: showIntAtBase applied to negative number'
     ) : showIt(quotRem(n, base), rs);
 };
@@ -2026,7 +2031,7 @@ const showUndefined = () => '(⊥)';
 // For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)
 // or @1@ (positive).
 // signum :: Num -> Num
-const signum = n => n < 0 ? -1 : (n > 0 ? 1 : 0);
+const signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);
 
 // snd :: (a, b) -> b
 const snd = tpl => tpl[1];
@@ -2059,7 +2064,7 @@ const sortOn = (f, xs) => {
     const fsbs = unzip(
             flatten([f])
             .reduceRight((a, x) =>
-                typeof x === 'boolean' ? {
+                ('boolean' === typeof x) ? {
                     asc: x,
                     fbs: a.fbs
                 } : {
@@ -2147,8 +2152,8 @@ const splitEvery = (n, xs) => {
 // Split a filename into directory and file. combine is the inverse.
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
-    strPath !== '' ? (
-        strPath[strPath.length - 1] !== '/' ? (() => {
+    ('' !== strPath) ? (
+         ('/' !== strPath[strPath.length - 1]) ? (() => {
             const
                 xs = strPath.split('/'),
                 stem = xs.slice(0, -1);
@@ -2161,7 +2166,7 @@ const splitFileName = strPath =>
 // splitOn :: String -> String -> [String]
 // splitOn :: a -> [a] -> [[a]]
 const splitOn = (needle, haystack) =>
-    typeof haystack === 'string' ? (
+    ('string' === typeof haystack) ? (
         haystack.split(needle)
     ) : (() => {
         const tpl = haystack.reduce(
@@ -2179,11 +2184,17 @@ const splitRegex = (needle, haystack) =>
 
 // sqrt :: Num -> Num
 const sqrt = n =>
-    n >= 0 ? Math.sqrt(n) : undefined;
+    (0 <= n) ? Math.sqrt(n) : undefined;
+
+// sqrtLR :: Num -> Either String Num
+const sqrtLR = n =>
+    0 > n ? (
+        Left('Square root of negative number: ' + n)
+    ) : Right(Math.sqrt(n));
 
 // sqrtMay :: Num -> Maybe Num
 const sqrtMay = n =>
-    n < 0 ? (
+    0 > n ? (
         Nothing()
     ) : Just(Math.sqrt(n));
 
