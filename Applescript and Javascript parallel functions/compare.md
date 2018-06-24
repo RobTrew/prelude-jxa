@@ -3,7 +3,16 @@
 ```
 
 ```applescript
--- compare :: a -> a -> Orderingon compare(a, b)	if a < b then		|LT|	else if a > b then		|GT|	else		|EQ|	end ifend compare
+-- compare :: a -> a -> Ordering
+on compare(a, b)
+    if a < b then
+        |LT|
+    else if a > b then
+        |GT|
+    else
+        |EQ|
+    end if
+end compare
 ```
 
 ```js

@@ -1,5 +1,8 @@
 ```applescript
--- showList :: [a] -> Stringon showList(xs)  showJSON(xs)end showList
+-- showList :: [a] -> String
+on showList(xs)
+  showJSON(xs)
+end showList
 ```
 
 ```js

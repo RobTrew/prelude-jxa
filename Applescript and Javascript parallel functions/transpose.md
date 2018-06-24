@@ -5,7 +5,34 @@
 ```
 
 ```applescript
--- transpose :: [[a]] -> [[a]]on transpose(xxs)	set intMax to |length|(maximumBy(comparing(my |length|), xxs))	set gaps to replicate(intMax, {})	script padded		on |λ|(xs)			set lng to |length|(xs)			if lng < intMax then				append(xs, items (lng + 1) thru -1 of gaps)			else				xs			end if		end |λ|	end script	set rows to map(padded, xxs)		script cols		on |λ|(_, iCol)			script cell				on |λ|(row)					item iCol of row				end |λ|			end script			concatMap(cell, rows)		end |λ|	end script	map(cols, item 1 of rows)end transpose
+-- transpose :: [[a]] -> [[a]]
+on transpose(xxs)
+    set intMax to |length|(maximumBy(comparing(my |length|), xxs))
+    set gaps to replicate(intMax, {})
+    script padded
+        on |λ|(xs)
+            set lng to |length|(xs)
+            if lng < intMax then
+                append(xs, items (lng + 1) thru -1 of gaps)
+            else
+                xs
+            end if
+        end |λ|
+    end script
+    set rows to map(padded, xxs)
+    
+    script cols
+        on |λ|(_, iCol)
+            script cell
+                on |λ|(row)
+                    item iCol of row
+                end |λ|
+            end script
+            concatMap(cell, rows)
+        end |λ|
+    end script
+    map(cols, item 1 of rows)
+end transpose
 ```
 
 ```js

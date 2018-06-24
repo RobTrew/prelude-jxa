@@ -5,7 +5,28 @@
 ```
 
 ```applescript
--- ap (<*>) :: Monad m => m (a -> b) -> m a -> m bon ap(mf, mx)	if class of mx is list then		apList(mf, mx)	else if class of mf is record then		set ks to keys(mf)		if ks contains "type" then			set t to type of mx			if t = "Either" then				apEither(mf, mx)			else if t = "Maybe" then				apMaybe(mf, mx)			else if t = "Tuple" then				apTuple(mf, mx)			else				missing value			end if		else			missing value		end if	end ifend ap
+-- ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
+on ap(mf, mx)
+    if class of mx is list then
+        apList(mf, mx)
+    else if class of mf is record then
+        set ks to keys(mf)
+        if ks contains "type" then
+            set t to type of mx
+            if t = "Either" then
+                apEither(mf, mx)
+            else if t = "Maybe" then
+                apMaybe(mf, mx)
+            else if t = "Tuple" then
+                apTuple(mf, mx)
+            else
+                missing value
+            end if
+        else
+            missing value
+        end if
+    end if
+end ap
 ```
 
 ```js

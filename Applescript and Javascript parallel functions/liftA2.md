@@ -6,7 +6,26 @@
 ```
 
 ```applescript
--- liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f con liftA2(f, a, b)    set c to class of a    if c is list then        liftA2List(f, a, b)    else if c is record and keys(a) contains "type" then        set t to type of a        if t = "Either" then            liftA2LR(f, a, b)        else if t = "Maybe" then            liftA2Maybe(f, a, b)        else if t = "Tuple" then            liftA2Tuple(f, a, b)        else            missing value        end if    else        missing value    end ifend liftA2
+-- liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+on liftA2(f, a, b)
+    set c to class of a
+    if c is list then
+        liftA2List(f, a, b)
+    else if c is record and keys(a) contains "type" then
+        set t to type of a
+        if t = "Either" then
+            liftA2LR(f, a, b)
+        else if t = "Maybe" then
+            liftA2Maybe(f, a, b)
+        else if t = "Tuple" then
+            liftA2Tuple(f, a, b)
+        else
+            missing value
+        end if
+    else
+        missing value
+    end if
+end liftA2
 ```
 
 ```js

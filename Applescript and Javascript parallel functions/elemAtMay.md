@@ -7,7 +7,29 @@
 ```
 
 ```applescript
--- elemAtMay :: Int -> Dict -> Maybe (String, a)-- elemAtMay :: Int -> [a] -> Maybe aon elemAtMay(i, x)	set bln to class of x is record	if bln then		set ks to keys(x)		if i ≤ |length|(ks) then			set k to item i of sort(ks)			script pair				on |λ|(v)					Just(Tuple(k, v))				end |λ|			end script			bindMay(lookup(k, x), pair)		end if	else		if i ≤ |length|(x) then			Just(item i of x)		else			Nothing()		end if	end ifend elemAtMay
+-- elemAtMay :: Int -> Dict -> Maybe (String, a)
+-- elemAtMay :: Int -> [a] -> Maybe a
+on elemAtMay(i, x)
+    set bln to class of x is record
+    if bln then
+        set ks to keys(x)
+        if i ≤ |length|(ks) then
+            set k to item i of sort(ks)
+            script pair
+                on |λ|(v)
+                    Just(Tuple(k, v))
+                end |λ|
+            end script
+            bindMay(lookup(k, x), pair)
+        end if
+    else
+        if i ≤ |length|(x) then
+            Just(item i of x)
+        else
+            Nothing()
+        end if
+    end if
+end elemAtMay
 ```
 
 ```js

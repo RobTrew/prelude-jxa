@@ -81,7 +81,7 @@ function TupleN() {
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
-            type: 'Tuple' + (lng > 2 ? lng.toString() : ''),
+            type: 'Tuple' + (2 < lng ? lng.toString() : ''),
             length: lng
         })
     ) : args[0];
@@ -2207,14 +2207,14 @@ const stripEnd = s => dropWhileEnd(isSpace, s);
 // stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 const stripPrefix = (pfx, s) => {
     const
-        blnString = typeof pfx === 'string',
+        blnString = 'string' === typeof pfx,
         [xs, ys] = blnString ? (
             [pfx.split(''), s.split('')]
         ) : [pfx, s];
     const
-        sp_ = (xs, ys) => xs.length === 0 ? (
+        sp_ = (xs, ys) => 0 === xs.length ? (
             Just(blnString ? ys.join('') : ys)
-        ) : (ys.length === 0 || xs[0] !== ys[0]) ? (
+        ) : (0 === ys.length || xs[0] !== ys[0]) ? (
             Nothing()
         ) : sp_(xs.slice(1), ys.slice(1));
     return sp_(xs, ys);
@@ -2238,7 +2238,7 @@ const subsequences = xs => {
             return cons([x], nonEmptySubsequences(xs)
                 .reduceRight(f, []));
         };
-    return typeof xs === 'string' ? (
+    return ('string' === typeof xs) ? (
         cons('', nonEmptySubsequences(xs.split(''))
             .map(x => ''.concat.apply('', x))) // map(concat)
     ) : cons([], nonEmptySubsequences(xs));
@@ -2273,7 +2273,9 @@ const tailMay = xs =>
 
 // tails :: [a] -> [[a]]
 const tails = xs => {
-    const xs_ = typeof xs === 'string' ? xs.split('') : xs;
+    const xs_ = ('string' === typeof xs) ? (
+        xs.split('')
+    ) : xs;
     return xs_.map((_, i) => xs_.slice(i))
         .concat([
             []
@@ -2293,8 +2295,8 @@ const takeAround = (p, xs) => {
 
 // takeBaseName :: FilePath -> String
 const takeBaseName = strPath =>
-  strPath !== '' ? (
-    strPath[strPath.length - 1] !== '/' ? (() => {
+  ('' !== strPath) ? (
+    ('/' !== strPath[strPath.length - 1]) ? (() => {
       const fn = strPath.split('/').slice(-1)[0];
       return fn.includes('.') ? (
         fn.split('.').slice(0, -1).join('.')
@@ -2312,7 +2314,7 @@ const takeCycle = (n, xs) => {
 
 // takeDirectory :: FilePath -> FilePath
 const takeDirectory = strPath =>
-    strPath !== '' ? (() => {
+    ('' !== strPath) ? (() => {
         const xs = (strPath.split('/'))
             .slice(0, -1);
         return xs.length > 0 ? (
@@ -2338,15 +2340,15 @@ const takeExtension = strPath => {
     const
         xs = strPath.split('.'),
         lng = xs.length;
-    return lng > 1 ? (
+    return 1 < lng ? (
         '.' + xs[lng - 1]
     ) : '';
 };
 
 // takeFileName :: FilePath -> FilePath
 const takeFileName = strPath =>
-    strPath !== '' ? (
-        strPath[strPath.length - 1] !== '/' ? (
+    '' !== strPath ? (
+        ('/' !== strPath[strPath.length - 1]) ? (
             strPath.split('/')
             .slice(-1)[0]
         ) : ''
@@ -2356,7 +2358,7 @@ const takeFileName = strPath =>
 // takeIterate :: Int -> (a -> a) -> a -> [a]
 const takeIterate = (n, f, x) =>
     snd(mapAccumL((a, _, i) => {
-        const v = i !== 0 ? f(a) : x;
+        const v = 0 !== i ? f(a) : x;
         return [v, v];
     }, x, Array.from({
         length: n
@@ -2416,7 +2418,7 @@ const toRatio = n =>
 // Sentence case - initial string capitalized and rest lowercase
 // toSentence :: String -> String
 const toSentence = s =>
-    s.length > 0 ? (
+    (0 < s.length) ? (
         s[0].toUpperCase() + s.slice(1)
         .toLowerCase()
     ) : s;
@@ -2463,7 +2465,7 @@ const traverseList = (f, xs) =>
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = oNode => {
   const nest = oNode.nest;
-  return nest.length > 0 ? (
+  return (0 < nest.length) ? (
     concatMap(treeLeaves, nest)
   ) : [oNode];
 };
@@ -2477,11 +2479,11 @@ const truncate = x => {
 // tupleFromArray [a] -> (a, a ...)
 const tupleFromArray = xs => {
     const lng = xs.length;
-    return lng > 1 ? xs.reduce(
+    return 1 < lng ? xs.reduce(
         (a, x, i) => Object.assign(a, {
             [i.toString()]: x
         }), {
-            type: 'Tuple' + (lng > 2 ? lng.toString() : '')
+            type: 'Tuple' + (2 < lng ? lng.toString() : '')
         }
     ) : undefined;
 };
@@ -2489,10 +2491,10 @@ const tupleFromArray = xs => {
 // typeName :: a -> String
 const typeName = v => {
     const t = typeof v;
-    return t === 'object' ? (
+    return 'object' === t ? (
         Array.isArray(v) ? (
             'List'
-        ) : v !== null ? (
+        ) : null !== v ? (
             v.type || 'Dict'
         ) : 'Bottom'
     ) : {
@@ -2508,7 +2510,7 @@ const unQuoted = s =>
 
 // uncons :: [a] -> Maybe (a, [a])
 const uncons = xs =>
-    xs.length > 0 ? (
+    (0 < xs.length) ? (
         Just(Tuple(xs[0], xs.slice(1)))
     ) : Nothing();
 
@@ -2596,7 +2598,7 @@ const unlines = xs => xs.join('\n');
 // Just the init and the last.
 // unsnoc :: [a] -> Maybe ([a], a)
 const unsnoc = xs =>
-    xs.length > 0 ? (
+    (0 < xs.length) ? (
         Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))
     ) : Nothing();
 

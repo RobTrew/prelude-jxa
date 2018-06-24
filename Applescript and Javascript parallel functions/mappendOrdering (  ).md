@@ -3,7 +3,14 @@
 ```
 
 ```applescript
--- mappendOrdering (<>) :: Ordering -> Ordering -> Orderingon mappendOrdering(a, b)	if my |EQ| = a then		b	else		a	end ifend mappendOrdering
+-- mappendOrdering (<>) :: Ordering -> Ordering -> Ordering
+on mappendOrdering(a, b)
+    if my |EQ| = a then
+        b
+    else
+        a
+    end if
+end mappendOrdering
 ```
 
 ```js

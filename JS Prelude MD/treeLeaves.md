@@ -2,7 +2,7 @@
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = oNode => {
   const nest = oNode.nest;
-  return nest.length > 0 ? (
+  return (0 < nest.length) ? (
     concatMap(treeLeaves, nest)
   ) : [oNode];
 };

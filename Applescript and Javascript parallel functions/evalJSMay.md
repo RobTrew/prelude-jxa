@@ -10,7 +10,22 @@
 ```
 
 ```applescript
--- evalJSMay :: String -> Maybe aon evalJSMay(strJS)	try -- NB if gJSC is global it must be released 		-- (e.g. set to null) at end of script		gJSC's evaluateScript	on error		set gJSC to current application's JSContext's new()		log ("new JSC")	end try	set v to unwrap((gJSC's evaluateScript:(strJS))'s toObject())	if v is missing value then		Nothing()	else		Just(v)	end ifend evalJSMay
+-- evalJSMay :: String -> Maybe a
+on evalJSMay(strJS)
+    try -- NB if gJSC is global it must be released 
+        -- (e.g. set to null) at end of script
+        gJSC's evaluateScript
+    on error
+        set gJSC to current application's JSContext's new()
+        log ("new JSC")
+    end try
+    set v to unwrap((gJSC's evaluateScript:(strJS))'s toObject())
+    if v is missing value then
+        Nothing()
+    else
+        Just(v)
+    end if
+end evalJSMay
 ```
 
 ```js

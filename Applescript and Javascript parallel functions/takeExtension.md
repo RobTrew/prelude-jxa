@@ -1,5 +1,13 @@
 ```applescript
--- takeExtension :: FilePath -> Stringon takeExtension(strPath)	set xs to splitOn(".", strPath)	if length of xs > 1 then		"." & item -1 of xs	else		""	end ifend takeExtension
+-- takeExtension :: FilePath -> String
+on takeExtension(strPath)
+    set xs to splitOn(".", strPath)
+    if length of xs > 1 then
+        "." & item -1 of xs
+    else
+        ""
+    end if
+end takeExtension
 ```
 
 ```js
@@ -8,7 +16,7 @@ const takeExtension = strPath => {
     const
         xs = strPath.split('.'),
         lng = xs.length;
-    return lng > 1 ? (
+    return 1 < lng ? (
         '.' + xs[lng - 1]
     ) : '';
 };

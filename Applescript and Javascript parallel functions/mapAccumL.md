@@ -8,14 +8,14 @@
 ```applescript
 -- mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 on mapAccumL(f, acc, xs)
-	script
-		on |λ|(a, x, i)
-			tell mReturn(f) to set pair to |λ|(|1| of a, x, i)
-			Tuple(|1| of pair, (|2| of a) & {|2| of pair})
-		end |λ|
-	end script
-	
-	foldl(result, Tuple(acc, []), xs)
+    script
+        on |λ|(a, x, i)
+            tell mReturn(f) to set pair to |λ|(|1| of a, x, i)
+            Tuple(|1| of pair, (|2| of a) & {|2| of pair})
+        end |λ|
+    end script
+    
+    foldl(result, Tuple(acc, []), xs)
 end mapAccumL
 ```
 

@@ -4,7 +4,14 @@
 ```
 
 ```applescript
--- fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))on fanArrow(f, g)	script		on |λ|(x)			Tuple(mReturn(f)'s |λ|(x), mReturn(g)'s |λ|(x))		end |λ|	end scriptend fanArrow
+-- fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
+on fanArrow(f, g)
+    script
+        on |λ|(x)
+            Tuple(mReturn(f)'s |λ|(x), mReturn(g)'s |λ|(x))
+        end |λ|
+    end script
+end fanArrow
 ```
 
 ```js

@@ -3,7 +3,27 @@
 ```
 
 ```applescript
--- breakOn :: String -> String -> (String, String)on breakOn(pat, src)	if pat ≠ "" then		set {dlm, my text item delimiters} to {my text item delimiters, pat}				set lstParts to text items of src		set lngParts to length of lstParts				if lngParts > 1 then			set tpl to Tuple(item 1 of lstParts, pat & ¬				((items 2 thru -1 of lstParts) as text))		else			set tpl to Tuple(src, "")		end if				set my text item delimiters to dlm		return tpl	else		missing value	end ifend breakOn
+-- breakOn :: String -> String -> (String, String)
+on breakOn(pat, src)
+    if pat ≠ "" then
+        set {dlm, my text item delimiters} to {my text item delimiters, pat}
+        
+        set lstParts to text items of src
+        set lngParts to length of lstParts
+        
+        if lngParts > 1 then
+            set tpl to Tuple(item 1 of lstParts, pat & ¬
+                ((items 2 thru -1 of lstParts) as text))
+        else
+            set tpl to Tuple(src, "")
+        end if
+        
+        set my text item delimiters to dlm
+        return tpl
+    else
+        missing value
+    end if
+end breakOn
 ```
 
 ```js

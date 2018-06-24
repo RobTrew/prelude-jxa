@@ -4,7 +4,14 @@
 ```
 
 ```applescript
--- maybeToList :: Maybe a -> [a]on maybeToList(mb)	if Nothing of mb then		{}	else		{Just of mb}	end ifend maybeToList
+-- maybeToList :: Maybe a -> [a]
+on maybeToList(mb)
+    if Nothing of mb then
+        {}
+    else
+        {Just of mb}
+    end if
+end maybeToList
 ```
 
 ```js

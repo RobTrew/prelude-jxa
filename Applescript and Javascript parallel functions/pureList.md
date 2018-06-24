@@ -1,5 +1,8 @@
 ```applescript
--- pureList :: a -> [a]on pureList(x)		{x}end pure
+-- pureList :: a -> [a]
+on pureList(x)
+        {x}
+end pure
 ```
 
 ```js

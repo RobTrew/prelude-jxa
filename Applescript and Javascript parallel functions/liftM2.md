@@ -3,7 +3,10 @@
 ```
 
 ```applescript
--- liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]on liftM2(f, a, b)	ap(map(curry(f), a), b)end liftM2
+-- liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
+on liftM2(f, a, b)
+    ap(map(curry(f), a), b)
+end liftM2
 ```
 
 ```js

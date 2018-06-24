@@ -5,7 +5,7 @@
 ```js
 // toSentence :: String -> String
 const toSentence = s =>
-    s.length > 0 ? (
+    (0 < s.length) ? (
         s[0].toUpperCase() + s.slice(1)
         .toLowerCase()
     ) : s;

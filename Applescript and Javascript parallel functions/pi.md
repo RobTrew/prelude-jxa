@@ -1,5 +1,6 @@
 ```applescript
--- pi :: Floatpi
+-- pi :: Float
+pi
 ```
 
 ```js

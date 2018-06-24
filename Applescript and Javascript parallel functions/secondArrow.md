@@ -4,7 +4,14 @@
 ```
 
 ```applescript
--- secondArrow :: (a -> b) -> ((c, a) -> (c, b))on secondArrow(f)	script		on |λ|(xy)			Tuple(|1| of xy, mReturn(f)'s |λ|(|2| of xy))		end |λ|	end scriptend |second|
+-- secondArrow :: (a -> b) -> ((c, a) -> (c, b))
+on secondArrow(f)
+    script
+        on |λ|(xy)
+            Tuple(|1| of xy, mReturn(f)'s |λ|(|2| of xy))
+        end |λ|
+    end script
+end |second|
 ```
 
 ```js

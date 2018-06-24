@@ -5,7 +5,16 @@
 ```
 
 ```applescript
--- any :: (a -> Bool) -> [a] -> Boolon |any|(f, xs)	tell mReturn(f)		set lng to length of xs		repeat with i from 1 to lng			if |λ|(item i of xs) then return true		end repeat		false	end tellend |any|
+-- any :: (a -> Bool) -> [a] -> Bool
+on |any|(f, xs)
+    tell mReturn(f)
+        set lng to length of xs
+        repeat with i from 1 to lng
+            if |λ|(item i of xs) then return true
+        end repeat
+        false
+    end tell
+end |any|
 ```
 
 ```js

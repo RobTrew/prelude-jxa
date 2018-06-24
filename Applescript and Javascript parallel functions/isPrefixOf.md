@@ -4,7 +4,21 @@
 ```
 
 ```applescript
--- isPrefixOf :: [a] -> [a] -> Bool-- isPrefixOf :: String -> String -> Boolon isPrefixOf(xs, ys)  set intX to length of xs	if intX < 1 then		true	else if intX > length of ys then		false	else if class of xs is string then		(offset of xs in ys) = 1	else		set {xxt, yyt} to {Just of uncons(xs), Just of uncons(ys)}		((|1| of xxt) = (|1| of yyt)) and isPrefixOf(|2| of xxt, |2| of yyt)	end ifend isPrefixOf
+-- isPrefixOf :: [a] -> [a] -> Bool
+-- isPrefixOf :: String -> String -> Bool
+on isPrefixOf(xs, ys)
+  set intX to length of xs
+    if intX < 1 then
+        true
+    else if intX > length of ys then
+        false
+    else if class of xs is string then
+        (offset of xs in ys) = 1
+    else
+        set {xxt, yyt} to {Just of uncons(xs), Just of uncons(ys)}
+        ((|1| of xxt) = (|1| of yyt)) and isPrefixOf(|2| of xxt, |2| of yyt)
+    end if
+end isPrefixOf
 ```
 
 ```js

@@ -1,5 +1,8 @@
 ```applescript
--- id :: a -> aon |id|(x)	xend |id|
+-- id :: a -> a
+on |id|(x)
+    x
+end |id|
 ```
 
 ```js

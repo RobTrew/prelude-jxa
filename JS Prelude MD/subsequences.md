@@ -17,7 +17,7 @@ const subsequences = xs => {
             return cons([x], nonEmptySubsequences(xs)
                 .reduceRight(f, []));
         };
-    return typeof xs === 'string' ? (
+    return ('string' === typeof xs) ? (
         cons('', nonEmptySubsequences(xs.split(''))
             .map(x => ''.concat.apply('', x))) // map(concat)
     ) : cons([], nonEmptySubsequences(xs));

@@ -6,7 +6,7 @@
 // takeIterate :: Int -> (a -> a) -> a -> [a]
 const takeIterate = (n, f, x) =>
     snd(mapAccumL((a, _, i) => {
-        const v = i !== 0 ? f(a) : x;
+        const v = 0 !== i ? f(a) : x;
         return [v, v];
     }, x, Array.from({
         length: n

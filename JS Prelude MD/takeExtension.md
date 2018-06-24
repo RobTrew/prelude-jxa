@@ -4,7 +4,7 @@ const takeExtension = strPath => {
     const
         xs = strPath.split('.'),
         lng = xs.length;
-    return lng > 1 ? (
+    return 1 < lng ? (
         '.' + xs[lng - 1]
     ) : '';
 };

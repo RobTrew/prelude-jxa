@@ -1,5 +1,8 @@
 ```applescript
--- showUndefined :: () -> Stringon showUndefined()	"⊥"end showUndefined
+-- showUndefined :: () -> String
+on showUndefined()
+    "⊥"
+end showUndefined
 ```
 
 ```js

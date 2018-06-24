@@ -1,5 +1,15 @@
 ```applescript
--- union :: [a] -> [a] -> [a]on union(xs, ys)	script flipDelete		on |λ|(xs, x)			my |delete|(x, xs)		end |λ|	end script		set sx to nub(xs)	sx & foldl(flipDelete, nub(ys), sx)end union
+-- union :: [a] -> [a] -> [a]
+on union(xs, ys)
+    script flipDelete
+        on |λ|(xs, x)
+            my |delete|(x, xs)
+        end |λ|
+    end script
+    
+    set sx to nub(xs)
+    sx & foldl(flipDelete, nub(ys), sx)
+end union
 ```
 
 ```js

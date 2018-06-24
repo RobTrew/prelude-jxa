@@ -1,5 +1,26 @@
 ```applescript
--- showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> Stringon showIntAtBase(base, toChr, n, rs)	script showIt		on |λ|(nd_, r)			set {n, d} to nd_			set r_ to toChr's |λ|(d) & r			if n > 0 then				|λ|(quotRem(n, base), r_)			else				r_			end if		end |λ|	end script		if base ≤ 1 then		"error: showIntAtBase applied to unsupported base"	else if n < 0 then		"error: showIntAtBase applied to negative number"	else		showIt's |λ|(quotRem(n, base), rs)	end ifend showIntAtBase
+-- showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
+on showIntAtBase(base, toChr, n, rs)
+    script showIt
+        on |λ|(nd_, r)
+            set {n, d} to nd_
+            set r_ to toChr's |λ|(d) & r
+            if n > 0 then
+                |λ|(quotRem(n, base), r_)
+            else
+                r_
+            end if
+        end |λ|
+    end script
+    
+    if base ≤ 1 then
+        "error: showIntAtBase applied to unsupported base"
+    else if n < 0 then
+        "error: showIntAtBase applied to negative number"
+    else
+        showIt's |λ|(quotRem(n, base), rs)
+    end if
+end showIntAtBase
 ```
 
 ```js

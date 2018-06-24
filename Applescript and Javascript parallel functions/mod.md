@@ -3,7 +3,10 @@
 ```
 
 ```applescript
--- mod :: Int -> Int -> Inton |mod|(n, d)	n mod dend |mod|
+-- mod :: Int -> Int -> Int
+on |mod|(n, d)
+    n mod d
+end |mod|
 ```
 
 ```js

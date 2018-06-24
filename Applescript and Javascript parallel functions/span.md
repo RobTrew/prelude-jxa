@@ -11,14 +11,14 @@
 ```applescript
 -- span :: (a -> Bool) -> [a] -> ([a], [a])
 on span(f, xs)
-	set lng to length of xs
-	set i to 0
-	tell mReturn(f)
-		repeat while i < lng and |λ|(item (i + 1) of xs)
-			set i to i + 1
-		end repeat
-	end tell
-	splitAt(i, xs)
+    set lng to length of xs
+    set i to 0
+    tell mReturn(f)
+        repeat while i < lng and |λ|(item (i + 1) of xs)
+            set i to i + 1
+        end repeat
+    end tell
+    splitAt(i, xs)
 end span
 ```
 

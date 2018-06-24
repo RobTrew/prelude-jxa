@@ -6,7 +6,16 @@
 ```
 
 ```applescript
--- mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])on mapAccumR(f, acc, xs)	script		on |λ|(x, a, i)			tell mReturn(f) to set pair to |λ|(|1| of a, x, i)			Tuple(|1| of pair, (|2| of pair) & |2| of a)		end |λ|	end script	foldr(result, Tuple(acc, []), xs)end mapAccumR
+-- mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+on mapAccumR(f, acc, xs)
+    script
+        on |λ|(x, a, i)
+            tell mReturn(f) to set pair to |λ|(|1| of a, x, i)
+            Tuple(|1| of pair, (|2| of pair) & |2| of a)
+        end |λ|
+    end script
+    foldr(result, Tuple(acc, []), xs)
+end mapAccumR
 ```
 
 ```js

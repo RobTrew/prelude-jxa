@@ -4,7 +4,15 @@
 ```
 
 ```applescript
--- uncurry :: (a -> b -> c) -> ((a, b) -> c)on uncurry(f)	script		property mf : mReturn(f)'s |λ|		on |λ|(pair)			mf(|1| of pair, |2| of pair)		end |λ|	end scriptend uncurry
+-- uncurry :: (a -> b -> c) -> ((a, b) -> c)
+on uncurry(f)
+    script
+        property mf : mReturn(f)'s |λ|
+        on |λ|(pair)
+            mf(|1| of pair, |2| of pair)
+        end |λ|
+    end script
+end uncurry
 ```
 
 ```js

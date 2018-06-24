@@ -2,11 +2,11 @@
 // tupleFromArray [a] -> (a, a ...)
 const tupleFromArray = xs => {
     const lng = xs.length;
-    return lng > 1 ? xs.reduce(
+    return 1 < lng ? xs.reduce(
         (a, x, i) => Object.assign(a, {
             [i.toString()]: x
         }), {
-            type: 'Tuple' + (lng > 2 ? lng.toString() : '')
+            type: 'Tuple' + (2 < lng ? lng.toString() : '')
         }
     ) : undefined;
 };

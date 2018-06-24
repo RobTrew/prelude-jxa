@@ -1,5 +1,8 @@
 ```applescript
--- pureMay :: a -> Maybe aon pureMay(x)	Just(x)end pureMay
+-- pureMay :: a -> Maybe a
+on pureMay(x)
+    Just(x)
+end pureMay
 ```
 
 ```js

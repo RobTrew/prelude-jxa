@@ -2,10 +2,10 @@
 // typeName :: a -> String
 const typeName = v => {
     const t = typeof v;
-    return t === 'object' ? (
+    return 'object' === t ? (
         Array.isArray(v) ? (
             'List'
-        ) : v !== null ? (
+        ) : null !== v ? (
             v.type || 'Dict'
         ) : 'Bottom'
     ) : {

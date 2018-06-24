@@ -4,7 +4,12 @@
 ```
 
 ```applescript
--- toTitle :: String -> Stringon toTitle(str)	set ca to current application	((ca's NSString's stringWithString:(str))'s ¬		capitalizedStringWithLocale:(ca's NSLocale's currentLocale())) as textend toTitle
+-- toTitle :: String -> String
+on toTitle(str)
+    set ca to current application
+    ((ca's NSString's stringWithString:(str))'s ¬
+        capitalizedStringWithLocale:(ca's NSLocale's currentLocale())) as text
+end toTitle
 ```
 
 ```js

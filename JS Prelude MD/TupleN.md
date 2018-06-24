@@ -8,7 +8,7 @@ function TupleN() {
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
-            type: 'Tuple' + (lng > 2 ? lng.toString() : ''),
+            type: 'Tuple' + (2 < lng ? lng.toString() : ''),
             length: lng
         })
     ) : args[0];

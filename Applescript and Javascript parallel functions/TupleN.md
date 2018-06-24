@@ -1,5 +1,8 @@
 ```applescript
--- TupleN :: a -> b ...  -> (a, b ... )on TupleN(xs)	tupleFromArray(xs)end Tuple
+-- TupleN :: a -> b ...  -> (a, b ... )
+on TupleN(xs)
+    tupleFromArray(xs)
+end Tuple
 ```
 
 ```js
@@ -12,7 +15,7 @@ function TupleN() {
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
-            type: 'Tuple' + (lng > 2 ? lng.toString() : ''),
+            type: 'Tuple' + (2 < lng ? lng.toString() : ''),
             length: lng
         })
     ) : args[0];
