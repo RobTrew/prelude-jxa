@@ -3,8 +3,8 @@
 ```
 
 ```js
-// intersperse :: Char -> String -> String
 // intersperse :: a -> [a] -> [a]
+// intersperse :: Char -> String -> String
 const intersperse = (sep, xs) => {
     const bool = 's' === (typeof xs)[0];
     return xs.length > 1 ? (

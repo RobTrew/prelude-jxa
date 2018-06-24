@@ -3,7 +3,7 @@
 ```
 
 ```js
-// unfoldForest :: (b -> (a, [b])) -> [b] -> Forest
+// unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 const unfoldForest = (f, xs) =>
     xs.map(b => unfoldTree(f, b));
 ```

@@ -52,7 +52,7 @@ concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
 const_ :: a -> b -> a
-createDirectoryIfMissingLR :: Bool -> FilePath ->
+createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
 curry :: ((a, b) -> c) -> a -> b -> c
 curry2 :: ((a, b) -> c) -> a -> b -> c
 delete :: Eq a => a -> [a] -> [a]
@@ -67,7 +67,7 @@ doesDirectoryExist :: FilePath -> IO Bool
 doesFileExist :: FilePath -> IO Bool
 doesPathExist :: FilePath -> IO Bool
 draw :: Tree String -> [String]
-drawForest :: Forest String -> String
+drawForest :: [Tree String] -> String
 drawTree :: Tree String -> String
 drop :: Int -> [a] -> [a]
 dropAround :: (Char -> Bool) -> String -> String
@@ -92,7 +92,7 @@ even :: Int -> Bool
 exp :: Float -> Float
 fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 filePath :: String -> FilePath
-filePathTree :: filePath -> [Tree String] -> Tree filePath
+filePathTree :: filePath -> [Tree String] -> Tree FilePath
 fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
 filter :: (a -> Bool) -> [a] -> [a]
@@ -150,8 +150,8 @@ intercalateS :: String -> [String] -> String
 intersect :: (Eq a) => [a] -> [a] -> [a]
 intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]
-intersperse :: Char -> String -> String
-isAlpha::Char - > Bool
+intersperse :: a -> [a] -> [a]
+isAlpha :: Char -> Bool
 isChar :: a -> Bool
 isDigit :: Char -> Bool
 isInfixOf :: Eq a => [a] -> [a] -> Bool
@@ -309,7 +309,7 @@ snoc :: [a] -> a -> [a]
 sort :: Ord a => [a] -> [a]
 sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 sortOn :: Ord b => (a -> b) -> [a] -> [a]
-span :: (a -> Bool) -> [a] -> ([a],[a])
+span :: (a -> Bool) -> [a] -> ([a], [a])
 splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 splitAt :: Int -> [a] -> ([a],[a])
 splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
@@ -362,7 +362,7 @@ typeName :: a -> String
 unQuoted :: String -> String
 uncons :: [a] -> Maybe (a, [a])
 uncurry :: (a -> b -> c) -> ((a, b) -> c)
-unfoldForest :: (b -> (a, [b])) -> [b] -> Forest
+unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 unfoldl :: (b -> Maybe (a, b)) -> b -> [a]
 unfoldr :: (b -> Maybe (a, b)) -> b -> [a]

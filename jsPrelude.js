@@ -452,7 +452,7 @@ const draw = node => {
     );
 };
 
-// drawForest :: Forest String -> String
+// drawForest :: [Tree String] -> String
 const drawForest = trees =>
     trees.map(drawTree).join('\n');
 
@@ -622,7 +622,7 @@ const exp = n => Math.exp(n);
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = (f, g) => x => Tuple(f(x), g(x));
 
-// filePathTree :: filePath -> [Tree String] -> Tree filePath
+// filePathTree :: filePath -> [Tree String] -> Tree FilePath
 const filePathTree = (fpAnchor, trees) => {
     const go = fp => tree => {
         const path = `${fp}/${tree.root}`;
@@ -979,8 +979,8 @@ const intersectionBy = (eq, xs) =>
     foldr1(((a, x) => intersectBy(eq, a, x)), xs);
 
 // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
-// intersperse :: Char -> String -> String
 // intersperse :: a -> [a] -> [a]
+// intersperse :: Char -> String -> String
 const intersperse = (sep, xs) => {
     const bool = 's' === (typeof xs)[0];
     return xs.length > 1 ? (
@@ -993,7 +993,7 @@ const intersperse = (sep, xs) => {
         )) : xs;
 };
 
-// isAlpha::Char - > Bool
+// isAlpha :: Char -> Bool
 const isAlpha = c =>
     /[A-Za-z0-9\u00C0-\u00FF]/.test(c);
 
@@ -2097,7 +2097,7 @@ const sortOn = (f, xs) => {
 // > span (< 0) [1,2,3] == ([],[1,2,3])
 //
 // span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
-// span :: (a -> Bool) -> [a] -> ([a],[a])
+// span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = (f, xs) =>
     splitAt(until(
         i => !f(xs[i]),
@@ -2510,7 +2510,7 @@ const uncons = xs =>
 const uncurry = f => args => f.apply(null, args);
 
 // | Build a forest from a list of seed values
-// unfoldForest :: (b -> (a, [b])) -> [b] -> Forest
+// unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 const unfoldForest = (f, xs) =>
     xs.map(b => unfoldTree(f, b));
 

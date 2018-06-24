@@ -3,7 +3,7 @@
 ```
 
 ```applescript
--- intersperse :: Char -> String -> String-- intersperse :: a -> [a] -> [a]on intersperse(sep, xs)	set lng to length of xs	if lng > 1 then		set acc to {item 1 of xs}		repeat with i from 2 to lng			set acc to acc & {sep, item i of xs}		end repeat		if class of xs is string then			concat(acc)		else			acc		end if	else		xs	end ifend intersperse
+-- intersperse :: a -> [a] -> [a]-- intersperse :: Char -> String -> Stringon intersperse(sep, xs)	set lng to length of xs	if lng > 1 then		set acc to {item 1 of xs}		repeat with i from 2 to lng			set acc to acc & {sep, item i of xs}		end repeat		if class of xs is string then			concat(acc)		else			acc		end if	else		xs	end ifend intersperse
 ```
 
 ```js
@@ -11,8 +11,8 @@
 ```
 
 ```js
-// intersperse :: Char -> String -> String
 // intersperse :: a -> [a] -> [a]
+// intersperse :: Char -> String -> String
 const intersperse = (sep, xs) => {
     const bool = 's' === (typeof xs)[0];
     return xs.length > 1 ? (

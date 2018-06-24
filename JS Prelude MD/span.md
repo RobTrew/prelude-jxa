@@ -10,7 +10,7 @@
 ```
 
 ```js
-// span :: (a -> Bool) -> [a] -> ([a],[a])
+// span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = (f, xs) =>
     splitAt(until(
         i => !f(xs[i]),
