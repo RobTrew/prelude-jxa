@@ -1,4 +1,4 @@
-```applescript
+```js
 // The root elements of a tree in pre-order.
 ```
 
