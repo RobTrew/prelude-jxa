@@ -34,7 +34,7 @@ const Left = x => ({
 // Node :: a -> [Tree a] -> Tree a
 const Node = (v, xs) => ({
     type: 'Node',
-    root: v, // any type of value (but must be consistent across tree)
+    root: v, // any type of value (consistent across tree)
     nest: xs || []
 });
 
@@ -678,6 +678,14 @@ const flatten = t =>
     Array.isArray(t) ? (
         [].concat.apply([], t.map(flatten))
     ): t;
+
+// The root elements of a tree in pre-order.
+// flattenTree :: Tree a -> [a]
+const flattenTree = t => {
+    const go = (xs, x) => [x.root]
+        .concat(x.nest.reduceRight(go, xs));
+    return go([], t);
+};
 
 // flip :: (a -> b -> c) -> b -> a -> c
 const flip = f => (a, b) => f.apply(null, [b, a]);

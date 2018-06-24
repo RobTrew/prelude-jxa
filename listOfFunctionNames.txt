@@ -102,6 +102,7 @@ findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 findIndices :: (a -> Bool) -> [a] -> [Int]
 firstArrow :: (a -> b) -> ((a, c) -> (b, c))
 flatten :: NestedList a -> [a]
+flattenTree :: Tree a -> [a]
 flip :: (a -> b -> c) -> b -> a -> c
 floor :: Num -> Int
 fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
