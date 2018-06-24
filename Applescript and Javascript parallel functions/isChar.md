@@ -5,5 +5,5 @@
 ```js
 // isChar :: a -> Bool
 const isChar = x =>
-    typeof x === 'string' && x.length === 1;
+    ('string' === typeof x) && (1 === x.length);
 ```

@@ -1,5 +1,5 @@
 ```js
-// treeLeaves :: Node -> [Node]
+// treeLeaves :: Tree -> [Tree]
 const treeLeaves = oNode => {
   const nest = oNode.nest;
   return nest.length > 0 ? (

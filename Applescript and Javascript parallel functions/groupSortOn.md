@@ -33,7 +33,7 @@ const groupSortOn = (f, xs) => {
     const fsbs = unzip(
             flatten([f])
             .reduceRight((a, x) =>
-                typeof x === 'boolean' ? {
+                'boolean' === typeof x ? {
                     asc: x,
                     fbs: a.fbs
                 } : {

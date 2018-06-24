@@ -7,7 +7,7 @@
 const elemIndex = (x, xs) => {
     const i = xs.indexOf(x);
     return {
-        Nothing: i === -1,
+        Nothing: -1 === i,
         Just: i
     };
 };

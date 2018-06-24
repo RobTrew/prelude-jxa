@@ -33,6 +33,6 @@ end inits
 const inits = xs => [
         []
     ]
-    .concat((typeof xs === 'string' ? xs.split('') : xs)
+    .concat(('string' === typeof xs ? xs.split('') : xs)
         .map((_, i, lst) => lst.slice(0, i + 1)));
 ```

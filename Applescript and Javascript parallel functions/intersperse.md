@@ -14,7 +14,7 @@
 // intersperse :: Char -> String -> String
 // intersperse :: a -> [a] -> [a]
 const intersperse = (sep, xs) => {
-    const bool = (typeof xs)[0] === 's';
+    const bool = 's' === (typeof xs)[0];
     return xs.length > 1 ? (
         (bool ? concat : x => x)(
             (bool ? (

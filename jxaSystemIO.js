@@ -12,7 +12,7 @@ const appendFile = (strPath, txt) => {
             oFullPath
             .stringByStandardizingPath, ref
         ) ? (
-            ref[0] === 0 ? (() => {
+            0 === ref[0] ? (() => {
                 const // Not a directory
                     oData = ObjC.wrap(txt)
                     .dataUsingEncoding($.NSUTF8StringEncoding),
@@ -93,7 +93,7 @@ const doesDirectoryExist = strPath => {
         .fileExistsAtPathIsDirectory(
             $(strPath)
             .stringByStandardizingPath, ref
-        ) && ref[0] === 1;
+        ) && (1 === ref[0]);
 };
 
 // doesFileExist :: FilePath -> IO Bool

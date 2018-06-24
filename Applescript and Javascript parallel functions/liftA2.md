@@ -20,11 +20,11 @@ const liftA2 = (f, a, b) =>
     Array.isArray(a) ? (
         liftA2List(f, a, b)
     ) : (t => Boolean(t) ? (
-        t === 'Either' ? (
+        'Either' === t ? (
             liftA2LR(f, a, b)
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             liftA2Maybe(f, a, b)
-        ) : t === 'Tuple' ? (
+        ) : 'Tuple' === t ? (
             liftA2Tuple(f, a, b)
         ) : undefined
     ) : undefined)(a.type);

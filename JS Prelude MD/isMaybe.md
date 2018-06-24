@@ -1,5 +1,5 @@
 ```js
 // isMaybe :: a -> Bool
 const isMaybe = x =>
-    x.type === 'Maybe';
+    'Maybe' === x.type;
 ```

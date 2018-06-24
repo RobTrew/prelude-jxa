@@ -18,12 +18,12 @@
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = (mf, mx) => {
     const t = mx.type;
-    return (t !== undefined ? (
-        t === 'Either' ? (
+    return (undefined !== t ? (
+       'Either' === t ? (
             apEither
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             apMaybe
-        ) : t === 'Node' ? (
+        ) : 'Node' === t ? (
             apTree
         ) : apTuple
     ) : apList)(mf, mx);

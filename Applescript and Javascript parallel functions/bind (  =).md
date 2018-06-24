@@ -9,11 +9,11 @@ const bind = (m, mf) =>
         bindList
     ) : (() => {
         const t = m.type;
-        return t === 'Either' ? (
+        return 'Either' === t ? (
             bindEither
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             bindMaybe
-        ) : t === 'Tuple' ? (
+        ) : 'Tuple' === t ? (
             bindTuple
         ) : x => Left('No bind instance found for type: ' + t);
     })()(m, mf));

@@ -4,5 +4,5 @@
 
 ```js
 // even :: Int -> Bool
-const even = n => n % 2 === 0;
+const even = n => 0 === n % 2;
 ```

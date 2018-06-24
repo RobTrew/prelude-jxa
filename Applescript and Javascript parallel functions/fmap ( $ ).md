@@ -6,12 +6,12 @@
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
 const fmap = (f, fa) => {
     const t = fa.type;
-    return (t !== undefined ? (
-        t === 'Either' ? (
+    return (undefined !== t ? (
+        'Either' === t ? (
             fmapLR
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             fmapMay
-        ) : t === 'Node' ? (
+        ) : 'Node' === t ? (
             fmapTree
         ) : fmapTuple
     ) : map)(f, fa);

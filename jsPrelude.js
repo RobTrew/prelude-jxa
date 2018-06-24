@@ -112,12 +112,12 @@ const any = (p, xs) => xs.some(p);
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = (mf, mx) => {
     const t = mx.type;
-    return (t !== undefined ? (
-        t === 'Either' ? (
+    return (undefined !== t ? (
+       'Either' === t ? (
             apEither
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             apMaybe
-        ) : t === 'Node' ? (
+        ) : 'Node' === t ? (
             apTree
         ) : apTuple
     ) : apList)(mf, mx);
@@ -191,11 +191,11 @@ const bind = (m, mf) =>
         bindList
     ) : (() => {
         const t = m.type;
-        return t === 'Either' ? (
+        return 'Either' === t ? (
             bindEither
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             bindMaybe
-        ) : t === 'Tuple' ? (
+        ) : 'Tuple' === t ? (
             bindTuple
         ) : x => Left('No bind instance found for type: ' + t);
     })()(m, mf));
@@ -346,7 +346,7 @@ const composeListRL = fs =>
 // concat :: [String] -> String
 const concat = xs =>
     xs.length > 0 ? (() => {
-        const unit = typeof xs[0] === 'string' ? '' : [];
+        const unit = 'string' === typeof xs[0] ? '' : [];
         return unit.concat.apply(unit, xs);
     })() : [];
 
@@ -419,7 +419,7 @@ const deleteMap = (k, dct) =>
 
 // difference :: Eq a => [a] -> [a] -> [a]
 const difference = (xs, ys) =>
-    xs.filter(x => ys.indexOf(x) === -1);
+    xs.filter(x => -1 === ys.indexOf(x));
 
 // div :: Int -> Int -> Int
 const div = (x, y) => Math.floor(x / y);
@@ -495,8 +495,8 @@ const dropWhileEnd = (p, s) => {
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = (lf, rf, e) =>
-    e.type === 'Either' ? (
-        e.Left !== undefined ? (
+    'Either' === e.type ? (
+        undefined !== e.Left ? (
             lf(e.Left)
         ) : rf(e.Right)
     ) : undefined;
@@ -526,7 +526,7 @@ const elemAtMay = (i, x) => {
 const elemIndex = (x, xs) => {
     const i = xs.indexOf(x);
     return {
-        Nothing: i === -1,
+        Nothing: -1 === i,
         Just: i
     };
 };
@@ -612,7 +612,7 @@ const evalJSMay = s => {
 };
 
 // even :: Int -> Bool
-const even = n => n % 2 === 0;
+const even = n => 0 === n % 2;
 
 // exp :: Float -> Float
 const exp = n => Math.exp(n);
@@ -693,12 +693,12 @@ const floor = x => {
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
 const fmap = (f, fa) => {
     const t = fa.type;
-    return (t !== undefined ? (
-        t === 'Either' ? (
+    return (undefined !== t ? (
+        'Either' === t ? (
             fmapLR
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             fmapMay
-        ) : t === 'Node' ? (
+        ) : 'Node' === t ? (
             fmapTree
         ) : fmapTuple
     ) : map)(f, fa);
@@ -811,7 +811,7 @@ const fst = tpl => tpl[0];
 
 // gcd :: Int -> Int -> Int
 const gcd = (x, y) => {
-    const _gcd = (a, b) => (b === 0 ? a : _gcd(b, a % b));
+    const _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b));
     return _gcd(Math.abs(x), Math.abs(y));
 };
 
@@ -851,7 +851,7 @@ const groupSortOn = (f, xs) => {
     const fsbs = unzip(
             flatten([f])
             .reduceRight((a, x) =>
-                typeof x === 'boolean' ? {
+                'boolean' === typeof x ? {
                     asc: x,
                     fbs: a.fbs
                 } : {
@@ -921,7 +921,7 @@ const initMay = xs =>
 const inits = xs => [
         []
     ]
-    .concat((typeof xs === 'string' ? xs.split('') : xs)
+    .concat(('string' === typeof xs ? xs.split('') : xs)
         .map((_, i, lst) => lst.slice(0, i + 1)));
 
 // insert :: Ord a => a -> [a] -> [a]
@@ -954,8 +954,8 @@ const intToDigit = n =>
 // intercalate :: [a] -> [[a]] -> [a]
 // intercalate :: String -> [String] -> String
 const intercalate = (sep, xs) =>
-    xs.length > 0 && typeof sep === 'string' &&
-    typeof xs[0] === 'string' ? (
+    xs.length > 0 && 'string' === typeof sep &&
+    'string' === typeof xs[0] ? (
         xs.join(sep)
     ) : concat(intersperse(sep, xs));
 
@@ -982,7 +982,7 @@ const intersectionBy = (eq, xs) =>
 // intersperse :: Char -> String -> String
 // intersperse :: a -> [a] -> [a]
 const intersperse = (sep, xs) => {
-    const bool = (typeof xs)[0] === 's';
+    const bool = 's' === (typeof xs)[0];
     return xs.length > 1 ? (
         (bool ? concat : x => x)(
             (bool ? (
@@ -999,7 +999,7 @@ const isAlpha = c =>
 
 // isChar :: a -> Bool
 const isChar = x =>
-    typeof x === 'string' && x.length === 1;
+    ('string' === typeof x) && (1 === x.length);
 
 // isDigit :: Char -> Bool
 const isDigit = c => {
@@ -1014,7 +1014,7 @@ const isInfixOf = (needle, haystack) =>
 
 // isLeft :: Either a b -> Bool
 const isLeft = lr =>
-    lr.type === 'Either' && lr.Left !== undefined;
+    ('Either' === lr.type) && (undefined !== lr.Left);
 
 // isLower :: Char -> Bool
 const isLower = c =>
@@ -1022,12 +1022,12 @@ const isLower = c =>
 
 // isMaybe :: a -> Bool
 const isMaybe = x =>
-    x.type === 'Maybe';
+    'Maybe' === x.type;
 
 // isNull :: [a] -> Bool
 // isNull :: String -> Bool
 const isNull = xs =>
-    Array.isArray(xs) || typeof xs === 'string' ? (
+    Array.isArray(xs) || ('string' === typeof xs) ? (
         xs.length < 1
     ) : undefined;
 
@@ -1050,7 +1050,7 @@ const isPrefixOf = (xs, ys) => {
 // isRight :: Either a b -> Bool
 const isRight = lr =>
   (typeof lr !== 'undefined') && 
-  lr.type === 'Either' && lr.Right !== undefined;
+  ('Either' === lr.type) && (undefined !== lr.Right);
 
 // The 'isSortedBy' function returns true iff the predicate returns true
 // for all adjacent pairs of elements in the list.
@@ -1153,7 +1153,7 @@ const lcm = (x, y) =>
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
     concatMap(
-        x => x.type === 'Either' && x.Left !== undefined ? (
+        x => ('Either' === x.type) && (undefined !== x.Left) ? (
             [x.Left]
         ) : [], xs
     );
@@ -1184,11 +1184,11 @@ const liftA2 = (f, a, b) =>
     Array.isArray(a) ? (
         liftA2List(f, a, b)
     ) : (t => Boolean(t) ? (
-        t === 'Either' ? (
+        'Either' === t ? (
             liftA2LR(f, a, b)
-        ) : t === 'Maybe' ? (
+        ) : 'Maybe' === t ? (
             liftA2Maybe(f, a, b)
-        ) : t === 'Tuple' ? (
+        ) : 'Tuple' === t ? (
             liftA2Tuple(f, a, b)
         ) : undefined
     ) : undefined)(a.type);
@@ -1340,7 +1340,7 @@ const mapFromList = kvs =>
         (a, kv) => {
             const k = kv[0];
             return Object.assign(a, {
-                [(typeof k === 'string' && k) || show(k)]: kv[1]
+                [(('string' === typeof k) && k) || show(k)]: kv[1]
             });
         }, {}
     );
@@ -1368,9 +1368,9 @@ const mapMaybe = (mf, xs) =>
 const mappend = (a, b) => {
     const t = a.type;
     return (Boolean(t) ? (
-        t === 'Maybe' ? (
+        'Maybe' === t ? (
             mappendMaybe
-        ) : t === 'Ordering' ? (
+        ) : 'Ordering' === t ? (
             mappendOrdering
         ) : mappendTuple
     ) : append)(a, b);
@@ -1511,7 +1511,7 @@ const negate = n => -n;
 const not = b => !b;
 
 // notElem :: Eq a => a -> [a] -> Bool
-const notElem = (x, xs) => xs.indexOf(x) === -1;
+const notElem = (x, xs) => -1 === xs.indexOf(x);
 
 // nub :: [a] -> [a]
 const nub = xs => nubBy((a, b) => a === b, xs);
@@ -2449,7 +2449,7 @@ const transpose = tbl => {
 const traverseList = (f, xs) =>
     sequenceAList(fmap(f, xs));
 
-// treeLeaves :: Node -> [Node]
+// treeLeaves :: Tree -> [Tree]
 const treeLeaves = oNode => {
   const nest = oNode.nest;
   return nest.length > 0 ? (

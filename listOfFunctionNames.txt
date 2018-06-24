@@ -355,7 +355,7 @@ toTitle :: String -> String
 toUpper :: String -> String
 transpose :: [[a]] -> [[a]]
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)
-treeLeaves :: Node -> [Node]
+treeLeaves :: Tree -> [Tree]
 truncate :: Num -> Int
 tupleFromArray [a] -> (a, a ...)
 typeName :: a -> String

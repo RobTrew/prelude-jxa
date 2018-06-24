@@ -7,9 +7,9 @@
 const mappend = (a, b) => {
     const t = a.type;
     return (Boolean(t) ? (
-        t === 'Maybe' ? (
+        'Maybe' === t ? (
             mappendMaybe
-        ) : t === 'Ordering' ? (
+        ) : 'Ordering' === t ? (
             mappendOrdering
         ) : mappendTuple
     ) : append)(a, b);
