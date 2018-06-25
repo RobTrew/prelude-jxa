@@ -2,7 +2,7 @@
 Generic functions for:
 
 - **macOS** scripting with JavaScript for Automation
-- **iOS** scripting with apps like the excellent [1Writer](http://1writerapp.com/), and @agiletortoise's Drafts.
+- **iOS** scripting in JavaScript, with apps like the excellent [1Writer](http://1writerapp.com/), and @agiletortoise's Drafts.
 
 ## Details:
 
