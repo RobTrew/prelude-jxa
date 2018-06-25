@@ -271,7 +271,7 @@ const breakOnMay = (pat, src) =>
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
 const cartesianProduct = (xs, ys) =>
     concatMap((x => concatMap(y => [
-        [Tuple(x, y)]
+        Tuple(x, y)
     ], ys)), xs);
 
 // List of (Predicate, value) tuples -> Default value 
@@ -661,9 +661,11 @@ const find = (p, xs) => {
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
 const findIndex = (p, xs) => {
     const
-        i = (typeof xs !== 'string' ? (
-            xs
-        ) : xs.split('')).findIndex(p);
+        i = (
+            'string' !== typeof xs ? (
+                xs
+            ) : xs.split('')
+        ).findIndex(p);
     return -1 !== i ? (
         Just(i)
     ) : Nothing();

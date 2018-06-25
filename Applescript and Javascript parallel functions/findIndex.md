@@ -51,9 +51,11 @@ end findIndex
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
 const findIndex = (p, xs) => {
     const
-        i = (typeof xs !== 'string' ? (
-            xs
-        ) : xs.split('')).findIndex(p);
+        i = (
+            'string' !== typeof xs ? (
+                xs
+            ) : xs.split('')
+        ).findIndex(p);
     return -1 !== i ? (
         Just(i)
     ) : Nothing();
