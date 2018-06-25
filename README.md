@@ -17,69 +17,73 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
 
 (c. 380 generic and file-system functions in total)
 
-Example of a JavaScript for Automation script which uses imported library
-file(s):
+**Display a menu of functions to copy to the clipboard**
 
-(see the usingLibs function called at the end)
+( Example of a JavaScript for Automation script which uses imported library
+ file(s) – see the `usingLibs` function called at the end )
+
+ ![Menu of functions](./functionMenu.png)
 
 ```javascript
 (() => {
     'use strict';
 
-    // Example of using an import of the whole jsPrelude.js library:
+    // Rob Trew (c) 2018 MIT
 
-    // Generating 350+ files containing comparisons of JS and AS versions
-    // of the same function.
+    // macOS menu for choosing a set of Prelude functions to paste.
+
+    // Edit these file paths to match your system.
+    const
+        // Library files at:
+        // https://github.com/RobTrew/prelude-jxa
+        jsonPath = '~/prelude-jxa/jsPreludeDict.json',
+        jsPreludeLibPath = '~/preludes/jsPrelude.js',
+        jxaSystemLibPath = '~/preludes/jxaSystemIO.js';
 
     // main :: IO ()
     const main = () => {
-        const
-            fpJXAFolder = '~/prelude-jxa/JS Prelude MD/',
-            fpASFolder = '~/prelude-applescript/AS Prelude MD/',
-            fpParallelFolder = '~/preludes/parallel/',
 
-            // Returning an 'Either' type:
-            //   a dictionary with a Left key for any error message,
-            //   or a Right key for a successfully computed value or result.
-            lrResult = bindLR(
-                createDirectoryIfMissingLR(true, fpParallelFolder),
-                fpOut => doesDirectoryExist(fpJXAFolder) ? (
-                    doesDirectoryExist(fpASFolder) ? (() => {
-                        const
-                            jxaFunctions = getDirectoryContents(
-                                fpJXAFolder
-                            ),
-                            gaps = foldl(
-                                (a, fpMD) => {
-                                    showLog('fpMD', fpMD);
-                                    const fpAS = fpASFolder + fpMD;
-                                    return doesFileExist(fpAS) ? (
-                                        writeFile(
-                                            fpParallelFolder + fpMD,
-                                            map(readFile, [
-                                                fpAS,
-                                                fpJXAFolder + fpMD
-                                            ]).join('\n\n')
-                                        ),
-                                        a
-                                    ) : a.concat(fpMD)
-                                }, [],
-                                jxaFunctions
-                            );
-                        return gaps.length > 0 ? (
-                            Left(
-                                'Missing Applescript pairs:\n' +
-                                gaps.join('\n')
-                            )
-                        ) : Right(
-                            jxaFunctions.length.toString() +
-                            ' parallel function files written.'
+        // standardSEAdditions :: () -> Application
+        const standardSEAdditions = () =>
+            Object.assign(Application('System Events'), {
+                includeStandardAdditions: true
+            });
+
+        return bindLR(
+            bindLR(
+                doesFileExist(jsonPath) ? (
+                    readFileLR(jsonPath)
+                ) : Left(`File not found at path: '${fp}'`),
+                jsonParseLR
+            ),
+            dctFns => {
+                const
+                    sa = standardSEAdditions(),
+                    ks = Object.keys(dctFns),
+                    choice = (
+                        sa.activate(),
+                        sa.chooseFromList(
+                            ks, {
+                                withTitle: 'JS Prelude',
+                                withPrompt: `( ${ks.length} functions )` +
+                                '\n\nChoose one or more to paste:',
+                                defaultItems: ks[0],
+                                multipleSelectionsAllowed: true,
+                                emptySelectionAllowed: true
+                            }
                         )
-
-                    })() : Left('Folder not found: ' + fpASFolder)
-                ) : Left('Folder not found: ' + fpJXAFolder)
-            );
-        return lrResult.Left || lrResult.Right;
+                    );
+                return choice ? (() => {
+                    const
+                        strFns = choice.map(k => dctFns[k])
+                        .join('\n\n');
+                    return (
+                        sa.setTheClipboardTo(strFns),
+                        strFns
+                    );
+                })() : '';
+            }
+        );
     };
 
     // LIBRARY IMPORT --------------------------------------
@@ -132,8 +136,9 @@ file(s):
     // MAIN ------------------------------------------------
     return usingLibs(
         [
-            '~/preludes/jsPrelude.js', // iOS and macOS
-            '~/preludes/jxaSystemIO.js' // macOS only
+            jsPreludeLibPath,
+            jxaSystemLibPath
+            // '~/Library/Script Libraries/BBDrafts.js'
         ],
         main
     );
