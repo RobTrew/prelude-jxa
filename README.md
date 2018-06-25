@@ -37,8 +37,8 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
         // Library files at:
         // https://github.com/RobTrew/prelude-jxa
         jsonPath = '~/prelude-jxa/jsPreludeDict.json',
-        jsPreludeLibPath = '~/preludes/jsPrelude.js',
-        jxaSystemLibPath = '~/preludes/jxaSystemIO.js';
+        jsPreludeLibPath = '~/prelude-jxa/jsPrelude.js',
+        jxaSystemLibPath = '~/prelude-jxa/jxaSystemIO.js';
 
     // main :: IO ()
     const main = () => {
@@ -66,7 +66,7 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
                             ks, {
                                 withTitle: 'JS Prelude',
                                 withPrompt: `( ${ks.length} functions )` +
-                                '\n\nChoose one or more to paste:',
+                                    '\n\nChoose one or more to paste:',
                                 defaultItems: ks[0],
                                 multipleSelectionsAllowed: true,
                                 emptySelectionAllowed: true
