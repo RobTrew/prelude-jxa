@@ -203,8 +203,8 @@ const readFile = strPath => {
     ) : str;
 };
 
-// readFileMay :: FilePath -> Maybe String
-const readFileMay = strPath => {
+// readFileLR :: FilePath -> Either String String
+const readFileLR = strPath => {
     const
         error = $(),
         str = ObjC.unwrap(
@@ -216,8 +216,8 @@ const readFileMay = strPath => {
             )
         );
     return Boolean(error.code) ? (
-        Nothing()
-    ) : Just(str);
+        Left(error.message)
+    ) : Right(str);
 };
 
 // removeFile :: FilePath -> Either String String
