@@ -149,7 +149,7 @@ const apMaybe = (mf, mx) =>
         Nothing()
     ) : Just(mf.Just(mx.Just));
 
-// apTree :: Tree (a -> b) -> Tree a -> Tree b
+// apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 const apTree = (tf, tx) => {
     const go = t =>
         Node(
