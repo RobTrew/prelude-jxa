@@ -16,11 +16,5 @@
 
 ```js
 // liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
-const liftM2 = (f, a, b) =>
-    Array.isArray(a) ? (
-        ap(map((g => x => y => g(x, y))(f), a), b)
-    ) : Object.keys(a)
-    .indexOf('Nothing') !== -1 ? (
-        a.Nothing || b.Nothing ? a : pureMay(f(a.Just, b.Just))
-    ) : undefined;
+const liftM2 = liftA2;
 ```
