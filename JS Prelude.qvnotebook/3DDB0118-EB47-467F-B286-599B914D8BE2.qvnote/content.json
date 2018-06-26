@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// and :: [Bool] -> Bool\nconst and = xs => {\n    let i = xs.length;\n    while (i--)\n        if (!xs[i]) return false;\n    return true;\n};"
+      "data": "// and :: [Bool] -> Bool\nconst and = xs =>\n    xs.every(Boolean);"
     }
   ]
 }

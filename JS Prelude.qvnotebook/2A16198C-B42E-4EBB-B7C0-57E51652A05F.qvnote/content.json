@@ -3,7 +3,7 @@
   "cells": [
     {
       "type": "code",
-      "language": "applescript",
+      "language": "javascript",
       "data": "// Mirror image of cons\n// New copy of the list, with an atom added at the end"
     },
     {

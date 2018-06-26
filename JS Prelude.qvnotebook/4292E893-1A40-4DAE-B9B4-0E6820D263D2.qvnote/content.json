@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    xs.length > 0 ? (\n        Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))\n    ) : Nothing();"
+      "data": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    (0 < xs.length) ? (\n        Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))\n    ) : Nothing();"
     }
   ]
 }

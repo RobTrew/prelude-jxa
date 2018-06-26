@@ -3,13 +3,13 @@
   "cells": [
     {
       "type": "code",
-      "language": "applescript",
+      "language": "javascript",
       "data": "// | Sign of a number.\n// The functions 'abs' and 'signum' should satisfy the law:\n//\n// > abs x * signum x == x\n//\n// For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)\n// or @1@ (positive)."
     },
     {
       "type": "code",
       "language": "javascript",
-      "data": "// signum :: Num -> Num\nconst signum = n => n < 0 ? -1 : (n > 0 ? 1 : 0);"
+      "data": "// signum :: Num -> Num\nconst signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);"
     }
   ]
 }

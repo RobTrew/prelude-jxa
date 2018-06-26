@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    xs.length > 0 ? (() => {\n        const unit = typeof xs[0] === 'string' ? '' : [];\n        return unit.concat.apply(unit, xs);\n    })() : [];"
+      "data": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    xs.length > 0 ? (() => {\n        const unit = 'string' === typeof xs[0] ? '' : [];\n        return unit.concat.apply(unit, xs);\n    })() : [];"
     }
   ]
 }

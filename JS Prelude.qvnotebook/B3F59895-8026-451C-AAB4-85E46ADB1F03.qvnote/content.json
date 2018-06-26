@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs =>\n    xs.length > 0 ? (\n        Just(Tuple(xs[0], xs.slice(1)))\n    ) : Nothing();"
+      "data": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs =>\n    (0 < xs.length) ? (\n        Just(Tuple(xs[0], xs.slice(1)))\n    ) : Nothing();"
     }
   ]
 }

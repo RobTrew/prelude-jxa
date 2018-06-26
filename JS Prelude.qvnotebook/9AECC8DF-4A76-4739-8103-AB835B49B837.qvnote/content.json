@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isLeft :: Either a b -> Bool\nconst isLeft = lr =>\n    lr.type === 'Either' && lr.Left !== undefined;"
+      "data": "// isLeft :: Either a b -> Bool\nconst isLeft = lr =>\n    ('Either' === lr.type) && (undefined !== lr.Left);"
     }
   ]
 }

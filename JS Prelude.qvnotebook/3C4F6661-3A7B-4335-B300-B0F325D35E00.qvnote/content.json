@@ -1,0 +1,10 @@
+{
+  "title": "jsonParseLR",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(`${e.message} (line:${e.line} col:${e.column})`);\n    }\n};"
+    }
+  ]
+}

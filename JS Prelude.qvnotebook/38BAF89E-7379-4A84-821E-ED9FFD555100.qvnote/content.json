@@ -1,0 +1,15 @@
+{
+  "title": "flattenTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// The root elements of a tree in pre-order."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// flattenTree :: Tree a -> [a]\nconst flattenTree = t => {\n    const go = (xs, x) => [x.root]\n        .concat(x.nest.reduceRight(go, xs));\n    return go([], t);\n};"
+    }
+  ]
+}

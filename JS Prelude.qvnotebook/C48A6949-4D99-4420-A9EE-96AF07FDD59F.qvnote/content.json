@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftM2 = (f, a, b) =>\n    Array.isArray(a) ? (\n        ap(map((g => x => y => g(x, y))(f), a), b)\n    ) : Object.keys(a)\n    .indexOf('Nothing') !== -1 ? (\n        a.Nothing || b.Nothing ? a : pureMay(f(a.Just, b.Just))\n    ) : undefined;"
+      "data": "// liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftM2 = liftA2;"
     }
   ]
 }

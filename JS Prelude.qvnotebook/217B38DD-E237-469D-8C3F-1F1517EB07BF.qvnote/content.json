@@ -1,0 +1,10 @@
+{
+  "title": "apTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// apTree :: Tree (a -> b) -> Tree a -> Tree b\nconst apTree = (tf, tx) => {\n    const go = t =>\n        Node(\n            t.root(tx.root),\n            tx.nest.map(curry(fmapTree)(t.root))\n            .concat(\n                t.nest.map(go)\n            )\n        );\n    return go(tf)\n};"
+    }
+  ]
+}

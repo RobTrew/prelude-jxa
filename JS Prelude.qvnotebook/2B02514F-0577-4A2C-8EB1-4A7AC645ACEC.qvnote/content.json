@@ -1,0 +1,10 @@
+{
+  "title": "sqrtLR",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// sqrtLR :: Num -> Either String Num\nconst sqrtLR = n =>\n    0 > n ? (\n        Left('Square root of negative number: ' + n)\n    ) : Right(Math.sqrt(n));"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "liftA2Tree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c\nconst liftA2Tree = (f, tx, ty) => {\n    const go = tx =>\n        Node(\n            f(tx.root, ty.root),\n            ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))\n            .concat(\n                tx.nest.map(go)\n            )\n        );\n    return go(tx);\n};"
+    }
+  ]
+}

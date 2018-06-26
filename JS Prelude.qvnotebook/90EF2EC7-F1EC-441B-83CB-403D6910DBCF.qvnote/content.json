@@ -1,10 +1,10 @@
 {
-  "title": "difference (\\\\)",
+  "title": "difference",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// difference (\\\\) :: Eq a => [a] -> [a] -> [a]\nconst difference = (xs, ys) =>\n    xs.filter(x => ys.indexOf(x) === -1);"
+      "data": "// difference :: Eq a => [a] -> [a] -> [a]\nconst difference = (xs, ys) =>\n    xs.filter(x => -1 === ys.indexOf(x));"
     }
   ]
 }

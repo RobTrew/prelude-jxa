@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isAlpha::Char - > Bool\nconst isAlpha = c =>\n    /[A-Za-z0-9\\u00C0-\\u00FF]/.test(c);"
+      "data": "// isAlpha :: Char -> Bool\nconst isAlpha = c =>\n    /[A-Za-z0-9\\u00C0-\\u00FF]/.test(c);"
     }
   ]
 }

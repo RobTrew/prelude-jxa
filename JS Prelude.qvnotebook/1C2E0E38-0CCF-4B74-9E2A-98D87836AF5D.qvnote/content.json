@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// sqrtMay :: Num -> Maybe Num\nconst sqrtMay = n =>\n    n < 0 ? (\n        Nothing()\n    ) : Just(Math.sqrt(n));"
+      "data": "// sqrtMay :: Num -> Maybe Num\nconst sqrtMay = n =>\n    0 > n ? (\n        Nothing()\n    ) : Just(Math.sqrt(n));"
     }
   ]
 }

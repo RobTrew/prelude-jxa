@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = (f, a, b) =>\n    Array.isArray(a) ? (\n        liftA2List(f, a, b)\n    ) : (t => Boolean(t) ? (\n        t === 'Either' ? (\n            liftA2LR(f, a, b)\n        ) : t === 'Maybe' ? (\n            liftA2Maybe(f, a, b)\n        ) : t === 'Tuple' ? (\n            liftA2Tuple(f, a, b)\n        ) : undefined\n    ) : undefined)(a.type);"
+      "data": "// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = (f, a, b) =>\n    Array.isArray(a) ? (\n        liftA2List(f, a, b)\n    ) : (t => Boolean(t) ? (\n        'Either' === t ? (\n            liftA2LR(f, a, b)\n        ) : 'Maybe' === t ? (\n            liftA2Maybe(f, a, b)\n        ) : 'Tuple' === t ? (\n            liftA2Tuple(f, a, b)\n        ) : 'Node' === t ? (\n            liftA2Tree(f, a, b)\n        ) : undefined\n    ) : undefined)(a.type);"
     }
   ]
 }

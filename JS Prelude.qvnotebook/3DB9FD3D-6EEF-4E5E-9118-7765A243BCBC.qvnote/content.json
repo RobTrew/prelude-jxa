@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// inits :: [a] -> [[a]]\n// inits :: String -> [String]\nconst inits = xs => [\n        []\n    ]\n    .concat((typeof xs === 'string' ? xs.split('') : xs)\n        .map((_, i, lst) => lst.slice(0, i + 1)));"
+      "data": "// inits :: [a] -> [[a]]\n// inits :: String -> [String]\nconst inits = xs => [\n        []\n    ]\n    .concat(('string' === typeof xs ? xs.split('') : xs)\n        .map((_, i, lst) => lst.slice(0, i + 1)));"
     }
   ]
 }

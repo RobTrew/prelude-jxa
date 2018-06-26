@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unfoldForest :: (b -> (a, [b])) -> [b] -> Forest\nconst unfoldForest = (f, xs) =>\n    xs.map(b => unfoldTree(f, b));"
+      "data": "// unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]\nconst unfoldForest = (f, xs) =>\n    xs.map(b => unfoldTree(f, b));"
     }
   ]
 }

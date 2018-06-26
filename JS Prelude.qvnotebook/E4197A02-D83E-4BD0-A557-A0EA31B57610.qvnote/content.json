@@ -1,0 +1,15 @@
+{
+  "title": "postorder",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Root elements of tree flattened bottom-up\n// into a postorder list."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// postorder :: Tree a -> [a]\nconst postorder = t => {\n    const go = (xs, x) =>\n        x.nest.reduce(go, xs).concat(x.root);\n    return go([], t);\n};"
+    }
+  ]
+}

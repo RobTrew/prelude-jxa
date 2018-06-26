@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// even :: Int -> Bool\nconst even = n => n % 2 === 0;"
+      "data": "// even :: Int -> Bool\nconst even = n => 0 === n % 2;"
     }
   ]
 }

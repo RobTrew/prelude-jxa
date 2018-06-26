@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = (sep, xs) =>\n    xs.length > 0 && typeof sep === 'string' &&\n    typeof xs[0] === 'string' ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep, xs));"
+      "data": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = (sep, xs) =>\n    xs.length > 0 && 'string' === typeof sep &&\n    'string' === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep, xs));"
     }
   ]
 }

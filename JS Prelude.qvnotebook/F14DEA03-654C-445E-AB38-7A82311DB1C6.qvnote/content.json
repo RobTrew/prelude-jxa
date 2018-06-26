@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// takeBaseName :: FilePath -> String\nconst takeBaseName = strPath =>\n  strPath !== '' ? (\n    strPath[strPath.length - 1] !== '/' ? (() => {\n      const fn = strPath.split('/').slice(-1)[0];\n      return fn.includes('.') ? (\n        fn.split('.').slice(0, -1).join('.')\n      ) : fn;\n    })() : ''\n  ) : '';"
+      "data": "// takeBaseName :: FilePath -> String\nconst takeBaseName = strPath =>\n  ('' !== strPath) ? (\n    ('/' !== strPath[strPath.length - 1]) ? (() => {\n      const fn = strPath.split('/').slice(-1)[0];\n      return fn.includes('.') ? (\n        fn.split('.').slice(0, -1).join('.')\n      ) : fn;\n    })() : ''\n  ) : '';"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// sqrt :: Num -> Num\nconst sqrt = n =>\n    n >= 0 ? Math.sqrt(n) : undefined;"
+      "data": "// sqrt :: Num -> Num\nconst sqrt = n =>\n    (0 <= n) ? Math.sqrt(n) : undefined;"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isChar :: a -> Bool\nconst isChar = x =>\n    typeof x === 'string' && x.length === 1;"
+      "data": "// isChar :: a -> Bool\nconst isChar = x =>\n    ('string' === typeof x) && (1 === x.length);"
     }
   ]
 }

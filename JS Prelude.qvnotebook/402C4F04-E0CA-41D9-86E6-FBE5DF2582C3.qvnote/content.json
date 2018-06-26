@@ -1,10 +1,10 @@
 {
-  "title": "readFileMay",
+  "title": "readFileLR",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// readFileMay :: FilePath -> Maybe String\nconst readFileMay = strPath => {\n    const\n        error = $(),\n        str = ObjC.unwrap(\n            $.NSString.stringWithContentsOfFileEncodingError(\n                $(strPath)\n                .stringByStandardizingPath,\n                $.NSUTF8StringEncoding,\n                error\n            )\n        );\n    return Boolean(error.code) ? (\n        Nothing()\n    ) : Just(str);\n};"
+      "data": "// readFileLR :: FilePath -> Either String String\nconst readFileLR = strPath => {\n    const\n        error = $(),\n        str = ObjC.unwrap(\n            $.NSString.stringWithContentsOfFileEncodingError(\n                $(strPath)\n                .stringByStandardizingPath,\n                $.NSUTF8StringEncoding,\n                error\n            )\n        );\n    return Boolean(error.code) ? (\n        Left(error.message)\n    ) : Right(str);\n};"
     }
   ]
 }

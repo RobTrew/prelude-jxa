@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isMaybe :: a -> Bool\nconst isMaybe = x =>\n    x.type === 'Maybe';"
+      "data": "// isMaybe :: a -> Bool\nconst isMaybe = x =>\n    'Maybe' === x.type;"
     }
   ]
 }
