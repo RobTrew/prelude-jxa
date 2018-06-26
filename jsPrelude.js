@@ -151,14 +151,15 @@ const apMaybe = (mf, mx) =>
 
 // apTree :: Tree (a -> b) -> Tree a -> Tree b
 const apTree = (tf, tx) => {
-    const f = tf.root;
-    return Node(
-        f(tx.root),
-        tx.nest.map(xs => fmapTree(f, xs))
-        .concat(
-            tf.nest.map(g => apTree(g, tx))
-        )
-    );
+    const go = t =>
+        Node(
+            t.root(tx.root),
+            tx.nest.map(curry(fmapTree)(t.root))
+            .concat(
+                t.nest.map(go)
+            )
+        );
+    return go(tf)
 };
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
@@ -1250,14 +1251,15 @@ const liftA2Maybe = (f, a, b) =>
 
 // liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
 const liftA2Tree = (f, tx, ty) => {
-    const x = tx.root;
-    return Node(
-        f(x, ty.root),
-        ty.nest.map(ys => fmapTree(curry(f)(x), ys))
-        .concat(
-            tx.nest.map(t => liftA2Tree(f, t, ty))
-        )
-    );
+    const go = tx =>
+        Node(
+            f(tx.root, ty.root),
+            ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
+            .concat(
+                tx.nest.map(go)
+            )
+        );
+    return go(tx);
 };
 
 // liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)

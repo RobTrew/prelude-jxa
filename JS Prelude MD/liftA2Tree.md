@@ -1,13 +1,14 @@
 ```js
 // liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
 const liftA2Tree = (f, tx, ty) => {
-    const x = tx.root;
-    return Node(
-        f(x, ty.root),
-        ty.nest.map(ys => fmapTree(curry(f)(x), ys))
-        .concat(
-            tx.nest.map(t => liftA2Tree(f, t, ty))
-        )
-    );
+    const go = tx =>
+        Node(
+            f(tx.root, ty.root),
+            ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
+            .concat(
+                tx.nest.map(go)
+            )
+        );
+    return go(tx);
 };
 ```

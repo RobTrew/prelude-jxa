@@ -1,35 +1,31 @@
 ```applescript
 -- apTree :: Tree (a -> b) -> Tree a -> Tree b
 on apTree(tf, tx)
-    set f to mReturn(root of tf)
-    
-    script apTx
-        on |λ|(tg)
-            apTree(tg, tx)
+    set fmap to curry(my fmapTree)
+    script go
+        on |λ|(t)
+            set f to root of t
+            Node(mReturn(f)'s |λ|(root of tx), ¬
+                map(fmap's |λ|(f), nest of tx) & ¬
+                map(go, nest of t))
         end |λ|
     end script
     
-    script fmapf
-        on |λ|(xs)
-            fmapTree(f, xs)
-        end |λ|
-    end script
-    
-    Node(|λ|(root of tx) of f, ¬
-        map(fmapf, nest of tx) & map(apTx, nest of tf))
+    return go's |λ|(tf)
 end apTree
 ```
 
 ```js
 // apTree :: Tree (a -> b) -> Tree a -> Tree b
 const apTree = (tf, tx) => {
-    const f = tf.root;
-    return Node(
-        f(tx.root),
-        tx.nest.map(xs => fmapTree(f, xs))
-        .concat(
-            tf.nest.map(g => apTree(g, tx))
-        )
-    );
+    const go = t =>
+        Node(
+            t.root(tx.root),
+            tx.nest.map(curry(fmapTree)(t.root))
+            .concat(
+                t.nest.map(go)
+            )
+        );
+    return go(tf)
 };
 ```
