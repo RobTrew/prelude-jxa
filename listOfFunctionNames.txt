@@ -187,6 +187,7 @@ liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftA2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
 liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)

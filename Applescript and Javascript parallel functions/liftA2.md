@@ -19,6 +19,8 @@ on liftA2(f, a, b)
             liftA2Maybe(f, a, b)
         else if "Tuple" = t then
             liftA2Tuple(f, a, b)
+        else if "Node" = t then
+            liftA2Tree(f, a, b)
         else
             missing value
         end if
@@ -45,6 +47,8 @@ const liftA2 = (f, a, b) =>
             liftA2Maybe(f, a, b)
         ) : 'Tuple' === t ? (
             liftA2Tuple(f, a, b)
+        ) : 'Node' === t ? (
+            liftA2Tree(f, a, b)
         ) : undefined
     ) : undefined)(a.type);
 ```

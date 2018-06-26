@@ -1227,6 +1227,8 @@ const liftA2 = (f, a, b) =>
             liftA2Maybe(f, a, b)
         ) : 'Tuple' === t ? (
             liftA2Tuple(f, a, b)
+        ) : 'Node' === t ? (
+            liftA2Tree(f, a, b)
         ) : undefined
     ) : undefined)(a.type);
 
@@ -1245,6 +1247,18 @@ const liftA2List = (f, xs, ys) =>
 // liftA2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 const liftA2Maybe = (f, a, b) =>
     a.Nothing ? a : b.Nothing ? b : Just(f(a.Just, b.Just));
+
+// liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
+const liftA2Tree = (f, tx, ty) => {
+    const x = tx.root;
+    return Node(
+        f(x, ty.root),
+        ty.nest.map(ys => fmapTree(curry(f)(x), ys))
+        .concat(
+            tx.nest.map(t => liftA2Tree(f, t, ty))
+        )
+    );
+};
 
 // liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 const liftA2Tuple = (f, a, b) =>

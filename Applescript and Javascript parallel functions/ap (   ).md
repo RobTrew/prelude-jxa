@@ -19,6 +19,8 @@ on ap(mf, mx)
                 apMaybe(mf, mx)
             else if t = "Tuple" then
                 apTuple(mf, mx)
+            else if t = "Node" then
+                apTree(mf, mx)
             else
                 missing value
             end if
