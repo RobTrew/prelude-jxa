@@ -18,6 +18,7 @@ ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 apList (<*>) :: [(a -> b)] -> [a] -> [b]
 apMaybe (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
+apTree :: Tree (a -> b) -> Tree a -> Tree b
 apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 append (++) :: [a] -> [a] -> [a]
 appendFile :: FilePath -> String -> IO Bool
