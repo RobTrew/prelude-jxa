@@ -1,8 +1,8 @@
 ```applescript
---    splitOn("\r\n", "a\r\nb\r\nd\r\ne") --> ["a","b","d","e"]
---    splitOn("aaa", "aaaXaaaXaaaXaaa") --> {"", "X", "X", "X", ""}
---    splitOn("x", "x") --> {"", ""}
---  splitOn(5, {1, 5, 9, 2, 6, 5, 3, 5}) --> {{1}, {9, 2, 6}, {3}, {}}
+-- splitOn("\r\n", "a\r\nb\r\nd\r\ne") --> ["a","b","d","e"]
+-- splitOn("aaa", "aaaXaaaXaaaXaaa") --> {"", "X", "X", "X", ""}
+-- splitOn("x", "x") --> {"", ""}
+-- splitOn(5, {1, 5, 9, 2, 6, 5, 3, 5}) --> {{1}, {9, 2, 6}, {3}, {}}
 ```
 
 ```applescript
