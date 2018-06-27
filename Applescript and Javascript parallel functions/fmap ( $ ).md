@@ -3,13 +3,13 @@
 on fmap(f, fa)
     if class of fa is record and keys(fa) contains "type" then
         set t to type of fa
-        if t = "Either" then
+        if "Either" = t then
             set fm to my fmapLR
-        else if t = "Maybe" then
+        else if "Maybe" = t then
             set fm to my fmapMay
-        else if t = "Tree" then
+        else if "Tree" = t then
             set fm to my fmapTree
-        else if t = "Tuple" then
+        else if "Tuple" = t then
             set fm to my fmapTuple
         else
             set fm to my map

@@ -13,13 +13,13 @@ on ap(mf, mx)
         set ks to keys(mf)
         if ks contains "type" then
             set t to type of mx
-            if t = "Either" then
+            if "Either" = t then
                 apEither(mf, mx)
-            else if t = "Maybe" then
+            else if "Maybe" = t then
                 apMaybe(mf, mx)
-            else if t = "Tuple" then
+            else if "Tuple" = t then
                 apTuple(mf, mx)
-            else if t = "Node" then
+            else if "Node" = t then
                 apTree(mf, mx)
             else
                 missing value

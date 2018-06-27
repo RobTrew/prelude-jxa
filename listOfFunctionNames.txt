@@ -253,7 +253,7 @@ properFraction :: Real -> (Int, Real)
 pureLR :: a -> Either e a
 pureList :: a -> [a]
 pureMay :: a -> Maybe a
-pureT :: f a -> (a -> f a)
+pureT :: String -> f a -> (a -> f a)
 pureTree :: a -> Tree a
 pureTuple :: a -> (a, a)
 quickSort :: (Ord a) => [a] -> [a]
@@ -359,7 +359,7 @@ toSentence :: String -> String
 toTitle :: String -> String
 toUpper :: String -> String
 transpose :: [[a]] -> [[a]]
-traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)
+traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 treeLeaves :: Tree -> [Tree]
 truncate :: Num -> Int
 tupleFromArray [a] -> (a, a ...)

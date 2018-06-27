@@ -1687,24 +1687,22 @@ const pureList = x => [x];
 // pureMay :: a -> Maybe a
 const pureMay = x => Just(x);
 
-// pureT :: f a -> (a -> f a)
-const pureT = x =>
-    Array.isArray(x) ? (
-        pureList
-    ) : (() => {
-        const t = x.type;
-        return t !== undefined ? (
-            'Either' === t ? (
-                pureLR
-            ) :'Maybe' === t ? (
-                pureMay
-            ) : 'Tree' === t ? (
-                pureTree
-            ) : 'Tuple' === t ? (
-                pureTuple
-            ) : pureList
-        ) : pureList;
-    })();
+// Given a type name string, returns a 
+// specialised 'pure', where
+// 'pure' lifts a value into a particular functor.
+// pureT :: String -> f a -> (a -> f a)
+const pureT = t => x =>
+    t !== 'List' ? (
+        'Either' === t ? (
+            pureLR(x)
+        ) : 'Maybe' === t ? (
+            pureMay(x)
+        ) : 'Tree' === t ? (
+            pureTree(x)
+        ) : 'Tuple' === t ? (
+            pureTuple(x)
+        ) : pureList(x)
+    ) : pureList(x);
 
 // pureTree :: a -> Tree a
 const pureTree = x => Node(x, []);
@@ -1942,13 +1940,8 @@ const scanr1 = (f, xs) =>
 const secondArrow = f => xy => Tuple(xy[0], f(xy[1]));
 
 // sequenceAList :: Applicative f => [f a] -> f [a]
-const sequenceAList = us =>
-    us.length > 0 ? (
-        us.reduceRight(
-            (v, u) => ap(fmap(x => xs => [x, ...xs], u), v),
-            pureT(us[0])([])
-        )
-    ) : us;
+const sequenceAList = xs =>
+    traverseList(x => x, xs);
 
 // show :: a -> String
 // show :: a -> Int -> Indented String
@@ -2511,12 +2504,21 @@ const transpose = tbl => {
 // - evaluate these actions from left to right,
 // - and collect the results.
 
-// traverse :: (Traversable t, Applicative f) => (a -> f b) -> t a -> f (t b)
-// traverse_ f = foldr cons_f (pure [])
-//   where cons_f x a = ((:) <$> (f x)) <*> a
-// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)
-const traverseList = (f, xs) =>
-    sequenceAList(fmap(f, xs));
+//    traverse f = List.foldr cons_f (pure [])
+//      where cons_f x ys = liftA2 (:) (f x) ys
+// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
+const traverseList = (f, xs) => {
+    const lng = xs.length;
+    return 0 < lng ? (() => {
+        const
+            vLast = f(xs[lng - 1]),
+            t = vLast.type || 'List';
+        return xs.slice(0, -1).reduceRight(
+            (ys, x) => liftA2(cons, f(x), ys),
+            liftA2(cons, vLast, pureT(t, []))
+        );
+    })() : [];
+};
 
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = oNode => {

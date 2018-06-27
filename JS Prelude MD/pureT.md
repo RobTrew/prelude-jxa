@@ -1,20 +1,21 @@
 ```js
-// pureT :: f a -> (a -> f a)
-const pureT = x =>
-    Array.isArray(x) ? (
-        pureList
-    ) : (() => {
-        const t = x.type;
-        return t !== undefined ? (
-            'Either' === t ? (
-                pureLR
-            ) :'Maybe' === t ? (
-                pureMay
-            ) : 'Tree' === t ? (
-                pureTree
-            ) : 'Tuple' === t ? (
-                pureTuple
-            ) : pureList
-        ) : pureList;
-    })();
+// Given a type name string, returns a 
+// specialised 'pure', where
+// 'pure' lifts a value into a particular functor.
+```
+
+```js
+// pureT :: String -> f a -> (a -> f a)
+const pureT = t => x =>
+    t !== 'List' ? (
+        'Either' === t ? (
+            pureLR(x)
+        ) : 'Maybe' === t ? (
+            pureMay(x)
+        ) : 'Tree' === t ? (
+            pureTree(x)
+        ) : 'Tuple' === t ? (
+            pureTuple(x)
+        ) : pureList(x)
+    ) : pureList(x);
 ```
