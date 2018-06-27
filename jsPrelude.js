@@ -2504,6 +2504,12 @@ const transpose = tbl => {
     );
 };
 
+// traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
+const traverseLR = (f, lr) =>
+    lr.Left !== undefined ? (
+        [lr]
+    ) : fmap(Right, f(lr.Right));
+
 // - Map each element of a structure to an action,
 // - evaluate these actions from left to right,
 // - and collect the results.
@@ -2523,6 +2529,12 @@ const traverseList = (f, xs) => {
         );
     })() : [];
 };
+
+// traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
+const traverseMay = (f, mb) =>
+    mb.Nothing ? (
+       [mb]
+   ) : fmap(Just, f(mb.Just));
 
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = oNode => {

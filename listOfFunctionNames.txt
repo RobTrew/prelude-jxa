@@ -359,7 +359,9 @@ toSentence :: String -> String
 toTitle :: String -> String
 toUpper :: String -> String
 transpose :: [[a]] -> [[a]]
+traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
+traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 treeLeaves :: Tree -> [Tree]
 truncate :: Num -> Int
 tupleFromArray [a] -> (a, a ...)
