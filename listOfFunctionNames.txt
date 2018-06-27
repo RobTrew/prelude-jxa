@@ -319,7 +319,7 @@ splitAt :: Int -> [a] -> ([a],[a])
 splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 splitEvery :: Int -> [a] -> [[a]]
 splitFileName :: FilePath -> (String, String)
-splitOn :: String -> String -> [String]
+splitOn :: a -> [a] -> [[a]]
 splitRegex :: Regex -> String -> [String]
 sqrt :: Num -> Num
 sqrtLR :: Num -> Either String Num
