@@ -1691,7 +1691,7 @@ const pureMay = x => Just(x);
 // specialised 'pure', where
 // 'pure' lifts a value into a particular functor.
 // pureT :: String -> f a -> (a -> f a)
-const pureT = t => x =>
+const pureT = (t, x) =>
     t !== 'List' ? (
         'Either' === t ? (
             pureLR(x)
