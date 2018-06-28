@@ -1012,7 +1012,7 @@ const intersectBy = (eq, xs, ys) => {
     xs.filter(x => ys.some(ceq(x))) : [];
 };
 
-// intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]
+// intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]
 const intersectionBy = (eq, xs) =>
     foldr1(((a, x) => intersectBy(eq, a, x)), xs);
 
@@ -1292,7 +1292,7 @@ const liftMmay = f =>
 // lines :: String -> [String]
 const lines = s => s.split(/[\r\n]/);
 
-// listFromTuple (a, a ...) -> [a]
+// listFromTuple :: (a, a ...) -> [a]
 const listFromTuple = tpl =>
     Object.keys(tpl)
     .sort()
@@ -1692,7 +1692,7 @@ const pureMay = x => Just(x);
 // 'pure' lifts a value into a particular functor.
 // pureT :: String -> f a -> (a -> f a)
 const pureT = (t, x) =>
-    t !== 'List' ? (
+    'List' !== t ? (
         'Either' === t ? (
             pureLR(x)
         ) : 'Maybe' === t ? (
@@ -2536,6 +2536,10 @@ const traverseMay = (f, mb) =>
        [mb]
    ) : fmap(Just, f(mb.Just));
 
+// traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
+const traverseTuple = (f, tpl) =>
+    fmap(curry(Tuple)(tpl[0]), f(tpl[1]));
+
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = oNode => {
   const nest = oNode.nest;
@@ -2550,7 +2554,7 @@ const truncate = x => {
     return m;
 };
 
-// tupleFromArray [a] -> (a, a ...)
+// tupleFromArray :: [a] -> (a, a ...)
 const tupleFromArray = xs => {
     const lng = xs.length;
     return 1 < lng ? xs.reduce(

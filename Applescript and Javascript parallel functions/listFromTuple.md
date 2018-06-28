@@ -1,5 +1,5 @@
 ```applescript
--- listFromTuple (a, a ...) -> [a]
+-- listFromTuple :: (a, a ...) -> [a]
 on listFromTuple(tpl)
     script
         on |λ|(k)
@@ -11,7 +11,7 @@ end listFromTuple
 ```
 
 ```js
-// listFromTuple (a, a ...) -> [a]
+// listFromTuple :: (a, a ...) -> [a]
 const listFromTuple = tpl =>
     Object.keys(tpl)
     .sort()

@@ -1,5 +1,5 @@
 ```js
-// listFromTuple (a, a ...) -> [a]
+// listFromTuple :: (a, a ...) -> [a]
 const listFromTuple = tpl =>
     Object.keys(tpl)
     .sort()

@@ -1,5 +1,5 @@
 ```applescript
--- tupleFromArray [a] -> (a, a ...)
+-- tupleFromArray :: [a] -> (a, a ...)
 on tupleFromArray(xs)
     set lng to length of xs
     if lng > 1 then
@@ -21,7 +21,7 @@ end tupleFromArray
 ```
 
 ```js
-// tupleFromArray [a] -> (a, a ...)
+// tupleFromArray :: [a] -> (a, a ...)
 const tupleFromArray = xs => {
     const lng = xs.length;
     return 1 < lng ? xs.reduce(

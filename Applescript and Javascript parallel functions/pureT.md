@@ -31,7 +31,7 @@ on pureT(t, x)
 ```js
 // pureT :: String -> f a -> (a -> f a)
 const pureT = (t, x) =>
-    t !== 'List' ? (
+    'List' !== t ? (
         'Either' === t ? (
             pureLR(x)
         ) : 'Maybe' === t ? (

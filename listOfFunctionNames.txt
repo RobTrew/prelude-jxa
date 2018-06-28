@@ -151,7 +151,7 @@ intercalate :: [a] -> [[a]] -> [a]
 intercalateS :: String -> [String] -> String
 intersect :: (Eq a) => [a] -> [a] -> [a]
 intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]
+intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]
 intersperse :: a -> [a] -> [a]
 isAlpha :: Char -> Bool
 isChar :: a -> Bool
@@ -193,7 +193,7 @@ liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 lines :: String -> [String]
 listDirectory :: FilePath -> [FilePath]
-listFromTuple (a, a ...) -> [a]
+listFromTuple :: (a, a ...) -> [a]
 listToMaybe :: [a] -> Maybe a
 log :: Float -> Float
 lookup :: Eq a => a -> Container -> Maybe b
@@ -362,9 +362,10 @@ transpose :: [[a]] -> [[a]]
 traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
+traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeLeaves :: Tree -> [Tree]
 truncate :: Num -> Int
-tupleFromArray [a] -> (a, a ...)
+tupleFromArray :: [a] -> (a, a ...)
 typeName :: a -> String
 unQuoted :: String -> String
 uncons :: [a] -> Maybe (a, [a])

@@ -1,5 +1,5 @@
 ```applescript
--- intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]
+-- intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]
 on intersectionBy(fnEq, xs)
     script
         property eq : mReturn(fnEq)
@@ -12,7 +12,7 @@ end intersectionBy
 ```
 
 ```js
-// intersectionBy:: (a -> a -> Bool) -> [[a]] -> [a]
+// intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]
 const intersectionBy = (eq, xs) =>
     foldr1(((a, x) => intersectBy(eq, a, x)), xs);
 ```
