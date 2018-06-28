@@ -22,6 +22,7 @@ end dropWhile
 
 ```js
 // dropWhile :: (a -> Bool) -> [a] -> [a]
+// dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = (p, xs) => {
   let i = 0;
   for (let lng = xs.length;

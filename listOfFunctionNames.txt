@@ -71,10 +71,10 @@ draw :: Tree String -> [String]
 drawForest :: [Tree String] -> String
 drawTree :: Tree String -> String
 drop :: Int -> [a] -> [a]
-dropAround :: (Char -> Bool) -> String -> String
+dropAround :: (a -> Bool) -> [a] -> [a]
 dropFileName :: FilePath -> FilePath
 dropWhile :: (a -> Bool) -> [a] -> [a]
-dropWhileEnd :: (Char -> Bool) -> String -> String
+dropWhileEnd :: (a -> Bool) -> [a] -> [a]
 either :: (a -> c) -> (b -> c) -> Either a b -> c
 elem :: Eq a => a -> [a] -> Bool
 elemAtMay :: Int -> Dict -> Maybe (String, a)

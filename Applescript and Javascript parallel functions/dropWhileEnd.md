@@ -1,6 +1,6 @@
 ```applescript
--- dropWhileEnd :: (Char -> Bool) -> String -> String
 -- dropWhileEnd :: (a -> Bool) -> [a] -> [a]
+-- dropWhileEnd :: (Char -> Bool) -> String -> String
 on dropWhileEnd(p, xs)
     set i to length of xs
     tell mReturn(p)
@@ -21,11 +21,11 @@ end dropWhileEnd
 ```
 
 ```js
-// dropWhileEnd :: (Char -> Bool) -> String -> String
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
-const dropWhileEnd = (p, s) => {
-    let i = s.length;
-    while (i-- && p(s[i])) {}
-    return s.slice(0, i + 1);
+// dropWhileEnd :: (Char -> Bool) -> String -> String
+const dropWhileEnd = (p, xs) => {
+    let i = xs.length;
+    while (i-- && p(xs[i])) {}
+    return xs.slice(0, i + 1);
 };
 ```

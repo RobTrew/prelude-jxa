@@ -477,8 +477,9 @@ const drawTree = tree =>
 // drop :: Int -> String -> String
 const drop = (n, xs) => xs.slice(n);
 
+// dropAround :: (a -> Bool) -> [a] -> [a]
 // dropAround :: (Char -> Bool) -> String -> String
-const dropAround = (p, s) => dropWhile(p, dropWhileEnd(p, s));
+const dropAround = (p, xs) => dropWhile(p, dropWhileEnd(p, xs));
 
 // dropFileName :: FilePath -> FilePath
 const dropFileName = strPath =>
@@ -491,6 +492,7 @@ const dropFileName = strPath =>
     })() : './';
 
 // dropWhile :: (a -> Bool) -> [a] -> [a]
+// dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = (p, xs) => {
   let i = 0;
   for (let lng = xs.length;
@@ -498,12 +500,12 @@ const dropWhile = (p, xs) => {
   return xs.slice(i);
 };
 
-// dropWhileEnd :: (Char -> Bool) -> String -> String
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
-const dropWhileEnd = (p, s) => {
-    let i = s.length;
-    while (i-- && p(s[i])) {}
-    return s.slice(0, i + 1);
+// dropWhileEnd :: (Char -> Bool) -> String -> String
+const dropWhileEnd = (p, xs) => {
+    let i = xs.length;
+    while (i-- && p(xs[i])) {}
+    return xs.slice(0, i + 1);
 };
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
@@ -538,10 +540,9 @@ const elemAtMay = (i, x) => {
 // elemIndex :: Eq a => a -> [a] -> Maybe Int
 const elemIndex = (x, xs) => {
     const i = xs.indexOf(x);
-    return {
-        Nothing: -1 === i,
-        Just: i
-    };
+    return -1 === i ? (
+        Nothing()
+    ) : Just(i);
 };
 
 // elemIndices :: Eq a => a -> [a] -> [Int]
@@ -1284,10 +1285,9 @@ const liftM2 = liftA2;
 
 // liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 const liftMmay = f =>
-    mb => mb.Nothing ? mb : {
-        Nothing: false,
-        Just: f(mb.Just)
-    };
+    mb => mb.Nothing ? (
+        mb
+    ) : Just(f(mb.Just))
 
 // lines :: String -> [String]
 const lines = s => s.split(/[\r\n]/);
