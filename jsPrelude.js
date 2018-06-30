@@ -346,15 +346,15 @@ const comparing = f =>
 // compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 const compose = (f, g) => x => f(g(x));
 
-// composeLTR (>>>) :: (a -> b) -> (b -> c) -> a -> c
-const composeLTR = (f, g) => x => f(g(x));
+// compose2 (>>>) :: (a -> b) -> (b -> c) -> a -> c
+const compose2 = (f, g) => x => f(g(x));
 
 // composeList :: [(a -> a)] -> (a -> a)
 const composeList = fs =>
     x => fs.reduceRight((a, f) => f(a), x, fs);
 
-// composeListLTR :: [(a -> a)] -> (a -> a)
-const composeListLTR = fs =>
+// composeList2 :: [(a -> a)] -> (a -> a)
+const composeList2 = fs =>
     x => fs.reduce((a, f) => f(a), x);
 
 // concat :: [[a]] -> [a]

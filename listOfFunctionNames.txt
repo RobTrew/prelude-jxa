@@ -47,9 +47,9 @@ chunksOf :: Int -> [a] -> [[a]]
 compare :: a -> a -> Ordering
 comparing :: (a -> b) -> (a -> a -> Ordering)
 compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
-composeLTR (>>>) :: (a -> b) -> (b -> c) -> a -> c
+compose2 (>>>) :: (a -> b) -> (b -> c) -> a -> c
 composeList :: [(a -> a)] -> (a -> a)
-composeListLTR :: [(a -> a)] -> (a -> a)
+composeList2 :: [(a -> a)] -> (a -> a)
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
