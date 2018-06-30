@@ -46,9 +46,10 @@ chr :: Int -> Char
 chunksOf :: Int -> [a] -> [[a]]
 compare :: a -> a -> Ordering
 comparing :: (a -> b) -> (a -> a -> Ordering)
-compose :: (b -> c) -> (a -> b) -> a -> c
-composeListLR :: [(a -> a)] -> (a -> a)
-composeListRL :: [(a -> a)] -> (a -> a)
+compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
+composeLTR (>>>) :: (a -> b) -> (b -> c) -> a -> c
+composeList :: [(a -> a)] -> (a -> a)
+composeListLTR :: [(a -> a)] -> (a -> a)
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
@@ -241,7 +242,7 @@ or :: [Bool] -> Bool
 ord :: Char -> Int
 outdented :: String -> String
 partition :: (a -> Bool) -> [a] -> ([a], [a])
-partitionEithers :: [Either a b] -> ([a], [b])
+partitionEithers :: [Either a b] -> ([a],[b])
 permutations :: [a] -> [[a]]
 permutationsWithRepetition :: Int -> [a] -> [[a]]
 pi :: Float
@@ -266,8 +267,6 @@ range :: Ix a => (a, a) -> [a]
 read :: Read a => String -> a
 readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String String
-readJSON :: String -> a
-readJSONLR :: Read a => String -> Either String a
 readMay :: Read a => String -> Maybe a
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num

@@ -154,12 +154,11 @@ const apTree = (tf, tx) => {
     const go = t =>
         Node(
             t.root(tx.root),
-            tx.nest.map(curry(fmapTree)(t.root))
-            .concat(
-                t.nest.map(go)
-            )
+            tx.nest.map(
+                curry(fmapTree)(t.root)
+            ).concat(t.nest.map(go))
         );
-    return go(tf)
+    return go(tf);
 };
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
@@ -344,16 +343,19 @@ const comparing = f =>
         return a < b ? -1 : (a > b ? 1 : 0);
     };
 
-// compose :: (b -> c) -> (a -> b) -> a -> c
+// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 const compose = (f, g) => x => f(g(x));
 
-// composeListLR :: [(a -> a)] -> (a -> a)
-const composeListLR = fs =>
-    x => fs.reduce((a, f) => f(a), x);
+// composeLTR (>>>) :: (a -> b) -> (b -> c) -> a -> c
+const composeLTR = (f, g) => x => f(g(x));
 
-// composeListRL :: [(a -> a)] -> (a -> a)
-const composeListRL = fs =>
+// composeList :: [(a -> a)] -> (a -> a)
+const composeList = fs =>
     x => fs.reduceRight((a, f) => f(a), x, fs);
+
+// composeListLTR :: [(a -> a)] -> (a -> a)
+const composeListLTR = fs =>
+    x => fs.reduce((a, f) => f(a), x);
 
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
@@ -1426,7 +1428,7 @@ const mappend = (a, b) => {
 // mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)
 const mappendComparing = fs =>
     (x, y) => fs.reduce(
-        (ordr, f) => ordr || compare(f(x), f(y)),
+        (ordr, f) => (ordr || compare(f(x), f(y))),
         0
     );
 
@@ -1617,7 +1619,7 @@ const partition = (p, xs) =>
         Tuple([], [])
     );
 
-// partitionEithers :: [Either a b] -> ([a], [b])
+// partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>
     xs.reduce((a, x) =>
         x.Left !== undefined ? (
@@ -1786,22 +1788,6 @@ function range() {
 
 // read :: Read a => String -> a
 const read = JSON.parse;
-
-// readJSON :: String -> a
-const readJSON = JSON.parse;
-
-// readJSONLR :: Read a => String -> Either String a
-const readJSONLR = strJSON => {
-    try {
-        return Right(JSON.parse(strJSON));
-    } catch (e) {
-        // message, line, column, stack
-        return Left(
-            'line:' + e.line +
-            ' col:' + e.column + ':\n' + e.message
-        );
-    }
-};
 
 // readMay :: Read a => String -> Maybe a
 const readMay = s => {
