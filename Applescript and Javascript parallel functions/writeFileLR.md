@@ -7,7 +7,7 @@ on writeFileLR(strPath, strText)
     set {bln, e} to (ca's NSString's stringWithString:strText)'s ¬
         writeToFile:(fp) atomically:true ¬
             encoding:(ca's NSUTF8StringEncoding) |error|:(reference)
-    if bln and e is missing value then
+    if bln and (missing value is e) then
         |Right|(fp as string)
     else
         |Left|(e's localizedDescription() as string)

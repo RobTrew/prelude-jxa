@@ -11,6 +11,6 @@ end isRight
 ```js
 // isRight :: Either a b -> Bool
 const isRight = lr =>
-  (typeof lr !== 'undefined') && 
+  ('undefined' !== typeof lr) && 
   ('Either' === lr.type) && (undefined !== lr.Right);
 ```

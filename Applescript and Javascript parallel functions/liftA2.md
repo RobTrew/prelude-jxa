@@ -9,14 +9,14 @@
 -- liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 on liftA2(f, a, b)
     set c to class of a
-    if c is list then
+    if c is list or c is text then
         liftA2List(f, a, b)
     else if c is record and keys(a) contains "type" then
         set t to type of a
         if "Either" = t then
             liftA2LR(f, a, b)
         else if "Maybe" = t then
-            liftA2Maybe(f, a, b)
+            liftA2May(f, a, b)
         else if "Tuple" = t then
             liftA2Tuple(f, a, b)
         else if "Node" = t then
@@ -25,7 +25,7 @@ on liftA2(f, a, b)
             missing value
         end if
     else
-        missing value
+        liftA2List
     end if
 end liftA2
 ```
@@ -37,18 +37,22 @@ end liftA2
 
 ```js
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = (f, a, b) =>
-    Array.isArray(a) ? (
-        liftA2List(f, a, b)
-    ) : (t => Boolean(t) ? (
-        'Either' === t ? (
-            liftA2LR(f, a, b)
-        ) : 'Maybe' === t ? (
-            liftA2Maybe(f, a, b)
-        ) : 'Tuple' === t ? (
-            liftA2Tuple(f, a, b)
-        ) : 'Node' === t ? (
-            liftA2Tree(f, a, b)
-        ) : undefined
-    ) : undefined)(a.type);
+const liftA2 = (f, a, b) => {
+    const t = a.type;
+    return (
+        undefined !== t ? (
+            'Either' === t ? (
+                liftA2LR
+            ) : 'Maybe' === t ? (
+                liftA2May
+            ) : 'Tuple' === t ? (
+                liftA2Tuple
+            ) : 'Node' === t ? (
+                liftA2Tree
+            ) : liftA2List
+        ) : liftA2List
+    ).apply(null, [f, a, b]);
+};
+
+// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 ```

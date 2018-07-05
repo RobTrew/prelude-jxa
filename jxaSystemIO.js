@@ -44,7 +44,7 @@ const appendFileMay = (strPath, txt) => {
             oFullPath
             .stringByStandardizingPath, ref
         ) ? (
-            ref[0] === 0 ? (() => {
+             0 === ref[0] ? (() => {
                 const // Not a directory
                     oData = ObjC.wrap(txt)
                     .dataUsingEncoding($.NSUTF8StringEncoding),
@@ -102,7 +102,7 @@ const doesFileExist = strPath => {
         .fileExistsAtPathIsDirectory(
             $(strPath)
             .stringByStandardizingPath, ref
-        ) && ref[0] !== 1;
+        ) && 1 !== ref[0];
 };
 
 // doesPathExist :: FilePath -> IO Bool
@@ -247,10 +247,10 @@ const tempFilePath = template =>
     .substring(3) + takeExtension(template);
 
 // unwrap :: NSObject -> a
-const unwrap = o => ObjC.unwrap(o);
+const unwrap = ObjC.unwrap;
 
 // wrap :: a -> NSObject
-const wrap = v => ObjC.wrap(v);
+const wrap = ObjC.wrap;
 
 // writeFile :: FilePath -> String -> IO ()
 const writeFile = (strPath, strText) =>

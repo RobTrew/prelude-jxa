@@ -1,4 +1,4 @@
 ```js
 // exp :: Float -> Float
-const exp = n => Math.exp(n);
+const exp = Math.exp;
 ```

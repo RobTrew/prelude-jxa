@@ -1,5 +1,6 @@
 ```applescript
 -- dropWhile :: (a -> Bool) -> [a] -> [a]
+-- dropWhileEnd :: (Char -> Bool) -> String -> String
 on dropWhile(p, xs)
     set lng to length of xs
     set i to 1

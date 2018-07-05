@@ -24,8 +24,8 @@ end fromEnum
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x => {
     const type = typeof x;
-    return type === 'boolean' ? (
+    return 'boolean' === type ? (
         x ? 1 : 0
-    ) : type === 'string' ? x.charCodeAt(0) : x;
+    ) : 'string' === type ? x.charCodeAt(0) : x;
 };
 ```

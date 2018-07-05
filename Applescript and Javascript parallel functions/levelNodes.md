@@ -26,7 +26,7 @@ end levelNodes
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
   iterateUntil(
-    xs => xs.length < 1,
+    xs => 1 > xs.length,
     xs => concatMap(x => x.nest, xs), [tree]
   );
 ```

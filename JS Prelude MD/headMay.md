@@ -1,5 +1,5 @@
 ```js
 // headMay :: [a] -> Maybe a
 const headMay = xs =>
-    xs.length > 0 ? Just(xs[0]) : Nothing();
+    0 < xs.length ? Just(xs[0]) : Nothing();
 ```

@@ -9,12 +9,14 @@
 const isPrefixOf = (xs, ys) => {
     const pfx = (xs, ys) => {
         const intX = xs.length;
-        return intX > 0 ? (
+        return 0 < intX ? (
             ys.length >= intX ? xs[0] === ys[0] && pfx(
                 xs.slice(1), ys.slice(1)
             ) : false
         ) : true;
     };
-    return typeof xs !== 'string' ? pfx(xs, ys) : ys.startsWith(xs);
+    return 'string' !== typeof xs ? (
+        pfx(xs, ys)
+    ) : ys.startsWith(xs);
 };
 ```

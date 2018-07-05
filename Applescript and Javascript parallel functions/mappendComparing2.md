@@ -38,7 +38,7 @@ const mappendComparing2 = fboolPairs =>
     (x, y) => fboolPairs.reduce(
         (ordr, fb) => {
             const f = fb[0];
-            return ordr !== 0 ? (
+            return 0 !== ordr ? (
                 ordr
             ) : fb[1] ? (
                 compare(f(x), f(y))

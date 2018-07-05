@@ -8,14 +8,18 @@
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = (mf, mx) => {
     const t = mx.type;
-    return (undefined !== t ? (
-       'Either' === t ? (
-            apEither
-        ) : 'Maybe' === t ? (
-            apMaybe
-        ) : 'Node' === t ? (
-            apTree
-        ) : apTuple
-    ) : apList)(mf, mx);
+    return (
+        undefined !== t ? (
+            'Either' === t ? (
+                apLR
+            ) : 'Maybe' === t ? (
+                apMay
+            ) : 'Node' === t ? (
+                apTree
+            ) : 'Tuple' === t ? (
+                apTuple
+            ) : apList
+        ) : apList
+    )(mf, mx);
 };
 ```

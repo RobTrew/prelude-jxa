@@ -5,18 +5,22 @@
 
 ```js
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = (f, a, b) =>
-    Array.isArray(a) ? (
-        liftA2List(f, a, b)
-    ) : (t => Boolean(t) ? (
-        'Either' === t ? (
-            liftA2LR(f, a, b)
-        ) : 'Maybe' === t ? (
-            liftA2Maybe(f, a, b)
-        ) : 'Tuple' === t ? (
-            liftA2Tuple(f, a, b)
-        ) : 'Node' === t ? (
-            liftA2Tree(f, a, b)
-        ) : undefined
-    ) : undefined)(a.type);
+const liftA2 = (f, a, b) => {
+    const t = a.type;
+    return (
+        undefined !== t ? (
+            'Either' === t ? (
+                liftA2LR
+            ) : 'Maybe' === t ? (
+                liftA2May
+            ) : 'Tuple' === t ? (
+                liftA2Tuple
+            ) : 'Node' === t ? (
+                liftA2Tree
+            ) : liftA2List
+        ) : liftA2List
+    ).apply(null, [f, a, b]);
+};
+
+// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 ```

@@ -6,7 +6,7 @@
 ```js
 // listToMaybe :: [a] -> Maybe a
 const listToMaybe = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs[0])
     ) : Nothing();
 ```

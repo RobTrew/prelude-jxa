@@ -11,7 +11,7 @@ const eq = (a, b) => {
     const t = typeof a;
     return t !== typeof b ? (
         false
-    ) : t !== 'object' ? (
+    ) : 'object' !== t ? (
         a === b
     ) : (() => {
         const aks = Object.keys(a);

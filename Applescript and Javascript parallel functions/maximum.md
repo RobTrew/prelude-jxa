@@ -18,7 +18,7 @@ end maximum
 ```js
 // maximum :: Ord a => [a] -> a
 const maximum = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         foldl1((a, x) => x > a ? x : a, xs)
     ) : undefined;
 ```

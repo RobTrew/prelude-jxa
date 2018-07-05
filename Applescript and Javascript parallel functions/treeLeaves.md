@@ -4,7 +4,7 @@ on treeLeaves(oNode)
     script go
         on |λ|(x)
             set lst to nest of x
-            if length of lst > 0 then
+            if 0 < length of lst then
                 concatMap(my treeLeaves, lst)
             else
                 {x}

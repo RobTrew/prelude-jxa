@@ -30,7 +30,7 @@ end |delete|
 ```js
 // delete :: Eq a => a -> [a] -> [a]
 const delete_ = (x, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         (x === xs[0]) ? (
             xs.slice(1)
         ) : [xs[0]].concat(delete_(x, xs.slice(1)))

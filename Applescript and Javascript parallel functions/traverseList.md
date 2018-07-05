@@ -32,7 +32,7 @@ on traverseList(f, xs)
             liftA2(my cons, vLast, pureT(t, [])), ¬
             items 1 thru -2 of xs)
     else
-        {}
+        {{}}
     end if
 end traverseList
 ```
@@ -58,6 +58,6 @@ const traverseList = (f, xs) => {
             (ys, x) => liftA2(cons, f(x), ys),
             liftA2(cons, vLast, pureT(t, []))
         );
-    })() : [];
+    })() : [[]];
 };
 ```

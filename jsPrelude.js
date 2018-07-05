@@ -112,21 +112,25 @@ const any = (p, xs) => xs.some(p);
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = (mf, mx) => {
     const t = mx.type;
-    return (undefined !== t ? (
-       'Either' === t ? (
-            apEither
-        ) : 'Maybe' === t ? (
-            apMaybe
-        ) : 'Node' === t ? (
-            apTree
-        ) : apTuple
-    ) : apList)(mf, mx);
+    return (
+        undefined !== t ? (
+            'Either' === t ? (
+                apLR
+            ) : 'Maybe' === t ? (
+                apMay
+            ) : 'Node' === t ? (
+                apTree
+            ) : 'Tuple' === t ? (
+                apTuple
+            ) : apList
+        ) : apList
+    )(mf, mx);
 };
 
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 const apLR = (flr, lr) => {
-    const pf = isRight(flr);
-    return pf && isRight(lr) ? (
+    const pf = (undefined === flr.Left);
+    return pf && (undefined === lr.Left) ? (
         Right(flr.Right(lr.Right))
     ) : (pf ? lr : flr);
 };
@@ -143,8 +147,8 @@ const apList = (fs, xs) => //
         [].concat.apply([], xs.map(x => [f(x)]))));
 
 // Maybe f applied to Maybe x, deriving a Maybe y
-// apMaybe (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
-const apMaybe = (mf, mx) =>
+// apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
+const apMay = (mf, mx) =>
     mf.Nothing || mx.Nothing ? (
         Nothing()
     ) : Just(mf.Just(mx.Just));
@@ -246,7 +250,7 @@ const break_ = (p, xs) => {
 const breakOn = (pat, src) =>
     Boolean(pat) ? (() => {
         const xs = src.split(pat);
-        return xs.length > 1 ? Tuple(
+        return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
         ) : Tuple(src, '');
     })() : undefined;
@@ -260,7 +264,7 @@ const breakOnAll = (pat, src) =>
     pat !== '' ? (
         src.split(pat)
         .reduce((a, x, i, xs) =>
-            i > 0 ? (
+            0 < i ? (
                 a.concat([
                     Tuple(xs.slice(0, i)
                         .join(pat), pat + xs.slice(i)
@@ -307,7 +311,7 @@ const ceiling = x => {
     const
       nr = properFraction(x),
       n = nr[0]
-    return nr[1] > 0 ? n + 1 : n;
+    return 0 < nr[1] ? n + 1 : n;
 };
 
 // Size of space -> filler Char -> String -> Centered String
@@ -346,16 +350,16 @@ const comparing = f =>
 // compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 const compose = (f, g) => x => f(g(x));
 
-// compose2 (>>>) :: (a -> b) -> (b -> c) -> a -> c
-const compose2 = (f, g) => x => f(g(x));
-
 // composeList :: [(a -> a)] -> (a -> a)
 const composeList = fs =>
     x => fs.reduceRight((a, f) => f(a), x, fs);
 
-// composeList2 :: [(a -> a)] -> (a -> a)
-const composeList2 = fs =>
+// composeListR :: [(a -> a)] -> (a -> a)
+const composeListR = fs =>
     x => fs.reduce((a, f) => f(a), x);
+
+// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
+const composeR = (f, g) => x => f(g(x));
 
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
@@ -366,7 +370,13 @@ const concat = xs =>
     })() : [];
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
-const concatMap = (f, xs) => [].concat.apply([], xs.map(f));
+const concatMap = (f, xs) => []
+    .concat.apply(
+        [],
+        (Array.isArray(xs) ? (
+            xs
+        ) : xs.split('')).map(f)
+    );
 
 // cons :: a -> [a] -> [a]
 const cons = (x, xs) =>  [x].concat(xs);
@@ -395,7 +405,7 @@ const curry2 = f => a => b => f(a, b);
 // xs with first instance of x (if any) removed
 // delete :: Eq a => a -> [a] -> [a]
 const delete_ = (x, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         (x === xs[0]) ? (
             xs.slice(1)
         ) : [xs[0]].concat(delete_(x, xs.slice(1)))
@@ -403,14 +413,14 @@ const delete_ = (x, xs) =>
 
 // deleteAt :: Int -> [a] -> [a]
 const deleteAt = (i, xs) =>
-    xs.length >= i ? (() => {
+    i <= xs.length ? (() => {
         const lr = splitAt(i, xs);
         return lr[0].concat(lr[1].slice(1));
     })() : xs;
 
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 const deleteBy = (f, x, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         f(x, xs[0]) ? (
             xs.slice(1)
         ) : [xs[0]].concat(deleteBy(f, x, xs.slice(1)))
@@ -418,7 +428,7 @@ const deleteBy = (f, x, xs) =>
 
 // deleteFirst :: a -> [a] -> [a]
 const deleteFirst = (x, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         x === xs[0] ? (
             xs.slice(1)
         ) : [xs[0]].concat(deleteFirst(x, xs.slice(1)))
@@ -451,8 +461,8 @@ const draw = node => {
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
         const lng = xs.length;
-        return lng > 0 ? (
-            lng > 1 ? append(
+        return 0 < lng ? (
+            1 < lng ? append(
                 cons(
                     '│',
                     shift('├─ ', '│  ', draw(xs[0]))
@@ -462,7 +472,7 @@ const draw = node => {
         ) : [];
     };
     return append(
-        lines(node.root),
+        lines(node.root.toString()),
         drawSubTrees(node.nest)
     );
 };
@@ -558,7 +568,7 @@ const elems = Object.values;
 
 // enumFromThenTo :: Enum a => a -> a -> a -> [a]
 const enumFromThenTo = (x1, x2, y) =>
-    (typeof x1 !== 'number' ? (
+    ('number' !== typeof x1 ? (
         enumFromThenToChar
     ) : enumFromThenToInt)
     .apply(null, [x1, x2, y]);
@@ -583,7 +593,7 @@ const enumFromThenToInt = (x1, x2, y) => {
 
 // enumFromTo :: Enum a => a -> a -> [a]
 const enumFromTo = (m, n) =>
-    (typeof m !== 'number' ? (
+    ('number' !== typeof m ? (
         enumFromToChar
     ) : enumFromToInt).apply(null, [m, n]);
 
@@ -608,7 +618,7 @@ const eq = (a, b) => {
     const t = typeof a;
     return t !== typeof b ? (
         false
-    ) : t !== 'object' ? (
+    ) : 'object' !== t ? (
         a === b
     ) : (() => {
         const aks = Object.keys(a);
@@ -631,7 +641,7 @@ const evalJSMay = s => {
 const even = n => 0 === n % 2;
 
 // exp :: Float -> Float
-const exp = n => Math.exp(n);
+const exp = Math.exp;
 
 // Compose a function from a simple value to a tuple of
 // the separate outputs of two different functions
@@ -690,7 +700,7 @@ const findIndex = (p, xs) => {
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 const findIndexR = (p, xs) => {
     const i = reverse(xs).findIndex(p);
-    return i !== -1 ? (
+    return -1 !== i ? (
         Just(xs.length - (1 + i))
     ) : Nothing();
 };
@@ -728,7 +738,7 @@ const floor = x => {
     const
       nr = properFraction(x),
       n = nr[0];
-    return nr[1] < 0 ? n - 1 : n;
+    return 0 > nr[1] ? n - 1 : n;
 };
 
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
@@ -747,8 +757,7 @@ const fmap = (f, fa) => {
 
 // fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 const fmapLR = (f, lr) =>
-    Object.keys(lr)
-    .includes('Right') ? (
+    undefined === lr.Left ? (
         Right(f(lr.Right))
     ) : lr;
 
@@ -774,7 +783,7 @@ const fmapTuple = (f, tpl) =>
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 const foldMapTree = (f, node) => {
     const go = x =>
-        x.nest.length > 0 ? mappend(
+        0 < x.nest.length ? mappend(
             f(x.root),
             foldl1(mappend, x.nest.map(go))
         ) : f(x.root);
@@ -792,12 +801,12 @@ const foldl = (f, a, xs) => xs.reduce(f, a);
 
 // foldl1 :: (a -> a -> a) -> [a] -> a
 const foldl1 = (f, xs) =>
-    xs.length > 1 ? xs.slice(1)
+    1 < xs.length ? xs.slice(1)
     .reduce(f, xs[0]) : xs[0];
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = (f, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs.slice(1)
             .reduce(f, xs[0]))
     ) : Nothing();
@@ -816,12 +825,12 @@ const foldr = (f, a, xs) => xs.reduceRight(flip(f), a);
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = (f, xs) =>
-    xs.length > 0 ? init(xs)
+    0 < xs.length ? init(xs)
     .reduceRight(f, last(xs)) : [];
 
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldr1May = (f, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs.slice(0, -1)
             .reduceRight(f, xs.slice(-1)[0]))
     ) : Nothing();
@@ -829,9 +838,9 @@ const foldr1May = (f, xs) =>
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x => {
     const type = typeof x;
-    return type === 'boolean' ? (
+    return 'boolean' === type ? (
         x ? 1 : 0
-    ) : type === 'string' ? x.charCodeAt(0) : x;
+    ) : 'string' === type ? x.charCodeAt(0) : x;
 };
 
 // | Return the contents of a 'Left'-value or a default value otherwise.
@@ -852,13 +861,15 @@ const fst = tpl => tpl[0];
 
 // gcd :: Int -> Int -> Int
 const gcd = (x, y) => {
-    const _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b));
-    return _gcd(Math.abs(x), Math.abs(y));
+    const
+        _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
+        abs = Math.abs;
+    return _gcd(abs(x), abs(y));
 };
 
 // genericIndexMay :: [a] -> Int -> Maybe a
 const genericIndexMay = (xs, i) =>
-    (i < xs.length && i >= 0) ? Just(xs[i]) : Nothing();
+    (i < xs.length && 0 <= i) ? Just(xs[i]) : Nothing();
 
 // group :: Eq a => [a] -> [[a]]
 const group = xs => groupBy((a, b) => a === b, xs);
@@ -933,7 +944,7 @@ const head = xs => xs.length ? xs[0] : undefined;
 
 // headMay :: [a] -> Maybe a
 const headMay = xs =>
-    xs.length > 0 ? Just(xs[0]) : Nothing();
+    0 < xs.length ? Just(xs[0]) : Nothing();
 
 // id :: a -> a
 const id = x => x;
@@ -941,7 +952,7 @@ const id = x => x;
 // indented :: String -> String -> String
 const indented = (strIndent, s) =>
     unlines(map(
-        x => x !== '' ? strIndent + x : x,
+        x => '' !== x ? strIndent + x : x,
         lines(s)
     ));
 
@@ -949,11 +960,14 @@ const indented = (strIndent, s) =>
 const index = (xs, i) => xs[i];
 
 // init :: [a] -> [a]
-const init = xs => xs.length > 0 ? xs.slice(0, -1) : undefined;
+const init = xs =>
+    0 < xs.length ? (
+        xs.slice(0, -1)
+    ) : undefined;
 
 // initMay :: [a] -> Maybe [a]
 const initMay = xs =>
-    xs.length > 0 ? Just(xs.slice(0, -1)) : Nothing();
+    0 < xs.length ? Just(xs.slice(0, -1)) : Nothing();
 
 // inits([1, 2, 3]) -> [[], [1], [1, 2], [1, 2, 3]
 // inits('abc') -> ["", "a", "ab", "abc"]
@@ -995,7 +1009,7 @@ const intToDigit = n =>
 // intercalate :: [a] -> [[a]] -> [a]
 // intercalate :: String -> [String] -> String
 const intercalate = (sep, xs) =>
-    xs.length > 0 && 'string' === typeof sep &&
+    0 < xs.length && 'string' === typeof sep &&
     'string' === typeof xs[0] ? (
         xs.join(sep)
     ) : concat(intersperse(sep, xs));
@@ -1006,12 +1020,12 @@ const intercalateS = (s, xs) =>
 
 // intersect :: (Eq a) => [a] -> [a] -> [a]
 const intersect = (xs, ys) => 
-  xs.filter(x => ys.indexOf(x) !== -1);
+  xs.filter(x => -1 !== ys.indexOf(x));
 
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const intersectBy = (eq, xs, ys) => {
     const ceq = curry(eq);
-    return (xs.length > 0 && ys.length > 0) ?
+    return (0 < xs.length && 0 < ys.length) ?
     xs.filter(x => ys.some(ceq(x))) : [];
 };
 
@@ -1023,7 +1037,7 @@ const intersectionBy = (eq, xs) =>
 // intersperse :: a -> [a] -> [a]
 // intersperse :: Char -> String -> String
 const intersperse = (sep, xs) => {
-    const bool = 's' === (typeof xs)[0];
+    const bool = 'string' === typeof xs;
     return xs.length > 1 ? (
         (bool ? concat : x => x)(
             (bool ? (
@@ -1045,7 +1059,7 @@ const isChar = x =>
 // isDigit :: Char -> Bool
 const isDigit = c => {
   const n = ord(c);
-  return n >= 48 && n <= 57;
+  return 48 <= n && 57 >= n;
 };
 
 // isInfixOf :: Eq a => [a] -> [a] -> Bool
@@ -1069,7 +1083,7 @@ const isMaybe = x =>
 // isNull :: String -> Bool
 const isNull = xs =>
     Array.isArray(xs) || ('string' === typeof xs) ? (
-        xs.length < 1
+        1 > xs.length
     ) : undefined;
 
 // isPrefixOf takes two lists or strings and returns 
@@ -1079,18 +1093,20 @@ const isNull = xs =>
 const isPrefixOf = (xs, ys) => {
     const pfx = (xs, ys) => {
         const intX = xs.length;
-        return intX > 0 ? (
+        return 0 < intX ? (
             ys.length >= intX ? xs[0] === ys[0] && pfx(
                 xs.slice(1), ys.slice(1)
             ) : false
         ) : true;
     };
-    return typeof xs !== 'string' ? pfx(xs, ys) : ys.startsWith(xs);
+    return 'string' !== typeof xs ? (
+        pfx(xs, ys)
+    ) : ys.startsWith(xs);
 };
 
 // isRight :: Either a b -> Bool
 const isRight = lr =>
-  (typeof lr !== 'undefined') && 
+  ('undefined' !== typeof lr) && 
   ('Either' === lr.type) && (undefined !== lr.Right);
 
 // The 'isSortedBy' function returns true iff the predicate returns true
@@ -1172,7 +1188,7 @@ const justifyRight = (n, cFiller, strText) =>
     ) : strText;
 
 // keys :: Dict -> [String]
-const keys = dct => Object.keys(dct);
+const keys = Object.keys;
 
 // Kleisli composition LR
 // kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
@@ -1180,10 +1196,10 @@ const kleisliCompose = (f, g) =>
     x => bind(f(x), g);
 
 // last :: [a] -> a
-const last = xs => xs.length ? xs.slice(-1)[0] : undefined;
+const last = xs => 0 < xs.length ? xs.slice(-1)[0] : undefined;
 
 // lastMay :: [a] -> Maybe a
-const lastMay = xs => xs.length > 0 ? (
+const lastMay = xs => 0 < xs.length ? (
     Just(xs.slice(-1)[0])
 ) : Nothing();
 
@@ -1205,7 +1221,7 @@ const length = xs => xs.length;
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
   iterateUntil(
-    xs => xs.length < 1,
+    xs => 1 > xs.length,
     xs => concatMap(x => x.nest, xs), [tree]
   );
 
@@ -1221,35 +1237,39 @@ const levels = tree =>
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = (f, a, b) =>
-    Array.isArray(a) ? (
-        liftA2List(f, a, b)
-    ) : (t => Boolean(t) ? (
-        'Either' === t ? (
-            liftA2LR(f, a, b)
-        ) : 'Maybe' === t ? (
-            liftA2Maybe(f, a, b)
-        ) : 'Tuple' === t ? (
-            liftA2Tuple(f, a, b)
-        ) : 'Node' === t ? (
-            liftA2Tree(f, a, b)
-        ) : undefined
-    ) : undefined)(a.type);
+const liftA2 = (f, a, b) => {
+    const t = a.type;
+    return (
+        undefined !== t ? (
+            'Either' === t ? (
+                liftA2LR
+            ) : 'Maybe' === t ? (
+                liftA2May
+            ) : 'Tuple' === t ? (
+                liftA2Tuple
+            ) : 'Node' === t ? (
+                liftA2Tree
+            ) : liftA2List
+        ) : liftA2List
+    ).apply(null, [f, a, b]);
+};
+
+// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 
 // liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 const liftA2LR = (f, a, b) =>
-    a.Right !== undefined ? (
-        b.Right !== undefined ? (
-            Right(f(a.Right, b.Right))
-        ) : b
-    ) : a;
+    undefined !== a.Left ? (
+        a
+    ) : undefined !== b.Left ? (
+        b
+    ) : Right(f(a.Right, b.Right));
 
 // liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 const liftA2List = (f, xs, ys) =>
     concatMap(x => concatMap(y => [f(x, y)], ys), xs);
 
-// liftA2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-const liftA2Maybe = (f, a, b) =>
+// liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+const liftA2May = (f, a, b) =>
     a.Nothing ? a : b.Nothing ? b : Just(f(a.Just, b.Just));
 
 // liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
@@ -1299,7 +1319,7 @@ const listFromTuple = tpl =>
     Object.keys(tpl)
     .sort()
     .reduce(
-        (a, k) => k !== 'type' ? (
+        (a, k) => 'type' !== k ? (
             a.concat(tpl[k])
         ) : a, []
     );
@@ -1308,12 +1328,12 @@ const listFromTuple = tpl =>
 // an empty list or Just the head of the list.
 // listToMaybe :: [a] -> Maybe a
 const listToMaybe = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs[0])
     ) : Nothing();
 
 // log :: Float -> Float
-const log = n => Math.log(n);
+const log = Math.log;
 
 // lookup :: Eq a => a -> Container -> Maybe b
 const lookup = (k, m) =>
@@ -1324,7 +1344,7 @@ const lookup = (k, m) =>
 // lookupDict :: a -> Dict -> Maybe b
 const lookupDict = (k, dct) => {
     const v = dct[k];
-    return v !== undefined ? (
+    return undefined !== v ? (
         Just(v)
     ) : Nothing();
 };
@@ -1336,12 +1356,12 @@ const lookupTuples = (k, kvs) =>
         x => Just(snd(x))
     );
 
-// Not required in JS, which has first functions by default
-// Included for comparison with AS, which can only obtain
+// Not required in JS, which has first functions by default.
+// Included only for comparison with AS, which has to derive
 // first class functions by lifting 'handlers' into 'scripts'
 // as anonymous |λ|() functions.
 
-// Here Just an alternative name for id.
+// In JS, mReturn is just an alternate name for id.
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
 const mReturn = id;
 
@@ -1441,7 +1461,7 @@ const mappendComparing2 = fboolPairs =>
     (x, y) => fboolPairs.reduce(
         (ordr, fb) => {
             const f = fb[0];
-            return ordr !== 0 ? (
+            return 0 !== ordr ? (
                 ordr
             ) : fb[1] ? (
                 compare(f(x), f(y))
@@ -1466,7 +1486,7 @@ const max = (a, b) => b > a ? b : a;
 
 // maximum :: Ord a => [a] -> a
 const maximum = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         foldl1((a, x) => x > a ? x : a, xs)
     ) : undefined;
 
@@ -1476,9 +1496,9 @@ const maximum = xs =>
 //  LT: -1 (or other negative n) 
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
 const maximumBy = (f, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         xs.slice(1)
-        .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0])
+        .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0])
     ) : undefined;
 
 //Ordering: (LT|EQ|GT):
@@ -1489,12 +1509,12 @@ const maximumBy = (f, xs) =>
 const maximumByMay = (f, xs) =>
     xs.length > 0 ? (
         Just(xs.slice(1)
-            .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0]))
+            .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0]))
     ) : Nothing();
 
 // maximumMay :: Ord a => [a] -> Maybe a
 const maximumMay = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs.slice(1)
             .reduce((a, x) => (x > a ? x : a), xs[0]))
     ) : Nothing();
@@ -1522,7 +1542,7 @@ const min = (a, b) => b < a ? b : a;
 
 // minimum :: Ord a => [a] -> a
 const minimum = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         foldl1((a, x) => x < a ? x : a, xs)
     ) : undefined;
 
@@ -1533,7 +1553,7 @@ const minimum = xs =>
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = (f, xs) =>
     xs.reduce((a, x) => undefined === a ? x : (
-        f(x, a) < 0 ? x : a
+        0 > f(x, a) ? x : a
     ), undefined);
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
@@ -1544,7 +1564,7 @@ const minimumByMay = (f, xs) =>
 
 // minimumMay :: [a] -> Maybe a
 const minimumMay = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs.slice(1)
             .reduce((a, x) => x < a ? x : a, xs[0])
         )
@@ -1567,7 +1587,7 @@ const nub = xs => nubBy((a, b) => a === b, xs);
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
 const nubBy = (p, xs) => {
-    const go = xs => xs.length > 0 ? (() => {
+    const go = xs => 0 < xs.length ? (() => {
         const x = xs[0];
         return [x].concat(
             go(xs.slice(1)
@@ -2490,6 +2510,24 @@ const transpose = tbl => {
     );
 };
 
+// traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
+const traverse = (f, tx) => {
+    const t = tx.type;
+    return (
+        undefined !== t ? (
+            'Either' === t ? (
+                traverseLR
+            ) : 'Maybe' === t ? (
+                traverseMay
+            ) : 'Node' === t ? (
+                traverseTree
+            ) : 'Tuple' === t ? (
+                traverseTuple
+            ) : traverseList
+        ) : traverseList
+    )(f, tx)
+};
+
 // traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 const traverseLR = (f, lr) =>
     lr.Left !== undefined ? (
@@ -2513,14 +2551,24 @@ const traverseList = (f, xs) => {
             (ys, x) => liftA2(cons, f(x), ys),
             liftA2(cons, vLast, pureT(t, []))
         );
-    })() : [];
+    })() : [[]];
 };
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 const traverseMay = (f, mb) =>
     mb.Nothing ? (
-       [mb]
-   ) : fmap(Just, f(mb.Just));
+        [mb]
+    ) : fmap(Just, f(mb.Just));
+
+// traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
+const traverseTree = (f, node) => {
+    const go = x =>
+        liftA2(
+            Node, f(x.root),
+            traverseList(go, x.nest)
+        );
+    return go(node);
+};
 
 // traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 const traverseTuple = (f, tpl) =>

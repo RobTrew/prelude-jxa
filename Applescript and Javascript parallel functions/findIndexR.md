@@ -15,7 +15,7 @@ end findIndexR
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 const findIndexR = (p, xs) => {
     const i = reverse(xs).findIndex(p);
-    return i !== -1 ? (
+    return -1 !== i ? (
         Just(xs.length - (1 + i))
     ) : Nothing();
 };

@@ -10,6 +10,6 @@
 const maximumByMay = (f, xs) =>
     xs.length > 0 ? (
         Just(xs.slice(1)
-            .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0]))
+            .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0]))
     ) : Nothing();
 ```

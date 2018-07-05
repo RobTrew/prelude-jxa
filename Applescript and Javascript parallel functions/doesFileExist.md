@@ -18,6 +18,6 @@ const doesFileExist = strPath => {
         .fileExistsAtPathIsDirectory(
             $(strPath)
             .stringByStandardizingPath, ref
-        ) && ref[0] !== 1;
+        ) && 1 !== ref[0];
 };
 ```

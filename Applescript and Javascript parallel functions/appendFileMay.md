@@ -50,7 +50,7 @@ const appendFileMay = (strPath, txt) => {
             oFullPath
             .stringByStandardizingPath, ref
         ) ? (
-            ref[0] === 0 ? (() => {
+             0 === ref[0] ? (() => {
                 const // Not a directory
                     oData = ObjC.wrap(txt)
                     .dataUsingEncoding($.NSUTF8StringEncoding),

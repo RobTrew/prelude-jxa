@@ -1,4 +1,4 @@
 ```js
 // unwrap :: NSObject -> a
-const unwrap = o => ObjC.unwrap(o);
+const unwrap = ObjC.unwrap;
 ```

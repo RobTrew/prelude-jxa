@@ -11,8 +11,8 @@ const draw = node => {
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
         const lng = xs.length;
-        return lng > 0 ? (
-            lng > 1 ? append(
+        return 0 < lng ? (
+            1 < lng ? append(
                 cons(
                     '│',
                     shift('├─ ', '│  ', draw(xs[0]))
@@ -22,7 +22,7 @@ const draw = node => {
         ) : [];
     };
     return append(
-        lines(node.root),
+        lines(node.root.toString()),
         drawSubTrees(node.nest)
     );
 };

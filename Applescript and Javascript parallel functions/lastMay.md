@@ -11,7 +11,7 @@ end lastMay
 
 ```js
 // lastMay :: [a] -> Maybe a
-const lastMay = xs => xs.length > 0 ? (
+const lastMay = xs => 0 < xs.length ? (
     Just(xs.slice(-1)[0])
 ) : Nothing();
 ```

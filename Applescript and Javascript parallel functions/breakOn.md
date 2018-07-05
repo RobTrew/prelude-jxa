@@ -35,7 +35,7 @@ end breakOn
 const breakOn = (pat, src) =>
     Boolean(pat) ? (() => {
         const xs = src.split(pat);
-        return xs.length > 1 ? Tuple(
+        return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
         ) : Tuple(src, '');
     })() : undefined;

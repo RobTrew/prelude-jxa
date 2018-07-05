@@ -19,6 +19,6 @@ const traverseList = (f, xs) => {
             (ys, x) => liftA2(cons, f(x), ys),
             liftA2(cons, vLast, pureT(t, []))
         );
-    })() : [];
+    })() : [[]];
 };
 ```
