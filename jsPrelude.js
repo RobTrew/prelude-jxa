@@ -1945,9 +1945,9 @@ const scanr1 = (f, xs) =>
 // secondArrow :: (a -> b) -> ((c, a) -> (c, b))
 const secondArrow = f => xy => Tuple(xy[0], f(xy[1]));
 
-// sequenceAList :: Applicative f => [f a] -> f [a]
-const sequenceAList = xs =>
-    traverseList(x => x, xs);
+// sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
+const sequenceA = tfa =>
+    traverse(id, tfa);
 
 // show :: a -> String
 // show :: a -> Int -> Indented String
