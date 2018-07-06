@@ -19,7 +19,8 @@ on pureT(t, x)
         pureTuple(x)
     else
         pureList(x)
-    end i
+    end if
+end pureT
 ```
 
 ```js

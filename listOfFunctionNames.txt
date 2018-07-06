@@ -267,7 +267,7 @@ range :: Ix a => (a, a) -> [a]
 read :: Read a => String -> a
 readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String String
-readMay :: Read a => String -> Maybe a
+readLR :: Read a => String -> Either String a
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
 regexMatches :: String -> String -> [[String]]

@@ -1809,8 +1809,8 @@ function range() {
 // read :: Read a => String -> a
 const read = JSON.parse;
 
-// readMay :: Read a => String -> Maybe a
-const readMay = s => {
+// readLR :: Read a => String -> Either String a
+const readLR = s => {
     try {
         return Just(JSON.parse(s))
     } catch (e) {

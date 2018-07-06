@@ -1,6 +1,6 @@
 ```applescript
 -- traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
-on traverseTree(f, oNode)
+on traverseTree(f, tree)
     script go
         on |λ|(x)
             liftA2(my Node, ¬
@@ -8,7 +8,7 @@ on traverseTree(f, oNode)
                 traverseList(go, nest of x))
         end |λ|
     end script
-    go's |λ|(oNode)
+    go's |λ|(tree)
 end traverseTree
 ```
 
