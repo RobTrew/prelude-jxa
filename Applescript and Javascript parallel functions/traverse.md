@@ -4,7 +4,7 @@ on traverse(f, tx)
     if class of tx is list then
         traverseList(f, tx)
     else if class of tx is record and keys(tx) contains "type" then
-        set t to type of mx
+        set t to type of tx
         if "Either" = t then
             traverseEither(f, tx)
         else if "Maybe" = t then

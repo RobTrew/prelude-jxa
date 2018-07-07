@@ -18,8 +18,10 @@ on fmap(f, fa)
         |λ|(f, fa) of mReturn(fm)
     else if c is text then
         map(f, characters of fa)
-    else
+    else if c is list then
         map(f, fa)
+    else
+        missing value
     end if
 end fmap
 ```
