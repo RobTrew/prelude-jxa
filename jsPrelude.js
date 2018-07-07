@@ -742,18 +742,20 @@ const floor = x => {
 };
 
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
-const fmap = (f, fa) => {
-    const t = fa.type;
-    return (undefined !== t ? (
+const fmap = (f, fa) =>
+    Array.isArray(fa) ? (
+        fa.map(f)
+    ) : 'string' !== typeof fa ? (
         'Either' === t ? (
             fmapLR
         ) : 'Maybe' === t ? (
             fmapMay
         ) : 'Node' === t ? (
             fmapTree
-        ) : fmapTuple
-    ) : map)(f, fa);
-};
+        ) : 'Tuple' === t ? (
+            fmapTuple
+        ) : undefined
+    )(fa) : fa.split('').map(f);
 
 // fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 const fmapLR = (f, lr) =>

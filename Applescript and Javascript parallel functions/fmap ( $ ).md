@@ -1,7 +1,8 @@
 ```applescript
 -- fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
 on fmap(f, fa)
-    if class of fa is record and keys(fa) contains "type" then
+    set c to class of fa
+    if c is record and keys(fa) contains "type" then
         set t to type of fa
         if "Either" = t then
             set fm to my fmapLR
@@ -15,6 +16,8 @@ on fmap(f, fa)
             set fm to my map
         end if
         |λ|(f, fa) of mReturn(fm)
+    else if c is text then
+        map(f, characters of fa)
     else
         map(f, fa)
     end if
@@ -23,16 +26,18 @@ end fmap
 
 ```js
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
-const fmap = (f, fa) => {
-    const t = fa.type;
-    return (undefined !== t ? (
+const fmap = (f, fa) =>
+    Array.isArray(fa) ? (
+        fa.map(f)
+    ) : 'string' !== typeof fa ? (
         'Either' === t ? (
             fmapLR
         ) : 'Maybe' === t ? (
             fmapMay
         ) : 'Node' === t ? (
             fmapTree
-        ) : fmapTuple
-    ) : map)(f, fa);
-};
+        ) : 'Tuple' === t ? (
+            fmapTuple
+        ) : undefined
+    )(fa) : fa.split('').map(f);
 ```
