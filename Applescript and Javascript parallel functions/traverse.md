@@ -6,7 +6,7 @@ on traverse(f, tx)
     else if class of tx is record and keys(tx) contains "type" then
         set t to type of tx
         if "Either" = t then
-            traverseEither(f, tx)
+            traverseLR(f, tx)
         else if "Maybe" = t then
             traverseMay(f, tx)
         else if "Node" = t then

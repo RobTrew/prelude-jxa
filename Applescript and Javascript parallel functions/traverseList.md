@@ -30,7 +30,7 @@ on traverseList(f, xs)
         
         foldr(cons_f, ¬
             liftA2(my cons, vLast, pureT(t, [])), ¬
-            items 1 thru -2 of xs)
+            init(xs))
     else
         {{}}
     end if

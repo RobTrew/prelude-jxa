@@ -11,7 +11,7 @@ on bind(m, mf)
             if t = "Maybe" then
                 bindMay(m, mf)
             else if t = "Either" then
-                bindEither(m, mf)
+                bindLR(m, mf)
             else if t = "Tuple" then
                 bindTuple(m, mf)
             else
