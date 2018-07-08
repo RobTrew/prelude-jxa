@@ -20,8 +20,15 @@ on liftA2Tree(f, tx, ty)
         end |λ|
     end script
     
-    Node(mReturn(f)'s |λ|(root of tx, root of ty), ¬
-        map(fmapT, nest of ty) & map(liftA2T, nest of tx))
+    if class of ty is list then
+        set rootLabel to {}
+        set forest to {}
+    else
+        set rootLabel to root of ty
+        set forest to map(fmapT, nest of ty) & map(liftA2T, nest of tx)
+    end if
+    
+    Node(mReturn(f)'s |λ|(root of tx, rootLabel), forest)
 end liftA2Tree
 ```
 
@@ -30,11 +37,13 @@ end liftA2Tree
 const liftA2Tree = (f, tx, ty) => {
     const go = tx =>
         Node(
-            f(tx.root, ty.root),
-            ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
-            .concat(
-                tx.nest.map(go)
-            )
+            f(tx.root, ty.root || ty),
+            Boolean(ty.nest) ? (
+                ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
+                .concat(
+                    tx.nest.map(go)
+                )
+            ) : ty
         );
     return go(tx);
 };

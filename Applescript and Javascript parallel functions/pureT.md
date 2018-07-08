@@ -13,7 +13,7 @@ on pureT(t, x)
         pureLR(x)
     else if "Maybe" = t then
         pureMay(x)
-    else if "Tree" = t then
+    else if "Node" = t then
         pureTree(x)
     else if "Tuple" = t then
         pureTuple(x)
@@ -37,7 +37,7 @@ const pureT = (t, x) =>
             pureLR(x)
         ) : 'Maybe' === t ? (
             pureMay(x)
-        ) : 'Tree' === t ? (
+        ) : 'Node' === t ? (
             pureTree(x)
         ) : 'Tuple' === t ? (
             pureTuple(x)

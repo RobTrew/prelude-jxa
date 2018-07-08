@@ -12,7 +12,7 @@ const pureT = (t, x) =>
             pureLR(x)
         ) : 'Maybe' === t ? (
             pureMay(x)
-        ) : 'Tree' === t ? (
+        ) : 'Node' === t ? (
             pureTree(x)
         ) : 'Tuple' === t ? (
             pureTuple(x)

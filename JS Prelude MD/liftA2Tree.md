@@ -3,11 +3,13 @@
 const liftA2Tree = (f, tx, ty) => {
     const go = tx =>
         Node(
-            f(tx.root, ty.root),
-            ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
-            .concat(
-                tx.nest.map(go)
-            )
+            f(tx.root, ty.root || ty),
+            Boolean(ty.nest) ? (
+                ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
+                .concat(
+                    tx.nest.map(go)
+                )
+            ) : ty
         );
     return go(tx);
 };

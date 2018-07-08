@@ -2,7 +2,12 @@
 -- liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 on liftA2LR(f, a, b)
     set x to |Right| of a
-    set y to |Right| of b
+    if class of b is list then
+        set y to {}
+    else
+        set y to |Right| of b
+    end if
+    
     if x is missing value then
         a
     else if y is missing value then

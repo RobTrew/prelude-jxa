@@ -12,7 +12,7 @@ on traverse(f, tx)
         else if "Node" = t then
             traverseTree(f, tx)
         else if "Tuple" = t then
-            traverseTuple
+            traverseTuple(f, tx)
         else
             missing value
         end if

@@ -3,15 +3,16 @@
 const fmap = (f, fa) =>
     Array.isArray(fa) ? (
         fa.map(f)
-    ) : 'string' !== typeof fa ? (
-        'Either' === t ? (
-            fmapLR
+    ) : 'string' !== typeof fa ? (() => {
+        const t = fa.type;
+        return ('Either' === t ? (
+            fmapLR(f, fa)
         ) : 'Maybe' === t ? (
-            fmapMay
+            fmapMay(f, fa)
         ) : 'Node' === t ? (
-            fmapTree
+            fmapTree(f, fa)
         ) : 'Tuple' === t ? (
-            fmapTuple
-        ) : undefined
-    )(fa) : fa.split('').map(f);
+            fmapTuple(f, fa)
+        ) : undefined)
+    })() : fa.split('').map(f);
 ```

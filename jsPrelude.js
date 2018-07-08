@@ -745,17 +745,18 @@ const floor = x => {
 const fmap = (f, fa) =>
     Array.isArray(fa) ? (
         fa.map(f)
-    ) : 'string' !== typeof fa ? (
-        'Either' === t ? (
-            fmapLR
+    ) : 'string' !== typeof fa ? (() => {
+        const t = fa.type;
+        return ('Either' === t ? (
+            fmapLR(f, fa)
         ) : 'Maybe' === t ? (
-            fmapMay
+            fmapMay(f, fa)
         ) : 'Node' === t ? (
-            fmapTree
+            fmapTree(f, fa)
         ) : 'Tuple' === t ? (
-            fmapTuple
-        ) : undefined
-    )(fa) : fa.split('').map(f);
+            fmapTuple(f, fa)
+        ) : undefined)
+    })() : fa.split('').map(f);
 
 // fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 const fmapLR = (f, lr) =>
@@ -1278,11 +1279,13 @@ const liftA2May = (f, a, b) =>
 const liftA2Tree = (f, tx, ty) => {
     const go = tx =>
         Node(
-            f(tx.root, ty.root),
-            ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
-            .concat(
-                tx.nest.map(go)
-            )
+            f(tx.root, ty.root || ty),
+            Boolean(ty.nest) ? (
+                ty.nest.map(curry(fmapTree)(curry(f)(tx.root)))
+                .concat(
+                    tx.nest.map(go)
+                )
+            ) : ty
         );
     return go(tx);
 };
@@ -1721,7 +1724,7 @@ const pureT = (t, x) =>
             pureLR(x)
         ) : 'Maybe' === t ? (
             pureMay(x)
-        ) : 'Tree' === t ? (
+        ) : 'Node' === t ? (
             pureTree(x)
         ) : 'Tuple' === t ? (
             pureTuple(x)
@@ -1949,7 +1952,7 @@ const secondArrow = f => xy => Tuple(xy[0], f(xy[1]));
 
 // sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 const sequenceA = tfa =>
-    traverse(id, tfa);
+    traverse(x => x, tfa);
 
 // show :: a -> String
 // show :: a -> Int -> Indented String
@@ -2532,9 +2535,9 @@ const traverse = (f, tx) => {
 
 // traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 const traverseLR = (f, lr) =>
-    lr.Left !== undefined ? (
-        [lr]
-    ) : fmap(Right, f(lr.Right));
+    undefined !== lr.Left ? (
+        fmap(Right, f(lr.Right))
+    ) : [lr]; //??
 
 // - Map each element of a structure to an action,
 // - evaluate these actions from left to right,
