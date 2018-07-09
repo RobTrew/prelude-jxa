@@ -1,38 +1,21 @@
 ```applescript
 -- takeWhile :: (a -> Bool) -> [a] -> [a]
+-- takeWhile :: (Char -> Bool) -> String -> String
 on takeWhile(p, xs)
     set bln to false
-    set blnText to (class of xs) is text
     tell mReturn(p)
         repeat with i from 1 to length of xs
-            if not |λ|(item i of xs) then
-                set bln to true
-                exit repeat
-            end if
+            if not |λ|(item i of xs) then ¬
+                return take(i - 1, xs)
         end repeat
     end tell
-    if bln then
-        if i > 1 then
-            if blnText then
-                text 1 thru (i - 1) of xs
-            else
-                items 1 thru (i - 1) of xs
-            end if
-        else
-            if blnText then
-                ""
-            else
-                {}
-            end if
-        end if
-    else
-        xs
-    end if
+    return xs
 end takeWhile
 ```
 
 ```js
 // takeWhile :: (a -> Bool) -> [a] -> [a]
+// takeWhile :: (Char -> Bool) -> String -> String
 const takeWhile = (p, xs) => {
     let i = 0;
     const lng = xs.length;

@@ -1,5 +1,6 @@
 ```js
 // takeWhile :: (a -> Bool) -> [a] -> [a]
+// takeWhile :: (Char -> Bool) -> String -> String
 const takeWhile = (p, xs) => {
     let i = 0;
     const lng = xs.length;
