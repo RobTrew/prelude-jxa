@@ -102,6 +102,7 @@ find :: (a -> Bool) -> [a] -> Maybe a
 findIndex :: (a -> Bool) -> [a] -> Maybe Int
 findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 findIndices :: (a -> Bool) -> [a] -> [Int]
+findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
 firstArrow :: (a -> b) -> ((a, c) -> (b, c))
 flatten :: NestedList a -> [a]
 flattenTree :: Tree a -> [a]
@@ -365,6 +366,7 @@ traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeLeaves :: Tree -> [Tree]
+treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 truncate :: Num -> Int
 tupleFromArray :: [a] -> (a, a ...)
 typeName :: a -> String

@@ -12,7 +12,9 @@ const eq = (a, b) => {
     return t !== typeof b ? (
         false
     ) : 'object' !== t ? (
-        a === b
+        'function' !== t ? (
+            a === b
+        ) : a.toString() === b.toString()
     ) : (() => {
         const aks = Object.keys(a);
         return aks.length !== Object.keys(b).length ? (

@@ -12,7 +12,7 @@ end tailMay
 ```js
 // tailMay :: [a] -> Maybe [a]
 const tailMay = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs.slice(1))
     ) : Nothing();
 ```

@@ -619,7 +619,9 @@ const eq = (a, b) => {
     return t !== typeof b ? (
         false
     ) : 'object' !== t ? (
-        a === b
+        'function' !== t ? (
+            a === b
+        ) : a.toString() === b.toString()
     ) : (() => {
         const aks = Object.keys(a);
         return aks.length !== Object.keys(b).length ? (
@@ -710,6 +712,27 @@ const findIndices = (p, xs) =>
     concatMap((x, i) => p(x) ? (
         [i]
     ) : [], xs);
+
+// The first of any nodes in the tree which match the predicate p
+// (For all matches, see treeMatches)
+// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
+const findTree = (p, tree) => {
+    const go = node =>
+        p(node.root) ? (
+            Just(node)
+        ) : (() => {
+            const
+                xs = node.nest,
+                lng = xs.length;
+                
+            return 0 < lng ? until(
+                tpl => lng <= tpl[0] || !tpl[1].Nothing,
+                tpl => Tuple(1 + tpl[0], go(xs[tpl[0]])),
+                Tuple(0, Nothing())
+            )[1] : Nothing()
+        })();
+    return go(tree);
+};
 
 // Lift a simple function to one which applies to a tuple, 
 // transforming only the first item of the tuple
@@ -1368,7 +1391,7 @@ const lookupTuples = (k, kvs) =>
 
 // In JS, mReturn is just an alternate name for id.
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
-const mReturn = id;
+const mReturn(x) = id(x);
 
 // map :: (a -> b) -> [a] -> [b]
 const map = (f, xs) => xs.map(f);
@@ -1588,7 +1611,7 @@ const not = b => !b;
 const notElem = (x, xs) => -1 === xs.indexOf(x);
 
 // nub :: [a] -> [a]
-const nub = xs => nubBy((a, b) => a === b, xs);
+const nub = xs => nubBy(eq, xs);
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
 const nubBy = (p, xs) => {
@@ -2037,7 +2060,7 @@ const showLR = lr => {
 };
 
 // showList :: [a] -> String
-const showList = show;
+const showList(x) = show(x);
 
 // showLog :: a -> IO ()
 const showLog = (...args) =>
@@ -2327,11 +2350,11 @@ const swap = ab =>
     Tuple(ab[1], ab[0]);
 
 // tail :: [a] -> [a]
-const tail = xs => xs.length > 0 ? xs.slice(1) : [];
+const tail = xs => 0 < xs.length ? xs.slice(1) : [];
 
 // tailMay :: [a] -> Maybe [a]
 const tailMay = xs =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         Just(xs.slice(1))
     ) : Nothing();
 
@@ -2586,6 +2609,18 @@ const treeLeaves = oNode => {
   return (0 < nest.length) ? (
     concatMap(treeLeaves, nest)
   ) : [oNode];
+};
+
+// A list of all nodes in the tree which match 
+// a predicate p.
+// For the first match only, see findTree.
+// treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
+const treeMatches = (p, tree) => {
+    const go = node =>
+        p(node.root) ? (
+            [node]
+        ) : concatMap(go, node.nest);
+    return go(tree);
 };
 
 // truncate :: Num -> Int

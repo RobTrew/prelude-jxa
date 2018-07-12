@@ -1,4 +1,4 @@
 ```js
 // tail :: [a] -> [a]
-const tail = xs => xs.length > 0 ? xs.slice(1) : [];
+const tail = xs => 0 < xs.length ? xs.slice(1) : [];
 ```

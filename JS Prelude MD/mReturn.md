@@ -9,5 +9,5 @@
 
 ```js
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
-const mReturn = id;
+const mReturn(x) = id(x);
 ```
