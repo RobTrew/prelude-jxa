@@ -7,5 +7,5 @@ end showList
 
 ```js
 // showList :: [a] -> String
-const showList = show;
+const showList = x => show(x);
 ```

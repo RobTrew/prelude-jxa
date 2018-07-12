@@ -3,9 +3,9 @@
 -- isNull :: String -> Bool
 on isNull(xs)
     if class of xs is string then
-        xs = ""
+        "" = xs
     else
-        xs = {}
+        {} = xs
     end if
 end isNull
 ```

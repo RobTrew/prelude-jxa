@@ -1,4 +1,4 @@
 ```js
 // showList :: [a] -> String
-const showList(x) = show(x);
+const showList = x => show(x);
 ```

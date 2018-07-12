@@ -1391,7 +1391,7 @@ const lookupTuples = (k, kvs) =>
 
 // In JS, mReturn is just an alternate name for id.
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
-const mReturn(x) = id(x);
+const mReturn = x => id(x);
 
 // map :: (a -> b) -> [a] -> [b]
 const map = (f, xs) => xs.map(f);
@@ -2060,7 +2060,7 @@ const showLR = lr => {
 };
 
 // showList :: [a] -> String
-const showList(x) = show(x);
+const showList = x => show(x);
 
 // showLog :: a -> IO ()
 const showLog = (...args) =>

@@ -7,9 +7,9 @@
 
 ```applescript
 -- maybe :: b -> (a -> b) -> Maybe a -> b
-on maybe(n, f, mb)
+on maybe(v, f, mb)
     if Nothing of mb then
-        n
+        v
     else
         tell mReturn(f) to |λ|(Just of mb)
     end if
