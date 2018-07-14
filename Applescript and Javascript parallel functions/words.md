@@ -1,7 +1,12 @@
 ```applescript
 -- words :: String -> [String]
 on |words|(s)
-    words of s
+    set ca to current application
+    (((ca's NSString's stringWithString:(s))'s ¬
+        componentsSeparatedByCharactersInSet:(ca's ¬
+            NSCharacterSet's whitespaceAndNewlineCharacterSet()))'s ¬
+        filteredArrayUsingPredicate:(ca's ¬
+            NSPredicate's predicateWithFormat:"0 < length")) as list
 end |words|
 ```
 
