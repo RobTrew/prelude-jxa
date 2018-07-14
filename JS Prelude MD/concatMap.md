@@ -1,10 +1,8 @@
 ```js
 // concatMap :: (a -> [b]) -> [a] -> [b]
-const concatMap = (f, xs) => []
-    .concat.apply(
-        [],
-        (Array.isArray(xs) ? (
-            xs
-        ) : xs.split('')).map(f)
-    );
+const concatMap = (f, xs) =>
+    0 < xs.length ? (() => {
+        const unit = 'string' !== typeof xs[0] ? [] : '';
+        return unit.concat.apply(unit, xs.map(f))
+    })() : [];
 ```

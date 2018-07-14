@@ -17,10 +17,10 @@ end treeLeaves
 
 ```js
 // treeLeaves :: Tree -> [Tree]
-const treeLeaves = oNode => {
-  const nest = oNode.nest;
+const treeLeaves = tree => {
+  const nest = tree.nest;
   return (0 < nest.length) ? (
     concatMap(treeLeaves, nest)
-  ) : [oNode];
+  ) : [tree];
 };
 ```

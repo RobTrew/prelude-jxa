@@ -370,13 +370,11 @@ const concat = xs =>
     })() : [];
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
-const concatMap = (f, xs) => []
-    .concat.apply(
-        [],
-        (Array.isArray(xs) ? (
-            xs
-        ) : xs.split('')).map(f)
-    );
+const concatMap = (f, xs) =>
+    0 < xs.length ? (() => {
+        const unit = 'string' !== typeof xs[0] ? [] : '';
+        return unit.concat.apply(unit, xs.map(f))
+    })() : [];
 
 // cons :: a -> [a] -> [a]
 const cons = (x, xs) =>  [x].concat(xs);
@@ -2604,11 +2602,11 @@ const traverseTuple = (f, tpl) =>
     fmap(curry(Tuple)(tpl[0]), f(tpl[1]));
 
 // treeLeaves :: Tree -> [Tree]
-const treeLeaves = oNode => {
-  const nest = oNode.nest;
+const treeLeaves = tree => {
+  const nest = tree.nest;
   return (0 < nest.length) ? (
     concatMap(treeLeaves, nest)
-  ) : [oNode];
+  ) : [tree];
 };
 
 // A list of all nodes in the tree which match 
