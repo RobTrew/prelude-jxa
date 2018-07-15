@@ -2,7 +2,7 @@
 -- concatMap :: (a -> [b]) -> [a] -> [b]
 on concatMap(f, xs)
     set lng to length of xs
-    if 0 < lng and class of (item 1 of xs) is string then
+    if 0 < lng and class of xs is string then
         set acc to ""
     else
         set acc to {}
@@ -20,7 +20,9 @@ end concatMap
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = (f, xs) =>
     0 < xs.length ? (() => {
-        const unit = 'string' !== typeof xs[0] ? [] : '';
+        const unit = 'string' !== typeof xs ? (
+            []
+        ) : '';
         return unit.concat.apply(unit, xs.map(f))
     })() : [];
 ```
