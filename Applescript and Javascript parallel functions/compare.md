@@ -6,11 +6,11 @@
 -- compare :: a -> a -> Ordering
 on compare(a, b)
     if a < b then
-        |LT|
+        -1
     else if a > b then
-        |GT|
+        1
     else
-        |EQ|
+        0
     end if
 end compare
 ```

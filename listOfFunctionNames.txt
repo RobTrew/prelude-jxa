@@ -97,6 +97,7 @@ filePath :: String -> FilePath
 filePathTree :: filePath -> [Tree String] -> Tree FilePath
 fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
+fileUTI :: FilePath -> String
 filter :: (a -> Bool) -> [a] -> [a]
 find :: (a -> Bool) -> [a] -> Maybe a
 findIndex :: (a -> Bool) -> [a] -> Maybe Int

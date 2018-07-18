@@ -662,6 +662,19 @@ const filePathTree = (fpAnchor, trees) => {
     return Node(fpAnchor, trees.map(go(fpAnchor)));
 };
 
+// fileUTI :: FilePath -> String
+const fileUTI = fp => {
+    const
+        e = $(),
+        uti = ObjC.unwrap(
+            $.NSWorkspace.sharedWorkspace
+            .typeOfFileError(fp, e)
+        );
+    return undefined !== uti ? (
+        uti
+    ) : ObjC.unwrap(e.localizedDescription);
+};
+
 // filter :: (a -> Bool) -> [a] -> [a]
 const filter = (f, xs) => xs.filter(f);
 
