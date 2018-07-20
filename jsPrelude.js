@@ -218,9 +218,9 @@ const bind = (m, mf) =>
 
 // bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 const bindLR = (m, mf) =>
-    m.Right !== undefined ? (
-        mf(m.Right)
-    ) : m;
+    undefined !== m.Left ? (
+        m
+    ) : mf(m.Right);
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 const bindList = (xs, mf) => 
@@ -628,6 +628,15 @@ const eq = (a, b) => {
             false
         ) : aks.every(k => eq(a[k], b[k]));
     })();
+};
+
+// evalJSLR :: String -> Either String String
+const evalJSLR = s => {
+    try {
+        return Right(eval('(' + s + ')'))
+    } catch (e) {
+        return Left(e.message);
+    };
 };
 
 // evalJSMay :: String -> Maybe a
@@ -2667,13 +2676,11 @@ const uncons = xs =>
         Just(Tuple(xs[0], xs.slice(1)))
     ) : Nothing();
 
-// Converts a function of more than one argument
-// to a function on Tuple type (Tuple ... TupleN)
-// or array which contains those arguments.
-// This implementation uses the fact that the Tuple
-// constructors create an object with a private .length property
+// Given a curried function, return an
+// equivalent function on a tuple or list pair
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
-const uncurry = f => args => f.apply(null, args);
+const uncurry = f => args =>
+    f(args[0])(args[1]);
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]

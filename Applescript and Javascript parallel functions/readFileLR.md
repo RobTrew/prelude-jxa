@@ -18,19 +18,20 @@ end readFileLR
 
 ```js
 // readFileLR :: FilePath -> Either String String
-const readFileLR = strPath => {
+const readFileLR = fp => {
     const
-        error = $(),
-        str = ObjC.unwrap(
+        e = $(),
+        uw = ObjC.unwrap,
+        s = uw(
             $.NSString.stringWithContentsOfFileEncodingError(
-                $(strPath)
+                $(fp)
                 .stringByStandardizingPath,
                 $.NSUTF8StringEncoding,
-                error
+                e
             )
         );
-    return Boolean(error.code) ? (
-        Left(error.message)
-    ) : Right(str);
+    return s !== undefined ? (
+        Right(s)
+    ) : Left(uw(e.localizedDescription));
 };
 ```
