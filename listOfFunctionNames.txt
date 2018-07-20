@@ -20,7 +20,6 @@ apList (<*>) :: [(a -> b)] -> [a] -> [b]
 apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
-appFrontDocPathLR :: String -> Either String String
 append (++) :: [a] -> [a] -> [a]
 appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
@@ -90,7 +89,7 @@ enumFromTo :: Enum a => a -> a -> [a]
 enumFromToChar :: Char -> Char -> [Char]
 enumFromToInt :: Int -> Int -> [Int]
 eq (==) :: Eq a => a -> a -> Bool
-evalJSLR :: String -> Either String String
+evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a
 even :: Int -> Bool
 exp :: Float -> Float

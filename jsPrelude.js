@@ -630,7 +630,7 @@ const eq = (a, b) => {
     })();
 };
 
-// evalJSLR :: String -> Either String String
+// evalJSLR :: String -> Either String a
 const evalJSLR = s => {
     try {
         return Right(eval('(' + s + ')'))
@@ -2676,8 +2676,8 @@ const uncons = xs =>
         Just(Tuple(xs[0], xs.slice(1)))
     ) : Nothing();
 
-// Given a curried function, return an
-// equivalent function on a tuple or list pair
+// Given a curried function, returns an
+// equivalent function on a tuple or list pair.
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f => args =>
     f(args[0])(args[1]);

@@ -1,5 +1,5 @@
 ```js
-// evalJSLR :: String -> Either String String
+// evalJSLR :: String -> Either String a
 const evalJSLR = s => {
     try {
         return Right(eval('(' + s + ')'))
