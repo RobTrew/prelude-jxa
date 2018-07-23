@@ -1849,9 +1849,9 @@ const read = JSON.parse;
 // readLR :: Read a => String -> Either String a
 const readLR = s => {
     try {
-        return Just(JSON.parse(s))
+        return Right(JSON.parse(s))
     } catch (e) {
-        return Nothing();
+        return Left(e.message);
     };
 };
 
@@ -2676,11 +2676,13 @@ const uncons = xs =>
         Just(Tuple(xs[0], xs.slice(1)))
     ) : Nothing();
 
-// Given a curried function, returns an
+// Given a curried/default function, returns an
 // equivalent function on a tuple or list pair.
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f => args =>
-    f(args[0])(args[1]);
+    1 < f.length ? (
+        f(args[0], args[1])
+    ) : f(args[0])(args[1]);
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
