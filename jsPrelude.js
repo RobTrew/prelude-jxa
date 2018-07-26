@@ -593,9 +593,9 @@ const enumFromThenToInt = (x1, x2, y) => {
 
 // enumFromTo :: Enum a => a -> a -> [a]
 const enumFromTo = (m, n) =>
-    ('number' !== typeof m ? (
-        enumFromToChar
-    ) : enumFromToInt).apply(null, [m, n]);
+    'number' !== typeof m ? (
+        enumFromToChar(m, n)
+    ) : enumFromToInt(m, n);
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = (m, n) => {
