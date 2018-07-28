@@ -364,8 +364,10 @@ const composeR = (f, g) => x => f(g(x));
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
 const concat = xs =>
-    xs.length > 0 ? (() => {
-        const unit = 'string' === typeof xs[0] ? '' : [];
+    0 < xs.length ? (() => {
+        const unit = 'string' !== typeof xs[0] ? (
+            []
+        ) : '';
         return unit.concat.apply(unit, xs);
     })() : [];
 
@@ -385,16 +387,19 @@ const cons = (x, xs) =>  [x].concat(xs);
 const const_ = (k, _) => k;
 
 // Flexibly handles two or more arguments, applying
-// the function directly if the argument array is complete,
+// the function directly if the argument array
+// is long enough for complete saturation,
 // or recursing with a concatenation of any existing and
 // newly supplied arguments, if gaps remain.
 // curry :: ((a, b) -> c) -> a -> b -> c
 const curry = (f, ...args) => {
-    const go = xs => xs.length >= f.length ? (
-        f.apply(null, xs)
-    ) : function () {
-        return go(xs.concat(Array.from(arguments)));
-    };
+    const
+        n = f.length,
+        go = xs => n <= xs.length ? (
+            f.apply(null, xs)
+        ) : function() {
+            return go(xs.concat(Array.from(arguments)));
+        };
     return go(args);
 };
 
