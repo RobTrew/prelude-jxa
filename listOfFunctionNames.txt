@@ -1,7 +1,4 @@
-EQ :: Ordering
-GT :: Ordering
 Just :: a -> Just a
-LT :: Ordering
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
 Nothing :: () -> Nothing
