@@ -8,7 +8,7 @@
 ```js
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = (pat, src) =>
-    pat !== '' ? (
+    '' !== pat ? (
         src.split(pat)
         .reduce((a, x, i, xs) =>
             0 < i ? (

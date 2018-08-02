@@ -41,20 +41,20 @@ end range
 function range() {
     const
         args = Array.from(arguments),
-        ab = args.length !== 1 ? (
+        ab = 1 !== args.length ? (
             args
         ) : args[0],
         [as, bs] = [ab[0], ab[1]].map(
             x => Array.isArray(x) ? (
                 x
-            ) : (x.type !== undefined) &&
+            ) : (undefined !== x.type) &&
             (x.type.startsWith('Tuple')) ? (
                 listFromTuple(x)
             ) : [x]
         ),
         an = as.length;
     return (an === bs.length) ? (
-        an > 1 ? (
+        1 < an ? (
             sequenceAList(as.map((_, i) => enumFromTo(as[i], bs[i])))
         ) : enumFromTo(as[0], bs[0])
     ) : [];

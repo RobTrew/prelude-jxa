@@ -64,7 +64,7 @@ const show = (x, n) => {
         };
     return JSON.stringify(e, (_, v) => {
         const
-            f = (v !== null && v !== undefined) ? (() => {
+            f = ((null !== v) && (undefined !== v)) ? (() => {
                 const t = v.type;
                 return 'Either' === t ? (
                     showLR

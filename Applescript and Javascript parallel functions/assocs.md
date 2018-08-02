@@ -2,9 +2,9 @@
 -- assocs :: Map k a -> [(k, a)]
 on assocs(m)
     set c to class of m
-    if c is list then
+    if list is c then
       zip(enumFromTo(1, length of m), m)
-    else if c is record then
+    else record is c then
         set dict to (current application's ¬
             NSDictionary's ¬
             dictionaryWithDictionary:(m))

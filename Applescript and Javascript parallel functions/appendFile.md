@@ -14,7 +14,7 @@ on appendFile(strPath, txt)
     set {blnExists, intFolder} to (ca's NSFileManager's defaultManager()'s ¬
         fileExistsAtPath:oFullPath isDirectory:(reference))
     if blnExists then
-        if intFolder = 0 then
+        if 0 = intFolder then
             set oData to (ca's NSString's stringWithString:txt)'s ¬
                 dataUsingEncoding:(ca's NSUTF8StringEncoding)
             set h to ca's NSFileHandle's fileHandleForWritingAtPath:oFullPath

@@ -3,7 +3,7 @@
 -- concat :: [String] -> String
 on concat(xs)
     set lng to length of xs
-    if 0 < lng and class of (item 1 of xs) is string then
+    if 0 < lng and string is class of (item 1 of xs) then
         set acc to ""
     else
         set acc to {}

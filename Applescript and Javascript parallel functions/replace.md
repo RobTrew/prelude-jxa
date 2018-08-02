@@ -15,9 +15,9 @@ end replace
 // replace :: Regex -> String -> String -> String
 const replace = (needle, strNew, strHaystack) =>
     strHaystack.replace(
-        typeof needle !== 'string' ? (
-            needle
-        ) : new RegExp(needle, 'g'),
-        strNew
+      'string' !== typeof needle ? (
+        needle
+      ) : new RegExp(needle, 'g'),
+      strNew
     );
 ```

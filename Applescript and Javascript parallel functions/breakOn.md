@@ -11,7 +11,7 @@ on breakOn(pat, src)
         set lstParts to text items of src
         set lngParts to length of lstParts
         
-        if lngParts > 1 then
+        if 1 < lngParts then
             set tpl to Tuple(item 1 of lstParts, pat & ¬
                 ((items 2 thru -1 of lstParts) as text))
         else

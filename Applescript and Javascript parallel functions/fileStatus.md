@@ -19,7 +19,7 @@ const fileStatus = fp => {
     error = $(),
     dct = $.NSFileManager.defaultManager
     .attributesOfItemAtPathError(fp, error).js;
-  return dct !== undefined ? (
+  return undefined !== dct ? (
     Right(dct)
   ) : Left(ObjC.unwrap(error.localizedDescription));
 };

@@ -130,7 +130,7 @@ const fileStatus = fp => {
     error = $(),
     dct = $.NSFileManager.defaultManager
     .attributesOfItemAtPathError(fp, error).js;
-  return dct !== undefined ? (
+  return undefined !== dct ? (
     Right(dct)
   ) : Left(ObjC.unwrap(error.localizedDescription));
 };
@@ -230,7 +230,7 @@ const readFileLR = fp => {
                 e
             )
         );
-    return s !== undefined ? (
+    return undefined !== s ? (
         Right(s)
     ) : Left(uw(e.localizedDescription));
 };

@@ -49,7 +49,7 @@ const elemAtMay = (i, x) => {
         k = bln ? i : Object.keys(x)
         .sort()[i],
         v = x[k];
-    return (typeof v)[0] !== 'u' ? (
+    return undefined !== v ? (
         Just(bln ? v : Tuple(k, v))
     ) : Nothing();
 };

@@ -1,7 +1,7 @@
 ```applescript
 -- approxRatio :: Real -> Real -> Ratio
 on approxRatio(epsilon, n)
-    if epsilon is missing value then
+    if missing value is epsilon then
         set e to 1 / 10000
     else
         set e to epsilon

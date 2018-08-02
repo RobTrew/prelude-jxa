@@ -5,7 +5,7 @@
 ```applescript
 -- abs :: Num -> Num
 on abs(x)
-    if x < 0 then
+    if 0 > x then
         -x
     else
         x

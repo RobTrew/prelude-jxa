@@ -32,7 +32,7 @@ const quickSortBy = (cmp, xs) =>
         const
             h = xs[0],
             lessMore = partition(
-                x => cmp(x, h) !== 1,
+                x => 1 !== cmp(x, h),
                 xs.slice(1)
             );
         return [].concat.apply(

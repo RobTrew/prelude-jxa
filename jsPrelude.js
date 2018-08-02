@@ -1,29 +1,11 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
-// EQ :: Ordering
-const EQ = {
-  type: 'Ordering',
-  value: 0
-};
-
-// GT :: Ordering
-const GT = {
-    type: 'Ordering',
-    value: 1
-};
-
 // Just :: a -> Just a
 const Just = x => ({
     type: 'Maybe',
     Nothing: false,
     Just: x
 });
-
-// LT :: Ordering
-const LT = {
-  type: 'Ordering',
-  value: -1
-};
 
 // Left :: a -> Either a b
 const Left = x => ({
@@ -261,7 +243,7 @@ const breakOn = (pat, src) =>
 // ==> [("a", "/b/c/"), ("a/b", "/c/"), ("a/b/c", "/")]
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = (pat, src) =>
-    pat !== '' ? (
+    '' !== pat ? (
         src.split(pat)
         .reduce((a, x, i, xs) =>
             0 < i ? (
@@ -279,7 +261,7 @@ const breakOnAll = (pat, src) =>
 const breakOnMay = (pat, src) =>
     Boolean(pat) ? (() => {
         const xs = src.split(pat);
-        return Just(xs.length > 1 ? Tuple(
+        return Just(0 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
         ) : Tuple(src, ''));
     })() : Nothing();
@@ -500,9 +482,10 @@ const dropAround = (p, xs) => dropWhile(p, dropWhileEnd(p, xs));
 
 // dropFileName :: FilePath -> FilePath
 const dropFileName = strPath =>
-    strPath !== '' ? (() => {
-        const xs = (strPath.split('/'))
-            .slice(0, -1);
+    '' !== strPath ? (() => {
+        const
+          xs = (strPath.split('/'))
+          .slice(0, -1);
         return xs.length > 0 ? (
             xs.join('/') + '/'
         ) : './';
@@ -549,7 +532,7 @@ const elemAtMay = (i, x) => {
         k = bln ? i : Object.keys(x)
         .sort()[i],
         v = x[k];
-    return (typeof v)[0] !== 'u' ? (
+    return undefined !== v ? (
         Just(bln ? v : Tuple(k, v))
     ) : Nothing();
 };
@@ -762,8 +745,9 @@ const flatten = t =>
 // The root elements of a tree in pre-order.
 // flattenTree :: Tree a -> [a]
 const flattenTree = t => {
-    const go = (xs, x) => [x.root]
-        .concat(x.nest.reduceRight(go, xs));
+    const
+      go = (xs, x) => [x.root]
+      .concat(x.nest.reduceRight(go, xs));
     return go([], t);
 };
 
@@ -920,10 +904,10 @@ const groupBy = (f, xs) => {
     const tpl = xs.slice(1)
         .reduce((a, x) => {
             const h = a[1].length > 0 ? a[1][0] : undefined;
-            return h !== undefined && f(h, x) ? (
+            return (undefined !== h) && f(h, x) ? (
                 Tuple(a[0], a[1].concat([x]))
             ) : Tuple(a[0].concat([a[1]]), [x]);
-        }, Tuple([], xs.length > 0 ? [xs[0]] : []));
+        }, Tuple([], 0 < xs.length ? [xs[0]] : []));
     return tpl[0].concat([tpl[1]]);
 };
 
@@ -1684,7 +1668,7 @@ const partition = (p, xs) =>
 // partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>
     xs.reduce((a, x) =>
-        x.Left !== undefined ? (
+        undefined !== x.Left ? (
             Tuple(a[0].concat(x.Left), a[1])
         ) : Tuple(a[0], a[1].concat(x.Right)),
         Tuple([], [])
@@ -1795,7 +1779,7 @@ const quickSortBy = (cmp, xs) =>
         const
             h = xs[0],
             lessMore = partition(
-                x => cmp(x, h) !== 1,
+                x => 1 !== cmp(x, h),
                 xs.slice(1)
             );
         return [].concat.apply(
@@ -1829,20 +1813,20 @@ const randomRInt = (low, high) =>
 function range() {
     const
         args = Array.from(arguments),
-        ab = args.length !== 1 ? (
+        ab = 1 !== args.length ? (
             args
         ) : args[0],
         [as, bs] = [ab[0], ab[1]].map(
             x => Array.isArray(x) ? (
                 x
-            ) : (x.type !== undefined) &&
+            ) : (undefined !== x.type) &&
             (x.type.startsWith('Tuple')) ? (
                 listFromTuple(x)
             ) : [x]
         ),
         an = as.length;
     return (an === bs.length) ? (
-        an > 1 ? (
+        1 < an ? (
             sequenceAList(as.map((_, i) => enumFromTo(as[i], bs[i])))
         ) : enumFromTo(as[0], bs[0])
     ) : [];
@@ -1862,7 +1846,7 @@ const readLR = s => {
 
 // recip :: Num -> Num
 const recip = n =>
-    n !== 0 ? (1 / n) : undefined;
+    0 !== n ? (1 / n) : undefined;
 
 // recipMay :: Num -> Maybe Num
 const recipMay = n =>
@@ -1886,10 +1870,10 @@ const rem = (n, m) => n % m;
 // replace :: Regex -> String -> String -> String
 const replace = (needle, strNew, strHaystack) =>
     strHaystack.replace(
-        typeof needle !== 'string' ? (
-            needle
-        ) : new RegExp(needle, 'g'),
-        strNew
+      'string' !== typeof needle ? (
+        needle
+      ) : new RegExp(needle, 'g'),
+      strNew
     );
 
 // replicate :: Int -> a -> [a]
@@ -2003,7 +1987,7 @@ const show = (x, n) => {
         };
     return JSON.stringify(e, (_, v) => {
         const
-            f = (v !== null && v !== undefined) ? (() => {
+            f = ((null !== v) && (undefined !== v)) ? (() => {
                 const t = v.type;
                 return 'Either' === t ? (
                     showLR
@@ -2067,7 +2051,7 @@ const showJSON = x => JSON.stringify(x, null, 2);
 
 // showLR :: Either a b -> String
 const showLR = lr => {
-    const k = lr.Left !== undefined ? (
+    const k = undefined !== lr.Left ? (
         'Left'
     ) : 'Right';
     return k + '(' + unQuoted(show(lr[k])) + ')';
@@ -2092,9 +2076,9 @@ const showMaybe = mb =>
 
 // showOrdering :: Ordering -> String
 const showOrdering = e =>
-    e.value > 0 ? (
+    0 < e.value ? (
         'GT'
-    ) : e.value < 0 ? (
+    ) : 0 > e.value ? (
         'LT'
     ) : 'EQ';
 

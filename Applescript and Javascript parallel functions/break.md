@@ -12,7 +12,7 @@ on break(p, xs)
         end repeat
     end tell
     if bln then
-        if i > 1 then
+        if 1 < i then
             Tuple(items 1 thru (i - 1) of xs, items i thru -1 of xs)
         else
             Tuple({}, xs)

@@ -30,7 +30,7 @@ const readFileLR = fp => {
                 e
             )
         );
-    return s !== undefined ? (
+    return undefined !== s ? (
         Right(s)
     ) : Left(uw(e.localizedDescription));
 };

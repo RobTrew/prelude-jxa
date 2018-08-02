@@ -14,8 +14,8 @@ on draw(tree)
     script drawSubTrees
         on |λ|(xs)
             set lng to length of xs
-            if lng > 0 then
-                if lng > 1 then
+            if 0 < lng then
+                if 1 < lng then
                     cons("│", append(shift's |λ|("├─ ", "│  ", draw(item 1 of xs)), ¬
                         |λ|(items 2 thru -1 of xs)))
                 else

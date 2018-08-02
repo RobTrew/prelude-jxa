@@ -33,7 +33,7 @@ end breakOnMay
 const breakOnMay = (pat, src) =>
     Boolean(pat) ? (() => {
         const xs = src.split(pat);
-        return Just(xs.length > 1 ? Tuple(
+        return Just(0 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
         ) : Tuple(src, ''));
     })() : Nothing();

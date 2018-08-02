@@ -8,10 +8,10 @@
 ```applescript
 -- breakOnAll :: String -> String -> [(String, String)]
 on breakOnAll(pat, src)
-    if pat ≠ "" then
+    if "" ≠ pat then
         script
             on |λ|(a, _, i, xs)
-                if i > 1 then
+                if 1 < i then
                     a & {Tuple(intercalate(pat, take(i - 1, xs)), ¬
                         pat & intercalate(pat, drop(i - 1, xs)))}
                 else
@@ -36,7 +36,7 @@ end breakOnAll
 ```js
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = (pat, src) =>
-    pat !== '' ? (
+    '' !== pat ? (
         src.split(pat)
         .reduce((a, x, i, xs) =>
             0 < i ? (

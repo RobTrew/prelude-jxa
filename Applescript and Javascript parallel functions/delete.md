@@ -7,11 +7,11 @@ on |delete|(x, xs)
     if Nothing of mbIndex then
         xs
     else
-        if lng > 1 then
+        if 1 < lng then
             set i to Just of mbIndex
-            if i = 1 then
+            if 1 = i then
                 items 2 thru -1 of xs
-            else if i = lng then
+            else if lng = i then
                 items 1 thru -2 of xs
             else
                 tell xs to items 1 thru (i - 1) & items (i + 1) thru -1

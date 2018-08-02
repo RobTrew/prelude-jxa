@@ -1,9 +1,9 @@
 ```js
 // showOrdering :: Ordering -> String
 const showOrdering = e =>
-    e.value > 0 ? (
+    0 < e.value ? (
         'GT'
-    ) : e.value < 0 ? (
+    ) : 0 > e.value ? (
         'LT'
     ) : 'EQ';
 ```

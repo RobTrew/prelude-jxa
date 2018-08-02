@@ -9,7 +9,7 @@
 on ap(mf, mx)
     if class of mx is list then
         apList(mf, mx)
-    else if class of mf is record and ¬
+    else if record is class of mf and ¬
         keys(mf) contains "type" then
         set t to type of mf
         if "Either" = t then
