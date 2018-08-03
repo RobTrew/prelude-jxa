@@ -278,7 +278,7 @@
   "replicate": "// replicate :: Int -> a -> [a]\nconst replicate = (n, x) =>\n    Array.from({\n        length: n\n    }, () => x);",
   "replicateM": "// Instance for lists (arrays) only here\n\n// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = (n, xs) => {\n    const loop = x => x <= 0 ? [\n        []\n    ] : liftA2(cons, xs, loop(x - 1));\n    return loop(n);\n};",
   "replicateString": "// replicateString :: Int -> String -> String\nconst replicateString = (n, s) => s.repeat(n);",
-  "reverse": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    typeof xs === 'string' ? (\n        xs.split('')\n        .reverse()\n        .join('')\n    ) : xs.slice(0)\n    .reverse();",
+  "reverse": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    'string' !== typeof xs ? (\n        xs.slice(0).reverse()\n    ) : xs.split('').reverse().join('');",
   "rights": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    concatMap(\n        x => ('Either' === x.type) && (undefined !== x.Right) ? (\n            [x.Right]\n        ) : [], xs\n    );",
   "rotate": "// rotate :: Int -> [a] -> [a]\nconst rotate = (n, xs) => {\n    const lng = xs.length;\n    return lng > 0 ? takeDropCycle(lng, n, xs) : [];\n};",
   "round": "// round :: a -> Int\nconst round = x => {\n    const\n        nr = properFraction(x),\n        [n, r] = [nr[0], nr[1]]\n        m = n + (r < 0 ? -1 : 1),\n        sign = signum(abs(r) - 0.5);\n    return (-1 === sign) ? n : (\n        0 === sign ? (even(n) ? n : m) : (\n            1 === sign ? m : undefined\n        )\n    );\n};",
