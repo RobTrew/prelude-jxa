@@ -363,7 +363,10 @@ const concatMap = (f, xs) =>
     })() : [];
 
 // cons :: a -> [a] -> [a]
-const cons = (x, xs) =>  [x].concat(xs);
+const cons = (x, xs) =>
+    Array.isArray(xs) ? (
+        [x].concat(xs)
+    ) : (x + xs);
 
 // const_ :: a -> b -> a
 const const_ = (k, _) => k;
