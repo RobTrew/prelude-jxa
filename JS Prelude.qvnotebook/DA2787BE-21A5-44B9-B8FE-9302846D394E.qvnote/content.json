@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = (f, x, xs) =>\n    xs.length > 0 ? (\n        f(x, xs[0]) ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(deleteBy(f, x, xs.slice(1)))\n    ) : [];"
+      "data": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = (f, x, xs) =>\n    0 < xs.length ? (\n        f(x, xs[0]) ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(deleteBy(f, x, xs.slice(1)))\n    ) : [];"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = (f, xs) =>\n    xs.length > 0 ? (\n        Just(xs.slice(0, -1)\n            .reduceRight(f, xs.slice(-1)[0]))\n    ) : Nothing();"
+      "data": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = (f, xs) =>\n    0 < xs.length ? (\n        Just(xs.slice(0, -1)\n            .reduceRight(f, xs.slice(-1)[0]))\n    ) : Nothing();"
     }
   ]
 }

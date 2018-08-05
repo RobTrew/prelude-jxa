@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// bindLR (>>=) :: Either a -> (a -> Either b) -> Either b\nconst bindLR = (m, mf) =>\n    m.Right !== undefined ? (\n        mf(m.Right)\n    ) : m;"
+      "data": "// bindLR (>>=) :: Either a -> (a -> Either b) -> Either b\nconst bindLR = (m, mf) =>\n    undefined !== m.Left ? (\n        m\n    ) : mf(m.Right);"
     }
   ]
 }

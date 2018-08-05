@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = (f, xs) =>\n    xs.length > 1 ? xs.slice(1)\n    .reduce(f, xs[0]) : xs[0];"
+      "data": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = (f, xs) =>\n    1 < xs.length ? xs.slice(1)\n    .reduce(f, xs[0]) : xs[0];"
     }
   ]
 }

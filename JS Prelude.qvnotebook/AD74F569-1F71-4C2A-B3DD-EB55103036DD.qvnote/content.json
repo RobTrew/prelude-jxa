@@ -1,0 +1,10 @@
+{
+  "title": "traverseMay",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)\nconst traverseMay = (f, mb) =>\n    mb.Nothing ? (\n        [mb]\n    ) : fmap(Just, f(mb.Just));"
+    }
+  ]
+}

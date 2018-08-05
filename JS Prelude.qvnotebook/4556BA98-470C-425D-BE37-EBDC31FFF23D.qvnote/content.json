@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// enumFromTo :: Enum a => a -> a -> [a]\nconst enumFromTo = (m, n) =>\n    (typeof m !== 'number' ? (\n        enumFromToChar\n    ) : enumFromToInt).apply(null, [m, n]);"
+      "data": "// enumFromTo :: Enum a => a -> a -> [a]\nconst enumFromTo = (m, n) =>\n    'number' !== typeof m ? (\n        enumFromToChar(m, n)\n    ) : enumFromToInt(m, n);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// wrap :: a -> NSObject\nconst wrap = v => ObjC.wrap(v);"
+      "data": "// wrap :: a -> NSObject\nconst wrap = ObjC.wrap;"
     }
   ]
 }

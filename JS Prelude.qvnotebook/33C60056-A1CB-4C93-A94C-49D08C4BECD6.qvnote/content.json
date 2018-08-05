@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)\nconst mappendComparing2 = fboolPairs =>\n    (x, y) => fboolPairs.reduce(\n        (ordr, fb) => {\n            const f = fb[0];\n            return ordr !== 0 ? (\n                ordr\n            ) : fb[1] ? (\n                compare(f(x), f(y))\n            ) : compare(f(y), f(x));\n        }, 0\n    );"
+      "data": "// mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)\nconst mappendComparing2 = fboolPairs =>\n    (x, y) => fboolPairs.reduce(\n        (ordr, fb) => {\n            const f = fb[0];\n            return 0 !== ordr ? (\n                ordr\n            ) : fb[1] ? (\n                compare(f(x), f(y))\n            ) : compare(f(y), f(x));\n        }, 0\n    );"
     }
   ]
 }

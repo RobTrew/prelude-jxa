@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unwrap :: NSObject -> a\nconst unwrap = o => ObjC.unwrap(o);"
+      "data": "// unwrap :: NSObject -> a\nconst unwrap = ObjC.unwrap;"
     }
   ]
 }

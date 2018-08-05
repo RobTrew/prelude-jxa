@@ -1,0 +1,10 @@
+{
+  "title": "setFromList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// setFromList :: Ord a => [a] -> Set a\nconst setFromList = xs =>\n    new Set(xs);"
+    }
+  ]
+}

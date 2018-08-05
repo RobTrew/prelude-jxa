@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// cons :: a -> [a] -> [a]\nconst cons = (x, xs) =>  [x].concat(xs);"
+      "data": "// cons :: a -> [a] -> [a]\nconst cons = (x, xs) =>\n    Array.isArray(xs) ? (\n        [x].concat(xs)\n    ) : (x + xs);"
     }
   ]
 }

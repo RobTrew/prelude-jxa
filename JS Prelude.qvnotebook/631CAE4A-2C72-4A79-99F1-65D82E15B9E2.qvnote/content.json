@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = (f, xs) => [].concat.apply([], xs.map(f));"
+      "data": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = (f, xs) =>\n    0 < xs.length ? (() => {\n        const unit = 'string' !== typeof xs ? (\n            []\n        ) : '';\n        return unit.concat.apply(unit, xs.map(f))\n    })() : [];"
     }
   ]
 }

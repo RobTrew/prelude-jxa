@@ -1,0 +1,10 @@
+{
+  "title": "isSubsetOf",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isSubsetOf :: Ord a => Set a -> Set a -> Bool\nconst isSubsetOf = (a, b) => {\n    for (let x of a) {\n        if (!b.has(x)) return false;\n    }\n    return true;\n};"
+    }
+  ]
+}

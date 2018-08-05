@@ -1,10 +1,10 @@
 {
-  "title": "readMay",
+  "title": "readLR",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// readMay :: Read a => String -> Maybe a\nconst readMay = s => {\n    try {\n        return Just(JSON.parse(s))\n    } catch (e) {\n        return Nothing();\n    };\n};"
+      "data": "// readLR :: Read a => String -> Either String a\nconst readLR = s => {\n    try {\n        return Right(JSON.parse(s))\n    } catch (e) {\n        return Left(e.message);\n    };\n};"
     }
   ]
 }

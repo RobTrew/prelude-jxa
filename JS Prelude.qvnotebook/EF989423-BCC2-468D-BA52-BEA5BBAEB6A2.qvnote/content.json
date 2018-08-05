@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = (n, xs) => {\n  const lng = xs.length;\n  return (lng >= n ? xs : concat(replicate(Math.ceil(n / lng), xs)))\n  .slice(0, n)\n};"
+      "data": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = (n, xs) => {\n    const lng = xs.length;\n    return (\n            n <= xs ? (\n                xs\n            ) : concat(\n                replicate(\n                    Math.ceil(n / lng),\n                    xs\n                )\n            )\n        )\n        .slice(0, n)\n};"
     }
   ]
 }

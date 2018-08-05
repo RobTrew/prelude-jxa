@@ -3,8 +3,8 @@
 on assocs(m)
     set c to class of m
     if list is c then
-      zip(enumFromTo(1, length of m), m)
-    else record is c then
+        zip(enumFromTo(1, length of m), m)
+    else if record is c then
         set dict to (current application's ¬
             NSDictionary's ¬
             dictionaryWithDictionary:(m))

@@ -4,12 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// - Map each element of a structure to an action,\n// - evaluate these actions from left to right,\n// - and collect the results.\n\n// traverse :: (Traversable t, Applicative f) => (a -> f b) -> t a -> f (t b)\n// traverse_ f = foldr cons_f (pure [])\n//   where cons_f x a = ((:) <$> (f x)) <*> a"
+      "data": "// - Map each element of a structure to an action,\n// - evaluate these actions from left to right,\n// - and collect the results.\n\n//    traverse f = List.foldr cons_f (pure [])\n//      where cons_f x ys = liftA2 (:) (f x) ys"
     },
     {
       "type": "code",
       "language": "javascript",
-      "data": "// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f (t b)\nconst traverseList = (f, xs) =>\n    sequenceAList(fmap(f, xs));"
+      "data": "// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]\nconst traverseList = (f, xs) => {\n    const lng = xs.length;\n    return 0 < lng ? (() => {\n        const\n            vLast = f(xs[lng - 1]),\n            t = vLast.type || 'List';\n        return xs.slice(0, -1).reduceRight(\n            (ys, x) => liftA2(cons, f(x), ys),\n            liftA2(cons, vLast, pureT(t, []))\n        );\n    })() : [[]];\n};"
     }
   ]
 }

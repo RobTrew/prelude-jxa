@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// log :: Float -> Float\nconst log = n => Math.log(n);"
+      "data": "// log :: Float -> Float\nconst log = Math.log;"
     }
   ]
 }

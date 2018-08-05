@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => x < a ? x : a, xs[0])\n        )\n    ) : Nothing();"
+      "data": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => x < a ? x : a, xs[0])\n        )\n    ) : Nothing();"
     }
   ]
 }

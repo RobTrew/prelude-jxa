@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// lookupDict :: a -> Dict -> Maybe b\nconst lookupDict = (k, dct) => {\n    const v = dct[k];\n    return v !== undefined ? (\n        Just(v)\n    ) : Nothing();\n};"
+      "data": "// lookupDict :: a -> Dict -> Maybe b\nconst lookupDict = (k, dct) => {\n    const v = dct[k];\n    return undefined !== v ? (\n        Just(v)\n    ) : Nothing();\n};"
     }
   ]
 }

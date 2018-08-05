@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = (mf, mx) => {\n    const t = mx.type;\n    return (undefined !== t ? (\n       'Either' === t ? (\n            apEither\n        ) : 'Maybe' === t ? (\n            apMaybe\n        ) : 'Node' === t ? (\n            apTree\n        ) : apTuple\n    ) : apList)(mf, mx);\n};"
+      "data": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = (mf, mx) => {\n    const t = mx.type;\n    return (\n        undefined !== t ? (\n            'Either' === t ? (\n                apLR\n            ) : 'Maybe' === t ? (\n                apMay\n            ) : 'Node' === t ? (\n                apTree\n            ) : 'Tuple' === t ? (\n                apTuple\n            ) : apList\n        ) : apList\n    )(mf, mx);\n};"
     }
   ]
 }

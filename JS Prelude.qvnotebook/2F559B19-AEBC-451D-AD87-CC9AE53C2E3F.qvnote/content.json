@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = oNode => {\n  const nest = oNode.nest;\n  return (0 < nest.length) ? (\n    concatMap(treeLeaves, nest)\n  ) : [oNode];\n};"
+      "data": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n  const nest = tree.nest;\n  return (0 < nest.length) ? (\n    concatMap(treeLeaves, nest)\n  ) : [tree];\n};"
     }
   ]
 }

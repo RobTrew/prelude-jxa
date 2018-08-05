@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// tupleFromArray [a] -> (a, a ...)\nconst tupleFromArray = xs => {\n    const lng = xs.length;\n    return 1 < lng ? xs.reduce(\n        (a, x, i) => Object.assign(a, {\n            [i.toString()]: x\n        }), {\n            type: 'Tuple' + (2 < lng ? lng.toString() : '')\n        }\n    ) : undefined;\n};"
+      "data": "// tupleFromArray :: [a] -> (a, a ...)\nconst tupleFromArray = xs => {\n    const lng = xs.length;\n    return 1 < lng ? xs.reduce(\n        (a, x, i) => Object.assign(a, {\n            [i.toString()]: x\n        }), {\n            type: 'Tuple' + (2 < lng ? lng.toString() : '')\n        }\n    ) : undefined;\n};"
     }
   ]
 }

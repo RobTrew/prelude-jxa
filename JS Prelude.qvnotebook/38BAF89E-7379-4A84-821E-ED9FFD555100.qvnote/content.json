@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// flattenTree :: Tree a -> [a]\nconst flattenTree = t => {\n    const go = (xs, x) => [x.root]\n        .concat(x.nest.reduceRight(go, xs));\n    return go([], t);\n};"
+      "data": "// flattenTree :: Tree a -> [a]\nconst flattenTree = t => {\n    const\n      go = (xs, x) => [x.root]\n      .concat(x.nest.reduceRight(go, xs));\n    return go([], t);\n};"
     }
   ]
 }

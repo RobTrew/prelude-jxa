@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// readFile :: FilePath -> IO String\nconst readFile = strPath => {\n    const\n        error = $(),\n        str = ObjC.unwrap(\n            $.NSString.stringWithContentsOfFileEncodingError(\n                $(strPath)\n                .stringByStandardizingPath,\n                $.NSUTF8StringEncoding,\n                error\n            )\n        );\n    return Boolean(error.code) ? (\n        ObjC.unwrap(error.localizedDescription)\n    ) : str;\n};"
+      "data": "// readFile :: FilePath -> IO String\nconst readFile = fp => {\n    const\n        e = $(),\n        uw = ObjC.unwrap,\n        s = uw(\n            $.NSString.stringWithContentsOfFileEncodingError(\n                $(fp)\n                .stringByStandardizingPath,\n                $.NSUTF8StringEncoding,\n                e\n            )\n        );\n    return undefined !== s ? (\n        s\n    ) : uw(e.localizedDescription);\n};"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    typeof xs === 'string' ? (\n        xs.split('')\n        .reverse()\n        .join('')\n    ) : xs.slice(0)\n    .reverse();"
+      "data": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    'string' !== typeof xs ? (\n        xs.slice(0).reverse()\n    ) : xs.split('').reverse().join('');"
     }
   ]
 }

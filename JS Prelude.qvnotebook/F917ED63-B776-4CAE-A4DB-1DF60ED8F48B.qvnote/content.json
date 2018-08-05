@@ -1,5 +1,5 @@
 {
-  "title": "apMaybe (<*>)",
+  "title": "apMay (<*>)",
   "cells": [
     {
       "type": "code",
@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apMaybe (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMaybe = (mf, mx) =>\n    mf.Nothing || mx.Nothing ? (\n        Nothing()\n    ) : Just(mf.Just(mx.Just));"
+      "data": "// apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMay = (mf, mx) =>\n    mf.Nothing || mx.Nothing ? (\n        Nothing()\n    ) : Just(mf.Just(mx.Just));"
     }
   ]
 }

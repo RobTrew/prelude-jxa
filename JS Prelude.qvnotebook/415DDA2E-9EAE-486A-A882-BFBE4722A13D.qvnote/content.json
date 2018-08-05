@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs =>\n    xs.length > 0 ? Just(xs.slice(0, -1)) : Nothing();"
+      "data": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs =>\n    0 < xs.length ? Just(xs.slice(0, -1)) : Nothing();"
     }
   ]
 }

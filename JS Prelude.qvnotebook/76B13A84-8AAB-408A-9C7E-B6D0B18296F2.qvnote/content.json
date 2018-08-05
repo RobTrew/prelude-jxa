@@ -1,0 +1,10 @@
+{
+  "title": "fileUTI",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// fileUTI :: FilePath -> String\nconst fileUTI = fp => {\n    const\n        e = $(),\n        uti = ObjC.unwrap(\n            $.NSWorkspace.sharedWorkspace\n            .typeOfFileError(fp, e)\n        );\n    return undefined !== uti ? (\n        uti\n    ) : ObjC.unwrap(e.localizedDescription);\n};"
+    }
+  ]
+}

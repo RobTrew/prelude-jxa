@@ -1,10 +1,10 @@
 {
-  "title": "composeListLR",
+  "title": "composeListR",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// composeListLR :: [(a -> a)] -> (a -> a)\nconst composeListLR = fs =>\n    x => fs.reduce((a, f) => f(a), x);"
+      "data": "// composeListR :: [(a -> a)] -> (a -> a)\nconst composeListR = fs =>\n    x => fs.reduce((a, f) => f(a), x);"
     }
   ]
 }

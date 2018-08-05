@@ -1,0 +1,15 @@
+{
+  "title": "treeMatches",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// A list of all nodes in the tree which match \n// a predicate p.\n// For the first match only, see findTree."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// treeMatches :: (a -> Bool) -> Tree a -> [Tree a]\nconst treeMatches = (p, tree) => {\n    const go = node =>\n        p(node.root) ? (\n            [node]\n        ) : concatMap(go, node.nest);\n    return go(tree);\n};"
+    }
+  ]
+}

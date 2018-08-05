@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = (a, b) => {\n    const t = typeof a;\n    return t !== typeof b ? (\n        false\n    ) : t !== 'object' ? (\n        a === b\n    ) : (() => {\n        const aks = Object.keys(a);\n        return aks.length !== Object.keys(b).length ? (\n            false\n        ) : aks.every(k => eq(a[k], b[k]));\n    })();\n};"
+      "data": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = (a, b) => {\n    const t = typeof a;\n    return t !== typeof b ? (\n        false\n    ) : 'object' !== t ? (\n        'function' !== t ? (\n            a === b\n        ) : a.toString() === b.toString()\n    ) : (() => {\n        const aks = Object.keys(a);\n        return aks.length !== Object.keys(b).length ? (\n            false\n        ) : aks.every(k => eq(a[k], b[k]));\n    })();\n};"
     }
   ]
 }

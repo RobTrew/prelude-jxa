@@ -1,0 +1,10 @@
+{
+  "title": "composeR (>>>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c\nconst composeR = (f, g) => x => f(g(x));"
+    }
+  ]
+}

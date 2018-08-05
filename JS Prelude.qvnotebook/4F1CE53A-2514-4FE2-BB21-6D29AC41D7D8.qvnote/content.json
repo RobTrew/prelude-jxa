@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = (f, xs) =>\n    xs.length > 0 ? (\n        xs.slice(1)\n        .reduce((a, x) => f(x, a) > 0 ? x : a, xs[0])\n    ) : undefined;"
+      "data": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = (f, xs) =>\n    0 < xs.length ? (\n        xs.slice(1)\n        .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0])\n    ) : undefined;"
     }
   ]
 }

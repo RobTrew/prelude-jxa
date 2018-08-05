@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x => {\n    const type = typeof x;\n    return type === 'boolean' ? (\n        x ? 1 : 0\n    ) : type === 'string' ? x.charCodeAt(0) : x;\n};"
+      "data": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x => {\n    const type = typeof x;\n    return 'boolean' === type ? (\n        x ? 1 : 0\n    ) : 'string' === type ? x.charCodeAt(0) : x;\n};"
     }
   ]
 }

@@ -167,6 +167,7 @@ isRight :: Either a b -> Bool
 isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
 isSpace :: Char -> Bool
 isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
+isSubsetOf :: Ord a => Set a -> Set a -> Bool
 isSuffixOf :: Eq a => [a] -> [a] -> Bool
 isUpper :: Char -> Bool
 iso8601Local :: Date -> String
@@ -289,6 +290,10 @@ scanr1 :: (a -> a -> a) -> [a] -> [a]
 secondArrow :: (a -> b) -> ((c, a) -> (c, b))
 sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 setCurrentDirectory :: String -> IO ()
+setFromList :: Ord a => [a] -> Set a
+setInsert :: Ord a => a -> Set a -> Set a
+setMember :: Ord a => a -> Set a -> Bool
+setSize :: Set a -> Int
 show :: a -> String
 showBinary :: Int -> String
 showDate :: Date -> String

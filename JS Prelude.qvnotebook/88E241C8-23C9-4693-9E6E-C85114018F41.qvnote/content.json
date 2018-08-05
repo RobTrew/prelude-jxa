@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// init :: [a] -> [a]\nconst init = xs => xs.length > 0 ? xs.slice(0, -1) : undefined;"
+      "data": "// init :: [a] -> [a]\nconst init = xs =>\n    0 < xs.length ? (\n        xs.slice(0, -1)\n    ) : undefined;"
     }
   ]
 }

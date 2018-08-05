@@ -4,12 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Converts a function of more than one argument\n// to a function on Tuple type (Tuple ... TupleN)\n// or array which contains those arguments.\n// This implementation uses the fact that the Tuple\n// constructors create an object with a private .length property"
+      "data": "// Given a curried/default function, returns an\n// equivalent function on a tuple or list pair."
     },
     {
       "type": "code",
       "language": "javascript",
-      "data": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f => args => f.apply(null, args);"
+      "data": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f => args =>\n    1 < f.length ? (\n        f(args[0], args[1])\n    ) : f(args[0])(args[1]);"
     }
   ]
 }

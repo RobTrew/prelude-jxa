@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    e.value > 0 ? (\n        'GT'\n    ) : e.value < 0 ? (\n        'LT'\n    ) : 'EQ';"
+      "data": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    0 < e.value ? (\n        'GT'\n    ) : 0 > e.value ? (\n        'LT'\n    ) : 'EQ';"
     }
   ]
 }

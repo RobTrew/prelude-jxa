@@ -1,0 +1,10 @@
+{
+  "title": "setSize",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// setSize :: Set a -> Int\nconst setSize = set =>\n    set.size;"
+    }
+  ]
+}

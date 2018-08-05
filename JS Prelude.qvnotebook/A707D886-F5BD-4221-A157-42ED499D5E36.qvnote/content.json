@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// dropWhile :: (a -> Bool) -> [a] -> [a]\nconst dropWhile = (p, xs) => {\n  let i = 0;\n  for (let lng = xs.length;\n    (i < lng) && p(xs[i]); i++) {}\n  return xs.slice(i);\n};"
+      "data": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = (p, xs) => {\n  let i = 0;\n  for (let lng = xs.length;\n    (i < lng) && p(xs[i]); i++) {}\n  return xs.slice(i);\n};"
     }
   ]
 }

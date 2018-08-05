@@ -1,0 +1,10 @@
+{
+  "title": "traverseTuple",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)\nconst traverseTuple = (f, tpl) =>\n    fmap(curry(Tuple)(tpl[0]), f(tpl[1]));"
+    }
+  ]
+}

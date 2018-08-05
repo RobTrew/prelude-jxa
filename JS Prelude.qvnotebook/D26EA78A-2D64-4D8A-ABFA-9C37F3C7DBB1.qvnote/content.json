@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    xs.length > 0 ? (\n        Just(xs[0])\n    ) : Nothing();"
+      "data": "// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    0 < xs.length ? (\n        Just(xs[0])\n    ) : Nothing();"
     }
   ]
 }

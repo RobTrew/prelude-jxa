@@ -1161,6 +1161,14 @@ const isSubsequenceOf = (xs, ys) => {
     );
 };
 
+// isSubsetOf :: Ord a => Set a -> Set a -> Bool
+const isSubsetOf = (a, b) => {
+    for (let x of a) {
+        if (!b.has(x)) return false;
+    }
+    return true;
+};
+
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
 const isSuffixOf = (suffix, main) =>
@@ -1223,7 +1231,8 @@ const kleisliCompose = (f, g) =>
     x => bind(f(x), g);
 
 // last :: [a] -> a
-const last = xs => 0 < xs.length ? xs.slice(-1)[0] : undefined;
+const last = xs =>
+    0 < xs.length ? xs.slice(-1)[0] : undefined;
 
 // lastMay :: [a] -> Maybe a
 const lastMay = xs => 0 < xs.length ? (
@@ -1975,6 +1984,22 @@ const secondArrow = f => xy => Tuple(xy[0], f(xy[1]));
 const sequenceA = tfa =>
     traverse(x => x, tfa);
 
+// setFromList :: Ord a => [a] -> Set a
+const setFromList = xs =>
+    new Set(xs);
+
+// setInsert :: Ord a => a -> Set a -> Set a
+const setInsert = (x, set) =>
+    set.add(x);
+
+// setMember :: Ord a => a -> Set a -> Bool
+const setMember = (x, set) =>
+    set.has(x);
+
+// setSize :: Set a -> Int
+const setSize = set =>
+    set.size;
+
 // show :: a -> String
 // show :: a -> Int -> Indented String
 const show = (x, n) => {
@@ -2393,9 +2418,18 @@ const takeBaseName = strPath =>
 // First n members of an infinite cycle of xs
 // takeCycle :: Int -> [a] -> [a]
 const takeCycle = (n, xs) => {
-  const lng = xs.length;
-  return (lng >= n ? xs : concat(replicate(Math.ceil(n / lng), xs)))
-  .slice(0, n)
+    const lng = xs.length;
+    return (
+            n <= xs ? (
+                xs
+            ) : concat(
+                replicate(
+                    Math.ceil(n / lng),
+                    xs
+                )
+            )
+        )
+        .slice(0, n)
 };
 
 // takeDirectory :: FilePath -> FilePath

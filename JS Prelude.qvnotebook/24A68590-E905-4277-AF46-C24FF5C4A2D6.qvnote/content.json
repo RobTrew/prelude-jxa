@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = (i, xs) =>\n    xs.length >= i ? (() => {\n        const lr = splitAt(i, xs);\n        return lr[0].concat(lr[1].slice(1));\n    })() : xs;"
+      "data": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = (i, xs) =>\n    i <= xs.length ? (() => {\n        const lr = splitAt(i, xs);\n        return lr[0].concat(lr[1].slice(1));\n    })() : xs;"
     }
   ]
 }

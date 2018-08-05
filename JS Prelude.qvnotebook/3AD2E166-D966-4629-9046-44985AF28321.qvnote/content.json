@@ -1,0 +1,10 @@
+{
+  "title": "traverseLR",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)\nconst traverseLR = (f, lr) =>\n    undefined !== lr.Left ? (\n        fmap(Right, f(lr.Right))\n    ) : [lr]; //??"
+    }
+  ]
+}

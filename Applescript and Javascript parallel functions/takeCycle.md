@@ -23,8 +23,17 @@ end takeCycle
 ```js
 // takeCycle :: Int -> [a] -> [a]
 const takeCycle = (n, xs) => {
-  const lng = xs.length;
-  return (lng >= n ? xs : concat(replicate(Math.ceil(n / lng), xs)))
-  .slice(0, n)
+    const lng = xs.length;
+    return (
+            n <= xs ? (
+                xs
+            ) : concat(
+                replicate(
+                    Math.ceil(n / lng),
+                    xs
+                )
+            )
+        )
+        .slice(0, n)
 };
 ```

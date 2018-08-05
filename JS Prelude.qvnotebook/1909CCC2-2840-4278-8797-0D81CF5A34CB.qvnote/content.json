@@ -1,0 +1,10 @@
+{
+  "title": "traverseTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)\nconst traverseTree = (f, node) => {\n    const go = x =>\n        liftA2(\n            Node, f(x.root),\n            traverseList(go, x.nest)\n        );\n    return go(node);\n};"
+    }
+  ]
+}

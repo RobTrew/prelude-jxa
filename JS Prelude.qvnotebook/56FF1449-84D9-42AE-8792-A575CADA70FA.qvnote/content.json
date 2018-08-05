@@ -1,0 +1,10 @@
+{
+  "title": "setInsert",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// setInsert :: Ord a => a -> Set a -> Set a\nconst setInsert = (x, set) =>\n    set.add(x);"
+    }
+  ]
+}

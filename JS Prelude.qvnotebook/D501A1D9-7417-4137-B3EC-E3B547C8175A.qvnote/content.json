@@ -4,7 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// pureT :: f a -> (a -> f a)\nconst pureT = x =>\n    Array.isArray(x) ? (\n        pureList\n    ) : (() => {\n        const t = x.type;\n        return t !== undefined ? (\n            'Either' === t ? (\n                pureLR\n            ) :'Maybe' === t ? (\n                pureMay\n            ) : 'Tree' === t ? (\n                pureTree\n            ) : 'Tuple' === t ? (\n                pureTuple\n            ) : pureList\n        ) : pureList;\n    })();"
+      "data": "// Given a type name string, returns a \n// specialised 'pure', where\n// 'pure' lifts a value into a particular functor."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = (t, x) =>\n    'List' !== t ? (\n        'Either' === t ? (\n            pureLR(x)\n        ) : 'Maybe' === t ? (\n            pureMay(x)\n        ) : 'Node' === t ? (\n            pureTree(x)\n        ) : 'Tuple' === t ? (\n            pureTuple(x)\n        ) : pureList(x)\n    ) : pureList(x);"
     }
   ]
 }
