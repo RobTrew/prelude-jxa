@@ -1,4 +1,10 @@
 ```applescript
+-- NB All names of NSMutableSets should be set to *missing value*
+-- before the script exits.
+-- ( scpt files can not be saved if they contain ObjC pointer values )
+```
+
+```applescript
 -- setFromList :: Ord a => [a] -> Set a
 on setFromList(xs)
     set ca to current application

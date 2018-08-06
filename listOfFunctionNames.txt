@@ -333,6 +333,7 @@ stripEnd :: String -> String
 stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 stripStart :: String -> String
 subsequences :: [a] -> [[a]]
+subsets :: [a] -> [[a]]
 subtract :: Num -> Num -> Num
 succ :: Enum a => a -> a
 sum :: [Num] -> Num
