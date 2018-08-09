@@ -10,7 +10,7 @@ end |round|
 const round = x => {
     const
         nr = properFraction(x),
-        [n, r] = [nr[0], nr[1]]
+        [n, r] = [nr[0], nr[1]],
         m = n + (r < 0 ? -1 : 1),
         sign = signum(abs(r) - 0.5);
     return (-1 === sign) ? n : (
