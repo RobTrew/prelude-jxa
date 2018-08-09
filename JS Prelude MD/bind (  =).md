@@ -11,6 +11,8 @@ const bind = (m, mf) =>
             bindMaybe
         ) : 'Tuple' === t ? (
             bindTuple
-        ) : x => Left('No bind instance found for type: ' + t);
+        ) : ('function' === typeof m) ? (
+            bindFn
+        ) : undefined;
     })()(m, mf));
 ```

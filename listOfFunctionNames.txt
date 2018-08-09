@@ -25,6 +25,7 @@ approxRatio :: Real -> Real -> Ratio
 argvLength :: Function -> Int
 assocs :: Map k a -> [(k, a)]
 bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
+bindFn :: (a -> b) -> (b -> c) -> a -> c
 bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
@@ -172,6 +173,7 @@ isSuffixOf :: Eq a => [a] -> [a] -> Bool
 isUpper :: Char -> Bool
 iso8601Local :: Date -> String
 iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
+join :: Monad m => m (m a) -> m a
 jsonLog :: a -> IO ()
 jsonParseLR :: String -> Either String a
 justifyLeft :: Int -> Char -> String -> String

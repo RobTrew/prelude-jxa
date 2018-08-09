@@ -1,10 +1,10 @@
 ```applescript
 -- approxRatio :: Real -> Real -> Ratio
 on approxRatio(epsilon, n)
-    if missing value is epsilon then
-        set e to 1 / 10000
-    else
+    if {real, integer} contains (class of epsilon) and 0 < epsilon then
         set e to epsilon
+    else
+        set e to 1 / 10000
     end if
     
     script gcde

@@ -195,8 +195,14 @@ const bind = (m, mf) =>
             bindMaybe
         ) : 'Tuple' === t ? (
             bindTuple
-        ) : x => Left('No bind instance found for type: ' + t);
+        ) : ('function' === typeof m) ? (
+            bindFn
+        ) : undefined;
     })()(m, mf));
+
+// bindFn :: (a -> b) -> (b -> c) -> a -> c
+const bindFn = (m, mf) =>
+    x => mf(y => m(x, y))(x);
 
 // bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 const bindLR = (m, mf) =>
@@ -1190,6 +1196,9 @@ const iterateUntil = (p, f, x) => {
     while (!p(h))(h = f(h), vs.push(h));
     return vs;
 };
+
+// join :: Monad m => m (m a) -> m a
+const join = x => bind(x, id);
 
 // jsonLog :: a -> IO ()
 const jsonLog = (...args) =>

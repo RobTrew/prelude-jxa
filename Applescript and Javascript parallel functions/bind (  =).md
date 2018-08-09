@@ -15,13 +15,15 @@ on bind(m, mf)
             else if "Tuple" = t then
                 bindTuple(m, mf)
             else
-                Nothing()
+                missing value
             end if
         else
-            Nothing()
+            missing value
         end if
+    else if handler is c or class is c then
+        bindFn(m, mf)
     else
-        Nothing()
+        missing value
     end if
 end bind
 ```
@@ -39,6 +41,8 @@ const bind = (m, mf) =>
             bindMaybe
         ) : 'Tuple' === t ? (
             bindTuple
-        ) : x => Left('No bind instance found for type: ' + t);
+        ) : ('function' === typeof m) ? (
+            bindFn
+        ) : undefined;
     })()(m, mf));
 ```
