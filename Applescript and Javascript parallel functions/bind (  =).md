@@ -36,7 +36,7 @@ const bind = (m, mf) =>
     ) : (() => {
         const t = m.type;
         return 'Either' === t ? (
-            bindEither
+            bindLR
         ) : 'Maybe' === t ? (
             bindMay
         ) : 'Tuple' === t ? (
