@@ -141,6 +141,7 @@
   "head": "// head :: [a] -> a\nconst head = xs => xs.length ? xs[0] : undefined;",
   "headMay": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    0 < xs.length ? Just(xs[0]) : Nothing();",
   "id": "// id :: a -> a\nconst id = x => x;",
+  "if_": "// if_ :: Bool -> a -> a -> a\nconst if_ = (bln, x, y) =>\n    bln ? x : y;",
   "indented": "// indented :: String -> String -> String\nconst indented = (strIndent, s) =>\n    unlines(map(\n        x => '' !== x ? strIndent + x : x,\n        lines(s)\n    ));",
   "index": "// index (!!) :: [a] -> Int -> a\nconst index = (xs, i) => xs[i];",
   "init": "// init :: [a] -> [a]\nconst init = xs =>\n    0 < xs.length ? (\n        xs.slice(0, -1)\n    ) : undefined;",

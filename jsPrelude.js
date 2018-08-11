@@ -982,6 +982,10 @@ const headMay = xs =>
 // id :: a -> a
 const id = x => x;
 
+// if_ :: Bool -> a -> a -> a
+const if_ = (bln, x, y) =>
+    bln ? x : y;
+
 // indented :: String -> String -> String
 const indented = (strIndent, s) =>
     unlines(map(

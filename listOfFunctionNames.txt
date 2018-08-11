@@ -140,6 +140,7 @@ groupSortOn :: Ord b => (a -> b) -> [a] -> [a]
 head :: [a] -> a
 headMay :: [a] -> Maybe a
 id :: a -> a
+if_ :: Bool -> a -> a -> a
 indented :: String -> String -> String
 index (!!) :: [a] -> Int -> a
 init :: [a] -> [a]

@@ -13,7 +13,7 @@ on transpose(xxs)
         on |λ|(xs)
             set lng to |length|(xs)
             if lng < intMax then
-                append(xs, items (lng + 1) thru -1 of gaps)
+                xs & items (lng + 1) thru -1 of gaps
             else
                 xs
             end if
