@@ -242,6 +242,7 @@ nub :: [a] -> [a]
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 odd :: Int -> Bool
 on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
+op :: String -> (a -> a -> b)
 or :: [Bool] -> Bool
 ord :: Char -> Int
 outdented :: String -> String

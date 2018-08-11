@@ -1656,6 +1656,11 @@ const odd = n => !even(n);
 // on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 const on = (f, g) => (a, b) => f(g(a), g(b));
 
+// Derive a function from the name of a JS infix operator
+// op :: String -> (a -> a -> b)
+const op = strOp =>
+    eval(`(a, b) => a ${strOp} b`);
+
 // or :: [Bool] -> Bool
 const or = xs =>
     xs.some(Boolean);

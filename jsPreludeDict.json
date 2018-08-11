@@ -243,6 +243,7 @@
   "nubBy": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = (p, xs) => {\n    const go = xs => 0 < xs.length ? (() => {\n        const x = xs[0];\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !p(x, y))\n            )\n        )\n    })() : [];\n    return go(xs);\n};",
   "odd": "// odd :: Int -> Bool\nconst odd = n => !even(n);",
   "on": "// e.g. sortBy(on(compare,length), xs)\n\n// on :: (b -> b -> c) -> (a -> b) -> a -> a -> c\nconst on = (f, g) => (a, b) => f(g(a), g(b));",
+  "op": "// Derive a function from the name of a JS infix operator\n\n// op :: String -> (a -> a -> b)\nconst op = strOp =>\n    eval(`(a, b) => a ${strOp} b`);",
   "or": "// or :: [Bool] -> Bool\nconst or = xs =>\n    xs.some(Boolean);",
   "ord": "// ord :: Char -> Int\nconst ord = c => c.codePointAt(0);",
   "outdented": "// All lines in the string outdented by the same amount\n// (just enough to ensure that the least indented lines \n//  have no remaining indent)\n// All relative indents are left unchanged\n\n// outdented :: String -> String\nconst outdented = s => {\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy( // size of minimum indent\n            comparing(length),\n            map(txt => rgx.exec(txt)[0], xs)\n        ));\n    return unlines(map(curry(drop)(n), xs));\n};",
