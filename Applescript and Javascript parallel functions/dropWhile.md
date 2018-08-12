@@ -9,15 +9,7 @@ on dropWhile(p, xs)
             set i to i + 1
         end repeat
     end tell
-    if i ≤ lng then
-        if class of xs ≠ string then
-            items i thru lng of xs
-        else
-            text i thru lng of xs
-        end if
-    else
-        {}
-    end if
+    drop(i - 1, xs)
 end dropWhile
 ```
 

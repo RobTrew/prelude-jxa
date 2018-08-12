@@ -2,7 +2,6 @@
 -- bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
 on bind(m, mf)
     set c to class of m
-    log c
     if list = c then
         bindList(m, mf)
     else if record = c then

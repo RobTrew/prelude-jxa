@@ -8,15 +8,7 @@ on dropWhileEnd(p, xs)
             set i to i - 1
         end repeat
     end tell
-    if i > 0 then
-        if class of xs ≠ string then
-            items 1 thru i of xs
-        else
-            text 1 thru i of xs
-        end if
-    else
-        {}
-    end if
+    take(i, xs)
 end dropWhileEnd
 ```
 
