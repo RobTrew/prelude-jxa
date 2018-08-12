@@ -1,14 +1,19 @@
 ```applescript
 -- drop :: Int -> [a] -> [a]
+-- drop :: Int -> String -> String
 on drop(n, xs)
-    if n < length of xs then
-        if text is class of xs then
-            text (n + 1) thru -1 of xs
+    if class of xs is not string then
+        if n < length of xs then
+            items (1 + n) thru -1 of xs
         else
-            items (n + 1) thru -1 of xs
+            {}
         end if
     else
-        {}
+        if n < length of xs then
+            text (1 + n) thru -1 of xs
+        else
+            ""
+        end if
     end if
 end drop
 ```

@@ -4,7 +4,7 @@ on strip(s)
     script isSpace
         on |λ|(c)
             set i to id of c
-            i = 32 or (i ≥ 9 and i ≤ 13)
+            32 = i or (9 ≤ i and 13 ≥ i)
         end |λ|
     end script
     dropWhile(isSpace, dropWhileEnd(isSpace, s))
