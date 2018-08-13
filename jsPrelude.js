@@ -2056,12 +2056,8 @@ const show = (x, n) => {
                     showOrdering
                 ) : 'Ratio' === t ? (
                     showRatio
-                ) : 'Tuple' === t ? (
+                ) : 'string' === typeof t && t.startsWith('Tuple') ? (
                     showTuple
-                ) : 'Tuple3' === t ? (
-                    showTuple3
-                ) : 'Tuple4' === t ? (
-                    showTuple4
                 ) : undefined;
             })() : showUndefined;
         return Boolean(f) ? (
@@ -2145,17 +2141,8 @@ const showRatio = nd =>
 
 // showTuple :: Tuple -> String
 const showTuple = tpl =>
-    '(' + [0, 1].map(x => unQuoted(show(tpl[x])))
-    .join(',') + ')';
-
-// showTuple3 :: Tuple3 -> String
-const showTuple3 = tpl =>
-    '(' + [0, 1, 2].map(x => unQuoted(show(tpl[x])))
-    .join(',') + ')';
-
-// showTuple4 :: Tuple4 -> String
-const showTuple4 = tpl =>
-    '(' + [0, 1, 2, 3].map(x => unQuoted(show(tpl[x])))
+    '(' + enumFromToInt(0, tpl.length - 1)
+    .map(x => unQuoted(show(tpl[x])))
     .join(',') + ')';
 
 // showUndefined :: () -> String
@@ -2863,19 +2850,19 @@ const unzip = xys =>
 // unzip3 :: [(a,b,c)] -> ([a],[b],[c])
 const unzip3 = xyzs =>
     xyzs.reduce(
-        (a, x) => Tuple3.apply(null, [0, 1, 2].map(
+        (a, x) => TupleN.apply(null, [0, 1, 2].map(
             i => a[i].concat(x[i])
         )),
-        Tuple3([], [], [])
+        TupleN([], [], [])
     );
 
 // unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
 const unzip4 = wxyzs =>
     wxyzs.reduce(
-        (a, x) => Tuple4.apply(null, [0, 1, 2, 3].map(
+        (a, x) => TupleN.apply(null, [0, 1, 2, 3].map(
             i => a[i].concat(x[i])
         )),
-        Tuple4([], [], [], [])
+        TupleN([], [], [], [])
     );
 
 // variance :: [Num] -> Num
@@ -2900,14 +2887,14 @@ const zip = (xs, ys) =>
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = (xs, ys, zs) =>
     xs.slice(0, Math.min(xs.length, ys.length, zs.length))
-    .map((x, i) => Tuple3(x, ys[i], zs[i]));
+    .map((x, i) => TupleN(x, ys[i], zs[i]));
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 const zip4 = (ws, xs, ys, zs) =>
     ws.slice(0, Math.min(
         xs.length, xs.length, ys.length, zs.length
     ))
-    .map((w, i) => Tuple4(w, xs[i], ys[i], zs[i]));
+    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith = (f, xs, ys) =>

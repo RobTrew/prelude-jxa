@@ -313,8 +313,6 @@ showMaybe :: Maybe a -> String
 showOrdering :: Ordering -> String
 showRatio :: Ratio -> String
 showTuple :: Tuple -> String
-showTuple3 :: Tuple3 -> String
-showTuple4 :: Tuple4 -> String
 showUndefined :: () -> String
 signum :: Num -> Num
 snd :: (a, b) -> b

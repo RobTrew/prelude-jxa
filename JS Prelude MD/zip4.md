@@ -4,5 +4,5 @@ const zip4 = (ws, xs, ys, zs) =>
     ws.slice(0, Math.min(
         xs.length, xs.length, ys.length, zs.length
     ))
-    .map((w, i) => Tuple4(w, xs[i], ys[i], zs[i]));
+    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 ```

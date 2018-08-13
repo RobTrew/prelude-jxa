@@ -3,7 +3,7 @@
 on zip4(ws, xs, ys, zs)
     script
         on |λ|(w, i)
-            Tuple4(w, item i of xs, item i of ys, item i of zs)
+            TupleN({w, item i of xs, item i of ys, item i of zs})
         end |λ|
     end script
     map(result, items 1 thru ¬
@@ -17,5 +17,5 @@ const zip4 = (ws, xs, ys, zs) =>
     ws.slice(0, Math.min(
         xs.length, xs.length, ys.length, zs.length
     ))
-    .map((w, i) => Tuple4(w, xs[i], ys[i], zs[i]));
+    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 ```

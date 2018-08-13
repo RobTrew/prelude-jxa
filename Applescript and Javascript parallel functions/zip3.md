@@ -3,7 +3,7 @@
 on zip3(xs, ys, zs)
     script
         on |λ|(x, i)
-            Tuple3(x, item i of ys, item i of zs)
+            TupleN({x, item i of ys, item i of zs})
         end |λ|
     end script
     map(result, items 1 thru ¬
@@ -15,5 +15,5 @@ end zip3
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = (xs, ys, zs) =>
     xs.slice(0, Math.min(xs.length, ys.length, zs.length))
-    .map((x, i) => Tuple3(x, ys[i], zs[i]));
+    .map((x, i) => TupleN(x, ys[i], zs[i]));
 ```

@@ -11,7 +11,7 @@ on unzip4(wxyzs)
         set end of ys to |3| of wxyz
         set end of zs to |4| of wxyz
     end repeat
-    return Tuple4(ws, xs, ys, zs)
+    return TupleN({ws, xs, ys, zs})
 end unzip4
 ```
 
@@ -19,9 +19,9 @@ end unzip4
 // unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
 const unzip4 = wxyzs =>
     wxyzs.reduce(
-        (a, x) => Tuple4.apply(null, [0, 1, 2, 3].map(
+        (a, x) => TupleN.apply(null, [0, 1, 2, 3].map(
             i => a[i].concat(x[i])
         )),
-        Tuple4([], [], [], [])
+        TupleN([], [], [], [])
     );
 ```

@@ -23,12 +23,8 @@ const show = (x, n) => {
                     showOrdering
                 ) : 'Ratio' === t ? (
                     showRatio
-                ) : 'Tuple' === t ? (
+                ) : 'string' === typeof t && t.startsWith('Tuple') ? (
                     showTuple
-                ) : 'Tuple3' === t ? (
-                    showTuple3
-                ) : 'Tuple4' === t ? (
-                    showTuple4
                 ) : undefined;
             })() : showUndefined;
         return Boolean(f) ? (
