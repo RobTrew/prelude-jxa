@@ -715,7 +715,7 @@ const findIndexR = (p, xs) => {
 
 // findIndices :: (a -> Bool) -> [a] -> [Int]
 const findIndices = (p, xs) =>
-    concatMap((x, i) => p(x) ? (
+    concatMap((x, i) => p(x, i, xs) ? (
         [i]
     ) : [], xs);
 
@@ -1532,6 +1532,20 @@ const mappendOrdering = (a, b) => eqOrdering(EQ, a) ? b : a;
 const mappendTuple = (t, t2) =>
     Tuple(mappend(t[0], t1[0]), mappend(t[1], t1[1]));
 
+// Returns a sequence-matching function for findIndices etc
+// findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
+// -> [1, 4]
+// matching :: [a] -> (a -> Int -> [a] -> Bool)
+const matching = pat => {
+    const
+        lng = pat.length,
+        bln = 0 < lng,
+        h = bln ? pat[0] : undefined;
+    return (x, i, src) =>
+        bln && h == x &&
+        eq(pat, src.slice(i, lng + i));
+};
+
 // max :: Ord a => a -> a -> a
 const max = (a, b) => b > a ? b : a;
 
@@ -2290,20 +2304,25 @@ const splitFileName = strPath =>
 // splitOn("\r\n", "a\r\nb\r\nd\r\ne") //--> ["a", "b", "d", "e"]
 // splitOn("aaa", "aaaXaaaXaaaXaaa") //--> ["", "X", "X", "X", ""]
 // splitOn("x", "x") //--> ["", ""]
-// splitOn(5, [1, 5, 9, 2, 6, 5, 3, 5]) //--> [[1], [9, 2, 6], [3], []]
-// splitOn :: a -> [a] -> [[a]]
+// splitOn([3, 1], [1,2,3,1,2,3,1,2,3]) //--> [[1,2],[2],[2,3]]
+// splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
-const splitOn = (needle, haystack) =>
-    ('string' === typeof haystack) ? (
-        haystack.split(needle)
+const splitOn = (pat, src) =>
+    ('string' === typeof src) ? (
+        src.split(pat)
     ) : (() => {
-        const tpl = haystack.reduce(
-            (a, x) => eq(needle, x) ? Tuple(
-                a[0].concat([a[1]]), []
-            ) : Tuple(a[0], a[1].concat(x)),
-            Tuple([], [])
-        );
-        return tpl[0].concat([tpl[1]]);
+        const
+            lng = pat.length,
+            tpl = foldl((a, i) =>
+
+                Tuple(
+                    fst(a).concat([src.slice(snd(a), i)]),
+                    lng + i
+                ), Tuple([], 0),
+
+                findIndices(matching(pat), src)
+            );
+        return fst(tpl).concat([src.slice(snd(tpl))]);
     })();
 
 // splitRegex :: Regex -> String -> [String]

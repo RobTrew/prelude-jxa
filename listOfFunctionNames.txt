@@ -218,6 +218,7 @@ mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)
 mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 mappendOrdering (<>) :: Ordering -> Ordering -> Ordering
 mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
+matching :: [a] -> (a -> Int -> [a] -> Bool)
 max :: Ord a => a -> a -> a
 maximum :: Ord a => [a] -> a
 maximumBy :: (a -> a -> Ordering) -> [a] -> a
@@ -327,7 +328,7 @@ splitAt :: Int -> [a] -> ([a],[a])
 splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 splitEvery :: Int -> [a] -> [[a]]
 splitFileName :: FilePath -> (String, String)
-splitOn :: a -> [a] -> [[a]]
+splitOn :: [a] -> [a] -> [[a]]
 splitRegex :: Regex -> String -> [String]
 sqrt :: Num -> Num
 sqrtLR :: Num -> Either String Num
