@@ -299,7 +299,7 @@ const ceiling = x => {
     const
       nr = properFraction(x),
       n = nr[0]
-    return 0 < nr[1] ? n + 1 : n;
+    return 0 < nr[1] ? 1 + n : n;
 };
 
 // Size of space -> filler Char -> String -> Centered String
@@ -365,7 +365,7 @@ const concatMap = (f, xs) =>
         const unit = 'string' !== typeof xs ? (
             []
         ) : '';
-        return unit.concat.apply(unit, xs.map(f))
+        return unit.concat.apply(unit, xs.map(f));
     })() : [];
 
 // cons :: a -> [a] -> [a]
@@ -674,8 +674,7 @@ const filter = (f, xs) => xs.filter(f);
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = (p, xs) => {
     for (let i = 0, lng = xs.length; i < lng; i++) {
-        let x = xs[i];
-        if (p(x)) return Just(x);
+        if (p(xs[i])) return Just(xs[i]);
     }
     return Nothing();
 };
@@ -746,10 +745,13 @@ const findTree = (p, tree) => {
 const firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);
 
 // flatten :: NestedList a -> [a]
-const flatten = t =>
-    Array.isArray(t) ? (
-        [].concat.apply([], t.map(flatten))
-    ): t;
+const flatten = t => {
+	const go = x => 
+    	Array.isArray(x) ? (
+        	[].concat(...x.map(go))
+    	) : x;
+	return go(t);
+};
 
 // The root elements of a tree in pre-order.
 // flattenTree :: Tree a -> [a]
@@ -1222,18 +1224,16 @@ const jsonParseLR = s => {
 };
 
 // justifyLeft :: Int -> Char -> String -> String
-const justifyLeft = (n, cFiller, strText) =>
-    n > strText.length ? (
-        (strText + cFiller.repeat(n))
-        .substr(0, n)
-    ) : strText;
+const justifyLeft = (n, cFiller, s) =>
+    n > s.length ? (
+        s.padEnd(n ,cFiller)
+    ) : s;
 
 // justifyRight :: Int -> Char -> String -> String
-const justifyRight = (n, cFiller, strText) =>
-    n > strText.length ? (
-        (cFiller.repeat(n) + strText)
-        .slice(-n)
-    ) : strText;
+const justifyRight = (n, cFiller, s) =>
+    n > s.length ? (
+        s.padStart(n, cFiller)
+    ) : s;
 
 // keys :: Dict -> [String]
 const keys = Object.keys;
@@ -2301,12 +2301,10 @@ const splitOn = (pat, src) =>
         const
             lng = pat.length,
             tpl = foldl((a, i) =>
-
                 Tuple(
                     fst(a).concat([src.slice(snd(a), i)]),
                     lng + i
                 ), Tuple([], 0),
-
                 findIndices(matching(pat), src)
             );
         return fst(tpl).concat([src.slice(snd(tpl))]);

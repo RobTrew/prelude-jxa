@@ -11,9 +11,8 @@ end justifyLeft
 
 ```js
 // justifyLeft :: Int -> Char -> String -> String
-const justifyLeft = (n, cFiller, strText) =>
-    n > strText.length ? (
-        (strText + cFiller.repeat(n))
-        .substr(0, n)
-    ) : strText;
+const justifyLeft = (n, cFiller, s) =>
+    n > s.length ? (
+        s.padEnd(n ,cFiller)
+    ) : s;
 ```

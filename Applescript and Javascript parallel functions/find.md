@@ -15,8 +15,7 @@ end find
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = (p, xs) => {
     for (let i = 0, lng = xs.length; i < lng; i++) {
-        let x = xs[i];
-        if (p(x)) return Just(x);
+        if (p(xs[i])) return Just(xs[i]);
     }
     return Nothing();
 };

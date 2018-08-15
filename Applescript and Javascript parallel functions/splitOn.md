@@ -48,12 +48,10 @@ const splitOn = (pat, src) =>
         const
             lng = pat.length,
             tpl = foldl((a, i) =>
-
                 Tuple(
                     fst(a).concat([src.slice(snd(a), i)]),
                     lng + i
                 ), Tuple([], 0),
-
                 findIndices(matching(pat), src)
             );
         return fst(tpl).concat([src.slice(snd(tpl))]);

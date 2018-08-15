@@ -8,6 +8,6 @@ const ceiling = x => {
     const
       nr = properFraction(x),
       n = nr[0]
-    return 0 < nr[1] ? n + 1 : n;
+    return 0 < nr[1] ? 1 + n : n;
 };
 ```

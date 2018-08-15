@@ -23,6 +23,6 @@ const concatMap = (f, xs) =>
         const unit = 'string' !== typeof xs ? (
             []
         ) : '';
-        return unit.concat.apply(unit, xs.map(f))
+        return unit.concat.apply(unit, xs.map(f));
     })() : [];
 ```
