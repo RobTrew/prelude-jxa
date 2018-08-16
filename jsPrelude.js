@@ -517,10 +517,6 @@ const dropWhileEnd = (p, xs) => {
     return xs.slice(0, i + 1);
 };
 
-// Abbreviation for quick testing
-// eft :: Enum a => a -> a -> [a]
-const eft = enumFromTo
-
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = (lf, rf, e) =>
     'Either' === e.type ? (
@@ -897,6 +893,12 @@ const fromRight = (def, lr) =>
 
 // fst :: (a, b) -> a
 const fst = tpl => tpl[0];
+
+// Abbreviation for quick testing
+// ft :: Enum a => a -> a -> [a]
+const ft = (m, n) => {
+  return enumFromTo(m, n);
+};
 
 // gcd :: Int -> Int -> Int
 const gcd = (x, y) => {
@@ -2164,7 +2166,9 @@ const signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);
 
 // Abbreviation for quick testing
 // sj :: a -> String
-const sj = showJSON
+const sj = x => {
+  return showJSON(x);
+};
 
 // snd :: (a, b) -> b
 const snd = tpl => tpl[1];

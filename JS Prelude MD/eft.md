@@ -4,5 +4,5 @@
 
 ```js
 // eft :: Enum a => a -> a -> [a]
-const eft = enumFromTo
+const eft = (m, n) => enumFromTo(m, n);
 ```

@@ -74,7 +74,6 @@ dropAround :: (a -> Bool) -> [a] -> [a]
 dropFileName :: FilePath -> FilePath
 dropWhile :: (a -> Bool) -> [a] -> [a]
 dropWhileEnd :: (a -> Bool) -> [a] -> [a]
-eft :: Enum a => a -> a -> [a]
 either :: (a -> c) -> (b -> c) -> Either a b -> c
 elem :: Eq a => a -> [a] -> Bool
 elemAtMay :: Int -> Dict -> Maybe (String, a)
@@ -128,6 +127,7 @@ fromLeft :: a -> Either a b -> a
 fromMaybe :: a -> Maybe a -> a
 fromRight :: b -> Either a b -> b
 fst :: (a, b) -> a
+ft :: Enum a => a -> a -> [a]
 gcd :: Int -> Int -> Int
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath

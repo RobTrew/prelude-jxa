@@ -4,5 +4,7 @@
 
 ```js
 // sj :: a -> String
-const sj = showJSON
+const sj = x => {
+  return showJSON(x);
+};
 ```
