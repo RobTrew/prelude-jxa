@@ -74,6 +74,7 @@ dropAround :: (a -> Bool) -> [a] -> [a]
 dropFileName :: FilePath -> FilePath
 dropWhile :: (a -> Bool) -> [a] -> [a]
 dropWhileEnd :: (a -> Bool) -> [a] -> [a]
+eft :: Enum a => a -> a -> [a]
 either :: (a -> c) -> (b -> c) -> Either a b -> c
 elem :: Eq a => a -> [a] -> Bool
 elemAtMay :: Int -> Dict -> Maybe (String, a)
@@ -315,6 +316,7 @@ showRatio :: Ratio -> String
 showTuple :: Tuple -> String
 showUndefined :: () -> String
 signum :: Num -> Num
+sj :: a -> String
 snd :: (a, b) -> b
 snoc :: [a] -> a -> [a]
 sort :: Ord a => [a] -> [a]

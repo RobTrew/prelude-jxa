@@ -517,6 +517,10 @@ const dropWhileEnd = (p, xs) => {
     return xs.slice(0, i + 1);
 };
 
+// Abbreviation for quick testing
+// eft :: Enum a => a -> a -> [a]
+const eft = enumFromTo
+
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = (lf, rf, e) =>
     'Either' === e.type ? (
@@ -2157,6 +2161,10 @@ const showUndefined = () => '(⊥)';
 // or @1@ (positive).
 // signum :: Num -> Num
 const signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);
+
+// Abbreviation for quick testing
+// sj :: a -> String
+const sj = showJSON
 
 // snd :: (a, b) -> b
 const snd = tpl => tpl[1];
