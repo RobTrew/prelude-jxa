@@ -2,11 +2,7 @@
 -- concatMap :: (a -> [b]) -> [a] -> [b]
 on concatMap(f, xs)
     set lng to length of xs
-    if 0 < lng and class of xs is string then
-        set acc to ""
-    else
-        set acc to {}
-    end if
+    set acc to {}
     tell mReturn(f)
         repeat with i from 1 to lng
             set acc to acc & |λ|(item i of xs, i, xs)
@@ -19,10 +15,11 @@ end concatMap
 ```js
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = (f, xs) =>
-    0 < xs.length ? (() => {
-        const unit = 'string' !== typeof xs ? (
-            []
-        ) : '';
-        return unit.concat.apply(unit, xs.map(f));
-    })() : [];
+    0 < xs.length ? (
+        [].concat.apply([], (
+            'string' !== typeof xs ? (
+                xs
+            ) : xs.split('')
+        ).map(f))
+    ) : [];
 ```
