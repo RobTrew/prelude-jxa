@@ -3,7 +3,7 @@
 on showIntAtBase(base, toChr, n, rs)
     script showIt
         on |λ|(nd_, r)
-            set {n, d} to nd_
+            set {n, d} to ({|1|, |2|} of nd_)
             set r_ to toChr's |λ|(d) & r
             if n > 0 then
                 |λ|(quotRem(n, base), r_)

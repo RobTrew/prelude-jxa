@@ -506,10 +506,14 @@ const dropFileName = strPath =>
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = (p, xs) => {
-  let i = 0;
-  for (let lng = xs.length;
-    (i < lng) && p(xs[i]); i++) {}
-  return xs.slice(i);
+    const lng = xs.length;
+    return 0 < lng ? xs.slice(
+        until(
+            i => i === lng || !p(xs[i]),
+            i => 1 + i,
+            0
+        )
+    ) : [];
 };
 
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
@@ -1966,8 +1970,12 @@ const rights = xs =>
 
 // rotate :: Int -> [a] -> [a]
 const rotate = (n, xs) => {
-    const lng = xs.length;
-    return lng > 0 ? takeDropCycle(lng, n, xs) : [];
+    const
+        lng = xs.length,
+        d = 0 > n ? (
+            (-n) % lng
+        ) : lng - (n % lng);
+    return drop(d, xs).concat(take(d, xs));
 };
 
 // round :: a -> Int
@@ -2416,10 +2424,10 @@ const subtract = (x, y) => y - x;
 // succ :: Enum a => a -> a
 const succ = x =>
     isChar(x) ? (
-        chr(ord(x) + 1)
+        chr(1 + ord(x))
     ) : isNaN(x) ? (
         undefined
-    ) : x + 1;
+    ) : 1 + x;
 
 // sum :: [Num] -> Num
 const sum = xs => xs.reduce((a, x) => a + x, 0);
@@ -2543,10 +2551,15 @@ const takeIterate = (n, f, x) =>
 // takeWhile :: (a -> Bool) -> [a] -> [a]
 // takeWhile :: (Char -> Bool) -> String -> String
 const takeWhile = (p, xs) => {
-    let i = 0;
     const lng = xs.length;
-    while ((i < lng) && p(xs[i])) (i = i + 1);
-    return xs.slice(0, i);
+    return 0 < lng ? xs.slice(
+        0,
+        until(
+            i => i === lng || !p(xs[i]),
+            i => 1 + i,
+            0
+        )
+    ) : [];
 };
 
 // takeWhileR :: (a -> Bool) -> [a] -> [a]

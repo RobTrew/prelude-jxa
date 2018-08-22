@@ -2,7 +2,7 @@
 -- succ :: Enum a => a -> a
 on succ(x)
     if isChar(x) then
-        chr(ord(x) + 1)
+        chr(1 + ord(x))
     else
         1 + x
     end if
@@ -13,8 +13,8 @@ end succ
 // succ :: Enum a => a -> a
 const succ = x =>
     isChar(x) ? (
-        chr(ord(x) + 1)
+        chr(1 + ord(x))
     ) : isNaN(x) ? (
         undefined
-    ) : x + 1;
+    ) : 1 + x;
 ```
