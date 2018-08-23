@@ -1,6 +1,9 @@
 ```js
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
-const isSuffixOf = (suffix, main) =>
-    main.indexOf(suffix) === main.length - suffix.length;
+const isSuffixOf = (ns, hs) => {
+    const go = delta =>
+        eq(ns, dropLength(delta, hs));
+    return bindMay(dropLengthMaybe(ns, hs), go);
+};
 ```

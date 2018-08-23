@@ -72,6 +72,8 @@ drawTree :: Tree String -> String
 drop :: Int -> [a] -> [a]
 dropAround :: (a -> Bool) -> [a] -> [a]
 dropFileName :: FilePath -> FilePath
+dropLength :: [a] -> [b] -> [b]
+dropLengthMaybe :: [a] -> [b] -> Maybe [b]
 dropWhile :: (a -> Bool) -> [a] -> [a]
 dropWhileEnd :: (a -> Bool) -> [a] -> [a]
 either :: (a -> c) -> (b -> c) -> Either a b -> c

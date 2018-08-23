@@ -503,6 +503,28 @@ const dropFileName = strPath =>
         ) : './';
     })() : './';
 
+// dropLength :: [a] -> [b] -> [b]
+const dropLength = (xs, ys) => {
+    const go = (x, y) =>
+        0 < x.length ? (
+            0 < y.length ? (
+                go(x.slice(1), y.slice(1))
+            ) : []
+        ) : y;
+    return go(xs, ys);
+};
+
+// dropLengthMaybe :: [a] -> [b] -> Maybe [b]
+const dropLengthMaybe = (xs, ys) => {
+    const go = (x, y) =>
+        0 < x.length ? (
+            0 < y.length ? (
+                go(x.slice(1), y.slice(1))
+            ) : Nothing()
+        ) : Just(y);
+    return go(xs, ys);
+};
+
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = (p, xs) => {
@@ -1146,16 +1168,16 @@ const isNull = xs =>
 // isPrefixOf :: [a] -> [a] -> Bool
 // isPrefixOf :: String -> String -> Bool
 const isPrefixOf = (xs, ys) => {
-    const pfx = (xs, ys) => {
+    const go = (xs, ys) => {
         const intX = xs.length;
         return 0 < intX ? (
-            ys.length >= intX ? xs[0] === ys[0] && pfx(
+            ys.length >= intX ? xs[0] === ys[0] && go(
                 xs.slice(1), ys.slice(1)
             ) : false
         ) : true;
     };
     return 'string' !== typeof xs ? (
-        pfx(xs, ys)
+        go(xs, ys)
     ) : ys.startsWith(xs);
 };
 
@@ -1199,8 +1221,11 @@ const isSubsetOf = (a, b) => {
 
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
-const isSuffixOf = (suffix, main) =>
-    main.indexOf(suffix) === main.length - suffix.length;
+const isSuffixOf = (ns, hs) => {
+    const go = delta =>
+        eq(ns, dropLength(delta, hs));
+    return bindMay(dropLengthMaybe(ns, hs), go);
+};
 
 // isUpper :: Char -> Bool
 const isUpper = c =>

@@ -1,7 +1,10 @@
 ```applescript
 -- unwords :: [String] -> String
 on unwords(xs)
-    intercalateS(space, xs)
+    set {dlm, my text item delimiters} to {my text item delimiters, space}
+    set s to xs as text
+    set my text item delimiters to dlm
+    return s
 end unwords
 ```
 
