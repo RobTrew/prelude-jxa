@@ -1,10 +1,16 @@
 ```js
 // Abbreviation for quick testing
+// enumFromTo by default, enumFromThenTo if 3 args
 ```
 
 ```js
 // ft :: Enum a => a -> a -> [a]
-const ft = (m, n) => {
-  return enumFromTo(m, n);
+function ft() {
+    const args = Array.from(arguments);
+    return (
+        2 < args.length ? (
+            enumFromThenTo
+        ) : enumFromTo
+    ).apply(null, args);
 };
 ```

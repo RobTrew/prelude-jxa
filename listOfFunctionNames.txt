@@ -380,7 +380,7 @@ traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeLeaves :: Tree -> [Tree]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 truncate :: Num -> Int
-tupleFromArray :: [a] -> (a, a ...)
+tupleFromList :: [a] -> (a, a ...)
 typeName :: a -> String
 unQuoted :: String -> String
 uncons :: [a] -> Maybe (a, [a])

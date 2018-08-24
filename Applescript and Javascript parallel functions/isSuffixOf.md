@@ -1,5 +1,6 @@
 ```applescript
 -- isSuffixOf :: Eq a => [a] -> [a] -> Bool
+-- isSuffixOf :: String -> String -> Bool
 on isSuffixOf(ns, hs)
     script go
         on |λ|(delta)
@@ -16,6 +17,8 @@ end isSuffixOf
 const isSuffixOf = (ns, hs) => {
     const go = delta =>
         eq(ns, dropLength(delta, hs));
-    return bindMay(dropLengthMaybe(ns, hs), go);
+    return 'string' !== typeof hs ? (
+        bindMay(dropLengthMaybe(ns, hs), go)
+    ) : hs.endsWith(ns);
 };
 ```

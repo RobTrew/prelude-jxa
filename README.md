@@ -92,9 +92,6 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
     // in the context of the JS libraries whose source
     // filePaths are listed in fps :: [FilePath]
 
-    // Evaluate a function f :: (() -> a)
-    // in the context of the JS libraries whose source
-    // filePaths are listed in fps :: [FilePath]
     // usingLibs :: [FilePath] -> (() -> a) -> a
     const usingLibs = (fps, f) =>
         fps.every(doesFileExist) ? (

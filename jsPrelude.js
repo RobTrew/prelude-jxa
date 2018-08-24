@@ -927,9 +927,15 @@ const fromRight = (def, lr) =>
 const fst = tpl => tpl[0];
 
 // Abbreviation for quick testing
+// enumFromTo by default, enumFromThenTo if 3 args
 // ft :: Enum a => a -> a -> [a]
-const ft = (m, n) => {
-  return enumFromTo(m, n);
+function ft() {
+    const args = Array.from(arguments);
+    return (
+        2 < args.length ? (
+            enumFromThenTo
+        ) : enumFromTo
+    ).apply(null, args);
 };
 
 // gcd :: Int -> Int -> Int
@@ -1224,7 +1230,9 @@ const isSubsetOf = (a, b) => {
 const isSuffixOf = (ns, hs) => {
     const go = delta =>
         eq(ns, dropLength(delta, hs));
-    return bindMay(dropLengthMaybe(ns, hs), go);
+    return 'string' !== typeof hs ? (
+        bindMay(dropLengthMaybe(ns, hs), go)
+    ) : hs.endsWith(ns);
 };
 
 // isUpper :: Char -> Bool
@@ -1408,13 +1416,7 @@ const lines = s => s.split(/[\r\n]/);
 
 // listFromTuple :: (a, a ...) -> [a]
 const listFromTuple = tpl =>
-    Object.keys(tpl)
-    .sort()
-    .reduce(
-        (a, k) => 'type' !== k ? (
-            a.concat(tpl[k])
-        ) : a, []
-    );
+    Array.from(tpl);
 
 // The listToMaybe function returns Nothing on 
 // an empty list or Just the head of the list.
@@ -2203,11 +2205,17 @@ const showUndefined = () => '(⊥)';
 // signum :: Num -> Num
 const signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);
 
-// Abbreviation for quick testing
+// Abbreviation for quick testing - any 2nd arg interpreted as indent size
 // sj :: a -> String
-const sj = x => {
-  return showJSON(x);
-};
+function sj() {
+    const args = Array.from(arguments);
+    return JSON.stringify.apply(
+        null,
+        1 < args.length && !isNaN(args[0]) ? [
+            args[1], null, args[0]
+        ] : [args[0], null, 2]
+    );
+}
 
 // snd :: (a, b) -> b
 const snd = tpl => tpl[1];
@@ -2756,17 +2764,9 @@ const truncate = x => {
     return m;
 };
 
-// tupleFromArray :: [a] -> (a, a ...)
-const tupleFromArray = xs => {
-    const lng = xs.length;
-    return 1 < lng ? xs.reduce(
-        (a, x, i) => Object.assign(a, {
-            [i.toString()]: x
-        }), {
-            type: 'Tuple' + (2 < lng ? lng.toString() : '')
-        }
-    ) : undefined;
-};
+// tupleFromList :: [a] -> (a, a ...)
+const tupleFromList = xs =>
+    TupleN.apply(null, xs);
 
 // typeName :: a -> String
 const typeName = v => {
