@@ -2,8 +2,10 @@
 -- compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 on compose(f, g)
     script
+        property mf : mReturn(f)
+        property mg : mReturn(g)
         on |λ|(x)
-            |λ|(|λ|(x) of mReturn(g)) of mReturn(f)
+            mf's |λ|(mg's |λ|(x))
         end |λ|
     end script
 end compose
