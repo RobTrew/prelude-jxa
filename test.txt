@@ -1,0 +1,2 @@
+Here we have a preliminary phrase or two, for testing iOS interactions
+between Working Copy and bitbucket.org
