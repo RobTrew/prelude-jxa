@@ -6,7 +6,7 @@ const takeWhile = (p, xs) => {
     return 0 < lng ? xs.slice(
         0,
         until(
-            i => i === lng || !p(xs[i]),
+            i => lng === i || !p(xs[i]),
             i => 1 + i,
             0
         )

@@ -2491,6 +2491,7 @@ const tails = xs => {
 };
 
 // take :: Int -> [a] -> [a]
+// take :: Int -> String -> String
 const take = (n, xs) => xs.slice(0, n);
 
 // takeAround :: (a -> Bool) -> [a] -> [a]
@@ -2588,7 +2589,7 @@ const takeWhile = (p, xs) => {
     return 0 < lng ? xs.slice(
         0,
         until(
-            i => i === lng || !p(xs[i]),
+            i => lng === i || !p(xs[i]),
             i => 1 + i,
             0
         )
