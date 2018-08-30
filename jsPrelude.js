@@ -1878,7 +1878,8 @@ const quickSortBy = (cmp, xs) =>
 const quot = (n, m) => Math.floor(n / m);
 
 // quotRem :: Int -> Int -> (Int, Int)
-const quotRem = (m, n) => Tuple(Math.floor(m / n), m % n);
+const quotRem = (m, n) => 
+  Tuple(Math.floor(m / n), m % n);
 
 // raise :: Num -> Int -> Num
 const raise = (n, e) => Math.pow(n, e);
@@ -2136,14 +2137,14 @@ const showIntAtBase = (base, toChr, n, rs) => {
     const showIt = ([n, d], r) => {
         const r_ = toChr(d) + r;
         return 0 !== n ? (
-            showIt(quotRem(n, base), r_)
+            showIt(Array.from(quotRem(n, base)), r_)
         ) : r_;
     };
     return 1 >= base ? (
         'error: showIntAtBase applied to unsupported base'
     ) : 0 > n ? (
         'error: showIntAtBase applied to negative number'
-    ) : showIt(quotRem(n, base), rs);
+    ) : showIt(Array.from(quotRem(n, base)), rs);
 };
 
 // showJSON :: a -> String
