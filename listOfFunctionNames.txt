@@ -146,6 +146,7 @@ id :: a -> a
 if_ :: Bool -> a -> a -> a
 indented :: String -> String -> String
 index (!!) :: [a] -> Int -> a
+indexOf :: Eq a => [a] -> [a] -> Maybe Int
 init :: [a] -> [a]
 initMay :: [a] -> Maybe [a]
 inits :: [a] -> [[a]]

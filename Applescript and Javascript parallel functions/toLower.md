@@ -9,5 +9,5 @@ end toLower
 
 ```js
 // toLower :: String -> String
-const toLower = s => s.toLowerCase();
+const toLower = s => s.toLocaleLowerCase();
 ```

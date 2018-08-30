@@ -1040,7 +1040,20 @@ const indented = (strIndent, s) =>
     ));
 
 // index (!!) :: [a] -> Int -> a
+// index (!!) :: String -> Int -> Char
 const index = (xs, i) => xs[i];
+
+// indexOf :: Eq a => [a] -> [a] -> Maybe Int
+// indexOf :: String -> String -> Maybe Int
+const indexOf = (needle, haystack) =>
+    'string' !== typeof haystack ? (
+        findIndex(xs => isPrefixOf(needle, xs), tails(haystack))
+    ) : (() => {
+        const i = haystack.indexOf(needle);
+        return -1 !== i ? (
+            Just(i)
+        ) : Nothing();
+    })();
 
 // init :: [a] -> [a]
 const init = xs =>
@@ -2634,7 +2647,7 @@ const toListTree = tree => {
 };
 
 // toLower :: String -> String
-const toLower = s => s.toLowerCase();
+const toLower = s => s.toLocaleLowerCase();
 
 // toRatio :: Real -> Ratio
 const toRatio = n =>
@@ -2657,7 +2670,7 @@ const toTitle = s =>
     .join('');
 
 // toUpper :: String -> String
-const toUpper = s => s.toUpperCase();
+const toUpper = s => s.toLocaleUpperCase();
 
 // If some of the rows are shorter than the following rows, 
 // their elements are skipped:

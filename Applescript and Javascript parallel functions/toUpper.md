@@ -9,5 +9,5 @@ end toUpper
 
 ```js
 // toUpper :: String -> String
-const toUpper = s => s.toUpperCase();
+const toUpper = s => s.toLocaleUpperCase();
 ```
