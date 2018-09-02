@@ -363,13 +363,7 @@ const concat = xs =>
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = (f, xs) =>
-    0 < xs.length ? (
-        [].concat.apply([], (
-            'string' !== typeof xs ? (
-                xs
-            ) : xs.split('')
-        ).map(f))
-    ) : [];
+    xs.reduce((a, x) => a.concat(f(x)), []);
 
 // cons :: a -> [a] -> [a]
 const cons = (x, xs) =>
