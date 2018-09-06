@@ -33,7 +33,7 @@ end breakOn
 ```js
 // breakOn :: String -> String -> (String, String)
 const breakOn = (pat, src) =>
-    Boolean(pat) ? (() => {
+    0 < pat.length ? (() => {
         const xs = src.split(pat);
         return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)

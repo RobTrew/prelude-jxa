@@ -238,7 +238,7 @@ const break_ = (p, xs) => {
 // Needle -> Haystack -> (prefix before match, match + rest)
 // breakOn :: String -> String -> (String, String)
 const breakOn = (pat, src) =>
-    Boolean(pat) ? (() => {
+    0 < pat.length ? (() => {
         const xs = src.split(pat);
         return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
@@ -1250,6 +1250,15 @@ const isUpper = c =>
 const iso8601Local = dte =>
     new Date(dte - (6E4 * dte.getTimezoneOffset()))
     .toISOString();
+
+// iterate :: (a -> a) -> a -> Generator [a]
+function* iterate(f, x) {
+    let v = x;
+    while (true) {
+        yield(v);
+        v = f(v);
+    }
+}
 
 // iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
 const iterateUntil = (p, f, x) => {
@@ -2500,7 +2509,15 @@ const tails = xs => {
 
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
-const take = (n, xs) => xs.slice(0, n);
+const take = (n, xs) =>
+    xs.constructor.constructor.name !== 'GeneratorFunction' ? (
+        xs.slice(0, n)
+    ) : [].concat.apply([], Array.from({
+        length: n
+    }, () => {
+        const x = xs.next();
+        return x.done ? [] : [x.value];
+    }));
 
 // takeAround :: (a -> Bool) -> [a] -> [a]
 const takeAround = (p, xs) => {
