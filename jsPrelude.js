@@ -1541,7 +1541,15 @@ const mapKeys = (f, dct) =>
 // included in the result list.
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 const mapMaybe = (mf, xs) =>
-    concatMap(compose(mf, maybeToList), xs);
+    xs.reduce(
+        (a, x) => {
+            const mb = mf(x);
+            return mb.Nothing ? (
+                a
+            ) : a.concat(mb.Just)
+        },
+        []
+    );
 
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = (a, b) => {

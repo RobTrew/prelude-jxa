@@ -16,7 +16,7 @@ on tail(xs)
         if blnText then
             text 2 thru -1 of xs
         else
-            rest of ys
+            rest of xs
         end if
     end if
 end tail
