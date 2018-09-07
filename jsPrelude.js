@@ -395,6 +395,16 @@ const curry = (f, ...args) => {
 // curry2 :: ((a, b) -> c) -> a -> b -> c
 const curry2 = f => a => b => f(a, b);
 
+// cycle :: [a] -> Generator [a]
+function* cycle(xs) {
+    const lng = xs.length;
+    let i = 0;
+    while (true) {
+        yield(xs[i])
+        i = (1 + i) % lng;
+    }
+}
+
 // xs with first instance of x (if any) removed
 // delete :: Eq a => a -> [a] -> [a]
 const delete_ = (x, xs) =>

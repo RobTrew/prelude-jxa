@@ -55,6 +55,7 @@ const_ :: a -> b -> a
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
 curry :: ((a, b) -> c) -> a -> b -> c
 curry2 :: ((a, b) -> c) -> a -> b -> c
+cycle :: [a] -> Generator [a]
 delete :: Eq a => a -> [a] -> [a]
 deleteAt :: Int -> [a] -> [a]
 deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
