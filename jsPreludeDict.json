@@ -178,7 +178,7 @@
   "isSuffixOf": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = (ns, hs) => {\n    const go = delta =>\n        eq(ns, dropLength(delta, hs));\n    return 'string' !== typeof hs ? (\n        bindMay(dropLengthMaybe(ns, hs), go)\n    ) : hs.endsWith(ns);\n};",
   "isUpper": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    /[A-Z]/.test(c);",
   "iso8601Local": "// iso8601Local :: Date -> String\nconst iso8601Local = dte =>\n    new Date(dte - (6E4 * dte.getTimezoneOffset()))\n    .toISOString();",
-  "iterate": "// iterate :: (a -> a) -> a -> Generator [a]\nfunction* iterate(f, x) {\n    let v = x;\n    while (true) {\n        yield(v);\n        v = f(v);\n    }\n}",
+  "iterate": "// iterate :: (a -> a) -> a -> Generator [a]\nfunction* iterate(f, x) {\n    let v = x;\n    let i = 1;\n    while (true) {\n        yield(v);\n        v = f(v, i);\n        i = 1 + i;\n    }\n}",
   "iterateUntil": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = (p, f, x) => {\n    const vs = [x];\n    let h = x;\n    while (!p(h))(h = f(h), vs.push(h));\n    return vs;\n};",
   "join": "// join :: Monad m => m (m a) -> m a\nconst join = x => bind(x, id);",
   "jsonLog": "// jsonLog :: a -> IO ()\nconst jsonLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",
