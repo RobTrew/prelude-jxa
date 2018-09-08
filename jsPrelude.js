@@ -407,12 +407,16 @@ function* cycle(xs) {
 
 // xs with first instance of x (if any) removed
 // delete :: Eq a => a -> [a] -> [a]
-const delete_ = (x, xs) =>
-    0 < xs.length ? (
-        (x === xs[0]) ? (
-            xs.slice(1)
-        ) : [xs[0]].concat(delete_(x, xs.slice(1)))
-    ) : [];
+const delete_ = (x, xs) => {
+    const go = xs => {
+        return 0 < xs.length ? (
+            (x === xs[0]) ? (
+                xs.slice(1)
+            ) : [xs[0]].concat(go(xs.slice(1)))
+        ) : [];
+    }
+    return go(xs);
+};
 
 // deleteAt :: Int -> [a] -> [a]
 const deleteAt = (i, xs) =>
@@ -1796,13 +1800,16 @@ const partitionEithers = xs =>
     );
 
 // permutations :: [a] -> [[a]]
-const permutations = xs =>
-    xs.length ? concatMap(x => concatMap(ys => [
-            [x].concat(ys)
-        ],
-        permutations(delete_(x, xs))), xs) : [
-        []
-    ];
+const permutations = xs => {
+    const go = xs =>
+        xs.length ? concatMap(x => concatMap(ys => [
+                [x].concat(ys)
+            ],
+            go(delete_(x, xs))), xs) : [
+            []
+        ];
+    return go(xs);
+};
 
 // permutationsWithRepetition :: Int -> [a] -> [[a]]
 const permutationsWithRepetition = (n, xs) =>
