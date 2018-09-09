@@ -11,17 +11,12 @@ end ft
 
 ```js
 // Abbreviation for quick testing
-// enumFromTo by default, enumFromThenTo if 3 args
 ```
 
 ```js
-// ft :: Enum a => a -> a -> [a]
-function ft() {
-    const args = Array.from(arguments);
-    return (
-        2 < args.length ? (
-            enumFromThenTo
-        ) : enumFromTo
-    ).apply(null, args);
-};
+// ft :: Int -> Int -> [Int]
+const ft = (m, n) =>
+    Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i)
 ```

@@ -1,5 +1,5 @@
 ```js
-// Nothing :: () -> Nothing
+// Nothing :: Maybe a
 const Nothing = () => ({
     type: 'Maybe',
     Nothing: true,

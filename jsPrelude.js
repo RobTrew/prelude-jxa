@@ -1,6 +1,6 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
-// Just :: a -> Just a
+// Just :: a -> Maybe a
 const Just = x => ({
     type: 'Maybe',
     Nothing: false,
@@ -20,7 +20,7 @@ const Node = (v, xs) => ({
     nest: xs || []
 });
 
-// Nothing :: () -> Nothing
+// Nothing :: Maybe a
 const Nothing = () => ({
     type: 'Maybe',
     Nothing: true,
@@ -452,6 +452,28 @@ const deleteMap = (k, dct) =>
 // difference :: Eq a => [a] -> [a] -> [a]
 const difference = (xs, ys) =>
     xs.filter(x => -1 === ys.indexOf(x));
+
+// digitToInt :: Char -> Int
+const digitToInt = c => {
+    const
+        ord = x => x.codePointAt(0),
+        oc = ord(c);
+    return 48 > oc || 102 < oc ? (
+        undefined
+    ) : (() => {
+        const
+            dec = oc - ord('0'),
+            hexu = oc - ord('A'),
+            hexl = oc - ord('a');
+        return 9 >= dec ? (
+            dec
+        ) : 0 <= hexu && 5 >= hexu  ? (
+            10 + hexu
+        ) : 0 <= hexl && 5 >= hexl ? (
+            10 + hexl
+        ) : undefined;
+    })();
+};
 
 // div :: Int -> Int -> Int
 const div = (x, y) => Math.floor(x / y);
@@ -935,16 +957,11 @@ const fromRight = (def, lr) =>
 const fst = tpl => tpl[0];
 
 // Abbreviation for quick testing
-// enumFromTo by default, enumFromThenTo if 3 args
-// ft :: Enum a => a -> a -> [a]
-function ft() {
-    const args = Array.from(arguments);
-    return (
-        2 < args.length ? (
-            enumFromThenTo
-        ) : enumFromTo
-    ).apply(null, args);
-};
+// ft :: Int -> Int -> [Int]
+const ft = (m, n) =>
+    Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i)
 
 // gcd :: Int -> Int -> Int
 const gcd = (x, y) => {
@@ -2888,23 +2905,24 @@ const unfoldl = (f, v) => {
 // case, @a@ is a prepended to the list and @b@ is used as the next
 // element in a recursive call.
 //
-// unfoldr(b => b === 0 ? Nothing() : Just(Tuple(b, b - 1)), 10);
+// unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);
 // --> [10,9,8,7,6,5,4,3,2,1]
 
 // (x => Maybe [value, remainder] -> initial value -> values
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
 const unfoldr = (f, v) => {
-    let xs = [];
-    return (
-        until(
-            mb => mb.Nothing,
-            mb => (
-                xs.push(mb.Just[0]),
-                f(mb.Just[1])
-            ), Just(Tuple(v, v))
-        ),
-        xs.slice(1)
-    );
+    let
+        xr = [v, v],
+        xs = [];
+    while (true) {
+        const mb = f(xr[1]);
+        if (mb.Nothing) {
+            return xs
+        } else {
+            xr = mb.Just;
+            xs.push(xr[0])
+        }
+    }
 };
 
 // union :: [a] -> [a] -> [a]

@@ -32,7 +32,7 @@ end unfoldr
 // case, @a@ is a prepended to the list and @b@ is used as the next
 // element in a recursive call.
 //
-// unfoldr(b => b === 0 ? Nothing() : Just(Tuple(b, b - 1)), 10);
+// unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);
 // --> [10,9,8,7,6,5,4,3,2,1]
 
 // (x => Maybe [value, remainder] -> initial value -> values
@@ -41,16 +41,17 @@ end unfoldr
 ```js
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
 const unfoldr = (f, v) => {
-    let xs = [];
-    return (
-        until(
-            mb => mb.Nothing,
-            mb => (
-                xs.push(mb.Just[0]),
-                f(mb.Just[1])
-            ), Just(Tuple(v, v))
-        ),
-        xs.slice(1)
-    );
+    let
+        xr = [v, v],
+        xs = [];
+    while (true) {
+        const mb = f(xr[1]);
+        if (mb.Nothing) {
+            return xs
+        } else {
+            xr = mb.Just;
+            xs.push(xr[0])
+        }
+    }
 };
 ```

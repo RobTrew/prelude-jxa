@@ -1,5 +1,5 @@
 ```js
-// Just :: a -> Just a
+// Just :: a -> Maybe a
 const Just = x => ({
     type: 'Maybe',
     Nothing: false,

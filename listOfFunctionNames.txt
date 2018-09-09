@@ -63,6 +63,7 @@ deleteFirst :: a -> [a] -> [a]
 deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 deleteMap :: k -> Dict -> Dict
 difference :: Eq a => [a] -> [a] -> [a]
+digitToInt :: Char -> Int
 div :: Int -> Int -> Int
 doesDirectoryExist :: FilePath -> IO Bool
 doesFileExist :: FilePath -> IO Bool
@@ -130,7 +131,7 @@ fromLeft :: a -> Either a b -> a
 fromMaybe :: a -> Maybe a -> a
 fromRight :: b -> Either a b -> b
 fst :: (a, b) -> a
-ft :: Enum a => a -> a -> [a]
+ft :: Int -> Int -> [Int]
 gcd :: Int -> Int -> Int
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
