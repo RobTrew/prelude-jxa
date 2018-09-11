@@ -1862,6 +1862,19 @@ const pred = x =>
         undefined
     ) : x - 1;
 
+// print :: a -> IO ()
+const print = x =>
+    typeof document !== 'undefined' ? (
+        document.writeln(x.toString())
+    ) : typeof draft !== 'undefined' ? (
+        editor.setText(
+            editor.getText() + '\n' +
+            x.toString() + '\n'
+        )
+    ) : (
+        x
+    );
+
 // product :: [Num] -> Num
 const product = xs => xs.reduce((a, x) => a * x, 1);
 

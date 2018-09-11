@@ -262,6 +262,7 @@ pi :: Float
 plus :: Num -> Num -> Num
 postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
+print :: a -> IO ()
 product :: [Num] -> Num
 properFraction :: Real -> (Int, Real)
 pureLR :: a -> Either e a
