@@ -1863,17 +1863,32 @@ const pred = x =>
     ) : x - 1;
 
 // print :: a -> IO ()
-const print = x =>
-    typeof document !== 'undefined' ? (
-        document.writeln(x.toString())
-    ) : typeof draft !== 'undefined' ? (
-        editor.setText(
-            editor.getText() + '\n' +
-            x.toString() + '\n'
+const print = x => {
+    const
+        c = x.constructor.name,
+        s = 'object' !== typeof x ? (
+            x.toString()
+        ) : 'Date' !== c ? (
+            JSON.stringify.apply(
+                null,
+                'Array' !== c ? (
+                    [x, null, 2]
+                ) : [x]
+            )
+        ) : x.toString();
+    return (
+        typeof document !== 'undefined' ? (
+            document.writeln(s)
+        ) : typeof draft !== 'undefined' ? (
+            editor.setText(
+                editor.getText() + '\n' + s
+            )
+        ) : (
+            console.log(s),
+            s
         )
-    ) : (
-        x
     );
+};
 
 // product :: [Num] -> Num
 const product = xs => xs.reduce((a, x) => a * x, 1);
