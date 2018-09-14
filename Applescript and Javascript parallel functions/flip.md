@@ -2,9 +2,9 @@
 -- flip :: (a -> b -> c) -> b -> a -> c
 on flip(f)
     script
-        property g : f
+        property g : mReturn(f)
         on |λ|(x, y)
-            g(y, x)
+            g's |λ|(y, x)
         end |λ|
     end script
 end flip
@@ -12,5 +12,5 @@ end flip
 
 ```js
 // flip :: (a -> b -> c) -> b -> a -> c
-const flip = f => (a, b) => f.apply(null, [b, a]);
+const flip = f => (a, b) => f(b, a)
 ```

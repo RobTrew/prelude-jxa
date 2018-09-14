@@ -252,11 +252,11 @@ const setCurrentDirectory = strPath =>
         .stringByStandardizingPath
     );
 
-// File name template -> temporary path
-// (Random digit sequence inserted between template base and extension)
+// File name template to temporary path
+// Random digit sequence inserted between template base and extension
 // tempFilePath :: String -> IO FilePath
 const tempFilePath = template =>
-    ObjC.unwrap($.NSTemporaryDirectory()) +
+  ObjC.unwrap($.NSTemporaryDirectory()) +
     takeBaseName(template) + Math.random()
     .toString()
     .substring(3) + takeExtension(template);
