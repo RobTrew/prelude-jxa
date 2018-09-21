@@ -125,8 +125,9 @@ const apLR = (flr, lr) => {
 // of a list of arguments, deriving a list of new values.
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
 const apList = (fs, xs) => //
-    [].concat.apply([], fs.map(f => //
-        [].concat.apply([], xs.map(x => [f(x)]))));
+    fs.reduce((a, f) => a.concat(
+        xs.reduce((a, x) => a.concat([f(x)]), [])
+    ), []);
 
 // Maybe f applied to Maybe x, deriving a Maybe y
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
@@ -276,9 +277,7 @@ const breakOnMay = (pat, src) =>
 
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
 const cartesianProduct = (xs, ys) =>
-    concatMap((x => concatMap(y => [
-        Tuple(x, y)
-    ], ys)), xs);
+    apList(xs.map(x => y => Tuple(x, y)), ys);
 
 // List of (Predicate, value) tuples -> Default value 
 //                        -> Value to test -> Output value

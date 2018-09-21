@@ -18,7 +18,5 @@ end cartesianProduct
 ```js
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
 const cartesianProduct = (xs, ys) =>
-    concatMap((x => concatMap(y => [
-        Tuple(x, y)
-    ], ys)), xs);
+    apList(xs.map(x => y => Tuple(x, y)), ys);
 ```

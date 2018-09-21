@@ -34,6 +34,7 @@ end apList
 ```js
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
 const apList = (fs, xs) => //
-    [].concat.apply([], fs.map(f => //
-        [].concat.apply([], xs.map(x => [f(x)]))));
+    fs.reduce((a, f) => a.concat(
+        xs.reduce((a, x) => a.concat([f(x)]), [])
+    ), []);
 ```
