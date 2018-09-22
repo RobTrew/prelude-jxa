@@ -394,6 +394,10 @@ const curry = (f, ...args) => {
 // curry2 :: ((a, b) -> c) -> a -> b -> c
 const curry2 = f => a => b => f(a, b);
 
+// curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d
+const curry3 = f =>
+    a => b => c => f(a, b, c);
+
 // cycle :: [a] -> Generator [a]
 function* cycle(xs) {
     const lng = xs.length;
@@ -2042,6 +2046,11 @@ const regexMatches = (strRgx, strHay) => {
 // rem :: Int -> Int -> Int
 const rem = (n, m) => n % m;
 
+// repeat :: a -> Generator [a]
+function* repeat(xs) {
+    while(true) yield xs;
+}
+
 // replace :: String -> String -> String -> String
 // replace :: Regex -> String -> String -> String
 const replace = (needle, strNew, strHaystack) =>
@@ -2222,17 +2231,17 @@ const showHex = n =>
 
 // showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
 const showIntAtBase = (base, toChr, n, rs) => {
-    const showIt = ([n, d], r) => {
+    const go = ([n, d], r) => {
         const r_ = toChr(d) + r;
         return 0 !== n ? (
-            showIt(Array.from(quotRem(n, base)), r_)
+            go(Array.from(quotRem(n, base)), r_)
         ) : r_;
     };
     return 1 >= base ? (
         'error: showIntAtBase applied to unsupported base'
     ) : 0 > n ? (
         'error: showIntAtBase applied to negative number'
-    ) : showIt(Array.from(quotRem(n, base)), rs);
+    ) : go(Array.from(quotRem(n, base)), rs);
 };
 
 // showJSON :: a -> String

@@ -287,6 +287,7 @@ recipMay :: Num -> Maybe Num
 regexMatches :: String -> String -> [[String]]
 rem :: Int -> Int -> Int
 removeFile :: FilePath -> Either String String
+repeat :: a -> Generator [a]
 replace :: String -> String -> String -> String
 replicate :: Int -> a -> [a]
 replicateM :: Int -> [a] -> [[a]]
