@@ -518,8 +518,12 @@ const drawTree = tree =>
     unlines(draw(tree));
 
 // drop :: Int -> [a] -> [a]
+// drop :: Int -> Generator [a] -> Generator [a]
 // drop :: Int -> String -> String
-const drop = (n, xs) => xs.slice(n);
+const drop = (n, xs) =>
+    Infinity > length(xs) ? (
+        xs.slice(n)
+    ) : (take(n, xs), xs);
 
 // dropAround :: (a -> Bool) -> [a] -> [a]
 // dropAround :: (Char -> Bool) -> String -> String
@@ -1366,8 +1370,11 @@ const lefts = xs =>
         ) : [], xs
     );
 
+// Returns Infinity over objects without finite length
+// this enables zip and zipWith to choose the shorter
+// argument when one non-finite like cycle, repeat etc
 // length :: [a] -> Int
-const length = xs => xs.length;
+const length = xs => xs.length || Infinity;
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
@@ -2095,13 +2102,10 @@ const rights = xs =>
 
 // rotate :: Int -> [a] -> [a]
 const rotate = (n, xs) => {
-    const
-        lng = xs.length,
-        d = 0 > n ? (
-            (-n) % lng
-        ) : lng - (n % lng);
-    return drop(d, xs).concat(take(d, xs));
-};
+    const lng = xs.length;
+    return Infinity > lng ? (
+        take(lng, drop(lng - n, cycle(xs)))
+    ) : undefined;
 
 // round :: a -> Int
 const round = x => {
@@ -2176,6 +2180,14 @@ const setMember = (x, set) =>
 // setSize :: Set a -> Int
 const setSize = set =>
     set.size;
+
+// shift :: Int -> [a] -> [a]
+const shift = (n, xs) => {
+    const lng = length(xs);
+    return Infinity > lng ? (
+        take(lng, drop(n, cycle(xs)))
+    ) : (drop(n, xs), xs);
+};
 
 // show :: a -> String
 // show :: a -> Int -> Indented String
@@ -3057,37 +3069,47 @@ const variance = xs => {
 // words :: String -> [String]
 const words = s => s.split(/\s+/);
 
+// Use of `take` and `length` here allows for zipping with non-finite 
+// lists - i.e. generators like cycle, repeat, iterate.
 // zip :: [a] -> [b] -> [(a, b)]
-const zip = (xs, ys) =>
-    xs.slice(0, Math.min(xs.length, ys.length))
-    .map((x, i) => Tuple(x, ys[i]));
+const zip = (xs, ys) => {
+    const
+        lng = Math.min(length(xs), length(xs)),
+        bs = take(lng, ys);
+    return take(lng, xs).map((x, i) => Tuple(x, bs[i]));
+};
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = (xs, ys, zs) =>
-    xs.slice(0, Math.min(xs.length, ys.length, zs.length))
+    xs.slice(0, Math.min(length(xs), length(ys), length(zs)))
     .map((x, i) => TupleN(x, ys[i], zs[i]));
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 const zip4 = (ws, xs, ys, zs) =>
-    ws.slice(0, Math.min(
-        xs.length, xs.length, ys.length, zs.length
-    ))
+    ws.slice(0, minimum([ws, xs, ys, zs].map(length)))
     .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 
+// Use of `take` and `length` here allows zipping with non-finite lists
+// i.e. generators like cycle, repeat, iterate.
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-const zipWith = (f, xs, ys) =>
-    Array.from({
-        length: Math.min(xs.length, ys.length)
-    }, (_, i) => f(xs[i], ys[i], i));
+const zipWith = (f, xs, ys) => {
+    const
+        lng = Math.min(length(xs), length(ys)),
+        as = take(lng, xs),
+        bs = take(lng, ys);
+    return Array.from({
+        length:lng
+    }, (_, i) => f(as[i], bs[i], i));
+};
 
 // zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 const zipWith3 = (f, xs, ys, zs) =>
     Array.from({
-        length: Math.min(xs.length, ys.length, zs.length)
+        length: Math.min(length(xs), length(ys), length(zs))
     }, (_, i) => f(xs[i], ys[i], zs[i]));
 
 // zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
 const zipWith4 = (f, ws, xs, ys, zs) =>
     Array.from({
-        length: Math.min(ws.length, xs.length, ys.length, zs.length)
+        length: minimum([ws, xs, ys, zs].map(length))
     }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));

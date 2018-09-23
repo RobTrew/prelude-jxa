@@ -55,6 +55,7 @@ const_ :: a -> b -> a
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
 curry :: ((a, b) -> c) -> a -> b -> c
 curry2 :: ((a, b) -> c) -> a -> b -> c
+curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d
 cycle :: [a] -> Generator [a]
 delete :: Eq a => a -> [a] -> [a]
 deleteAt :: Int -> [a] -> [a]
@@ -308,6 +309,7 @@ setFromList :: Ord a => [a] -> Set a
 setInsert :: Ord a => a -> Set a -> Set a
 setMember :: Ord a => a -> Set a -> Bool
 setSize :: Set a -> Int
+shift :: Int -> [a] -> [a]
 show :: a -> String
 showBinary :: Int -> String
 showDate :: Date -> String

@@ -21,5 +21,8 @@ end drop
 ```js
 // drop :: Int -> [a] -> [a]
 // drop :: Int -> String -> String
-const drop = (n, xs) => xs.slice(n);
+const drop = (n, xs) =>
+    length(xs) < Infinity ? (
+        xs.slice(n)
+    ) : (take(n, xs), xs);
 ```
