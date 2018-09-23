@@ -19,7 +19,7 @@ end zip
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = (xs, ys) => {
     const
-        lng = Math.min(length(xs), length(xs)),
+        lng = Math.min(length(xs), length(ys)),
         bs = take(lng, ys);
     return take(lng, xs).map((x, i) => Tuple(x, bs[i]));
 };

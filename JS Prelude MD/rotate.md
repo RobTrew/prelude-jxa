@@ -5,4 +5,5 @@ const rotate = (n, xs) => {
     return Infinity > lng ? (
         take(lng, drop(lng - n, cycle(xs)))
     ) : undefined;
+};
 ```

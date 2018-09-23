@@ -2106,6 +2106,7 @@ const rotate = (n, xs) => {
     return Infinity > lng ? (
         take(lng, drop(lng - n, cycle(xs)))
     ) : undefined;
+};
 
 // round :: a -> Int
 const round = x => {
@@ -3074,7 +3075,7 @@ const words = s => s.split(/\s+/);
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = (xs, ys) => {
     const
-        lng = Math.min(length(xs), length(xs)),
+        lng = Math.min(length(xs), length(ys)),
         bs = take(lng, ys);
     return take(lng, xs).map((x, i) => Tuple(x, bs[i]));
 };
