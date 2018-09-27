@@ -1,7 +1,7 @@
 ```applescript
 -- showList :: [a] -> String
 on showList(xs)
-  showJSON(xs)
+    "[" & intercalateS(", ", map(show, xs)) & "]"
 end showList
 ```
 

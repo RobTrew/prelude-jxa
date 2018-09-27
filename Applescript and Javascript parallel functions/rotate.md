@@ -1,13 +1,12 @@
 ```applescript
 -- rotate :: Int -> [a] -> [a]
 on rotate(n, xs)
-    set lng to length of xs
-    if 0 > n then
-        set d to (-n) mod lng
+    set lng to |length|(xs)
+    if missing value is not lng then
+        take(lng, drop(lng - n, cycle(xs)))
     else
-        set d to lng - (n mod lng)
+        lng
     end if
-    drop(d, xs) & take(d, xs)
 end rotate
 ```
 
