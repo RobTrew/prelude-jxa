@@ -629,6 +629,15 @@ const elemIndices = (x, xs) =>
 // elems :: Dict -> [a]
 const elems = Object.values;
 
+// enumFrom :: a -> [a]
+function* enumFrom(x) {
+    let v = x;
+    while (true) {
+        yield v;
+        v = succ(v);
+    }
+}
+
 // enumFromThenTo :: Enum a => a -> a -> a -> [a]
 const enumFromThenTo = (x1, x2, y) =>
     ('number' !== typeof x1 ? (
@@ -861,6 +870,16 @@ const fmap = (f, fa) =>
             fmapTuple(f, fa)
         ) : undefined)
     })() : fa.split('').map(f);
+
+// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
+function* fmapGen(f, gen) {
+    const g = gen;
+    let v = take(1, g);
+    while (0 < v.length) {
+        yield(f(v))
+        v = take(1, g)
+    }
+}
 
 // fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 const fmapLR = (f, lr) =>
@@ -1372,7 +1391,7 @@ const lefts = xs =>
 
 // Returns Infinity over objects without finite length
 // this enables zip and zipWith to choose the shorter
-// argument when one non-finite like cycle, repeat etc
+// argument when one is non-finite, like cycle, repeat etc
 // length :: [a] -> Int
 const length = xs => xs.length || Infinity;
 
@@ -2925,10 +2944,16 @@ const unQuoted = s =>
     dropAround(x => 34 === x.codePointAt(0), s);
 
 // uncons :: [a] -> Maybe (a, [a])
-const uncons = xs =>
-    (0 < xs.length) ? (
-        Just(Tuple(xs[0], xs.slice(1)))
+const uncons = xs => {
+    const lng = length(xs);
+    return (0 < lng) ? (
+        Just(
+            lng < Infinity ? (
+                Tuple(xs[0],  xs.slice(1)) // Finite list
+            ) : Tuple(take(1, xs)[0],  xs) // Lazy generator
+        )
     ) : Nothing();
+};
 
 // Given a curried/default function, returns an
 // equivalent function on a tuple or list pair.
@@ -3074,10 +3099,11 @@ const words = s => s.split(/\s+/);
 // lists - i.e. generators like cycle, repeat, iterate.
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = (xs, ys) => {
-    const
-        lng = Math.min(length(xs), length(ys)),
-        bs = take(lng, ys);
-    return take(lng, xs).map((x, i) => Tuple(x, bs[i]));
+    const lng = Math.min(length(xs), length(ys));
+    return Infinity !== lng ? (() => {
+        const bs = take(lng, ys);
+        return take(lng, xs).map((x, i) => Tuple(x, bs[i]));
+    })() : zipGen(xs, ys);
 };
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
@@ -3089,6 +3115,24 @@ const zip3 = (xs, ys, zs) =>
 const zip4 = (ws, xs, ys, zs) =>
     ws.slice(0, minimum([ws, xs, ys, zs].map(length)))
     .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
+
+// zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
+const zipGen = (ga, gb) => {
+    function* go(ma, mb) {
+        let
+            a = ma,
+            b = mb;
+        while(!a.Nothing && !b.Nothing) {
+            let
+                ta = a.Just,
+                tb = b.Just
+            yield(Tuple(fst(ta), fst(tb)));
+            a = uncons(snd(ta));
+            b = uncons(snd(tb));
+        }
+    }
+    return go(uncons(ga), uncons(gb));
+};
 
 // Use of `take` and `length` here allows zipping with non-finite lists
 // i.e. generators like cycle, repeat, iterate.

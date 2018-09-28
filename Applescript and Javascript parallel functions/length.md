@@ -13,7 +13,7 @@ end |length|
 ```js
 // Returns Infinity over objects without finite length
 // this enables zip and zipWith to choose the shorter
-// argument when one non-finite like cycle, repeat etc
+// argument when one is non-finite, like cycle, repeat etc
 ```
 
 ```js

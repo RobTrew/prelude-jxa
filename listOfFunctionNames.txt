@@ -85,6 +85,7 @@ elemAtMay :: Int -> Dict -> Maybe (String, a)
 elemIndex :: Eq a => a -> [a] -> Maybe Int
 elemIndices :: Eq a => a -> [a] -> [Int]
 elems :: Dict -> [a]
+enumFrom :: a -> [a]
 enumFromThenTo :: Enum a => a -> a -> a -> [a]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
 enumFromThenToInt :: Int -> Int -> Int -> [Int]
@@ -114,6 +115,7 @@ flattenTree :: Tree a -> [a]
 flip :: (a -> b -> c) -> b -> a -> c
 floor :: Num -> Int
 fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
+fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 fmapTree :: (a -> b) -> Tree a -> Tree b
@@ -417,6 +419,7 @@ writeTempFile :: String -> String -> IO FilePath
 zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
+zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
