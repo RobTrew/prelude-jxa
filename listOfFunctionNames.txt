@@ -368,7 +368,7 @@ takeExtension :: FilePath -> String
 takeFileName :: FilePath -> FilePath
 takeIterate :: Int -> (a -> a) -> a -> [a]
 takeWhile :: (a -> Bool) -> [a] -> [a]
-takeWhileGen :: (a -> Bool) -> Generator [a] -> [a]
+takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 takeWhileR :: (a -> Bool) -> [a] -> [a]
 tempFilePath :: String -> IO FilePath
 then (>>) :: Monad m => m a -> m b -> m b

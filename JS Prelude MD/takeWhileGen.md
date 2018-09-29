@@ -1,5 +1,5 @@
 ```js
-// takeWhileGen :: (a -> Bool) -> Generator [a] -> [a]
+// takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 const takeWhileGen = (p, xs) => {
     const ys = [];
     let

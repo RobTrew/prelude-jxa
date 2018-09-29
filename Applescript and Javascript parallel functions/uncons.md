@@ -24,11 +24,14 @@ end uncons
 const uncons = xs => {
     const lng = length(xs);
     return (0 < lng) ? (
-        Just(
-            lng < Infinity ? (
-                Tuple(xs[0],  xs.slice(1)) // Finite list
-            ) : Tuple(take(1, xs)[0],  xs) // Lazy generator
-        )
+        lng < Infinity ? (
+            Just(Tuple(xs[0], xs.slice(1))) // Finite list
+        ) : (() => {
+            const nxt = take(1, xs);
+            return 0 < nxt.length ? (
+                Just(Tuple(nxt[0], xs))
+            ) : Nothing();
+        })() // Lazy generator
     ) : Nothing();
 };
 ```

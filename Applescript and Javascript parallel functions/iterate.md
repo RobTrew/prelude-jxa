@@ -17,7 +17,7 @@ end iterate
 ```
 
 ```js
-// iterate :: (a -> a) -> a -> Generator [a]
+// iterate :: (a -> a) -> a -> Gen [a]
 function* iterate(f, x) {
     let v = x;
     while (true) {
