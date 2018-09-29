@@ -1,5 +1,5 @@
 ```applescript
--- takeWhileGen :: (a -> Bool) -> Generator [a] -> [a]
+-- takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 on takeWhileGen(p, xs)
     set ys to {}
     set v to |λ|() of xs

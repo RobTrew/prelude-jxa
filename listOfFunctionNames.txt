@@ -182,7 +182,7 @@ isSubsetOf :: Ord a => Set a -> Set a -> Bool
 isSuffixOf :: Eq a => [a] -> [a] -> Bool
 isUpper :: Char -> Bool
 iso8601Local :: Date -> String
-iterate :: (a -> a) -> a -> Generator [a]
+iterate :: (a -> a) -> a -> Gen [a]
 iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
 join :: Monad m => m (m a) -> m a
 jsonLog :: a -> IO ()

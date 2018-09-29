@@ -1,5 +1,5 @@
 ```applescript
--- iterate :: (a -> a) -> a -> Generator [a]
+-- iterate :: (a -> a) -> a -> Gen [a]
 on iterate(f, x)
     script
         property v : missing value
