@@ -5,7 +5,7 @@ on |length|(xs)
     if list is c or string is c then
         length of xs
     else
-        2 ^ 30 -- (simple proxy for non-finite)
+        (2 ^ 29 - 1) -- (maxInt - simple proxy for non-finite)
     end if
 end |length|
 ```

@@ -13,7 +13,12 @@ on uncons(xs)
                 Just(Tuple(item 1 of xs, rest of xs))
             end if
         else
-            Just(Tuple(item 1 of take(1, xs), xs))
+            set nxt to take(1, xs)
+            if {} is nxt then
+                Nothing()
+            else
+                Just(Tuple(item 1 of nxt, xs))
+            end if
         end if
     end if
 end uncons
