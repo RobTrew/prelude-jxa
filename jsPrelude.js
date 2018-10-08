@@ -371,7 +371,7 @@ const cons = (x, xs) =>
     ) : (x + xs);
 
 // const_ :: a -> b -> a
-const const_ = (k, _) => k;
+const const_ = k => _ => k;
 
 // Flexibly handles two or more arguments, applying
 // the function directly if the argument array

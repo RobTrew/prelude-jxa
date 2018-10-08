@@ -7,5 +7,5 @@ end const_
 
 ```js
 // const_ :: a -> b -> a
-const const_ = (k, _) => k;
+const const_ = k => _ => k;
 ```
