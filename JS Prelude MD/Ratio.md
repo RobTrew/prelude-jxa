@@ -1,8 +1,12 @@
 ```js
-// Ratio :: Int -> Int -> Ratio
-const Ratio = (n, d) => ({
-    type: 'Ratio',
-    'n': n, // numerator
-    'd': d // denominator
-});
+// ratio :: Int -> Int -> Ratio Int
+const ratio = (n, d) =>
+    0 !== d ? (() => {
+        const g = gcd(n, d);
+        return {
+            type: 'Ratio',
+            'n': quot(n, g), // numerator
+            'd': quot(d, g) // denominator
+        }
+    })() : undefined;
 ```

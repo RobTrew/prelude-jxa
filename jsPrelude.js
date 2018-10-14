@@ -33,13 +33,6 @@ const Ordering = e =>
         value: (e > 0 ? 1 : e < 0 ? -1 : 0)
     });
 
-// Ratio :: Int -> Int -> Ratio
-const Ratio = (n, d) => ({
-    type: 'Ratio',
-    'n': n, // numerator
-    'd': d // denominator
-});
-
 // Right :: b -> Either a b
 const Right = x => ({
     type: 'Either',
@@ -171,10 +164,11 @@ const approxRatio = (eps, n) => {
             return _gcd(Math.abs(x), Math.abs(y));
         },
         c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);
-    return Ratio(
-        Math.floor(n / c), // numerator
-        Math.floor(1 / c) // denominator
-    );
+    return {
+        type: 'Ratio',
+        n: Math.floor(n / c),
+        d: Math.floor(1 / c)
+    };
 };
 
 // argvLength :: Function -> Int
@@ -370,7 +364,7 @@ const cons = (x, xs) =>
         [x].concat(xs)
     ) : (x + xs);
 
-// const_ :: a -> b -> a
+// const :: a -> b -> a
 const const_ = k => _ => k;
 
 // Flexibly handles two or more arguments, applying
@@ -873,11 +867,10 @@ const fmap = (f, fa) =>
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 function* fmapGen(f, gen) {
-    const g = gen;
-    let v = take(1, g);
+    let v = take(1, gen);
     while (0 < v.length) {
-        yield(f(v))
-        v = take(1, g)
+        yield(f(v[0]))
+        v = take(1, gen)
     }
 }
 
@@ -1614,6 +1607,16 @@ const mapMaybe = (mf, xs) =>
         []
     );
 
+// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
+function* mapMaybeGen(mf, gen) {
+    let v = take(1, gen);
+    while (0 < v.length) {
+        let mb = mf(v[0]);
+        if (!mb.Nothing) yield mb.Just
+        v = take(1, gen);
+    }
+}
+
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = (a, b) => {
     const t = a.type;
@@ -1925,6 +1928,12 @@ const print = x => {
 // product :: [Num] -> Num
 const product = xs => xs.reduce((a, x) => a * x, 1);
 
+// properFracRatio :: Ratio -> (Int, Ratio)
+const properFracRatio = nd => {
+    const [q, r] = Array.from(quotRem(nd.n, nd.d));
+    return Tuple(q, ratio(r, nd.d));
+};
+
 // properFraction :: Real -> (Int, Real)
 const properFraction = n => {
     const i = Math.floor(n) + (n < 0 ? 1 : 0);
@@ -2037,6 +2046,17 @@ function range() {
         ) : enumFromTo(as[0], bs[0])
     ) : [];
 };
+
+// ratio :: Int -> Int -> Ratio Int
+const ratio = (n, d) =>
+    0 !== d ? (() => {
+        const g = gcd(n, d);
+        return {
+            type: 'Ratio',
+            'n': quot(n, g), // numerator
+            'd': quot(d, g) // denominator
+        }
+    })() : undefined;
 
 // read :: Read a => String -> a
 const read = JSON.parse;
@@ -2914,10 +2934,10 @@ const treeMatches = (p, tree) => {
 };
 
 // truncate :: Num -> Int
-const truncate = x => {
-    const [m, _] = properFraction(x);
-    return m;
-};
+const truncate = x =>
+    'Ratio' === x.type ? (
+        properFracRatio(x)[0]
+    ) : properFraction(x)[0];
 
 // tupleFromList :: [a] -> (a, a ...)
 const tupleFromList = xs =>

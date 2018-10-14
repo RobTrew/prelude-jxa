@@ -7,8 +7,8 @@ end truncate
 
 ```js
 // truncate :: Num -> Int
-const truncate = x => {
-    const [m, _] = properFraction(x);
-    return m;
-};
+const truncate = x =>
+    'Ratio' === x.type ? (
+        properFracRatio(x)[0]
+    ) : properFraction(x)[0];
 ```

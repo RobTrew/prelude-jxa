@@ -40,9 +40,10 @@ const approxRatio = (eps, n) => {
             return _gcd(Math.abs(x), Math.abs(y));
         },
         c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);
-    return Ratio(
-        Math.floor(n / c), // numerator
-        Math.floor(1 / c) // denominator
-    );
+    return {
+        type: 'Ratio',
+        n: Math.floor(n / c),
+        d: Math.floor(1 / c)
+    };
 };
 ```

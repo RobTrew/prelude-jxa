@@ -3,7 +3,6 @@ Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
 Nothing :: Maybe a
 Ordering :: Int -> Ordering
-Ratio :: Int -> Int -> Ratio
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 TupleN :: a -> b ...  -> (a, b ... )
@@ -51,7 +50,7 @@ composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
-const_ :: a -> b -> a
+const :: a -> b -> a
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
 curry :: ((a, b) -> c) -> a -> b -> c
 curry2 :: ((a, b) -> c) -> a -> b -> c
@@ -222,6 +221,7 @@ mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 mapFromList :: [(k, v)] -> Dict
 mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 mapMaybe :: (a -> Maybe b) -> [a] -> [b]
+mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 mappend (<>) :: Monoid a => a -> a -> a
 mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)
 mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)
@@ -267,6 +267,7 @@ postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
 print :: a -> IO ()
 product :: [Num] -> Num
+properFracRatio :: Ratio -> (Int, Ratio)
 properFraction :: Real -> (Int, Real)
 pureLR :: a -> Either e a
 pureList :: a -> [a]
@@ -281,6 +282,7 @@ quotRem :: Int -> Int -> (Int, Int)
 raise :: Num -> Int -> Num
 randomRInt :: Int -> Int -> Int
 range :: Ix a => (a, a) -> [a]
+ratio :: Int -> Int -> Ratio Int
 read :: Read a => String -> a
 readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String String

@@ -5,8 +5,8 @@
 
 ```applescript
 -- all :: (a -> Bool) -> [a] -> Bool
-on all(f, xs)
-    tell mReturn(f)
+on all(p, xs)
+    tell mReturn(p)
         set lng to length of xs
         repeat with i from 1 to lng
             if not |λ|(item i of xs, i, xs) then return false
