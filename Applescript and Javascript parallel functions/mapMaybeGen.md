@@ -25,7 +25,7 @@ end mapMaybeGen
 ```
 
 ```js
-// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> [b]
+// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 function* mapMaybeGen(mf, gen) {
     let v = take(1, gen);
     while (0 < v.length) {
