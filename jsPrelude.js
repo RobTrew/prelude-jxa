@@ -157,18 +157,19 @@ const apply = (f, x) => f(x);
 
 // Epsilon -> Real -> Ratio
 // approxRatio :: Real -> Real -> Ratio
-const approxRatio = (eps, n) => {
-    const
-        gcde = (e, x, y) => {
-            const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
-            return _gcd(Math.abs(x), Math.abs(y));
-        },
-        c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);
-    return {
-        type: 'Ratio',
-        n: Math.floor(n / c),
-        d: Math.floor(1 / c)
-    };
+const approxRatio = eps => n => {
+  const
+    gcde = (e, x, y) => {
+      const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
+      return _gcd(Math.abs(x), Math.abs(y));
+    },
+    c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, Math.abs(n)),
+    r = ratio(Math.floor(Math.abs(n) / c), Math.floor(1 / c));
+  return {
+    type: 'Ratio',
+    n: r.n * signum(n),
+    d: r.d
+  };
 };
 
 // argvLength :: Function -> Int
@@ -1597,15 +1598,10 @@ const mapKeys = (f, dct) =>
 // included in the result list.
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 const mapMaybe = (mf, xs) =>
-    xs.reduce(
-        (a, x) => {
-            const mb = mf(x);
-            return mb.Nothing ? (
-                a
-            ) : a.concat(mb.Just)
-        },
-        []
-    );
+  xs.reduce(
+    (a, x) => maybe(a, j => a.concat(j), mf(x)),
+    []
+  );
 
 // mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 function* mapMaybeGen(mf, gen) {

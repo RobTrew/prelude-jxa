@@ -35,13 +35,8 @@ end mapMaybe
 ```js
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 const mapMaybe = (mf, xs) =>
-    xs.reduce(
-        (a, x) => {
-            const mb = mf(x);
-            return mb.Nothing ? (
-                a
-            ) : a.concat(mb.Just)
-        },
-        []
-    );
+  xs.reduce(
+    (a, x) => maybe(a, j => a.concat(j), mf(x)),
+    []
+  );
 ```
