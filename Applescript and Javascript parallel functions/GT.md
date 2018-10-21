@@ -1,12 +1,20 @@
 ```applescript
--- GT :: Ordering
-property |GT| : {type:"Ordering", value:1}
+-- gt :: Ord a => a -> a -> Bool
+on gt(x, y)
+    set c to class of x
+    if record is c or list is c then
+        fst(x) > fst(y)
+    else
+        x > y
+    end if
+end gt
 ```
 
 ```js
-// GT :: Ordering
-const GT = {
-    type: 'Ordering',
-    value: 1
+// gt :: Ord a => a -> a -> Bool
+const gt = (x, y) => {
+    return 'Tuple' === x.type ? (
+        fst(x) > fst(y)
+    ) : (x > y);
 };
 ```
