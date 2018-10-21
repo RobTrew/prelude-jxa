@@ -144,6 +144,7 @@ getTemporaryDirectory :: IO FilePath
 group :: Eq a => [a] -> [[a]]
 groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 groupSortOn :: Ord b => (a -> b) -> [a] -> [a]
+gt :: Ord a => a -> a -> Bool
 head :: [a] -> a
 headMay :: [a] -> Maybe a
 id :: a -> a

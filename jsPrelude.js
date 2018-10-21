@@ -161,10 +161,10 @@ const approxRatio = eps => n => {
   const
     gcde = (e, x, y) => {
       const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
-      return _gcd(Math.abs(x), Math.abs(y));
+      return _gcd(abs(x), abs(y));
     },
-    c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, Math.abs(n)),
-    r = ratio(Math.floor(Math.abs(n) / c), Math.floor(1 / c));
+    c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, abs(n)),
+    r = ratio(quot(abs(n), c), quot(1, c));
   return {
     type: 'Ratio',
     n: r.n * signum(n),
@@ -1066,6 +1066,13 @@ const groupSortOn = (f, xs) => {
         .map(gp => gp.map(x => x[iLast])); // undecorated version of data, post sort
 };
 
+// gt :: Ord a => a -> a -> Bool
+const gt = (x, y) => {
+    return 'Tuple' === x.type ? (
+        fst(x) > fst(y)
+    ) : (x > y);
+};
+
 // head :: [a] -> a
 const head = xs => xs.length ? xs[0] : undefined;
 
@@ -1387,7 +1394,7 @@ const lefts = xs =>
 // this enables zip and zipWith to choose the shorter
 // argument when one is non-finite, like cycle, repeat etc
 // length :: [a] -> Int
-const length = xs => xs.length || Infinity;
+const length = xs => Array.isArray(xs) ? xs.length : Infinity;
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
@@ -1676,7 +1683,7 @@ const matching = pat => {
 };
 
 // max :: Ord a => a -> a -> a
-const max = (a, b) => b > a ? b : a;
+const max = (a, b) => gt(b, a) ? b : a;
 
 // maximum :: Ord a => [a] -> a
 const maximum = xs =>
