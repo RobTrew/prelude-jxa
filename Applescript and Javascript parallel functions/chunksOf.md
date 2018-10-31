@@ -1,18 +1,18 @@
 ```applescript
 -- chunksOf :: Int -> [a] -> [[a]]
-on chunksOf(k, xs)
-    script
-        on go(ys)
-            set ab to splitAt(k, ys)
-            set a to |1| of ab
-            if isNull(a) then
-                {}
+on chunksOf(n, xs)
+    set lng to length of xs
+    script go
+        on |λ|(a, i)
+            set x to (i + n) - 1
+            if x ≥ lng then
+                a & {items i thru -1 of xs}
             else
-                {a} & go(|2| of ab)
+                a & {items i thru x of xs}
             end if
-        end go
+        end |λ|
     end script
-    result's go(xs)
+    foldl(go, {}, enumFromThenTo(1, n, lng))
 end chunksOf
 ```
 

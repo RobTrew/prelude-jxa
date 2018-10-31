@@ -1,5 +1,5 @@
 ```applescript
--- splitAt :: Int -> [a] -> ([a],[a])
+-- splitAt :: Int -> [a] -> ([a], [a])
 on splitAt(n, xs)
     if n > 0 and n < length of xs then
         if class of xs is text then

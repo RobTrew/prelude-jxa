@@ -24,7 +24,7 @@ on groupBy(f, xs)
     end script
     
     if length of xs > 0 then
-        set dct to foldl(enGroup, {active:{item 1 of xs}, sofar:{}}, tail(xs))
+        set dct to foldl(enGroup, {active:{item 1 of xs}, sofar:{}}, rest of xs)
         if length of (active of dct) > 0 then
             sofar of dct & {active of dct}
         else
