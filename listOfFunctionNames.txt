@@ -413,7 +413,7 @@ unwrap :: NSObject -> a
 unzip :: [(a,b)] -> ([a],[b])
 unzip3 :: [(a,b,c)] -> ([a],[b],[c])
 unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
-unZipN :: [(a,b,...)] -> ([a],[b],...)
+unzipN :: [(a,b,...)] -> ([a],[b],...)
 variance :: [Num] -> Num
 words :: String -> [String]
 wrap :: a -> NSObject
