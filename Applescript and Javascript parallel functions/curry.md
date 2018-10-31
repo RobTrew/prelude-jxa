@@ -27,7 +27,7 @@ const curry = (f, ...args) => {
     const
         n = f.length,
         go = xs => n <= xs.length ? (
-            f.apply(null, xs)
+            f(...xs)
         ) : function() {
             return go(xs.concat(Array.from(arguments)));
         };

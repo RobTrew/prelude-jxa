@@ -3,6 +3,7 @@
 const enumFromThenTo = (x1, x2, y) =>
     ('number' !== typeof x1 ? (
         enumFromThenToChar
-    ) : enumFromThenToInt)
-    .apply(null, [x1, x2, y]);
+    ) : enumFromThenToInt)(
+        ...[x1, x2, y]
+    )
 ```

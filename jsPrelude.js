@@ -178,7 +178,7 @@ const argvLength = f => f.length;
 // assocs :: Map k a -> [(k, a)]
 const assocs = m =>
     Object.entries(m).map(
-        kv => Tuple.apply(null, kv)
+        kv => Tuple(...kv)
     );
 
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
@@ -378,7 +378,7 @@ const curry = (f, ...args) => {
     const
         n = f.length,
         go = xs => n <= xs.length ? (
-            f.apply(null, xs)
+            f(...xs)
         ) : function() {
             return go(xs.concat(Array.from(arguments)));
         };
@@ -637,8 +637,9 @@ function* enumFrom(x) {
 const enumFromThenTo = (x1, x2, y) =>
     ('number' !== typeof x1 ? (
         enumFromThenToChar
-    ) : enumFromThenToInt)
-    .apply(null, [x1, x2, y]);
+    ) : enumFromThenToInt)(
+        ...[x1, x2, y]
+    )
 
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
 const enumFromThenToChar = (x1, x2, y) => {
@@ -1393,7 +1394,10 @@ const lefts = xs =>
 // this enables zip and zipWith to choose the shorter
 // argument when one is non-finite, like cycle, repeat etc
 // length :: [a] -> Int
-const length = xs => Array.isArray(xs) ? xs.length : Infinity;
+const length = xs =>
+    (Array.isArray(xs) || 'string' === typeof xs) ? (
+        xs.length
+    ) : Infinity;
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
@@ -1413,6 +1417,7 @@ const levels = tree =>
 
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
+// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = (f, a, b) => {
     const t = a.type;
@@ -1428,10 +1433,8 @@ const liftA2 = (f, a, b) => {
                 liftA2Tree
             ) : liftA2List
         ) : liftA2List
-    ).apply(null, [f, a, b]);
+    )(...[f, a, b]);
 };
-
-// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 
 // liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 const liftA2LR = (f, a, b) =>
@@ -2454,7 +2457,7 @@ const span = (f, xs) =>
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 const splitArrow = (f, g) => tpl => Tuple(f(tpl[0]), g(tpl[1]));
 
-// splitAt :: Int -> [a] -> ([a],[a])
+// splitAt :: Int -> [a] -> ([a], [a])
 const splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));
 
 // Splitting not on a delimiter, but whenever the relationship between
@@ -2788,8 +2791,9 @@ const then = (ma, mb) =>
         thenList
     ) : isMaybe(ma) ? (
         thenMay
-    ) : thenIO)
-    .apply(null, [ma, mb]);
+    ) : thenIO)(
+        ...[ma, mb]
+    )
 
 // thenIO (>>) :: IO a -> IO b -> IO b
 const thenIO = (ma, mb) => mb;
@@ -2946,7 +2950,7 @@ const truncate = x =>
 
 // tupleFromList :: [a] -> (a, a ...)
 const tupleFromList = xs =>
-    TupleN.apply(null, xs);
+    TupleN(...xs);
 
 // typeName :: a -> String
 const typeName = v => {
@@ -3085,7 +3089,7 @@ const unwords = xs => xs.join(' ');
 // unzip :: [(a,b)] -> ([a],[b])
 const unzip = xys =>
     xys.reduce(
-        (a, x) => Tuple.apply(null, [0, 1].map(
+        (a, x) => Tuple(...[0, 1].map(
             i => a[i].concat(x[i])
         )),
         Tuple([], [])
@@ -3108,6 +3112,19 @@ const unzip4 = wxyzs =>
         )),
         TupleN([], [], [], [])
     );
+
+// unZipN :: [(a,b,...)] -> ([a],[b],...)
+const unzipN = tpls =>
+    TupleN(...tpls.reduce(
+        (a, tpl) => a.map(
+            (x, i) => x.concat(tpl[i])
+        ),
+        replicate(
+            0 < tpls.length ? (
+                tpls[0].length
+            ) : 0, []
+        )
+    ));
 
 // variance :: [Num] -> Num
 const variance = xs => {
@@ -3161,6 +3178,18 @@ const zipGen = (ga, gb) => {
     }
     return go(uncons(ga), uncons(gb));
 };
+
+// zipN :: [a] -> [b] ... -> [(a, b ...)]
+function zipN() {
+    const args = Array.from(arguments);
+    return 1 < args.length ? map(
+        (x, i) => TupleN(...map(y => y[i], args)),
+        take(
+            Math.min(...map(length, args)),
+            args[0]
+        )
+    ) : args;
+}
 
 // Use of `take` and `length` here allows zipping with non-finite lists
 // i.e. generators like cycle, repeat, iterate.

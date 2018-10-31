@@ -339,7 +339,7 @@ sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 sortOn :: Ord b => (a -> b) -> [a] -> [a]
 span :: (a -> Bool) -> [a] -> ([a], [a])
 splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
-splitAt :: Int -> [a] -> ([a],[a])
+splitAt :: Int -> [a] -> ([a], [a])
 splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 splitEvery :: Int -> [a] -> [[a]]
 splitFileName :: FilePath -> (String, String)
@@ -413,6 +413,7 @@ unwrap :: NSObject -> a
 unzip :: [(a,b)] -> ([a],[b])
 unzip3 :: [(a,b,c)] -> ([a],[b],[c])
 unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
+unZipN :: [(a,b,...)] -> ([a],[b],...)
 variance :: [Num] -> Num
 words :: String -> [String]
 wrap :: a -> NSObject
@@ -423,6 +424,7 @@ zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
+zipN :: [a] -> [b] ... -> [(a, b ...)]
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]

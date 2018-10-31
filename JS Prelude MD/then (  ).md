@@ -5,6 +5,7 @@ const then = (ma, mb) =>
         thenList
     ) : isMaybe(ma) ? (
         thenMay
-    ) : thenIO)
-    .apply(null, [ma, mb]);
+    ) : thenIO)(
+        ...[ma, mb]
+    )
 ```

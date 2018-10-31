@@ -18,5 +18,8 @@ end |length|
 
 ```js
 // length :: [a] -> Int
-const length = xs => Array.isArray(xs) ? xs.length : Infinity;
+const length = xs =>
+    (Array.isArray(xs) || 'string' === typeof xs) ? (
+        xs.length
+    ) : Infinity;
 ```

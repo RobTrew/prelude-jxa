@@ -33,6 +33,7 @@ end liftA2
 ```js
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
+// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 ```
 
 ```js
@@ -51,8 +52,6 @@ const liftA2 = (f, a, b) => {
                 liftA2Tree
             ) : liftA2List
         ) : liftA2List
-    ).apply(null, [f, a, b]);
+    )(...[f, a, b]);
 };
-
-// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 ```
