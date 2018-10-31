@@ -19,6 +19,9 @@ end chunksOf
 ```js
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = (n, xs) =>
-    xs.reduce((a, _, i, xs) =>
-        i % n ? a : a.concat([xs.slice(i, i + n)]), []);
+    enumFromThenTo(0, n - 1, xs.length - 1)
+    .reduce(
+        (a, i) => a.concat([xs.slice(i, i + n)]),
+        []
+    );
 ```

@@ -316,8 +316,11 @@ const chr = String.fromCodePoint;
 
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = (n, xs) =>
-    xs.reduce((a, _, i, xs) =>
-        i % n ? a : a.concat([xs.slice(i, i + n)]), []);
+    enumFromThenTo(0, n - 1, xs.length - 1)
+    .reduce(
+        (a, i) => a.concat([xs.slice(i, i + n)]),
+        []
+    );
 
 // compare :: a -> a -> Ordering
 const compare = (a, b) => a < b ? -1 : (a > b ? 1 : 0);
@@ -985,7 +988,7 @@ const fst = tpl => tpl[0];
 const ft = (m, n) =>
     Array.from({
         length: 1 + n - m
-    }, (_, i) => m + i)
+    }, (_, i) => m + i);
 
 // gcd :: Int -> Int -> Int
 const gcd = (x, y) => {
@@ -1390,8 +1393,8 @@ const lefts = xs =>
         ) : [], xs
     );
 
-// Returns Infinity over objects without finite length
-// this enables zip and zipWith to choose the shorter
+// Returns Infinity over objects without finite length.
+// This enables zip and zipWith to choose the shorter
 // argument when one is non-finite, like cycle, repeat etc
 // length :: [a] -> Int
 const length = xs =>
@@ -2651,7 +2654,7 @@ const tails = xs => {
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
 const take = (n, xs) =>
-    xs.constructor.constructor.name !== 'GeneratorFunction' ? (
+    'GeneratorFunction' !== xs.constructor.constructor.name ? (
         xs.slice(0, n)
     ) : [].concat.apply([], Array.from({
         length: n
