@@ -36,7 +36,7 @@ end take
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
 const take = (n, xs) =>
-    xs.constructor.constructor.name !== 'GeneratorFunction' ? (
+    'GeneratorFunction' !== xs.constructor.constructor.name ? (
         xs.slice(0, n)
     ) : [].concat.apply([], Array.from({
         length: n

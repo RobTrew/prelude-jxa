@@ -26,5 +26,5 @@ end ft
 const ft = (m, n) =>
     Array.from({
         length: 1 + n - m
-    }, (_, i) => m + i)
+    }, (_, i) => m + i);
 ```
