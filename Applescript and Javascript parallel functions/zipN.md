@@ -1,11 +1,10 @@
 ```applescript
 -- Arbitrary number of lists to zip
 -- all enclosed in an argument vector list
-
 ```
 
 ```applescript
--- zipN :: [a] -> [b] ... -> [(a, b ...)]
+-- zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 on zipN(argv)
     if 1 < length of argv then
         script go
@@ -27,7 +26,7 @@ end zipN
 ```
 
 ```js
-// zipN :: [a] -> [b] ... -> [(a, b ...)]
+// zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
     const args = Array.from(arguments);
     return 1 < args.length ? map(

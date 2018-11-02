@@ -1,5 +1,5 @@
 ```js
-// zipN :: [a] -> [b] ... -> [(a, b ...)]
+// zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
     const args = Array.from(arguments);
     return 1 < args.length ? map(

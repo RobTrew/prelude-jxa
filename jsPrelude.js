@@ -62,7 +62,6 @@ function TupleN() {
     ) : args[0];
 };
 
-// | Absolute value.
 // abs :: Num -> Num
 const abs = Math.abs;
 
@@ -582,11 +581,11 @@ const dropWhileEnd = (p, xs) => {
 };
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
-const either = (lf, rf, e) =>
+const either = (fl, fr, e) =>
     'Either' === e.type ? (
         undefined !== e.Left ? (
-            lf(e.Left)
-        ) : rf(e.Right)
+            fl(e.Left)
+        ) : fr(e.Right)
     ) : undefined;
 
 // elem :: Eq a => a -> [a] -> Bool
@@ -3116,7 +3115,7 @@ const unzip4 = wxyzs =>
         TupleN([], [], [], [])
     );
 
-// unZipN :: [(a,b,...)] -> ([a],[b],...)
+// unzipN :: [(a,b,...)] -> ([a],[b],...)
 const unzipN = tpls =>
     TupleN(...tpls.reduce(
         (a, tpl) => a.map(
@@ -3182,7 +3181,7 @@ const zipGen = (ga, gb) => {
     return go(uncons(ga), uncons(gb));
 };
 
-// zipN :: [a] -> [b] ... -> [(a, b ...)]
+// zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
     const args = Array.from(arguments);
     return 1 < args.length ? map(
