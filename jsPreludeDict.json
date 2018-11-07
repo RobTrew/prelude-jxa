@@ -328,7 +328,7 @@
   "showLog": "// showLog :: a -> IO ()\nconst showLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",
   "showMaybe": "// showMaybe :: Maybe a -> String\nconst showMaybe = mb =>\n    mb.Nothing ? (\n        'Nothing'\n    ) : 'Just(' + unQuoted(show(mb.Just)) + ')';",
   "showOrdering": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    0 < e.value ? (\n        'GT'\n    ) : 0 > e.value ? (\n        'LT'\n    ) : 'EQ';",
-  "showRatio": "// showRatio :: Ratio -> String\nconst showRatio = nd =>\n    nd.n.toString() + '/' + nd.d.toString();",
+  "showRatio": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    r.n.toString() + (\n      1 !== r.d ? (\n          '/' + r.d.toString()\n      ) : ''\n    );",
   "showTuple": "// showTuple :: Tuple -> String\nconst showTuple = tpl =>\n    '(' + enumFromToInt(0, tpl.length - 1)\n    .map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
   "showUndefined": "// showUndefined :: () -> String\nconst showUndefined = () => '(⊥)';",
   "signum": "// | Sign of a number.\n// The functions 'abs' and 'signum' should satisfy the law:\n//\n// > abs x * signum x == x\n//\n// For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)\n// or @1@ (positive).\n\n// signum :: Num -> Num\nconst signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);",
