@@ -1,9 +1,11 @@
 ```js
 // showRatio :: Ratio -> String
 const showRatio = r =>
-    r.n.toString() + (
-      1 !== r.d ? (
-          '/' + r.d.toString()
-      ) : ''
+    'Ratio' !== r.type ? (
+        r.toString()
+    ) : r.n.toString() + (
+        1 !== r.d ? (
+            '/' + r.d.toString()
+        ) : ''
     );
 ```

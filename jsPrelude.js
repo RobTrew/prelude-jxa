@@ -2068,6 +2068,39 @@ const ratio = (x, y) => {
   return go(x * signum(y), abs(y));
 };
 
+// ratioDiv :: Rational -> Rational -> Rational
+const ratioDiv = (r1, r2) =>
+    ratio(r1.n * r2.d, r1.d * r2.n);
+
+// ratioMinus :: Rational -> Rational -> Rational
+const ratioMinus = (r1, r2) => {
+    const d = lcm(r1.d, r2.d);
+    return ratio(
+        (r1.n * (d / r1.d)) - (r2.n * (d / r2.d)),
+        d
+    );
+};
+
+// ratioMult :: Rational -> Rational -> Rational
+const ratioMult = (n1, n2) => {
+    const [r1, r2] = map(rational, [n1, n2]);
+    return ratio(r1.n * r2.n, r1.d * r2.d);
+};
+
+// ratioPlus :: Rational -> Rational -> Rational
+const ratioPlus = (n1, n2) => {
+    const [r1, r2] = map(rational, [n1, n2]);
+    const d = lcm(r1.d, r2.d);
+    return ratio(
+        (r1.n * (d / r1.d)) + (r2.n * (d / r2.d)),
+        d
+    );
+};
+
+// rational :: Num a => a -> Rational
+const rational = x =>
+    isNaN(x) ? x : ratio(x, 1);
+
 // read :: Read a => String -> a
 const read = JSON.parse;
 
@@ -2344,10 +2377,12 @@ const showOrdering = e =>
 
 // showRatio :: Ratio -> String
 const showRatio = r =>
-    r.n.toString() + (
-      1 !== r.d ? (
-          '/' + r.d.toString()
-      ) : ''
+    'Ratio' !== r.type ? (
+        r.toString()
+    ) : r.n.toString() + (
+        1 !== r.d ? (
+            '/' + r.d.toString()
+        ) : ''
     );
 
 // showTuple :: Tuple -> String
