@@ -847,8 +847,12 @@ const flip = f =>
 // floor :: Num -> Int
 const floor = x => {
     const
-      nr = properFraction(x),
-      n = nr[0];
+        nr = (
+            'Ratio' !== x.type ? (
+                properFraction
+            ) : properFracRatio
+        )(x),
+        n = nr[0];
     return 0 > nr[1] ? n - 1 : n;
 };
 
@@ -2072,7 +2076,7 @@ const ratio = (x, y) => {
 const ratioDiv = (n1, n2) => {
     const [r1, r2] = map(rational, [n1, n2]);
     return ratio(r1.n * r2.d, r1.d * r2.n);
-}
+};
 
 // ratioMinus :: Rational -> Rational -> Rational
 const ratioMinus = (n1, n2) => {
