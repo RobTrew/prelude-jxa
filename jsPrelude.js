@@ -2069,11 +2069,14 @@ const ratio = (x, y) => {
 };
 
 // ratioDiv :: Rational -> Rational -> Rational
-const ratioDiv = (r1, r2) =>
-    ratio(r1.n * r2.d, r1.d * r2.n);
+const ratioDiv = (n1, n2) => {
+    const [r1, r2] = map(rational, [n1, n2]);
+    return ratio(r1.n * r2.d, r1.d * r2.n);
+}
 
 // ratioMinus :: Rational -> Rational -> Rational
-const ratioMinus = (r1, r2) => {
+const ratioMinus = (n1, n2) => {
+    const [r1, r2] = map(rational, [n1, n2]);
     const d = lcm(r1.d, r2.d);
     return ratio(
         (r1.n * (d / r1.d)) - (r2.n * (d / r2.d)),
