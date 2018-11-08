@@ -2106,7 +2106,9 @@ const ratioPlus = (n1, n2) => {
 
 // rational :: Num a => a -> Rational
 const rational = x =>
-    isNaN(x) ? x : ratio(x, 1);
+    isNaN(x) ? x : Number.isInteger(x) ? (
+        ratio(x, 1)
+    ) : approxRatio(undefined)(x);
 
 // read :: Read a => String -> a
 const read = JSON.parse;
