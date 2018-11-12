@@ -88,9 +88,8 @@ enumFrom :: a -> [a]
 enumFromThenTo :: Enum a => a -> a -> a -> [a]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
 enumFromThenToInt :: Int -> Int -> Int -> [Int]
-enumFromTo :: Enum a => a -> a -> [a]
+enumFromTo :: Int -> Int -> [Int]
 enumFromToChar :: Char -> Char -> [Char]
-enumFromToInt :: Int -> Int -> [Int]
 eq (==) :: Eq a => a -> a -> Bool
 evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a

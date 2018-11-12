@@ -1,7 +1,9 @@
 ```js
-// enumFromTo :: Enum a => a -> a -> [a]
+// enumFromTo :: Int -> Int -> [Int]
 const enumFromTo = (m, n) =>
-    'number' !== typeof m ? (
-        enumFromToChar(m, n)
-    ) : enumFromToInt(m, n);
+    m <= n ? iterateUntil(
+        x => n <= x,
+        x => 1 + x,
+        m
+    ) : [];
 ```

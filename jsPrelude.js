@@ -661,11 +661,13 @@ const enumFromThenToInt = (x1, x2, y) => {
     }, (_, i) => x1 + (d * i));
 };
 
-// enumFromTo :: Enum a => a -> a -> [a]
+// enumFromTo :: Int -> Int -> [Int]
 const enumFromTo = (m, n) =>
-    'number' !== typeof m ? (
-        enumFromToChar(m, n)
-    ) : enumFromToInt(m, n);
+    m <= n ? iterateUntil(
+        x => n <= x,
+        x => 1 + x,
+        m
+    ) : [];
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = (m, n) => {
@@ -674,14 +676,6 @@ const enumFromToChar = (m, n) => {
         length: Math.floor(intN - intM) + 1
     }, (_, i) => String.fromCodePoint(intM + i));
 };
-
-// enumFromToInt :: Int -> Int -> [Int]
-const enumFromToInt = (m, n) =>
-    m <= n ? iterateUntil(
-        x => n <= x,
-        x => 1 + x,
-        m
-    ) : [];
 
 // eq (==) :: Eq a => a -> a -> Bool
 const eq = (a, b) => {
