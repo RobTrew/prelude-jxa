@@ -3088,7 +3088,7 @@ const unfoldl = (f, v) => {
     );
 };
 
-// The 'unfoldr' function is a \`dual\' to 'foldr': while 'foldr'
+// The 'unfoldr' function is a *dual* to 'foldr': while 'foldr'
 // reduces a list to a summary value, 'unfoldr' builds a list from
 // a seed value.  The function takes the element and returns 'Nothing'
 // if it is done producing the list or returns 'Just' @(a,b)@, in which
