@@ -1625,13 +1625,17 @@ function* mapMaybeGen(mf, gen) {
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = (a, b) => {
     const t = a.type;
-    return (Boolean(t) ? (
-        'Maybe' === t ? (
-            mappendMaybe
-        ) : 'Ordering' === t ? (
-            mappendOrdering
-        ) : mappendTuple
-    ) : append)(a, b);
+    return (
+        Boolean(t) ? (
+            'Maybe' === t ? (
+                mappendMaybe
+            ) : 'Ordering' === t ? (
+                mappendOrdering
+            ) : mappendTuple
+        ) : 'function' !== typeof a ? (
+            append
+        ) : mappendFn
+    )(a, b);
 };
 
 // mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)
@@ -1657,6 +1661,10 @@ const mappendComparing2 = fboolPairs =>
             ) : compare(f(y), f(x));
         }, 0
     );
+
+// mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
+const mappendFn = (f, g) =>
+    x => mappend(f(x), g(x));
 
 // mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 const mappendMaybe = (a, b) =>
