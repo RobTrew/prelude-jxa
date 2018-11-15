@@ -224,6 +224,10 @@ const bindTuple = (tpl, f) => {
     );
 };
 
+// bool :: a -> a -> Bool -> a
+const bool = f => t => p =>
+    p ? t : f;
+
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = (p, xs) => {
   for (var i = 0, lng = xs.length; (i < lng) && !p(xs[i]); i++) {};
@@ -635,13 +639,13 @@ function* enumFrom(x) {
     }
 }
 
-// enumFromThenTo :: Enum a => a -> a -> a -> [a]
-const enumFromThenTo = (x1, x2, y) =>
-    ('number' !== typeof x1 ? (
-        enumFromThenToChar
-    ) : enumFromThenToInt)(
-        ...[x1, x2, y]
-    )
+// enumFromThenTo :: Int -> Int -> Int -> [Int]
+const enumFromThenTo = (x1, x2, y) => {
+    const d = x2 - x1;
+    return Array.from({
+        length: Math.floor(y - x2) / d + 2
+    }, (_, i) => x1 + (d * i));
+};
 
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
 const enumFromThenToChar = (x1, x2, y) => {
@@ -651,14 +655,6 @@ const enumFromThenToChar = (x1, x2, y) => {
     return Array.from({
         length: (Math.floor(iY - i2) / d) + 2
     }, (_, i) => String.fromCodePoint(i1 + (d * i)));
-};
-
-// enumFromThenToInt :: Int -> Int -> Int -> [Int]
-const enumFromThenToInt = (x1, x2, y) => {
-    const d = x2 - x1;
-    return Array.from({
-        length: Math.floor(y - x2) / d + 2
-    }, (_, i) => x1 + (d * i));
 };
 
 // enumFromTo :: Int -> Int -> [Int]
@@ -2413,7 +2409,7 @@ const showRatio = r =>
 
 // showTuple :: Tuple -> String
 const showTuple = tpl =>
-    '(' + enumFromToInt(0, tpl.length - 1)
+    '(' + enumFromTo(0, tpl.length - 1)
     .map(x => unQuoted(show(tpl[x])))
     .join(',') + ')';
 

@@ -29,6 +29,7 @@ bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
+bool :: a -> a -> Bool -> a
 break :: (a -> Bool) -> [a] -> ([a], [a])
 breakOn :: String -> String -> (String, String)
 breakOnAll :: String -> String -> [(String, String)]
@@ -85,9 +86,8 @@ elemIndex :: Eq a => a -> [a] -> Maybe Int
 elemIndices :: Eq a => a -> [a] -> [Int]
 elems :: Dict -> [a]
 enumFrom :: a -> [a]
-enumFromThenTo :: Enum a => a -> a -> a -> [a]
+enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
-enumFromThenToInt :: Int -> Int -> Int -> [Int]
 enumFromTo :: Int -> Int -> [Int]
 enumFromToChar :: Char -> Char -> [Char]
 eq (==) :: Eq a => a -> a -> Bool
