@@ -161,7 +161,7 @@
   "intToDigit": "// intToDigit :: Int -> Char\nconst intToDigit = n =>\n    n >= 0 && n < 16 ? (\n        '0123456789ABCDEF'.charAt(n)\n    ) : '?';",
   "intercalate": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = (sep, xs) =>\n    0 < xs.length && 'string' === typeof sep &&\n    'string' === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep, xs));",
   "intercalateS": "// intercalateS :: String -> [String] -> String\nconst intercalateS = (s, xs) =>\n    xs.join(s);",
-  "intersect": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = (xs, ys) => \n  xs.filter(x => -1 !== ys.indexOf(x));",
+  "intersect": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = (xs, ys) => {\n    const s = new Set(ys);\n    return xs.filter(x => s.has(x));\n};",
   "intersectBy": "// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst intersectBy = (eq, xs, ys) => {\n    const ceq = curry(eq);\n    return (0 < xs.length && 0 < ys.length) ?\n    xs.filter(x => ys.some(ceq(x))) : [];\n};",
   "intersectionBy": "// intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectionBy = (eq, xs) =>\n    foldr1(((a, x) => intersectBy(eq, a, x)), xs);",
   "intersperse": "// intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]\n\n// intersperse :: a -> [a] -> [a]\n// intersperse :: Char -> String -> String\nconst intersperse = (sep, xs) => {\n    const bool = 'string' === typeof xs;\n    return xs.length > 1 ? (\n        (bool ? concat : x => x)(\n            (bool ? (\n                xs.split('')\n            ) : xs)\n            .slice(1)\n            .reduce((a, x) => a.concat([sep, x]), [xs[0]])\n        )) : xs;\n};",
