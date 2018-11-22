@@ -3,7 +3,7 @@
 ```
 
 ```js
-// unfoldl :: (b -> Maybe (a, b)) -> b -> [a]
+// unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
 const unfoldl = (f, v) => {
     let xs = [];
     return (

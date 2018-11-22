@@ -3073,7 +3073,7 @@ const unfoldTree = (f, b) => {
 };
 
 // (x => Maybe [value, remainder] -> initial value -> values
-// unfoldl :: (b -> Maybe (a, b)) -> b -> [a]
+// unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
 const unfoldl = (f, v) => {
     let xs = [];
     return (
@@ -3280,3 +3280,26 @@ const zipWith4 = (f, ws, xs, ys, zs) =>
     Array.from({
         length: minimum([ws, xs, ys, zs].map(length))
     }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));
+
+// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
+function zipWithN() {
+    const
+        args = Array.from(arguments),
+        rows = args.slice(1),
+        f = args[0];
+    return 1 < rows.length ? map(
+        i => f(...map(r => r[i], rows)),
+        enumFromTo(
+            0,
+            Math.min(...map(length, rows)) -1,
+        )
+    ) : rows;
+}
+
+// or
+
+// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
+// const zipWithN = (f, tplLists) =>
+//     map(x => f(...Array.from(x)),
+//         zipN(...Array.from(tplLists))
+//     );
