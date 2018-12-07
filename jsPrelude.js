@@ -1542,10 +1542,10 @@ const mReturn = x => id(x);
 // map :: (a -> b) -> [a] -> [b]
 const map = (f, xs) => xs.map(f);
 
-// 'The mapAccumL function behaves like a combination of map and foldl; 
+// Map-accumulation is a combination of map and a catamorphism;
 // it applies a function to each element of a list, passing an accumulating 
 // parameter from left to right, and returning a final value of this 
-// accumulator together with the new list.' (See Hoogle)
+// accumulator together with the new list.
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = (f, acc, xs) =>
     xs.reduce((a, x, i) => {
@@ -2525,28 +2525,27 @@ const splitArrow = (f, g) => tpl => Tuple(f(tpl[0]), g(tpl[1]));
 // splitAt :: Int -> [a] -> ([a], [a])
 const splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));
 
-// Splitting not on a delimiter, but whenever the relationship between
-// two consecutive items matches a supplied predicate function
+// Splitting not on a delimiter, but wherever the relationship
+// between consecutive terms matches a binary predicate
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 // splitBy :: (String -> String -> Bool) -> String -> [String]
 const splitBy = (p, xs) =>
-    (xs.length < 2) ? [xs] : (() => {
-        const
-            bln = 'string' === typeof xs,
-            ys = bln ? xs.split('') : xs,
-            h = ys[0],
-            parts = ys.slice(1)
-            .reduce(([acc, active, prev], x) =>
-                p(prev, x) ? (
-                    [acc.concat([active]), [x], x]
-                ) : [acc, active.concat(x), x], [
-                    [],
-                    [h],
-                    h
-                ]);
-        return (bln ? (
-            ps => ps.map(cs => ''.concat.apply('', cs))
-        ) : x => x)(parts[0].concat([parts[1]]));
+    2 > xs.length ? [xs] : (() => {
+        const [a, r] = foldl(
+            (a, [bln, x, y]) => bln ? (
+                [fst(a).concat([snd(a)]), [y]]
+            ) : [fst(a), snd(a).concat(y)],
+            Tuple([], [xs[0]]),
+            zipWith(
+                (a, b) => [p(a, b), a, b],
+                xs, tail(xs)
+            )
+        );
+        return (
+            'string' !== typeof xs ? id : (
+                x => map(concat, x)
+            )
+        )(a.concat([r]));
     })();
 
 // splitEvery :: Int -> [a] -> [[a]]
