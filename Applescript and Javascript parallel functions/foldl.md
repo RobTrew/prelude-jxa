@@ -10,23 +10,6 @@ on foldl(f, startValue, xs)
       return v
       end tell
 end foldl
-
--- or
-
--- foldl :: (a -> b -> a) -> a -> [b] -> a
--- on foldl(f, startValue, xs)
---     script go
---         property mf : mReturn(f)'s |λ|
---         on |λ|(a, xs)
---             if {} ≠ xs then
---                 |λ|(mf(a, item 1 of xs), rest of xs)
---             else
---                 a
---             end if
---         end |λ|
---     end script
---     go's |λ|(startValue, xs)
--- end foldl
 ```
 
 ```js

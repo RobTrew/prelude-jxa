@@ -20,10 +20,10 @@ end mapAccumL
 ```
 
 ```js
-// 'The mapAccumL function behaves like a combination of map and foldl; 
+// Map-accumulation is a combination of map and a catamorphism;
 // it applies a function to each element of a list, passing an accumulating 
 // parameter from left to right, and returning a final value of this 
-// accumulator together with the new list.' (See Hoogle)
+// accumulator together with the new list.
 ```
 
 ```js

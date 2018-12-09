@@ -1,7 +1,8 @@
 ```applescript
 -- mappend (<>) :: Monoid a => a -> a -> a
 on mappend(a, b)
-    if class of a is record and class of b is record then
+    set ca to class of a
+    if record is ca then
         script instanceMay
             on |λ|(strType)
                 set mb to lookup(strType, ¬
@@ -14,6 +15,8 @@ on mappend(a, b)
         else
             mReturn(Just of mbi)'s |λ|(a, b)
         end if
+    else if handler is ca then
+        mappendFn(a, b)
     else
         a & b
     end if
@@ -24,12 +27,16 @@ end mappend
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = (a, b) => {
     const t = a.type;
-    return (Boolean(t) ? (
-        'Maybe' === t ? (
-            mappendMaybe
-        ) : 'Ordering' === t ? (
-            mappendOrdering
-        ) : mappendTuple
-    ) : append)(a, b);
+    return (
+        Boolean(t) ? (
+            'Maybe' === t ? (
+                mappendMaybe
+            ) : 'Ordering' === t ? (
+                mappendOrdering
+            ) : mappendTuple
+        ) : 'function' !== typeof a ? (
+            append
+        ) : mappendFn
+    )(a, b);
 };
 ```

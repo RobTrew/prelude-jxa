@@ -409,6 +409,10 @@ function* cycle(xs) {
     }
 }
 
+// degrees :: Float x => Radians x -> Degrees x
+const degrees = r =>
+    (180 / Math.PI) * r;
+
 // xs with first instance of x (if any) removed
 // delete :: Eq a => a -> [a] -> [a]
 const delete_ = (x, xs) => {
@@ -1891,7 +1895,7 @@ const permutations = xs =>
 
 // permutationsWithRepetition :: Int -> [a] -> [[a]]
 const permutationsWithRepetition = (n, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         map(flatten,
             foldl1(
                 x => cartesianProduct(xs, x),
@@ -2033,6 +2037,10 @@ const quot = (n, m) => Math.floor(n / m);
 // quotRem :: Int -> Int -> (Int, Int)
 const quotRem = (m, n) => 
   Tuple(Math.floor(m / n), m % n);
+
+// radians :: Float x => Degrees x -> Radians x
+const radians = x =>
+    (Math.PI / 180) * x;
 
 // raise :: Num -> Int -> Num
 const raise = (n, e) => Math.pow(n, e);
@@ -2183,10 +2191,10 @@ const replicate = (n, x) =>
 // Instance for lists (arrays) only here
 // replicateM :: Int -> [a] -> [[a]]
 const replicateM = (n, xs) => {
-    const loop = x => x <= 0 ? [
+    const go = x => 0 >= x ? [
         []
-    ] : liftA2(cons, xs, loop(x - 1));
-    return loop(n);
+    ] : liftA2List(cons, xs, go(x - 1));
+    return go(n);
 };
 
 // replicateString :: Int -> String -> String
@@ -2530,22 +2538,23 @@ const splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 // splitBy :: (String -> String -> Bool) -> String -> [String]
 const splitBy = (p, xs) =>
-    2 > xs.length ? [xs] : (() => {
-        const [a, r] = foldl(
-            (a, [bln, x, y]) => bln ? (
-                [fst(a).concat([snd(a)]), [y]]
-            ) : [fst(a), snd(a).concat(y)],
-            Tuple([], [xs[0]]),
-            zipWith(
-                (a, b) => [p(a, b), a, b],
-                xs, tail(xs)
-            )
-        );
-        return (
-            'string' !== typeof xs ? id : (
-                x => map(concat, x)
-            )
-        )(a.concat([r]));
+    (xs.length < 2) ? [xs] : (() => {
+        const
+            bln = 'string' === typeof xs,
+            ys = bln ? xs.split('') : xs,
+            h = ys[0],
+            parts = ys.slice(1)
+            .reduce(([acc, active, prev], x) =>
+                p(prev, x) ? (
+                    [acc.concat([active]), [x], x]
+                ) : [acc, active.concat(x), x], [
+                    [],
+                    [h],
+                    h
+                ]);
+        return (bln ? (
+            ps => ps.map(cs => ''.concat.apply('', cs))
+        ) : x => x)(parts[0].concat([parts[1]]));
     })();
 
 // splitEvery :: Int -> [a] -> [[a]]

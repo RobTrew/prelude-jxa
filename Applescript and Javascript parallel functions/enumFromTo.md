@@ -1,18 +1,24 @@
 ```applescript
--- enumFromTo :: Enum a => a -> a -> [a]
+-- enumFromTo :: Int -> Int -> [Int]
 on enumFromTo(m, n)
-    if class of m is integer then
-        enumFromToInt(m, n)
+    if m ≤ n then
+        set lst to {}
+        repeat with i from m to n
+            set end of lst to i
+        end repeat
+        return lst
     else
-        enumFromToChar(m, n)
+        return {}
     end if
 end enumFromTo
 ```
 
 ```js
-// enumFromTo :: Enum a => a -> a -> [a]
+// enumFromTo :: Int -> Int -> [Int]
 const enumFromTo = (m, n) =>
-    'number' !== typeof m ? (
-        enumFromToChar(m, n)
-    ) : enumFromToInt(m, n);
+    m <= n ? iterateUntil(
+        x => n <= x,
+        x => 1 + x,
+        m
+    ) : [];
 ```

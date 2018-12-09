@@ -1,7 +1,7 @@
 ```js
 // permutationsWithRepetition :: Int -> [a] -> [[a]]
 const permutationsWithRepetition = (n, xs) =>
-    xs.length > 0 ? (
+    0 < xs.length ? (
         map(flatten,
             foldl1(
                 x => cartesianProduct(xs, x),

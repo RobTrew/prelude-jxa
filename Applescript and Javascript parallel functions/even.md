@@ -1,7 +1,7 @@
 ```applescript
 -- even :: Int -> Bool
 on even(x)
-    x mod 2 = 0
+    0 = x mod 2
 end even
 ```
 

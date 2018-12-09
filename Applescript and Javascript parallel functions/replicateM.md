@@ -35,9 +35,9 @@ end replicateM
 ```js
 // replicateM :: Int -> [a] -> [[a]]
 const replicateM = (n, xs) => {
-    const loop = x => x <= 0 ? [
+    const go = x => 0 >= x ? [
         []
-    ] : liftA2(cons, xs, loop(x - 1));
-    return loop(n);
+    ] : liftA2List(cons, xs, go(x - 1));
+    return go(n);
 };
 ```

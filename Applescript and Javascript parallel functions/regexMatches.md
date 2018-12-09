@@ -24,7 +24,7 @@ on regexMatches(strRegex, strHay)
                 end |λ|
             end script
             map(rangeMatched, ¬
-                enumFromToInt(0, ((numberOfRanges of m) as integer) - 1))
+                enumFromTo(0, ((numberOfRanges of m) as integer) - 1))
         end |λ|
     end script
     

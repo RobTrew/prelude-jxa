@@ -57,6 +57,7 @@ curry :: ((a, b) -> c) -> a -> b -> c
 curry2 :: ((a, b) -> c) -> a -> b -> c
 curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d
 cycle :: [a] -> Generator [a]
+degrees :: Float x => Radians x -> Degrees x
 delete :: Eq a => a -> [a] -> [a]
 deleteAt :: Int -> [a] -> [a]
 deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
@@ -280,6 +281,7 @@ quickSort :: (Ord a) => [a] -> [a]
 quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
 quot :: Int -> Int -> Int
 quotRem :: Int -> Int -> (Int, Int)
+radians :: Float x => Degrees x -> Radians x
 raise :: Num -> Int -> Num
 randomRInt :: Int -> Int -> Int
 range :: Ix a => (a, a) -> [a]

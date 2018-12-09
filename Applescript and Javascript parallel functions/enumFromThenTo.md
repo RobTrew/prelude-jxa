@@ -1,20 +1,22 @@
 ```applescript
--- enumFromThenTo :: Enum a => a -> a -> a -> [a]
+-- enumFromThenTo :: Int -> Int -> Int -> [Int]
 on enumFromThenTo(x1, x2, y)
-    if class of x1 is integer then
-        enumFromThenToInt(x1, x2, y)
-    else
-        enumFromThenToChar(x1, x2, y)
-    end if
+    set xs to {}
+    set gap to x2 - x1
+    set d to max(1, abs(gap)) * (signum(gap))
+    repeat with i from x1 to y by d
+        set end of xs to i
+    end repeat
+    return xs
 end enumFromThenTo
 ```
 
 ```js
-// enumFromThenTo :: Enum a => a -> a -> a -> [a]
-const enumFromThenTo = (x1, x2, y) =>
-    ('number' !== typeof x1 ? (
-        enumFromThenToChar
-    ) : enumFromThenToInt)(
-        ...[x1, x2, y]
-    )
+// enumFromThenTo :: Int -> Int -> Int -> [Int]
+const enumFromThenTo = (x1, x2, y) => {
+    const d = x2 - x1;
+    return Array.from({
+        length: Math.floor(y - x2) / d + 2
+    }, (_, i) => x1 + (d * i));
+};
 ```

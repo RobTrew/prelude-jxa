@@ -2,35 +2,42 @@
 -- splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 -- splitBy :: (String -> String -> Bool) -> String -> [String]
 on splitBy(p, xs)
-    if length of xs < 2 then
+    if 2 > length of xs then
         {xs}
     else
-        script f
-            property mp : |λ| of mReturn(p)
-            on |λ|(a, x)
-                set {acc, active, prev} to a
-                if mp(prev, x) then
-                    {acc & {active}, {x}, x}
-                else
-                    {acc, active & x, x}
-                end if
+        script pairMatch
+            property mp : mReturn(p)'s |λ|
+            on |λ|(a, b)
+                {mp(a, b), a, b}
             end |λ|
         end script
         
-        set h to item 1 of xs
-        set lstParts to foldl(f, {{}, {h}, h}, items 2 thru -1 of xs)
-        if class of item 1 of xs = string then
-            map(concat, (item 1 of lstParts & {item 2 of lstParts}))
+        script addOrSplit
+            on |λ|(a, blnXY)
+                set {bln, x, y} to blnXY
+                if bln then
+                    {fst(a) & {snd(a)}, {y}}
+                else
+                    {fst(a), snd(a) & y}
+                end if
+            end |λ|
+        end script
+        set {a, r} to foldl(addOrSplit, ¬
+            {{}, {item 1 of xs}}, ¬
+            zipWith(pairMatch, xs, tail(xs)))
+        
+        if list is class of xs then
+            a & {r}
         else
-            item 1 of lstParts & {item 2 of lstParts}
+            map(my concat, a & {r})
         end if
     end if
 end splitBy
 ```
 
 ```js
-// Splitting not on a delimiter, but whenever the relationship between
-// two consecutive items matches a supplied predicate function
+// Splitting not on a delimiter, but wherever the relationship
+// between consecutive terms matches a binary predicate
 ```
 
 ```js
