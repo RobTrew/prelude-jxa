@@ -29,8 +29,8 @@ const cons = (x, xs) =>
         [x].concat(xs)
     ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (
         x + xs
-    ) : ( // Wrapping existing generator to prepend one element
-        function* gen() {
+    ) : ( // Existing generator wrapped with one additional element
+        function* () {
             yield x;
             let nxt = xs.next()
             while (!xs.done) {
