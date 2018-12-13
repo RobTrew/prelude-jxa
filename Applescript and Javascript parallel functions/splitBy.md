@@ -16,15 +16,15 @@ on splitBy(p, xs)
             on |λ|(a, blnXY)
                 set {bln, x, y} to blnXY
                 if bln then
-                    {fst(a) & {snd(a)}, {y}}
+                    {item 1 of a & {item 2 of a}, {y}}
                 else
-                    {fst(a), snd(a) & y}
+                    {item 1 of a, (item 2 of a) & y}
                 end if
             end |λ|
         end script
         set {a, r} to foldl(addOrSplit, ¬
             {{}, {item 1 of xs}}, ¬
-            zipWith(pairMatch, xs, tail(xs)))
+            zipWith(pairMatch, xs, rest of xs))
         
         if list is class of xs then
             a & {r}

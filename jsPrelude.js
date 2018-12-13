@@ -369,7 +369,18 @@ const concatMap = (f, xs) =>
 const cons = (x, xs) =>
     Array.isArray(xs) ? (
         [x].concat(xs)
-    ) : (x + xs);
+    ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (
+        x + xs
+    ) : ( // Wrapping existing generator to prepend one element
+        function* gen() {
+            yield x;
+            let nxt = xs.next()
+            while (!xs.done) {
+                yield nxt.value;
+                nxt = xs.next();
+            }
+        }
+    )();
 
 // const :: a -> b -> a
 const const_ = k => _ => k;
@@ -586,6 +597,18 @@ const dropWhileEnd = (p, xs) => {
     let i = xs.length;
     while (i-- && p(xs[i])) {}
     return xs.slice(0, i + 1);
+};
+
+// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
+const dropWhileGen = (p, xs) => {
+    let
+        nxt = xs.next(),
+        v = nxt.value;
+    while (!nxt.done && p(v)) {
+        nxt = xs.next();
+        v = nxt.value;
+    }
+    return cons(v, xs);
 };
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
