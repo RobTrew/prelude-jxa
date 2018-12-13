@@ -151,6 +151,17 @@ const apTuple = (tf, tx) =>
 // append (++) :: String -> String -> String
 const append = (xs, ys) => xs.concat(ys);
 
+// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
+function* appendGen(xs, ys) {
+    for (let vs of [xs, ys]) {
+        let nxt = vs.next()
+        while (!nxt.done) {
+            yield nxt.value
+            nxt = vs.next()
+        }
+    }
+};
+
 // apply ($) :: (a -> b) -> a -> b
 const apply = (f, x) => f(x);
 
@@ -375,7 +386,7 @@ const cons = (x, xs) =>
         function* () {
             yield x;
             let nxt = xs.next()
-            while (!xs.done) {
+            while (!nxt.done) {
                 yield nxt.value;
                 nxt = xs.next();
             }

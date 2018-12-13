@@ -19,6 +19,7 @@ apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 append (++) :: [a] -> [a] -> [a]
 appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
+appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 apply ($) :: (a -> b) -> a -> b
 approxRatio :: Real -> Real -> Ratio
 argvLength :: Function -> Int

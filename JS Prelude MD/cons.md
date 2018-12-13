@@ -9,7 +9,7 @@ const cons = (x, xs) =>
         function* () {
             yield x;
             let nxt = xs.next()
-            while (!xs.done) {
+            while (!nxt.done) {
                 yield nxt.value;
                 nxt = xs.next();
             }
