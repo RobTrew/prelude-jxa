@@ -165,7 +165,8 @@ intercalate :: [a] -> [[a]] -> [a]
 intercalateS :: String -> [String] -> String
 intersect :: (Eq a) => [a] -> [a] -> [a]
 intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]
+intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
+intersection :: Ord a => Set a -> Set a -> Set a
 intersperse :: a -> [a] -> [a]
 isAlpha :: Char -> Bool
 isChar :: a -> Bool
@@ -337,6 +338,7 @@ showLog :: a -> IO ()
 showMaybe :: Maybe a -> String
 showOrdering :: Ordering -> String
 showRatio :: Ratio -> String
+showSet :: Set -> String
 showTuple :: Tuple -> String
 showUndefined :: () -> String
 signum :: Num -> Num
@@ -414,6 +416,7 @@ unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
 unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
 union :: [a] -> [a] -> [a]
 unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
+unionSet :: Ord a => Set a -> Set a -> Set a
 unlines :: [String] -> String
 unsnoc :: [a] -> Maybe ([a], a)
 until :: (a -> Bool) -> (a -> a) -> a -> a

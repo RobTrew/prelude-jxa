@@ -666,7 +666,11 @@ const elemIndices = (x, xs) =>
     ) : [], xs);
 
 // elems :: Dict -> [a]
-const elems = Object.values;
+// elems :: Set -> [a]
+const elems = x =>
+    'Set' !== x.constructor.name ? (
+        Object.values(x)
+    ) : Array.from(x.values());
 
 // enumFrom :: a -> [a]
 function* enumFrom(x) {
@@ -1216,18 +1220,22 @@ const intersectBy = (eq, xs, ys) => {
     xs.filter(x => ys.some(ceq(x))) : [];
 };
 
-// intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]
-const intersectionBy = (eq, xs) =>
+// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
+const intersectListsBy = (eq, xs) =>
     foldr1(((a, x) => intersectBy(eq, a, x)), xs);
+
+// intersection :: Ord a => Set a -> Set a -> Set a
+const intersection = (s, s1) =>
+    new Set([...s].filter(x => s1.has(x)));
 
 // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
 // intersperse :: a -> [a] -> [a]
 // intersperse :: Char -> String -> String
 const intersperse = (sep, xs) => {
-    const bool = 'string' === typeof xs;
+    const bln = 'string' === typeof xs;
     return xs.length > 1 ? (
-        (bool ? concat : x => x)(
-            (bool ? (
+        (bln ? concat : x => x)(
+            (bln ? (
                 xs.split('')
             ) : xs)
             .slice(1)
@@ -1237,7 +1245,7 @@ const intersperse = (sep, xs) => {
 
 // isAlpha :: Char -> Bool
 const isAlpha = c =>
-    /[A-Za-z0-9\u00C0-\u00FF]/.test(c);
+    /[A-Za-z\u00C0-\u00FF]/.test(c);
 
 // isChar :: a -> Bool
 const isChar = x =>
@@ -1578,7 +1586,10 @@ const lookupTuples = (k, kvs) =>
 const mReturn = x => id(x);
 
 // map :: (a -> b) -> [a] -> [b]
-const map = (f, xs) => xs.map(f);
+const map = (f, xs) =>
+    (Array.isArray(xs) ? (
+        xs
+    ) : xs.split('')).map(f);
 
 // Map-accumulation is a combination of map and a catamorphism;
 // it applies a function to each element of a list, passing an accumulating 
@@ -1893,8 +1904,8 @@ const partition = (p, xs) =>
 
 // partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>
-    xs.reduce((a, x) =>
-        undefined !== x.Left ? (
+    xs.reduce(
+        (a, x) => undefined !== x.Left ? (
             Tuple(a[0].concat(x.Left), a[1])
         ) : Tuple(a[0], a[1].concat(x.Right)),
         Tuple([], [])
@@ -2450,6 +2461,10 @@ const showRatio = r =>
             '/' + r.d.toString()
         ) : ''
     );
+
+// showSet :: Set -> String
+const showSet = s =>
+    intercalate(sort(elems(s)), ['{','}']);
 
 // showTuple :: Tuple -> String
 const showTuple = tpl =>
@@ -3171,6 +3186,14 @@ const unionBy = (fnEq, xs, ys) => {
         )
     );
 };
+
+// unionSet :: Ord a => Set a -> Set a -> Set a
+const unionSet = (s, s1) =>
+    Array.from(s1.values())
+    .reduce(
+        (a, x) => (a.add(x), a),
+        new Set(s)
+    );
 
 // unlines :: [String] -> String
 const unlines = xs => xs.join('\n');

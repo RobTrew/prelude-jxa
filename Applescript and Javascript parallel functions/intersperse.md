@@ -31,10 +31,10 @@ end intersperse
 // intersperse :: a -> [a] -> [a]
 // intersperse :: Char -> String -> String
 const intersperse = (sep, xs) => {
-    const bool = 'string' === typeof xs;
+    const bln = 'string' === typeof xs;
     return xs.length > 1 ? (
-        (bool ? concat : x => x)(
-            (bool ? (
+        (bln ? concat : x => x)(
+            (bln ? (
                 xs.split('')
             ) : xs)
             .slice(1)
