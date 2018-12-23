@@ -12,7 +12,7 @@ end intersectionBy
 ```
 
 ```js
-// intersectionBy :: (a -> a -> Bool) -> [[a]] -> [a]
-const intersectionBy = (eq, xs) =>
+// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
+const intersectListsBy = (eq, xs) =>
     foldr1(((a, x) => intersectBy(eq, a, x)), xs);
 ```
