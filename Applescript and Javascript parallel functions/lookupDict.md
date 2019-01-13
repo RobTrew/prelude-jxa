@@ -3,7 +3,7 @@
 on lookupDict(k, dct)
     set ca to current application
     set v to (ca's NSDictionary's dictionaryWithDictionary:dct)'s objectForKey:k
-    if v ≠ missing value then
+    if missing value ≠ v then
         Just(item 1 of ((ca's NSArray's arrayWithObject:v) as list))
     else
         Nothing()

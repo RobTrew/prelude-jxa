@@ -1,22 +1,22 @@
 ```applescript
 -- deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 on deleteBy(fnEq, x, xs)
-    if length of xs > 0 then
-        set mb to uncons(xs)
-        if Nothing of mb then
-            xs
-        else
-            set ht to Just of mb
-            set {h, t} to {|1| of ht, |2| of ht}
-            if |λ|(x, h) of mReturn(fnEq) then
-                t
+    script go
+        property eq : mReturn(fnEq)'s |λ|
+        on |λ|(xs)
+            if 0 < length of xs then
+                tell xs to set {h, t} to {item 1, rest}
+                if eq(x, h) then
+                    t
+                else
+                    {h} & |λ|(t)
+                end if
             else
-                {h} & deleteBy(fnEq, x, t)
+                {}
             end if
-        end if
-    else
-        {}
-    end if
+        end |λ|
+    end script
+    go's |λ|(xs)
 end deleteBy
 ```
 

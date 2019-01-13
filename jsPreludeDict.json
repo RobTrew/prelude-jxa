@@ -63,7 +63,7 @@
   "delete": "// xs with first instance of x (if any) removed\n\n// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = (x, xs) => {\n    const go = xs => {\n        return 0 < xs.length ? (\n            (x === xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n    }\n    return go(xs);\n};",
   "deleteAt": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = (i, xs) =>\n    i <= xs.length ? (() => {\n        const lr = splitAt(i, xs);\n        return lr[0].concat(lr[1].slice(1));\n    })() : xs;",
   "deleteBy": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = (f, x, xs) =>\n    0 < xs.length ? (\n        f(x, xs[0]) ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(deleteBy(f, x, xs.slice(1)))\n    ) : [];",
-  "deleteFirst": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = (x, xs) =>\n    0 < xs.length ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(deleteFirst(x, xs.slice(1)))\n    ) : [];",
+  "deleteFirst": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = (x, xs) => {\n    const go = xs => 0 < xs.length ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(go(xs.slice(1)))\n    ) : [];\n    return go(xs);\n};",
   "deleteFirstsBy": "// deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst deleteFirstsBy = (fnEq, xs, ys) =>\n    ys.reduce((x, y) => deleteBy(fnEq, y, x), xs);",
   "deleteMap": "// deleteMap :: k -> Dict -> Dict\nconst deleteMap = (k, dct) =>\n    (delete dct[k], dct);",
   "difference": "// difference :: Eq a => [a] -> [a] -> [a]\nconst difference = (xs, ys) =>\n    xs.filter(x => -1 === ys.indexOf(x));",
