@@ -3,8 +3,8 @@
 -- drop :: Int -> String -> String
 on drop(n, xs)
     set c to class of xs
-    if c is not script then
-        if c is not string then
+    if script is not c then
+        if string is not c then
             if n < length of xs then
                 items (1 + n) thru -1 of xs
             else
