@@ -1,10 +1,11 @@
 ```applescript
 -- showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
-on showIntAtBase(base, toChr, n, rs)
+on showIntAtBase(base, toDigit, n, rs)
     script showIt
+        property f : mReturn(toDigit)
         on |λ|(nd_, r)
             set {n, d} to ({|1|, |2|} of nd_)
-            set r_ to toChr's |λ|(d) & r
+            set r_ to f's |λ|(d) & r
             if n > 0 then
                 |λ|(quotRem(n, base), r_)
             else
@@ -12,14 +13,7 @@ on showIntAtBase(base, toChr, n, rs)
             end if
         end |λ|
     end script
-    
-    if base ≤ 1 then
-        "error: showIntAtBase applied to unsupported base"
-    else if n < 0 then
-        "error: showIntAtBase applied to negative number"
-    else
-        showIt's |λ|(quotRem(n, base), rs)
-    end if
+    showIt's |λ|(quotRem(n, base), rs)
 end showIntAtBase
 ```
 
