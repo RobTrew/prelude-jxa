@@ -1263,16 +1263,15 @@ const isDigit = c => {
 
 // isInfixOf :: (Eq a) => [a] -> [a] -> Bool
 // isInfixOf :: String -> String -> Bool
-const isInfixOf = (needle, haystack) => {
-    const lng = needle.length;
-    const go = xs =>
-        lng <= xs.length ? (
-            isPrefixOf(needle, xs) || go(xs.slice(1))
-        ) : false;
-    return 'string' !== typeof haystack ? (
-        go(haystack)
-    ) : haystack.includes(needle);
-};
+const isInfixOf = (needle, haystack) =>
+    'string' !== typeof haystack ? (() => {
+        const
+            lng = needle.length,
+            go = xs => lng <= xs.length ? (
+                isPrefixOf(needle, xs) || go(xs.slice(1))
+            ) : false;
+        return go(haystack);
+    })() : haystack.includes(needle);
 
 // isLeft :: Either a b -> Bool
 const isLeft = lr =>
