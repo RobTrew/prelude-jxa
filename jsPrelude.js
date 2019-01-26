@@ -2101,8 +2101,9 @@ const radians = x =>
 // raise :: Num -> Int -> Num
 const raise = (n, e) => Math.pow(n, e);
 
-// randomRInt :: Int -> Int -> Int
-const randomRInt = (low, high) =>
+-- e.g. map(randomRInt(1, 10), ft(1, 20))
+// randomRInt :: Int -> Int -> IO () -> Int 
+const randomRInt = (low, high) => () =>
     low + Math.floor(
         (Math.random() * ((high - low) + 1))
     );
