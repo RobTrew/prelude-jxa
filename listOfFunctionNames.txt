@@ -87,8 +87,8 @@ elem :: Eq a => a -> [a] -> Bool
 elemAtMay :: Int -> Dict -> Maybe (String, a)
 elemIndex :: Eq a => a -> [a] -> Maybe Int
 elemIndices :: Eq a => a -> [a] -> [Int]
-elems :: Dict -> [a]
-enumFrom :: a -> [a]
+elems :: Map k a -> [a]
+enumFrom :: Enum a => a -> [a]
 enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
 enumFromTo :: Int -> Int -> [Int]
@@ -135,7 +135,7 @@ fromLeft :: a -> Either a b -> a
 fromMaybe :: a -> Maybe a -> a
 fromRight :: b -> Either a b -> b
 fst :: (a, b) -> a
-ft :: Int -> Int -> [Int]
+ft :: (Int, Int) -> [Int]
 gcd :: Int -> Int -> Int
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
@@ -286,7 +286,7 @@ quot :: Int -> Int -> Int
 quotRem :: Int -> Int -> (Int, Int)
 radians :: Float x => Degrees x -> Radians x
 raise :: Num -> Int -> Num
-randomRInt :: Int -> Int -> IO () -> Int 
+randomRInt :: Int -> Int -> IO () -> Int
 range :: Ix a => (a, a) -> [a]
 ratio :: Int -> Int -> Ratio Int
 ratioDiv :: Rational -> Rational -> Rational
