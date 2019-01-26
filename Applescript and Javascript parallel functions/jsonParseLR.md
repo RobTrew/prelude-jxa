@@ -6,7 +6,6 @@ on jsonParseLR(s)
         JSONObjectWithData:((ca's NSString's stringWithString:s)'s ¬
             dataUsingEncoding:(ca's NSUTF8StringEncoding)) ¬
             options:0 |error|:(reference)
-    
     if x is missing value then
         |Left|(e's localizedDescription() as string)
     else
