@@ -8,6 +8,6 @@ const toEnum = t => x => {
     };
     return t in dct ? (
         dct[t](x)
-    ) : t[x];
+    ) : t[t[x]]
 };
 ```

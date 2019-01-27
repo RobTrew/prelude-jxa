@@ -1,7 +1,8 @@
 ```js
 // namedEnumFromList :: String -> [String] -> Dict
-const namedEnumFromList = (name, keys, values) =>
-    keys.map(
+const namedEnumFromList = (name, keys, values) => {
+    const e = {};
+    return keys.map(
         values ? (
             (k, i) => Tuple(k, values[i])
         ) : Tuple
@@ -13,9 +14,11 @@ const namedEnumFromList = (name, keys, values) =>
                     'name': name,
                     'key': kv[0],
                     'value': kv[1],
-                    'enum': keys
-                }
+                    'enum': e
+                },
+                [kv[1]]: kv[0]
             }
-        ), {}
+        ), e
     );
+};
 ```

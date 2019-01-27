@@ -1848,8 +1848,9 @@ const minimumMay = xs =>
 const mod = (n, d) => n % d;
 
 // namedEnumFromList :: String -> [String] -> Dict
-const namedEnumFromList = (name, keys, values) =>
-    keys.map(
+const namedEnumFromList = (name, keys, values) => {
+    const e = {};
+    return keys.map(
         values ? (
             (k, i) => Tuple(k, values[i])
         ) : Tuple
@@ -1861,11 +1862,13 @@ const namedEnumFromList = (name, keys, values) =>
                     'name': name,
                     'key': kv[0],
                     'value': kv[1],
-                    'enum': keys
-                }
+                    'enum': e
+                },
+                [kv[1]]: kv[0]
             }
-        ), {}
+        ), e
     );
+};
 
 // negate :: Num -> Num
 const negate = n => -n;
@@ -1912,9 +1915,13 @@ const or = xs =>
 const ord = c => c.codePointAt(0);
 
 // ordering :: () -> Ordering
-const ordering = namedEnumFromList(
-    'Ordering', ['LT', 'EQ', 'GT']
-);
+const
+    ordering = namedEnumFromList(
+        'Ordering', ['LT', 'EQ', 'GT']
+    ),
+    LT = ordering.LT,
+    EQ = ordering.EQ,
+    GT = ordering.GT;
 
 // All lines in the string outdented by the same amount
 // (just enough to ensure that the least indented lines 
@@ -2979,7 +2986,7 @@ const toEnum = t => x => {
     };
     return t in dct ? (
         dct[t](x)
-    ) : t[x];
+    ) : t[t[x]]
 };
 
 // toListTree :: Tree a -> [a]
