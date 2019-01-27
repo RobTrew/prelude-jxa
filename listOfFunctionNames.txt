@@ -1,9 +1,7 @@
-Enum :: String -> [String] -> Dict
 Just :: a -> Maybe a
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
 Nothing :: Maybe a
-Ordering :: () -> Ordering
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 TupleN :: a -> b ...  -> (a, b ... )
@@ -94,6 +92,7 @@ enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
 enumFromTo :: Enum a => a -> a -> [a]
 enumFromToChar :: Char -> Char -> [Char]
+enum_ :: String -> [String] -> Dict
 eq (==) :: Eq a => a -> a -> Bool
 evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a
@@ -262,6 +261,7 @@ on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 op :: String -> (a -> a -> b)
 or :: [Bool] -> Bool
 ord :: Char -> Int
+ordering :: () -> Ordering
 outdented :: String -> String
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])

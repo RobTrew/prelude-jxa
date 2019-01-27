@@ -13,8 +13,8 @@ end Ordering
 ```
 
 ```js
-// Ordering :: () -> Ordering
-const Ordering = Enum(
+// ordering :: () -> Ordering
+const ordering = enum_(
     'Ordering', ['LT', 'EQ', 'GT']
 );
 ```

@@ -1,25 +1,5 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
-// Enum :: String -> [String] -> Dict
-const Enum = (name, keys, values) =>
-    keys.map(
-        values ? (
-            (k, i) => Tuple(k, values[i])
-        ) : Tuple
-    ).reduce(
-        (a, kv) => Object.assign(
-            a, {
-                [kv[0]]: {
-                    'type': 'enum',
-                    'name': name,
-                    'key': kv[0],
-                    'value': kv[1],
-                    'enum': keys
-                }
-            }
-        ), {}
-    );
-
 // Just :: a -> Maybe a
 const Just = x => ({
     type: 'Maybe',
@@ -45,11 +25,6 @@ const Nothing = () => ({
     type: 'Maybe',
     Nothing: true,
 });
-
-// Ordering :: () -> Ordering
-const Ordering = Enum(
-    'Ordering', ['LT', 'EQ', 'GT']
-);
 
 // Right :: b -> Either a b
 const Right = x => ({
@@ -748,6 +723,26 @@ const enumFromToChar = (m, n) => {
         length: Math.floor(intN - intM) + 1
     }, (_, i) => String.fromCodePoint(intM + i));
 };
+
+// enum_ :: String -> [String] -> Dict
+const enum_ = (name, keys, values) =>
+    keys.map(
+        values ? (
+            (k, i) => Tuple(k, values[i])
+        ) : Tuple
+    ).reduce(
+        (a, kv) => Object.assign(
+            a, {
+                [kv[0]]: {
+                    'type': 'enum',
+                    'name': name,
+                    'key': kv[0],
+                    'value': kv[1],
+                    'enum': keys
+                }
+            }
+        ), {}
+    );
 
 // eq (==) :: Eq a => a -> a -> Bool
 const eq = (a, b) => {
@@ -1915,6 +1910,11 @@ const or = xs =>
 
 // ord :: Char -> Int
 const ord = c => c.codePointAt(0);
+
+// ordering :: () -> Ordering
+const ordering = enum_(
+    'Ordering', ['LT', 'EQ', 'GT']
+);
 
 // All lines in the string outdented by the same amount
 // (just enough to ensure that the least indented lines 
