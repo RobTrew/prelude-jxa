@@ -14,7 +14,7 @@ end Ordering
 
 ```js
 // ordering :: () -> Ordering
-const ordering = enum_(
+const ordering = namedEnumFromList(
     'Ordering', ['LT', 'EQ', 'GT']
 );
 ```

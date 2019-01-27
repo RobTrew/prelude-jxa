@@ -724,26 +724,6 @@ const enumFromToChar = (m, n) => {
     }, (_, i) => String.fromCodePoint(intM + i));
 };
 
-// enum_ :: String -> [String] -> Dict
-const enum_ = (name, keys, values) =>
-    keys.map(
-        values ? (
-            (k, i) => Tuple(k, values[i])
-        ) : Tuple
-    ).reduce(
-        (a, kv) => Object.assign(
-            a, {
-                [kv[0]]: {
-                    'type': 'enum',
-                    'name': name,
-                    'key': kv[0],
-                    'value': kv[1],
-                    'enum': keys
-                }
-            }
-        ), {}
-    );
-
 // eq (==) :: Eq a => a -> a -> Bool
 const eq = (a, b) => {
     const t = typeof a;
@@ -1867,6 +1847,26 @@ const minimumMay = xs =>
 // mod :: Int -> Int -> Int
 const mod = (n, d) => n % d;
 
+// namedEnumFromList :: String -> [String] -> Dict
+const namedEnumFromList = (name, keys, values) =>
+    keys.map(
+        values ? (
+            (k, i) => Tuple(k, values[i])
+        ) : Tuple
+    ).reduce(
+        (a, kv) => Object.assign(
+            a, {
+                [kv[0]]: {
+                    'type': 'enum',
+                    'name': name,
+                    'key': kv[0],
+                    'value': kv[1],
+                    'enum': keys
+                }
+            }
+        ), {}
+    );
+
 // negate :: Num -> Num
 const negate = n => -n;
 
@@ -1912,7 +1912,7 @@ const or = xs =>
 const ord = c => c.codePointAt(0);
 
 // ordering :: () -> Ordering
-const ordering = enum_(
+const ordering = namedEnumFromList(
     'Ordering', ['LT', 'EQ', 'GT']
 );
 

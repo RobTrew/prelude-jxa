@@ -92,7 +92,6 @@ enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
 enumFromTo :: Enum a => a -> a -> [a]
 enumFromToChar :: Char -> Char -> [Char]
-enum_ :: String -> [String] -> Dict
 eq (==) :: Eq a => a -> a -> Bool
 evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a
@@ -250,6 +249,7 @@ minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 minimumMay :: [a] -> Maybe a
 mod :: Int -> Int -> Int
 modificationTime :: FilePath -> Either String Date
+namedEnumFromList :: String -> [String] -> Dict
 negate :: Num -> Num
 newUUID :: () -> IO UUID String
 not :: Bool -> Bool
