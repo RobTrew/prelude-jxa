@@ -1,8 +1,9 @@
+Enum :: String -> [String] -> Dict
 Just :: a -> Maybe a
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
 Nothing :: Maybe a
-Ordering :: Int -> Ordering
+Ordering :: () -> Ordering
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 TupleN :: a -> b ...  -> (a, b ... )
@@ -91,7 +92,7 @@ elems :: Map k a -> [a]
 enumFrom :: Enum a => a -> [a]
 enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
-enumFromTo :: Int -> Int -> [Int]
+enumFromTo :: Enum a => a -> a -> [a]
 enumFromToChar :: Char -> Char -> [Char]
 eq (==) :: Eq a => a -> a -> Bool
 evalJSLR :: String -> Either String a
@@ -389,6 +390,7 @@ then (>>) :: Monad m => m a -> m b -> m b
 thenIO (>>) :: IO a -> IO b -> IO b
 thenList (>>) :: [a] -> [b] -> [b]
 thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
+toEnum :: Type -> Int -> a
 toListTree :: Tree a -> [a]
 toLower :: String -> String
 toRatio :: Real -> Ratio

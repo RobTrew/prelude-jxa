@@ -1,5 +1,21 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
+// Enum :: String -> [String] -> Dict
+const Enum = (name, items) =>
+    items.reduce(
+        (a, k, i) => Object.assign(
+            a, {
+                [k]: {
+                    'type': 'enum',
+                    'name': name,
+                    'key': k,
+                    'index': i,
+                    'enum': items
+                }
+            }
+        ), {}
+    );
+
 // Just :: a -> Maybe a
 const Just = x => ({
     type: 'Maybe',
@@ -26,12 +42,10 @@ const Nothing = () => ({
     Nothing: true,
 });
 
-// Ordering :: Int -> Ordering
-const Ordering = e =>
-    ({
-        type: 'Ordering',
-        value: (e > 0 ? 1 : e < 0 ? -1 : 0)
-    });
+// Ordering :: () -> Ordering
+const Ordering = Enum(
+    'Ordering', ['LT', 'EQ', 'GT']
+);
 
 // Right :: b -> Either a b
 const Right = x => ({
@@ -669,14 +683,14 @@ const elemIndices = (x, xs) =>
         [i]
     ) : [], xs);
 
-// elems :: Dict -> [a]
-// elems :: Set -> [a]
+// elems :: Map k a -> [a]
+// elems :: Set a -> [a]
 const elems = x =>
     'Set' !== x.constructor.name ? (
         Object.values(x)
     ) : Array.from(x.values());
 
-// enumFrom :: a -> [a]
+// enumFrom :: Enum a => a -> [a]
 function* enumFrom(x) {
     let v = x;
     while (true) {
@@ -703,13 +717,20 @@ const enumFromThenToChar = (x1, x2, y) => {
     }, (_, i) => String.fromCodePoint(i1 + (d * i)));
 };
 
-// enumFromTo :: Int -> Int -> [Int]
-const enumFromTo = (m, n) =>
-    m <= n ? iterateUntil(
-        x => n <= x,
-        x => 1 + x,
-        m
-    ) : [];
+// enumFromTo :: Enum a => a -> a -> [a]
+const enumFromTo = (m, n) => {
+    const
+        [x, y] = [m, n].map(fromEnum),
+        b = x + (Number(m) ? m - x : 0),
+        tp = m instanceof Object ? (
+            m.enum
+        ) : typeof m;
+    return Array.from({
+        length: 1 + (y - x)
+    }, (_, i) => toEnum(tp)(
+        b + i
+    ));
+};
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = (m, n) => {
@@ -999,12 +1020,12 @@ const foldr1May = (f, xs) =>
     ) : Nothing();
 
 // fromEnum :: Enum a => a -> Int
-const fromEnum = x => {
-    const type = typeof x;
-    return 'boolean' === type ? (
-        x ? 1 : 0
-    ) : 'string' === type ? x.charCodeAt(0) : x;
-};
+const fromEnum = x =>
+    typeof x !== 'string' ? (
+        x.constructor === Object ? (
+            x.index
+        ) : parseInt(Number(x))
+    ) : x.codePointAt(0);
 
 // | Return the contents of a 'Left'-value or a default value otherwise.
 // fromLeft :: a -> Either a b -> a
@@ -1023,7 +1044,7 @@ const fromRight = (def, lr) =>
 const fst = tpl => tpl[0];
 
 // Abbreviation for quick testing
-// ft :: Int -> Int -> [Int]
+// ft :: (Int, Int) -> [Int]
 const ft = (m, n) =>
     Array.from({
         length: 1 + n - m
@@ -2939,6 +2960,18 @@ const thenList = (xs, ys) =>
 // thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
 const thenMay = (mbx, mby) =>
     mbx.Nothing ? mbx : mby;
+
+// toEnum :: Type -> Int -> a
+const toEnum = t => x => {
+    const dct = {
+        'number': Number,
+        'string': String.fromCodePoint,
+        'boolean': Boolean
+    };
+    return t in dct ? (
+        dct[t](x)
+    ) : t[x];
+};
 
 // toListTree :: Tree a -> [a]
 const toListTree = tree => {

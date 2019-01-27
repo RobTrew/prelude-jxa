@@ -1,5 +1,5 @@
 ```js
-// enumFrom :: a -> [a]
+// enumFrom :: Enum a => a -> [a]
 function* enumFrom(x) {
     let v = x;
     while (true) {
