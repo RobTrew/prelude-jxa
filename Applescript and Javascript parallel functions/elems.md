@@ -12,8 +12,8 @@ end elems
 ```
 
 ```js
-// elems :: Dict -> [a]
-// elems :: Set -> [a]
+// elems :: Map k a -> [a]
+// elems :: Set a -> [a]
 const elems = x =>
     'Set' !== x.constructor.name ? (
         Object.values(x)

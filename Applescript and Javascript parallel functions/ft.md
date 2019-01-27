@@ -3,7 +3,7 @@
 ```
 
 ```applescript
--- ft :: Int -> Int -> [Int]
+-- ft :: (Int, Int) -> [Int]
 on ft(m, n)
     if m ≤ n then
         set lst to {}
