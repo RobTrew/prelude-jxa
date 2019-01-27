@@ -1,15 +1,19 @@
 ```js
 // Enum :: String -> [String] -> Dict
-const Enum = (name, items) =>
-    items.reduce(
-        (a, k, i) => Object.assign(
+const Enum = (name, keys, values) =>
+    keys.map(
+        values ? (
+            (k, i) => Tuple(k, values[i])
+        ) : Tuple
+    ).reduce(
+        (a, kv) => Object.assign(
             a, {
-                [k]: {
+                [kv[0]]: {
                     'type': 'enum',
                     'name': name,
-                    'key': k,
-                    'index': i,
-                    'enum': items
+                    'key': kv[0],
+                    'value': kv[1],
+                    'enum': keys
                 }
             }
         ), {}

@@ -1,5 +1,5 @@
 ```applescript
--- enumFrom :: a -> [a]
+-- enumFrom :: Enum a => a -> [a]
 on enumFrom(x)
     script
         property v : missing value

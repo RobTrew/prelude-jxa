@@ -1,16 +1,20 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
 // Enum :: String -> [String] -> Dict
-const Enum = (name, items) =>
-    items.reduce(
-        (a, k, i) => Object.assign(
+const Enum = (name, keys, values) =>
+    keys.map(
+        values ? (
+            (k, i) => Tuple(k, values[i])
+        ) : Tuple
+    ).reduce(
+        (a, kv) => Object.assign(
             a, {
-                [k]: {
+                [kv[0]]: {
                     'type': 'enum',
                     'name': name,
-                    'key': k,
-                    'index': i,
-                    'enum': items
+                    'key': kv[0],
+                    'value': kv[1],
+                    'enum': keys
                 }
             }
         ), {}
@@ -720,16 +724,21 @@ const enumFromThenToChar = (x1, x2, y) => {
 // enumFromTo :: Enum a => a -> a -> [a]
 const enumFromTo = (m, n) => {
     const
-        [x, y] = [m, n].map(fromEnum),
-        b = x + (Number(m) ? m - x : 0),
-        tp = m instanceof Object ? (
+        t = typeof m,
+        isNum = 'number' === t,
+        isInt = isNum && (0 == m % 1),
+        [x, y] = isInt ? (
+            [m, n]
+        ) : [m, n].map(fromEnum),
+        b = x + (isNum ? m - x : 0),
+        tp = isInt ? undefined : m instanceof Object ? (
             m.enum
-        ) : typeof m;
+        ) : t;
     return Array.from({
         length: 1 + (y - x)
-    }, (_, i) => toEnum(tp)(
-        b + i
-    ));
+    }, isInt ? (
+        (_, i) => b + i
+    ) : (_, i) => toEnum(tp)(b + i))
 };
 
 // enumFromToChar :: Char -> Char -> [Char]
@@ -1023,7 +1032,7 @@ const foldr1May = (f, xs) =>
 const fromEnum = x =>
     typeof x !== 'string' ? (
         x.constructor === Object ? (
-            x.index
+            x.value
         ) : parseInt(Number(x))
     ) : x.codePointAt(0);
 

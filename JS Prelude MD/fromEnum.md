@@ -3,7 +3,7 @@
 const fromEnum = x =>
     typeof x !== 'string' ? (
         x.constructor === Object ? (
-            x.index
+            x.value
         ) : parseInt(Number(x))
     ) : x.codePointAt(0);
 ```
