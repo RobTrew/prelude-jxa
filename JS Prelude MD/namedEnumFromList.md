@@ -13,6 +13,7 @@ const namedEnumFromList = (name, keys, values) => {
                     'type': 'enum',
                     'name': name,
                     'key': kv[0],
+                    'max' : e[keys.length - 1],
                     'value': kv[1],
                     'enum': e
                 },
