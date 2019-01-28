@@ -1,7 +1,9 @@
 ```js
 // namedEnumFromList :: String -> [String] -> Dict
 const namedEnumFromList = (name, keys, values) => {
-    const e = {};
+    const
+        e = {},
+        iMax = keys.length - 1;
     return keys.map(
         values ? (
             (k, i) => Tuple(k, values[i])
@@ -13,7 +15,7 @@ const namedEnumFromList = (name, keys, values) => {
                     'type': 'enum',
                     'name': name,
                     'key': kv[0],
-                    'max' : e[keys.length - 1],
+                    'max' : iMax,
                     'value': kv[1],
                     'enum': e
                 },

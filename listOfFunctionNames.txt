@@ -234,6 +234,7 @@ mappendOrdering (<>) :: Ordering -> Ordering -> Ordering
 mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 matching :: [a] -> (a -> Int -> [a] -> Bool)
 max :: Ord a => a -> a -> a
+maxBound :: a -> a
 maximum :: Ord a => [a] -> a
 maximumBy :: (a -> a -> Ordering) -> [a] -> a
 maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
@@ -243,6 +244,7 @@ maybeToList :: Maybe a -> [a]
 mean :: [Num] -> Num
 member :: Key -> Dict -> Bool
 min :: Ord a => a -> a -> a
+minBound :: a -> a
 minimum :: Ord a => [a] -> a
 minimumBy :: (a -> a -> Ordering) -> [a] -> a
 minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a

@@ -1758,6 +1758,18 @@ const matching = pat => {
 // max :: Ord a => a -> a -> a
 const max = (a, b) => gt(b, a) ? b : a;
 
+// maxBound :: a -> a
+const maxBound = x => {
+    const e = x.enum;
+    return Boolean(e) ? (
+        e[e[x.max]]
+    ) : {
+        'number': Number.MAX_SAFE_INTEGER,
+        'string': String.fromCodePoint(65535),
+        'boolean': true
+    }[typeof x];
+};
+
 // maximum :: Ord a => [a] -> a
 const maximum = xs =>
     0 < xs.length ? (
@@ -1814,6 +1826,18 @@ const member = (k, dct) => k in dct;
 // min :: Ord a => a -> a -> a
 const min = (a, b) => b < a ? b : a;
 
+// minBound :: a -> a
+const minBound = x => {
+    const e = x.enum;
+    return Boolean(e) ? (
+        e[e[0]]
+    ) : {
+        'number': Number.MIN_SAFE_INTEGER,
+        'string': String.fromCodePoint(0),
+        'boolean': false
+    }[typeof x];
+};
+
 // minimum :: Ord a => [a] -> a
 const minimum = xs =>
     0 < xs.length ? (
@@ -1849,7 +1873,9 @@ const mod = (n, d) => n % d;
 
 // namedEnumFromList :: String -> [String] -> Dict
 const namedEnumFromList = (name, keys, values) => {
-    const e = {};
+    const
+        e = {},
+        iMax = keys.length - 1;
     return keys.map(
         values ? (
             (k, i) => Tuple(k, values[i])
@@ -1861,7 +1887,7 @@ const namedEnumFromList = (name, keys, values) => {
                     'type': 'enum',
                     'name': name,
                     'key': kv[0],
-                    'max' : e[keys.length - 1],
+                    'max' : iMax,
                     'value': kv[1],
                     'enum': e
                 },
