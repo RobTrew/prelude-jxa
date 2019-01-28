@@ -2013,12 +2013,14 @@ const postorder = t => {
 };
 
 // pred :: Enum a => a -> a
-const pred = x =>
-    isChar(x) ? (
-        chr(ord(x) - 1)
-    ) : isNaN(x) ? (
-        undefined
+const pred = x => {
+    const t = typeof x;
+    return 'number' !== t ? (
+        toEnum(
+            'object' !== t ? t : x.enum
+        )(fromEnum(x) - 1)
     ) : x - 1;
+};
 
 // print :: a -> IO ()
 const print = x => {
@@ -2784,12 +2786,14 @@ const subsets = xs => {
 const subtract = (x, y) => y - x;
 
 // succ :: Enum a => a -> a
-const succ = x =>
-    isChar(x) ? (
-        chr(1 + ord(x))
-    ) : isNaN(x) ? (
-        undefined
+const succ = x => {
+    const t = typeof x;
+    return 'number' !== t ? (
+        toEnum(
+            'object' !== t ? t : x.enum
+        )(1 + fromEnum(x))
     ) : 1 + x;
+};
 
 // sum :: [Num] -> Num
 const sum = xs => xs.reduce((a, x) => a + x, 0);
