@@ -273,6 +273,7 @@ pi :: Float
 plus :: Num -> Num -> Num
 postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
+predMay :: Enum a => a -> Maybe a
 print :: a -> IO ()
 product :: [Num] -> Num
 properFracRatio :: Ratio -> (Int, Ratio)
@@ -370,6 +371,7 @@ subsequences :: [a] -> [[a]]
 subsets :: [a] -> [[a]]
 subtract :: Num -> Num -> Num
 succ :: Enum a => a -> a
+succMay :: Enum a => a -> Maybe a
 sum :: [Num] -> Num
 swap :: (a, b) -> (b, a)
 tail :: [a] -> [a]
