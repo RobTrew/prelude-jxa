@@ -5,7 +5,7 @@
 ```applescript
 -- mReturn :: First-class m => (a -> b) -> m (a -> b)
 on mReturn(f)
-    if class of f is script then
+    if script is class of f then
         f
     else
         script
