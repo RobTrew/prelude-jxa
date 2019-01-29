@@ -2035,7 +2035,7 @@ const pred = x => {
     return 'number' !== t ? (() => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
         return i > mn ? (
-            toEnum(t !== 'object' ? t : x.enum)(i - 1)
+            toEnum(x)(i - 1)
         ) : Error('succ :: enum out of range.')
     })() : x > Number.MIN_SAFE_INTEGER ? (
         x - 1
@@ -2048,7 +2048,7 @@ const predMay = x => {
     return 'number' !== t ? (() => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
         return i > mn ? (
-            Just(toEnum(t !== 'object' ? t : x.enum)(i - 1))
+            Just(toEnum(x)(i - 1))
         ) : Nothing()
     })() : x > Number.MIN_SAFE_INTEGER ? (
         Just(x - 1)
@@ -2824,7 +2824,7 @@ const succ = x => {
     return 'number' !== t ? (() => {
         const [i, mx] = [x, maxBound(x)].map(fromEnum);
         return i < mx ? (
-            toEnum(t !== 'object' ? t : x.enum)(1 + i)
+            toEnum(x)(1 + i)
         ) : Error('succ :: enum out of range.')
     })() : x < Number.MAX_SAFE_INTEGER ? (
         1 + x
@@ -2837,7 +2837,7 @@ const succMay = x => {
     return 'number' !== t ? (() => {
         const [i, mx] = [x, maxBound(x)].map(fromEnum);
         return i < mx ? (
-            Just(toEnum(t !== 'object' ? t : x.enum)(1 + i))
+            Just(toEnum(x)(1 + i))
         ) : Nothing()
     })() : x < Number.MAX_SAFE_INTEGER ? (
         Just(1 + x)

@@ -5,7 +5,7 @@ const succMay = x => {
     return 'number' !== t ? (() => {
         const [i, mx] = [x, maxBound(x)].map(fromEnum);
         return i < mx ? (
-            Just(toEnum(t !== 'object' ? t : x.enum)(1 + i))
+            Just(toEnum(x)(1 + i))
         ) : Nothing()
     })() : x < Number.MAX_SAFE_INTEGER ? (
         Just(1 + x)
