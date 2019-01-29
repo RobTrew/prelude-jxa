@@ -16,7 +16,7 @@ const pred = x => {
     return 'number' !== t ? (() => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
         return i > mn ? (
-            toEnum(t !== 'object' ? t : x.enum)(i - 1)
+            toEnum(x)(i - 1)
         ) : Error('succ :: enum out of range.')
     })() : x > Number.MIN_SAFE_INTEGER ? (
         x - 1
