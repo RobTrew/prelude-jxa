@@ -5,7 +5,6 @@ Nothing :: Maybe a
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 TupleN :: a -> b ...  -> (a, b ... )
-
 abs :: Num -> Num
 all :: (a -> Bool) -> [a] -> Bool
 and :: [Bool] -> Bool
@@ -395,7 +394,7 @@ then (>>) :: Monad m => m a -> m b -> m b
 thenIO (>>) :: IO a -> IO b -> IO b
 thenList (>>) :: [a] -> [b] -> [b]
 thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
-toEnum :: Type -> Int -> a
+toEnum :: a -> Int -> a
 toListTree :: Tree a -> [a]
 toLower :: String -> String
 toRatio :: Real -> Ratio

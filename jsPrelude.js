@@ -699,21 +699,11 @@ const enumFromThenToChar = (x1, x2, y) => {
 // enumFromTo :: Enum a => a -> a -> [a]
 const enumFromTo = (m, n) => {
     const
-        t = typeof m,
-        isNum = 'number' === t,
-        isInt = isNum && (0 == m % 1),
-        [x, y] = isInt ? (
-            [m, n]
-        ) : [m, n].map(fromEnum),
-        b = x + (isNum ? m - x : 0),
-        tp = isInt ? undefined : m instanceof Object ? (
-            m.enum
-        ) : t;
+        [x, y] = [m, n].map(fromEnum),
+        b = x + ('number' !== typeof m ? 0 : m - x);
     return Array.from({
         length: 1 + (y - x)
-    }, isInt ? (
-        (_, i) => b + i
-    ) : (_, i) => toEnum(tp)(b + i))
+    }, (_, i) => toEnum(m)(b + i));
 };
 
 // enumFromToChar :: Char -> Char -> [Char]
@@ -3040,16 +3030,20 @@ const thenList = (xs, ys) =>
 const thenMay = (mbx, mby) =>
     mbx.Nothing ? mbx : mby;
 
-// toEnum :: Type -> Int -> a
-const toEnum = t => x => {
-    const dct = {
-        'number': Number,
-        'string': String.fromCodePoint,
-        'boolean': Boolean
-    };
-    return t in dct ? (
-        dct[t](x)
-    ) : t[t[x]]
+// The first argument is a sample of the type
+// allowing the function to make the right mapping
+// toEnum :: a -> Int -> a
+const toEnum = e => x => {
+    const
+        m = e.enum,
+        f = {
+            'number': Number,
+            'string': String.fromCodePoint,
+            'boolean': Boolean
+        } [typeof e];
+    return f ? (
+        f(x)
+    ) : m[m[x]];
 };
 
 // toListTree :: Tree a -> [a]
