@@ -5,16 +5,11 @@
 
 ```js
 // toEnum :: a -> Int -> a
-const toEnum = e => x => {
-    const
-        m = e.enum,
-        f = {
-            'number': Number,
-            'string': String.fromCodePoint,
-            'boolean': Boolean
-        } [typeof e];
-    return f ? (
-        f(x)
-    ) : m[m[x]];
-};
+const toEnum = e => x =>
+    ({
+        'number': Number,
+        'string': String.fromCodePoint,
+        'boolean': Boolean,
+        'object': v => e.min + v
+    } [typeof e])(x);
 ```

@@ -330,7 +330,8 @@ const chunksOf = (n, xs) =>
     );
 
 // compare :: a -> a -> Ordering
-const compare = (a, b) => a < b ? -1 : (a > b ? 1 : 0);
+const compare = (a, b) =>
+    a < b ? -1 : (a > b ? 1 : 0);
 
 // comparing :: (a -> b) -> (a -> a -> Ordering)
 const comparing = f =>
@@ -3034,18 +3035,13 @@ const thenMay = (mbx, mby) =>
 // The first argument is a sample of the type
 // allowing the function to make the right mapping
 // toEnum :: a -> Int -> a
-const toEnum = e => x => {
-    const
-        m = e.enum,
-        f = {
-            'number': Number,
-            'string': String.fromCodePoint,
-            'boolean': Boolean
-        } [typeof e];
-    return f ? (
-        f(x)
-    ) : m[m[x]];
-};
+const toEnum = e => x =>
+    ({
+        'number': Number,
+        'string': String.fromCodePoint,
+        'boolean': Boolean,
+        'object': v => e.min + v
+    } [typeof e])(x);
 
 // toListTree :: Tree a -> [a]
 const toListTree = tree => {
