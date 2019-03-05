@@ -2964,6 +2964,10 @@ const takeFileName = strPath =>
         ) : ''
     ) : '';
 
+// takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
+const takeFromThenTo = (a, b, z, xs) =>
+    map(i => xs[i], enumFromThenTo(a, b, z));
+
 // takeIterate n f x == [x, f x, f (f x), ...]
 // takeIterate :: Int -> (a -> a) -> a -> [a]
 const takeIterate = (n, f, x) =>

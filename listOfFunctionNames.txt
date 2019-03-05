@@ -385,6 +385,7 @@ takeDirectory :: FilePath -> FilePath
 takeDropCycle :: Int -> [a] -> [a]
 takeExtension :: FilePath -> String
 takeFileName :: FilePath -> FilePath
+takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
 takeIterate :: Int -> (a -> a) -> a -> [a]
 takeWhile :: (a -> Bool) -> [a] -> [a]
 takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
