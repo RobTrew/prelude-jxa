@@ -152,7 +152,7 @@
   "id": "// id :: a -> a\nconst id = x => x;",
   "if_": "// if_ :: Bool -> a -> a -> a\nconst if_ = (bln, x, y) =>\n    bln ? x : y;",
   "indented": "// indented :: String -> String -> String\nconst indented = (strIndent, s) =>\n    unlines(map(\n        x => '' !== x ? strIndent + x : x,\n        lines(s)\n    ));",
-  "index": "// index (!!) :: [a] -> Int -> a\n// index (!!) :: String -> Int -> Char\nconst index = (xs, i) => xs[i];",
+  "index": "// index (!!) :: [a] -> Int -> Maybe a\n// index (!!) :: Generator (Int, a) -> Int -> Maybe a\n// index (!!) :: String -> Int -> Maybe Char\nconst index = xs => i => {\n    const s = xs.constructor.constructor.name;\n    return 'GeneratorFunction' !== s ? (() => {\n        const v = xs[i];\n        return undefined !== v ? Just(v) : Nothing();\n    })() : (() => {\n        const v = until(\n            x => x.done || i <= fst(x.value),\n            () => xs.next(),\n            xs.next()\n        );\n        return v.done ? Nothing() : Just(snd(v.value));\n    })();\n};",
   "indexOf": "// indexOf :: Eq a => [a] -> [a] -> Maybe Int\n// indexOf :: String -> String -> Maybe Int\nconst indexOf = (needle, haystack) =>\n    'string' !== typeof haystack ? (\n        findIndex(xs => isPrefixOf(needle, xs), tails(haystack))\n    ) : (() => {\n        const i = haystack.indexOf(needle);\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    })();",
   "init": "// init :: [a] -> [a]\nconst init = xs =>\n    0 < xs.length ? (\n        xs.slice(0, -1)\n    ) : undefined;",
   "initMay": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs =>\n    0 < xs.length ? Just(xs.slice(0, -1)) : Nothing();",
