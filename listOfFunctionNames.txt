@@ -151,7 +151,7 @@ headMay :: [a] -> Maybe a
 id :: a -> a
 if_ :: Bool -> a -> a -> a
 indented :: String -> String -> String
-index (!!) :: [a] -> Int -> a
+index (!!) :: [a] -> Int -> Maybe a
 indexOf :: Eq a => [a] -> [a] -> Maybe Int
 init :: [a] -> [a]
 initMay :: [a] -> Maybe [a]
