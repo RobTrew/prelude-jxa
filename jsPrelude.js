@@ -369,6 +369,11 @@ const concat = xs =>
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = (f, xs) =>
     xs.reduce((a, x) => a.concat(f(x)), []);
+    
+// Briefer but slower:
+// concatMap :: (a -> [b]) -> [a] -> [b]
+// const concatMap = (f, xs) =>
+//     [].concat(...xs.map(f))
 
 // cons :: a -> [a] -> [a]
 const cons = (x, xs) =>
@@ -2985,7 +2990,10 @@ const takeFromThenTo = (a, b, z, xs) => {
         map(i => xs[i], ixs)
     ) : (() => {
         const g = zipGen(enumFrom(0), take(z, xs));
-        return catMaybes(map(index(g), ixs));
+        return concatMap(i => {
+            const mb = index(g)(i);
+            return mb.Nothing ? [] : [mb.Just];
+        }, ixs);
     })();
 };
 
@@ -3107,17 +3115,28 @@ const toUpper = s => s.toLocaleUpperCase();
 // their elements are skipped:
 // > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]
 // transpose :: [[a]] -> [[a]]
-// transpose :: [[a]] -> [[a]]
-const transpose = tbl => {
-    const
-        gaps = replicate(
-            length(maximumBy(comparing(length), tbl)), []
-        ),
-        rows = map(xs => xs.concat(gaps.slice(xs.length)), tbl);
-    return map(
-        (_, col) => concatMap(row => [row[col]], rows),
-        rows[0]
-    );
+const transpose = xss => {
+    const go = xss =>
+        0 < xss.length ? (() => {
+            const
+                h = xss[0],
+                t = xss.slice(1);
+            return 0 < h.length ? (
+                [
+                    [h[0]].concat(t.reduce(
+                        (a, xs) => a.concat(
+                            0 < xs.length ? (
+                                [xs[0]]
+                            ) : []
+                        ),
+                        []
+                    ))
+                ].concat(go([h.slice(1)].concat(
+                    t.map(xs => xs.slice(1))
+                )))
+            ) : go(t);
+        })() : [];
+    return go(xss);
 };
 
 // traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
