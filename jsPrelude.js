@@ -2672,10 +2672,10 @@ const sortOn = (f, xs) => {
 //
 // span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
-const span = (f, xs) =>
+const span = (p, xs) =>
     splitAt(until(
-        i => !f(xs[i]),
-        i => i + 1,
+        i => !p(xs[i]),
+        i => 1 + i,
         0
     ), xs);
 
@@ -2739,6 +2739,8 @@ const splitFileName = strPath =>
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
 const splitOn = (pat, src) =>
+    /* A list of the strings delimited by
+       instances of a given pattern in s. */
     ('string' === typeof src) ? (
         src.split(pat)
     ) : (() => {
