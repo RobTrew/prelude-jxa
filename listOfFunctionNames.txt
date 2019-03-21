@@ -40,6 +40,7 @@ catMaybes :: [Maybe a] -> [a]
 ceiling :: Num -> Int
 center :: Int -> Char -> String -> String
 chars :: String -> [Char]
+chop :: ([a] -> (b, [a])) -> [a] -> [b]
 chr :: Int -> Char
 chunksOf :: Int -> [a] -> [[a]]
 compare :: a -> a -> Ordering
