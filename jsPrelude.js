@@ -318,6 +318,16 @@ const center = (n, c, s) => {
 // chars :: String -> [Char]
 const chars = s => s.split('');
 
+// chop :: ([a] -> (b, [a])) -> [a] -> [b]
+const chop = (f, as) => {
+    const go = xs =>
+        0 < xs.length ? (() => {
+            const [b, ys] = Array.from(f(xs));
+            return cons(b, go(ys))
+        })() : [];
+    return go(as);
+};
+
 // chr :: Int -> Char
 const chr = String.fromCodePoint;
 
@@ -3092,7 +3102,7 @@ const toLower = s => s.toLocaleLowerCase();
 
 // toRatio :: Real -> Ratio
 const toRatio = n =>
-    approxRatio(1e-12, n);
+    approxRatio(1e-12)(n);
 
 // Sentence case - initial string capitalized and rest lowercase
 // toSentence :: String -> String

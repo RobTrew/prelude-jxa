@@ -35,10 +35,10 @@ end span
 
 ```js
 // span :: (a -> Bool) -> [a] -> ([a], [a])
-const span = (f, xs) =>
+const span = (p, xs) =>
     splitAt(until(
-        i => !f(xs[i]),
-        i => i + 1,
+        i => !p(xs[i]),
+        i => 1 + i,
         0
     ), xs);
 ```
