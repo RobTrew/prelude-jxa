@@ -2884,6 +2884,24 @@ const sum = xs => xs.reduce((a, x) => a + x, 0);
 const swap = ab =>
     Tuple(ab[1], ab[0]);
 
+// tabulated :: String -> (a -> String) ->
+//                        (b -> String) ->
+//           (a -> b) -> [a] -> String
+const tabulated = (s, xShow, fxShow, f, xs) => {
+    // Heading -> x display function ->
+    //           fx display function ->
+    //    f -> values -> tabular string
+    const
+        ys = map(xShow, xs),
+        w = maximumBy(comparing(x => x.length), ys).length,
+        rows = zipWith(
+            (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
+            ys,
+            map(compose(fxShow, f), xs)
+        );
+    return s + '\n' + unlines(rows);
+};
+
 // tail :: [a] -> [a]
 const tail = xs => 0 < xs.length ? xs.slice(1) : [];
 
@@ -2976,14 +2994,20 @@ const takeDropCycle = (n, i, xs) => {
     );
 };
 
-// takeExtension :: FilePath -> String
-const takeExtension = strPath => {
-    const
-        xs = strPath.split('.'),
-        lng = xs.length;
-    return 1 < lng ? (
-        '.' + xs[lng - 1]
-    ) : '';
+// takeExtension :: Regex String -> FilePath -> String
+const takeExtension = charSet => fp => {
+    const fs = fp.split('/');
+    return 0 < fs.length ? (() => {
+        const
+            rgx = new RegExp('^[' + charSet + ']+$'),
+            xs = fs.slice(-1)[0].split('.'),
+            ext = 1 < xs.length ? (
+                xs.slice(-1)[0]
+            ) : '';
+        return rgx.test(ext) ? (
+            '.' + ext
+        ) : '';
+    })() : '';
 };
 
 // takeFileName :: FilePath -> FilePath

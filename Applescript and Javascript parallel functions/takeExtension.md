@@ -12,9 +12,9 @@ end takeExtension
 
 ```js
 // takeExtension :: FilePath -> String
-const takeExtension = strPath => {
+const takeExtension = fp => {
     const
-        xs = strPath.split('.'),
+        xs = fp.split('.'),
         lng = xs.length;
     return 1 < lng ? (
         '.' + xs[lng - 1]

@@ -375,6 +375,7 @@ succ :: Enum a => a -> a
 succMay :: Enum a => a -> Maybe a
 sum :: [Num] -> Num
 swap :: (a, b) -> (b, a)
+tabulated :: String -> (a -> String) ->
 tail :: [a] -> [a]
 tailMay :: [a] -> Maybe [a]
 tails :: [a] -> [[a]]
@@ -384,7 +385,7 @@ takeBaseName :: FilePath -> String
 takeCycle :: Int -> [a] -> [a]
 takeDirectory :: FilePath -> FilePath
 takeDropCycle :: Int -> [a] -> [a]
-takeExtension :: FilePath -> String
+takeExtension :: Regex String -> FilePath -> String
 takeFileName :: FilePath -> FilePath
 takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
 takeIterate :: Int -> (a -> a) -> a -> [a]
