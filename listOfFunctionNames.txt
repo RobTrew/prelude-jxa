@@ -66,6 +66,7 @@ deleteFirst :: a -> [a] -> [a]
 deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 deleteMap :: k -> Dict -> Dict
 difference :: Eq a => [a] -> [a] -> [a]
+differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
 digitToInt :: Char -> Int
 div :: Int -> Int -> Int
 doesDirectoryExist :: FilePath -> IO Bool
