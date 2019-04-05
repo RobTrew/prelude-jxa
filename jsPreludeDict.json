@@ -344,6 +344,7 @@
   "showLog": "// showLog :: a -> IO ()\nconst showLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",
   "showMaybe": "// showMaybe :: Maybe a -> String\nconst showMaybe = mb =>\n    mb.Nothing ? (\n        'Nothing'\n    ) : 'Just(' + unQuoted(show(mb.Just)) + ')';",
   "showOrdering": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    0 < e.value ? (\n        'GT'\n    ) : 0 > e.value ? (\n        'LT'\n    ) : 'EQ';",
+  "showPrecision": "// showPrecision Int -> Float -> String\nconst showPrecision = n => f => {\n    // A string showing a floating point number\n    // at a given degree of precision.\n    const d = Math.pow(10, n);\n    return (Math.round(d * f) / d);\n};",
   "showRatio": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    'Ratio' !== r.type ? (\n        r.toString()\n    ) : r.n.toString() + (\n        1 !== r.d ? (\n            '/' + r.d.toString()\n        ) : ''\n    );",
   "showSet": "// showSet :: Set -> String\nconst showSet = s =>\n    intercalate(sort(elems(s)), ['{','}']);",
   "showTuple": "// showTuple :: Tuple -> String\nconst showTuple = tpl =>\n    '(' + enumFromTo(0, tpl.length - 1)\n    .map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
