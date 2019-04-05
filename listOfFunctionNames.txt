@@ -343,6 +343,7 @@ showList :: [a] -> String
 showLog :: a -> IO ()
 showMaybe :: Maybe a -> String
 showOrdering :: Ordering -> String
+showPrecision Int -> Float -> String
 showRatio :: Ratio -> String
 showSet :: Set -> String
 showTuple :: Tuple -> String
