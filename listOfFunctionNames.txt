@@ -367,6 +367,7 @@ splitRegex :: Regex -> String -> [String]
 sqrt :: Num -> Num
 sqrtLR :: Num -> Either String Num
 sqrtMay :: Num -> Maybe Num
+str :: a -> String
 strip :: String -> String
 stripEnd :: String -> String
 stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
