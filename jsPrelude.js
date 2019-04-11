@@ -26,6 +26,16 @@ const Nothing = () => ({
     Nothing: true,
 });
 
+// Ordering :: Int -> Ordering
+const Ordering = e => ({
+    type: 'Ordering',
+    value: 0 > e ? (
+        -1
+    ) : 0 < e ? (
+        1
+    ) : 0
+});
+
 // Right :: b -> Either a b
 const Right = x => ({
     type: 'Either',
@@ -1684,7 +1694,9 @@ const mapFromList = kvs =>
         (a, kv) => {
             const k = kv[0];
             return Object.assign(a, {
-                [(('string' === typeof k) && k) || show(k)]: kv[1]
+                [
+                    (('string' === typeof k) && k) || JSON.stringify(k)
+                ]: kv[1]
             });
         }, {}
     );
@@ -2809,6 +2821,9 @@ const sqrtMay = n =>
     0 > n ? (
         Nothing()
     ) : Just(Math.sqrt(n));
+
+// str :: a -> String
+const str = x => x.toString();
 
 // strip :: String -> String
 const strip = s => s.trim();
