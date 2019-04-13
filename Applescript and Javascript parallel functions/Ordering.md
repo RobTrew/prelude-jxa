@@ -13,13 +13,13 @@ end Ordering
 ```
 
 ```js
-// ordering :: () -> Ordering
-const
-    ordering = namedEnumFromList(
-        'Ordering', ['LT', 'EQ', 'GT'],
-        [-1, 0, 1]
-    ),
-    LT = ordering.LT,
-    EQ = ordering.EQ,
-    GT = ordering.GT;
+// Ordering :: Int -> Ordering
+const Ordering = e => ({
+    type: 'Ordering',
+    value: 0 > e ? (
+        -1
+    ) : 0 < e ? (
+        1
+    ) : 0
+});
 ```

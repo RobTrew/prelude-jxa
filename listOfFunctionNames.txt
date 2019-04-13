@@ -254,7 +254,7 @@ minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 minimumMay :: [a] -> Maybe a
 mod :: Int -> Int -> Int
 modificationTime :: FilePath -> Either String Date
-namedEnumFromList :: String -> [String] -> Dict
+namedEnumFromList :: String -> [String] -> [a] -> Dict
 negate :: Num -> Num
 newUUID :: () -> IO UUID String
 not :: Bool -> Bool
@@ -319,6 +319,7 @@ reverse :: [a] -> [a]
 rights :: [Either a b] -> [b]
 rotate :: Int -> [a] -> [a]
 round :: a -> Int
+roundTo :: Float -> Int -> Float
 safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 scanl :: (b -> a -> b) -> b -> [a] -> [b]
 scanl1 :: (a -> a -> a) -> [a] -> [a]

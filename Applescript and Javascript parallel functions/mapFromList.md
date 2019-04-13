@@ -20,7 +20,9 @@ const mapFromList = kvs =>
         (a, kv) => {
             const k = kv[0];
             return Object.assign(a, {
-                [(('string' === typeof k) && k) || show(k)]: kv[1]
+                [
+                    (('string' === typeof k) && k) || JSON.stringify(k)
+                ]: kv[1]
             });
         }, {}
     );
