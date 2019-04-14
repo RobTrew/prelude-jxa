@@ -100,6 +100,7 @@ evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a
 even :: Int -> Bool
 exp :: Float -> Float
+fTable :: String -> (a -> String) -> (b -> String) -> (a -> b) -> [a] -> String
 fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 filePath :: String -> FilePath
 filePathTree :: filePath -> [Tree String] -> Tree FilePath
@@ -319,7 +320,7 @@ reverse :: [a] -> [a]
 rights :: [Either a b] -> [b]
 rotate :: Int -> [a] -> [a]
 round :: a -> Int
-roundTo :: Float -> Int -> Float
+roundTo :: Int -> Float -> Float
 safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 scanl :: (b -> a -> b) -> b -> [a] -> [b]
 scanl1 :: (a -> a -> a) -> [a] -> [a]
@@ -345,7 +346,7 @@ showList :: [a] -> String
 showLog :: a -> IO ()
 showMaybe :: Maybe a -> String
 showOrdering :: Ordering -> String
-showPrecision Int -> Float -> String
+showPrecision :: Int -> Float -> String
 showRatio :: Ratio -> String
 showSet :: Set -> String
 showTuple :: Tuple -> String
@@ -380,7 +381,6 @@ succ :: Enum a => a -> a
 succMay :: Enum a => a -> Maybe a
 sum :: [Num] -> Num
 swap :: (a, b) -> (b, a)
-tabulated :: String -> (a -> String) ->
 tail :: [a] -> [a]
 tailMay :: [a] -> Maybe [a]
 tails :: [a] -> [[a]]

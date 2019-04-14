@@ -797,6 +797,22 @@ const even = n => 0 === n % 2;
 // exp :: Float -> Float
 const exp = Math.exp;
 
+// fTable :: String -> (a -> String) -> (b -> String) -> (a -> b) -> [a] -> String
+const fTable = (s, xShow, fxShow, f, xs) => {
+    // Heading -> x display function ->
+    //           fx display function ->
+    //    f -> values -> tabular string
+    const
+        ys = map(xShow, xs),
+        w = maximumBy(comparing(x => x.length), ys).length,
+        rows = zipWith(
+            (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
+            ys,
+            map(compose(fxShow, f), xs)
+        );
+    return s + '\n' + unlines(rows);
+};
+
 // Compose a function from a simple value to a tuple of
 // the separate outputs of two different functions
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
@@ -1919,7 +1935,7 @@ const minimumMay = xs =>
 // mod :: Int -> Int -> Int
 const mod = (n, d) => n % d;
 
-// namedEnumFromList :: String -> [String] -> Dict
+// namedEnumFromList :: String -> [String] -> [a] -> Dict
 const namedEnumFromList = (name, keys, values) => {
     const
         e = {},
@@ -2424,6 +2440,12 @@ const round = x => {
     );
 };
 
+// roundTo :: Int -> Float -> Float
+const roundTo = (n, x) => {
+    const d = Math.pow(10, n);
+    return Math.round(x * d) / d;
+};
+
 // safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 const safeMay = (p, f, x) =>
     p(x) ? Just(f(x)) : Nothing();
@@ -2595,12 +2617,12 @@ const showOrdering = e =>
         'LT'
     ) : 'EQ';
 
-// showPrecision Int -> Float -> String
-const showPrecision = n => f => {
+// showPrecision :: Int -> Float -> String
+const showPrecision = n => x => {
     // A string showing a floating point number
     // at a given degree of precision.
     const d = Math.pow(10, n);
-    return (Math.round(d * f) / d);
+    return str(Math.round(d * x) / d);
 };
 
 // showRatio :: Ratio -> String
@@ -2922,24 +2944,6 @@ const sum = xs => xs.reduce((a, x) => a + x, 0);
 // swap :: (a, b) -> (b, a)
 const swap = ab =>
     Tuple(ab[1], ab[0]);
-
-// tabulated :: String -> (a -> String) ->
-//                        (b -> String) ->
-//           (a -> b) -> [a] -> String
-const tabulated = (s, xShow, fxShow, f, xs) => {
-    // Heading -> x display function ->
-    //           fx display function ->
-    //    f -> values -> tabular string
-    const
-        ys = map(xShow, xs),
-        w = maximumBy(comparing(x => x.length), ys).length,
-        rows = zipWith(
-            (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
-            ys,
-            map(compose(fxShow, f), xs)
-        );
-    return s + '\n' + unlines(rows);
-};
 
 // tail :: [a] -> [a]
 const tail = xs => 0 < xs.length ? xs.slice(1) : [];

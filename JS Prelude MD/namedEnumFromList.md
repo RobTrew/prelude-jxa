@@ -1,5 +1,5 @@
 ```js
-// namedEnumFromList :: String -> [String] -> Dict
+// namedEnumFromList :: String -> [String] -> [a] -> Dict
 const namedEnumFromList = (name, keys, values) => {
     const
         e = {},
