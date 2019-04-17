@@ -804,13 +804,14 @@ const fTable = (s, xShow, fxShow, f, xs) => {
     //    f -> values -> tabular string
     const
         ys = map(xShow, xs),
-        w = maximumBy(comparing(x => x.length), ys).length,
-        rows = zipWith(
+        w = maximum(map(length, ys));
+    return s + '\n' + unlines(
+        zipWith(
             (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
             ys,
             map(compose(fxShow, f), xs)
-        );
-    return s + '\n' + unlines(rows);
+        )
+    );
 };
 
 // Compose a function from a simple value to a tuple of
@@ -836,7 +837,8 @@ const filter = (f, xs) => xs.filter(f);
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = (p, xs) => {
     for (let i = 0, lng = xs.length; i < lng; i++) {
-        if (p(xs[i])) return Just(xs[i]);
+        const v = xs[i];
+        if (p(v)) return Just(v);
     }
     return Nothing();
 };
