@@ -21,12 +21,13 @@ const fTable = (s, xShow, fxShow, f, xs) => {
     //    f -> values -> tabular string
     const
         ys = map(xShow, xs),
-        w = maximumBy(comparing(x => x.length), ys).length,
-        rows = zipWith(
+        w = maximum(map(length, ys));
+    return s + '\n' + unlines(
+        zipWith(
             (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
             ys,
             map(compose(fxShow, f), xs)
-        );
-    return s + '\n' + unlines(rows);
+        )
+    );
 };
 ```
