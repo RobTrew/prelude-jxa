@@ -18,7 +18,7 @@ on take(n, xs)
     else if script is c then
         set ys to {}
         repeat with i from 1 to n
-            set v to xs's |λ|()
+            set v to |λ|() of xs
             if missing value is v then
                 return ys
             else
