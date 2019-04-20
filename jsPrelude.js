@@ -3591,6 +3591,10 @@ const zipWith4 = (f, ws, xs, ys, zs) =>
         length: minimum([ws, xs, ys, zs].map(length))
     }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));
 
+// zipWithM :: (Applicative m) => (a -> b -> m c) -> [a] -> [b] -> m [c]
+const zipWithM = (f, xs, ys) =>
+    sequenceA(zipWith(f, xs, ys));
+
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 function zipWithN() {
     const
