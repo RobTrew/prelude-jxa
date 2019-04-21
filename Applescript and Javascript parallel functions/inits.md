@@ -34,5 +34,5 @@ const inits = xs => [
         []
     ]
     .concat(('string' === typeof xs ? xs.split('') : xs)
-        .map((_, i, lst) => lst.slice(0, i + 1)));
+        .map((_, i, lst) => lst.slice(0, 1 + i)));
 ```

@@ -803,15 +803,15 @@ const fTable = (s, xShow, fxShow, f, xs) => {
     //           fx display function ->
     //    f -> values -> tabular string
     const
-        ys = map(xShow, xs),
-        w = maximum(map(length, ys));
-    return s + '\n' + unlines(
+        ys = xs.map(xShow),
+        w = Math.max(...map(length, ys));
+    return s + '\n' + (
         zipWith(
-            (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
+            (a, b) => a.padStart(w, ' ') + ' -> ' + b,
             ys,
-            map(compose(fxShow, f), xs)
+            xs.map(x => fxShow(f(x)))
         )
-    );
+    ).join('\n');
 };
 
 // Compose a function from a simple value to a tuple of
@@ -1239,7 +1239,7 @@ const inits = xs => [
         []
     ]
     .concat(('string' === typeof xs ? xs.split('') : xs)
-        .map((_, i, lst) => lst.slice(0, i + 1)));
+        .map((_, i, lst) => lst.slice(0, 1 + i)));
 
 // insert :: Ord a => a -> [a] -> [a]
 const insert = (x, ys) => {
@@ -1541,7 +1541,6 @@ const levels = tree =>
 
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
-// const liftA2 = (f, x, y) => ap(fmap(curry(f), x), y);
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = (f, a, b) => {
     const t = a.type;
@@ -1954,8 +1953,7 @@ const namedEnumFromList = (name, keys, values) => {
                     'name': name,
                     'key': kv[0],
                     'max' : iMax,
-                    'value': kv[1],
-                    'enum': e
+                    'value': kv[1]
                 },
                 [kv[1]]: kv[0]
             }
@@ -3039,19 +3037,16 @@ const takeDropCycle = (n, i, xs) => {
     );
 };
 
-// takeExtension :: Regex String -> FilePath -> String
-const takeExtension = charSet => fp => {
+// takeExtension :: FilePath -> String
+const takeExtension = fp => {
     const fs = fp.split('/');
     return 0 < fs.length ? (() => {
         const
-            rgx = new RegExp('^[' + charSet + ']+$'),
             xs = fs.slice(-1)[0].split('.'),
             ext = 1 < xs.length ? (
                 xs.slice(-1)[0]
             ) : '';
-        return rgx.test(ext) ? (
-            '.' + ext
-        ) : '';
+        return '.' + ext;
     })() : '';
 };
 

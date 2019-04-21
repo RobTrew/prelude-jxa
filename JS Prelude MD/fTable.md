@@ -5,14 +5,14 @@ const fTable = (s, xShow, fxShow, f, xs) => {
     //           fx display function ->
     //    f -> values -> tabular string
     const
-        ys = map(xShow, xs),
-        w = maximum(map(length, ys));
-    return s + '\n' + unlines(
+        ys = xs.map(xShow),
+        w = Math.max(...map(length, ys));
+    return s + '\n' + (
         zipWith(
-            (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
+            (a, b) => a.padStart(w, ' ') + ' -> ' + b,
             ys,
-            map(compose(fxShow, f), xs)
+            xs.map(x => fxShow(f(x)))
         )
-    );
+    ).join('\n');
 };
 ```

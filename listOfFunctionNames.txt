@@ -390,7 +390,7 @@ takeBaseName :: FilePath -> String
 takeCycle :: Int -> [a] -> [a]
 takeDirectory :: FilePath -> FilePath
 takeDropCycle :: Int -> [a] -> [a]
-takeExtension :: Regex String -> FilePath -> String
+takeExtension :: FilePath -> String
 takeFileName :: FilePath -> FilePath
 takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
 takeIterate :: Int -> (a -> a) -> a -> [a]
