@@ -7,7 +7,7 @@ Generic functions for:
 ## Details:
 
 - Function names are as in [Hoogle](https://www.haskell.org/hoogle/?hoogle=concatMap).
-- The 300+ functions in [jsPrelude.js](https://github.com/RobTrew/prelude-jxa/blob/master/jsPrelude.js) are generic and cross-platform (macOS, iOS etc),
+- The 400+ functions in [jsPrelude.js](https://github.com/RobTrew/prelude-jxa/blob/master/jsPrelude.js) are generic and cross-platform (macOS, iOS etc),
 - The 20+ functions in [jxaSystemIO.js](https://github.com/RobTrew/prelude-jxa/blob/master/jxaSystemIO.js) are specific to macOS.
 
 For the purposes of sketching and testing  a script,  
