@@ -720,6 +720,30 @@ function* enumFrom(x) {
     }
 }
 
+// enumFromPairs :: String -> [(String, Int)] -> Dict
+const enumFromPairs = (name, kvs) => {
+    const
+        iMax = kvs[kvs.length - 1][1],
+        iMin = kvs[0][1];
+    return kvs.reduce(
+        (a, kv) => {
+            return Object.assign(
+                a, {
+                    [kv[0]]: {
+                        'type': 'enum',
+                        'name': name,
+                        'key': kv[0],
+                        'max': iMax,
+                        'min': iMin,
+                        'value': kv[1]
+                    },
+                    [kv[1]]: kv[0]
+                }
+            )
+        }, {}
+    );
+};
+
 // enumFromThenTo :: Int -> Int -> Int -> [Int]
 const enumFromThenTo = (x1, x2, y) => {
     const d = x2 - x1;
@@ -804,13 +828,11 @@ const fTable = (s, xShow, fxShow, f, xs) => {
     //    f -> values -> tabular string
     const
         ys = xs.map(xShow),
-        w = Math.max(...map(length, ys));
-    return s + '\n' + (
-        zipWith(
-            (a, b) => a.padStart(w, ' ') + ' -> ' + b,
-            ys,
-            xs.map(x => fxShow(f(x)))
-        )
+        w = Math.max(...ys.map(length));
+    return s + '\n' + zipWith(
+        (a, b) => a.padStart(w, ' ') + ' -> ' + b,
+        ys,
+        xs.map(x => fxShow(f(x)))
     ).join('\n');
 };
 
@@ -1936,31 +1958,6 @@ const minimumMay = xs =>
 // mod :: Int -> Int -> Int
 const mod = (n, d) => n % d;
 
-// namedEnumFromList :: String -> [String] -> [a] -> Dict
-const namedEnumFromList = (name, keys, values) => {
-    const
-        e = {},
-        iMax = keys.length - 1;
-    return keys.map(
-        values ? (
-            (k, i) => Tuple(k, values[i])
-        ) : Tuple
-    ).reduce(
-        (a, kv) => Object.assign(
-            a, {
-                [kv[0]]: {
-                    'type': 'enum',
-                    'name': name,
-                    'key': kv[0],
-                    'max' : iMax,
-                    'value': kv[1]
-                },
-                [kv[1]]: kv[0]
-            }
-        ), e
-    );
-};
-
 // negate :: Num -> Num
 const negate = n => -n;
 
@@ -2007,9 +2004,9 @@ const ord = c => c.codePointAt(0);
 
 // ordering :: () -> Ordering
 const
-    ordering = namedEnumFromList(
-        'Ordering', ['LT', 'EQ', 'GT'],
-        [-1, 0, 1]
+    ordering = enumFromPairs(
+        'Ordering', 
+        [['LT', -1], ['EQ', 0], ['GT', 1]]
     ),
     LT = ordering.LT,
     EQ = ordering.EQ,
@@ -2186,7 +2183,7 @@ const pureMay = x => Just(x);
 // specialised 'pure', where
 // 'pure' lifts a value into a particular functor.
 // pureT :: String -> f a -> (a -> f a)
-const pureT = (t, x) =>
+const pureT = t => x =>
     'List' !== t ? (
         'Either' === t ? (
             pureLR(x)
@@ -3266,6 +3263,12 @@ const traverseList = (f, xs) => {
 const traverseMay = (f, mb) =>
     mb.Nothing ? (
         [mb]
+    ) : fmap(Just, f(mb.Just));
+
+// traverseMayTo :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
+const traverseMayTo = (t, f, mb) =>
+    mb.Nothing ? (
+        pureT(t)(Nothing())
     ) : fmap(Just, f(mb.Just));
 
 // traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)

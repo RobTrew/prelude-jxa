@@ -91,6 +91,7 @@ elemIndex :: Eq a => a -> [a] -> Maybe Int
 elemIndices :: Eq a => a -> [a] -> [Int]
 elems :: Map k a -> [a]
 enumFrom :: Enum a => a -> [a]
+enumFromPairs :: String -> [(String, Int)] -> Dict
 enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
 enumFromTo :: Enum a => a -> a -> [a]
@@ -255,7 +256,6 @@ minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 minimumMay :: [a] -> Maybe a
 mod :: Int -> Int -> Int
 modificationTime :: FilePath -> Either String Date
-namedEnumFromList :: String -> [String] -> [a] -> Dict
 negate :: Num -> Num
 newUUID :: () -> IO UUID String
 not :: Bool -> Bool
@@ -414,6 +414,7 @@ traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
 traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
+traverseMayTo :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeLeaves :: Tree -> [Tree]

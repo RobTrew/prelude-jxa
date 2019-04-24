@@ -6,13 +6,11 @@ const fTable = (s, xShow, fxShow, f, xs) => {
     //    f -> values -> tabular string
     const
         ys = xs.map(xShow),
-        w = Math.max(...map(length, ys));
-    return s + '\n' + (
-        zipWith(
-            (a, b) => a.padStart(w, ' ') + ' -> ' + b,
-            ys,
-            xs.map(x => fxShow(f(x)))
-        )
+        w = Math.max(...ys.map(length));
+    return s + '\n' + zipWith(
+        (a, b) => a.padStart(w, ' ') + ' -> ' + b,
+        ys,
+        xs.map(x => fxShow(f(x)))
     ).join('\n');
 };
 ```

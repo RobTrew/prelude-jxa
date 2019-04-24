@@ -20,14 +20,12 @@ const fTable = (s, xShow, fxShow, f, xs) => {
     //           fx display function ->
     //    f -> values -> tabular string
     const
-        ys = map(xShow, xs),
-        w = maximum(map(length, ys));
-    return s + '\n' + unlines(
-        zipWith(
-            (a, b) => justifyRight(w, ' ', a) + ' -> ' + b,
-            ys,
-            map(compose(fxShow, f), xs)
-        )
-    );
+        ys = xs.map(xShow),
+        w = Math.max(...ys.map(length));
+    return s + '\n' + zipWith(
+        (a, b) => a.padStart(w, ' ') + ' -> ' + b,
+        ys,
+        xs.map(x => fxShow(f(x)))
+    ).join('\n');
 };
 ```
