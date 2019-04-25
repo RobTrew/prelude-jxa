@@ -1,5 +1,5 @@
 ```applescript
--- liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
+-- liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 on liftA2Tree(f, tx, ty)
     
     script fx
