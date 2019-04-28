@@ -26,7 +26,7 @@
   "argvLength": "// argvLength :: Function -> Int\nconst argvLength = f => f.length;",
   "assocs": "// assocs :: Map k a -> [(k, a)]\nconst assocs = m =>\n    Object.entries(m).map(\n        kv => Tuple(...kv)\n    );",
   "bind": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = (m, mf) =>\n    (Array.isArray(m) ? (\n        bindList\n    ) : (() => {\n        const t = m.type;\n        return 'Either' === t ? (\n            bindLR\n        ) : 'Maybe' === t ? (\n            bindMay\n        ) : 'Tuple' === t ? (\n            bindTuple\n        ) : ('function' === typeof m) ? (\n            bindFn\n        ) : undefined;\n    })()(m, mf));",
-  "bindFn": "// bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c\nconst bindFn = (f , bop) => \n    x => bop(f(x), x)",
+  "bindFn": "// bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c\nconst bindFn = (f, bop) =>\n    // Where either bop or f is a binary operator.\n    x => curry(bop)(curry(f)(x))(x)",
   "bindLR": "// bindLR (>>=) :: Either a -> (a -> Either b) -> Either b\nconst bindLR = (m, mf) =>\n    undefined !== m.Left ? (\n        m\n    ) : mf(m.Right);",
   "bindList": "// bindList (>>=) :: [a] -> (a -> [b]) -> [b]\nconst bindList = (xs, mf) => \n  [].concat.apply([], xs.map(mf));",
   "bindMay": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = (mb, mf) =>\n    mb.Nothing ? mb : mf(mb.Just);",
