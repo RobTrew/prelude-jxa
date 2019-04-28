@@ -211,9 +211,9 @@ const bind = (m, mf) =>
         ) : undefined;
     })()(m, mf));
 
-// bindFn :: (a -> b) -> (b -> c) -> a -> c
-const bindFn = (m, mf) =>
-    x => mf(y => m(x, y))(x);
+// bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
+const bindFn = (f , bop) => 
+    x => bop(f(x), x)
 
 // bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 const bindLR = (m, mf) =>
@@ -1597,7 +1597,7 @@ const liftA2List = (f, xs, ys) =>
 const liftA2May = (f, a, b) =>
     a.Nothing ? a : b.Nothing ? b : Just(f(a.Just, b.Just));
 
-// liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
+// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 const liftA2Tree = (f, tx, ty) => {
     const go = tx =>
         Node(
@@ -3267,12 +3267,6 @@ const traverseList = (f, xs) => {
 const traverseMay = (f, mb) =>
     mb.Nothing ? (
         [mb]
-    ) : fmap(Just, f(mb.Just));
-
-// traverseMayTo :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
-const traverseMayTo = (t, f, mb) =>
-    mb.Nothing ? (
-        pureT(t)(Nothing())
     ) : fmap(Just, f(mb.Just));
 
 // traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)

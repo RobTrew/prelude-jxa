@@ -1,5 +1,5 @@
 ```js
-// liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
+// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 const liftA2Tree = (f, tx, ty) => {
     const go = tx =>
         Node(

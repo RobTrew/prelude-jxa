@@ -25,7 +25,7 @@ approxRatio :: Real -> Real -> Ratio
 argvLength :: Function -> Int
 assocs :: Map k a -> [(k, a)]
 bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
-bindFn :: (a -> b) -> (b -> c) -> a -> c
+bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
 bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
@@ -209,7 +209,7 @@ liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-liftA2Tree :: Tree (a -> b -> c) -> Tree a -> Tree b -> Tree c
+liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
@@ -414,7 +414,6 @@ traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
 traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
-traverseMayTo :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeLeaves :: Tree -> [Tree]
