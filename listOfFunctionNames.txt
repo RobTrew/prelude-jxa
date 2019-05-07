@@ -2,7 +2,6 @@ Just :: a -> Maybe a
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
 Nothing :: Maybe a
-Ordering :: Int -> Ordering
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 TupleN :: a -> b ...  -> (a, b ... )
@@ -21,6 +20,7 @@ appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
 appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 apply ($) :: (a -> b) -> a -> b
+applyN :: Int -> (a -> a) -> a -> a
 approxRatio :: Real -> Real -> Ratio
 argvLength :: Function -> Int
 assocs :: Map k a -> [(k, a)]
@@ -454,5 +454,5 @@ zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
-zipWithM :: (Applicative m) => (a -> b -> m c) -> [a] -> [b] -> m [c]
+zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
