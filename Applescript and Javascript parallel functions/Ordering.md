@@ -1,15 +1,8 @@
 ```applescript
--- Ordering :: Int -> Ordering
-on Ordering(e)
-    if e > 0 then
-        set v to 1
-    else if e < 0 then
-        set v to -1
-    else
-        set v to 0
-    end if
-    {type:"Ordering", value:v}
-end Ordering
+-- ordering :: () -> Ordering
+on ordering()
+    enumFromPairs("Ordering", {{"LT", -1}, {"EQ", 0}, {"GT", 1}})
+end ordering
 ```
 
 ```js

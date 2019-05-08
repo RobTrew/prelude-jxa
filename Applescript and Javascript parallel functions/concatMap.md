@@ -5,7 +5,7 @@ on concatMap(f, xs)
     set acc to {}
     tell mReturn(f)
         repeat with i from 1 to lng
-            set end of acc to (|λ|(item i of xs, i, xs))
+            set acc to acc & (|λ|(item i of xs, i, xs))
         end repeat
     end tell
     return acc
