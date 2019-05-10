@@ -120,7 +120,7 @@ const apTree = (tf, tx) => {
     return go(tf);
 };
 
-// apTuple (<*>) :: (a, a0 -> b) -> (a, a0) -> (a, b)
+// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 const apTuple = tpl => 
   liftA2Tuple(x => x)(tpl)
 
