@@ -4,8 +4,6 @@
 
 ```js
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
-const apMay = (mf, mx) =>
-    mf.Nothing || mx.Nothing ? (
-        Nothing()
-    ) : Just(mf.Just(mx.Just));
+const apMay = mf =>
+    liftA2May(x => x)(mf)
 ```

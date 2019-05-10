@@ -105,10 +105,8 @@ const apList = fs =>
 
 // Maybe f applied to Maybe x, deriving a Maybe y
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
-const apMay = (mf, mx) =>
-    mf.Nothing || mx.Nothing ? (
-        Nothing()
-    ) : Just(mf.Just(mx.Just));
+const apMay = mf =>
+    liftA2May(x => x)(mf)
 
 // apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 const apTree = (tf, tx) => {
@@ -1593,8 +1591,8 @@ const liftA2List = f => xs => ys =>
     concatMap(x => concatMap(y => [f(x)(y)], ys), xs);
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-const liftA2May = (f, a, b) =>
-    a.Nothing ? a : b.Nothing ? b : Just(f(a.Just, b.Just));
+const liftA2May = f => a => b =>
+    a.Nothing ? a : b.Nothing ? b : Just(f(a.Just)(b.Just));
 
 // liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 const liftA2Tree = (f, tx, ty) => {
