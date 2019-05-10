@@ -11,7 +11,7 @@ and :: [Bool] -> Bool
 any :: (a -> Bool) -> [a] -> Bool
 ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
-apList (<*>) :: [(a -> b)] -> [a] -> [b]
+apList (<*>) :: [a -> b] -> [a] -> [b]
 apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
@@ -206,12 +206,12 @@ length :: [a] -> Int
 levelNodes :: Tree a -> [[Tree a]]
 levels :: Tree a -> [[a]]
 liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c
 liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
-liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 lines :: String -> [String]
 listDirectory :: FilePath -> [FilePath]

@@ -6,10 +6,12 @@
 ```js
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = (f, a, b) => {
-    const t = a.type;
+    const t = typeName(a);
     return (
-        undefined !== t ? (
-            'Either' === t ? (
+        'Bottom' !== t ? (
+            '(a -> b)' === t ? (
+                liftA2Fn
+            ) : 'Either' === t ? (
                 liftA2LR
             ) : 'Maybe' === t ? (
                 liftA2May

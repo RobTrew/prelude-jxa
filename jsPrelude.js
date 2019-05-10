@@ -26,16 +26,6 @@ const Nothing = () => ({
     Nothing: true,
 });
 
-// Ordering :: Int -> Ordering
-const Ordering = e => ({
-    type: 'Ordering',
-    value: 0 > e ? (
-        -1
-    ) : 0 < e ? (
-        1
-    ) : 0
-});
-
 // Right :: b -> Either a b
 const Right = x => ({
     type: 'Either',
@@ -105,24 +95,13 @@ const ap = (mf, mx) => {
 };
 
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
-const apLR = (flr, lr) => {
-    const pf = (undefined === flr.Left);
-    return pf && (undefined === lr.Left) ? (
-        Right(flr.Right(lr.Right))
-    ) : (pf ? lr : flr);
-};
+const apLR = flr => liftA2LR(id)(flr)
 
-// e.g. [(*2),(/2), sqrt] <*> [1,2,3]
-// -->  ap([dbl, hlf, root], [1, 2, 3])
-// -->  [2,4,6,0.5,1,1.5,1,1.4142135623730951,1.7320508075688772]
-
-// Each member of a list of functions applied to each
-// of a list of arguments, deriving a list of new values.
-// apList (<*>) :: [(a -> b)] -> [a] -> [b]
-const apList = (fs, xs) => //
-    fs.reduce((a, f) => a.concat(
-        xs.reduce((a, x) => a.concat([f(x)]), [])
-    ), []);
+// apList (<*>) :: [a -> b] -> [a] -> [b]
+const apList = fs =>
+    // The application of each of a list of functions,
+    // to each of a list of values.
+    xs => liftA2List(x => x)(fs)(xs)
 
 // Maybe f applied to Maybe x, deriving a Maybe y
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
@@ -167,6 +146,13 @@ function* appendGen(xs, ys) {
 
 // apply ($) :: (a -> b) -> a -> b
 const apply = (f, x) => f(x);
+
+// applyN :: Int -> (a -> a) -> a -> a
+const applyN = (n, f, x) =>
+    Array.from({
+        length: n
+    }, () => f)
+    .reduce((a, g) => g(a), x)
 
 // Epsilon -> Real -> Ratio
 // approxRatio :: Real -> Real -> Ratio
@@ -1566,10 +1552,12 @@ const levels = tree =>
 // liftA2 f a b = fmap f a <*> b
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = (f, a, b) => {
-    const t = a.type;
+    const t = typeName(a);
     return (
-        undefined !== t ? (
-            'Either' === t ? (
+        'Bottom' !== t ? (
+            '(a -> b)' === t ? (
+                liftA2Fn
+            ) : 'Either' === t ? (
                 liftA2LR
             ) : 'Maybe' === t ? (
                 liftA2May
@@ -1582,17 +1570,27 @@ const liftA2 = (f, a, b) => {
     )(...[f, a, b]);
 };
 
+// liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c
+const liftA2Fn = op => f => g =>
+    // Lift a binary function to a composition
+    // over two other functions.
+    // liftA2 (*) (+ 2) (+ 3) 7 == 90
+    x => op(f(x))(g(x));
+
 // liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
-const liftA2LR = (f, a, b) =>
-    undefined !== a.Left ? (
-        a
-    ) : undefined !== b.Left ? (
-        b
-    ) : Right(f(a.Right, b.Right));
+const liftA2LR = f => a => b =>
+     undefined !== a.Left ? (
+         a
+     ) : undefined !== b.Left ? (
+         b
+     ) : Right(f(a.Right)(b.Right))
 
 // liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
-const liftA2List = (f, xs, ys) =>
-    concatMap(x => concatMap(y => [f(x, y)], ys), xs);
+const liftA2List = f => xs => ys =>
+    // The binary operator f lifted to a function over two
+    // lists. f applied to each pair of arguments in the
+    // cartesian product of xs and ys.
+    concatMap(x => concatMap(y => [f(x)(y)], ys), xs);
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 const liftA2May = (f, a, b) =>
@@ -1620,22 +1618,6 @@ const liftA2Tree = (f, tx, ty) => {
 // liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 const liftA2Tuple = (f, a, b) =>
     Tuple(mappend(a[0], b[0]), f(a[1], b[1]));
-
-// > liftM2 (+) [0,1] [0,2] = [0,2,1,3]
-// > liftM2 (+) (Just 1) Nothing = Nothing
-
-// Control.Monad : 
-// "Promote a function to a monad, scanning the monadic arguments 
-// from left to right."
-
-// Add 7, 9, or 10,  to 100 or 1000
-// liftM2(plus, [7, 9, 10], [100, 1000])
-
-// --> [107, 1007, 109, 1009, 110, 1010]
-
-// liftM2 f xs ys = [f] <*> xs <*> ys
-// liftM2 :: (a -> b -> c) -> [a] -> [b] -> [c]
-const liftM2 = liftA2;
 
 // liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 const liftMmay = f =>
@@ -3325,9 +3307,10 @@ const typeName = v => {
         ) : 'Bottom'
     ) : {
         'boolean': 'Bool',
-        'number' : 'Num',
-        'string' : 'String'
-    }[t] || 'Bottom';
+        'number': 'Num',
+        'string': 'String',
+        'function' : '(a -> b)'
+    } [t] || 'Bottom';
 };
 
 // unQuoted :: String -> String
@@ -3588,7 +3571,7 @@ const zipWith4 = (f, ws, xs, ys, zs) =>
         length: minimum([ws, xs, ys, zs].map(length))
     }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));
 
-// zipWithM :: (Applicative m) => (a -> b -> m c) -> [a] -> [b] -> m [c]
+// zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 const zipWithM = (f, xs, ys) =>
     sequenceA(zipWith(f, xs, ys));
 

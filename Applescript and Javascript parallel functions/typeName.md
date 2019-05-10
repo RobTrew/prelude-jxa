@@ -4,7 +4,7 @@ on typeName(x)
     set mb to lookup((class of x) as string, ¬
         {|list|:"List", |integer|:"Int", |real|:"Float", |text|:¬
             "String", |string|:"String", |record|:¬
-            "Record", |boolean|:"Bool", |handler|:"Function", |script|:"Function"})
+            "Record", |boolean|:"Bool", |handler|:"(a -> b)", |script|:"(a -> b"})
     if Nothing of mb then
         "Bottom"
     else
@@ -34,8 +34,9 @@ const typeName = v => {
         ) : 'Bottom'
     ) : {
         'boolean': 'Bool',
-        'number' : 'Num',
-        'string' : 'String'
-    }[t] || 'Bottom';
+        'number': 'Num',
+        'string': 'String',
+        'function' : '(a -> b)'
+    } [t] || 'Bottom';
 };
 ```

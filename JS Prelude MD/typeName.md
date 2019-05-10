@@ -10,8 +10,9 @@ const typeName = v => {
         ) : 'Bottom'
     ) : {
         'boolean': 'Bool',
-        'number' : 'Num',
-        'string' : 'String'
-    }[t] || 'Bottom';
+        'number': 'Num',
+        'string': 'String',
+        'function' : '(a -> b)'
+    } [t] || 'Bottom';
 };
 ```
