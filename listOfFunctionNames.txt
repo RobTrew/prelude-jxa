@@ -14,7 +14,7 @@ apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 apList (<*>) :: [a -> b] -> [a] -> [b]
 apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
-apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
+apTuple (<*>) :: (a, a0 -> b) -> (a, a0) -> (a, b)
 append (++) :: [a] -> [a] -> [a]
 appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
@@ -211,7 +211,7 @@ liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
-liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
+liftA2Tuple :: (a0 -> b -> c) -> (a, a0) -> (a, b) -> (a, c)
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 lines :: String -> [String]
 listDirectory :: FilePath -> [FilePath]

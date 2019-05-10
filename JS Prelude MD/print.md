@@ -1,18 +1,7 @@
 ```js
 // print :: a -> IO ()
 const print = x => {
-    const
-        c = x.constructor.name,
-        s = 'object' !== typeof x ? (
-            x.toString()
-        ) : 'Date' !== c ? (
-            JSON.stringify.apply(
-                null,
-                'Array' !== c ? (
-                    [x, null, 2]
-                ) : [x]
-            )
-        ) : x.toString();
+    const s = show(x);
     return (
         typeof document !== 'undefined' ? (
             document.writeln(s)

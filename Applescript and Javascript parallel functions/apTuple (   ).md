@@ -6,10 +6,7 @@ end apTuple
 ```
 
 ```js
-// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
-const apTuple = (tf, tx) =>
-    Tuple(
-        mappend(tf[0], tx[0]),
-        tf[1](tx[1])
-    );
+// apTuple (<*>) :: (a, a0 -> b) -> (a, a0) -> (a, b)
+const apTuple = tpl => 
+  liftA2Tuple(x => x)(tpl)
 ```

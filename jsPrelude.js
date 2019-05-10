@@ -120,12 +120,9 @@ const apTree = (tf, tx) => {
     return go(tf);
 };
 
-// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
-const apTuple = (tf, tx) =>
-    Tuple(
-        mappend(tf[0], tx[0]),
-        tf[1](tx[1])
-    );
+// apTuple (<*>) :: (a, a0 -> b) -> (a, a0) -> (a, b)
+const apTuple = tpl => 
+  liftA2Tuple(x => x)(tpl)
 
 // append (++) :: [a] -> [a] -> [a]
 // append (++) :: String -> String -> String
@@ -1613,9 +1610,9 @@ const liftA2Tree = (f, tx, ty) => {
     return go(tx);
 };
 
-// liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
-const liftA2Tuple = (f, a, b) =>
-    Tuple(mappend(a[0], b[0]), f(a[1], b[1]));
+// liftA2Tuple :: (a0 -> b -> c) -> (a, a0) -> (a, b) -> (a, c)
+const liftA2Tuple = f => a => b =>
+    Tuple(mappend(a[0], b[0]), f(a[1])(b[1]));
 
 // liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 const liftMmay = f =>
@@ -2114,18 +2111,7 @@ const predMay = x => {
 
 // print :: a -> IO ()
 const print = x => {
-    const
-        c = x.constructor.name,
-        s = 'object' !== typeof x ? (
-            x.toString()
-        ) : 'Date' !== c ? (
-            JSON.stringify.apply(
-                null,
-                'Array' !== c ? (
-                    [x, null, 2]
-                ) : [x]
-            )
-        ) : x.toString();
+    const s = show(x);
     return (
         typeof document !== 'undefined' ? (
             document.writeln(s)
