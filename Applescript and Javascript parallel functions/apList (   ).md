@@ -8,7 +8,7 @@
 ```
 
 ```applescript
--- apList (<*>) :: [(a -> b)] -> [a] -> [b]
+-- apList (<*>) :: [a -> b] -> [a] -> [b]
 on apList(fs, xs)
     set lst to {}
     repeat with f in fs

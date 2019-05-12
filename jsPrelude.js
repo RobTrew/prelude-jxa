@@ -1610,7 +1610,7 @@ const liftA2Tree = (f, tx, ty) => {
     return go(tx);
 };
 
-// liftA2Tuple :: (a0 -> b -> c) -> (a, a0) -> (a, b) -> (a, c)
+// liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 const liftA2Tuple = f => a => b =>
     Tuple(mappend(a[0], b[0]), f(a[1])(b[1]));
 
@@ -2208,6 +2208,12 @@ const quot = (n, m) => Math.floor(n / m);
 // quotRem :: Int -> Int -> (Int, Int)
 const quotRem = (m, n) => 
   Tuple(Math.floor(m / n), m % n);
+
+// quoted :: Char -> String -> String
+const quoted = c =>
+    // A string flanked on both sides
+    // by a specified quote character.
+    s => c + s + c
 
 // radians :: Float x => Degrees x -> Radians x
 const radians = x =>
