@@ -10,6 +10,7 @@ all :: (a -> Bool) -> [a] -> Bool
 and :: [Bool] -> Bool
 any :: (a -> Bool) -> [a] -> Bool
 ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
+apFn :: (a -> b -> c) -> (a -> b) -> a -> c
 apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 apList (<*>) :: [a -> b] -> [a] -> [b]
 apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b

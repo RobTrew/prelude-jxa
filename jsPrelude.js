@@ -94,6 +94,11 @@ const ap = (mf, mx) => {
     )(mf, mx);
 };
 
+// apFn :: (a -> b -> c) -> (a -> b) -> a -> c
+const apFn = f =>
+    // Applicative instance for functions.
+    g => x => f(x)(g(x))
+
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 const apLR = flr => liftA2LR(id)(flr)
 
