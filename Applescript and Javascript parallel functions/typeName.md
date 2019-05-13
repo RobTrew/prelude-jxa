@@ -1,7 +1,7 @@
 ```applescript
 -- typeName :: a -> String
 on typeName(x)
-    set mb to lookup((class of x) as string, ¬
+    set mb to lookupDict((class of x) as string, ¬
         {|list|:"List", |integer|:"Int", |real|:"Float", |text|:¬
             "String", |string|:"String", |record|:¬
             "Record", |boolean|:"Bool", |handler|:"(a -> b)", |script|:"(a -> b"})

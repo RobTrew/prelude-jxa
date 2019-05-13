@@ -490,8 +490,10 @@ const deleteMap = (k, dct) =>
     (delete dct[k], dct);
 
 // difference :: Eq a => [a] -> [a] -> [a]
-const difference = (xs, ys) =>
-    xs.filter(x => -1 === ys.indexOf(x));
+const difference = (xs, ys) => {
+    const s = new Set(ys);
+    return xs.filter(x => ! s.has(x));
+};
 
 // differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
 function* differenceGen(ga, gb) {

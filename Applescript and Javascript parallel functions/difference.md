@@ -17,6 +17,8 @@ end difference
 
 ```js
 // difference :: Eq a => [a] -> [a] -> [a]
-const difference = (xs, ys) =>
-    xs.filter(x => -1 === ys.indexOf(x));
+const difference = (xs, ys) => {
+    const s = new Set(ys);
+    return xs.filter(x => ! s.has(x));
+};
 ```
