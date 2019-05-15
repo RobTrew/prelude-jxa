@@ -13,7 +13,7 @@ end foldr
 ```
 
 ```js
-// Note that that the Haskell signature of foldr is different from that of
+// Note that that the Haskell signature of foldr differs from that of
 // foldl - the positions of accumulator and current value are reversed
 ```
 

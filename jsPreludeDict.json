@@ -133,7 +133,7 @@
   "foldl1": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = (f, xs) =>\n    1 < xs.length ? xs.slice(1)\n    .reduce(f, xs[0]) : xs[0];",
   "foldl1May": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = (f, xs) =>\n    0 < xs.length ? (\n        Just(xs.slice(1)\n            .reduce(f, xs[0]))\n    ) : Nothing();",
   "foldlTree": "// foldlTree :: (b -> a -> b) -> b -> Tree a -> b\nconst foldlTree = (f, acc, node) => {\n  const go = (a, x) =>\n    x.nest.reduce(go, f(a, x));\n  return go(acc, node);\n};",
-  "foldr": "// Note that that the Haskell signature of foldr is different from that of\n// foldl - the positions of accumulator and current value are reversed\n\n// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = (f, a, xs) => xs.reduceRight(flip(f), a);",
+  "foldr": "// Note that that the Haskell signature of foldr differs from that of\n// foldl - the positions of accumulator and current value are reversed\n\n// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = (f, a, xs) => xs.reduceRight(flip(f), a);",
   "foldr1": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = (f, xs) =>\n    0 < xs.length ? init(xs)\n    .reduceRight(f, last(xs)) : [];",
   "foldr1May": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = (f, xs) =>\n    0 < xs.length ? (\n        Just(xs.slice(0, -1)\n            .reduceRight(f, xs.slice(-1)[0]))\n    ) : Nothing();",
   "fromEnum": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x =>\n    typeof x !== 'string' ? (\n        x.constructor === Object ? (\n            x.value\n        ) : parseInt(Number(x))\n    ) : x.codePointAt(0);",
