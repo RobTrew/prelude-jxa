@@ -313,6 +313,7 @@ recipMay :: Num -> Maybe Num
 regexMatches :: String -> String -> [[String]]
 rem :: Int -> Int -> Int
 removeFile :: FilePath -> Either String String
+renameFile :: FilePath -> FilePath -> IO ()
 repeat :: a -> Generator [a]
 replace :: String -> String -> String -> String
 replicate :: Int -> a -> [a]

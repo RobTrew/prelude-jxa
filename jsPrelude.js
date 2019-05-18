@@ -108,7 +108,6 @@ const apList = fs =>
     // to each of a list of values.
     xs => liftA2List(x => x)(fs)(xs)
 
-// Maybe f applied to Maybe x, deriving a Maybe y
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 const apMay = mf =>
     liftA2May(x => x)(mf)
@@ -2351,6 +2350,15 @@ const regexMatches = (strRgx, strHay) => {
 
 // rem :: Int -> Int -> Int
 const rem = (n, m) => n % m;
+
+// renameFile :: FilePath -> FilePath -> IO ()
+const renameFile = (fp, fp2) => {
+    const error = $();
+    return $.NSFileManager.defaultManager
+        .moveItemAtPathToPathError(fp, fp2, error) ? (
+            Right('Moved to: ' + fp2)
+        ) : Left(ObjC.unwrap(error.localizedDescription));
+};
 
 // repeat :: a -> Generator [a]
 function* repeat(xs) {
