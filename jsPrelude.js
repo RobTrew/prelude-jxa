@@ -325,7 +325,7 @@ const chop = (f, as) => {
 };
 
 // chr :: Int -> Char
-const chr = String.fromCodePoint;
+const chr = x => String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = (n, xs) =>
@@ -558,7 +558,7 @@ const draw = node => {
         ) : [];
     };
     return append(
-        lines(node.root.toString()),
+        lines(node.root),
         drawSubTrees(node.nest)
     );
 };
@@ -2627,6 +2627,10 @@ const showRatio = r =>
 // showSet :: Set -> String
 const showSet = s =>
     intercalate(sort(elems(s)), ['{','}']);
+
+// showTree :: Tree a -> String
+const showTree = x =>
+    drawTree(fmap(JSON.stringify, x));
 
 // showTuple :: Tuple -> String
 const showTuple = tpl =>

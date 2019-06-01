@@ -1,4 +1,4 @@
 ```js
 // chr :: Int -> Char
-const chr = String.fromCodePoint;
+const chr = x => String.fromCodePoint(x);
 ```

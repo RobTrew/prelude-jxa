@@ -22,7 +22,7 @@ const draw = node => {
         ) : [];
     };
     return append(
-        lines(node.root.toString()),
+        lines(node.root),
         drawSubTrees(node.nest)
     );
 };

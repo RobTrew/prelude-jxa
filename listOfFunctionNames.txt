@@ -352,6 +352,7 @@ showOrdering :: Ordering -> String
 showPrecision :: Int -> Float -> String
 showRatio :: Ratio -> String
 showSet :: Set -> String
+showTree :: Tree a -> String
 showTuple :: Tuple -> String
 showUndefined :: () -> String
 signum :: Num -> Num
