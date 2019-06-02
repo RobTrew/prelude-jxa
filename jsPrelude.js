@@ -2606,6 +2606,16 @@ const showOrdering = e =>
         'LT'
     ) : 'EQ';
 
+// showOutline :: Tree String -> String
+const showOutline = tree => {
+    const go = indent => tree =>
+        unlines(
+            [indent + tree.root]
+            .concat(concatMap(go('    ' + indent), tree.nest))
+        );
+    return go('')(tree);
+};
+
 // showPrecision :: Int -> Float -> String
 const showPrecision = n => x => {
     // A string showing a floating point number

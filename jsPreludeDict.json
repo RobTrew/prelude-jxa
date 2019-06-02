@@ -350,6 +350,7 @@
   "showLog": "// showLog :: a -> IO ()\nconst showLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",
   "showMaybe": "// showMaybe :: Maybe a -> String\nconst showMaybe = mb =>\n    mb.Nothing ? (\n        'Nothing'\n    ) : 'Just(' + unQuoted(show(mb.Just)) + ')';",
   "showOrdering": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    0 < e.value ? (\n        'GT'\n    ) : 0 > e.value ? (\n        'LT'\n    ) : 'EQ';",
+  "showOutline": "// showOutline :: Tree String -> String\nconst showOutline = tree => {\n    const go = indent => tree =>\n        unlines(\n            [indent + tree.root]\n            .concat(concatMap(go('    ' + indent), tree.nest))\n        );\n    return go('')(tree);\n};",
   "showPrecision": "// showPrecision :: Int -> Float -> String\nconst showPrecision = n => x => {\n    // A string showing a floating point number\n    // at a given degree of precision.\n    const d = Math.pow(10, n);\n    return str(Math.round(d * x) / d);\n};",
   "showRatio": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    'Ratio' !== r.type ? (\n        r.toString()\n    ) : r.n.toString() + (\n        1 !== r.d ? (\n            '/' + r.d.toString()\n        ) : ''\n    );",
   "showSet": "// showSet :: Set -> String\nconst showSet = s =>\n    intercalate(sort(elems(s)), ['{','}']);",

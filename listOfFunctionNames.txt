@@ -349,6 +349,7 @@ showList :: [a] -> String
 showLog :: a -> IO ()
 showMaybe :: Maybe a -> String
 showOrdering :: Ordering -> String
+showOutline :: Tree String -> String
 showPrecision :: Int -> Float -> String
 showRatio :: Ratio -> String
 showSet :: Set -> String
