@@ -3226,6 +3226,19 @@ const transpose = xss => {
     return go(xss);
 };
 
+// transpose_ :: [[a]] -> [[a]]
+const transpose_ = rows =>
+    // The columns of the input transposed
+    // into new rows.
+    // Simpler version of transpose, assuming input 
+    // rows of even length.
+    0 < rows.length ? rows[0].map(
+        (x, i) => concatMap(
+            x => x[i],
+            rows
+        )
+    ) : [];
+
 // traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
 const traverse = (f, tx) => {
     const t = tx.type;
