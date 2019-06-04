@@ -750,15 +750,11 @@ const enumFromThenToChar = (x1, x2, y) => {
     }, (_, i) => String.fromCodePoint(i1 + (d * i)));
 };
 
-// enumFromTo :: Enum a => a -> a -> [a]
-const enumFromTo = (m, n) => {
-    const
-        [x, y] = [m, n].map(fromEnum),
-        b = x + ('number' !== typeof m ? 0 : m - x);
-    return Array.from({
-        length: 1 + (y - x)
-    }, (_, i) => toEnum(m)(b + i));
-};
+// enumFromTo :: Int -> Int -> [Int]
+const enumFromTo = (m, n) =>
+    Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i);
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = (m, n) => {
@@ -766,6 +762,16 @@ const enumFromToChar = (m, n) => {
     return Array.from({
         length: Math.floor(intN - intM) + 1
     }, (_, i) => String.fromCodePoint(intM + i));
+};
+
+// enumFromTo_ :: Enum a => a -> a -> [a]
+const enumFromTo_ = (m, n) => {
+    const
+        [x, y] = [m, n].map(fromEnum),
+        b = x + ('number' !== typeof m ? 0 : m - x);
+    return Array.from({
+        length: 1 + (y - x)
+    }, (_, i) => toEnum(m)(b + i));
 };
 
 // eq (==) :: Eq a => a -> a -> Bool
@@ -1268,8 +1274,8 @@ const insertBy = (cmp, x, ys) => {
         .concat(ys.slice(i));
 };
 
-// insertMap :: Dict -> String -> a -> Dict
-const insertMap = (dct, k, v) =>
+// insertDict :: Dict -> String -> a -> Dict
+const insertDict = (dct, k, v) =>
   Object.assign(dct, {[k]: v});
 
 // intToDigit :: Int -> Char
@@ -2634,9 +2640,11 @@ const showRatio = r =>
         ) : ''
     );
 
-// showSet :: Set -> String
-const showSet = s =>
-    intercalate(sort(elems(s)), ['{','}']);
+// showSet :: Set a -> String
+const showSet = oSet =>
+    '{' + Array.from(oSet)
+    .map(x => x.toString())
+    .join(',') + '}';
 
 // showTree :: Tree a -> String
 const showTree = x =>

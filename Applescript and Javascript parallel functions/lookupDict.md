@@ -1,6 +1,8 @@
 ```applescript
 -- lookupDict :: a -> Dict -> Maybe b
 on lookupDict(k, dct)
+    -- Just the value of k in the dictionary,
+    -- or Nothing if k is not found.
     set ca to current application
     set v to (ca's NSDictionary's dictionaryWithDictionary:dct)'s objectForKey:k
     if missing value ≠ v then

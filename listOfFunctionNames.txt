@@ -95,8 +95,9 @@ enumFrom :: Enum a => a -> [a]
 enumFromPairs :: String -> [(String, Int)] -> Dict
 enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
-enumFromTo :: Enum a => a -> a -> [a]
+enumFromTo :: Int -> Int -> [Int]
 enumFromToChar :: Char -> Char -> [Char]
+enumFromTo_ :: Enum a => a -> a -> [a]
 eq (==) :: Eq a => a -> a -> Bool
 evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a
@@ -352,7 +353,7 @@ showOrdering :: Ordering -> String
 showOutline :: Tree String -> String
 showPrecision :: Int -> Float -> String
 showRatio :: Ratio -> String
-showSet :: Set -> String
+showSet :: Set a -> String
 showTree :: Tree a -> String
 showTuple :: Tuple -> String
 showUndefined :: () -> String

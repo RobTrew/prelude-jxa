@@ -1,5 +1,5 @@
 ```applescript
--- showSet :: Set -> String
+-- showSet :: Set a -> String
 on showSet(s)
     script str
         on |λ|(x)
@@ -11,7 +11,9 @@ end showSet
 ```
 
 ```js
-// showSet :: Set -> String
-const showSet = s =>
-    intercalate(sort(elems(s)), ['{','}']);
+// showSet :: Set a -> String
+const showSet = oSet =>
+    '{' + Array.from(oSet)
+    .map(x => x.toString())
+    .join(',') + '}';
 ```

@@ -1,6 +1,8 @@
 ```applescript
 -- map :: (a -> b) -> [a] -> [b]
 on map(f, xs)
+    -- The list obtained by applying f
+    -- to each element of xs.
     tell mReturn(f)
         set lng to length of xs
         set lst to {}

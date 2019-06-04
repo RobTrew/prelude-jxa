@@ -2,11 +2,11 @@
 -- showOutline :: Tree String -> String
 on showOutline(x)
     script go
-        on |λ|(strIndent)
+        on |λ|(indent)
             script
                 on |λ|(tree)
-                    {strIndent & (root of tree)} & ¬
-                        concatMap(go's |λ|(tab & strIndent), ¬
+                    {indent & (root of tree)} & ¬
+                        concatMap(go's |λ|(tab & indent), ¬
                             nest of tree)
                 end |λ|
             end script

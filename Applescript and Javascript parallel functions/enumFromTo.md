@@ -1,28 +1,22 @@
 ```applescript
--- enumFromTo :: Enum a => a -> a -> [a]
+-- enumFromTo :: Int -> Int -> [Int]
 on enumFromTo(m, n)
     if m ≤ n then
-        set x to fromEnum(m)
-        set y to fromEnum(n)
-        set xs to {}
-        repeat with i from x to y
-            set end of xs to i
+        set lst to {}
+        repeat with i from m to n
+            set end of lst to i
         end repeat
-        map(toEnum(m), xs)
+        return lst
     else
         return {}
     end if
-end enumFromTo
+end ft
 ```
 
 ```js
-// enumFromTo :: Enum a => a -> a -> [a]
-const enumFromTo = (m, n) => {
-    const
-        [x, y] = [m, n].map(fromEnum),
-        b = x + ('number' !== typeof m ? 0 : m - x);
-    return Array.from({
-        length: 1 + (y - x)
-    }, (_, i) => toEnum(m)(b + i));
-};
+// enumFromTo :: Int -> Int -> [Int]
+const enumFromTo = (m, n) =>
+    Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i);
 ```
