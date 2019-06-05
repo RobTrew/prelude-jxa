@@ -1,16 +1,10 @@
 ```applescript
--- span, applied to a predicate p and a list xs, returns a tuple of xs of elements that satisfy p and second element is the remainder of the list:
--- 
--- > span (< 3) [1,2,3,4,1,2,3,4] == ([1,2],[3,4,1,2,3,4])
--- > span (< 9) [1,2,3] == ([1,2,3],[])
--- > span (< 0) [1,2,3] == ([],[1,2,3])
--- 
--- span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
-```
-
-```applescript
 -- span :: (a -> Bool) -> [a] -> ([a], [a])
 on span(f, xs)
+    -- The longest (possibly empty) prefix of xs
+    -- that contains only elements satisfying p,
+    -- tupled with the remainder of xs.
+    -- span(p, xs) eq (takeWhile(p, xs), dropWhile(p, xs)) 
     set lng to length of xs
     set i to 0
     tell mReturn(f)
