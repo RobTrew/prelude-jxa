@@ -259,6 +259,7 @@ minimumMay :: [a] -> Maybe a
 mod :: Int -> Int -> Int
 modificationTime :: FilePath -> Either String Date
 negate :: Num -> Num
+nest :: Tree a -> [a]
 newUUID :: () -> IO UUID String
 not :: Bool -> Bool
 notElem :: Eq a => a -> [a] -> Bool
@@ -322,6 +323,7 @@ replicateM :: Int -> [a] -> [[a]]
 replicateString :: Int -> String -> String
 reverse :: [a] -> [a]
 rights :: [Either a b] -> [b]
+root :: Tree a -> a
 rotate :: Int -> [a] -> [a]
 round :: a -> Int
 roundTo :: Int -> Float -> Float

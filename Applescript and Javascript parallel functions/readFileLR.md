@@ -11,7 +11,7 @@ on readFileLR(strPath)
     if e is missing value then
         |Right|(s as string)
     else
-        |Left|(message of e)
+        |Left|((localizedDescription of e) as string)
     end if
 end readFileLR
 ```

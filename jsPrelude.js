@@ -63,10 +63,9 @@ const abs = Math.abs;
 // all :: (a -> Bool) -> [a] -> Bool
 const all = (p, xs) => xs.every(p);
 
-// | The conjunction of a container of Bools. 
-// True unless any contained value is false.
 // and :: [Bool] -> Bool
 const and = xs =>
+    // True unless any contained value is false.
     xs.every(Boolean);
 
 // | True if any contained element satisfies the predicate.
@@ -1955,6 +1954,9 @@ const mod = (n, d) => n % d;
 // negate :: Num -> Num
 const negate = n => -n;
 
+// nest :: Tree a -> [a]
+const nest = tree => tree.nest;
+
 // not :: Bool -> Bool
 const not = b => !b;
 
@@ -2412,6 +2414,9 @@ const rights = xs =>
             [x.Right]
         ) : [], xs
     );
+
+// root :: Tree a -> a
+const root = tree => tree.root;
 
 // rotate :: Int -> [a] -> [a]
 const rotate = (n, xs) => {
