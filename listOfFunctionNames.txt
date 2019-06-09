@@ -427,6 +427,7 @@ traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeLeaves :: Tree -> [Tree]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
+treeMenu :: Tree String -> IO [String]
 truncate :: Num -> Int
 tupleFromList :: [a] -> (a, a ...)
 typeName :: a -> String

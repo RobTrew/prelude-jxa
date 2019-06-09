@@ -490,7 +490,7 @@ const deleteMap = (k, dct) =>
 // difference :: Eq a => [a] -> [a] -> [a]
 const difference = (xs, ys) => {
     const s = new Set(ys);
-    return xs.filter(x => ! s.has(x));
+    return xs.filter(x => !s.has(x));
 };
 
 // differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
@@ -3328,6 +3328,39 @@ const treeMatches = (p, tree) => {
         p(node.root) ? (
             [node]
         ) : concatMap(go, node.nest);
+    return go(tree);
+};
+
+// treeMenu :: Tree String -> IO [String]
+const treeMenu = tree => {
+    const go = t => {
+        const
+            strTitle = t.root,
+            subs = t.nest,
+            menu = map(root, subs),
+            blnMore = 0 < concatMap(nest, subs).length;
+        return until(
+            // This menu is cancelled, or a leaf-menu choice is made.
+            tpl => !fst(tpl) || !isNull(snd(tpl)),
+            tpl => either(
+                _ => Tuple(false, []),
+                x => Tuple(true, x),
+                bindLR(
+                    showMenuLR(!blnMore, strTitle, menu),
+                    ks => {
+                        const
+                            k = ks[0],
+                            chosen = find(x => k === x.root, subs)
+                            .Just;
+                        return Right(
+                            isNull(chosen.nest) ? ks : go(chosen)
+                        );
+                    }
+                )
+            ),
+            Tuple(true, [])
+        )[1]
+    };
     return go(tree);
 };
 
