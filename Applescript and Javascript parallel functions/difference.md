@@ -1,17 +1,12 @@
 ```applescript
 -- difference :: Eq a => [a] -> [a] -> [a]
 on difference(xs, ys)
-    script 
-        on |λ|(a, y)
-            if a contains y then
-                my |delete|(y, a)
-            else
-                a
-            end if
+    script p
+        on |λ|(x)
+            x is not in ys
         end |λ|
     end script
- 
-    foldl(result, xs, ys)
+    filter(p, xs)
 end difference
 ```
 
