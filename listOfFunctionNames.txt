@@ -382,6 +382,7 @@ strip :: String -> String
 stripEnd :: String -> String
 stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 stripStart :: String -> String
+subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
 subsequences :: [a] -> [[a]]
 subsets :: [a] -> [[a]]
 subtract :: Num -> Num -> Num
@@ -425,6 +426,7 @@ traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
+treeFromDict :: String -> Dict -> Tree String
 treeLeaves :: Tree -> [Tree]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]

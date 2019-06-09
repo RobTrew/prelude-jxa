@@ -2888,6 +2888,21 @@ const stripPrefix = (pfx, s) => {
 // stripStart :: String -> String
 const stripStart = s => dropWhile(isSpace, s);
 
+// subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
+const subTreeAtPath = (tree, path) => {
+    const go = (nest, xs) =>
+        0 < nest.length && 0 < xs.length ? (() => {
+            const h = xs[0];
+            return bindMay(
+                find(t => h === t.root, nest),
+                t => 1 < xs.length ? (
+                    go(t.nest, xs.slice(1))
+                ) : Just(t)
+            );
+        })() : Nothing();
+    return go([tree], path);
+};
+
 // subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
 // subsequences('abc') -> ["","a","b","ab","c","ac","bc","abc"]
 // subsequences :: [a] -> [[a]]
@@ -3310,6 +3325,17 @@ const traverseTree = (f, node) => {
 // traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 const traverseTuple = (f, tpl) =>
     fmap(curry(Tuple)(tpl[0]), f(tpl[1]));
+
+// treeFromDict :: String -> Dict -> Tree String
+const treeFromDict = rootLabel => dict => {
+    const go = x =>
+        'object' !== typeof x ? [] : (
+            Array.isArray(x) ? (
+                map(v => Node(v, []), x)
+            ) : map(k => Node(k, go(x[k])), keys(x))
+        );
+    return Node(rootLabel, go(dict));
+};
 
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = tree => {
