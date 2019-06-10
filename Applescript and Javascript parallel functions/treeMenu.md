@@ -3,8 +3,8 @@
 on treeMenu(tree)
     script go
         on |λ|(tree)
-            set menuTitle to root(tree)
-            set subTrees to nest(tree)
+            set menuTitle to root of tree
+            set subTrees to nest of tree
             set menuItems to map(my root, subTrees)
             set blnNoSubMenus to {} = concatMap(my nest, subTrees)
             
@@ -19,11 +19,11 @@ on treeMenu(tree)
                     set k to item 1 of choices
                     script match
                         on |λ|(x)
-                            k = my root(x)
+                            k = root of x
                         end |λ|
                     end script
                     set chosenSubTree to (Just of find(match, subTrees))
-                    if {} ≠ nest(chosenSubTree) then
+                    if {} ≠ (nest of chosenSubTree) then
                         |Right|(|λ|(chosenSubTree) of go)
                     else
                         |Right|(choices)
