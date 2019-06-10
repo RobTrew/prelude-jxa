@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = (p, xs) => {\n  let i = 0;\n  for (let lng = xs.length;\n    (i < lng) && p(xs[i]); i++) {}\n  return xs.slice(i);\n};"
+      "data": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = (p, xs) => {\n    const lng = xs.length;\n    return 0 < lng ? xs.slice(\n        until(\n            i => i === lng || !p(xs[i]),\n            i => 1 + i,\n            0\n        )\n    ) : [];\n};"
     }
   ]
 }

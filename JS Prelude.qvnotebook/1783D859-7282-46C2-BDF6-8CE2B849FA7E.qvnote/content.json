@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// curry :: ((a, b) -> c) -> a -> b -> c\nconst curry = (f, ...args) => {\n    const\n        n = f.length,\n        go = xs => n <= xs.length ? (\n            f.apply(null, xs)\n        ) : function() {\n            return go(xs.concat(Array.from(arguments)));\n        };\n    return go(args);\n};"
+      "data": "// curry :: ((a, b) -> c) -> a -> b -> c\nconst curry = (f, ...args) => {\n    const\n        n = f.length,\n        go = xs => n <= xs.length ? (\n            f(...xs)\n        ) : function() {\n            return go(xs.concat(Array.from(arguments)));\n        };\n    return go(args);\n};"
     }
   ]
 }

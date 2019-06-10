@@ -1,0 +1,10 @@
+{
+  "title": "digitToInt",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// digitToInt :: Char -> Int\nconst digitToInt = c => {\n    const\n        ord = x => x.codePointAt(0),\n        oc = ord(c);\n    return 48 > oc || 102 < oc ? (\n        undefined\n    ) : (() => {\n        const\n            dec = oc - ord('0'),\n            hexu = oc - ord('A'),\n            hexl = oc - ord('a');\n        return 9 >= dec ? (\n            dec\n        ) : 0 <= hexu && 5 >= hexu  ? (\n            10 + hexu\n        ) : 0 <= hexl && 5 >= hexl ? (\n            10 + hexl\n        ) : undefined;\n    })();\n};"
+    }
+  ]
+}

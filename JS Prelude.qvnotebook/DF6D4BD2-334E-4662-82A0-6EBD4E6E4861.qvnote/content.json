@@ -1,0 +1,15 @@
+{
+  "title": "toEnum",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// The first argument is a sample of the type\n// allowing the function to make the right mapping"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// toEnum :: a -> Int -> a\nconst toEnum = e => x =>\n    ({\n        'number': Number,\n        'string': String.fromCodePoint,\n        'boolean': Boolean,\n        'object': v => e.min + v\n    } [typeof e])(x);"
+    }
+  ]
+}

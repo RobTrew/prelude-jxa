@@ -1,0 +1,10 @@
+{
+  "title": "roundTo",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// roundTo :: Int -> Float -> Float\nconst roundTo = (n, x) => {\n    const d = Math.pow(10, n);\n    return Math.round(x * d) / d;\n};"
+    }
+  ]
+}

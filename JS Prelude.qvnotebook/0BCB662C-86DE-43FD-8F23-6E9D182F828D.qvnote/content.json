@@ -1,0 +1,10 @@
+{
+  "title": "degrees",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// degrees :: Float x => Radians x -> Degrees x\nconst degrees = r =>\n    (180 / Math.PI) * r;"
+    }
+  ]
+}

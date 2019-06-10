@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mapFromList :: [(k, v)] -> Dict\nconst mapFromList = kvs =>\n    kvs.reduce(\n        (a, kv) => {\n            const k = kv[0];\n            return Object.assign(a, {\n                [(('string' === typeof k) && k) || show(k)]: kv[1]\n            });\n        }, {}\n    );"
+      "data": "// mapFromList :: [(k, v)] -> Dict\nconst mapFromList = kvs =>\n    kvs.reduce(\n        (a, kv) => {\n            const k = kv[0];\n            return Object.assign(a, {\n                [\n                    (('string' === typeof k) && k) || JSON.stringify(k)\n                ]: kv[1]\n            });\n        }, {}\n    );"
     }
   ]
 }

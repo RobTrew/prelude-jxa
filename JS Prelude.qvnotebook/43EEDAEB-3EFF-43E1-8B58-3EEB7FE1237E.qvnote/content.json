@@ -1,0 +1,10 @@
+{
+  "title": "takeWhileGen",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst takeWhileGen = (p, xs) => {\n    const ys = [];\n    let\n        nxt = xs.next(),\n        v = nxt.value;\n    while (!nxt.done && p(v)) {\n        ys.push(v);\n        nxt = xs.next();\n        v = nxt.value\n    }\n    return ys;\n};"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// toRatio :: Real -> Ratio\nconst toRatio = n =>\n    approxRatio(1e-12, n);"
+      "data": "// toRatio :: Real -> Ratio\nconst toRatio = n =>\n    approxRatio(1e-12)(n);"
     }
   ]
 }

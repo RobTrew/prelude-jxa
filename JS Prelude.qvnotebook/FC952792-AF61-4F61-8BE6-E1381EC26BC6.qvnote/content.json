@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = (lf, rf, e) =>\n    'Either' === e.type ? (\n        undefined !== e.Left ? (\n            lf(e.Left)\n        ) : rf(e.Right)\n    ) : undefined;"
+      "data": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = (fl, fr, e) =>\n    'Either' === e.type ? (\n        undefined !== e.Left ? (\n            fl(e.Left)\n        ) : fr(e.Right)\n    ) : undefined;"
     }
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "title": "ft",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Abbreviation for quick testing"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// ft :: (Int, Int) -> [Int]\nconst ft = (m, n) =>\n    Array.from({\n        length: 1 + n - m\n    }, (_, i) => m + i);"
+    }
+  ]
+}

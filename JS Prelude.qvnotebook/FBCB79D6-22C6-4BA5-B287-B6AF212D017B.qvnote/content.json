@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// permutationsWithRepetition :: Int -> [a] -> [[a]]\nconst permutationsWithRepetition = (n, xs) =>\n    xs.length > 0 ? (\n        map(flatten,\n            foldl1(\n                x => cartesianProduct(xs, x),\n                replicate(n, xs)\n            )\n        )\n    ) : [];"
+      "data": "// permutationsWithRepetition :: Int -> [a] -> [[a]]\nconst permutationsWithRepetition = (n, xs) =>\n    0 < xs.length ? (\n        map(flatten,\n            foldl1(\n                x => cartesianProduct(xs, x),\n                replicate(n, xs)\n            )\n        )\n    ) : [];"
     }
   ]
 }

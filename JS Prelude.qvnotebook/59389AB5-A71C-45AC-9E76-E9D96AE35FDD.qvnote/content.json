@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = (suffix, main) =>\n    main.indexOf(suffix) === main.length - suffix.length;"
+      "data": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = (ns, hs) => {\n    const go = delta =>\n        eq(ns, dropLength(delta, hs));\n    return 'string' !== typeof hs ? (\n        bindMay(dropLengthMaybe(ns, hs), go)\n    ) : hs.endsWith(ns);\n};"
     }
   ]
 }

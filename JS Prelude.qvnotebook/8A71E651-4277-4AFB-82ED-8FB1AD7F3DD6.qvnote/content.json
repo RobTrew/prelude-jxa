@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = (flr, lr) => {\n    const pf = (undefined === flr.Left);\n    return pf && (undefined === lr.Left) ? (\n        Right(flr.Right(lr.Right))\n    ) : (pf ? lr : flr);\n};"
+      "data": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = flr => liftA2LR(id)(flr)"
     }
   ]
 }

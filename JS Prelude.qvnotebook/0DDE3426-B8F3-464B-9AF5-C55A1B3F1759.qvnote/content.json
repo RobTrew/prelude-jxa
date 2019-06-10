@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// splitAt :: Int -> [a] -> ([a],[a])\nconst splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));"
+      "data": "// splitAt :: Int -> [a] -> ([a], [a])\nconst splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));"
     }
   ]
 }

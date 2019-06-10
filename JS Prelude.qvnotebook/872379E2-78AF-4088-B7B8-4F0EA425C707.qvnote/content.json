@@ -1,10 +1,10 @@
 {
-  "title": "insertMap",
+  "title": "insertDict",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// insertMap :: Dict -> String -> a -> Dict\nconst insertMap = (dct, k, v) =>\n  Object.assign(dct, {[k]: v});"
+      "data": "// insertDict :: Dict -> String -> a -> Dict\nconst insertDict = (dct, k, v) =>\n  Object.assign(dct, {[k]: v});"
     }
   ]
 }

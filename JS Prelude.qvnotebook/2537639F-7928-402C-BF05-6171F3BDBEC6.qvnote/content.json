@@ -4,12 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// (x => Maybe [value, remainder] -> initial value -> values"
+      "data": "// unfoldl(x => 0 !== x ? Just([x - 1, x]) : Nothing(), 10);\n// --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
     },
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unfoldl :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldl = (f, v) => {\n    let xs = [];\n    return (\n        until(\n            mb => mb.Nothing,\n            mb => (\n                xs = [mb.Just[1]].concat(xs),\n                f(mb.Just[1])\n            ), Just(Tuple(v, v))\n        ),\n        xs.slice(1)\n    );\n};"
+      "data": "// unfoldl :: (b -> Maybe (b, a)) -> b -> [a]\nconst unfoldl = (f, v) => {\n    let\n        xr = [v, v],\n        xs = [];\n    while (true) {\n        const mb = f(xr[0]);\n        if (mb.Nothing) {\n            return xs\n        } else {\n            xr = mb.Just;\n            xs = [xr[1]].concat(xs);\n        }\n    }\n};"
     }
   ]
 }

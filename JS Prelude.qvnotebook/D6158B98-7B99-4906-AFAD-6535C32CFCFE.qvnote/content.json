@@ -1,0 +1,10 @@
+{
+  "title": "enumFromTo",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = (m, n) =>\n    Array.from({\n        length: 1 + n - m\n    }, (_, i) => m + i);"
+    }
+  ]
+}

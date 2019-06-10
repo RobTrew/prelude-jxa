@@ -1,10 +1,10 @@
 {
-  "title": "index (!!)",
+  "title": "index",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// index (!!) :: [a] -> Int -> a\nconst index = (xs, i) => xs[i];"
+      "data": "// index (!!) :: [a] -> Int -> Maybe a\n// index (!!) :: Generator (Int, a) -> Int -> Maybe a\n// index (!!) :: String -> Int -> Maybe Char\nconst index = xs => i => {\n    const s = xs.constructor.constructor.name;\n    return 'GeneratorFunction' !== s ? (() => {\n        const v = xs[i];\n        return undefined !== v ? Just(v) : Nothing();\n    })() : (() => {\n        const v = until(\n            x => x.done || i <= fst(x.value),\n            () => xs.next(),\n            xs.next()\n        );\n        return v.done ? Nothing() : Just(snd(v.value));\n    })();\n};"
     }
   ]
 }

@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = (f, xs) =>\n    splitAt(until(\n        i => !f(xs[i]),\n        i => i + 1,\n        0\n    ), xs);"
+      "data": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = (p, xs) =>\n    splitAt(until(\n        i => !p(xs[i]),\n        i => 1 + i,\n        0\n    ), xs);"
     }
   ]
 }

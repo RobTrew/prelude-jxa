@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = (p, xs) => {\n    for (let i = 0, lng = xs.length; i < lng; i++) {\n        let x = xs[i];\n        if (p(x)) return Just(x);\n    }\n    return Nothing();\n};"
+      "data": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = (p, xs) => {\n    const i = xs.findIndex(p);\n    return -1 !== i ? (\n        Just(xs[i])\n    ) : Nothing();\n};"
     }
   ]
 }

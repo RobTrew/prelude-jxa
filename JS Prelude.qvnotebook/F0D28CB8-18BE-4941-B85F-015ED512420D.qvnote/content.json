@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// map :: (a -> b) -> [a] -> [b]\nconst map = (f, xs) => xs.map(f);"
+      "data": "// map :: (a -> b) -> [a] -> [b]\nconst map = (f, xs) =>\n    (Array.isArray(xs) ? (\n        xs\n    ) : xs.split('')).map(f);"
     }
   ]
 }

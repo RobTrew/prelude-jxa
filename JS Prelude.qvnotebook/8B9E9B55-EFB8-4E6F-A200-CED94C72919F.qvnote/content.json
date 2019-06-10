@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// take :: Int -> [a] -> [a]\nconst take = (n, xs) => xs.slice(0, n);"
+      "data": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = (n, xs) =>\n    'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        xs.slice(0, n)\n    ) : [].concat.apply([], Array.from({\n        length: n\n    }, () => {\n        const x = xs.next();\n        return x.done ? [] : [x.value];\n    }));"
     }
   ]
 }

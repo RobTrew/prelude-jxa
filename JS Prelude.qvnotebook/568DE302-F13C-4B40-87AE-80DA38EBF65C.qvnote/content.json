@@ -1,0 +1,10 @@
+{
+  "title": "root",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// root :: Tree a -> a\nconst root = tree => tree.root;"
+    }
+  ]
+}

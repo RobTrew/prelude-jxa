@@ -4,7 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = (f, xs, ys) =>\n    Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => f(xs[i], ys[i], i));"
+      "data": "// Use of `take` and `length` here allows zipping with non-finite lists\n// i.e. generators like cycle, repeat, iterate."
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = (f, xs, ys) => {\n    const\n        lng = Math.min(length(xs), length(ys)),\n        as = take(lng, xs),\n        bs = take(lng, ys);\n    return Array.from({\n        length:lng\n    }, (_, i) => f(as[i], bs[i], i));\n};"
     }
   ]
 }

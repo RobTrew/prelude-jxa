@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c\nconst liftA2LR = (f, a, b) =>\n    undefined !== a.Left ? (\n        a\n    ) : undefined !== b.Left ? (\n        b\n    ) : Right(f(a.Right, b.Right));"
+      "data": "// liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c\nconst liftA2LR = f => a => b =>\n     undefined !== a.Left ? (\n         a\n     ) : undefined !== b.Left ? (\n         b\n     ) : Right(f(a.Right)(b.Right))"
     }
   ]
 }

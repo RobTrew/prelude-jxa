@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = (t, x) =>\n    'List' !== t ? (\n        'Either' === t ? (\n            pureLR(x)\n        ) : 'Maybe' === t ? (\n            pureMay(x)\n        ) : 'Node' === t ? (\n            pureTree(x)\n        ) : 'Tuple' === t ? (\n            pureTuple(x)\n        ) : pureList(x)\n    ) : pureList(x);"
+      "data": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t => x =>\n    'List' !== t ? (\n        'Either' === t ? (\n            pureLR(x)\n        ) : 'Maybe' === t ? (\n            pureMay(x)\n        ) : 'Node' === t ? (\n            pureTree(x)\n        ) : 'Tuple' === t ? (\n            pureTuple(x)\n        ) : pureList(x)\n    ) : pureList(x);"
     }
   ]
 }

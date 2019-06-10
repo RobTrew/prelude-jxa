@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// succ :: Enum a => a -> a\nconst succ = x =>\n    isChar(x) ? (\n        chr(ord(x) + 1)\n    ) : isNaN(x) ? (\n        undefined\n    ) : x + 1;"
+      "data": "// succ :: Enum a => a -> a\nconst succ = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mx] = [x, maxBound(x)].map(fromEnum);\n        return i < mx ? (\n            toEnum(x)(1 + i)\n        ) : Error('succ :: enum out of range.')\n    })() : x < Number.MAX_SAFE_INTEGER ? (\n        1 + x\n    ) : Error('succ :: Num out of range.')\n};"
     }
   ]
 }

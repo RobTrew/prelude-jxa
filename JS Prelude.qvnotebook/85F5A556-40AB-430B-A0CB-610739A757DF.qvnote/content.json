@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// takeExtension :: FilePath -> String\nconst takeExtension = strPath => {\n    const\n        xs = strPath.split('.'),\n        lng = xs.length;\n    return 1 < lng ? (\n        '.' + xs[lng - 1]\n    ) : '';\n};"
+      "data": "// takeExtension :: FilePath -> String\nconst takeExtension = fp => {\n    const fs = fp.split('/');\n    return 0 < fs.length ? (() => {\n        const\n            xs = fs.slice(-1)[0].split('.'),\n            ext = 1 < xs.length ? (\n                xs.slice(-1)[0]\n            ) : '';\n        return '.' + ext;\n    })() : '';\n};"
     }
   ]
 }

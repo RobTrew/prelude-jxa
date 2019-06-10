@@ -4,7 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// length :: [a] -> Int\nconst length = xs => xs.length;"
+      "data": "// Returns Infinity over objects without finite length.\n// This enables zip and zipWith to choose the shorter\n// argument when one is non-finite, like cycle, repeat etc"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// length :: [a] -> Int\nconst length = xs =>\n    (Array.isArray(xs) || 'string' === typeof xs) ? (\n        xs.length\n    ) : Infinity;"
     }
   ]
 }

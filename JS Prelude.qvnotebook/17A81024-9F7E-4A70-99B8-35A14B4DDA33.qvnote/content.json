@@ -1,0 +1,10 @@
+{
+  "title": "enumFrom",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// enumFrom :: Enum a => a -> [a]\nfunction* enumFrom(x) {\n    let v = x;\n    while (true) {\n        yield v;\n        v = succ(v);\n    }\n}"
+    }
+  ]
+}

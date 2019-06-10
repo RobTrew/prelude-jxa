@@ -1,0 +1,10 @@
+{
+  "title": "appendGen",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]\nfunction* appendGen(xs, ys) {\n    for (let vs of [xs, ys]) {\n        let nxt = vs.next()\n        while (!nxt.done) {\n            yield nxt.value\n            nxt = vs.next()\n        }\n    }\n};"
+    }
+  ]
+}

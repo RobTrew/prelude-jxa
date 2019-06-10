@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// | The conjunction of a container of Bools. \n// True unless any contained value is false."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// and :: [Bool] -> Bool\nconst and = xs =>\n    xs.every(Boolean);"
+      "data": "// and :: [Bool] -> Bool\nconst and = xs =>\n    // True unless any contained value is false.\n    xs.every(Boolean);"
     }
   ]
 }

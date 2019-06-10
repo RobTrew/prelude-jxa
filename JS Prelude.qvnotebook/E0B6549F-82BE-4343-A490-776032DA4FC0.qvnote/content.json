@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Splitting not on a delimiter, but whenever the relationship between\n// two consecutive items matches a supplied predicate function"
+      "data": "// Splitting not on a delimiter, but wherever the relationship\n// between consecutive terms matches a binary predicate"
     },
     {
       "type": "code",

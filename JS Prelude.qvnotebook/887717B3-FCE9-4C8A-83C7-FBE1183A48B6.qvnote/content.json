@@ -1,0 +1,10 @@
+{
+  "title": "str",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// str :: a -> String\nconst str = x => x.toString();"
+    }
+  ]
+}

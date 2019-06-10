@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// truncate :: Num -> Int\nconst truncate = x => {\n    const [m, _] = properFraction(x);\n    return m;\n};"
+      "data": "// truncate :: Num -> Int\nconst truncate = x =>\n    'Ratio' === x.type ? (\n        properFracRatio(x)[0]\n    ) : properFraction(x)[0];"
     }
   ]
 }

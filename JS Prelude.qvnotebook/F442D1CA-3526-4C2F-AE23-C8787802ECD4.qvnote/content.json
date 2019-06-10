@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// quotRem :: Int -> Int -> (Int, Int)\nconst quotRem = (m, n) => Tuple(Math.floor(m / n), m % n);"
+      "data": "// quotRem :: Int -> Int -> (Int, Int)\nconst quotRem = (m, n) => \n  Tuple(Math.floor(m / n), m % n);"
     }
   ]
 }

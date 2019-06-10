@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// showRatio :: Ratio -> String\nconst showRatio = nd =>\n    nd.n.toString() + '/' + nd.d.toString();"
+      "data": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    'Ratio' !== r.type ? (\n        r.toString()\n    ) : r.n.toString() + (\n        1 !== r.d ? (\n            '/' + r.d.toString()\n        ) : ''\n    );"
     }
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "title": "sj",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Abbreviation for quick testing - any 2nd arg interpreted as indent size"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// sj :: a -> String\nfunction sj() {\n    const args = Array.from(arguments);\n    return JSON.stringify.apply(\n        null,\n        1 < args.length && !isNaN(args[0]) ? [\n            args[1], null, args[0]\n        ] : [args[0], null, 2]\n    );\n}"
+    }
+  ]
+}

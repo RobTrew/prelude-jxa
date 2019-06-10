@@ -1,0 +1,10 @@
+{
+  "title": "zipN",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// zipN :: [a] -> [b] -> ... -> [(a, b ...)]\nfunction zipN() {\n    const args = Array.from(arguments);\n    return 1 < args.length ? map(\n        (x, i) => TupleN(...map(y => y[i], args)),\n        take(\n            Math.min(...map(length, args)),\n            args[0]\n        )\n    ) : args;\n}"
+    }
+  ]
+}

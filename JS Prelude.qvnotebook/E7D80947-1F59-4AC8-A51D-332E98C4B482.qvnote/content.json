@@ -1,0 +1,10 @@
+{
+  "title": "repeat",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// repeat :: a -> Generator [a]\nfunction* repeat(xs) {\n    while(true) yield xs;\n}"
+    }
+  ]
+}

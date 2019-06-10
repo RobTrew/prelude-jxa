@@ -1,0 +1,10 @@
+{
+  "title": "bindFn (>>=)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c\nconst bindFn = (f, bop) =>\n    // Where either bop or f is a binary operator.\n    x => curry(bop)(curry(f)(x))(x)"
+    }
+  ]
+}

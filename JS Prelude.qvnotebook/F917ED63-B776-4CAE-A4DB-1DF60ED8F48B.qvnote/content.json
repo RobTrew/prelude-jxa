@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Maybe f applied to Maybe x, deriving a Maybe y"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMay = (mf, mx) =>\n    mf.Nothing || mx.Nothing ? (\n        Nothing()\n    ) : Just(mf.Just(mx.Just));"
+      "data": "// apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMay = mf =>\n    liftA2May(x => x)(mf)"
     }
   ]
 }

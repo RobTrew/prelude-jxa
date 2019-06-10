@@ -1,0 +1,10 @@
+{
+  "title": "showSet",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showSet :: Set a -> String\nconst showSet = oSet =>\n    '{' + Array.from(oSet)\n    .map(x => x.toString())\n    .join(',') + '}';"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "mappendFn",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)\nconst mappendFn = (f, g) =>\n    x => mappend(f(x), g(x));"
+    }
+  ]
+}

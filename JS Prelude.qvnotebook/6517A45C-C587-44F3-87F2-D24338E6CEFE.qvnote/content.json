@@ -4,12 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// splitOn(\"\\r\\n\", \"a\\r\\nb\\r\\nd\\r\\ne\") //--> [\"a\", \"b\", \"d\", \"e\"]\n// splitOn(\"aaa\", \"aaaXaaaXaaaXaaa\") //--> [\"\", \"X\", \"X\", \"X\", \"\"]\n// splitOn(\"x\", \"x\") //--> [\"\", \"\"]\n// splitOn(5, [1, 5, 9, 2, 6, 5, 3, 5]) //--> [[1], [9, 2, 6], [3], []]"
+      "data": "// splitOn(\"\\r\\n\", \"a\\r\\nb\\r\\nd\\r\\ne\") //--> [\"a\", \"b\", \"d\", \"e\"]\n// splitOn(\"aaa\", \"aaaXaaaXaaaXaaa\") //--> [\"\", \"X\", \"X\", \"X\", \"\"]\n// splitOn(\"x\", \"x\") //--> [\"\", \"\"]\n// splitOn([3, 1], [1,2,3,1,2,3,1,2,3]) //--> [[1,2],[2],[2,3]]"
     },
     {
       "type": "code",
       "language": "javascript",
-      "data": "// splitOn :: a -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = (needle, haystack) =>\n    ('string' === typeof haystack) ? (\n        haystack.split(needle)\n    ) : (() => {\n        const tpl = haystack.reduce(\n            (a, x) => eq(needle, x) ? Tuple(\n                a[0].concat([a[1]]), []\n            ) : Tuple(a[0], a[1].concat(x)),\n            Tuple([], [])\n        );\n        return tpl[0].concat([tpl[1]]);\n    })();"
+      "data": "// splitOn :: [a] -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = (pat, src) =>\n    /* A list of the strings delimited by\n       instances of a given pattern in s. */\n    ('string' === typeof src) ? (\n        src.split(pat)\n    ) : (() => {\n        const\n            lng = pat.length,\n            tpl = foldl((a, i) =>\n                Tuple(\n                    fst(a).concat([src.slice(snd(a), i)]),\n                    lng + i\n                ), Tuple([], 0),\n                findIndices(matching(pat), src)\n            );\n        return fst(tpl).concat([src.slice(snd(tpl))]);\n    })();"
     }
   ]
 }

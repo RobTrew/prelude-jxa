@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// floor :: Num -> Int\nconst floor = x => {\n    const\n      nr = properFraction(x),\n      n = nr[0];\n    return 0 > nr[1] ? n - 1 : n;\n};"
+      "data": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            'Ratio' !== x.type ? (\n                properFraction\n            ) : properFracRatio\n        )(x),\n        n = nr[0];\n    return 0 > nr[1] ? n - 1 : n;\n};"
     }
   ]
 }

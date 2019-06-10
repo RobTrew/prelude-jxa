@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// 'The mapAccumL function behaves like a combination of map and foldl; \n// it applies a function to each element of a list, passing an accumulating \n// parameter from left to right, and returning a final value of this \n// accumulator together with the new list.' (See Hoogle)"
+      "data": "// Map-accumulation is a combination of map and a catamorphism;\n// it applies a function to each element of a list, passing an accumulating \n// parameter from left to right, and returning a final value of this \n// accumulator together with the new list."
     },
     {
       "type": "code",

@@ -1,0 +1,10 @@
+{
+  "title": "showTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showTree :: Tree a -> String\nconst showTree = x =>\n    drawTree(fmap(JSON.stringify, x));"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "treeFromDict",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// treeFromDict :: String -> Dict -> Tree String\nconst treeFromDict = rootLabel => dict => {\n    const go = x =>\n        'object' !== typeof x ? [] : (\n            Array.isArray(x) ? (\n                map(v => Node(v, []), x)\n            ) : map(k => Node(k, go(x[k])), keys(x))\n        );\n    return Node(rootLabel, go(dict));\n};"
+    }
+  ]
+}

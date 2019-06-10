@@ -4,7 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)\nconst traverseLR = (f, lr) =>\n    undefined !== lr.Left ? (\n        fmap(Right, f(lr.Right))\n    ) : [lr]; //??"
+      "data": "//instance Traversable (Either a) where\n//    traverse _ (Left x) = pure (Left x)\n//    traverse f (Right y) = Right <$> f y"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)\nconst traverseLR = (f, lr) =>\n    undefined !== lr.Left ? (\n        [lr]\n    ) : fmap(Right, f(lr.Right));"
     }
   ]
 }

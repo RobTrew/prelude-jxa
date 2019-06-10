@@ -1,0 +1,10 @@
+{
+  "title": "mapMaybeGen",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nfunction* mapMaybeGen(mf, gen) {\n    let v = take(1, gen);\n    while (0 < v.length) {\n        let mb = mf(v[0]);\n        if (!mb.Nothing) yield mb.Just\n        v = take(1, gen);\n    }\n}"
+    }
+  ]
+}

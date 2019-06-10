@@ -1,10 +1,10 @@
 {
-  "title": "enumFromToInt",
+  "title": "enumFromTo_",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// enumFromToInt :: Int -> Int -> [Int]\nconst enumFromToInt = (m, n) =>\n    m <= n ? iterateUntil(\n        x => n <= x,\n        x => 1 + x,\n        m\n    ) : [];"
+      "data": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = (m, n) => {\n    const\n        [x, y] = [m, n].map(fromEnum),\n        b = x + ('number' !== typeof m ? 0 : m - x);\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};"
     }
   ]
 }

@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = (mf, xs) =>\n    concatMap(compose(mf, maybeToList), xs);"
+      "data": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = (mf, xs) =>\n  xs.reduce(\n    (a, x) => maybe(a, j => a.concat(j), mf(x)),\n    []\n  );"
     }
   ]
 }

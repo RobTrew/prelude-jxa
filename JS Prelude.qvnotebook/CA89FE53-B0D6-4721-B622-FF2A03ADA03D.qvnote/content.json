@@ -1,0 +1,10 @@
+{
+  "title": "join",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// join :: Monad m => m (m a) -> m a\nconst join = x => bind(x, id);"
+    }
+  ]
+}

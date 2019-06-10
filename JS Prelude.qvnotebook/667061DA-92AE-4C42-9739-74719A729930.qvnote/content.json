@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// e.g. [(*2),(/2), sqrt] <*> [1,2,3]\n// -->  ap([dbl, hlf, root], [1, 2, 3])\n// -->  [2,4,6,0.5,1,1.5,1,1.4142135623730951,1.7320508075688772]\n\n// Each member of a list of functions applied to each\n// of a list of arguments, deriving a list of new values."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// apList (<*>) :: [(a -> b)] -> [a] -> [b]\nconst apList = (fs, xs) => //\n    [].concat.apply([], fs.map(f => //\n        [].concat.apply([], xs.map(x => [f(x)]))));"
+      "data": "// apList (<*>) :: [a -> b] -> [a] -> [b]\nconst apList = fs =>\n    // The application of each of a list of functions,\n    // to each of a list of values.\n    xs => liftA2List(x => x)(fs)(xs)"
     }
   ]
 }

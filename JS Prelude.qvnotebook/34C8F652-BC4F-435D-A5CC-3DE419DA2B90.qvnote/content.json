@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// pred :: Enum a => a -> a\nconst pred = x =>\n    isChar(x) ? (\n        chr(ord(x) - 1)\n    ) : isNaN(x) ? (\n        undefined\n    ) : x - 1;"
+      "data": "// pred :: Enum a => a -> a\nconst pred = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mn] = [x, minBound(x)].map(fromEnum);\n        return i > mn ? (\n            toEnum(x)(i - 1)\n        ) : Error('succ :: enum out of range.')\n    })() : x > Number.MIN_SAFE_INTEGER ? (\n        x - 1\n    ) : Error('succ :: Num out of range.')\n};"
     }
   ]
 }

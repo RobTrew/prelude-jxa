@@ -1,10 +1,10 @@
 {
-  "title": "Ordering",
+  "title": "ordering",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Ordering :: Int -> Ordering\nconst Ordering = e =>\n    ({\n        type: 'Ordering',\n        value: (e > 0 ? 1 : e < 0 ? -1 : 0)\n    });"
+      "data": "// ordering :: () -> Ordering\nconst\n    ordering = enumFromPairs(\n        'Ordering', \n        [['LT', -1], ['EQ', 0], ['GT', 1]]\n    ),\n    LT = ordering.LT,\n    EQ = ordering.EQ,\n    GT = ordering.GT;"
     }
   ]
 }

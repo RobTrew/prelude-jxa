@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Just :: a -> Just a\nconst Just = x => ({\n    type: 'Maybe',\n    Nothing: false,\n    Just: x\n});"
+      "data": "// Just :: a -> Maybe a\nconst Just = x => ({\n    type: 'Maybe',\n    Nothing: false,\n    Just: x\n});"
     }
   ]
 }

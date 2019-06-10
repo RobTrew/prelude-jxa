@@ -1,0 +1,15 @@
+{
+  "title": "matching",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Returns a sequence-matching function for findIndices etc\n// findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])\n// -> [1, 4]"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// matching :: [a] -> (a -> Int -> [a] -> Bool)\nconst matching = pat => {\n    const\n        lng = pat.length,\n        bln = 0 < lng,\n        h = bln ? pat[0] : undefined;\n    return (x, i, src) =>\n        bln && h == x &&\n        eq(pat, src.slice(i, lng + i));\n};"
+    }
+  ]
+}

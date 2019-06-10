@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]\nconst zipWith4 = (f, ws, xs, ys, zs) =>\n    Array.from({\n        length: Math.min(ws.length, xs.length, ys.length, zs.length)\n    }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));"
+      "data": "// zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]\nconst zipWith4 = (f, ws, xs, ys, zs) =>\n    Array.from({\n        length: minimum([ws, xs, ys, zs].map(length))\n    }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));"
     }
   ]
 }

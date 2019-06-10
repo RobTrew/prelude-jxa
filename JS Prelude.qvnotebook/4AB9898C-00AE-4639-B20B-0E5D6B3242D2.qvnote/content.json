@@ -1,10 +1,10 @@
 {
-  "title": "const_",
+  "title": "const",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// const_ :: a -> b -> a\nconst const_ = (k, _) => k;"
+      "data": "// const :: a -> b -> a\nconst const_ = k => _ => k;"
     }
   ]
 }

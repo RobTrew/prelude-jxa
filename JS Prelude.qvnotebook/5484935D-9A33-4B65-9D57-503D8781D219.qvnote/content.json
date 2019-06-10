@@ -1,0 +1,10 @@
+{
+  "title": "quoted",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// quoted :: Char -> String -> String\nconst quoted = c =>\n    // A string flanked on both sides\n    // by a specified quote character.\n    s => c + s + c"
+    }
+  ]
+}

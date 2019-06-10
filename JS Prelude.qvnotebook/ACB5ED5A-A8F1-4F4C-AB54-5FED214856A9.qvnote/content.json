@@ -1,0 +1,10 @@
+{
+  "title": "treeMenu",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// treeMenu :: Tree String -> IO [String]\nconst treeMenu = tree => {\n    const go = t => {\n        const\n            strTitle = t.root,\n            subs = t.nest,\n            menu = map(root, subs),\n            blnMore = 0 < concatMap(nest, subs).length;\n        return until(\n            // This menu is cancelled, or a leaf-menu choice is made.\n            tpl => !fst(tpl) || !isNull(snd(tpl)),\n            tpl => either(\n                _ => Tuple(false, []),\n                x => Tuple(true, x),\n                bindLR(\n                    showMenuLR(!blnMore, strTitle, menu),\n                    ks => {\n                        const\n                            k = ks[0],\n                            chosen = find(x => k === x.root, subs)\n                            .Just;\n                        return Right(\n                            isNull(chosen.nest) ? ks : go(chosen)\n                        );\n                    }\n                )\n            ),\n            Tuple(true, [])\n        )[1]\n    };\n    return go(tree);\n};"
+    }
+  ]
+}

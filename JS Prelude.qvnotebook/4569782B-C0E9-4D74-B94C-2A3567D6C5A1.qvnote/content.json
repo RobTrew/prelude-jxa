@@ -1,0 +1,10 @@
+{
+  "title": "showOutline",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showOutline :: Tree String -> String\nconst showOutline = tree => {\n    const go = indent => tree =>\n        unlines(\n            [indent + tree.root]\n            .concat(concatMap(go('    ' + indent), tree.nest))\n        );\n    return go('')(tree);\n};"
+    }
+  ]
+}

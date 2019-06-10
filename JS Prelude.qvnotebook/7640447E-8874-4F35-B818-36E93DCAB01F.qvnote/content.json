@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// justifyLeft :: Int -> Char -> String -> String\nconst justifyLeft = (n, cFiller, strText) =>\n    n > strText.length ? (\n        (strText + cFiller.repeat(n))\n        .substr(0, n)\n    ) : strText;"
+      "data": "// justifyLeft :: Int -> Char -> String -> String\nconst justifyLeft = (n, cFiller, s) =>\n    n > s.length ? (\n        s.padEnd(n ,cFiller)\n    ) : s;"
     }
   ]
 }

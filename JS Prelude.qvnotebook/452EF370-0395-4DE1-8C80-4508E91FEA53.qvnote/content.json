@@ -1,0 +1,10 @@
+{
+  "title": "curry3",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d\nconst curry3 = f =>\n    a => b => c => f(a, b, c);"
+    }
+  ]
+}

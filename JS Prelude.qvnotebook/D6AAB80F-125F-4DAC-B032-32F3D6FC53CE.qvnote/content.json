@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = (xs, ys) => \n  xs.filter(x => -1 !== ys.indexOf(x));"
+      "data": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = (xs, ys) => {\n    const s = new Set(ys);\n    return xs.filter(x => s.has(x));\n};"
     }
   ]
 }

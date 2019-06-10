@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// getFinderDirectory :: IO FilePath\nconst getFinderDirectory = () =>\n    Application('Finder')\n    .insertionLocation()\n    .url()\n    .slice(7);"
+      "data": "// getFinderDirectory :: IO FilePath\nconst getFinderDirectory = () =>\n    decodeURIComponent(\n        Application('Finder')\n        .insertionLocation()\n        .url()\n        .slice(7)\n    );"
     }
   ]
 }

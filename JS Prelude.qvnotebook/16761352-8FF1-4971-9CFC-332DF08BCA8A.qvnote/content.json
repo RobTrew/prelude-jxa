@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = f => (a, b) => f.apply(null, [b, a]);"
+      "data": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = f =>\n    1 < f.length ? (\n        (a, b) => f(b, a)\n    ) : (x => y => f(y)(x));"
     }
   ]
 }

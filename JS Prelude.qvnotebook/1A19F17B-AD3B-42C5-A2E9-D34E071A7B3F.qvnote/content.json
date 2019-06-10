@@ -1,0 +1,10 @@
+{
+  "title": "if_",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// if_ :: Bool -> a -> a -> a\nconst if_ = (bln, x, y) =>\n    bln ? x : y;"
+    }
+  ]
+}

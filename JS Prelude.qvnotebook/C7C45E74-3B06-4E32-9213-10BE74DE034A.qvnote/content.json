@@ -1,0 +1,10 @@
+{
+  "title": "showPrecision",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showPrecision :: Int -> Float -> String\nconst showPrecision = n => x => {\n    // A string showing a floating point number\n    // at a given degree of precision.\n    const d = Math.pow(10, n);\n    return str(Math.round(d * x) / d);\n};"
+    }
+  ]
+}

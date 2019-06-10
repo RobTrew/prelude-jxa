@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// elems :: Dict -> [a]\nconst elems = Object.values;"
+      "data": "// elems :: Map k a -> [a]\n// elems :: Set a -> [a]\nconst elems = x =>\n    'Set' !== x.constructor.name ? (\n        Object.values(x)\n    ) : Array.from(x.values());"
     }
   ]
 }

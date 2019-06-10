@@ -4,7 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// findIndices :: (a -> Bool) -> [a] -> [Int]\nconst findIndices = (p, xs) =>\n    concatMap((x, i) => p(x) ? (\n        [i]\n    ) : [], xs);"
+      "data": "// findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])\n//-> {2, 5}"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// findIndices :: (a -> Bool) -> [a] -> [Int]\n// findIndices :: (String -> Bool) -> String -> [Int]\nconst findIndices = (p, xs) =>\n    concatMap((x, i) => p(x, i, xs) ? (\n        [i]\n    ) : [], xs);"
     }
   ]
 }

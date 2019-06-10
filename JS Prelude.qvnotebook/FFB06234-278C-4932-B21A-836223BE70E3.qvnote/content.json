@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = (x, xs) =>\n    0 < xs.length ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(deleteFirst(x, xs.slice(1)))\n    ) : [];"
+      "data": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = (x, xs) => {\n    const go = xs => 0 < xs.length ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(go(xs.slice(1)))\n    ) : [];\n    return go(xs);\n};"
     }
   ]
 }

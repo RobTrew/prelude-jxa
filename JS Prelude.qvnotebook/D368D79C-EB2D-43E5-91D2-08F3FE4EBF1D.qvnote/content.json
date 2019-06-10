@@ -1,0 +1,15 @@
+{
+  "title": "op",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Derive a function from the name of a JS infix operator"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// op :: String -> (a -> a -> b)\nconst op = strOp =>\n    eval(`(a, b) => a ${strOp} b`);"
+    }
+  ]
+}

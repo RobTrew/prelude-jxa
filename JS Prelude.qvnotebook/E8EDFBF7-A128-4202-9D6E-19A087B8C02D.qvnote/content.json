@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isPrefixOf :: [a] -> [a] -> Bool\n// isPrefixOf :: String -> String -> Bool\nconst isPrefixOf = (xs, ys) => {\n    const pfx = (xs, ys) => {\n        const intX = xs.length;\n        return 0 < intX ? (\n            ys.length >= intX ? xs[0] === ys[0] && pfx(\n                xs.slice(1), ys.slice(1)\n            ) : false\n        ) : true;\n    };\n    return 'string' !== typeof xs ? (\n        pfx(xs, ys)\n    ) : ys.startsWith(xs);\n};"
+      "data": "// isPrefixOf :: [a] -> [a] -> Bool\n// isPrefixOf :: String -> String -> Bool\nconst isPrefixOf = (xs, ys) => {\n    const go = (xs, ys) => {\n        const intX = xs.length;\n        return 0 < intX ? (\n            ys.length >= intX ? xs[0] === ys[0] && go(\n                xs.slice(1), ys.slice(1)\n            ) : false\n        ) : true;\n    };\n    return 'string' !== typeof xs ? (\n        go(xs, ys)\n    ) : ys.startsWith(xs);\n};"
     }
   ]
 }

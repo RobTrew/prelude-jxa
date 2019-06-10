@@ -1,0 +1,10 @@
+{
+  "title": "applyN",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// applyN :: Int -> (a -> a) -> a -> a\nconst applyN = (n, f, x) =>\n    Array.from({\n        length: n\n    }, () => f)\n    .reduce((a, g) => g(a), x)"
+    }
+  ]
+}

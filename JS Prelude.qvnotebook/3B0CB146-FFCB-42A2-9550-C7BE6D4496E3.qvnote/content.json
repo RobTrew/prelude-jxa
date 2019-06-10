@@ -4,12 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// File name template -> temporary path\n// (Random digit sequence inserted between template base and extension)"
+      "data": "// File name template to temporary path\n// Random digit sequence inserted between template base and extension"
     },
     {
       "type": "code",
       "language": "javascript",
-      "data": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n    ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);"
+      "data": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n  ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);"
     }
   ]
 }

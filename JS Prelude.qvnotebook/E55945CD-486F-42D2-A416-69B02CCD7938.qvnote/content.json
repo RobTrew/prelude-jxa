@@ -1,0 +1,10 @@
+{
+  "title": "properFracRatio",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = Array.from(quotRem(nd.n, nd.d));\n    return Tuple(q, ratio(r, nd.d));\n};"
+    }
+  ]
+}
