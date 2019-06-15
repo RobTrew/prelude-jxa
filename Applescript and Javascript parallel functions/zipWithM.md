@@ -4,7 +4,7 @@ on zipWithM(fm, xs, ys)
     -- A functor of the type to which fm lifts its result.
     -- For example, Nothing/Left if any of the zip applications failed,
     -- or Just/Right a list of the results, when all succeeded.
-    traverseList(my |id|, zipWith(fm, xs, ys))
+    traverseList(my identity, zipWith(fm, xs, ys))
 end zipWithM
 ```
 

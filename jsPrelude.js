@@ -99,7 +99,7 @@ const apFn = f =>
     g => x => f(x)(g(x))
 
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
-const apLR = flr => liftA2LR(id)(flr)
+const apLR = flr => liftA2LR(identity)(flr)
 
 // apList (<*>) :: [a -> b] -> [a] -> [b]
 const apList = fs =>
@@ -197,8 +197,8 @@ const bind = (m, mf) =>
 
 // bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
 const bindFn = (f, bop) =>
-    // Where either bop or f is a binary operator.
-    x => curry(bop)(curry(f)(x))(x)
+    // Binary operator applied over f x and x.
+    x => bop(f(x), x);
 
 // bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 const bindLR = (m, mf) =>
@@ -1067,6 +1067,13 @@ const foldr1May = (f, xs) =>
             .reduceRight(f, xs.slice(-1)[0]))
     ) : Nothing();
 
+// foldrTree :: (a -> b -> b) -> b -> Tree a -> b
+const foldrTree = (f, acc, node) => {
+    const go = (a, x) =>
+        x.nest.reduceRight(go, f(x.root, a));
+    return go(acc, node);
+};
+
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
     typeof x !== 'string' ? (
@@ -1191,8 +1198,8 @@ const head = xs => xs.length ? xs[0] : undefined;
 const headMay = xs =>
     0 < xs.length ? Just(xs[0]) : Nothing();
 
-// id :: a -> a
-const id = x => x;
+// identity :: a -> a
+const identity = x => x;
 
 // if_ :: Bool -> a -> a -> a
 const if_ = (bln, x, y) =>
@@ -1468,7 +1475,7 @@ const iterateUntil = (p, f, x) => {
 };
 
 // join :: Monad m => m (m a) -> m a
-const join = x => bind(x, id);
+const join = x => bind(x, identity);
 
 // jsonLog :: a -> IO ()
 const jsonLog = (...args) =>
@@ -1674,9 +1681,9 @@ const lookupTuples = (k, kvs) =>
 // first class functions by lifting 'handlers' into 'scripts'
 // as anonymous |λ|() functions.
 
-// In JS, mReturn is just an alternate name for id.
+// In JS, mReturn is just an alternate name for identity.
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
-const mReturn = x => id(x);
+const mReturn = x => identity(x);
 
 // map :: (a -> b) -> [a] -> [b]
 const map = (f, xs) =>
@@ -3365,20 +3372,27 @@ const treeMenu = tree => {
             menu = map(root, subs),
             blnMore = 0 < concatMap(nest, subs).length;
         return until(
-            // This menu is cancelled, or a leaf-menu choice is made.
             tpl => !fst(tpl) || !isNull(snd(tpl)),
             tpl => either(
-                _ => Tuple(false, []),
+                x => Tuple(false, []),
                 x => Tuple(true, x),
                 bindLR(
                     showMenuLR(!blnMore, strTitle, menu),
                     ks => {
-                        const
-                            k = ks[0],
-                            chosen = find(x => k === x.root, subs)
-                            .Just;
-                        return Right(
-                            isNull(chosen.nest) ? ks : go(chosen)
+                        const k = ks[0];
+                        return maybe(
+                            Left(k + ': not found in ' +
+                                JSON.stringify(ks)
+                            ),
+                            Right,
+                            bindMay(
+                                find(x => k === x.root, subs),
+                                chosen => Just(
+                                    isNull(chosen.nest) ? (
+                                        ks // Choice made in leaf menu.
+                                    ) : go(chosen)
+                                )
+                            )
                         );
                     }
                 )

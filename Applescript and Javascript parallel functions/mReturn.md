@@ -18,10 +18,10 @@ end mReturn
 // first class functions by lifting 'handlers' into 'scripts'
 // as anonymous |λ|() functions.
 
-// In JS, mReturn is just an alternate name for id.
+// In JS, mReturn is just an alternate name for identity.
 ```
 
 ```js
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
-const mReturn = x => id(x);
+const mReturn = x => identity(x);
 ```

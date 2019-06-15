@@ -70,20 +70,27 @@ const treeMenu = tree => {
             menu = map(root, subs),
             blnMore = 0 < concatMap(nest, subs).length;
         return until(
-            // This menu is cancelled, or a leaf-menu choice is made.
             tpl => !fst(tpl) || !isNull(snd(tpl)),
             tpl => either(
-                _ => Tuple(false, []),
+                x => Tuple(false, []),
                 x => Tuple(true, x),
                 bindLR(
                     showMenuLR(!blnMore, strTitle, menu),
                     ks => {
-                        const
-                            k = ks[0],
-                            chosen = find(x => k === x.root, subs)
-                            .Just;
-                        return Right(
-                            isNull(chosen.nest) ? ks : go(chosen)
+                        const k = ks[0];
+                        return maybe(
+                            Left(k + ': not found in ' +
+                                JSON.stringify(ks)
+                            ),
+                            Right,
+                            bindMay(
+                                find(x => k === x.root, subs),
+                                chosen => Just(
+                                    isNull(chosen.nest) ? (
+                                        ks // Choice made in leaf menu.
+                                    ) : go(chosen)
+                                )
+                            )
                         );
                     }
                 )

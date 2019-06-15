@@ -19,6 +19,6 @@ end bindFn
 ```js
 // bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
 const bindFn = (f, bop) =>
-    // Where either bop or f is a binary operator.
-    x => curry(bop)(curry(f)(x))(x)
+    // Binary operator applied over f x and x.
+    x => bop(f(x), x);
 ```
