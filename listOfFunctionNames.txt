@@ -4,6 +4,7 @@ Node :: a -> [Tree a] -> Tree a
 Nothing :: Maybe a
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
+Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 TupleN :: a -> b ...  -> (a, b ... )
 abs :: Num -> Num
 all :: (a -> Bool) -> [a] -> Bool

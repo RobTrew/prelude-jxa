@@ -1,12 +1,7 @@
 ```applescript
 -- listFromTuple :: (a, a ...) -> [a]
 on listFromTuple(tpl)
-    script
-        on |λ|(k)
-            Just of lookupDict(k, tpl)
-        end |λ|
-    end script -- All keys except 'type' at end
-    map(result, items 1 thru -2 of sort(keys(tpl)))
+    items 2 thru -2 of (tpl as list)
 end listFromTuple
 ```
 

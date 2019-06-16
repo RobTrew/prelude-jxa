@@ -40,6 +40,15 @@ const Tuple = (a, b) => ({
   length: 2
 });
 
+// Tuple3 (,,) :: a -> b -> c -> (a, b, c)
+const Tuple3 = (a, b, c) => ({
+  type: 'Tuple3',
+  '0': a,
+  '1': b,
+  '2': c,
+  length: 3
+});
+
 // TupleN :: a -> b ...  -> (a, b ... )
 function TupleN() {
     const
@@ -1031,6 +1040,14 @@ const foldTree = (f, tree) => {
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = (f, a, xs) => xs.reduce(f, a);
 
+// OR deep curried
+// foldl :: (a -> b -> a) -> a -> [b] -> a
+// const foldl = f => a => xs => {
+//     let v = a;
+//     xs.forEach(x => v = f(v)(x));
+//     return v;
+// };
+
 // foldl1 :: (a -> a -> a) -> [a] -> a
 const foldl1 = (f, xs) =>
     1 < xs.length ? xs.slice(1)
@@ -1053,7 +1070,17 @@ const foldlTree = (f, acc, node) => {
 // Note that that the Haskell signature of foldr differs from that of
 // foldl - the positions of accumulator and current value are reversed
 // foldr :: (a -> b -> b) -> b -> [a] -> b
-const foldr = (f, a, xs) => xs.reduceRight(flip(f), a);
+const foldr = (f, a, xs) =>
+    xs.reduceRight((a, x) => f(x, a), a);
+
+// or deep-curried:
+// foldr :: (b -> a -> a) -> a -> [b] -> a
+// const foldr = f => a => xs => {
+//     let v = a,
+//         i = xs.length;
+//     while (i--) v = f(xs[i])(v);
+//     return v;
+// };
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = (f, xs) =>
