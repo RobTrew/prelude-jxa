@@ -19,7 +19,7 @@ const drawTree2 = blnCompact => tree => {
             return Tuple3(ls.map(f), g(m), rs.map(h));
         };
 
-    const lmrBuild = w => f => wsTree => {
+    const lmrBuild = (w, f) => wsTree => {
         const
             leftPad = n => s => ' '.repeat(n) + s,
             conS = x => xs => x + xs,
@@ -66,7 +66,6 @@ const drawTree2 = blnCompact => tree => {
             ));
         })();
     };
-
     const
         measuredTree = fmapTree(
             compose(
@@ -76,12 +75,13 @@ const drawTree2 = blnCompact => tree => {
             tree
         ),
         levelWidths = foldr(
-            level => a => [maximum(level.map(fst))].concat(a)
-        )([])(init(levels(measuredTree)));
-
+            (level, a) => [maximum(level.map(fst))].concat(a),
+            [],
+            init(levels(measuredTree))
+        );
     return unlines(
         stringsFromLMR(
-            foldr(lmrBuild)(0)(levelWidths)(
+            foldr(lmrBuild, 0, levelWidths)(
                 measuredTree
             )
         )
