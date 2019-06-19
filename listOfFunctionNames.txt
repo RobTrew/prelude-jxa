@@ -78,6 +78,7 @@ doesPathExist :: FilePath -> IO Bool
 draw :: Tree String -> [String]
 drawForest :: [Tree String] -> String
 drawTree :: Tree String -> String
+drawTree2 :: Bool -> Tree String -> String
 drop :: Int -> [a] -> [a]
 dropAround :: (a -> Bool) -> [a] -> [a]
 dropFileName :: FilePath -> FilePath
