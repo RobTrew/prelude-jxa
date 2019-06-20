@@ -599,7 +599,7 @@ const drawTree2 = blnCompact => tree => {
             return Tuple3(ls.map(f), g(m), rs.map(h));
         };
 
-    const lmrBuild = (w, f) => wsTree => {
+    const lmrBuild = (f, w) => wsTree => {
         const
             leftPad = n => s => ' '.repeat(n) + s,
             conS = x => xs => x + xs,
@@ -627,9 +627,9 @@ const drawTree2 = blnCompact => tree => {
             return fghApplied(
                 indented,
                 s => _x + ({
+                    '┌': '┬',
                     '│': '┤',
                     '├': '┼',
-                    '┌': '┬',
                     '└': '┴'
                 })[s[0]] + s.slice(1),
                 indented
@@ -651,21 +651,18 @@ const drawTree2 = blnCompact => tree => {
             compose(
                 bindFn(length, Tuple),
                 x => ' ' + x + ' '
-            ),
-            tree
+            ), tree
         ),
-        levelWidths = foldr(
-            (level, a) => [maximum(level.map(fst))].concat(a),
-            [],
-            init(levels(measuredTree))
+        levelWidths = init(levels(measuredTree))
+        .reduce(
+            (a, level) => a.concat(maximum(level.map(fst))),
+            []
         );
-    return unlines(
-        stringsFromLMR(
-            foldr(lmrBuild, 0, levelWidths)(
-                measuredTree
-            )
+    return unlines(stringsFromLMR(
+        levelWidths.reduceRight(lmrBuild, x => x)(
+            measuredTree
         )
-    );
+    ));
 };
 
 // drop :: Int -> [a] -> [a]
