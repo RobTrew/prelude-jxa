@@ -580,8 +580,9 @@ const drawTree = tree =>
     unlines(draw(tree));
 
 // drawTree2 :: Bool -> Tree String -> String
-const drawTree2 = blnCentered => blnPruned => tree => {
-    // Design adapted from Donnacha Oisin Kidney's snippet at:
+const drawTree2 = blnCompressed => blnPruned => tree => {
+    // Adapted from the tree design and algorithm in
+    // Donnacha Oisin Kidney's Haskell snippet at:
     // https://doisinkidney.com/snippets/drawing-trees.html
     const
         lmrFromStrings = xs => {
@@ -627,14 +628,14 @@ const drawTree2 = blnCentered => blnPruned => tree => {
                 indented,
                 s => _x + ({
                     '┌': '┬',
-                    '│': '┤',
                     '├': '┼',
+                    '│': '┤',
                     '└': '┴'
                 })[s[0]] + s.slice(1),
                 indented
             )(lmrFromStrings(
                 intercalate(
-                    blnCentered ? ['│'] : [],
+                    blnCompressed ? [] : ['│'],
                     [treeFix(' ', '┌', '│')(lmrs[0])]
                     .concat(init(lmrs.slice(1)).map(
                         treeFix('│', '├', '│')
