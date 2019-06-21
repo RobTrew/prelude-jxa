@@ -579,7 +579,7 @@ const drawForest = trees =>
 const drawTree = tree =>
     unlines(draw(tree));
 
-// drawTree2 :: Bool -> Tree String -> String
+// drawTree2 :: Bool -> Bool -> Tree String -> String
 const drawTree2 = blnCompressed => blnPruned => tree => {
     // Adapted from the tree design and algorithm in
     // Donnacha Oisin Kidney's Haskell snippet at:
