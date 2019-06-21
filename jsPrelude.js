@@ -580,22 +580,21 @@ const drawTree = tree =>
     unlines(draw(tree));
 
 // drawTree2 :: Bool -> Tree String -> String
-const drawTree2 = blnCompact => tree => {
-    // Algorithm adapted from Donnacha Oisin Kidney's:
+const drawTree2 = blnCentered => blnPruned => tree => {
+    // Design adapted from Donnacha Oisin Kidney's snippet at:
     // https://doisinkidney.com/snippets/drawing-trees.html
     const
         lmrFromStrings = xs => {
             const [ls, rs] = Array.from(splitAt(
-                Math.floor(xs.length / 2), xs
+                Math.floor(xs.length / 2),
+                xs
             ));
             return Tuple3(ls, rs[0], rs.slice(1));
         },
-        stringsFromLMR = lxr => {
-            const xs = Array.from(lxr);
-            return xs[0].concat(xs[1]).concat(xs[2]);
-        },
-        fghApplied = (f, g, h) => triple => {
-            const [ls, m, rs] = Array.from(triple);
+        stringsFromLMR = lmr =>
+        Array.from(lmr).reduce((a, x) => a.concat(x), []),
+        fghOverLMR = (f, g, h) => lmr => {
+            const [ls, m, rs] = Array.from(lmr);
             return Tuple3(ls.map(f), g(m), rs.map(h));
         };
 
@@ -610,7 +609,7 @@ const drawTree2 = blnCompact => tree => {
             Tuple3([], '─'.repeat(w - nChars) + x, [])
         ) : 1 === lng ? (() => {
             const indented = leftPad(1 + w);
-            return fghApplied(
+            return fghOverLMR(
                 indented,
                 z => '─'.repeat(w - nChars) + x + '─' + z,
                 indented
@@ -619,12 +618,12 @@ const drawTree2 = blnCompact => tree => {
             const
                 treeFix = (l, m, r) => compose(
                     stringsFromLMR,
-                    fghApplied(conS(l), conS(m), conS(r))
+                    fghOverLMR(conS(l), conS(m), conS(r))
                 ),
                 _x = '─'.repeat(w - nChars) + x,
                 indented = leftPad(w),
-                ys = xs.map(f);
-            return fghApplied(
+                lmrs = xs.map(f);
+            return fghOverLMR(
                 indented,
                 s => _x + ({
                     '┌': '┬',
@@ -635,12 +634,13 @@ const drawTree2 = blnCompact => tree => {
                 indented
             )(lmrFromStrings(
                 intercalate(
-                    blnCompact ? [] : ['│'],
-                    [treeFix(' ', '┌', '│')(ys[0])]
-                    .concat(init(ys.slice(1)).map(
+                    blnCentered ? ['│'] : [],
+                    [treeFix(' ', '┌', '│')(lmrs[0])]
+                    .concat(init(lmrs.slice(1)).map(
                         treeFix('│', '├', '│')
-                    )).concat([treeFix('│', '└', ' ')(
-                        ys[ys.length - 1]
+                    ))
+                    .concat([treeFix('│', '└', ' ')(
+                        lmrs[lmrs.length - 1]
                     )])
                 )
             ));
@@ -658,11 +658,17 @@ const drawTree2 = blnCompact => tree => {
             (a, level) => a.concat(maximum(level.map(fst))),
             []
         );
-    return unlines(stringsFromLMR(
-        levelWidths.reduceRight(lmrBuild, x => x)(
-            measuredTree
-        )
-    ));
+    return unlines(
+        (blnPruned ? (
+            curry(filter)(s => any(
+                c => !'│ '.includes(c),
+                chars(s)))
+        ) : identity)(stringsFromLMR(
+            levelWidths.reduceRight(
+                lmrBuild, x => x
+            )(measuredTree)
+        ))
+    );
 };
 
 // drop :: Int -> [a] -> [a]
