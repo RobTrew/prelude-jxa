@@ -1,10 +1,10 @@
 ```js
 // drawTree2 :: Bool -> Bool -> Tree String -> String
-const drawTree2 = blnCompressed => blnPruned => tree => {
-    // Adapted from the tree design and algorithm in
-    // Donnacha Oisin Kidney's Haskell snippet at:
+const drawTree2 = blnCompact => blnPruned => tree => {
+    // Tree design and algorithm inspired by the Haskell snippet at:
     // https://doisinkidney.com/snippets/drawing-trees.html
     const
+        // Lefts, Middle, Rights
         lmrFromStrings = xs => {
             const [ls, rs] = Array.from(splitAt(
                 Math.floor(xs.length / 2),
@@ -22,7 +22,6 @@ const drawTree2 = blnCompressed => blnPruned => tree => {
     const lmrBuild = (f, w) => wsTree => {
         const
             leftPad = n => s => ' '.repeat(n) + s,
-            conS = x => xs => x + xs,
             xs = wsTree.nest,
             lng = xs.length,
             [nChars, x] = Array.from(wsTree.root);
@@ -37,9 +36,10 @@ const drawTree2 = blnCompressed => blnPruned => tree => {
             )(f(xs[0]));
         })() : (() => {
             const
+                cFix = x => xs => x + xs,
                 treeFix = (l, m, r) => compose(
                     stringsFromLMR,
-                    fghOverLMR(conS(l), conS(m), conS(r))
+                    fghOverLMR(cFix(l), cFix(m), cFix(r))
                 ),
                 _x = '─'.repeat(w - nChars) + x,
                 indented = leftPad(w),
@@ -55,7 +55,7 @@ const drawTree2 = blnCompressed => blnPruned => tree => {
                 indented
             )(lmrFromStrings(
                 intercalate(
-                    blnCompressed ? [] : ['│'],
+                    blnCompact ? [] : ['│'],
                     [treeFix(' ', '┌', '│')(lmrs[0])]
                     .concat(init(lmrs.slice(1)).map(
                         treeFix('│', '├', '│')
@@ -70,7 +70,10 @@ const drawTree2 = blnCompressed => blnPruned => tree => {
     const
         measuredTree = fmapTree(
             compose(
-                bindFn(length, Tuple),
+                s => {
+                    const lng = s.length;
+                    return Tuple(lng, s)
+                },
                 x => ' ' + x + ' '
             ), tree
         ),
@@ -78,17 +81,19 @@ const drawTree2 = blnCompressed => blnPruned => tree => {
         .reduce(
             (a, level) => a.concat(maximum(level.map(fst))),
             []
-        );
-    return unlines(
-        (blnPruned ? (
-            curry(filter)(s => any(
-                c => !'│ '.includes(c),
-                chars(s)))
-        ) : identity)(stringsFromLMR(
+        ),
+        treeLines = stringsFromLMR(
             levelWidths.reduceRight(
                 lmrBuild, x => x
             )(measuredTree)
-        ))
+        );
+    return unlines(
+        blnPruned ? (
+            treeLines.filter(
+                s => s.split('')
+                .some(c => !' │'.includes(c))
+            )
+        ) : treeLines
     );
 };
 ```
