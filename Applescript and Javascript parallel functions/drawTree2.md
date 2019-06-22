@@ -21,12 +21,14 @@ on drawTree2(blnCompressed, blnPruned, tree)
             a & maximum(map(my fst, level))
         end |λ|
     end script
-    set levelWidths to foldl(levelMax, {}, init(levels(measuredTree)))
+    set levelWidths to foldl(levelMax, {}, ¬
+        init(levels(measuredTree)))
     
     -- Lefts, Mid, Rights
     script lmrFromStrings
         on |λ|(xs)
-            set {ls, rs} to items 2 thru -2 of (splitAt((length of xs) div 2, xs) as list)
+            set {ls, rs} to items 2 thru -2 of ¬
+                (splitAt((length of xs) div 2, xs) as list)
             Tuple3(ls, item 1 of rs, rest of rs)
         end |λ|
     end script
@@ -63,14 +65,6 @@ on drawTree2(blnCompressed, blnPruned, tree)
             end script
         end leftPad
         
-        on conS(x)
-            script
-                on |λ|(xs)
-                    x & xs
-                end |λ|
-            end script
-        end conS
-        
         -- lmrBuild main
         on |λ|(w, f)
             script
@@ -78,11 +72,16 @@ on drawTree2(blnCompressed, blnPruned, tree)
                 on |λ|(wsTree)
                     set xs to nest of wsTree
                     set lng to length of xs
-                    set {nChars, x} to items 2 thru -2 of ((root of wsTree) as list)
+                    set {nChars, x} to items 2 thru -2 of ¬
+                        ((root of wsTree) as list)
                     set _x to replicateString(w - nChars, "─") & x
+                    
+                    -- LEAF NODE ------------------------------------
                     if 0 = lng then
                         Tuple3({}, _x, {})
+                        
                     else if 1 = lng then
+                        -- NODE WITH SINGLE CHILD ---------------------
                         set indented to leftPad(1 + w)
                         script lineLinked
                             on |λ|(z)
@@ -90,12 +89,23 @@ on drawTree2(blnCompressed, blnPruned, tree)
                             end |λ|
                         end script
                         |λ|(|λ|(item 1 of xs) of mf) of ¬
-                            (|λ|(indented, lineLinked, indented) of fghOverLMR)
+                            (|λ|(indented, lineLinked, indented) of ¬
+                                fghOverLMR)
                     else
+                        -- NODE WITH CHILDREN -------------------------
                         script treeFix
+                            on cFix(x)
+                                script
+                                    on |λ|(xs)
+                                        x & xs
+                                    end |λ|
+                                end script
+                            end cFix
+                            
                             on |λ|(l, m, r)
                                 compose(stringsFromLMR, ¬
-                                    |λ|(conS(l), conS(m), conS(r)) of fghOverLMR)
+                                    |λ|(cFix(l), cFix(m), cFix(r)) of ¬
+                                    fghOverLMR)
                             end |λ|
                         end script
                         
@@ -125,19 +135,24 @@ on drawTree2(blnCompressed, blnPruned, tree)
                         
                         tell lmrFromStrings
                             set tupleLMR to |λ|(intercalate(sep, ¬
-                                {|λ|(item 1 of lmrs) of (|λ|(" ", "┌", "│") of treeFix)} & ¬
-                                map(|λ|("│", "├", "│") of treeFix, init(tail(lmrs))) & ¬
-                                {|λ|(item -1 of lmrs) of (|λ|("│", "└", " ") of treeFix)}))
+                                {|λ|(item 1 of lmrs) of ¬
+                                    (|λ|(" ", "┌", "│") of treeFix)} & ¬
+                                map(|λ|("│", "├", "│") of treeFix, ¬
+                                    init(tail(lmrs))) & ¬
+                                {|λ|(item -1 of lmrs) of ¬
+                                    (|λ|("│", "└", " ") of treeFix)}))
                         end tell
                         
-                        |λ|(tupleLMR) of (|λ|(indented, linked, indented) of fghOverLMR)
+                        |λ|(tupleLMR) of ¬
+                            (|λ|(indented, linked, indented) of fghOverLMR)
                     end if
                 end |λ|
             end script
         end |λ|
     end script
     
-    set treeLines to |λ|(|λ|(measuredTree) of foldr(lmrBuild, 0, levelWidths)) of stringsFromLMR
+    set treeLines to |λ|(|λ|(measuredTree) of ¬
+        foldr(lmrBuild, 0, levelWidths)) of stringsFromLMR
     if blnPruned then
         script notEmpty
             on |λ|(s)
@@ -155,7 +170,6 @@ on drawTree2(blnCompressed, blnPruned, tree)
     end if
     unlines(xs)
 end drawTree2
-
 ```
 
 ```js
