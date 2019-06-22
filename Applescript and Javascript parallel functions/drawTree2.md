@@ -185,8 +185,12 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             xs = wsTree.nest,
             lng = xs.length,
             [nChars, x] = Array.from(wsTree.root);
+
+        // LEAF NODE --------------------------------------
         return 0 === lng ? (
             Tuple3([], '─'.repeat(w - nChars) + x, [])
+
+        // NODE WITH SINGLE CHILD -------------------------
         ) : 1 === lng ? (() => {
             const indented = leftPad(1 + w);
             return fghOverLMR(
@@ -194,6 +198,8 @@ const drawTree2 = blnCompact => blnPruned => tree => {
                 z => '─'.repeat(w - nChars) + x + '─' + z,
                 indented
             )(f(xs[0]));
+
+        // NODE WITH CHILDREN -----------------------------
         })() : (() => {
             const
                 cFix = x => xs => x + xs,
@@ -229,13 +235,11 @@ const drawTree2 = blnCompact => blnPruned => tree => {
     };
     const
         measuredTree = fmapTree(
-            compose(
-                s => {
-                    const lng = s.length;
-                    return Tuple(lng, s)
-                },
-                x => ' ' + x + ' '
-            ), tree
+            v => {
+                const s = ' ' + v + ' ';
+                return Tuple(s.length, s)
+            }
+            , tree
         ),
         levelWidths = init(levels(measuredTree))
         .reduce(
