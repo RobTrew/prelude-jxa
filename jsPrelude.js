@@ -67,10 +67,17 @@ function TupleN() {
 // abs :: Num -> Num
 const abs = Math.abs;
 
-// Determines whether all elements of the structure 
+// True if all elements of the list 
 // satisfy the predicate.
 // all :: (a -> Bool) -> [a] -> Bool
 const all = (p, xs) => xs.every(p);
+
+// allTree :: (a -> Bool) -> Tree a -> Bool
+const allTree = (p, tree) =>
+    foldTree(
+        (x, xs) => p(x) && xs.every(Boolean),
+        tree
+    );
 
 // and :: [Bool] -> Bool
 const and = xs =>
@@ -80,6 +87,13 @@ const and = xs =>
 // | True if any contained element satisfies the predicate.
 // any :: (a -> Bool) -> [a] -> Bool
 const any = (p, xs) => xs.some(p);
+
+// anyTree :: (a -> Bool) -> Tree a -> Bool
+const anyTree = (p, tree) =>
+    foldTree(
+        (x, xs) => p(x) || xs.some(Boolean),
+        tree
+    );
 
 // Applies wrapped functions to wrapped values, 
 // for example applying a list of functions to a list of values
@@ -1747,9 +1761,7 @@ const liftA2Tree = (f, tx, ty) => {
                         curry(f)(tx.root)
                     )
                 )
-                .concat(
-                    tx.nest.map(go)
-                )
+                .concat(tx.nest.map(go))
             ) : []
         );
     return go(tx);
@@ -3449,8 +3461,9 @@ const traverseMay = (f, mb) =>
         [mb]
     ) : fmap(Just, f(mb.Just));
 
-// traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
+// traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
 const traverseTree = (f, node) => {
+    // traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
     const go = x =>
         liftA2(
             Node, f(x.root),

@@ -56,6 +56,22 @@ on drawTree2(blnCompressed, blnPruned, tree)
         end |λ|
     end script
     
+    script treeFix
+        on cFix(x)
+            script
+                on |λ|(xs)
+                    x & xs
+                end |λ|
+            end script
+        end cFix
+        
+        on |λ|(l, m, r)
+            compose(stringsFromLMR, ¬
+                |λ|(cFix(l), cFix(m), cFix(r)) of ¬
+                fghOverLMR)
+        end |λ|
+    end script
+
     script lmrBuild
         on leftPad(n)
             script
@@ -76,7 +92,23 @@ on drawTree2(blnCompressed, blnPruned, tree)
                         ((root of wsTree) as list)
                     set _x to replicateString(w - nChars, "─") & x
                     
-                    -- LEAF NODE ------------------------------------
+                    script linked
+                        on |λ|(s)
+                            set c to text 1 of s
+                            set t to tail(s)
+                            if "┌" = c then
+                                _x & "┬" & t
+                            else if "│" = c then
+                                _x & "┤" & t
+                            else if "├" = c then
+                                _x & "┼" & t
+                            else
+                                _x & "┴" & t
+                            end if
+                        end |λ|
+                    end script
+                    
+                    -- LEAF NODE --------------------------------------
                     if 0 = lng then
                         Tuple3({}, _x, {})
                         
@@ -93,38 +125,6 @@ on drawTree2(blnCompressed, blnPruned, tree)
                                 fghOverLMR)
                     else
                         -- NODE WITH CHILDREN -------------------------
-                        script treeFix
-                            on cFix(x)
-                                script
-                                    on |λ|(xs)
-                                        x & xs
-                                    end |λ|
-                                end script
-                            end cFix
-                            
-                            on |λ|(l, m, r)
-                                compose(stringsFromLMR, ¬
-                                    |λ|(cFix(l), cFix(m), cFix(r)) of ¬
-                                    fghOverLMR)
-                            end |λ|
-                        end script
-                        
-                        script linked
-                            on |λ|(s)
-                                set c to text 1 of s
-                                set t to tail(s)
-                                if "┌" = c then
-                                    _x & "┬" & t
-                                else if "│" = c then
-                                    _x & "┤" & t
-                                else if "├" = c then
-                                    _x & "┼" & t
-                                else
-                                    _x & "┴" & t
-                                end if
-                            end |λ|
-                        end script
-                        
                         set indented to leftPad(w)
                         set lmrs to map(f, xs)
                         if blnCompressed then

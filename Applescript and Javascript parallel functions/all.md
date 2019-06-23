@@ -1,11 +1,7 @@
 ```applescript
--- Applied to a predicate and a list, `all` determines if all elements 
--- of the list satisfy the predicate.
-```
-
-```applescript
 -- all :: (a -> Bool) -> [a] -> Bool
 on all(p, xs)
+    -- True if p holds for every value in xs
     tell mReturn(p)
         set lng to length of xs
         repeat with i from 1 to lng
@@ -17,7 +13,7 @@ end all
 ```
 
 ```js
-// Determines whether all elements of the structure 
+// True if all elements of the list 
 // satisfy the predicate.
 ```
 

@@ -8,8 +8,10 @@ Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 TupleN :: a -> b ...  -> (a, b ... )
 abs :: Num -> Num
 all :: (a -> Bool) -> [a] -> Bool
+allTree :: (a -> Bool) -> Tree a -> Bool
 and :: [Bool] -> Bool
 any :: (a -> Bool) -> [a] -> Bool
+anyTree :: (a -> Bool) -> Tree a -> Bool
 ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 apFn :: (a -> b -> c) -> (a -> b) -> a -> c
 apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
@@ -427,7 +429,7 @@ traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
 traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
-traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
+traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeFromDict :: String -> Dict -> Tree String
 treeLeaves :: Tree -> [Tree]

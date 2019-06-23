@@ -44,9 +44,7 @@ const liftA2Tree = (f, tx, ty) => {
                         curry(f)(tx.root)
                     )
                 )
-                .concat(
-                    tx.nest.map(go)
-                )
+                .concat(tx.nest.map(go))
             ) : []
         );
     return go(tx);

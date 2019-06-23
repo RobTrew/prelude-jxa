@@ -1,5 +1,5 @@
 ```js
-// Determines whether all elements of the structure 
+// True if all elements of the list 
 // satisfy the predicate.
 ```
 
