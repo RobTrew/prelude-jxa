@@ -2171,6 +2171,13 @@ const outdented = s => {
     return unlines(map(curry(drop)(n), xs));
 };
 
+// pairNestFromTree :: Tree a -> PairNest a
+const pairNestFromTree = tree =>
+    foldTree(
+        (v, xs) => [v, xs],
+        tree
+    );
+
 // partition :: Predicate -> List -> (Matches, nonMatches)
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
 const partition = (p, xs) =>
@@ -2708,6 +2715,12 @@ const showDate = JSON.stringify;
 
 // showDict :: Dict -> String
 const showDict = show;
+
+// showForest :: [Tree a] -> String
+const showForest = xs =>
+    xs.map(x => drawTree2(false)(true)(
+        fmapTree(show, x)
+    ));
 
 // showHex :: Int -> String
 const showHex = n =>
@@ -3485,6 +3498,13 @@ const treeFromDict = rootLabel => dict => {
             ) : map(k => Node(k, go(x[k])), keys(x))
         );
     return Node(rootLabel, go(dict));
+};
+
+// treeFromPairNest :: PairNest a -> Tree a
+const treeFromPairNest = vxs => {
+    const go = vxs =>
+        Node(vxs[0], vxs[1].map(go));
+    return go(vxs);
 };
 
 // treeLeaves :: Tree -> [Tree]

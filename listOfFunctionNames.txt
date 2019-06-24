@@ -277,6 +277,7 @@ or :: [Bool] -> Bool
 ord :: Char -> Int
 ordering :: () -> Ordering
 outdented :: String -> String
+pairNestFromTree :: Tree a -> PairNest a
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
 permutations :: [a] -> [[a]]
@@ -349,6 +350,7 @@ show :: a -> String
 showBinary :: Int -> String
 showDate :: Date -> String
 showDict :: Dict -> String
+showForest :: [Tree a] -> String
 showHex :: Int -> String
 showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
 showJSON :: a -> String
@@ -432,6 +434,7 @@ traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeFromDict :: String -> Dict -> Tree String
+treeFromPairNest :: PairNest a -> Tree a
 treeLeaves :: Tree -> [Tree]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]
