@@ -1,8 +1,7 @@
 ```js
 // pairNestFromTree :: Tree a -> PairNest a
-const pairNestFromTree = tree =>
-    foldTree(
-        (v, xs) => [v, xs],
-        tree
-    );
+const pairNestFromTree = tree => {
+    const go = node => [node.root, node.nest.map(go)];
+    return go(tree);
+};
 ```

@@ -2172,11 +2172,10 @@ const outdented = s => {
 };
 
 // pairNestFromTree :: Tree a -> PairNest a
-const pairNestFromTree = tree =>
-    foldTree(
-        (v, xs) => [v, xs],
-        tree
-    );
+const pairNestFromTree = tree => {
+    const go = node => [node.root, node.nest.map(go)];
+    return go(tree);
+};
 
 // partition :: Predicate -> List -> (Matches, nonMatches)
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
