@@ -2717,9 +2717,9 @@ const showDict = show;
 
 // showForest :: [Tree a] -> String
 const showForest = xs =>
-    xs.map(x => drawTree2(false)(true)(
+    unlines(xs.map(x => drawTree2(false)(true)(
         fmapTree(show, x)
-    ));
+    )));
 
 // showHex :: Int -> String
 const showHex = n =>
