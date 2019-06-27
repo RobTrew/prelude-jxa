@@ -1,7 +1,7 @@
 ```applescript
 -- showForest :: [Tree a] -> String
 on showForest(xs)
-    unlines(map(showTree, xs))
+    unlines(map(my showTree, xs))
 end showForest
 ```
 

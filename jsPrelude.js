@@ -351,9 +351,9 @@ const chr = x => String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = (n, xs) =>
-    enumFromThenTo(0, n - 1, xs.length - 1)
+    enumFromThenTo(0, n, xs.length - 1)
     .reduce(
-        (a, i) => a.concat([xs.slice(i, i + n)]),
+        (a, i) => a.concat([xs.slice(i, (n + i))]),
         []
     );
 
@@ -782,7 +782,10 @@ const either = (fl, fr, e) =>
     ) : undefined;
 
 // elem :: Eq a => a -> [a] -> Bool
-const elem = (x, xs) => xs.includes(x);
+const elem = (x, xs) => xs.some(eq(x))
+
+// OR for primitive data types:
+// xs.includes(x)
 
 // If x is a dictionary, then the Int is read as an 
 // index into the lexically sorted keys of the Dict, 
@@ -899,7 +902,7 @@ const enumFromTo_ = (m, n) => {
 };
 
 // eq (==) :: Eq a => a -> a -> Bool
-const eq = (a, b) => {
+const eq = a => b => {
     const t = typeof a;
     return t !== typeof b ? (
         false
@@ -908,10 +911,10 @@ const eq = (a, b) => {
             a === b
         ) : a.toString() === b.toString()
     ) : (() => {
-        const aks = Object.keys(a);
-        return aks.length !== Object.keys(b).length ? (
+        const kvs = Object.entries(a);
+        return kvs.length !== Object.keys(b).length ? (
             false
-        ) : aks.every(k => eq(a[k], b[k]));
+        ) : kvs.every(([k, v]) => eq(v)(b[k]));
     })();
 };
 
@@ -3501,8 +3504,7 @@ const treeFromDict = rootLabel => dict => {
 
 // treeFromPairNest :: PairNest a -> Tree a
 const treeFromPairNest = vxs => {
-    const go = vxs =>
-        Node(vxs[0], vxs[1].map(go));
+    const go = vxs => Node(vxs[0], vxs[1].map(go));
     return go(vxs);
 };
 

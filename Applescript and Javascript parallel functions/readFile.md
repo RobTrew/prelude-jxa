@@ -8,7 +8,7 @@ on readFile(strPath)
             stringWithString:strPath)'s ¬
             stringByStandardizingPath) ¬
             encoding:(ca's NSUTF8StringEncoding) |error|:(e))
-    if e is missing value then
+    if missing value is e then
         s as string
     else
         (localizedDescription of e) as string
