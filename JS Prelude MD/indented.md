@@ -1,8 +1,7 @@
 ```js
 // indented :: String -> String -> String
 const indented = (strIndent, s) =>
-    unlines(map(
-        x => '' !== x ? strIndent + x : x,
-        lines(s)
-    ));
+    s.split(/[\r\n]/).map(
+        x => '' !== x ? strIndent + x : x
+    ).join('\n')
 ```

@@ -295,6 +295,12 @@ const breakOnMay = (pat, src) =>
         ) : Tuple(src, ''));
     })() : Nothing();
 
+// bulleted :: String -> String -> String
+const bulleted = (strIndent, s) =>
+    s.split(/[\r\n]/).map(
+        x => '' !== x ? strIndent + '- ' + x : x
+    ).join('\n')
+
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
 const cartesianProduct = (xs, ys) =>
     apList(xs.map(x => y => Tuple(x, y)), ys);
@@ -1353,10 +1359,9 @@ const if_ = (bln, x, y) =>
 
 // indented :: String -> String -> String
 const indented = (strIndent, s) =>
-    unlines(map(
-        x => '' !== x ? strIndent + x : x,
-        lines(s)
-    ));
+    s.split(/[\r\n]/).map(
+        x => '' !== x ? strIndent + x : x
+    ).join('\n')
 
 // index (!!) :: [a] -> Int -> Maybe a
 // index (!!) :: Generator (Int, a) -> Int -> Maybe a

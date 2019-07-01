@@ -39,6 +39,7 @@ break :: (a -> Bool) -> [a] -> ([a], [a])
 breakOn :: String -> String -> (String, String)
 breakOnAll :: String -> String -> [(String, String)]
 breakOnMay :: String -> String -> Maybe (String, String)
+bulleted :: String -> String -> String
 cartesianProduct :: [a] -> [b] -> [(a, b)]
 caseOf :: [(a -> Bool, b)] -> b -> a ->  b
 catMaybes :: [Maybe a] -> [a]
