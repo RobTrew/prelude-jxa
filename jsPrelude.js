@@ -303,7 +303,7 @@ const bulleted = (strIndent, s) =>
 
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
 const cartesianProduct = (xs, ys) =>
-    apList(xs.map(x => y => Tuple(x, y)), ys);
+    xs.flatMap(x => ys.flatMap(y => Tuple(x, y)));
 
 // List of (Predicate, value) tuples -> Default value 
 //                        -> Value to test -> Output value
@@ -1743,7 +1743,7 @@ const liftA2List = f => xs => ys =>
     // The binary operator f lifted to a function over two
     // lists. f applied to each pair of arguments in the
     // cartesian product of xs and ys.
-    concatMap(x => concatMap(y => [f(x)(y)], ys), xs);
+    xs.flatMap(x => ys.flatMap(y => [f(x)(y)]));
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 const liftA2May = f => a => b =>
