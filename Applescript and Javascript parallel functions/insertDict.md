@@ -1,6 +1,6 @@
 ```applescript
--- insertDict :: Dict -> String -> a -> Dict
-on insertDict(rec, k, v)
+-- insertDict :: String -> a -> Dict -> Dict
+on insertDict(k, v, rec)
     tell (current application's NSMutableDictionary's ¬
         dictionaryWithDictionary:rec)
         its setValue:v forKey:(k as string)
@@ -10,7 +10,9 @@ end insertDict
 ```
 
 ```js
-// insertDict :: Dict -> String -> a -> Dict
-const insertDict = (dct, k, v) =>
-  Object.assign(dct, {[k]: v});
+// insertDict :: String -> a -> Dict -> Dict
+const insertDict = (k, v, dct) =>
+    Object.assign(dct, {
+        [k]: v
+    });
 ```

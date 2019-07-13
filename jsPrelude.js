@@ -169,7 +169,7 @@ function* appendGen(xs, ys) {
 const apply = (f, x) => f(x);
 
 // applyN :: Int -> (a -> a) -> a -> a
-const applyN = (n, f, x) =>
+const applyN = (n, f) => x =>
     Array.from({
         length: n
     }, () => f)
@@ -402,12 +402,7 @@ const concat = xs =>
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = (f, xs) =>
-    xs.reduce((a, x) => a.concat(f(x)), []);
-    
-// Briefer but slower:
-// concatMap :: (a -> [b]) -> [a] -> [b]
-// const concatMap = (f, xs) =>
-//     [].concat(...xs.map(f))
+    xs.flatMap(f);
 
 // cons :: a -> [a] -> [a]
 const cons = (x, xs) =>
@@ -908,7 +903,7 @@ const enumFromTo_ = (m, n) => {
 };
 
 // eq (==) :: Eq a => a -> a -> Bool
-const eq = a => b => {
+const eq = (a, b) => {
     const t = typeof a;
     return t !== typeof b ? (
         false
@@ -1060,13 +1055,7 @@ const findTree = (p, tree) => {
 const firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);
 
 // flatten :: NestedList a -> [a]
-const flatten = t => {
-	const go = x => 
-    	Array.isArray(x) ? (
-        	[].concat(...x.map(go))
-    	) : x;
-	return go(t);
-};
+const flatten = nest => nest.flat();
 
 // The root elements of a tree in pre-order.
 // flattenTree :: Tree a -> [a]
@@ -1430,9 +1419,11 @@ const insertBy = (cmp, x, ys) => {
         .concat(ys.slice(i));
 };
 
-// insertDict :: Dict -> String -> a -> Dict
-const insertDict = (dct, k, v) =>
-  Object.assign(dct, {[k]: v});
+// insertDict :: String -> a -> Dict -> Dict
+const insertDict = (k, v, dct) =>
+    Object.assign(dct, {
+        [k]: v
+    });
 
 // intToDigit :: Int -> Char
 const intToDigit = n =>
@@ -1876,16 +1867,7 @@ const mapAccumR = (f, acc, xs) =>
 
 // mapFromList :: [(k, v)] -> Dict
 const mapFromList = kvs =>
-    kvs.reduce(
-        (a, kv) => {
-            const k = kv[0];
-            return Object.assign(a, {
-                [
-                    (('string' === typeof k) && k) || JSON.stringify(k)
-                ]: kv[1]
-            });
-        }, {}
-    );
+    Object.fromEntries(kvs);
 
 // A function mapped over the keys of a record
 // mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
@@ -2122,12 +2104,12 @@ const notElem = (x, xs) =>
 const nub = xs => nubBy(eq, xs);
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = (p, xs) => {
+const nubBy = (fEq, xs) => {
     const go = xs => 0 < xs.length ? (() => {
         const x = xs[0];
         return [x].concat(
             go(xs.slice(1)
-                .filter(y => !p(x, y))
+                .filter(y => !fEq(x)(y))
             )
         )
     })() : [];

@@ -1,5 +1,7 @@
 ```js
-// insertDict :: Dict -> String -> a -> Dict
-const insertDict = (dct, k, v) =>
-  Object.assign(dct, {[k]: v});
+// insertDict :: String -> a -> Dict -> Dict
+const insertDict = (k, v, dct) =>
+    Object.assign(dct, {
+        [k]: v
+    });
 ```

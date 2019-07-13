@@ -171,7 +171,7 @@ initMay :: [a] -> Maybe [a]
 inits :: [a] -> [[a]]
 insert :: Ord a => a -> [a] -> [a]
 insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
-insertDict :: Dict -> String -> a -> Dict
+insertDict :: String -> a -> Dict -> Dict
 intToDigit :: Int -> Char
 intercalate :: [a] -> [[a]] -> [a]
 intercalateS :: String -> [String] -> String
