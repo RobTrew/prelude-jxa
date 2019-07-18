@@ -3,10 +3,11 @@
 -- elems :: Set a -> [a]
 on elems(x)
     if record is class of x then -- Dict
-        set ca to current application
-        (ca's NSDictionary's dictionaryWithDictionary:rec)'s allValues() as list
+        tell current application to allValues() ¬
+            of dictionaryWithDictionary_(x) ¬
+            of its NSDictionary as list
     else -- Set
-        (x's allObjects()) as list
+        (allObjects() of x) as list
     end if
 end elems
 ```
