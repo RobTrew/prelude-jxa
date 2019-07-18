@@ -27,6 +27,6 @@ end levelNodes
 const levelNodes = tree =>
   iterateUntil(
     xs => 1 > xs.length,
-    xs => concatMap(x => x.nest, xs), [tree]
+    xs => xs.flatMap(x => x.nest), [tree]
   );
 ```

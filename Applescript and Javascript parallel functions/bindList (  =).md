@@ -13,6 +13,6 @@ end bindList
 
 ```js
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
-const bindList = (xs, mf) => 
-  [].concat.apply([], xs.map(mf));
+const bindList = (xs, mf) =>
+    xs.flatMap(mf);
 ```

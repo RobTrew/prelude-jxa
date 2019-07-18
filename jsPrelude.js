@@ -230,8 +230,8 @@ const bindLR = (m, mf) =>
     ) : mf(m.Right);
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
-const bindList = (xs, mf) => 
-  [].concat.apply([], xs.map(mf));
+const bindList = (xs, mf) =>
+    xs.flatMap(mf);
 
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 const bindMay = (mb, mf) =>
@@ -318,7 +318,7 @@ const caseOf = (pvs, otherwise, x) => {
 
 // catMaybes :: [Maybe a] -> [a]
 const catMaybes = mbs =>
-    concatMap(m => m.Nothing ? [] : [m.Just], mbs);
+    mbs.flatMap(m => m.Nothing ? [] : [m.Just]);
 
 // The least integer not less than x
 // ceiling :: Num -> Int
@@ -816,9 +816,9 @@ const elemIndex = (x, xs) => {
 
 // elemIndices :: Eq a => a -> [a] -> [Int]
 const elemIndices = (x, xs) =>
-    concatMap((y, i) => y === x ? (
+    xs.flatMap((y, i) => y === x ? (
         [i]
-    ) : [], xs);
+    ) : []);
 
 // elems :: Map k a -> [a]
 // elems :: Set a -> [a]
@@ -1024,9 +1024,9 @@ const findIndexR = (p, xs) => {
 // findIndices :: (a -> Bool) -> [a] -> [Int]
 // findIndices :: (String -> Bool) -> String -> [Int]
 const findIndices = (p, xs) =>
-    concatMap((x, i) => p(x, i, xs) ? (
+    xs.flatMap((x, i) => p(x, i, xs) ? (
         [i]
-    ) : [], xs);
+    ) : []);
 
 // The first of any nodes in the tree which match the predicate p
 // (For all matches, see treeMatches)
@@ -1671,10 +1671,10 @@ const lcm = (x, y) =>
 
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
-    concatMap(
+    xs.flatMap(
         x => ('Either' === x.type) && (undefined !== x.Left) ? (
             [x.Left]
-        ) : [], xs
+        ) : []
     );
 
 // Returns Infinity over objects without finite length.
@@ -1690,7 +1690,7 @@ const length = xs =>
 const levelNodes = tree =>
   iterateUntil(
     xs => 1 > xs.length,
-    xs => concatMap(x => x.nest, xs), [tree]
+    xs => xs.flatMap(x => x.nest), [tree]
   );
 
 // levels :: Tree a -> [[a]]
@@ -2190,29 +2190,17 @@ const partitionEithers = xs =>
 // permutations :: [a] -> [[a]]
 const permutations = xs =>
     xs.reduceRight(
-        (a, x) => concatMap(
-            xs => enumFromTo(0, xs.length)
+        (a, x) => a.flatMap(
+            xs => Array.from({
+                length: 1 + xs.length
+            }, (_, i) => i)
             .map(n => xs.slice(0, n)
                 .concat(x)
                 .concat(xs.slice(n))
-            ),
-            a
+            )
         ),
         [[]]
     );
-
-// OR
-// // permutations :: [a] -> [[a]]
-// const permutations = xs => {
-//     const go = xs =>
-//         xs.length ? concatMap(x => concatMap(ys => [
-//                 [x].concat(ys)
-//             ],
-//             go(delete_(x, xs))), xs) : [
-//             []
-//         ];
-//     return go(xs);
-// };
 
 // permutationsWithRepetition :: Int -> [a] -> [[a]]
 const permutationsWithRepetition = (n, xs) =>
@@ -2552,10 +2540,10 @@ const reverse = xs =>
 
 // rights :: [Either a b] -> [b]
 const rights = xs =>
-    concatMap(
+    xs.flatMap(
         x => ('Either' === x.type) && (undefined !== x.Right) ? (
             [x.Right]
-        ) : [], xs
+        ) : []
     );
 
 // root :: Tree a -> a
@@ -3248,10 +3236,10 @@ const takeFromThenTo = (a, b, z, xs) => {
         map(i => xs[i], ixs)
     ) : (() => {
         const g = zipGen(enumFrom(0), take(z, xs));
-        return concatMap(i => {
+        return ixs.flatMap(i => {
             const mb = index(g)(i);
             return mb.Nothing ? [] : [mb.Just];
-        }, ixs);
+        });
     })();
 };
 
@@ -3404,9 +3392,8 @@ const transpose_ = rows =>
     // Simpler version of transpose, assuming input 
     // rows of even length.
     0 < rows.length ? rows[0].map(
-        (x, i) => concatMap(
-            x => x[i],
-            rows
+        (x, i) => rows.flatMap(
+            x => x[i]
         )
     ) : [];
 
@@ -3499,7 +3486,7 @@ const treeFromPairNest = vxs => {
 const treeLeaves = tree => {
   const nest = tree.nest;
   return (0 < nest.length) ? (
-    concatMap(treeLeaves, nest)
+    nest.flatMap(treeLeaves)
   ) : [tree];
 };
 
@@ -3511,7 +3498,7 @@ const treeMatches = (p, tree) => {
     const go = node =>
         p(node.root) ? (
             [node]
-        ) : concatMap(go, node.nest);
+        ) : node.nest.flatMap(go);
     return go(tree);
 };
 
@@ -3522,7 +3509,7 @@ const treeMenu = tree => {
             strTitle = t.root,
             subs = t.nest,
             menu = map(root, subs),
-            blnMore = 0 < concatMap(nest, subs).length;
+            blnMore = 0 < subs.flatMap(nest).length;
         return until(
             tpl => !fst(tpl) || !isNull(snd(tpl)),
             tpl => either(

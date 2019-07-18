@@ -20,7 +20,7 @@ end treeLeaves
 const treeLeaves = tree => {
   const nest = tree.nest;
   return (0 < nest.length) ? (
-    concatMap(treeLeaves, nest)
+    nest.flatMap(treeLeaves)
   ) : [tree];
 };
 ```

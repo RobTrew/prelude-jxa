@@ -5,12 +5,11 @@ on assocs(m)
     if list is c then
         zip(enumFromTo(1, length of m), m)
     else if record is c then
-        set dict to (current application's ¬
-            NSDictionary's ¬
-            dictionaryWithDictionary:(m))
-        zip((dict's allKeys()'s ¬
-            sortedArrayUsingSelector:"compare:") as list, ¬
-            dict's allValues() as list)
+        tell current application to set dict to ¬
+            dictionaryWithDictionary_(m) of its NSDictionary
+        zip((sortedArrayUsingSelector_("compare:") of ¬
+            allKeys() of dict) as list, ¬
+            (allValues() of dict) as list)
     else
         {}
     end if

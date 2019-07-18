@@ -7,7 +7,7 @@
 // findIndices :: (a -> Bool) -> [a] -> [Int]
 // findIndices :: (String -> Bool) -> String -> [Int]
 const findIndices = (p, xs) =>
-    concatMap((x, i) => p(x, i, xs) ? (
+    xs.flatMap((x, i) => p(x, i, xs) ? (
         [i]
-    ) : [], xs);
+    ) : []);
 ```

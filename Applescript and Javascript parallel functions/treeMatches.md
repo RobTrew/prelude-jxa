@@ -33,7 +33,7 @@ const treeMatches = (p, tree) => {
     const go = node =>
         p(node.root) ? (
             [node]
-        ) : concatMap(go, node.nest);
+        ) : node.nest.flatMap(go);
     return go(tree);
 };
 ```

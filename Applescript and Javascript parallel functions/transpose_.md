@@ -14,9 +14,8 @@ const transpose_ = rows =>
     // Simpler version of transpose, assuming input 
     // rows of even length.
     0 < rows.length ? rows[0].map(
-        (x, i) => concatMap(
-            x => x[i],
-            rows
+        (x, i) => rows.flatMap(
+            x => x[i]
         )
     ) : [];
 ```

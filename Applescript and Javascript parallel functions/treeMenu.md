@@ -68,7 +68,7 @@ const treeMenu = tree => {
             strTitle = t.root,
             subs = t.nest,
             menu = map(root, subs),
-            blnMore = 0 < concatMap(nest, subs).length;
+            blnMore = 0 < subs.flatMap(nest).length;
         return until(
             tpl => !fst(tpl) || !isNull(snd(tpl)),
             tpl => either(

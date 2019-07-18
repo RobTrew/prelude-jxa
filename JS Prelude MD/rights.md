@@ -1,9 +1,9 @@
 ```js
 // rights :: [Either a b] -> [b]
 const rights = xs =>
-    concatMap(
+    xs.flatMap(
         x => ('Either' === x.type) && (undefined !== x.Right) ? (
             [x.Right]
-        ) : [], xs
+        ) : []
     );
 ```
