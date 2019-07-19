@@ -23,21 +23,20 @@ end createDirectoryIfMissingLR
 
 ```js
 // createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
-const createDirectoryIfMissingLR = (blnParents, fp) =>
-    doesPathExist(fp) ? (
-        Right(`Found: '${fp}'`)
+const createDirectoryIfMissingLR = (blnParents, dirPath) => {
+    const fp = filePath(dirPath);
+    return doesPathExist(fp) ? (
+        Right(fp)
     ) : (() => {
         const
             e = $(),
             blnOK = $.NSFileManager.defaultManager[
                 'createDirectoryAtPath' +
                 'WithIntermediateDirectoriesAttributesError'
-            ]($(fp)
-                .stringByStandardizingPath,
-                blnParents, undefined, e
-            );
+            ](fp, blnParents, undefined, e);
         return blnOK ? (
             Right(fp)
         ) : Left(e.localizedDescription);
     })();
+};
 ```
