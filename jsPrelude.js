@@ -201,6 +201,26 @@ const assocs = m =>
         kv => Tuple(...kv)
     );
 
+// base64decode :: String -> String
+const base64decode = s =>
+    ObjC.unwrap(
+        $.NSString.alloc.initWithDataEncoding(
+            $.NSData.alloc.initWithBase64EncodedStringOptions(
+                s, 0
+            ),
+            $.NSUTF8StringEncoding
+        )
+    );
+
+// base64encode :: String -> String
+const base64encode = s =>
+    ObjC.unwrap(
+        $.NSString.stringWithString(s)
+        .dataUsingEncoding(
+            $.NSUTF8StringEncoding
+        ).base64EncodedStringWithOptions(0)
+    );
+
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
 const bind = (m, mf) =>
     (Array.isArray(m) ? (
@@ -903,7 +923,7 @@ const enumFromTo_ = (m, n) => {
 };
 
 // eq (==) :: Eq a => a -> a -> Bool
-const eq = (a, b) => {
+const eq = a => b => {
     const t = typeof a;
     return t !== typeof b ? (
         false
@@ -1055,7 +1075,7 @@ const findTree = (p, tree) => {
 const firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);
 
 // flatten :: NestedList a -> [a]
-const flatten = nest => nest.flat();
+const flatten = nest => nest.flat(Infinity);
 
 // The root elements of a tree in pre-order.
 // flattenTree :: Tree a -> [a]
@@ -3288,6 +3308,12 @@ const takeWhileR = (p, xs) => {
     let i = xs.length;
     while (i-- && p(xs[i])) {}
     return xs.slice(i + 1);
+};
+
+// taskPaperDateString :: Date -> String
+const taskPaperDateString = dte => {
+    const [d, t] = iso8601Local(new Date()).split('T');
+    return [d, t.slice(0, 5)].join(' ');
 };
 
 // then (>>) :: Monad m => m a -> m b -> m b

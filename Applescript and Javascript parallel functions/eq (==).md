@@ -7,7 +7,7 @@ end eq
 
 ```js
 // eq (==) :: Eq a => a -> a -> Bool
-const eq = (a, b) => {
+const eq = a => b => {
     const t = typeof a;
     return t !== typeof b ? (
         false

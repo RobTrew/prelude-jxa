@@ -11,5 +11,5 @@ end flatten
 
 ```js
 // flatten :: NestedList a -> [a]
-const flatten = nest => nest.flat();
+const flatten = nest => nest.flat(Infinity);
 ```
