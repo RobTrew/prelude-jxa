@@ -66,13 +66,15 @@ curry :: ((a, b) -> c) -> a -> b -> c
 curry2 :: ((a, b) -> c) -> a -> b -> c
 curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d
 cycle :: [a] -> Generator [a]
+decodedPath :: Percent Encoded String -> FilePath
 degrees :: Float x => Radians x -> Degrees x
 delete :: Eq a => a -> [a] -> [a]
 deleteAt :: Int -> [a] -> [a]
 deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 deleteFirst :: a -> [a] -> [a]
 deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-deleteMap :: k -> Dict -> Dict
+deleteKey :: String -> Dict -> Dict
+dictFromList :: [(k, v)] -> Dict
 difference :: Eq a => [a] -> [a] -> [a]
 differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
 digitToInt :: Char -> Int
@@ -98,6 +100,7 @@ elemAtMay :: Int -> Dict -> Maybe (String, a)
 elemIndex :: Eq a => a -> [a] -> Maybe Int
 elemIndices :: Eq a => a -> [a] -> [Int]
 elems :: Map k a -> [a]
+encodedPath :: FilePath -> Percent Encoded String
 enumFrom :: Enum a => a -> [a]
 enumFromPairs :: String -> [(String, Int)] -> Dict
 enumFromThenTo :: Int -> Int -> Int -> [Int]
@@ -236,7 +239,6 @@ map :: (a -> b) -> [a] -> [b]
 mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
 mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-mapFromList :: [(k, v)] -> Dict
 mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]

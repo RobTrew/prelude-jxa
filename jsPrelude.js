@@ -479,6 +479,9 @@ function* cycle(xs) {
     }
 }
 
+// decodedPath :: Percent Encoded String -> FilePath
+const decodedPath = decodeURI;
+
 // degrees :: Float x => Radians x -> Degrees x
 const degrees = r =>
     (180 / Math.PI) * r;
@@ -527,9 +530,13 @@ const deleteFirst = (x, xs) => {
 const deleteFirstsBy = (fnEq, xs, ys) =>
     ys.reduce((x, y) => deleteBy(fnEq, y, x), xs);
 
-// deleteMap :: k -> Dict -> Dict
-const deleteMap = (k, dct) =>
+// deleteKey :: String -> Dict -> Dict
+const deleteKey = (k, dct) =>
     (delete dct[k], dct);
+
+// dictFromList :: [(k, v)] -> Dict
+const dictFromList = kvs =>
+    Object.fromEntries(kvs);
 
 // difference :: Eq a => [a] -> [a] -> [a]
 const difference = (xs, ys) => {
@@ -846,6 +853,9 @@ const elems = x =>
     'Set' !== x.constructor.name ? (
         Object.values(x)
     ) : Array.from(x.values());
+
+// encodedPath :: FilePath -> Percent Encoded String
+const encodedPath = encodeURI;
 
 // enumFrom :: Enum a => a -> [a]
 function* enumFrom(x) {
@@ -1884,10 +1894,6 @@ const mapAccumR = (f, acc, xs) =>
             [pair[1]].concat(a[1])
         );
     }, Tuple(acc, []));
-
-// mapFromList :: [(k, v)] -> Dict
-const mapFromList = kvs =>
-    Object.fromEntries(kvs);
 
 // A function mapped over the keys of a record
 // mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
