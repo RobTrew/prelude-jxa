@@ -1,4 +1,5 @@
 {
+  "Action": "// Action :: (a -> b) -> a -> Action b\nconst Action = f => x => ({\n    // Constructor for an action.\n    type: 'Action',\n    act: f,\n    arg: x\n});",
   "Just": "// Just :: a -> Maybe a\nconst Just = x => ({\n    type: 'Maybe',\n    Nothing: false,\n    Just: x\n});",
   "Left": "// Left :: a -> Either a b\nconst Left = x => ({\n    type: 'Either',\n    Left: x\n});",
   "Node": "// Node :: a -> [Tree a] -> Tree a\nconst Node = (v, xs) => ({\n    type: 'Node',\n    root: v, // any type of value (consistent across tree)\n    nest: xs || []\n});",
@@ -339,6 +340,7 @@
   "rotate": "// rotate :: Int -> [a] -> [a]\nconst rotate = (n, xs) => {\n    const lng = xs.length;\n    return Infinity > lng ? (\n        take(lng, drop(lng - n, cycle(xs)))\n    ) : undefined;\n};",
   "round": "// round :: a -> Int\nconst round = x => {\n    const\n        nr = properFraction(x),\n        [n, r] = [nr[0], nr[1]],\n        m = n + (r < 0 ? -1 : 1),\n        sign = signum(abs(r) - 0.5);\n    return (-1 === sign) ? n : (\n        0 === sign ? (even(n) ? n : m) : (\n            1 === sign ? m : undefined\n        )\n    );\n};",
   "roundTo": "// roundTo :: Int -> Float -> Float\nconst roundTo = (n, x) => {\n    const d = Math.pow(10, n);\n    return Math.round(x * d) / d;\n};",
+  "runAction": "// runAction :: Action a -> a\nconst runAction = act =>\n    // Evaluation of an action.\n    act['act'](act['arg']);",
   "safeMay": "// safeMay :: (a -> Bool) -> (a -> b) -> Maybe b\nconst safeMay = (p, f, x) =>\n    p(x) ? Just(f(x)) : Nothing();",
   "scanl": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = (f, startValue, xs) =>\n    xs.reduce((a, x) => {\n        const v = f(a[0], x);\n        return Tuple(v, a[1].concat(v));\n    }, Tuple(startValue, [startValue]))[1];",
   "scanl1": "// scanl1 is a variant of scanl that has no starting value argument\n\n// scanl1 :: (a -> a -> a) -> [a] -> [a]\nconst scanl1 = (f, xs) =>\n    xs.length > 0 ? scanl(f, xs[0], xs.slice(1)) : [];",

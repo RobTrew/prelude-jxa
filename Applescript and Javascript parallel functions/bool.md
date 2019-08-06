@@ -2,9 +2,15 @@
 -- bool :: a -> a -> Bool -> a
 on bool(f, t, p)
     if p then
-        t
+        set v to t
     else
-        f
+        set v to f
+    end if
+    -- Delayed evaluation, if needed.
+    if handler is class of v then
+        |λ|() of mReturn(v)
+    else
+        v
     end if
 end bool
 ```

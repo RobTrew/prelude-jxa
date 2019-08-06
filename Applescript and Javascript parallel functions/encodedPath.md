@@ -2,9 +2,9 @@
 -- encodedPath :: FilePath -> Percent Encoded String
 on encodedPath(fp)
     tell current application
-        (its ((NSString's stringWithString:fp)'s ¬
-            stringByAddingPercentEncodingWithAllowedCharacters:(its NSCharacterSet's ¬
-                URLPathAllowedCharacterSet))) as string
+        set charSet to URLPathAllowedCharacterSet of its NSCharacterSet
+        (stringByAddingPercentEncodingWithAllowedCharacters_(charSet) of ¬
+            stringWithString_(fp) of its NSString) as string
     end tell
 end encodedPath
 ```

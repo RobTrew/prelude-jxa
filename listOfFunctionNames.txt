@@ -1,3 +1,4 @@
+Action :: (a -> b) -> a -> Action b
 Just :: a -> Maybe a
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
@@ -338,6 +339,7 @@ root :: Tree a -> a
 rotate :: Int -> [a] -> [a]
 round :: a -> Int
 roundTo :: Int -> Float -> Float
+runAction :: Action a -> a
 safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 scanl :: (b -> a -> b) -> b -> [a] -> [b]
 scanl1 :: (a -> a -> a) -> [a] -> [a]

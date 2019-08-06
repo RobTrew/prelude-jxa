@@ -1,5 +1,13 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
+// Action :: (a -> b) -> a -> Action b
+const Action = f => x => ({
+    // Constructor for an action.
+    type: 'Action',
+    act: f,
+    arg: x
+});
+
 // Just :: a -> Maybe a
 const Just = x => ({
     type: 'Maybe',
@@ -2602,6 +2610,11 @@ const roundTo = (n, x) => {
     const d = Math.pow(10, n);
     return Math.round(x * d) / d;
 };
+
+// runAction :: Action a -> a
+const runAction = act =>
+    // Evaluation of an action.
+    act['act'](act['arg']);
 
 // safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 const safeMay = (p, f, x) =>
