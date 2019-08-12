@@ -1296,21 +1296,6 @@ const gcd = (x, y) => {
 const genericIndexMay = (xs, i) =>
     (i < xs.length && 0 <= i) ? Just(xs[i]) : Nothing();
 
-// getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
-const getDirectoryContentsLR = strPath => {
-    const
-        error = $(),
-        xs = $.NSFileManager.defaultManager
-        .contentsOfDirectoryAtPathError(
-            $(strPath).stringByStandardizingPath,
-            error
-        );
-    return xs.isNil() ? (
-        Left(ObjC.unwrap(error.localizedDescription))
-    ) : Right(ObjC.deepUnwrap(xs))
-};
-
-
 // group :: Eq a => [a] -> [[a]]
 const group = xs => groupBy((a, b) => a === b, xs);
 
