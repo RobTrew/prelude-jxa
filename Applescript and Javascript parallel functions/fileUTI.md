@@ -13,16 +13,18 @@ end fileUTI
 ```
 
 ```js
-// fileUTI :: FilePath -> String
+// ObjC.import('AppKit')
+```
+
+```js
+// fileUTI :: FilePath -> Either String String
 const fileUTI = fp => {
     const
         e = $(),
-        uti = ObjC.unwrap(
-            $.NSWorkspace.sharedWorkspace
-            .typeOfFileError(fp, e)
-        );
-    return undefined !== uti ? (
-        uti
-    ) : ObjC.unwrap(e.localizedDescription);
+        uti = $.NSWorkspace.sharedWorkspace
+        .typeOfFileError(fp, e);
+    return uti.isNil() ? (
+        Left(ObjC.unwrap(e.localizedDescription))
+    ) : Right(ObjC.unwrap(uti));
 };
 ```

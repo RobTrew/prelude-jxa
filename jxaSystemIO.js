@@ -125,26 +125,25 @@ const fileSize = fp =>
 
 // fileStatus :: FilePath -> Either String Dict
 const fileStatus = fp => {
-  const
-    error = $(),
-    dct = $.NSFileManager.defaultManager
-    .attributesOfItemAtPathError(fp, error).js;
-  return undefined !== dct ? (
-    Right(dct)
-  ) : Left(ObjC.unwrap(error.localizedDescription));
+    const
+        e = $(),
+        dct = $.NSFileManager.defaultManager
+        .attributesOfItemAtPathError(fp, e);
+    return dct.isNil() ? (
+        Left(ObjC.unwrap(e.localizedDescription))
+    ) : Right(ObjC.deepUnwrap(dct));
 };
 
-// fileUTI :: FilePath -> String
+// ObjC.import('AppKit')
+// fileUTI :: FilePath -> Either String String
 const fileUTI = fp => {
     const
         e = $(),
-        uti = ObjC.unwrap(
-            $.NSWorkspace.sharedWorkspace
-            .typeOfFileError(fp, e)
-        );
-    return undefined !== uti ? (
-        uti
-    ) : ObjC.unwrap(e.localizedDescription);
+        uti = $.NSWorkspace.sharedWorkspace
+        .typeOfFileError(fp, e);
+    return uti.isNil() ? (
+        Left(ObjC.unwrap(e.localizedDescription))
+    ) : Right(ObjC.unwrap(uti));
 };
 
 // getCurrentDirectory :: IO FilePath
@@ -204,36 +203,30 @@ const newUUID = () =>
 const readFile = fp => {
     const
         e = $(),
-        uw = ObjC.unwrap,
-        s = uw(
-            $.NSString.stringWithContentsOfFileEncodingError(
-                $(fp)
-                .stringByStandardizingPath,
-                $.NSUTF8StringEncoding,
-                e
-            )
+        ns = $.NSString.stringWithContentsOfFileEncodingError(
+            $(fp).stringByStandardizingPath,
+            $.NSUTF8StringEncoding,
+            e
         );
-    return undefined !== s ? (
-        s
-    ) : uw(e.localizedDescription);
+    return ObjC.unwrap(
+        ns.isNil() ? (
+            e.localizedDescription
+        ) : ns
+    );
 };
 
-// readFileLR :: FilePath -> Either String String
+// readFileLR :: FilePath -> Either String IO String
 const readFileLR = fp => {
     const
         e = $(),
-        uw = ObjC.unwrap,
-        s = uw(
-            $.NSString.stringWithContentsOfFileEncodingError(
-                $(fp)
-                .stringByStandardizingPath,
-                $.NSUTF8StringEncoding,
-                e
-            )
+        ns = $.NSString.stringWithContentsOfFileEncodingError(
+            $(fp).stringByStandardizingPath,
+            $.NSUTF8StringEncoding,
+            e
         );
-    return undefined !== s ? (
-        Right(s)
-    ) : Left(uw(e.localizedDescription));
+    return ns.isNil() ? (
+        Left(ObjC.unwrap(e.localizedDescription))
+    ) : Right(ObjC.unwrap(ns));
 };
 
 // removeFile :: FilePath -> Either String String

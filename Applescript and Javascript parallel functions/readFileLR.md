@@ -17,21 +17,17 @@ end readFileLR
 ```
 
 ```js
-// readFileLR :: FilePath -> Either String String
+// readFileLR :: FilePath -> Either String IO String
 const readFileLR = fp => {
     const
         e = $(),
-        uw = ObjC.unwrap,
-        s = uw(
-            $.NSString.stringWithContentsOfFileEncodingError(
-                $(fp)
-                .stringByStandardizingPath,
-                $.NSUTF8StringEncoding,
-                e
-            )
+        ns = $.NSString.stringWithContentsOfFileEncodingError(
+            $(fp).stringByStandardizingPath,
+            $.NSUTF8StringEncoding,
+            e
         );
-    return undefined !== s ? (
-        Right(s)
-    ) : Left(uw(e.localizedDescription));
+    return ns.isNil() ? (
+        Left(ObjC.unwrap(e.localizedDescription))
+    ) : Right(ObjC.unwrap(ns));
 };
 ```
