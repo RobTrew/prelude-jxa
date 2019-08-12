@@ -2867,7 +2867,10 @@ const showUndefined = () => '(⊥)';
 // signum :: Num -> Num
 const signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);
 
-// Abbreviation for quick testing - any 2nd arg interpreted as indent size
+// Abbreviation of showJSON for quick testing.
+// Default indent size is two, which can be
+// overriden by any integer supplied as the
+// first argument of more than one.
 // sj :: a -> String
 function sj() {
     const args = Array.from(arguments);

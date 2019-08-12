@@ -1,5 +1,8 @@
 ```js
-// Abbreviation for quick testing - any 2nd arg interpreted as indent size
+// Abbreviation of showJSON for quick testing.
+// Default indent size is two, which can be
+// overriden by any integer supplied as the
+// first argument of more than one.
 ```
 
 ```js

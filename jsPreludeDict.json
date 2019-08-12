@@ -376,7 +376,7 @@
   "showTuple": "// showTuple :: Tuple -> String\nconst showTuple = tpl =>\n    '(' + enumFromTo(0, tpl.length - 1)\n    .map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
   "showUndefined": "// showUndefined :: () -> String\nconst showUndefined = () => '(⊥)';",
   "signum": "// | Sign of a number.\n// The functions 'abs' and 'signum' should satisfy the law:\n//\n// > abs x * signum x == x\n//\n// For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)\n// or @1@ (positive).\n\n// signum :: Num -> Num\nconst signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);",
-  "sj": "// Abbreviation for quick testing - any 2nd arg interpreted as indent size\n\n// sj :: a -> String\nfunction sj() {\n    const args = Array.from(arguments);\n    return JSON.stringify.apply(\n        null,\n        1 < args.length && !isNaN(args[0]) ? [\n            args[1], null, args[0]\n        ] : [args[0], null, 2]\n    );\n}",
+  "sj": "// Abbreviation of showJSON for quick testing.\n// Default indent size is two, which can be\n// overriden by any integer supplied as the\n// first argument of more than one.\n\n// sj :: a -> String\nfunction sj() {\n    const args = Array.from(arguments);\n    return JSON.stringify.apply(\n        null,\n        1 < args.length && !isNaN(args[0]) ? [\n            args[1], null, args[0]\n        ] : [args[0], null, 2]\n    );\n}",
   "snd": "// snd :: (a, b) -> b\nconst snd = tpl => tpl[1];",
   "snoc": "// Mirror image of cons\n// New copy of the list, with an atom added at the end\n\n// snoc :: [a] -> a -> [a]\nconst snoc = (xs, x) => xs.concat(x);",
   "sort": "// sort :: Ord a => [a] -> [a]\nconst sort = xs => xs.slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));",
