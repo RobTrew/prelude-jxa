@@ -158,6 +158,7 @@ gcd :: Int -> Int -> Int
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
 getDirectoryContents :: FilePath -> IO [FilePath]
+getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
 getFinderDirectory :: IO FilePath
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath
