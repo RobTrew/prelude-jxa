@@ -1,5 +1,5 @@
 ```applescript
--- readFileLR :: FilePath -> Either String String
+-- readFileLR :: FilePath -> Either String IO String
 on readFileLR(strPath)
     set ca to current application
     set e to reference
@@ -8,10 +8,10 @@ on readFileLR(strPath)
             stringWithString:strPath)'s ¬
             stringByStandardizingPath) ¬
             encoding:(ca's NSUTF8StringEncoding) |error|:(e))
-    if e is missing value then
-        |Right|(s as string)
-    else
+    if s is missing value then
         |Left|((localizedDescription of e) as string)
+    else
+        |Right|(s as string)
     end if
 end readFileLR
 ```
