@@ -133,10 +133,12 @@ const apFn = f =>
 const apLR = flr => liftA2LR(identity)(flr)
 
 // apList (<*>) :: [a -> b] -> [a] -> [b]
-const apList = fs =>
+const apList = fs => xs =>
     // The application of each of a list of functions,
     // to each of a list of values.
-    xs => liftA2List(x => x)(fs)(xs)
+    fs.flatMap(
+        f => xs.flatMap(x => [f(x)])
+    );
 
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 const apMay = mf =>
@@ -405,7 +407,8 @@ const comparing = f =>
     };
 
 // compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
-const compose = (f, g) => x => f(g(x));
+const compose = (...fs) =>
+    x => fs.reduceRight((a, f) => f(a), x);
 
 // composeList :: [(a -> a)] -> (a -> a)
 const composeList = fs =>

@@ -24,8 +24,10 @@ end apList
 
 ```js
 // apList (<*>) :: [a -> b] -> [a] -> [b]
-const apList = fs =>
+const apList = fs => xs =>
     // The application of each of a list of functions,
     // to each of a list of values.
-    xs => liftA2List(x => x)(fs)(xs)
+    fs.flatMap(
+        f => xs.flatMap(x => [f(x)])
+    );
 ```
