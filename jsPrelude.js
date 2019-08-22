@@ -1954,30 +1954,6 @@ const mappend = (a, b) => {
     )(a, b);
 };
 
-// mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)
-const mappendComparing = fs =>
-    (x, y) => fs.reduce(
-        (ordr, f) => (ordr || compare(f(x), f(y))),
-        0
-    );
-
-// Expects functions in the argument list to be 
-// paired with Bools:
-//     true  -> ascending sort on that key
-//     false -> descending sort on that key
-// mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)
-const mappendComparing2 = fboolPairs =>
-    (x, y) => fboolPairs.reduce(
-        (ordr, fb) => {
-            const f = fb[0];
-            return 0 !== ordr ? (
-                ordr
-            ) : fb[1] ? (
-                compare(f(x), f(y))
-            ) : compare(f(y), f(x));
-        }, 0
-    );
-
 // mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 const mappendFn = (f, g) =>
     x => mappend(f(x), g(x));
@@ -1987,8 +1963,8 @@ const mappendMaybe = (a, b) =>
     a.Nothing ? b : b.Nothing ? a :
     Just(mappend(a.Just, b.Just));
 
-// mappendOrdering (<>) :: Ordering -> Ordering -> Ordering
-const mappendOrdering = (a, b) => eqOrdering(EQ, a) ? b : a;
+// mappendOrd (<>) :: Ordering -> Ordering -> Ordering
+const mappendOrd = (a, b) => a !== 0 ? a : b;
 
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 const mappendTuple = (t, t2) =>
