@@ -7,8 +7,8 @@
 
 ```js
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
-const minimumBy = (f, xs) =>
+const minimumBy = f => xs =>
     xs.reduce((a, x) => undefined === a ? x : (
-        0 > f(x, a) ? x : a
+        0 > f(x)(a) ? x : a
     ), undefined);
 ```

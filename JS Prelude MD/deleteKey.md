@@ -1,5 +1,5 @@
 ```js
 // deleteKey :: String -> Dict -> Dict
-const deleteKey = (k, dct) =>
+const deleteKey = k => dct =>
     (delete dct[k], dct);
 ```

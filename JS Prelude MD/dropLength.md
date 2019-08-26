@@ -1,6 +1,6 @@
 ```js
 // dropLength :: [a] -> [b] -> [b]
-const dropLength = (xs, ys) => {
+const dropLength = xs => ys => {
     const go = (x, y) =>
         0 < x.length ? (
             0 < y.length ? (

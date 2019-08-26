@@ -36,7 +36,7 @@ const nubBy = (fEq, xs) => {
         const x = xs[0];
         return [x].concat(
             go(xs.slice(1)
-                .filter(y => !fEq(x)(y))
+                .filter(y => !fEq(x, y))
             )
         )
     })() : [];

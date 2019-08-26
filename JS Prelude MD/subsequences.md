@@ -8,18 +8,17 @@
 // subsequences :: String -> [String]
 const subsequences = xs => {
     const
-        cons = (x, xs) => [x].concat(xs),
         // nonEmptySubsequences :: [a] -> [[a]]
         nonEmptySubsequences = xxs => {
             if (xxs.length < 1) return [];
             const [x, xs] = [xxs[0], xxs.slice(1)];
-            const f = (r, ys) => cons(ys, cons(cons(x, ys), r));
-            return cons([x], nonEmptySubsequences(xs)
+            const f = (r, ys) => cons(ys)(cons(cons(x)(ys))(r));
+            return cons([x])(nonEmptySubsequences(xs)
                 .reduceRight(f, []));
         };
     return ('string' === typeof xs) ? (
-        cons('', nonEmptySubsequences(xs.split(''))
+        cons('')(nonEmptySubsequences(xs.split(''))
             .map(x => ''.concat.apply('', x))) // map(concat)
-    ) : cons([], nonEmptySubsequences(xs));
+    ) : cons([])(nonEmptySubsequences(xs));
 };
 ```

@@ -1,7 +1,7 @@
 ```js
 // show :: a -> String
 // show :: a -> Int -> Indented String
-const show = (x, n) => {
+const show = x => n => {
     const
         e = ('function' !== typeof x) ? (
             x

@@ -11,7 +11,7 @@ const approxRatio = eps => n => {
       return _gcd(abs(x), abs(y));
     },
     c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, abs(n)),
-    r = ratio(quot(abs(n), c), quot(1, c));
+    r = ratio(quot(abs(n))(c))(quot(1, c));
   return {
     type: 'Ratio',
     n: r.n * signum(n),

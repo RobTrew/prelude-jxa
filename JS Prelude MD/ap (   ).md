@@ -6,7 +6,7 @@
 
 ```js
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
-const ap = (mf, mx) => {
+const ap = mf => mx => {
     const t = mx.type;
     return (
         undefined !== t ? (
@@ -20,6 +20,6 @@ const ap = (mf, mx) => {
                 apTuple
             ) : apList
         ) : apList
-    )(mf, mx);
+    )(mf)(mx);
 };
 ```

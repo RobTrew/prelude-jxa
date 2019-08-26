@@ -6,7 +6,7 @@
 
 ```js
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
-const treeMatches = (p, tree) => {
+const treeMatches = p => tree => {
     const go = node =>
         p(node.root) ? (
             [node]

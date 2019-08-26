@@ -5,5 +5,5 @@
 
 ```js
 // snoc :: [a] -> a -> [a]
-const snoc = (xs, x) => xs.concat(x);
+const snoc = xs => x => xs.concat(x);
 ```

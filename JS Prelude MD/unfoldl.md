@@ -5,7 +5,7 @@
 
 ```js
 // unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
-const unfoldl = (f, v) => {
+const unfoldl = f => v => {
     let
         xr = [v, v],
         xs = [];

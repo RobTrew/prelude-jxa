@@ -1,6 +1,6 @@
 ```js
 // applyN :: Int -> (a -> a) -> a -> a
-const applyN = (n, f) => x =>
+const applyN = n => f => x =>
     Array.from({
         length: n
     }, () => f)

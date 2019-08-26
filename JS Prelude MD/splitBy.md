@@ -6,7 +6,7 @@
 ```js
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 // splitBy :: (String -> String -> Bool) -> String -> [String]
-const splitBy = (p, xs) =>
+const splitBy = p => xs =>
     (xs.length < 2) ? [xs] : (() => {
         const
             bln = 'string' === typeof xs,

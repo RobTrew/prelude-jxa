@@ -14,7 +14,7 @@
 
 ```js
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
-const unfoldr = (f, v) => {
+const unfoldr = f => v => {
     let
         xr = [v, v],
         xs = [];

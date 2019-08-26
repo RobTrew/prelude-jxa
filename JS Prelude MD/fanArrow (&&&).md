@@ -5,5 +5,7 @@
 
 ```js
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
-const fanArrow = (f, g) => x => Tuple(f(x), g(x));
+const fanArrow = f => g => x => Tuple(f(x))(
+        g(x)
+      );
 ```

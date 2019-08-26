@@ -1,5 +1,5 @@
 ```js
 // setSize :: Set a -> Int
-const setSize = set =>
-    set.size;
+const setSize = oSet =>
+    oSet.size;
 ```

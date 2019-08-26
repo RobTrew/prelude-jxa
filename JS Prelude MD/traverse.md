@@ -1,6 +1,6 @@
 ```js
 // traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
-const traverse = (f, tx) => {
+const traverse = f => tx => {
     const t = tx.type;
     return (
         undefined !== t ? (
@@ -14,6 +14,6 @@ const traverse = (f, tx) => {
                 traverseTuple
             ) : traverseList
         ) : traverseList
-    )(f, tx)
+    )(f)(tx)
 };
 ```

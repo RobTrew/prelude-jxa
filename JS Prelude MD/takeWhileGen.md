@@ -1,6 +1,6 @@
 ```js
 // takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-const takeWhileGen = (p, xs) => {
+const takeWhileGen = p => xs => {
     const ys = [];
     let
         nxt = xs.next(),

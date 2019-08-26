@@ -5,7 +5,7 @@
 
 ```js
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = (f, a, b) => {
+const liftA2 = f => a => b => {
     const t = typeName(a);
     return (
         'Bottom' !== t ? (

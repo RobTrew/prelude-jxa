@@ -1,7 +1,7 @@
 ```js
 // isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
 // isSubsequenceOf :: String -> String -> Bool
-const isSubsequenceOf = (xs, ys) => {
+const isSubsequenceOf = xs => ys => {
     const iss = (a, b) =>
         a.length > 0 ? (
             b.length > 0 ? (

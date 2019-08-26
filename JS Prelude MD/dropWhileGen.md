@@ -1,6 +1,6 @@
 ```js
 // dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-const dropWhileGen = (p, xs) => {
+const dropWhileGen = p => xs => {
     let
         nxt = xs.next(),
         v = nxt.value;
@@ -8,6 +8,6 @@ const dropWhileGen = (p, xs) => {
         nxt = xs.next();
         v = nxt.value;
     }
-    return cons(v, xs);
+    return cons(v)(xs);
 };
 ```

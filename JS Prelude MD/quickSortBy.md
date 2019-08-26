@@ -5,12 +5,11 @@
 
 ```js
 // quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const quickSortBy = (cmp, xs) =>
+const quickSortBy = cmp => xs =>
     xs.length > 1 ? (() => {
         const
             h = xs[0],
-            lessMore = partition(
-                x => 1 !== cmp(x, h),
+            lessMore = partition(x => 1 !== cmp(x, h))(
                 xs.slice(1)
             );
         return [].concat.apply(

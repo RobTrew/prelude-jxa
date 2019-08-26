@@ -1,6 +1,6 @@
 ```js
 // regexMatches :: String -> String -> [[String]]
-const regexMatches = (strRgx, strHay) => {
+const regexMatches = strRgx => strHay => {
     const rgx = new RegExp(strRgx, 'g');
     let m = rgx.exec(strHay),
         xs = [];

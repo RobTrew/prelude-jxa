@@ -6,7 +6,7 @@
 ```js
 // isPrefixOf :: [a] -> [a] -> Bool
 // isPrefixOf :: String -> String -> Bool
-const isPrefixOf = (xs, ys) => {
+const isPrefixOf = xs => ys => {
     const go = (xs, ys) => {
         const intX = xs.length;
         return 0 < intX ? (

@@ -12,7 +12,7 @@
 ```js
 // groupSortOn :: Ord b => (a -> b) -> [a] -> [a]
 // groupSortOn :: Ord b => [((a -> b), Bool)]  -> [a] -> [a]
-const groupSortOn = (f, xs) => {
+const groupSortOn = f => xs => {
     // Functions and matching bools derived from argument f
     // which is a single key function
     const fsbs = unzip(
@@ -35,14 +35,15 @@ const groupSortOn = (f, xs) => {
         [fs, bs] = [fsbs[0], fsbs[1]],
         iLast = fs.length;
     // decorate-sort-group-undecorate
-    return groupBy(
-            (p, q) => p[0] === q[0],
+    return groupBy(p => q => p[0] === q[0])(
             sortBy(
                 mappendComparing(
                     // functions that access pre-calculated values by position
                     // in the decorated ('Schwartzian') version of xs
                     zip(fs.map((_, i) => x => x[i]), bs)
-                ), xs.map( // xs decorated with precalculated key function values
+                )
+            )(
+              xs.map( // xs decorated with precalculated key function values
                     x => fs.reduceRight(
                         (a, g) => [g(x)].concat(a), [
                             x

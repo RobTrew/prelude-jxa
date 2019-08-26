@@ -8,7 +8,7 @@
 ```js
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
-const splitOn = (pat, src) =>
+const splitOn = pat => src =>
     /* A list of the strings delimited by
        instances of a given pattern in s. */
     ('string' === typeof src) ? (
@@ -16,12 +16,11 @@ const splitOn = (pat, src) =>
     ) : (() => {
         const
             lng = pat.length,
-            tpl = foldl((a, i) =>
-                Tuple(
-                    fst(a).concat([src.slice(snd(a), i)]),
-                    lng + i
-                ), Tuple([], 0),
-                findIndices(matching(pat), src)
+            tpl = findIndices(matching(pat))(src).reduce(
+                (a, i) => Tuple(
+                    fst(a).concat([src.slice(snd(a), i)])
+                )(lng + i),
+                Tuple([])(0),
             );
         return fst(tpl).concat([src.slice(snd(tpl))]);
     })();

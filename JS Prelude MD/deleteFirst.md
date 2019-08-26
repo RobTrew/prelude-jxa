@@ -1,6 +1,6 @@
 ```js
 // deleteFirst :: a -> [a] -> [a]
-const deleteFirst = (x, xs) => {
+const deleteFirst = x => xs => {
     const go = xs => 0 < xs.length ? (
         x === xs[0] ? (
             xs.slice(1)

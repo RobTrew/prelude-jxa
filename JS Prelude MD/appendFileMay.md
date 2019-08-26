@@ -1,6 +1,6 @@
 ```js
 // appendFileMay :: FilePath -> String -> Maybe IO FilePath
-const appendFileMay = (strPath, txt) => {
+const appendFileMay = strPath => txt => {
     const
         oFullPath = ObjC.wrap(strPath)
         .stringByStandardizingPath,
@@ -28,7 +28,7 @@ const appendFileMay = (strPath, txt) => {
             })() : Nothing()
             // Text appending to directory is undefined
         ) : doesDirectoryExist(takeDirectory(strFullPath)) ? (
-            writeFile(oFullPath, txt), // Effect, and
+            writeFile(oFullPath)(txt), // Effect, and
             Just(strFullPath) // value
         ) : Nothing();
 };

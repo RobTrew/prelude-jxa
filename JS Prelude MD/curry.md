@@ -8,7 +8,7 @@
 
 ```js
 // curry :: ((a, b) -> c) -> a -> b -> c
-const curry = (f, ...args) => {
+const curry = f => (...args) => {
     const
         n = f.length,
         go = xs => n <= xs.length ? (

@@ -22,7 +22,7 @@ const Left = x => ({
 });
 
 // Node :: a -> [Tree a] -> Tree a
-const Node = (v, xs) => ({
+const Node = v => xs => ({
     type: 'Node',
     root: v, // any type of value (consistent across tree)
     nest: xs || []
@@ -41,7 +41,7 @@ const Right = x => ({
 });
 
 // Tuple (,) :: a -> b -> (a, b)
-const Tuple = (a, b) => ({
+const Tuple = a => b => ({
   type: 'Tuple',
   '0': a,
   '1': b,
@@ -49,7 +49,7 @@ const Tuple = (a, b) => ({
 });
 
 // Tuple3 (,,) :: a -> b -> c -> (a, b, c)
-const Tuple3 = (a, b, c) => ({
+const Tuple3 = a => b => c => ({
   type: 'Tuple3',
   '0': a,
   '1': b,
@@ -78,12 +78,11 @@ const abs = Math.abs;
 // True if all elements of the list 
 // satisfy the predicate.
 // all :: (a -> Bool) -> [a] -> Bool
-const all = (p, xs) => xs.every(p);
+const all = p => xs => xs.every(p);
 
 // allTree :: (a -> Bool) -> Tree a -> Bool
-const allTree = (p, tree) =>
-    foldTree(
-        (x, xs) => p(x) && xs.every(Boolean),
+const allTree = p => tree =>
+    foldTree(x => xs => p(x) && xs.every(Boolean))(
         tree
     );
 
@@ -94,12 +93,11 @@ const and = xs =>
 
 // | True if any contained element satisfies the predicate.
 // any :: (a -> Bool) -> [a] -> Bool
-const any = (p, xs) => xs.some(p);
+const any = p => xs => xs.some(p);
 
 // anyTree :: (a -> Bool) -> Tree a -> Bool
-const anyTree = (p, tree) =>
-    foldTree(
-        (x, xs) => p(x) || xs.some(Boolean),
+const anyTree = p => tree =>
+    foldTree(x => xs => p(x) || xs.some(Boolean))(
         tree
     );
 
@@ -107,7 +105,7 @@ const anyTree = (p, tree) =>
 // for example applying a list of functions to a list of values
 // or applying Just(f) to Just(x), Right(f) to Right(x), etc
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
-const ap = (mf, mx) => {
+const ap = mf => mx => {
     const t = mx.type;
     return (
         undefined !== t ? (
@@ -121,7 +119,7 @@ const ap = (mf, mx) => {
                 apTuple
             ) : apList
         ) : apList
-    )(mf, mx);
+    )(mf)(mx);
 };
 
 // apFn :: (a -> b -> c) -> (a -> b) -> a -> c
@@ -145,10 +143,9 @@ const apMay = mf =>
     liftA2May(x => x)(mf)
 
 // apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
-const apTree = (tf, tx) => {
+const apTree = tf => tx => {
     const go = t =>
-        Node(
-            t.root(tx.root),
+        Node(t.root(tx.root))(
             tx.nest.map(
                 curry(fmapTree)(t.root)
             ).concat(t.nest.map(go))
@@ -162,24 +159,25 @@ const apTuple = tpl =>
 
 // append (++) :: [a] -> [a] -> [a]
 // append (++) :: String -> String -> String
-const append = (xs, ys) => xs.concat(ys);
+const append = xs => ys => xs.concat(ys);
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
-function* appendGen(xs, ys) {
-    for (let vs of [xs, ys]) {
-        let nxt = vs.next()
-        while (!nxt.done) {
-            yield nxt.value
-            nxt = vs.next()
+const appendGen = xs =>
+    function* (ys) {
+        for (let vs of [xs, ys]) {
+            let nxt = vs.next()
+            while (!nxt.done) {
+                yield nxt.value
+                nxt = vs.next()
+            }
         }
-    }
-};
+    };
 
 // apply ($) :: (a -> b) -> a -> b
-const apply = (f, x) => f(x);
+const apply = f => x => f(x);
 
 // applyN :: Int -> (a -> a) -> a -> a
-const applyN = (n, f) => x =>
+const applyN = n => f => x =>
     Array.from({
         length: n
     }, () => f)
@@ -194,7 +192,7 @@ const approxRatio = eps => n => {
       return _gcd(abs(x), abs(y));
     },
     c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, abs(n)),
-    r = ratio(quot(abs(n), c), quot(1, c));
+    r = ratio(quot(abs(n))(c))(quot(1, c));
   return {
     type: 'Ratio',
     n: r.n * signum(n),
@@ -232,7 +230,7 @@ const base64encode = s =>
     );
 
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
-const bind = (m, mf) =>
+const bind = m => mf =>
     (Array.isArray(m) ? (
         bindList
     ) : (() => {
@@ -246,32 +244,31 @@ const bind = (m, mf) =>
         ) : ('function' === typeof m) ? (
             bindFn
         ) : undefined;
-    })()(m, mf));
+    })()(m)(mf));
 
 // bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
-const bindFn = (f, bop) =>
+const bindFn = f => bop =>
     // Binary operator applied over f x and x.
-    x => bop(f(x), x);
+    x => bop(f(x))(x);
 
 // bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
-const bindLR = (m, mf) =>
+const bindLR = m => mf =>
     undefined !== m.Left ? (
         m
     ) : mf(m.Right);
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
-const bindList = (xs, mf) =>
+const bindList = xs => mf =>
     xs.flatMap(mf);
 
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
-const bindMay = (mb, mf) =>
+const bindMay = mb => mf =>
     mb.Nothing ? mb : mf(mb.Just);
 
 // bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
-const bindTuple = (tpl, f) => {
+const bindTuple = tpl => f => {
     const t2 = f(tpl[1]);
-    return Tuple(
-        mappend(tpl[0], t2[0]),
+    return Tuple(mappend(tpl[0])(t2[0]))(
         t2[1]
     );
 };
@@ -281,19 +278,21 @@ const bool = f => t => p =>
     p ? t : f;
 
 // break :: (a -> Bool) -> [a] -> ([a], [a])
-const break_ = (p, xs) => {
+const break_ = p => xs => {
   for (var i = 0, lng = xs.length; (i < lng) && !p(xs[i]); i++) {};
-  return Tuple(xs.slice(0, i), xs.slice(i));
+  return Tuple(xs.slice(0, i))(
+    xs.slice(i)
+  );
 };
 
 // Needle -> Haystack -> (prefix before match, match + rest)
 // breakOn :: String -> String -> (String, String)
-const breakOn = (pat, src) =>
+const breakOn = pat => src =>
     0 < pat.length ? (() => {
         const xs = src.split(pat);
         return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
-        ) : Tuple(src, '');
+        ) : Tuple(src)('');
     })() : undefined;
 
 // breakOnAll "::" ""
@@ -301,15 +300,14 @@ const breakOn = (pat, src) =>
 // breakOnAll "/" "a/b/c/"
 // ==> [("a", "/b/c/"), ("a/b", "/c/"), ("a/b/c", "/")]
 // breakOnAll :: String -> String -> [(String, String)]
-const breakOnAll = (pat, src) =>
+const breakOnAll = pat => src =>
     '' !== pat ? (
         src.split(pat)
         .reduce((a, x, i, xs) =>
             0 < i ? (
                 a.concat([
-                    Tuple(xs.slice(0, i)
-                        .join(pat), pat + xs.slice(i)
-                        .join(pat)
+                    Tuple(xs.slice(0, i).join(pat))(
+                      pat + xs.slice(i).join(pat)
                     )
                 ])
             ) : a, [])
@@ -317,28 +315,28 @@ const breakOnAll = (pat, src) =>
 
 // Needle -> Haystack -> maybe (prefix before match, match + rest)
 // breakOnMay :: String -> String -> Maybe (String, String)
-const breakOnMay = (pat, src) =>
+const breakOnMay = pat => src =>
     Boolean(pat) ? (() => {
         const xs = src.split(pat);
         return Just(0 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
-        ) : Tuple(src, ''));
+        ) : Tuple(src)(''));
     })() : Nothing();
 
 // bulleted :: String -> String -> String
-const bulleted = (strIndent, s) =>
+const bulleted = strIndent => s =>
     s.split(/[\r\n]/).map(
         x => '' !== x ? strIndent + '- ' + x : x
     ).join('\n')
 
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
-const cartesianProduct = (xs, ys) =>
-    xs.flatMap(x => ys.flatMap(y => Tuple(x, y)));
+const cartesianProduct = xs => ys =>
+    xs.flatMap(x => ys.flatMap(y => Tuple(x)(y)));
 
 // List of (Predicate, value) tuples -> Default value 
 //                        -> Value to test -> Output value
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
-const caseOf = (pvs, otherwise, x) => {
+const caseOf = pvs => otherwise => x => {
     const mb = pvs.reduce((a, pv) =>
         a.Nothing ? (
             pv[0](x) ? Just(pv[1]) : a
@@ -361,23 +359,23 @@ const ceiling = x => {
 
 // Size of space -> filler Char -> String -> Centered String
 // center :: Int -> Char -> String -> String
-const center = (n, c, s) => {
+const center = n => c => s => {
   const
-    qr = quotRem(n - s.length, 2),
+    qr = quotRem(n - s.length)(2),
     q = qr[0];
-  return replicateString(q, c) +
-    s + replicateString(q + qr[1], c);
+  return replicateString(q)(c) +
+    s + replicateString(q + qr[1])(c);
 };
 
 // chars :: String -> [Char]
 const chars = s => s.split('');
 
 // chop :: ([a] -> (b, [a])) -> [a] -> [b]
-const chop = (f, as) => {
+const chop = f => as => {
     const go = xs =>
         0 < xs.length ? (() => {
             const [b, ys] = Array.from(f(xs));
-            return cons(b, go(ys))
+            return cons(b)(go(ys))
         })() : [];
     return go(as);
 };
@@ -386,20 +384,22 @@ const chop = (f, as) => {
 const chr = x => String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
-const chunksOf = (n, xs) =>
-    enumFromThenTo(0, n, xs.length - 1)
+const chunksOf = n => xs =>
+    enumFromThenTo(0)(
+        n
+    )(xs.length - 1)
     .reduce(
         (a, i) => a.concat([xs.slice(i, (n + i))]),
         []
     );
 
 // compare :: a -> a -> Ordering
-const compare = (a, b) =>
+const compare = a => b =>
     a < b ? -1 : (a > b ? 1 : 0);
 
 // comparing :: (a -> b) -> (a -> a -> Ordering)
 const comparing = f =>
-    (x, y) => {
+    x => y => {
         const
             a = f(x),
             b = f(y);
@@ -419,7 +419,7 @@ const composeListR = fs =>
     x => fs.reduce((a, f) => f(a), x);
 
 // composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
-const composeR = (f, g) => x => f(g(x));
+const composeR = f => g => x => f(g(x));
 
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
@@ -432,11 +432,11 @@ const concat = xs =>
     })() : [];
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
-const concatMap = (f, xs) =>
+const concatMap = f => xs =>
     xs.flatMap(f);
 
 // cons :: a -> [a] -> [a]
-const cons = (x, xs) =>
+const cons = x => xs =>
     Array.isArray(xs) ? (
         [x].concat(xs)
     ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (
@@ -461,7 +461,7 @@ const const_ = k => _ => k;
 // or recursing with a concatenation of any existing and
 // newly supplied arguments, if gaps remain.
 // curry :: ((a, b) -> c) -> a -> b -> c
-const curry = (f, ...args) => {
+const curry = f => (...args) => {
     const
         n = f.length,
         go = xs => n <= xs.length ? (
@@ -499,7 +499,7 @@ const degrees = r =>
 
 // xs with first instance of x (if any) removed
 // delete :: Eq a => a -> [a] -> [a]
-const delete_ = (x, xs) => {
+const delete_ = x => xs => {
     const go = xs => {
         return 0 < xs.length ? (
             (x === xs[0]) ? (
@@ -511,16 +511,16 @@ const delete_ = (x, xs) => {
 };
 
 // deleteAt :: Int -> [a] -> [a]
-const deleteAt = (i, xs) =>
+const deleteAt = i => xs =>
     i <= xs.length ? (() => {
-        const lr = splitAt(i, xs);
+        const lr = splitAt(i)(xs);
         return lr[0].concat(lr[1].slice(1));
     })() : xs;
 
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
-const deleteBy = (fEq, x, xs) => {
+const deleteBy = fEq => x => xs => {
     const go = xs => 0 < xs.length ? (
-        fEq(x, xs[0]) ? (
+        fEq(x)(xs[0]) ? (
             xs.slice(1)
         ) : [xs[0]].concat(go(xs.slice(1)))
     ) : [];
@@ -528,7 +528,7 @@ const deleteBy = (fEq, x, xs) => {
 };
 
 // deleteFirst :: a -> [a] -> [a]
-const deleteFirst = (x, xs) => {
+const deleteFirst = x => xs => {
     const go = xs => 0 < xs.length ? (
         x === xs[0] ? (
             xs.slice(1)
@@ -538,11 +538,11 @@ const deleteFirst = (x, xs) => {
 };
 
 // deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const deleteFirstsBy = (fnEq, xs, ys) =>
-    ys.reduce((x, y) => deleteBy(fnEq, y, x), xs);
+const deleteFirstsBy = fnEq => xs => ys =>
+    ys.reduce((x, y) => deleteBy(fnEq)(y)(x), xs);
 
 // deleteKey :: String -> Dict -> Dict
-const deleteKey = (k, dct) =>
+const deleteKey = k => dct =>
     (delete dct[k], dct);
 
 // dictFromList :: [(k, v)] -> Dict
@@ -550,24 +550,26 @@ const dictFromList = kvs =>
     Object.fromEntries(kvs);
 
 // difference :: Eq a => [a] -> [a] -> [a]
-const difference = (xs, ys) => {
+const difference = xs => ys => {
     const s = new Set(ys);
     return xs.filter(x => !s.has(x));
 };
 
 // differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
-function* differenceGen(ga, gb) {
-    // All values of generator stream ga except any
-    // already seen in generator stream gb.
-    const
-        stream = zipGen(ga, gb),
-        sb = new Set([]);
-    let xy = take(1, stream);
-    while (0 < xy.length) {
-        const [x, y] = Array.from(xy[0]);
-        sb.add(y);
-        if (!sb.has(x)) yield x;
-        xy = take(1, stream);
+const differenceGen = ga => {
+    return function*(gb) {
+        // All values of generator stream ga except any
+        // already seen in generator stream gb.
+        const
+            stream = zipGen(ga)(gb),
+            sb = new Set([]);
+        let xy = take(1)(stream);
+        while (0 < xy.length) {
+            const [x, y] = Array.from(xy[0]);
+            sb.add(y);
+            if (!sb.has(x)) yield x;
+            xy = take(1)(stream);
+        }
     }
 };
 
@@ -594,32 +596,35 @@ const digitToInt = c => {
 };
 
 // div :: Int -> Int -> Int
-const div = (x, y) => Math.floor(x / y);
+const div = x => y => Math.floor(x / y);
 
 // draw :: Tree String -> [String]
 const draw = node => {
     // shift :: String -> String -> [String] -> [String]
-    const shift = (first, other, xs) =>
-        zipWith(
-            append,
-            cons(first, replicate(xs.length - 1, other)),
-            xs
-        );
+    const shifted = (first, other, xs) =>
+        zipWith(append)(
+            cons(first)(
+              replicate(xs.length - 1)(
+                other
+              )
+            )
+        )(xs);
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
         const lng = xs.length;
         return 0 < lng ? (
             1 < lng ? append(
-                cons(
-                    '│',
-                    shift('├─ ', '│  ', draw(xs[0]))
-                ),
+                cons('│')(
+                    shifted('├─ ', '│  ', draw(xs[0]))
+                )
+            )(
                 drawSubTrees(xs.slice(1))
-            ) : cons('│', shift('└─ ', '   ', draw(xs[0])))
+            ) : cons('│')(
+              shifted('└─ ', '   ', draw(xs[0]))
+            )
         ) : [];
     };
-    return append(
-        lines(node.root),
+    return append(lines(node.root))(
         drawSubTrees(node.nest)
     );
 };
@@ -643,13 +648,17 @@ const drawTree2 = blnCompact => blnPruned => tree => {
                 Math.floor(xs.length / 2),
                 xs
             ));
-            return Tuple3(ls, rs[0], rs.slice(1));
+            return Tuple3(ls)(
+              rs[0]
+            )(rs.slice(1));
         },
         stringsFromLMR = lmr =>
         Array.from(lmr).reduce((a, x) => a.concat(x), []),
         fghOverLMR = (f, g, h) => lmr => {
             const [ls, m, rs] = Array.from(lmr);
-            return Tuple3(ls.map(f), g(m), rs.map(h));
+            return Tuple3(ls.map(f))(
+              g(m)
+            )(rs.map(h));
         };
 
     const lmrBuild = (f, w) => wsTree => {
@@ -661,7 +670,9 @@ const drawTree2 = blnCompact => blnPruned => tree => {
 
         // LEAF NODE --------------------------------------
         return 0 === lng ? (
-            Tuple3([], '─'.repeat(w - nChars) + x, [])
+            Tuple3([])(
+              '─'.repeat(w - nChars) + x
+            )([])
 
         // NODE WITH SINGLE CHILD -------------------------
         ) : 1 === lng ? (() => {
@@ -676,8 +687,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         })() : (() => {
             const
                 cFix = x => xs => x + xs,
-                treeFix = (l, m, r) => compose(
-                    stringsFromLMR,
+                treeFix = (l, m, r) => compose(stringsFromLMR)(
                     fghOverLMR(cFix(l), cFix(m), cFix(r))
                 ),
                 _x = '─'.repeat(w - nChars) + x,
@@ -693,8 +703,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
                 })[s[0]] + s.slice(1),
                 indented
             )(lmrFromStrings(
-                intercalate(
-                    blnCompact ? [] : ['│'],
+                intercalate(blnCompact ? [] : ['│'])(
                     [treeFix(' ', '┌', '│')(lmrs[0])]
                     .concat(init(lmrs.slice(1)).map(
                         treeFix('│', '├', '│')
@@ -707,13 +716,10 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         })();
     };
     const
-        measuredTree = fmapTree(
-            v => {
-                const s = ' ' + v + ' ';
-                return Tuple(s.length, s)
-            }
-            , tree
-        ),
+        measuredTree = fmapTree(v => {
+          const s = ' ' + v + ' ';
+          return Tuple(s.length, s)
+        })(tree),
         levelWidths = init(levels(measuredTree))
         .reduce(
             (a, level) => a.concat(maximum(level.map(fst))),
@@ -737,14 +743,16 @@ const drawTree2 = blnCompact => blnPruned => tree => {
 // drop :: Int -> [a] -> [a]
 // drop :: Int -> Generator [a] -> Generator [a]
 // drop :: Int -> String -> String
-const drop = (n, xs) =>
+const drop = n => xs =>
     Infinity > length(xs) ? (
         xs.slice(n)
-    ) : (take(n, xs), xs);
+    ) : (take(n)(xs), xs);
 
 // dropAround :: (a -> Bool) -> [a] -> [a]
 // dropAround :: (Char -> Bool) -> String -> String
-const dropAround = (p, xs) => dropWhile(p, dropWhileEnd(p, xs));
+const dropAround = p => xs => dropWhile(p)(
+  dropWhileEnd(p)(xs)
+);
 
 // dropFileName :: FilePath -> FilePath
 const dropFileName = strPath =>
@@ -758,7 +766,7 @@ const dropFileName = strPath =>
     })() : './';
 
 // dropLength :: [a] -> [b] -> [b]
-const dropLength = (xs, ys) => {
+const dropLength = xs => ys => {
     const go = (x, y) =>
         0 < x.length ? (
             0 < y.length ? (
@@ -769,7 +777,7 @@ const dropLength = (xs, ys) => {
 };
 
 // dropLengthMaybe :: [a] -> [b] -> Maybe [b]
-const dropLengthMaybe = (xs, ys) => {
+const dropLengthMaybe = xs => ys => {
     const go = (x, y) =>
         0 < x.length ? (
             0 < y.length ? (
@@ -781,27 +789,25 @@ const dropLengthMaybe = (xs, ys) => {
 
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
-const dropWhile = (p, xs) => {
+const dropWhile = p => xs => {
     const lng = xs.length;
     return 0 < lng ? xs.slice(
-        until(
-            i => i === lng || !p(xs[i]),
-            i => 1 + i,
-            0
-        )
+        until(i => i === lng || !p(xs[i]))(
+            i => 1 + i
+        )(0)
     ) : [];
 };
 
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
 // dropWhileEnd :: (Char -> Bool) -> String -> String
-const dropWhileEnd = (p, xs) => {
+const dropWhileEnd = p => xs => {
     let i = xs.length;
     while (i-- && p(xs[i])) {}
     return xs.slice(0, i + 1);
 };
 
 // dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-const dropWhileGen = (p, xs) => {
+const dropWhileGen = p => xs => {
     let
         nxt = xs.next(),
         v = nxt.value;
@@ -809,11 +815,11 @@ const dropWhileGen = (p, xs) => {
         nxt = xs.next();
         v = nxt.value;
     }
-    return cons(v, xs);
+    return cons(v)(xs);
 };
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
-const either = (fl, fr, e) =>
+const either = fl => fr => e =>
     'Either' === e.type ? (
         undefined !== e.Left ? (
             fl(e.Left)
@@ -821,7 +827,7 @@ const either = (fl, fr, e) =>
     ) : undefined;
 
 // elem :: Eq a => a -> [a] -> Bool
-const elem = (x, xs) => xs.some(eq(x))
+const elem = x => xs => xs.some(eq(x))
 
 // OR for primitive data types:
 // xs.includes(x)
@@ -833,7 +839,7 @@ const elem = (x, xs) => xs.some(eq(x))
 // (In either case, returns Nothing for an Int out of range)
 // elemAtMay :: Int -> Dict -> Maybe (String, a)
 // elemAtMay :: Int -> [a] -> Maybe a
-const elemAtMay = (i, x) => {
+const elemAtMay = i => x => {
     const
         bln = Array.isArray(x),
         k = bln ? i : Object.keys(x)
@@ -845,7 +851,7 @@ const elemAtMay = (i, x) => {
 };
 
 // elemIndex :: Eq a => a -> [a] -> Maybe Int
-const elemIndex = (x, xs) => {
+const elemIndex = x => xs => {
     const i = xs.indexOf(x);
     return -1 === i ? (
         Nothing()
@@ -853,7 +859,7 @@ const elemIndex = (x, xs) => {
 };
 
 // elemIndices :: Eq a => a -> [a] -> [Int]
-const elemIndices = (x, xs) =>
+const elemIndices = x => xs =>
     xs.flatMap((y, i) => y === x ? (
         [i]
     ) : []);
@@ -878,7 +884,7 @@ function* enumFrom(x) {
 }
 
 // enumFromPairs :: String -> [(String, Int)] -> Dict
-const enumFromPairs = (name, kvs) => {
+const enumFromPairs = name => kvs => {
     const
         iMax = kvs[kvs.length - 1][1],
         iMin = kvs[0][1];
@@ -902,7 +908,7 @@ const enumFromPairs = (name, kvs) => {
 };
 
 // enumFromThenTo :: Int -> Int -> Int -> [Int]
-const enumFromThenTo = (x1, x2, y) => {
+const enumFromThenTo = x1 => x2 => y => {
     const d = x2 - x1;
     return Array.from({
         length: Math.floor(y - x2) / d + 2
@@ -910,7 +916,7 @@ const enumFromThenTo = (x1, x2, y) => {
 };
 
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
-const enumFromThenToChar = (x1, x2, y) => {
+const enumFromThenToChar = x1 => x2 => y => {
     const [i1, i2, iY] = Array.from([x1, x2, y])
         .map(x => x.charCodeAt(0)),
         d = i2 - i1;
@@ -920,13 +926,13 @@ const enumFromThenToChar = (x1, x2, y) => {
 };
 
 // enumFromTo :: Int -> Int -> [Int]
-const enumFromTo = (m, n) =>
+const enumFromTo = m => n =>
     Array.from({
         length: 1 + n - m
     }, (_, i) => m + i);
 
 // enumFromToChar :: Char -> Char -> [Char]
-const enumFromToChar = (m, n) => {
+const enumFromToChar = m => n => {
     const [intM, intN] = [m, n].map(x => x.charCodeAt(0));
     return Array.from({
         length: Math.floor(intN - intM) + 1
@@ -934,7 +940,7 @@ const enumFromToChar = (m, n) => {
 };
 
 // enumFromTo_ :: Enum a => a -> a -> [a]
-const enumFromTo_ = (m, n) => {
+const enumFromTo_ = m => n => {
     const
         [x, y] = [m, n].map(fromEnum),
         b = x + ('number' !== typeof m ? 0 : m - x);
@@ -985,7 +991,7 @@ const even = n => 0 === n % 2;
 const exp = Math.exp;
 
 // fTable :: String -> (a -> String) -> (b -> String) -> (a -> b) -> [a] -> String
-const fTable = (s, xShow, fxShow, f, xs) => {
+const fTable = s => xShow => fxShow => f => xs => {
     // Heading -> x display function ->
     //           fx display function ->
     //    f -> values -> tabular string
@@ -993,8 +999,8 @@ const fTable = (s, xShow, fxShow, f, xs) => {
         ys = xs.map(xShow),
         w = Math.max(...ys.map(length));
     return s + '\n' + zipWith(
-        (a, b) => a.padStart(w, ' ') + ' -> ' + b,
-        ys,
+        (a, b) => a.padStart(w, ' ') + ' -> ' + b
+    )(ys)(
         xs.map(x => fxShow(f(x)))
     ).join('\n');
 };
@@ -1002,25 +1008,28 @@ const fTable = (s, xShow, fxShow, f, xs) => {
 // Compose a function from a simple value to a tuple of
 // the separate outputs of two different functions
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
-const fanArrow = (f, g) => x => Tuple(f(x), g(x));
+const fanArrow = f => g => x => Tuple(f(x))(
+        g(x)
+      );
 
 // filePathTree :: filePath -> [Tree String] -> Tree FilePath
-const filePathTree = (fpAnchor, trees) => {
+const filePathTree = fpAnchor => trees => {
     const go = fp => tree => {
         const path = `${fp}/${tree.root}`;
-        return Node(
-            path,
+        return Node(path)(
             tree.nest.map(go(path))
         );
     };
-    return Node(fpAnchor, trees.map(go(fpAnchor)));
+    return Node(fpAnchor)(
+      trees.map(go(fpAnchor))
+    );
 };
 
 // filter :: (a -> Bool) -> [a] -> [a]
-const filter = (f, xs) => xs.filter(f);
+const filter = f => xs => xs.filter(f);
 
 // find :: (a -> Bool) -> [a] -> Maybe a
-const find = (p, xs) => {
+const find = p => xs => {
     const i = xs.findIndex(p);
     return -1 !== i ? (
         Just(xs[i])
@@ -1040,7 +1049,7 @@ const find = (p, xs) => {
 // findIndex(isUpper, "all lower case")
 //-> {"type":"Maybe","Nothing":true}
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
-const findIndex = (p, xs) => {
+const findIndex = p => xs => {
     const
         i = (
             'string' !== typeof xs ? (
@@ -1053,7 +1062,7 @@ const findIndex = (p, xs) => {
 };
 
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
-const findIndexR = (p, xs) => {
+const findIndexR = p => xs => {
     const i = reverse(xs).findIndex(p);
     return -1 !== i ? (
         Just(xs.length - (1 + i))
@@ -1064,7 +1073,7 @@ const findIndexR = (p, xs) => {
 //-> {2, 5}
 // findIndices :: (a -> Bool) -> [a] -> [Int]
 // findIndices :: (String -> Bool) -> String -> [Int]
-const findIndices = (p, xs) =>
+const findIndices = p => xs =>
     xs.flatMap((x, i) => p(x, i, xs) ? (
         [i]
     ) : []);
@@ -1072,7 +1081,7 @@ const findIndices = (p, xs) =>
 // The first of any nodes in the tree which match the predicate p
 // (For all matches, see treeMatches)
 // findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
-const findTree = (p, tree) => {
+const findTree = p => tree => {
     const go = node =>
         p(node.root) ? (
             Just(node)
@@ -1080,11 +1089,14 @@ const findTree = (p, tree) => {
             const
                 xs = node.nest,
                 lng = xs.length;
-                
-            return 0 < lng ? until(
-                tpl => lng <= tpl[0] || !tpl[1].Nothing,
-                tpl => Tuple(1 + tpl[0], go(xs[tpl[0]])),
-                Tuple(0, Nothing())
+            return 0 < lng ? until(tpl => lng <= tpl[0] || !tpl[1].Nothing)(
+                tpl => Tuple(1 + tpl[0])(
+                  go(xs[tpl[0]])
+                )
+            )(
+                Tuple(0)(
+                  Nothing()
+                )
             )[1] : Nothing()
         })();
     return go(tree);
@@ -1093,7 +1105,9 @@ const findTree = (p, tree) => {
 // Lift a simple function to one which applies to a tuple, 
 // transforming only the first item of the tuple
 // firstArrow :: (a -> b) -> ((a, c) -> (b, c))
-const firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);
+const firstArrow = f => xy => Tuple(f(xy[0]))(
+    xy[1]
+);
 
 // flatten :: NestedList a -> [a]
 const flatten = nest => nest.flat(Infinity);
@@ -1126,133 +1140,127 @@ const floor = x => {
 };
 
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
-const fmap = (f, fa) =>
+const fmap = f => fa =>
     Array.isArray(fa) ? (
         fa.map(f)
     ) : 'string' !== typeof fa ? (() => {
         const t = fa.type;
         return ('Either' === t ? (
-            fmapLR(f, fa)
+            fmapLR(f)(fa)
         ) : 'Maybe' === t ? (
-            fmapMay(f, fa)
+            fmapMay(f)(fa)
         ) : 'Node' === t ? (
-            fmapTree(f, fa)
+            fmapTree(f)(fa)
         ) : 'Tuple' === t ? (
-            fmapTuple(f, fa)
+            fmapTuple(f)(fa)
         ) : undefined)
     })() : fa.split('').map(f);
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
-function* fmapGen(f, gen) {
-    let v = take(1, gen);
-    while (0 < v.length) {
-        yield(f(v[0]))
-        v = take(1, gen)
-    }
-}
+const fmapGen = f =>
+    function*(gen) {
+        let v = take(1, gen);
+        while (0 < v.length) {
+            yield(f(v[0]))
+            v = take(1, gen)
+        }
+    };
 
 // fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
-const fmapLR = (f, lr) =>
+const fmapLR = f => lr =>
     undefined === lr.Left ? (
         Right(f(lr.Right))
     ) : lr;
 
 // fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
-const fmapMay = (f, mb) =>
+const fmapMay = f => mb =>
     mb.Nothing ? (
         mb
     ) : Just(f(mb.Just));
 
 // fmapTree :: (a -> b) -> Tree a -> Tree b
-const fmapTree = (f, tree) => {
-    const go = node => Node(
-        f(node.root),
+const fmapTree = f => tree => {
+    const go = node => Node(f(node.root))(
         node.nest.map(go)
     );
     return go(tree);
 };
 
 // fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
-const fmapTuple = (f, tpl) =>
-    Tuple(tpl[0], f(tpl[1]));
+const fmapTuple = f => tpl =>
+    Tuple(tpl[0])(
+        f(tpl[1])
+    );
 
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
-const foldMapTree = (f, node) => {
+const foldMapTree = f => node => {
     const go = x =>
-        0 < x.nest.length ? mappend(
-            f(x.root),
-            foldl1(mappend, x.nest.map(go))
+        0 < x.nest.length ? mappend(f(x.root))(
+            foldl1(mappend)(x.nest.map(go))
         ) : f(x.root);
     return go(node);
 };
 
 // foldTree :: (a -> [b] -> b) -> Tree a -> b
-const foldTree = (f, tree) => {
-    const go = node => f(node.root, node.nest.map(go));
+const foldTree = f => tree => {
+    const go = node => f(node.root)(
+        node.nest.map(go)
+    );
     return go(tree);
 };
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
-const foldl = (f, a, xs) => xs.reduce(f, a);
-
-// OR deep curried
-// foldl :: (a -> b -> a) -> a -> [b] -> a
-// const foldl = f => a => xs => {
-//     let v = a;
-//     xs.forEach(x => v = f(v)(x));
-//     return v;
-// };
+const foldl = f => a => xs => {
+    let v = a;
+    xs.forEach(x => v = f(v)(x));
+    return v;
+};
 
 // foldl1 :: (a -> a -> a) -> [a] -> a
-const foldl1 = (f, xs) =>
+const foldl1 = f => xs =>
     1 < xs.length ? xs.slice(1)
-    .reduce(f, xs[0]) : xs[0];
+    .reduce(uncurry(f), xs[0]) : xs[0];
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
-const foldl1May = (f, xs) =>
+const foldl1May = f => xs =>
     0 < xs.length ? (
         Just(xs.slice(1)
-            .reduce(f, xs[0]))
+            .reduce(uncurry(f), xs[0]))
     ) : Nothing();
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
-const foldlTree = (f, acc, node) => {
+const foldlTree = f => acc => node => {
   const go = (a, x) =>
-    x.nest.reduce(go, f(a, x));
+    x.nest.reduce(go, f(a)(x));
   return go(acc, node);
 };
 
 // Note that that the Haskell signature of foldr differs from that of
 // foldl - the positions of accumulator and current value are reversed
-// foldr :: (a -> b -> b) -> b -> [a] -> b
-const foldr = (f, a, xs) =>
-    xs.reduceRight((a, x) => f(x, a), a);
-
-// or deep-curried:
 // foldr :: (b -> a -> a) -> a -> [b] -> a
-// const foldr = f => a => xs => {
-//     let v = a,
-//         i = xs.length;
-//     while (i--) v = f(xs[i])(v);
-//     return v;
-// };
+const foldr = f => a => xs => {
+    let v = a,
+        i = xs.length;
+    while (i--) v = f(xs[i])(v);
+    return v;
+};
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
-const foldr1 = (f, xs) =>
+const foldr1 = f => xs =>
     0 < xs.length ? init(xs)
-    .reduceRight(f, last(xs)) : [];
+    .reduceRight(uncurry(f), last(xs)) : [];
 
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
-const foldr1May = (f, xs) =>
+const foldr1May = f => xs =>
     0 < xs.length ? (
         Just(xs.slice(0, -1)
-            .reduceRight(f, xs.slice(-1)[0]))
+            .reduceRight(uncurr(f), xs.slice(-1)[0]))
     ) : Nothing();
 
 // foldrTree :: (a -> b -> b) -> b -> Tree a -> b
-const foldrTree = (f, acc, node) => {
+const foldrTree = f => acc => node => {
     const go = (a, x) =>
-        x.nest.reduceRight(go, f(x.root, a));
+        x.nest.reduceRight(go, f(x.root)(a));
     return go(acc, node);
 };
 
@@ -1266,15 +1274,15 @@ const fromEnum = x =>
 
 // | Return the contents of a 'Left'-value or a default value otherwise.
 // fromLeft :: a -> Either a b -> a
-const fromLeft = (def, lr) =>
+const fromLeft = def => lr =>
   isLeft(lr) ? lr.Left : def;
 
 // fromMaybe :: a -> Maybe a -> a
-const fromMaybe = (def, mb) => mb.Nothing ? def : mb.Just;
+const fromMaybe = def => mb => mb.Nothing ? def : mb.Just;
 
 // | Return the contents of a 'Right'-value or a default value otherwise.
 // fromRight :: b -> Either a b -> b
-const fromRight = (def, lr) =>
+const fromRight = def => lr =>
   isRight(lr) ? lr.Right : def;
 
 // fst :: (a, b) -> a
@@ -1282,13 +1290,13 @@ const fst = tpl => tpl[0];
 
 // Abbreviation for quick testing
 // ft :: (Int, Int) -> [Int]
-const ft = (m, n) =>
+const ft = m => n =>
     Array.from({
         length: 1 + n - m
     }, (_, i) => m + i);
 
 // gcd :: Int -> Int -> Int
-const gcd = (x, y) => {
+const gcd = x => y => {
     const
         _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
         abs = Math.abs;
@@ -1296,22 +1304,24 @@ const gcd = (x, y) => {
 };
 
 // genericIndexMay :: [a] -> Int -> Maybe a
-const genericIndexMay = (xs, i) =>
+const genericIndexMay = xs => i =>
     (i < xs.length && 0 <= i) ? Just(xs[i]) : Nothing();
 
 // group :: Eq a => [a] -> [[a]]
-const group = xs => groupBy((a, b) => a === b, xs);
+const group = xs => groupBy(a => b => a === b)(
+    xs
+);
 
 // Typical usage: groupBy(on(eq, f), xs)
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = (f, xs) => {
+const groupBy = f => xss => {
     const tpl = xs.slice(1)
         .reduce((a, x) => {
             const h = a[1].length > 0 ? a[1][0] : undefined;
             return (undefined !== h) && f(h, x) ? (
-                Tuple(a[0], a[1].concat([x]))
-            ) : Tuple(a[0].concat([a[1]]), [x]);
-        }, Tuple([], 0 < xs.length ? [xs[0]] : []));
+                Tuple(a[0])(a[1].concat([x]))
+            ) : Tuple(a[0].concat([a[1]]))([x]);
+        }, Tuple([])(0 < xs.length ? [xs[0]] : []));
     return tpl[0].concat([tpl[1]]);
 };
 
@@ -1325,7 +1335,7 @@ const groupBy = (f, xs) => {
 // Groups are arranged from from lowest to highest.
 // groupSortOn :: Ord b => (a -> b) -> [a] -> [a]
 // groupSortOn :: Ord b => [((a -> b), Bool)]  -> [a] -> [a]
-const groupSortOn = (f, xs) => {
+const groupSortOn = f => xs => {
     // Functions and matching bools derived from argument f
     // which is a single key function
     const fsbs = unzip(
@@ -1348,14 +1358,15 @@ const groupSortOn = (f, xs) => {
         [fs, bs] = [fsbs[0], fsbs[1]],
         iLast = fs.length;
     // decorate-sort-group-undecorate
-    return groupBy(
-            (p, q) => p[0] === q[0],
+    return groupBy(p => q => p[0] === q[0])(
             sortBy(
                 mappendComparing(
                     // functions that access pre-calculated values by position
                     // in the decorated ('Schwartzian') version of xs
                     zip(fs.map((_, i) => x => x[i]), bs)
-                ), xs.map( // xs decorated with precalculated key function values
+                )
+            )(
+              xs.map( // xs decorated with precalculated key function values
                     x => fs.reduceRight(
                         (a, g) => [g(x)].concat(a), [
                             x
@@ -1368,7 +1379,7 @@ const groupSortOn = (f, xs) => {
 };
 
 // gt :: Ord a => a -> a -> Bool
-const gt = (x, y) =>
+const gt = x => y =>
     'Tuple' === x.type ? (
         x[0] > y[0]
     ) : (x > y);
@@ -1384,11 +1395,10 @@ const headMay = xs =>
 const identity = x => x;
 
 // if_ :: Bool -> a -> a -> a
-const if_ = (bln, x, y) =>
-    bln ? x : y;
+const if_ = bln => x => y => bln ? x : y;
 
 // indented :: String -> String -> String
-const indented = (strIndent, s) =>
+const indented = strIndent => s =>
     s.split(/[\r\n]/).map(
         x => '' !== x ? strIndent + x : x
     ).join('\n')
@@ -1413,9 +1423,11 @@ const index = xs => i => {
 
 // indexOf :: Eq a => [a] -> [a] -> Maybe Int
 // indexOf :: String -> String -> Maybe Int
-const indexOf = (needle, haystack) =>
+const indexOf = needle => haystack =>
     'string' !== typeof haystack ? (
-        findIndex(xs => isPrefixOf(needle, xs), tails(haystack))
+        findIndex(xs => isPrefixOf(needle)(xs))(
+          tails(haystack)
+        )
     ) : (() => {
         const i = haystack.indexOf(needle);
         return -1 !== i ? (
@@ -1444,7 +1456,7 @@ const inits = xs => [
         .map((_, i, lst) => lst.slice(0, 1 + i)));
 
 // insert :: Ord a => a -> [a] -> [a]
-const insert = (x, ys) => {
+const insert = x => ys => {
     const cmp = (a, b) => a < b ? -1 : (a > b ? 1 : 0);
     for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};
     return ys.slice(0, i)
@@ -1453,7 +1465,7 @@ const insert = (x, ys) => {
 };
 
 // insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
-const insertBy = (cmp, x, ys) => {
+const insertBy = cmp => x => ys => {
     for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};
     return ys.slice(0, i)
         .concat(x)
@@ -1461,7 +1473,7 @@ const insertBy = (cmp, x, ys) => {
 };
 
 // insertDict :: String -> a -> Dict -> Dict
-const insertDict = (k, v, dct) =>
+const insertDict = k => v => dct =>
     Object.assign(dct, {
         [k]: v
     });
@@ -1474,41 +1486,42 @@ const intToDigit = n =>
 
 // intercalate :: [a] -> [[a]] -> [a]
 // intercalate :: String -> [String] -> String
-const intercalate = (sep, xs) =>
+const intercalate = sep => xs =>
     0 < xs.length && 'string' === typeof sep &&
     'string' === typeof xs[0] ? (
         xs.join(sep)
-    ) : concat(intersperse(sep, xs));
+    ) : concat(intersperse(sep)(xs));
 
 // intercalateS :: String -> [String] -> String
-const intercalateS = (s, xs) =>
+const intercalateS = s => xs =>
     xs.join(s);
 
 // intersect :: (Eq a) => [a] -> [a] -> [a]
-const intersect = (xs, ys) => {
+const intersect = xs => ys => {
     const s = new Set(ys);
     return xs.filter(x => s.has(x));
 };
 
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const intersectBy = (eq, xs, ys) => {
-    const ceq = curry(eq);
+const intersectBy = eq => xs => ys => {
     return (0 < xs.length && 0 < ys.length) ?
-    xs.filter(x => ys.some(ceq(x))) : [];
+    xs.filter(x => ys.some(eq(x))) : [];
 };
 
 // intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
-const intersectListsBy = (eq, xs) =>
-    foldr1(((a, x) => intersectBy(eq, a, x)), xs);
+const intersectListsBy = eq => xs =>
+    foldr1((a => x => intersectBy(eq)(a)(x)))(
+        xs
+    );
 
 // intersection :: Ord a => Set a -> Set a -> Set a
-const intersection = (s, s1) =>
+const intersection = s => s1 =>
     new Set([...s].filter(x => s1.has(x)));
 
 // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
 // intersperse :: a -> [a] -> [a]
 // intersperse :: Char -> String -> String
-const intersperse = (sep, xs) => {
+const intersperse = sep => xs => {
     const bln = 'string' === typeof xs;
     return xs.length > 1 ? (
         (bln ? concat : x => x)(
@@ -1536,12 +1549,12 @@ const isDigit = c => {
 
 // isInfixOf :: (Eq a) => [a] -> [a] -> Bool
 // isInfixOf :: String -> String -> Bool
-const isInfixOf = (needle, haystack) =>
+const isInfixOf = needle => haystack =>
     'string' !== typeof haystack ? (() => {
         const
             lng = needle.length,
             go = xs => lng <= xs.length ? (
-                isPrefixOf(needle, xs) || go(xs.slice(1))
+                isPrefixOf(needle)(xs) || go(xs.slice(1))
             ) : false;
         return go(haystack);
     })() : haystack.includes(needle);
@@ -1569,7 +1582,7 @@ const isNull = xs =>
 // true iff the first is a prefix of the second.
 // isPrefixOf :: [a] -> [a] -> Bool
 // isPrefixOf :: String -> String -> Bool
-const isPrefixOf = (xs, ys) => {
+const isPrefixOf = xs => ys => {
     const go = (xs, ys) => {
         const intX = xs.length;
         return 0 < intX ? (
@@ -1591,7 +1604,7 @@ const isRight = lr =>
 // The 'isSortedBy' function returns true iff the predicate returns true
 // for all adjacent pairs of elements in the list.
 // isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
-const isSortedBy = (cmp, xs) =>
+const isSortedBy = cmp => xs =>
     xs.length < 2 || all(x => x < 1, zipWith(cmp, xs, tail(xs)));
 
 // isSpace :: Char -> Bool
@@ -1599,7 +1612,7 @@ const isSpace = c => /\s/.test(c);
 
 // isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
 // isSubsequenceOf :: String -> String -> Bool
-const isSubsequenceOf = (xs, ys) => {
+const isSubsequenceOf = xs => ys => {
     const iss = (a, b) =>
         a.length > 0 ? (
             b.length > 0 ? (
@@ -1614,7 +1627,7 @@ const isSubsequenceOf = (xs, ys) => {
 };
 
 // isSubsetOf :: Ord a => Set a -> Set a -> Bool
-const isSubsetOf = (a, b) => {
+const isSubsetOf = a => b => {
     for (let x of a) {
         if (!b.has(x)) return false;
     }
@@ -1623,11 +1636,13 @@ const isSubsetOf = (a, b) => {
 
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
-const isSuffixOf = (ns, hs) => {
+const isSuffixOf = ns => hs => {
     const go = delta =>
-        eq(ns, dropLength(delta, hs));
+        eq(ns)(dropLength(delta)(hs));
     return 'string' !== typeof hs ? (
-        bindMay(dropLengthMaybe(ns, hs), go)
+        bindMay(dropLengthMaybe(ns)(hs))(
+          go
+        )
     ) : hs.endsWith(ns);
 };
 
@@ -1641,16 +1656,17 @@ const iso8601Local = dte =>
     .toISOString();
 
 // iterate :: (a -> a) -> a -> Gen [a]
-function* iterate(f, x) {
-    let v = x;
-    while (true) {
-        yield(v);
-        v = f(v);
-    }
-}
+const iterate = f =>
+    function* (x) {
+        let v = x;
+        while (true) {
+            yield(v);
+            v = f(v);
+        }
+    };
 
 // iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
-const iterateUntil = (p, f, x) => {
+const iterateUntil = p => f => x => {
     const vs = [x];
     let h = x;
     while (!p(h))(h = f(h), vs.push(h));
@@ -1658,7 +1674,9 @@ const iterateUntil = (p, f, x) => {
 };
 
 // join :: Monad m => m (m a) -> m a
-const join = x => bind(x, identity);
+const join = x => bind(x)(
+    identity
+);
 
 // jsonLog :: a -> IO ()
 const jsonLog = (...args) =>
@@ -1678,13 +1696,13 @@ const jsonParseLR = s => {
 };
 
 // justifyLeft :: Int -> Char -> String -> String
-const justifyLeft = (n, cFiller, s) =>
+const justifyLeft = n => cFiller => s =>
     n > s.length ? (
         s.padEnd(n ,cFiller)
     ) : s;
 
 // justifyRight :: Int -> Char -> String -> String
-const justifyRight = (n, cFiller, s) =>
+const justifyRight = n => cFiller => s =>
     n > s.length ? (
         s.padStart(n, cFiller)
     ) : s;
@@ -1694,8 +1712,10 @@ const keys = Object.keys;
 
 // Kleisli composition LR
 // kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
-const kleisliCompose = (f, g) =>
-    x => bind(f(x), g);
+const kleisliCompose = f => g =>
+    x => bind(f(x))(
+        g
+    );
 
 // last :: [a] -> a
 const last = xs =>
@@ -1707,8 +1727,8 @@ const lastMay = xs => 0 < xs.length ? (
 ) : Nothing();
 
 // lcm :: Int -> Int -> Int
-const lcm = (x, y) =>
-   ( x === 0 || y === 0) ? 0 : Math.abs(Math.floor(x / gcd(x, y)) * y);
+const lcm = x => y =>
+   ( x === 0 || y === 0) ? 0 : Math.abs(Math.floor(x / gcd(x)(y)) * y);
 
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
@@ -1729,23 +1749,20 @@ const length = xs =>
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
-  iterateUntil(
-    xs => 1 > xs.length,
-    xs => xs.flatMap(x => x.nest), [tree]
-  );
+  iterateUntil(xs => 1 > xs.length)(
+    xs => xs.flatMap(x => x.nest)
+  )([tree]);
 
 // levels :: Tree a -> [[a]]
 const levels = tree =>
-    iterateUntil(
-        xs => 1 > xs.length,
-        ys => [].concat(...ys.map(nest)),
-        [tree]
-    ).map(xs => xs.map(root));
+    iterateUntil(xs => 1 > xs.length)(
+        ys => [].concat(...ys.map(nest))
+    )([tree]).map(xs => xs.map(root));
 
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = (f, a, b) => {
+const liftA2 = f => a => b => {
     const t = typeName(a);
     return (
         'Bottom' !== t ? (
@@ -1791,15 +1808,12 @@ const liftA2May = f => a => b =>
     a.Nothing ? a : b.Nothing ? b : Just(f(a.Just)(b.Just));
 
 // liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
-const liftA2Tree = (f, tx, ty) => {
+const liftA2Tree = f => tx => ty => {
     const go = tx =>
-        Node(
-            f(tx.root, ty.root),
+        Node(f(tx.root, ty.root))(
             Boolean(ty.nest) ? (
                 ty.nest.map(
-                    curry(fmapTree)(
-                        curry(f)(tx.root)
-                    )
+                    fmapTree(f(tx.root))
                 )
                 .concat(tx.nest.map(go))
             ) : []
@@ -1809,7 +1823,9 @@ const liftA2Tree = (f, tx, ty) => {
 
 // liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 const liftA2Tuple = f => a => b =>
-    Tuple(mappend(a[0], b[0]), f(a[1])(b[1]));
+    Tuple(mappend(a[0])(b[0]))(
+        f(a[1])(b[1])
+    );
 
 // liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 const liftMmay = f =>
@@ -1836,13 +1852,13 @@ const listToMaybe = xs =>
 const log = Math.log;
 
 // lookup :: Eq a => a -> Container -> Maybe b
-const lookup = (k, m) =>
+const lookup = k => m =>
     (Array.isArray(m) ? (
         lookupTuples
-    ) : lookupDict)(k, m);
+    ) : lookupDict)(k)(m);
 
 // lookupDict :: a -> Dict -> Maybe b
-const lookupDict = (k, dct) => {
+const lookupDict = k => dct => {
     const v = dct[k];
     return undefined !== v ? (
         Just(v)
@@ -1850,11 +1866,12 @@ const lookupDict = (k, dct) => {
 };
 
 // lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
-const lookupTuples = (k, kvs) =>
+const lookupTuples = k => kvs =>
     bindMay(
-        find(x => k === fst(x), kvs),
-        x => Just(snd(x))
-    );
+      find(x => k === fst(x))(
+        kvs
+      )
+    )(x => Just(snd(x)));
 
 // Not required in JS, which has first functions by default.
 // Included only for comparison with AS, which has to derive
@@ -1866,7 +1883,7 @@ const lookupTuples = (k, kvs) =>
 const mReturn = x => identity(x);
 
 // map :: (a -> b) -> [a] -> [b]
-const map = (f, xs) =>
+const map = f => xs =>
     (Array.isArray(xs) ? (
         xs
     ) : xs.split('')).map(f);
@@ -1876,19 +1893,23 @@ const map = (f, xs) =>
 // parameter from left to right, and returning a final value of this 
 // accumulator together with the new list.
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-const mapAccumL = (f, acc, xs) =>
+const mapAccumL = f => acc => xs =>
     xs.reduce((a, x, i) => {
-        const pair = f(a[0], x, i);
-        return Tuple(pair[0], a[1].concat(pair[1]));
-    }, Tuple(acc, []));
+        const pair = f(a[0])(x)(i);
+        return Tuple(pair[0])(a[1].concat(pair[1]));
+    }, Tuple(acc)([]));
 
 // mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
-const mapAccumL_Tree = (f, acc, tree) => {
+const mapAccumL_Tree = f => acc => tree => {
     const go = (a, x) => {
         const
-            pair = f(a, x.root),
-            tpl = mapAccumL(go, pair[0], x.nest);
-        return Tuple(tpl[0], Node(pair[1], tpl[1]));
+            pair = f(a)(x.root),
+            tpl = mapAccumL(go)(pair[0])(x.nest);
+        return Tuple(tpl[0])(
+            Node(pair[1])(
+              tpl[1]
+            )
+        );
     };
     return go(acc, tree);
 };
@@ -1898,21 +1919,23 @@ const mapAccumL_Tree = (f, acc, tree) => {
 // parameter from right to left, and returning a final value of this 
 // accumulator together with the new list.' (See Hoogle)
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-const mapAccumR = (f, acc, xs) =>
+const mapAccumR = f => acc => xs =>
     xs.reduceRight((a, x, i) => {
-        const pair = f(a[0], x, i);
-        return Tuple(pair[0],
+        const pair = f(a[0])(x)(i);
+        return Tuple(pair[0])(
             [pair[1]].concat(a[1])
         );
-    }, Tuple(acc, []));
+    }, Tuple(acc)([]));
 
 // A function mapped over the keys of a record
+// A function mapped over the keys of a record
 // mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
-const mapKeys = (f, dct) =>
+const mapKeys = f => dct =>
     mapFromList(
-        map(
-            kv => [f(read(kv[0])), kv[1]],
-            zip(keys(dct), elems(dct))
+        map(kv => [f(read(kv[0]))(kv[1])])(
+            zip(keys(dct))(
+                elems(dct)
+            )
         )
     );
 
@@ -1922,24 +1945,27 @@ const mapKeys = (f, dct) =>
 // added on to the result list. If it just Just b, then b is
 // included in the result list.
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]
-const mapMaybe = (mf, xs) =>
+const mapMaybe = mf => xs =>
   xs.reduce(
-    (a, x) => maybe(a, j => a.concat(j), mf(x)),
+    (a, x) => maybe(a)(
+        j => a.concat(j)
+    )(mf(x)),
     []
   );
 
 // mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
-function* mapMaybeGen(mf, gen) {
-    let v = take(1, gen);
-    while (0 < v.length) {
-        let mb = mf(v[0]);
-        if (!mb.Nothing) yield mb.Just
-        v = take(1, gen);
-    }
-}
+const mapMaybeGen = mf =>
+    function*(gen) {
+        let v = take(1, gen);
+        while (0 < v.length) {
+            let mb = mf(v[0]);
+            if (!mb.Nothing) yield mb.Just
+            v = take(1, gen);
+        }
+    };
 
 // mappend (<>) :: Monoid a => a -> a -> a
-const mappend = (a, b) => {
+const mappend = a => b => {
     const t = a.type;
     return (
         Boolean(t) ? (
@@ -1951,24 +1977,39 @@ const mappend = (a, b) => {
         ) : 'function' !== typeof a ? (
             append
         ) : mappendFn
-    )(a, b);
+    )(a)(b);
 };
 
 // mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
-const mappendFn = (f, g) =>
-    x => mappend(f(x), g(x));
+const mappendFn = f => g =>
+    x => mappend(f(x))(
+        g(x)
+    );
 
 // mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
-const mappendMaybe = (a, b) =>
-    a.Nothing ? b : b.Nothing ? a :
-    Just(mappend(a.Just, b.Just));
+const mappendMaybe = a => b =>
+    a.Nothing ? (
+        b
+    ) : b.Nothing ? (
+        a
+    ) : Just(
+        mappend(a.Just)(
+            b.Just
+        )
+    );
 
 // mappendOrd (<>) :: Ordering -> Ordering -> Ordering
-const mappendOrd = (a, b) => a !== 0 ? a : b;
+const mappendOrd = a => b => a !== 0 ? a : b;
 
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
-const mappendTuple = (t, t2) =>
-    Tuple(mappend(t[0], t1[0]), mappend(t[1], t1[1]));
+const mappendTuple = t => t2 =>
+    Tuple(
+        mappend(t[0])(
+            t1[0]
+        )
+    )(mappend(t[1])(
+        t1[1]
+    ));
 
 // Returns a sequence-matching function for findIndices etc
 // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
@@ -1979,13 +2020,15 @@ const matching = pat => {
         lng = pat.length,
         bln = 0 < lng,
         h = bln ? pat[0] : undefined;
-    return (x, i, src) =>
+    return x => i => src =>
         bln && h == x &&
-        eq(pat, src.slice(i, lng + i));
+        eq(pat)(
+            src.slice(i, lng + i)
+        );
 };
 
 // max :: Ord a => a -> a -> a
-const max = (a, b) => gt(b, a) ? b : a;
+const max = a => b => gt(b)(a) ? b : a;
 
 // maxBound :: a -> a
 const maxBound = x => {
@@ -2010,7 +2053,7 @@ const maximum = xs =>
 //	EQ: 0
 //  LT: -1 (or other negative n) 
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
-const maximumBy = (f, xs) =>
+const maximumBy = f => xs =>
     0 < xs.length ? (
         xs.slice(1)
         .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0])
@@ -2021,7 +2064,7 @@ const maximumBy = (f, xs) =>
 //	EQ: 0
 //  LT: -1 (or other negative n) 
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
-const maximumByMay = (f, xs) =>
+const maximumByMay = f => xs =>
     xs.length > 0 ? (
         Just(xs.slice(1)
             .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0]))
@@ -2036,7 +2079,7 @@ const maximumMay = xs =>
 
 // Default value (v) if m.Nothing, or f(m.Just)
 // maybe :: b -> (a -> b) -> Maybe a -> b
-const maybe = (v, f, m) =>
+const maybe = v => f => m =>
     m.Nothing ? v : f(m.Just);
 
 // The maybeToList function returns an empty list when given
@@ -2050,10 +2093,10 @@ const mean = xs =>
   xs.reduce((a, x) => a + x, 0) / xs.length;
 
 // member :: Key -> Dict -> Bool
-const member = (k, dct) => k in dct;
+const member = k => dct => k in dct;
 
 // min :: Ord a => a -> a -> a
-const min = (a, b) => b < a ? b : a;
+const min = a => b => b < a ? b : a;
 
 // minBound :: a -> a
 const minBound = x => {
@@ -2070,7 +2113,7 @@ const minBound = x => {
 // minimum :: Ord a => [a] -> a
 const minimum = xs =>
     0 < xs.length ? (
-        foldl1((a, x) => x < a ? x : a, xs)
+        foldl1(a => x => x < a ? x : a, xs)
     ) : undefined;
 
 //Ordering: (LT|EQ|GT):
@@ -2078,15 +2121,15 @@ const minimum = xs =>
 //	EQ: 0
 //  LT: -1 (or other negative n)
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
-const minimumBy = (f, xs) =>
+const minimumBy = f => xs =>
     xs.reduce((a, x) => undefined === a ? x : (
-        0 > f(x, a) ? x : a
+        0 > f(x)(a) ? x : a
     ), undefined);
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
-const minimumByMay = (f, xs) =>
+const minimumByMay = f => xs =>
     xs.reduce((a, x) => a.Nothing ? Just(x) : (
-        f(x, a.Just) < 0 ? Just(x) : a
+        f(x)(a.Just) < 0 ? Just(x) : a
     ), Nothing());
 
 // minimumMay :: [a] -> Maybe a
@@ -2098,7 +2141,7 @@ const minimumMay = xs =>
     ) : Nothing();
 
 // mod :: Int -> Int -> Int
-const mod = (n, d) => n % d;
+const mod = n => d => n % d;
 
 // negate :: Num -> Num
 const negate = n => -n;
@@ -2110,14 +2153,15 @@ const nest = tree => tree.nest;
 const not = b => !b;
 
 // notElem :: Eq a => a -> [a] -> Bool
-const notElem = (x, xs) =>
+const notElem = x => xs =>
     !xs.includes(x);
 
 // nub :: [a] -> [a]
-const nub = xs => nubBy(eq, xs);
+const nub = xs => 
+  nubBy(eq)(xs);
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = (fEq, xs) => {
+const nubBy = fEq => xs => {
     const go = xs => 0 < xs.length ? (() => {
         const x = xs[0];
         return [x].concat(
@@ -2134,7 +2178,7 @@ const odd = n => !even(n);
 
 // e.g. sortBy(on(compare,length), xs)
 // on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
-const on = (f, g) => (a, b) => f(g(a), g(b));
+const on = f => g => a => b => f(g(a), g(b));
 
 // Derive a function from the name of a JS infix operator
 // op :: String -> (a -> a -> b)
@@ -2167,11 +2211,10 @@ const outdented = s => {
     const
         rgx = /^ */, // Leading space characters.
         xs = lines(s),
-        n = length(minimumBy( // size of minimum indent
-            comparing(length),
-            map(txt => rgx.exec(txt)[0], xs)
+        n = length(minimumBy(comparing(length))(
+            xs.map(txt => rgx.exec(txt)[0])
         ));
-    return unlines(map(curry(drop)(n), xs));
+    return unlines(map(drop(n))(xs));
 };
 
 // pairNestFromTree :: Tree a -> PairNest a
@@ -2182,22 +2225,22 @@ const pairNestFromTree = tree => {
 
 // partition :: Predicate -> List -> (Matches, nonMatches)
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
-const partition = (p, xs) =>
+const partition = p => xs =>
     xs.reduce(
         (a, x) =>
         p(x) ? (
-            Tuple(a[0].concat(x), a[1])
-        ) : Tuple(a[0], a[1].concat(x)),
-        Tuple([], [])
+            Tuple(a[0].concat(x))(a[1])
+        ) : Tuple(a[0])(a[1].concat(x)),
+        Tuple([])([])
     );
 
 // partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>
     xs.reduce(
         (a, x) => undefined !== x.Left ? (
-            Tuple(a[0].concat(x.Left), a[1])
-        ) : Tuple(a[0], a[1].concat(x.Right)),
-        Tuple([], [])
+            Tuple(a[0].concat(x.Left))(a[1])
+        ) : Tuple(a[0])(a[1].concat(x.Right)),
+        Tuple([])([])
     );
 
 // permutations :: [a] -> [[a]]
@@ -2216,12 +2259,11 @@ const permutations = xs =>
     );
 
 // permutationsWithRepetition :: Int -> [a] -> [[a]]
-const permutationsWithRepetition = (n, xs) =>
+const permutationsWithRepetition = n => xs =>
     0 < xs.length ? (
-        map(flatten,
-            foldl1(
-                x => cartesianProduct(xs, x),
-                replicate(n, xs)
+        map(flatten)(
+            foldl1(x => cartesianProduct(xs, x))(
+                replicate(n)(xs)
             )
         )
     ) : [];
@@ -2230,7 +2272,7 @@ const permutationsWithRepetition = (n, xs) =>
 const pi = Math.PI;
 
 // plus :: Num -> Num -> Num
-const plus = (a, b) => a + b;
+const plus = a => b => a + b;
 
 // Root elements of tree flattened bottom-up
 // into a postorder list.
@@ -2296,7 +2338,7 @@ const properFracRatio = nd => {
 // properFraction :: Real -> (Int, Real)
 const properFraction = n => {
     const i = Math.floor(n) + (n < 0 ? 1 : 0);
-    return Tuple(i, n - i);
+    return Tuple(i)(n - i);
 };
 
 // pureLR :: a -> Either e a
@@ -2338,7 +2380,9 @@ const quickSort = xs =>
     xs.length > 1 ? (() => {
         const
             h = xs[0],
-            lessMore = partition(x => x <= h, xs.slice(1));
+            lessMore = partition(x => x <= h)(
+                xs.slice(1)
+            );
         return [].concat.apply(
             [], [quickSort(lessMore[0]), h, quickSort(lessMore[1])]
         );
@@ -2347,12 +2391,11 @@ const quickSort = xs =>
 // Included only for comparison with AppleScript
 // sort and sortBy are faster and more flexible
 // quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const quickSortBy = (cmp, xs) =>
+const quickSortBy = cmp => xs =>
     xs.length > 1 ? (() => {
         const
             h = xs[0],
-            lessMore = partition(
-                x => 1 !== cmp(x, h),
+            lessMore = partition(x => 1 !== cmp(x, h))(
                 xs.slice(1)
             );
         return [].concat.apply(
@@ -2361,11 +2404,13 @@ const quickSortBy = (cmp, xs) =>
     })() : xs;
 
 // quot :: Int -> Int -> Int
-const quot = (n, m) => Math.floor(n / m);
+const quot = n => m => Math.floor(n / m);
 
 // quotRem :: Int -> Int -> (Int, Int)
-const quotRem = (m, n) => 
-  Tuple(Math.floor(m / n), m % n);
+const quotRem = m => n => 
+  Tuple(Math.floor(m / n))(
+      m % n
+  );
 
 // quoted :: Char -> String -> String
 const quoted = c =>
@@ -2378,11 +2423,11 @@ const radians = x =>
     (Math.PI / 180) * x;
 
 // raise :: Num -> Int -> Num
-const raise = (n, e) => Math.pow(n, e);
+const raise = n => e => Math.pow(n, e);
 
 // e.g. map(randomRInt(1, 10), ft(1, 20))
 // randomRInt :: Int -> Int -> IO () -> Int
-const randomRInt = (low, high) => () =>
+const randomRInt = low => high => () =>
     low + Math.floor(
         (Math.random() * ((high - low) + 1))
     );
@@ -2412,16 +2457,16 @@ function range() {
         an = as.length;
     return (an === bs.length) ? (
         1 < an ? (
-            sequenceAList(as.map((_, i) => enumFromTo(as[i], bs[i])))
-        ) : enumFromTo(as[0], bs[0])
+            sequenceAList(as.map((_, i) => enumFromTo(as[i])(bs[i])))
+        ) : enumFromTo(as[0])(bs[0])
     ) : [];
 };
 
 // ratio :: Int -> Int -> Ratio Int
-const ratio = (x, y) => {
+const ratio = x => y => {
   const go = (x, y) =>
     0 !== y ? (() => {
-      const d = gcd(x, y);
+      const d = gcd(x)(y);
       return {
         type: 'Ratio',
         'n': quot(x, d), // numerator
@@ -2432,33 +2477,45 @@ const ratio = (x, y) => {
 };
 
 // ratioDiv :: Rational -> Rational -> Rational
-const ratioDiv = (n1, n2) => {
-    const [r1, r2] = map(rational, [n1, n2]);
-    return ratio(r1.n * r2.d, r1.d * r2.n);
+const ratioDiv = n1 => n2 => {
+    const [r1, r2] = map(rational)(
+        [n1, n2]
+    );
+    return ratio(r1.n * r2.d)(
+        r1.d * r2.n
+    );
 };
 
 // ratioMinus :: Rational -> Rational -> Rational
-const ratioMinus = (n1, n2) => {
-    const [r1, r2] = map(rational, [n1, n2]);
+const ratioMinus = n1 => n2 => {
+    const [r1, r2] = map(rational)(
+        [n1, n2]
+    );
     const d = lcm(r1.d, r2.d);
-    return ratio(
-        (r1.n * (d / r1.d)) - (r2.n * (d / r2.d)),
+    return ratio((r1.n * (d / r1.d)) - (r2.n * (d / r2.d)))(
         d
     );
 };
 
 // ratioMult :: Rational -> Rational -> Rational
-const ratioMult = (n1, n2) => {
-    const [r1, r2] = map(rational, [n1, n2]);
-    return ratio(r1.n * r2.n, r1.d * r2.d);
+const ratioMult = n1 => n2 => {
+    const [r1, r2] = map(rational)(
+        [n1, n2]
+    );
+    return ratio(r1.n * r2.n)(
+        r1.d * r2.d
+    );
 };
 
 // ratioPlus :: Rational -> Rational -> Rational
 const ratioPlus = (n1, n2) => {
-    const [r1, r2] = map(rational, [n1, n2]);
-    const d = lcm(r1.d, r2.d);
-    return ratio(
-        (r1.n * (d / r1.d)) + (r2.n * (d / r2.d)),
+    const [r1, r2] = map(rational)(
+        [n1, n2]
+    );
+    const d = lcm(r1.d)(
+        r2.d
+    );
+    return ratio((r1.n * (d / r1.d)) + (r2.n * (d / r2.d)))(
         d
     );
 };
@@ -2466,7 +2523,7 @@ const ratioPlus = (n1, n2) => {
 // rational :: Num a => a -> Rational
 const rational = x =>
     isNaN(x) ? x : Number.isInteger(x) ? (
-        ratio(x, 1)
+        ratio(x)(1)
     ) : approxRatio(undefined)(x);
 
 // read :: Read a => String -> a
@@ -2492,7 +2549,7 @@ const recipMay = n =>
     ) : Just(1 / n);
 
 // regexMatches :: String -> String -> [[String]]
-const regexMatches = (strRgx, strHay) => {
+const regexMatches = strRgx => strHay => {
     const rgx = new RegExp(strRgx, 'g');
     let m = rgx.exec(strHay),
         xs = [];
@@ -2501,10 +2558,10 @@ const regexMatches = (strRgx, strHay) => {
 };
 
 // rem :: Int -> Int -> Int
-const rem = (n, m) => n % m;
+const rem = n => m => n % m;
 
 // renameFile :: FilePath -> FilePath -> IO ()
-const renameFile = (fp, fp2) => {
+const renameFile = fp => fp2 => {
     const error = $();
     return $.NSFileManager.defaultManager
         .moveItemAtPathToPathError(fp, fp2, error) ? (
@@ -2519,7 +2576,7 @@ function* repeat(xs) {
 
 // replace :: String -> String -> String -> String
 // replace :: Regex -> String -> String -> String
-const replace = (needle, strNew, strHaystack) =>
+const replace = needle => strNew => strHaystack =>
     strHaystack.replace(
       'string' !== typeof needle ? (
         needle
@@ -2528,22 +2585,24 @@ const replace = (needle, strNew, strHaystack) =>
     );
 
 // replicate :: Int -> a -> [a]
-const replicate = (n, x) =>
+const replicate = n => x =>
     Array.from({
         length: n
     }, () => x);
 
 // Instance for lists (arrays) only here
 // replicateM :: Int -> [a] -> [[a]]
-const replicateM = (n, xs) => {
+const replicateM = n => xs => {
     const go = x => 0 >= x ? [
         []
-    ] : liftA2List(cons, xs, go(x - 1));
+    ] : liftA2List(cons)(
+        xs
+    )(go(x - 1));
     return go(n);
 };
 
 // replicateString :: Int -> String -> String
-const replicateString = (n, s) => s.repeat(n);
+const replicateString = n => s => s.repeat(n);
 
 // reverse :: [a] -> [a]
 const reverse = xs =>
@@ -2563,10 +2622,14 @@ const rights = xs =>
 const root = tree => tree.root;
 
 // rotate :: Int -> [a] -> [a]
-const rotate = (n, xs) => {
+const rotate = n => xs => {
     const lng = xs.length;
     return Infinity > lng ? (
-        take(lng, drop(lng - n, cycle(xs)))
+        take(lng)(
+            drop(lng - n)(
+                cycle(xs)
+            )
+        )
     ) : undefined;
 };
 
@@ -2585,7 +2648,7 @@ const round = x => {
 };
 
 // roundTo :: Int -> Float -> Float
-const roundTo = (n, x) => {
+const roundTo = n => x => {
     const d = Math.pow(10, n);
     return Math.round(x * d) / d;
 };
@@ -2596,25 +2659,29 @@ const runAction = act =>
     act['act'](act['arg']);
 
 // safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
-const safeMay = (p, f, x) =>
+const safeMay = p => f => x =>
     p(x) ? Just(f(x)) : Nothing();
 
 // scanl :: (b -> a -> b) -> b -> [a] -> [b]
-const scanl = (f, startValue, xs) =>
+const scanl = f => startValue => xs =>
     xs.reduce((a, x) => {
         const v = f(a[0], x);
         return Tuple(v, a[1].concat(v));
-    }, Tuple(startValue, [startValue]))[1];
+    }, Tuple(startValue)([startValue]))[1];
 
 // scanl1 is a variant of scanl that has no starting value argument
 // scanl1 :: (a -> a -> a) -> [a] -> [a]
-const scanl1 = (f, xs) =>
-    xs.length > 0 ? scanl(f, xs[0], xs.slice(1)) : [];
+const scanl1 = f => xs =>
+    xs.length > 0 ? (
+        scanl(f)(
+            xs[0]
+        )(xs.slice(1))
+    ) : [];
 
 // scanr :: (b -> a -> b) -> b -> [a] -> [b]
-const scanr = (f, startValue, xs) =>
+const scanr = f => startValue => xs =>
     xs.reduceRight((a, x) => {
-        const v = f(a.acc, x);
+        const v = f(a.acc)(x);
         return {
             acc: v,
             scan: [v].concat(a.scan)
@@ -2627,45 +2694,56 @@ const scanr = (f, startValue, xs) =>
 
 // scanr1 is a variant of scanr that has no starting value argument
 // scanr1 :: (a -> a -> a) -> [a] -> [a]
-const scanr1 = (f, xs) =>
-    xs.length > 0 ? scanr(f, xs.slice(-1)[0], xs.slice(0, -1)) : [];
+const scanr1 = f => xs =>
+    xs.length > 0 ? (
+        scanr(f)(
+            xs.slice(-1)[0], xs.slice(0, -1)
+        ) 
+    ) : [];
 
 // Lift a simple function to one which applies to a tuple, 
 // transforming only the second item of the tuple
 // secondArrow :: (a -> b) -> ((c, a) -> (c, b))
-const secondArrow = f => xy => Tuple(xy[0], f(xy[1]));
+const secondArrow = f => xy => 
+    Tuple(xy[0])(
+        f(xy[1])
+    );
 
 // sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 const sequenceA = tfa =>
-    traverse(x => x, tfa);
+    traverse(x => x)(
+        tfa
+    );
 
 // setFromList :: Ord a => [a] -> Set a
 const setFromList = xs =>
     new Set(xs);
 
 // setInsert :: Ord a => a -> Set a -> Set a
-const setInsert = (x, set) =>
-    set.add(x);
+const setInsert = x => oSet =>
+    oSet.add(x);
 
 // setMember :: Ord a => a -> Set a -> Bool
-const setMember = (x, set) =>
-    set.has(x);
+const setMember = x => oSet =>
+    oSet.has(x);
 
 // setSize :: Set a -> Int
-const setSize = set =>
-    set.size;
+const setSize = oSet =>
+    oSet.size;
 
 // shift :: Int -> [a] -> [a]
-const shift = (n, xs) => {
+const shift = n => xs => {
     const lng = length(xs);
     return Infinity > lng ? (
-        take(lng, drop(n, cycle(xs)))
-    ) : (drop(n, xs), xs);
+        take(lng)(
+          drop(n)(cycle(xs))
+        )
+    ) : (drop(n)(xs), xs);
 };
 
 // show :: a -> String
 // show :: a -> Int -> Indented String
-const show = (x, n) => {
+const show = x => n => {
     const
         e = ('function' !== typeof x) ? (
             x
@@ -2702,7 +2780,9 @@ const show = (x, n) => {
 // showBinary :: Int -> String
 const showBinary = n => {
     const binaryChar = n => 0 !== n ? '1' : '0';
-    return showIntAtBase(2, binaryChar, n, '');
+    return showIntAtBase(2)(
+        binaryChar
+    )(n)('');
 };
 
 // showDate :: Date -> String
@@ -2714,15 +2794,19 @@ const showDict = show;
 // showForest :: [Tree a] -> String
 const showForest = xs =>
     unlines(xs.map(x => drawTree2(false)(true)(
-        fmapTree(show, x)
+        fmapTree(show)(
+            x
+        )
     )));
 
 // showHex :: Int -> String
 const showHex = n =>
-    showIntAtBase(16, intToDigit, n, '');
+    showIntAtBase(16)(
+        intToDigit
+    )(n)('');
 
 // showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
-const showIntAtBase = (base, toChr, n, rs) => {
+const showIntAtBase = base => toChr => n => rs => {
     const go = ([n, d], r) => {
         const r_ = toChr(d) + r;
         return 0 !== n ? (
@@ -2733,7 +2817,7 @@ const showIntAtBase = (base, toChr, n, rs) => {
         'error: showIntAtBase applied to unsupported base'
     ) : 0 > n ? (
         'error: showIntAtBase applied to negative number'
-    ) : go(Array.from(quotRem(n, base)), rs);
+    ) : go(Array.from(quotRem(n)(base)), rs);
 };
 
 // showJSON :: a -> String
@@ -2777,7 +2861,7 @@ const showOutline = tree => {
     const go = indent => tree =>
         unlines(
             [indent + tree.root]
-            .concat(concatMap(go('    ' + indent), tree.nest))
+            .concat(tree.nest.flatMap(go('    ' + indent)))
         );
     return go('')(tree);
 };
@@ -2809,7 +2893,9 @@ const showSet = oSet =>
 // showTree :: Tree a -> String
 const showTree = x =>
     drawTree2(false)(true)(
-        fmapTree(show, x)
+        fmapTree(show)(
+            x
+        )
     );
 
 // showTuple :: Tuple -> String
@@ -2852,14 +2938,14 @@ const snd = tpl => tpl[1];
 // Mirror image of cons
 // New copy of the list, with an atom added at the end
 // snoc :: [a] -> a -> [a]
-const snoc = (xs, x) => xs.concat(x);
+const snoc = xs => x => xs.concat(x);
 
 // sort :: Ord a => [a] -> [a]
 const sort = xs => xs.slice()
     .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const sortBy = (f, xs) =>
+const sortBy = f => xs =>
     xs.slice()
     .sort(f);
 
@@ -2870,7 +2956,7 @@ const sortBy = (f, xs) =>
 // or Schwartzian transform.
 // Elements are arranged from from lowest to highest.
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
-const sortOn = (f, xs) => {
+const sortOn = f => xs => {
     // Functions and matching bools derived from argument f
     // which may be a single key function, or a list of key functions
     // each of which may or may not be followed by a direction bool.
@@ -2898,7 +2984,7 @@ const sortOn = (f, xs) => {
             // functions that access pre-calculated values
             // by position in the decorated ('Schwartzian')
             // version of xs
-            zip(fs.map((_, i) => x => x[i]), bs)
+            zip(fs.map((_, i) => x => x[i]))(bs)
         ), xs.map( // xs decorated with precalculated values
             x => fs.reduceRight(
                 (a, g) => [g(x)].concat(a), [
@@ -2916,26 +3002,27 @@ const sortOn = (f, xs) => {
 //
 // span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
-const span = (p, xs) =>
-    splitAt(until(
-        i => !p(xs[i]),
-        i => 1 + i,
-        0
-    ), xs);
+const span = p => xs =>
+    splitAt(until(i => !p(xs[i]))(
+        i => 1 + i
+    )(0), xs);
 
 // Compose a function (from a tuple to a tuple), 
 // (with separate transformations for fst and snd)
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
-const splitArrow = (f, g) => tpl => Tuple(f(tpl[0]), g(tpl[1]));
+const splitArrow = f => g => tpl => Tuple(f(tpl[0]), g(tpl[1]));
 
 // splitAt :: Int -> [a] -> ([a], [a])
-const splitAt = (n, xs) => Tuple(xs.slice(0, n), xs.slice(n));
+const splitAt = n => xs => 
+  Tuple(xs.slice(0, n))(
+      xs.slice(n)
+  );
 
 // Splitting not on a delimiter, but wherever the relationship
 // between consecutive terms matches a binary predicate
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 // splitBy :: (String -> String -> Bool) -> String -> [String]
-const splitBy = (p, xs) =>
+const splitBy = p => xs =>
     (xs.length < 2) ? [xs] : (() => {
         const
             bln = 'string' === typeof xs,
@@ -2956,10 +3043,10 @@ const splitBy = (p, xs) =>
     })();
 
 // splitEvery :: Int -> [a] -> [[a]]
-const splitEvery = (n, xs) => {
+const splitEvery = n => xs => {
     if (xs.length <= n) return [xs];
     const [h, t] = [xs.slice(0, n), xs.slice(n)];
-    return [h].concat(splitEvery(n, t));
+    return [h].concat(splitEvery(n)(t));
 };
 
 // Split a filename into directory and file. combine is the inverse.
@@ -2971,10 +3058,10 @@ const splitFileName = strPath =>
                 xs = strPath.split('/'),
                 stem = xs.slice(0, -1);
             return stem.length > 0 ? (
-                Tuple(stem.join('/') + '/', xs.slice(-1)[0])
-            ) : Tuple('./', xs.slice(-1)[0]);
-        })() : Tuple(strPath, '')
-    ) : Tuple('./', '');
+                Tuple(stem.join('/') + '/')(xs.slice(-1)[0])
+            ) : Tuple('./')(xs.slice(-1)[0]);
+        })() : Tuple(strPath)('')
+    ) : Tuple('./')('');
 
 // splitOn("\r\n", "a\r\nb\r\nd\r\ne") //--> ["a", "b", "d", "e"]
 // splitOn("aaa", "aaaXaaaXaaaXaaa") //--> ["", "X", "X", "X", ""]
@@ -2982,7 +3069,7 @@ const splitFileName = strPath =>
 // splitOn([3, 1], [1,2,3,1,2,3,1,2,3]) //--> [[1,2],[2],[2,3]]
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
-const splitOn = (pat, src) =>
+const splitOn = pat => src =>
     /* A list of the strings delimited by
        instances of a given pattern in s. */
     ('string' === typeof src) ? (
@@ -2990,18 +3077,17 @@ const splitOn = (pat, src) =>
     ) : (() => {
         const
             lng = pat.length,
-            tpl = foldl((a, i) =>
-                Tuple(
-                    fst(a).concat([src.slice(snd(a), i)]),
-                    lng + i
-                ), Tuple([], 0),
-                findIndices(matching(pat), src)
+            tpl = findIndices(matching(pat))(src).reduce(
+                (a, i) => Tuple(
+                    fst(a).concat([src.slice(snd(a), i)])
+                )(lng + i),
+                Tuple([])(0),
             );
         return fst(tpl).concat([src.slice(snd(tpl))]);
     })();
 
 // splitRegex :: Regex -> String -> [String]
-const splitRegex = (needle, haystack) =>
+const splitRegex = needle => haystack =>
     haystack.split(needle);
 
 // sqrt :: Num -> Num
@@ -3027,10 +3113,13 @@ const str = x => x.toString();
 const strip = s => s.trim();
 
 // stripEnd :: String -> String
-const stripEnd = s => dropWhileEnd(isSpace, s);
+const stripEnd = s =>
+  dropWhileEnd(isSpace)(
+      s
+  );
 
 // stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
-const stripPrefix = (pfx, s) => {
+const stripPrefix = pfx => s => {
     const
         blnString = 'string' === typeof pfx,
         [xs, ys] = blnString ? (
@@ -3046,15 +3135,17 @@ const stripPrefix = (pfx, s) => {
 };
 
 // stripStart :: String -> String
-const stripStart = s => dropWhile(isSpace, s);
+const stripStart = s =>
+    dropWhile(isSpace)(
+        s
+    );
 
 // subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
-const subTreeAtPath = (tree, path) => {
+const subTreeAtPath = tree => path => {
     const go = (nest, xs) =>
         0 < nest.length && 0 < xs.length ? (() => {
             const h = xs[0];
-            return bindMay(
-                find(t => h === t.root, nest),
+            return bindMay(find(t => h === t.root, nest))(
                 t => 1 < xs.length ? (
                     go(t.nest, xs.slice(1))
                 ) : Just(t)
@@ -3069,19 +3160,18 @@ const subTreeAtPath = (tree, path) => {
 // subsequences :: String -> [String]
 const subsequences = xs => {
     const
-        cons = (x, xs) => [x].concat(xs),
         // nonEmptySubsequences :: [a] -> [[a]]
         nonEmptySubsequences = xxs => {
             if (xxs.length < 1) return [];
             const [x, xs] = [xxs[0], xxs.slice(1)];
-            const f = (r, ys) => cons(ys, cons(cons(x, ys), r));
-            return cons([x], nonEmptySubsequences(xs)
+            const f = (r, ys) => cons(ys)(cons(cons(x)(ys))(r));
+            return cons([x])(nonEmptySubsequences(xs)
                 .reduceRight(f, []));
         };
     return ('string' === typeof xs) ? (
-        cons('', nonEmptySubsequences(xs.split(''))
+        cons('')(nonEmptySubsequences(xs.split(''))
             .map(x => ''.concat.apply('', x))) // map(concat)
-    ) : cons([], nonEmptySubsequences(xs));
+    ) : cons([])(nonEmptySubsequences(xs));
 };
 
 // subsets :: [a] -> [[a]]
@@ -3101,7 +3191,7 @@ const subsets = xs => {
 };
 
 // subtract :: Num -> Num -> Num
-const subtract = (x, y) => y - x;
+const subtract = x => y => y - x;
 
 // succ :: Enum a => a -> a
 const succ = x => {
@@ -3134,7 +3224,9 @@ const sum = xs => xs.reduce((a, x) => a + x, 0);
 
 // swap :: (a, b) -> (b, a)
 const swap = ab =>
-    Tuple(ab[1], ab[0]);
+    Tuple(ab[1])(
+        ab[0]
+    );
 
 // tail :: [a] -> [a]
 const tail = xs => 0 < xs.length ? xs.slice(1) : [];
@@ -3159,7 +3251,7 @@ const tails = xs => {
 
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
-const take = (n, xs) =>
+const take = n => xs =>
     'GeneratorFunction' !== xs.constructor.constructor.name ? (
         xs.slice(0, n)
     ) : [].concat.apply([], Array.from({
@@ -3170,10 +3262,10 @@ const take = (n, xs) =>
     }));
 
 // takeAround :: (a -> Bool) -> [a] -> [a]
-const takeAround = (p, xs) => {
-    const ys = takeWhile(p, xs);
+const takeAround = p => xs => {
+    const ys = takeWhile(p)(xs);
     return ys.length < xs.length ? (
-        ys.concat(takeWhileR(p, xs))
+        ys.concat(takeWhileR(p)(xs))
     ) : ys;
 };
 
@@ -3190,14 +3282,13 @@ const takeBaseName = strPath =>
 
 // First n members of an infinite cycle of xs
 // takeCycle :: Int -> [a] -> [a]
-const takeCycle = (n, xs) => {
+const takeCycle = n => xs => {
     const lng = xs.length;
     return (
             n <= xs ? (
                 xs
             ) : concat(
-                replicate(
-                    Math.ceil(n / lng),
+                replicate( Math.ceil(n / lng))(
                     xs
                 )
             )
@@ -3216,16 +3307,23 @@ const takeDirectory = strPath =>
     })() : '.';
 
 // take N Members of an infinite cycle of xs, starting from index I
+// take N Members of an infinite cycle of xs, starting from index I
 // takeDropCycle :: Int -> [a] -> [a]
-const takeDropCycle = (n, i, xs) => {
+const takeDropCycle = n => i => xs => {
     const
         lng = xs.length,
         m = n + i;
-    return drop(i,
-        take(m,
-            (lng >= m ? xs : concat(replicate(Math.ceil(m / lng), xs)))
+    return drop(i)(
+        take(m)(
+            lng >= m ? (
+                xs
+            ) : concat(
+                replicate(Math.ceil(m / lng)(
+                    xs
+                ))
+            )
         )
-    );
+    )
 };
 
 // takeExtension :: FilePath -> String
@@ -3251,12 +3349,14 @@ const takeFileName = strPath =>
     ) : '';
 
 // takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
-const takeFromThenTo = (a, b, z, xs) => {
-    const ixs = enumFromThenTo(a, b, z);
+const takeFromThenTo = a => b => z => xs => {
+    const ixs = enumFromThenTo(a)(b)(z);
     return 'GeneratorFunction' !== xs.constructor.constructor.name ? (
-        map(i => xs[i], ixs)
+        ixs.map(i => xs[i])
     ) : (() => {
-        const g = zipGen(enumFrom(0), take(z, xs));
+        const g = zipGen(enumFrom(0))(
+            take(z)(xs)
+        );
         return ixs.flatMap(i => {
             const mb = index(g)(i);
             return mb.Nothing ? [] : [mb.Just];
@@ -3265,9 +3365,10 @@ const takeFromThenTo = (a, b, z, xs) => {
 };
 
 // takeIterate n f x == [x, f x, f (f x), ...]
+// takeIterate n f x == [x, f x, f (f x), ...]
 // takeIterate :: Int -> (a -> a) -> a -> [a]
-const takeIterate = (n, f, x) =>
-    snd(mapAccumL((a, _, i) => {
+const takeIterate = n => f => x =>
+    snd(mapAccumL(a => _ => i => {
         const v = 0 !== i ? f(a) : x;
         return [v, v];
     }, x, Array.from({
@@ -3276,22 +3377,20 @@ const takeIterate = (n, f, x) =>
 
 // takeWhile :: (a -> Bool) -> [a] -> [a]
 // takeWhile :: (Char -> Bool) -> String -> String
-const takeWhile = (p, xs) =>
+const takeWhile = p => xs =>
     xs.constructor.constructor.name !==
     'GeneratorFunction' ? (() => {
         const lng = xs.length;
         return 0 < lng ? xs.slice(
             0,
-            until(
-                i => lng === i || !p(xs[i]),
-                i => 1 + i,
-                0
-            )
+            until(i => lng === i || !p(xs[i]))(
+                i => 1 + i
+            )(0)
         ) : [];
-    })() : takeWhileGen(p, xs);
+    })() : takeWhileGen(p)(xs);
 
 // takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-const takeWhileGen = (p, xs) => {
+const takeWhileGen = p => xs => {
     const ys = [];
     let
         nxt = xs.next(),
@@ -3305,7 +3404,7 @@ const takeWhileGen = (p, xs) => {
 };
 
 // takeWhileR :: (a -> Bool) -> [a] -> [a]
-const takeWhileR = (p, xs) => {
+const takeWhileR = p => xs => {
     let i = xs.length;
     while (i-- && p(xs[i])) {}
     return xs.slice(i + 1);
@@ -3318,7 +3417,7 @@ const taskPaperDateString = dte => {
 };
 
 // then (>>) :: Monad m => m a -> m b -> m b
-const then = (ma, mb) =>
+const then = ma => mb =>
     (Array.isArray(ma) ? (
         thenList
     ) : isMaybe(ma) ? (
@@ -3328,14 +3427,14 @@ const then = (ma, mb) =>
     )
 
 // thenIO (>>) :: IO a -> IO b -> IO b
-const thenIO = (ma, mb) => mb;
+const thenIO = ma => mb => mb;
 
 // thenList (>>) :: [a] -> [b] -> [b]
-const thenList = (xs, ys) =>
-    concatMap(_ => ys, xs);
+const thenList = xs => ys =>
+    xs.flatMap(_ => ys);
 
 // thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
-const thenMay = (mbx, mby) =>
+const thenMay = mbx => mby =>
     mbx.Nothing ? mbx : mby;
 
 // The first argument is a sample of the type
@@ -3377,7 +3476,7 @@ const toSentence = s =>
 // It simply simply capitalizes the first character of each word.
 // toTitle :: String -> String
 const toTitle = s =>
-    regexMatches(/(\w)(\w*)(\b[\W]*|$)/g, s)
+    regexMatches(/(\w)(\w*)(\b[\W]*|$)/g)(s)
     .map(ms => ms[1].toUpperCase() + ms[2].toLowerCase() + ms[3])
     .join('');
 
@@ -3425,7 +3524,7 @@ const transpose_ = rows =>
     ) : [];
 
 // traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
-const traverse = (f, tx) => {
+const traverse = f => tx => {
     const t = tx.type;
     return (
         undefined !== t ? (
@@ -3439,17 +3538,19 @@ const traverse = (f, tx) => {
                 traverseTuple
             ) : traverseList
         ) : traverseList
-    )(f, tx)
+    )(f)(tx)
 };
 
 //instance Traversable (Either a) where
 //    traverse _ (Left x) = pure (Left x)
 //    traverse f (Right y) = Right <$> f y
 // traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
-const traverseLR = (f, lr) =>
+const traverseLR = f => lr =>
     undefined !== lr.Left ? (
         [lr]
-    ) : fmap(Right, f(lr.Right));
+    ) : fmap(Right)(
+        f(lr.Right)
+    );
 
 // - Map each element of a structure to an action,
 // - evaluate these actions from left to right,
@@ -3458,54 +3559,67 @@ const traverseLR = (f, lr) =>
 //    traverse f = List.foldr cons_f (pure [])
 //      where cons_f x ys = liftA2 (:) (f x) ys
 // traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
-const traverseList = (f, xs) => {
+const traverseList = f => xs => {
     const lng = xs.length;
     return 0 < lng ? (() => {
         const
             vLast = f(xs[lng - 1]),
             t = vLast.type || 'List';
         return xs.slice(0, -1).reduceRight(
-            (ys, x) => liftA2(cons, f(x), ys),
-            liftA2(cons, vLast, pureT(t, []))
+            (ys, x) => liftA2(cons)(f(x))(ys),
+            liftA2(cons)(vLast)(pureT(t, []))
         );
     })() : [[]];
 };
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
-const traverseMay = (f, mb) =>
+const traverseMay = f => mb =>
     mb.Nothing ? (
         [mb]
-    ) : fmap(Just, f(mb.Just));
+    ) : fmap(Just)(
+        f(mb.Just)
+    );
 
 // traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
-const traverseTree = (f, node) => {
+const traverseTree = f => node => {
     // traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
     const go = x =>
-        liftA2(
-            Node, f(x.root),
-            traverseList(go, x.nest)
+        liftA2(Node)(f(x.root))(
+            traverseList(go)(
+                x.nest
+            )
         );
     return go(node);
 };
 
 // traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
-const traverseTuple = (f, tpl) =>
-    fmap(curry(Tuple)(tpl[0]), f(tpl[1]));
+const traverseTuple = f => tpl =>
+    fmap(Tuple(tpl[0]))(
+        f(tpl[1])
+    );
 
 // treeFromDict :: String -> Dict -> Tree String
 const treeFromDict = rootLabel => dict => {
     const go = x =>
         'object' !== typeof x ? [] : (
             Array.isArray(x) ? (
-                map(v => Node(v, []), x)
-            ) : map(k => Node(k, go(x[k])), keys(x))
+                x.map(v => Node(v, []))
+            ) : keys(x).map(
+                k => Node(k)(
+                    go(x[k])
+                )
+            )
         );
-    return Node(rootLabel, go(dict));
+    return Node(rootLabel)(
+        go(dict)
+    );
 };
 
 // treeFromPairNest :: PairNest a -> Tree a
 const treeFromPairNest = vxs => {
-    const go = vxs => Node(vxs[0], vxs[1].map(go));
+    const go = vxs => Node(vxs[0])(
+        vxs[1].map(go)
+    );
     return go(vxs);
 };
 
@@ -3521,7 +3635,7 @@ const treeLeaves = tree => {
 // a predicate p.
 // For the first match only, see findTree.
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
-const treeMatches = (p, tree) => {
+const treeMatches = p => tree => {
     const go = node =>
         p(node.root) ? (
             [node]
@@ -3535,24 +3649,23 @@ const treeMenu = tree => {
         const
             strTitle = t.root,
             subs = t.nest,
-            menu = map(root, subs),
+            menu = subs.map(root),
             blnMore = 0 < subs.flatMap(nest).length;
-        return until(
-            tpl => !fst(tpl) || !isNull(snd(tpl)),
-            tpl => either(
-                x => Tuple(false, []),
-                x => Tuple(true, x),
-                bindLR(
-                    showMenuLR(!blnMore, strTitle, menu),
+        return until( tpl => !fst(tpl) || !isNull(snd(tpl)))(
+            tpl => either(x => Tuple(false)([]))(
+                x => Tuple(true, x)
+            )(
+                bindLR(showMenuLR(!blnMore, strTitle, menu))(
                     ks => {
                         const k = ks[0];
                         return maybe(
                             Left(k + ': not found in ' +
                                 JSON.stringify(ks)
-                            ),
-                            Right,
-                            bindMay(
-                                find(x => k === x.root, subs),
+                            )
+                        )(
+                            Right 
+                        )(
+                            bindMay(find(x => k === x.root)(subs))(
                                 chosen => Just(
                                     isNull(chosen.nest) ? (
                                         ks // Choice made in leaf menu.
@@ -3562,9 +3675,8 @@ const treeMenu = tree => {
                         );
                     }
                 )
-            ),
-            Tuple(true, [])
-        )[1]
+            )
+        )(Tuple(true)([]))[1]
     };
     return go(tree);
 };
@@ -3598,18 +3710,20 @@ const typeName = v => {
 
 // unQuoted :: String -> String
 const unQuoted = s =>
-    dropAround(x => 34 === x.codePointAt(0), s);
+    dropAround(x => 34 === x.codePointAt(0))(
+        s
+    );
 
 // uncons :: [a] -> Maybe (a, [a])
 const uncons = xs => {
     const lng = length(xs);
     return (0 < lng) ? (
         lng < Infinity ? (
-            Just(Tuple(xs[0], xs.slice(1))) // Finite list
+            Just(Tuple(xs[0])(xs.slice(1))) // Finite list
         ) : (() => {
             const nxt = take(1, xs);
             return 0 < nxt.length ? (
-                Just(Tuple(nxt[0], xs))
+                Just(Tuple(nxt[0])(xs))
             ) : Nothing();
         })() // Lazy generator
     ) : Nothing();
@@ -3625,20 +3739,24 @@ const uncurry = f => args =>
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
-const unfoldForest = (f, xs) =>
-    xs.map(b => unfoldTree(f, b));
+const unfoldForest = f => x =>
+    xs.map(unfoldTree(f));
 
 // | Build a tree from a seed value
 // unfoldTree :: (b -> (a, [b])) -> b -> Tree a
-const unfoldTree = (f, b) => {
+const unfoldTree = f => b => {
     const tpl = f(b);
-    return Node(tpl[0], unfoldForest(f, tpl[1]));
+    return Node(tpl[0])(
+        unfoldForest(f)(
+            tpl[1]
+        )
+    );
 };
 
 // unfoldl(x => 0 !== x ? Just([x - 1, x]) : Nothing(), 10);
 // --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 // unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
-const unfoldl = (f, v) => {
+const unfoldl = f => v => {
     let
         xr = [v, v],
         xs = [];
@@ -3665,7 +3783,7 @@ const unfoldl = (f, v) => {
 
 // (x => Maybe [value, remainder] -> initial value -> values
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
-const unfoldr = (f, v) => {
+const unfoldr = f => v => {
     let
         xr = [v, v],
         xs = [];
@@ -3681,22 +3799,26 @@ const unfoldr = (f, v) => {
 };
 
 // union :: [a] -> [a] -> [a]
-const union = (xs, ys) =>
-  unionBy((a, b) => a === b, xs, ys);
+const union = xs => ys =>
+  unionBy(a => b => a === b)(
+      xs
+  )(ys);
 
 // unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const unionBy = (fnEq, xs, ys) => {
-    const sx = nubBy(fnEq, xs);
+const unionBy = fnEq => xs => ys => {
+    const sx = nubBy(fnEq)(xs);
     return sx.concat(
         sx.reduce(
-            (a, x) => deleteBy(fnEq, x, a),
-            nubBy(fnEq, ys)
+            (a, x) => deleteBy(fnEq)(
+                x
+            )(a),
+            nubBy(fnEq)(ys)
         )
     );
 };
 
 // unionSet :: Ord a => Set a -> Set a -> Set a
-const unionSet = (s, s1) =>
+const unionSet = s => s1 =>
     Array.from(s1.values())
     .reduce(
         (a, x) => (a.add(x), a),
@@ -3711,11 +3833,11 @@ const unlines = xs => xs.join('\n');
 // unsnoc :: [a] -> Maybe ([a], a)
 const unsnoc = xs =>
     (0 < xs.length) ? (
-        Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))
+        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))
     ) : Nothing();
 
 // until :: (a -> Bool) -> (a -> a) -> a -> a
-const until = (p, f, x) => {
+const until = p => f => x => {
     let v = x;
     while (!p(v)) v = f(v);
     return v;
@@ -3727,10 +3849,10 @@ const unwords = xs => xs.join(' ');
 // unzip :: [(a,b)] -> ([a],[b])
 const unzip = xys =>
     xys.reduce(
-        (a, x) => Tuple(...[0, 1].map(
+        (a, x) => uncurry(Tuple)(...[0, 1].map(
             i => a[i].concat(x[i])
         )),
-        Tuple([], [])
+        Tuple([])([])
     );
 
 // unzip3 :: [(a,b,c)] -> ([a],[b],[c])
@@ -3739,7 +3861,7 @@ const unzip3 = xyzs =>
         (a, x) => TupleN.apply(null, [0, 1, 2].map(
             i => a[i].concat(x[i])
         )),
-        TupleN([], [], [])
+        TupleN([])([])([])
     );
 
 // unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
@@ -3781,26 +3903,26 @@ const words = s => s.split(/\s+/);
 // Use of `take` and `length` here allows for zipping with non-finite 
 // lists - i.e. generators like cycle, repeat, iterate.
 // zip :: [a] -> [b] -> [(a, b)]
-const zip = (xs, ys) => {
+const zip = xs => ys => {
     const lng = Math.min(length(xs), length(ys));
     return Infinity !== lng ? (() => {
-        const bs = take(lng, ys);
-        return take(lng, xs).map((x, i) => Tuple(x, bs[i]));
-    })() : zipGen(xs, ys);
+        const bs = take(lng)(ys);
+        return take(lng)(xs).map((x, i) => Tuple(x)(bs[i]));
+    })() : zipGen(xs)(ys);
 };
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
-const zip3 = (xs, ys, zs) =>
+const zip3 = xs => ys => zs =>
     xs.slice(0, Math.min(length(xs), length(ys), length(zs)))
-    .map((x, i) => TupleN(x, ys[i], zs[i]));
+    .map((x, i) => TupleN(x)(ys[i])(zs[i]));
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
-const zip4 = (ws, xs, ys, zs) =>
+const zip4 = ws => xs => ys => zs =>
     ws.slice(0, minimum([ws, xs, ys, zs].map(length)))
     .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 
 // zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
-const zipGen = (ga, gb) => {
+const zipGen = ga => gb => {
     function* go(ma, mb) {
         let
             a = ma,
@@ -3809,7 +3931,11 @@ const zipGen = (ga, gb) => {
             let
                 ta = a.Just,
                 tb = b.Just
-            yield(Tuple(fst(ta), fst(tb)));
+            yield(
+                Tuple(fst(ta))(
+                    fst(tb)
+                )
+            );
             a = uncons(snd(ta));
             b = uncons(snd(tb));
         }
@@ -3832,31 +3958,37 @@ function zipN() {
 // Use of `take` and `length` here allows zipping with non-finite lists
 // i.e. generators like cycle, repeat, iterate.
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-const zipWith = (f, xs, ys) => {
+const zipWith = f => xs => ys => {
     const
         lng = Math.min(length(xs), length(ys)),
-        as = take(lng, xs),
-        bs = take(lng, ys);
+        as = take(lng)(xs),
+        bs = take(lng)(ys);
     return Array.from({
         length:lng
-    }, (_, i) => f(as[i], bs[i], i));
+    }, (_, i) => f(as[i])(
+        bs[i]
+    )(i));
 };
 
 // zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
-const zipWith3 = (f, xs, ys, zs) =>
+const zipWith3 = f => xs => ys => zs =>
     Array.from({
         length: Math.min(length(xs), length(ys), length(zs))
-    }, (_, i) => f(xs[i], ys[i], zs[i]));
+    }, (_, i) => f(xs[i])(ys[i])(zs[i]));
 
 // zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
-const zipWith4 = (f, ws, xs, ys, zs) =>
+const zipWith4 = f => ws => xs => ys => zs =>
     Array.from({
         length: minimum([ws, xs, ys, zs].map(length))
-    }, (_, i) => f(ws[i], xs[i], ys[i], zs[i]));
+    }, (_, i) => f(ws[i])(xs[i])(ys[i])(zs[i]));
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
-const zipWithM = (f, xs, ys) =>
-    sequenceA(zipWith(f, xs, ys));
+const zipWithM = f => xs => ys =>
+    sequenceA(
+        zipWith(f)(
+            xs
+        )(ys)
+    );
 
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 function zipWithN() {

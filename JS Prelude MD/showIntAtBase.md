@@ -1,6 +1,6 @@
 ```js
 // showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
-const showIntAtBase = (base, toChr, n, rs) => {
+const showIntAtBase = base => toChr => n => rs => {
     const go = ([n, d], r) => {
         const r_ = toChr(d) + r;
         return 0 !== n ? (
@@ -11,6 +11,6 @@ const showIntAtBase = (base, toChr, n, rs) => {
         'error: showIntAtBase applied to unsupported base'
     ) : 0 > n ? (
         'error: showIntAtBase applied to negative number'
-    ) : go(Array.from(quotRem(n, base)), rs);
+    ) : go(Array.from(quotRem(n)(base)), rs);
 };
 ```

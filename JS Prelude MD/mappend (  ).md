@@ -1,6 +1,6 @@
 ```js
 // mappend (<>) :: Monoid a => a -> a -> a
-const mappend = (a, b) => {
+const mappend = a => b => {
     const t = a.type;
     return (
         Boolean(t) ? (
@@ -12,6 +12,6 @@ const mappend = (a, b) => {
         ) : 'function' !== typeof a ? (
             append
         ) : mappendFn
-    )(a, b);
+    )(a)(b);
 };
 ```

@@ -5,5 +5,5 @@
 
 ```js
 // all :: (a -> Bool) -> [a] -> Bool
-const all = (p, xs) => xs.every(p);
+const all = p => xs => xs.every(p);
 ```

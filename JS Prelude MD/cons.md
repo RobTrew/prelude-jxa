@@ -1,6 +1,6 @@
 ```js
 // cons :: a -> [a] -> [a]
-const cons = (x, xs) =>
+const cons = x => xs =>
     Array.isArray(xs) ? (
         [x].concat(xs)
     ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (

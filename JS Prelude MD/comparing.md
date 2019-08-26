@@ -1,7 +1,7 @@
 ```js
 // comparing :: (a -> b) -> (a -> a -> Ordering)
 const comparing = f =>
-    (x, y) => {
+    x => y => {
         const
             a = f(x),
             b = f(y);

@@ -5,7 +5,7 @@
 
 ```js
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
-const caseOf = (pvs, otherwise, x) => {
+const caseOf = pvs => otherwise => x => {
     const mb = pvs.reduce((a, pv) =>
         a.Nothing ? (
             pv[0](x) ? Just(pv[1]) : a

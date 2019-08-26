@@ -1,6 +1,6 @@
 ```js
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
-const bind = (m, mf) =>
+const bind = m => mf =>
     (Array.isArray(m) ? (
         bindList
     ) : (() => {
@@ -14,5 +14,5 @@ const bind = (m, mf) =>
         ) : ('function' === typeof m) ? (
             bindFn
         ) : undefined;
-    })()(m, mf));
+    })()(m)(mf));
 ```

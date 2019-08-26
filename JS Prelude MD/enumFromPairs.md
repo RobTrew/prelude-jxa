@@ -1,6 +1,6 @@
 ```js
 // enumFromPairs :: String -> [(String, Int)] -> Dict
-const enumFromPairs = (name, kvs) => {
+const enumFromPairs = name => kvs => {
     const
         iMax = kvs[kvs.length - 1][1],
         iMin = kvs[0][1];

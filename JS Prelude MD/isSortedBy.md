@@ -5,6 +5,6 @@
 
 ```js
 // isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
-const isSortedBy = (cmp, xs) =>
+const isSortedBy = cmp => xs =>
     xs.length < 2 || all(x => x < 1, zipWith(cmp, xs, tail(xs)));
 ```

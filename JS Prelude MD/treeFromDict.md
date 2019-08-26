@@ -4,9 +4,15 @@ const treeFromDict = rootLabel => dict => {
     const go = x =>
         'object' !== typeof x ? [] : (
             Array.isArray(x) ? (
-                map(v => Node(v, []), x)
-            ) : map(k => Node(k, go(x[k])), keys(x))
+                x.map(v => Node(v, []))
+            ) : keys(x).map(
+                k => Node(k)(
+                    go(x[k])
+                )
+            )
         );
-    return Node(rootLabel, go(dict));
+    return Node(rootLabel)(
+        go(dict)
+    );
 };
 ```

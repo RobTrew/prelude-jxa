@@ -5,24 +5,23 @@ const treeMenu = tree => {
         const
             strTitle = t.root,
             subs = t.nest,
-            menu = map(root, subs),
+            menu = subs.map(root),
             blnMore = 0 < subs.flatMap(nest).length;
-        return until(
-            tpl => !fst(tpl) || !isNull(snd(tpl)),
-            tpl => either(
-                x => Tuple(false, []),
-                x => Tuple(true, x),
-                bindLR(
-                    showMenuLR(!blnMore, strTitle, menu),
+        return until( tpl => !fst(tpl) || !isNull(snd(tpl)))(
+            tpl => either(x => Tuple(false)([]))(
+                x => Tuple(true, x)
+            )(
+                bindLR(showMenuLR(!blnMore, strTitle, menu))(
                     ks => {
                         const k = ks[0];
                         return maybe(
                             Left(k + ': not found in ' +
                                 JSON.stringify(ks)
-                            ),
-                            Right,
-                            bindMay(
-                                find(x => k === x.root, subs),
+                            )
+                        )(
+                            Right 
+                        )(
+                            bindMay(find(x => k === x.root)(subs))(
                                 chosen => Just(
                                     isNull(chosen.nest) ? (
                                         ks // Choice made in leaf menu.
@@ -32,9 +31,8 @@ const treeMenu = tree => {
                         );
                     }
                 )
-            ),
-            Tuple(true, [])
-        )[1]
+            )
+        )(Tuple(true)([]))[1]
     };
     return go(tree);
 };

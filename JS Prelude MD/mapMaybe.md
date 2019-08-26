@@ -8,9 +8,11 @@
 
 ```js
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]
-const mapMaybe = (mf, xs) =>
+const mapMaybe = mf => xs =>
   xs.reduce(
-    (a, x) => maybe(a, j => a.concat(j), mf(x)),
+    (a, x) => maybe(a)(
+        j => a.concat(j)
+    )(mf(x)),
     []
   );
 ```

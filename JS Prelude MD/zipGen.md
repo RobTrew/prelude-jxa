@@ -1,6 +1,6 @@
 ```js
 // zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
-const zipGen = (ga, gb) => {
+const zipGen = ga => gb => {
     function* go(ma, mb) {
         let
             a = ma,
@@ -9,7 +9,11 @@ const zipGen = (ga, gb) => {
             let
                 ta = a.Just,
                 tb = b.Just
-            yield(Tuple(fst(ta), fst(tb)));
+            yield(
+                Tuple(fst(ta))(
+                    fst(tb)
+                )
+            );
             a = uncons(snd(ta));
             b = uncons(snd(tb));
         }

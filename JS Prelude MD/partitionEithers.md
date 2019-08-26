@@ -3,8 +3,8 @@
 const partitionEithers = xs =>
     xs.reduce(
         (a, x) => undefined !== x.Left ? (
-            Tuple(a[0].concat(x.Left), a[1])
-        ) : Tuple(a[0], a[1].concat(x.Right)),
-        Tuple([], [])
+            Tuple(a[0].concat(x.Left))(a[1])
+        ) : Tuple(a[0])(a[1].concat(x.Right)),
+        Tuple([])([])
     );
 ```

@@ -1,6 +1,6 @@
 ```js
 // stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
-const stripPrefix = (pfx, s) => {
+const stripPrefix = pfx => s => {
     const
         blnString = 'string' === typeof pfx,
         [xs, ys] = blnString ? (

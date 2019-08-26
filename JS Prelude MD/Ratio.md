@@ -1,9 +1,9 @@
 ```js
 // ratio :: Int -> Int -> Ratio Int
-const ratio = (x, y) => {
+const ratio = x => y => {
   const go = (x, y) =>
     0 !== y ? (() => {
-      const d = gcd(x, y);
+      const d = gcd(x)(y);
       return {
         type: 'Ratio',
         'n': quot(x, d), // numerator

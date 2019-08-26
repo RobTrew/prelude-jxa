@@ -4,5 +4,5 @@
 
 ```js
 // any :: (a -> Bool) -> [a] -> Bool
-const any = (p, xs) => xs.some(p);
+const any = p => xs => xs.some(p);
 ```

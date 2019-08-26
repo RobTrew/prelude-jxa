@@ -5,7 +5,7 @@
 ```js
 // intersperse :: a -> [a] -> [a]
 // intersperse :: Char -> String -> String
-const intersperse = (sep, xs) => {
+const intersperse = sep => xs => {
     const bln = 'string' === typeof xs;
     return xs.length > 1 ? (
         (bln ? concat : x => x)(

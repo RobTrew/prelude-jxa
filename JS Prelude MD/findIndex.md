@@ -18,7 +18,7 @@
 
 ```js
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
-const findIndex = (p, xs) => {
+const findIndex = p => xs => {
     const
         i = (
             'string' !== typeof xs ? (

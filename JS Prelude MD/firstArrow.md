@@ -5,5 +5,7 @@
 
 ```js
 // firstArrow :: (a -> b) -> ((a, c) -> (b, c))
-const firstArrow = f => xy => Tuple(f(xy[0]), xy[1]);
+const firstArrow = f => xy => Tuple(f(xy[0]))(
+    xy[1]
+);
 ```

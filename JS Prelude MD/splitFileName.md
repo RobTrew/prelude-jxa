@@ -11,8 +11,8 @@ const splitFileName = strPath =>
                 xs = strPath.split('/'),
                 stem = xs.slice(0, -1);
             return stem.length > 0 ? (
-                Tuple(stem.join('/') + '/', xs.slice(-1)[0])
-            ) : Tuple('./', xs.slice(-1)[0]);
-        })() : Tuple(strPath, '')
-    ) : Tuple('./', '');
+                Tuple(stem.join('/') + '/')(xs.slice(-1)[0])
+            ) : Tuple('./')(xs.slice(-1)[0]);
+        })() : Tuple(strPath)('')
+    ) : Tuple('./')('');
 ```

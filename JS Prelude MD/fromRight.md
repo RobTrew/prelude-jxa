@@ -4,6 +4,6 @@
 
 ```js
 // fromRight :: b -> Either a b -> b
-const fromRight = (def, lr) =>
+const fromRight = def => lr =>
   isRight(lr) ? lr.Right : def;
 ```

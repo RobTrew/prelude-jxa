@@ -11,10 +11,9 @@ const outdented = s => {
     const
         rgx = /^ */, // Leading space characters.
         xs = lines(s),
-        n = length(minimumBy( // size of minimum indent
-            comparing(length),
-            map(txt => rgx.exec(txt)[0], xs)
+        n = length(minimumBy(comparing(length))(
+            xs.map(txt => rgx.exec(txt)[0])
         ));
-    return unlines(map(curry(drop)(n), xs));
+    return unlines(map(drop(n))(xs));
 };
 ```

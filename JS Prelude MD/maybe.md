@@ -4,6 +4,6 @@
 
 ```js
 // maybe :: b -> (a -> b) -> Maybe a -> b
-const maybe = (v, f, m) =>
+const maybe = v => f => m =>
     m.Nothing ? v : f(m.Just);
 ```

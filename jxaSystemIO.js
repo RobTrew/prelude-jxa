@@ -1,7 +1,7 @@
 // JXA SYSTEMIO GENERIC FUNCTIONS
 
 // appendFile :: FilePath -> String -> IO Bool
-const appendFile = (strPath, txt) => {
+const appendFile = strPath => txt => {
     const
         oFullPath = ObjC.wrap(strPath)
         .stringByStandardizingPath,
@@ -27,13 +27,13 @@ const appendFile = (strPath, txt) => {
                 );
             })() : false // Text appending to directory is undefined
         ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(strPath))) ? (
-            writeFile(oFullPath, txt), // Effect, and
+            writeFile(oFullPath)(txt), // Effect, and
             true // value.
         ) : false;
 };
 
 // appendFileMay :: FilePath -> String -> Maybe IO FilePath
-const appendFileMay = (strPath, txt) => {
+const appendFileMay = strPath => txt => {
     const
         oFullPath = ObjC.wrap(strPath)
         .stringByStandardizingPath,
@@ -61,13 +61,13 @@ const appendFileMay = (strPath, txt) => {
             })() : Nothing()
             // Text appending to directory is undefined
         ) : doesDirectoryExist(takeDirectory(strFullPath)) ? (
-            writeFile(oFullPath, txt), // Effect, and
+            writeFile(oFullPath)(txt), // Effect, and
             Just(strFullPath) // value
         ) : Nothing();
 };
 
 // createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
-const createDirectoryIfMissingLR = (blnParents, dirPath) => {
+const createDirectoryIfMissingLR = blnParents => dirPath => {
     const fp = filePath(dirPath);
     return doesPathExist(fp) ? (
         Right(fp)
@@ -118,8 +118,7 @@ const filePath = s =>
 
 // fileSize :: FilePath -> Either String Int
 const fileSize = fp =>
-  bindLR(
-    fileStatus(fp),
+  bindLR(fileStatus(fp))(
     dct => Right(ObjC.unwrap(dct.NSFileSize))
   );
 
@@ -205,8 +204,7 @@ const listDirectory = strPath =>
 
 // modificationTime :: FilePath -> Either String Date
 const modificationTime = fp =>
-    bindLR(
-       fileStatus(fp),
+    bindLR(fileStatus(fp))(
        dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
     );
 
@@ -277,7 +275,7 @@ const unwrap = ObjC.unwrap;
 const wrap = ObjC.wrap;
 
 // writeFile :: FilePath -> String -> IO ()
-const writeFile = (strPath, strText) =>
+const writeFile = strPath => strText =>
     $.NSString.alloc.initWithUTF8String(strText)
     .writeToFileAtomicallyEncodingError(
         $(strPath)
@@ -286,7 +284,7 @@ const writeFile = (strPath, strText) =>
     );
 
 // writeFileLR :: FilePath -> Either String IO FilePath
-const writeFileLR = (strPath, strText) => {
+const writeFileLR = strPath => strText => {
     const
         e = $(),
         fp = $(strPath)
@@ -302,11 +300,11 @@ const writeFileLR = (strPath, strText) => {
 
 // File name template -> string data -> IO temporary path
 // writeTempFile :: String -> String -> IO FilePath
-const writeTempFile = (template, txt) => {
+const writeTempFile = template => txt => {
     const
         strPath = ObjC.unwrap($.NSTemporaryDirectory()) +
         takeBaseName(template) + Math.random()
         .toString()
         .substring(3) + takeExtension(template);
-    return (writeFile(strPath, txt), strPath);
+    return (writeFile(strPath)(txt), strPath);
 };

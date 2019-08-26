@@ -27,8 +27,8 @@ function range() {
         an = as.length;
     return (an === bs.length) ? (
         1 < an ? (
-            sequenceAList(as.map((_, i) => enumFromTo(as[i], bs[i])))
-        ) : enumFromTo(as[0], bs[0])
+            sequenceAList(as.map((_, i) => enumFromTo(as[i])(bs[i])))
+        ) : enumFromTo(as[0])(bs[0])
     ) : [];
 };
 ```

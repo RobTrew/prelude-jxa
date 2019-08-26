@@ -1,6 +1,6 @@
 ```js
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
-const enumFromThenToChar = (x1, x2, y) => {
+const enumFromThenToChar = x1 => x2 => y => {
     const [i1, i2, iY] = Array.from([x1, x2, y])
         .map(x => x.charCodeAt(0)),
         d = i2 - i1;

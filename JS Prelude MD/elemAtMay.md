@@ -9,7 +9,7 @@
 ```js
 // elemAtMay :: Int -> Dict -> Maybe (String, a)
 // elemAtMay :: Int -> [a] -> Maybe a
-const elemAtMay = (i, x) => {
+const elemAtMay = i => x => {
     const
         bln = Array.isArray(x),
         k = bln ? i : Object.keys(x)

@@ -1,6 +1,6 @@
 ```js
 // writeFileLR :: FilePath -> Either String IO FilePath
-const writeFileLR = (strPath, strText) => {
+const writeFileLR = strPath => strText => {
     const
         e = $(),
         fp = $(strPath)

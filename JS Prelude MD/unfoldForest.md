@@ -4,6 +4,6 @@
 
 ```js
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
-const unfoldForest = (f, xs) =>
-    xs.map(b => unfoldTree(f, b));
+const unfoldForest = f => x =>
+    xs.map(unfoldTree(f));
 ```

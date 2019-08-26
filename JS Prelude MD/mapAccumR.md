@@ -7,11 +7,11 @@
 
 ```js
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-const mapAccumR = (f, acc, xs) =>
+const mapAccumR = f => acc => xs =>
     xs.reduceRight((a, x, i) => {
-        const pair = f(a[0], x, i);
-        return Tuple(pair[0],
+        const pair = f(a[0])(x)(i);
+        return Tuple(pair[0])(
             [pair[1]].concat(a[1])
         );
-    }, Tuple(acc, []));
+    }, Tuple(acc)([]));
 ```

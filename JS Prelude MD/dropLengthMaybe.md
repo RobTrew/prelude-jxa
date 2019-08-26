@@ -1,6 +1,6 @@
 ```js
 // dropLengthMaybe :: [a] -> [b] -> Maybe [b]
-const dropLengthMaybe = (xs, ys) => {
+const dropLengthMaybe = xs => ys => {
     const go = (x, y) =>
         0 < x.length ? (
             0 < y.length ? (

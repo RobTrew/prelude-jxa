@@ -1,7 +1,7 @@
 ```js
 // replace :: String -> String -> String -> String
 // replace :: Regex -> String -> String -> String
-const replace = (needle, strNew, strHaystack) =>
+const replace = needle => strNew => strHaystack =>
     strHaystack.replace(
       'string' !== typeof needle ? (
         needle

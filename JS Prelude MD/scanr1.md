@@ -4,6 +4,10 @@
 
 ```js
 // scanr1 :: (a -> a -> a) -> [a] -> [a]
-const scanr1 = (f, xs) =>
-    xs.length > 0 ? scanr(f, xs.slice(-1)[0], xs.slice(0, -1)) : [];
+const scanr1 = f => xs =>
+    xs.length > 0 ? (
+        scanr(f)(
+            xs.slice(-1)[0], xs.slice(0, -1)
+        ) 
+    ) : [];
 ```
