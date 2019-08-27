@@ -5,6 +5,6 @@ const unzip3 = xyzs =>
         (a, x) => TupleN.apply(null, [0, 1, 2].map(
             i => a[i].concat(x[i])
         )),
-        TupleN([])([])([])
+        TupleN([], [], [])
     );
 ```

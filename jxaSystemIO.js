@@ -173,7 +173,6 @@ const getDirectoryContentsLR = strPath => {
     ) : Right(ObjC.deepUnwrap(xs))
 };
 
-
 // getFinderDirectory :: IO FilePath
 const getFinderDirectory = () =>
     decodeURIComponent(

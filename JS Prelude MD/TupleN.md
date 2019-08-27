@@ -3,13 +3,13 @@
 function TupleN() {
     const
         args = Array.from(arguments),
-        lng = args.length;
-    return lng > 1 ? Object.assign(
+        n = args.length;
+    return n > 1 ? Object.assign(
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
-            type: 'Tuple' + (2 < lng ? lng.toString() : ''),
-            length: lng
+            type: 'Tuple' + (2 < n ? n.toString() : ''),
+            length: n
         })
     ) : args[0];
 };

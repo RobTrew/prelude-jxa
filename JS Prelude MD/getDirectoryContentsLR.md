@@ -12,5 +12,4 @@ const getDirectoryContentsLR = strPath => {
         Left(ObjC.unwrap(error.localizedDescription))
     ) : Right(ObjC.deepUnwrap(xs))
 };
-
 ```

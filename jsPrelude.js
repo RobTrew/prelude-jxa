@@ -61,13 +61,13 @@ const Tuple3 = a => b => c => ({
 function TupleN() {
     const
         args = Array.from(arguments),
-        lng = args.length;
-    return lng > 1 ? Object.assign(
+        n = args.length;
+    return n > 1 ? Object.assign(
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
-            type: 'Tuple' + (2 < lng ? lng.toString() : ''),
-            length: lng
+            type: 'Tuple' + (2 < n ? n.toString() : ''),
+            length: n
         })
     ) : args[0];
 };
@@ -385,10 +385,9 @@ const chr = x => String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = n => xs =>
-    enumFromThenTo(0)(
-        n
-    )(xs.length - 1)
-    .reduce(
+    enumFromThenTo(0)(n)(
+        xs.length - 1
+    ).reduce(
         (a, i) => a.concat([xs.slice(i, (n + i))]),
         []
     );
@@ -1313,12 +1312,13 @@ const group = xs => groupBy(a => b => a === b)(
 );
 
 // Typical usage: groupBy(on(eq, f), xs)
+// Typical usage: groupBy(on(eq, f), xs)
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = f => xss => {
     const tpl = xs.slice(1)
         .reduce((a, x) => {
             const h = a[1].length > 0 ? a[1][0] : undefined;
-            return (undefined !== h) && f(h, x) ? (
+            return (undefined !== h) && f(h)(x) ? (
                 Tuple(a[0])(a[1].concat([x]))
             ) : Tuple(a[0].concat([a[1]]))([x]);
         }, Tuple([])(0 < xs.length ? [xs[0]] : []));
@@ -2900,7 +2900,7 @@ const showTree = x =>
 
 // showTuple :: Tuple -> String
 const showTuple = tpl =>
-    '(' + enumFromTo(0, tpl.length - 1)
+    '(' + enumFromTo(0)(tpl.length - 1)
     .map(x => unQuoted(show(tpl[x])))
     .join(',') + ')';
 
@@ -3732,10 +3732,8 @@ const uncons = xs => {
 // Given a curried/default function, returns an
 // equivalent function on a tuple or list pair.
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
-const uncurry = f => args =>
-    1 < f.length ? (
-        f(args[0], args[1])
-    ) : f(args[0])(args[1]);
+const uncurry = f =>
+    (a, b) => f(a)(b)
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
@@ -3849,9 +3847,9 @@ const unwords = xs => xs.join(' ');
 // unzip :: [(a,b)] -> ([a],[b])
 const unzip = xys =>
     xys.reduce(
-        (a, x) => uncurry(Tuple)(...[0, 1].map(
-            i => a[i].concat(x[i])
-        )),
+        (ab, xy) => Tuple(ab[0].concat(xy[0]))(
+            ab[1].concat(xy[1])
+        ),
         Tuple([])([])
     );
 
@@ -3861,7 +3859,7 @@ const unzip3 = xyzs =>
         (a, x) => TupleN.apply(null, [0, 1, 2].map(
             i => a[i].concat(x[i])
         )),
-        TupleN([])([])([])
+        TupleN([], [], [])
     );
 
 // unzip4 :: [(a,b,c,d)] -> ([a],[b],[c],[d])
@@ -3914,7 +3912,7 @@ const zip = xs => ys => {
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs => ys => zs =>
     xs.slice(0, Math.min(length(xs), length(ys), length(zs)))
-    .map((x, i) => TupleN(x)(ys[i])(zs[i]));
+    .map((x, i) => TupleN(x, ys[i], zs[i]));
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 const zip4 = ws => xs => ys => zs =>
