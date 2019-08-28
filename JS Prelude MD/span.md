@@ -12,7 +12,9 @@
 ```js
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p => xs =>
-    splitAt(until(i => !p(xs[i]))(
-        i => 1 + i
-    )(0), xs);
+    splitAt(
+        until(i => !p(xs[i]))(
+            i => 1 + i
+        )(0)
+    )(xs);
 ```

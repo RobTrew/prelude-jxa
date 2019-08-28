@@ -1312,17 +1312,21 @@ const group = xs => groupBy(a => b => a === b)(
 );
 
 // Typical usage: groupBy(on(eq, f), xs)
-// Typical usage: groupBy(on(eq, f), xs)
+// Typical usage: groupBy(on(eq)(f), xs)
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = f => xss => {
-    const tpl = xs.slice(1)
-        .reduce((a, x) => {
-            const h = a[1].length > 0 ? a[1][0] : undefined;
-            return (undefined !== h) && f(h)(x) ? (
-                Tuple(a[0])(a[1].concat([x]))
-            ) : Tuple(a[0].concat([a[1]]))([x]);
-        }, Tuple([])(0 < xs.length ? [xs[0]] : []));
-    return tpl[0].concat([tpl[1]]);
+const groupBy = fEq => xs => {
+    const go = lst =>
+        0 < lst.length ? (() => {
+            const
+                x = lst[0],
+                tpl = span(fEq(x))(
+                    lst.slice(1)
+                );
+            return [
+                [x].concat(tpl[0])
+            ].concat(go(tpl[1]))
+        })() : [];
+    return go(xs);
 };
 
 // Sort and group a list by comparing the results of a key function
@@ -3003,9 +3007,11 @@ const sortOn = f => xs => {
 // span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p => xs =>
-    splitAt(until(i => !p(xs[i]))(
-        i => 1 + i
-    )(0), xs);
+    splitAt(
+        until(i => !p(xs[i]))(
+            i => 1 + i
+        )(0)
+    )(xs);
 
 // Compose a function (from a tuple to a tuple), 
 // (with separate transformations for fst and snd)
