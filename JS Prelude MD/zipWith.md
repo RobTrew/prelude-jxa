@@ -14,6 +14,6 @@ const zipWith = f => xs => ys => {
         length:lng
     }, (_, i) => f(as[i])(
         bs[i]
-    )(i));
+    ));
 };
 ```

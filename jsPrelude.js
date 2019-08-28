@@ -2947,7 +2947,7 @@ const sort = xs => xs.slice()
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f => xs =>
     xs.slice()
-    .sort(f);
+    .sort(uncurry(f));
 
 // Sort a list by comparing the results of a key function applied to each
 // element. sortOn f is equivalent to sortBy (comparing f), but has the
@@ -3965,7 +3965,7 @@ const zipWith = f => xs => ys => {
         length:lng
     }, (_, i) => f(as[i])(
         bs[i]
-    )(i));
+    ));
 };
 
 // zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
