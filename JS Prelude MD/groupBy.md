@@ -5,18 +5,20 @@
 ```js
 // Typical usage: groupBy(on(eq)(f), xs)
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = fEq => xs => {
-    const go = lst =>
-        0 < lst.length ? (() => {
-            const
-                x = lst[0],
-                tpl = span(fEq(x))(
-                    lst.slice(1)
-                );
-            return [
-                [x].concat(tpl[0])
-            ].concat(go(tpl[1]))
-        })() : [];
-    return go(xs);
-};
+const groupBy = fEq => xs =>
+    0 < xs.length ? (() => {
+        const
+            tpl = xs.slice(1).reduce(
+                (gw, x) => {
+                    const
+                        gps = gw[0],
+                        wkg = gw[1];
+                    return fEq(wkg[0])(x) ? (
+                        Tuple(gps)(wkg.concat([x]))
+                    ) : Tuple(gps.concat([wkg]))([x]);
+                },
+                Tuple([])([xs[0]])
+            );
+        return tpl[0].concat([tpl[1]])
+    })() : [];
 ```

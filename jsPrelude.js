@@ -1314,20 +1314,22 @@ const group = xs => groupBy(a => b => a === b)(
 // Typical usage: groupBy(on(eq, f), xs)
 // Typical usage: groupBy(on(eq)(f), xs)
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = fEq => xs => {
-    const go = lst =>
-        0 < lst.length ? (() => {
-            const
-                x = lst[0],
-                tpl = span(fEq(x))(
-                    lst.slice(1)
-                );
-            return [
-                [x].concat(tpl[0])
-            ].concat(go(tpl[1]))
-        })() : [];
-    return go(xs);
-};
+const groupBy = fEq => xs =>
+    0 < xs.length ? (() => {
+        const
+            tpl = xs.slice(1).reduce(
+                (gw, x) => {
+                    const
+                        gps = gw[0],
+                        wkg = gw[1];
+                    return fEq(wkg[0])(x) ? (
+                        Tuple(gps)(wkg.concat([x]))
+                    ) : Tuple(gps.concat([wkg]))([x]);
+                },
+                Tuple([])([xs[0]])
+            );
+        return tpl[0].concat([tpl[1]])
+    })() : [];
 
 // Sort and group a list by comparing the results of a key function
 // applied to each element. groupSortOn f is equivalent to
@@ -2182,7 +2184,7 @@ const odd = n => !even(n);
 
 // e.g. sortBy(on(compare,length), xs)
 // on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
-const on = f => g => a => b => f(g(a), g(b));
+const on = f => g => a => b => f(g(a))(g(b));
 
 // Derive a function from the name of a JS infix operator
 // op :: String -> (a -> a -> b)
@@ -3909,10 +3911,9 @@ const words = s => s.split(/\s+/);
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs => ys => {
     const lng = Math.min(length(xs), length(ys));
-    return Infinity !== lng ? (() => {
-        const bs = take(lng)(ys);
-        return take(lng)(xs).map((x, i) => Tuple(x)(bs[i]));
-    })() : zipGen(xs)(ys);
+    return Infinity !== lng ? (
+        zipList(xs)(ys)
+    ) : zipGen(xs)(ys);
 };
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
@@ -3945,6 +3946,14 @@ const zipGen = ga => gb => {
         }
     }
     return go(uncons(ga), uncons(gb));
+};
+
+// zipList :: [a] -> [b] -> [(a, b)]
+const zipList = xs => ys => {
+    const n = Math.min(xs.length, ys.length);
+    return xs.slice(0, n).map(
+        (x, i) => Tuple(x)(ys[i])
+    );
 };
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
