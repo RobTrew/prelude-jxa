@@ -3,5 +3,5 @@
 const zipList = xs => ys =>
     xs.slice(
         0, Math.min(xs.length, ys.length)
-    ).map((x, i) => Tuple(x)(ys[i]]));
+    ).map((x, i) => Tuple(x)(ys[i]));
 ```
