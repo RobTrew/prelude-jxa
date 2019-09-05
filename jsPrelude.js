@@ -3949,12 +3949,10 @@ const zipGen = ga => gb => {
 };
 
 // zipList :: [a] -> [b] -> [(a, b)]
-const zipList = xs => ys => {
-    const n = Math.min(xs.length, ys.length);
-    return xs.slice(0, n).map(
-        (x, i) => Tuple(x)(ys[i])
-    );
-};
+const zipList = xs => ys =>
+    xs.slice(
+        0, Math.min(xs.length, ys.length)
+    ).map((x, i) => Tuple(x)(ys[i]]));
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
@@ -3994,6 +3992,12 @@ const zipWith4 = f => ws => xs => ys => zs =>
     Array.from({
         length: minimum([ws, xs, ys, zs].map(length))
     }, (_, i) => f(ws[i])(xs[i])(ys[i])(zs[i]));
+
+// zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
+const zipWithList = f => xs => ys =>
+    xs.slice(
+        0, Math.min(xs.length, ys.length)
+    ).map((x, i) => f(x)(ys[i]));
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 const zipWithM = f => xs => ys =>
