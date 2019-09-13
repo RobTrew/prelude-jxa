@@ -295,10 +295,6 @@ const breakOn = pat => src =>
         ) : Tuple(src)('');
     })() : undefined;
 
-// breakOnAll "::" ""
-// ==> []
-// breakOnAll "/" "a/b/c/"
-// ==> [("a", "/b/c/"), ("a/b", "/c/"), ("a/b/c", "/")]
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = pat => src =>
     '' !== pat ? (
@@ -1158,10 +1154,10 @@ const fmap = f => fa =>
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
     function*(gen) {
-        let v = take(1, gen);
+        let v = take(1)(gen);
         while (0 < v.length) {
             yield(f(v[0]))
-            v = take(1, gen)
+            v = take(1)(gen)
         }
     };
 
@@ -1580,9 +1576,7 @@ const isMaybe = x =>
 // isNull :: [a] -> Bool
 // isNull :: String -> Bool
 const isNull = xs =>
-    Array.isArray(xs) || ('string' === typeof xs) ? (
-        1 > xs.length
-    ) : undefined;
+    1 > xs.length;
 
 // isPrefixOf takes two lists or strings and returns 
 // true iff the first is a prefix of the second.
@@ -3296,7 +3290,7 @@ const takeCycle = n => xs => {
             n <= xs ? (
                 xs
             ) : concat(
-                replicate( Math.ceil(n / lng))(
+                replicate(Math.ceil(n / lng))(
                     xs
                 )
             )
@@ -3729,7 +3723,7 @@ const uncons = xs => {
         lng < Infinity ? (
             Just(Tuple(xs[0])(xs.slice(1))) // Finite list
         ) : (() => {
-            const nxt = take(1, xs);
+            const nxt = take(1)(xs);
             return 0 < nxt.length ? (
                 Just(Tuple(nxt[0])(xs))
             ) : Nothing();
@@ -3970,15 +3964,16 @@ function zipN() {
 // i.e. generators like cycle, repeat, iterate.
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith = f => xs => ys => {
-    const
-        lng = Math.min(length(xs), length(ys)),
+    const lng = Math.min(length(xs), length(ys));
+    return Infinity > lng ? (() => {
         as = take(lng)(xs),
-        bs = take(lng)(ys);
-    return Array.from({
-        length:lng
-    }, (_, i) => f(as[i])(
-        bs[i]
-    ));
+            bs = take(lng)(ys);
+        return Array.from({
+            length: lng
+        }, (_, i) => f(as[i])(
+            bs[i]
+        ));
+    })() : zipWithGen(f)(xs)(ys);
 };
 
 // zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
@@ -3992,6 +3987,24 @@ const zipWith4 = f => ws => xs => ys => zs =>
     Array.from({
         length: minimum([ws, xs, ys, zs].map(length))
     }, (_, i) => f(ws[i])(xs[i])(ys[i])(zs[i]));
+
+// zipWithGen :: (a -> b -> c) Gen [a] -> Gen [b] -> Gen [c]
+const zipWithGen = f => ga => gb => {
+    function* go(ma, mb) {
+        let
+            a = ma,
+            b = mb;
+        while (!a.Nothing && !b.Nothing) {
+            let
+                ta = a.Just,
+                tb = b.Just
+            yield(f(fst(ta))(fst(tb)));
+            a = uncons(snd(ta));
+            b = uncons(snd(tb));
+        }
+    }
+    return go(uncons(ga), uncons(gb));
+};
 
 // zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWithList = f => xs => ys =>

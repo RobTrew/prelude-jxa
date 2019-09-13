@@ -85,11 +85,11 @@ const createDirectoryIfMissingLR = blnParents => dirPath => {
 };
 
 // doesDirectoryExist :: FilePath -> IO Bool
-const doesDirectoryExist = strPath => {
+const doesDirectoryExist = fp => {
     const ref = Ref();
     return $.NSFileManager.defaultManager
         .fileExistsAtPathIsDirectory(
-            $(strPath)
+            $(fp)
             .stringByStandardizingPath, ref
         ) && ref[0];
 };
@@ -150,22 +150,22 @@ const getCurrentDirectory = () =>
     ObjC.unwrap($.NSFileManager.defaultManager.currentDirectoryPath);
 
 // getDirectoryContents :: FilePath -> IO [FilePath]
-const getDirectoryContents = strPath =>
+const getDirectoryContents = fp =>
     ObjC.deepUnwrap(
         $.NSFileManager.defaultManager
         .contentsOfDirectoryAtPathError(
-            $(strPath)
+            $(fp)
             .stringByStandardizingPath, null
         )
     );
 
 // getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
-const getDirectoryContentsLR = strPath => {
+const getDirectoryContentsLR = fp => {
     const
         error = $(),
         xs = $.NSFileManager.defaultManager
         .contentsOfDirectoryAtPathError(
-            $(strPath).stringByStandardizingPath,
+            $(fp).stringByStandardizingPath,
             error
         );
     return xs.isNil() ? (
@@ -191,11 +191,11 @@ const getTemporaryDirectory = () =>
     ObjC.unwrap($.NSTemporaryDirectory());
 
 // listDirectory :: FilePath -> [FilePath]
-const listDirectory = strPath =>
+const listDirectory = fp =>
 	ObjC.unwrap(
 		$.NSFileManager.defaultManager
 		.contentsOfDirectoryAtPathError(
-			ObjC.wrap(strPath)
+			ObjC.wrap(fp)
 			.stringByStandardizingPath,
 			null
 		))

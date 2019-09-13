@@ -1,11 +1,4 @@
 ```js
-// breakOnAll "::" ""
-// ==> []
-// breakOnAll "/" "a/b/c/"
-// ==> [("a", "/b/c/"), ("a/b", "/c/"), ("a/b/c", "/")]
-```
-
-```js
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = pat => src =>
     '' !== pat ? (

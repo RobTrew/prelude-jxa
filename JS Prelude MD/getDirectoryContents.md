@@ -1,10 +1,10 @@
 ```js
 // getDirectoryContents :: FilePath -> IO [FilePath]
-const getDirectoryContents = strPath =>
+const getDirectoryContents = fp =>
     ObjC.deepUnwrap(
         $.NSFileManager.defaultManager
         .contentsOfDirectoryAtPathError(
-            $(strPath)
+            $(fp)
             .stringByStandardizingPath, null
         )
     );

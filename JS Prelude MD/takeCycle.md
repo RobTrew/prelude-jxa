@@ -10,7 +10,7 @@ const takeCycle = n => xs => {
             n <= xs ? (
                 xs
             ) : concat(
-                replicate( Math.ceil(n / lng))(
+                replicate(Math.ceil(n / lng))(
                     xs
                 )
             )

@@ -1,10 +1,10 @@
 ```js
 // listDirectory :: FilePath -> [FilePath]
-const listDirectory = strPath =>
+const listDirectory = fp =>
 	ObjC.unwrap(
 		$.NSFileManager.defaultManager
 		.contentsOfDirectoryAtPathError(
-			ObjC.wrap(strPath)
+			ObjC.wrap(fp)
 			.stringByStandardizingPath,
 			null
 		))

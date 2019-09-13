@@ -1,11 +1,11 @@
 ```js
 // getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
-const getDirectoryContentsLR = strPath => {
+const getDirectoryContentsLR = fp => {
     const
         error = $(),
         xs = $.NSFileManager.defaultManager
         .contentsOfDirectoryAtPathError(
-            $(strPath).stringByStandardizingPath,
+            $(fp).stringByStandardizingPath,
             error
         );
     return xs.isNil() ? (
