@@ -2368,7 +2368,7 @@ const pureT = t => x =>
     ) : pureList(x);
 
 // pureTree :: a -> Tree a
-const pureTree = x => Node(x, []);
+const pureTree = x => Node(x)([]);
 
 // pureTuple :: a -> (a, a)
 const pureTuple = x => Tuple('', x);
