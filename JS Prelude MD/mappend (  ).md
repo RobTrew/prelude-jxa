@@ -7,7 +7,7 @@ const mappend = a => b => {
             'Maybe' === t ? (
                 mappendMaybe
             ) : 'Ordering' === t ? (
-                mappendOrdering
+                mappendOrd
             ) : mappendTuple
         ) : 'function' !== typeof a ? (
             append

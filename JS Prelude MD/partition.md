@@ -1,8 +1,4 @@
 ```js
-// partition :: Predicate -> List -> (Matches, nonMatches)
-```
-
-```js
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
 const partition = p => xs =>
     xs.reduce(

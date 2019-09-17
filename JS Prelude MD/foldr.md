@@ -4,7 +4,7 @@
 ```
 
 ```js
-// foldr :: (b -> a -> a) -> a -> [b] -> a
+// foldr :: (a -> b -> b) -> b -> [a] -> b
 const foldr = f => a => xs => {
     let v = a,
         i = xs.length;

@@ -1233,7 +1233,7 @@ const foldlTree = f => acc => node => {
 
 // Note that that the Haskell signature of foldr differs from that of
 // foldl - the positions of accumulator and current value are reversed
-// foldr :: (b -> a -> a) -> a -> [b] -> a
+// foldr :: (a -> b -> b) -> b -> [a] -> b
 const foldr = f => a => xs => {
     let v = a,
         i = xs.length;
@@ -1974,7 +1974,7 @@ const mappend = a => b => {
             'Maybe' === t ? (
                 mappendMaybe
             ) : 'Ordering' === t ? (
-                mappendOrdering
+                mappendOrd
             ) : mappendTuple
         ) : 'function' !== typeof a ? (
             append
@@ -2225,7 +2225,6 @@ const pairNestFromTree = tree => {
     return go(tree);
 };
 
-// partition :: Predicate -> List -> (Matches, nonMatches)
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
 const partition = p => xs =>
     xs.reduce(
