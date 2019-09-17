@@ -1,5 +1,6 @@
 ```js
-// fTable :: String -> (a -> String) -> (b -> String) -> (a -> b) -> [a] -> String
+// fTable :: String -> (a -> String) -> (b -> String) 
+//                      -> (a -> b) -> [a] -> String
 const fTable = s => xShow => fxShow => f => xs => {
     // Heading -> x display function ->
     //           fx display function ->

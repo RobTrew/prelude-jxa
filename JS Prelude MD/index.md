@@ -8,11 +8,9 @@ const index = xs => i => {
         const v = xs[i];
         return undefined !== v ? Just(v) : Nothing();
     })() : (() => {
-        const v = until(
-            x => x.done || i <= fst(x.value),
-            () => xs.next(),
-            xs.next()
-        );
+        const v = until(x => x.done || i <= fst(x.value))(
+            () => xs.next()
+        )(xs.next());
         return v.done ? Nothing() : Just(snd(v.value));
     })();
 };

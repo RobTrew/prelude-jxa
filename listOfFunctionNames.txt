@@ -6,7 +6,7 @@ Nothing :: Maybe a
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
-TupleN :: a -> b ...  -> (a, b ... )
+TupleN :: a -> b ... -> (a, b ... )
 abs :: Num -> Num
 all :: (a -> Bool) -> [a] -> Bool
 allTree :: (a -> Bool) -> Tree a -> Bool
@@ -44,7 +44,7 @@ breakOnAll :: String -> String -> [(String, String)]
 breakOnMay :: String -> String -> Maybe (String, String)
 bulleted :: String -> String -> String
 cartesianProduct :: [a] -> [b] -> [(a, b)]
-caseOf :: [(a -> Bool, b)] -> b -> a ->  b
+caseOf :: [(a -> Bool, b)] -> b -> a -> b
 catMaybes :: [Maybe a] -> [a]
 ceiling :: Num -> Int
 center :: Int -> Char -> String -> String
@@ -245,11 +245,9 @@ mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 mappend (<>) :: Monoid a => a -> a -> a
-mappendComparing :: [(a -> b)] -> (a -> a -> Ordering)
-mappendComparing2 :: [((a -> b), Bool)] -> (a -> a -> Ordering)
 mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
-mappendOrdering (<>) :: Ordering -> Ordering -> Ordering
+mappendOrd (<>) :: Ordering -> Ordering -> Ordering
 mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 matching :: [a] -> (a -> Int -> [a] -> Bool)
 max :: Ord a => a -> a -> a
@@ -479,9 +477,12 @@ zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
+zipList :: [a] -> [b] -> [(a, b)]
 zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
+zipWithGen :: (a -> b -> c) Gen [a] -> Gen [b] -> Gen [c]
+zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]

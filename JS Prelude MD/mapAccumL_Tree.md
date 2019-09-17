@@ -1,5 +1,6 @@
 ```js
-// mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
+// mapAccumL_Tree :: (acc -> x -> (acc, y)) 
+// -> acc -> Tree -> (acc, Tree)
 const mapAccumL_Tree = f => acc => tree => {
     const go = (a, x) => {
         const

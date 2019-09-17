@@ -1,5 +1,6 @@
 ```js
-// createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
+// createDirectoryIfMissingLR :: Bool -> FilePath -> 
+// Either String String
 const createDirectoryIfMissingLR = blnParents => dirPath => {
     const fp = filePath(dirPath);
     return doesPathExist(fp) ? (

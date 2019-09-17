@@ -985,7 +985,8 @@ const even = n => 0 === n % 2;
 // exp :: Float -> Float
 const exp = Math.exp;
 
-// fTable :: String -> (a -> String) -> (b -> String) -> (a -> b) -> [a] -> String
+// fTable :: String -> (a -> String) -> (b -> String) 
+//                      -> (a -> b) -> [a] -> String
 const fTable = s => xShow => fxShow => f => xs => {
     // Heading -> x display function ->
     //           fx display function ->
@@ -1414,11 +1415,9 @@ const index = xs => i => {
         const v = xs[i];
         return undefined !== v ? Just(v) : Nothing();
     })() : (() => {
-        const v = until(
-            x => x.done || i <= fst(x.value),
-            () => xs.next(),
-            xs.next()
-        );
+        const v = until(x => x.done || i <= fst(x.value))(
+            () => xs.next()
+        )(xs.next());
         return v.done ? Nothing() : Just(snd(v.value));
     })();
 };
@@ -1711,7 +1710,8 @@ const justifyRight = n => cFiller => s =>
 const keys = Object.keys;
 
 // Kleisli composition LR
-// kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
+// kleisliCompose (>=>) :: Monad m => 
+// (a -> m b) -> (b -> m c) -> (a -> m c)
 const kleisliCompose = f => g =>
     x => bind(f(x))(
         g
@@ -1821,7 +1821,8 @@ const liftA2Tree = f => tx => ty => {
     return go(tx);
 };
 
-// liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
+// liftA2Tuple :: Monoid m => 
+// (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 const liftA2Tuple = f => a => b =>
     Tuple(mappend(a[0])(b[0]))(
         f(a[1])(b[1])
@@ -1899,7 +1900,8 @@ const mapAccumL = f => acc => xs =>
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
 
-// mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
+// mapAccumL_Tree :: (acc -> x -> (acc, y)) 
+// -> acc -> Tree -> (acc, Tree)
 const mapAccumL_Tree = f => acc => tree => {
     const go = (a, x) => {
         const
@@ -2056,7 +2058,7 @@ const maximum = xs =>
 const maximumBy = f => xs =>
     0 < xs.length ? (
         xs.slice(1)
-        .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0])
+        .reduce((a, x) => 0 < f(x)(a) ? x : a, xs[0])
     ) : undefined;
 
 //Ordering: (LT|EQ|GT):
@@ -3525,7 +3527,8 @@ const transpose_ = rows =>
         )
     ) : [];
 
-// traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
+// traverse :: (Applicative f, Traversable t) => 
+// (a -> f b) -> t a -> f (t b)
 const traverse = f => tx => {
     const t = tx.type;
     return (
@@ -3543,10 +3546,11 @@ const traverse = f => tx => {
     )(f)(tx)
 };
 
-//instance Traversable (Either a) where
+// instance Traversable (Either a) where
 //    traverse _ (Left x) = pure (Left x)
 //    traverse f (Right y) = Right <$> f y
-// traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
+// traverseLR :: Applicative f => 
+// (t -> f b) -> Either a t -> f (Either a b)
 const traverseLR = f => lr =>
     undefined !== lr.Left ? (
         [lr]
