@@ -5,10 +5,6 @@
 
 ```js
 // foldr :: (a -> b -> b) -> b -> [a] -> b
-const foldr = f => a => xs => {
-    let v = a,
-        i = xs.length;
-    while (i--) v = f(xs[i])(v);
-    return v;
-};
+const foldr = f => a => xs =>
+    xs.reduceRight((a, x) => f(x)(a), a);
 ```

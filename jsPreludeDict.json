@@ -146,7 +146,7 @@
   "foldl1": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f => xs =>\n    1 < xs.length ? xs.slice(1)\n    .reduce(uncurry(f), xs[0]) : xs[0];",
   "foldl1May": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f => xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1)\n            .reduce(uncurry(f), xs[0]))\n    ) : Nothing();",
   "foldlTree": "// foldlTree :: (b -> a -> b) -> b -> Tree a -> b\nconst foldlTree = f => acc => node => {\n  const go = (a, x) =>\n    x.nest.reduce(go, f(a)(x));\n  return go(acc, node);\n};",
-  "foldr": "// Note that that the Haskell signature of foldr differs from that of\n// foldl - the positions of accumulator and current value are reversed\n\n// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f => a => xs => {\n    let v = a,\n        i = xs.length;\n    while (i--) v = f(xs[i])(v);\n    return v;\n};",
+  "foldr": "// Note that that the Haskell signature of foldr differs from that of\n// foldl - the positions of accumulator and current value are reversed\n\n// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f => a => xs =>\n    xs.reduceRight((a, x) => f(x)(a), a);",
   "foldr1": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = f => xs =>\n    0 < xs.length ? init(xs)\n    .reduceRight(uncurry(f), last(xs)) : [];",
   "foldr1May": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = f => xs =>\n    0 < xs.length ? (\n        Just(xs.slice(0, -1)\n            .reduceRight(uncurr(f), xs.slice(-1)[0]))\n    ) : Nothing();",
   "foldrTree": "// foldrTree :: (a -> b -> b) -> b -> Tree a -> b\nconst foldrTree = f => acc => node => {\n    const go = (a, x) =>\n        x.nest.reduceRight(go, f(x.root)(a));\n    return go(acc, node);\n};",
