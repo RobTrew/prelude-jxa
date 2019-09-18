@@ -143,15 +143,8 @@ const apMay = mf =>
     liftA2May(x => x)(mf)
 
 // apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
-const apTree = tf => tx => {
-    const go = t =>
-        Node(t.root(tx.root))(
-            tx.nest.map(
-                curry(fmapTree)(t.root)
-            ).concat(t.nest.map(go))
-        );
-    return go(tf);
-};
+const apTree = tf =>
+    liftA2Tree(x => x)(tf)
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 const apTuple = tpl => 
@@ -183,8 +176,8 @@ const applyN = n => f => x =>
     }, () => f)
     .reduce((a, g) => g(a), x)
 
-// Epsilon -> Real -> Ratio
-// approxRatio :: Real -> Real -> Ratio
+// Epsilon -> Float -> Ratio
+// approxRatio :: Float -> Float -> Ratio
 const approxRatio = eps => n => {
   const
     gcde = (e, x, y) => {

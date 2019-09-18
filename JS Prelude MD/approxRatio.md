@@ -1,9 +1,9 @@
 ```js
-// Epsilon -> Real -> Ratio
+// Epsilon -> Float -> Ratio
 ```
 
 ```js
-// approxRatio :: Real -> Real -> Ratio
+// approxRatio :: Float -> Float -> Ratio
 const approxRatio = eps => n => {
   const
     gcde = (e, x, y) => {
