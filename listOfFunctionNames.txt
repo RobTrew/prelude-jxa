@@ -26,7 +26,7 @@ appendFileMay :: FilePath -> String -> Maybe IO FilePath
 appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 apply ($) :: (a -> b) -> a -> b
 applyN :: Int -> (a -> a) -> a -> a
-approxRatio :: Real -> Real -> Ratio
+approxRatio :: Float -> Float -> Ratio
 argvLength :: Function -> Int
 assocs :: Map k a -> [(k, a)]
 base64decode :: String -> String
