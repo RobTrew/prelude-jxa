@@ -1,5 +1,6 @@
 ```js
-// zipWithGen :: (a -> b -> c) Gen [a] -> Gen [b] -> Gen [c]
+// zipWithGen :: (a -> b -> c) -> 
+// Gen [a] -> Gen [b] -> Gen [c]
 const zipWithGen = f => ga => gb => {
     function* go(ma, mb) {
         let

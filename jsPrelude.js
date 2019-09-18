@@ -130,12 +130,12 @@ const apFn = f =>
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 const apLR = flr => liftA2LR(identity)(flr)
 
-// apList (<*>) :: [a -> b] -> [a] -> [b]
+// apList (<*>) :: [(a -> b)] -> [a] -> [b]
 const apList = fs => xs =>
-    // The application of each of a list of functions,
-    // to each of a list of values.
+    // The sequential application of each of a list
+    // of functions to each of a list of values.
     fs.flatMap(
-        f => xs.flatMap(x => [f(x)])
+        f => xs.map(f)
     );
 
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
@@ -1801,7 +1801,9 @@ const liftA2List = f => xs => ys =>
     // The binary operator f lifted to a function over two
     // lists. f applied to each pair of arguments in the
     // cartesian product of xs and ys.
-    xs.flatMap(x => ys.flatMap(y => [f(x)(y)]));
+    xs.flatMap(
+        x => ys.map(f(x))
+    );
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 const liftA2May = f => a => b =>
@@ -3723,7 +3725,7 @@ const unQuoted = s =>
 const uncons = xs => {
     const lng = length(xs);
     return (0 < lng) ? (
-        lng < Infinity ? (
+        Infinity > lng ? (
             Just(Tuple(xs[0])(xs.slice(1))) // Finite list
         ) : (() => {
             const nxt = take(1)(xs);
@@ -3991,7 +3993,8 @@ const zipWith4 = f => ws => xs => ys => zs =>
         length: minimum([ws, xs, ys, zs].map(length))
     }, (_, i) => f(ws[i])(xs[i])(ys[i])(zs[i]));
 
-// zipWithGen :: (a -> b -> c) Gen [a] -> Gen [b] -> Gen [c]
+// zipWithGen :: (a -> b -> c) -> 
+// Gen [a] -> Gen [b] -> Gen [c]
 const zipWithGen = f => ga => gb => {
     function* go(ma, mb) {
         let

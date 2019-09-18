@@ -3,7 +3,7 @@
 const uncons = xs => {
     const lng = length(xs);
     return (0 < lng) ? (
-        lng < Infinity ? (
+        Infinity > lng ? (
             Just(Tuple(xs[0])(xs.slice(1))) // Finite list
         ) : (() => {
             const nxt = take(1)(xs);
