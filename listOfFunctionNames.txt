@@ -8,6 +8,7 @@ Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 TupleN :: a -> b ... -> (a, b ... )
 abs :: Num -> Num
+add (+) :: Num a => a -> a -> a
 all :: (a -> Bool) -> [a] -> Bool
 allTree :: (a -> Bool) -> Tree a -> Bool
 and :: [Bool] -> Bool
@@ -268,6 +269,7 @@ minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 minimumMay :: [a] -> Maybe a
 mod :: Int -> Int -> Int
 modificationTime :: FilePath -> Either String Date
+mul (*) :: Num a => a -> a -> a
 negate :: Num -> Num
 nest :: Tree a -> [a]
 newUUID :: () -> IO UUID String

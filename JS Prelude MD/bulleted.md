@@ -1,7 +1,7 @@
 ```js
 // bulleted :: String -> String -> String
-const bulleted = strIndent => s =>
+const bulleted = strTab => s =>
     s.split(/[\r\n]/).map(
-        x => '' !== x ? strIndent + '- ' + x : x
-    ).join('\n')
+        x => '' !== x ? strTab + '- ' + x : x
+    ).join('\n');
 ```

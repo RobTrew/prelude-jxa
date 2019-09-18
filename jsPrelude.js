@@ -75,6 +75,9 @@ function TupleN() {
 // abs :: Num -> Num
 const abs = Math.abs;
 
+// add (+) :: Num a => a -> a -> a
+const add = a => b => a + b;
+
 // True if all elements of the list 
 // satisfy the predicate.
 // all :: (a -> Bool) -> [a] -> Bool
@@ -313,10 +316,10 @@ const breakOnMay = pat => src =>
     })() : Nothing();
 
 // bulleted :: String -> String -> String
-const bulleted = strIndent => s =>
+const bulleted = strTab => s =>
     s.split(/[\r\n]/).map(
-        x => '' !== x ? strIndent + '- ' + x : x
-    ).join('\n')
+        x => '' !== x ? strTab + '- ' + x : x
+    ).join('\n');
 
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
 const cartesianProduct = xs => ys =>
@@ -1805,7 +1808,7 @@ const liftA2May = f => a => b =>
 // liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 const liftA2Tree = f => tx => ty => {
     const go = tx =>
-        Node(f(tx.root, ty.root))(
+        Node(f(tx.root)(ty.root))(
             Boolean(ty.nest) ? (
                 ty.nest.map(
                     fmapTree(f(tx.root))
@@ -2139,6 +2142,9 @@ const minimumMay = xs =>
 
 // mod :: Int -> Int -> Int
 const mod = n => d => n % d;
+
+// mul (*) :: Num a => a -> a -> a
+const mul = a => b => a * b;
 
 // negate :: Num -> Num
 const negate = n => -n;
