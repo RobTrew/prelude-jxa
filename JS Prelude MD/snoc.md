@@ -1,9 +1,8 @@
 ```js
-// Mirror image of cons
-// New copy of the list, with an atom added at the end
-```
-
-```js
 // snoc :: [a] -> a -> [a]
-const snoc = xs => x => xs.concat(x);
+const snoc = xs =>
+    // The mirror image of cons
+    // A new copy of the given list, 
+    // with an atom appended at the end.
+    x => xs.concat(x);
 ```

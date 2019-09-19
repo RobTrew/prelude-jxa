@@ -1,4 +1,6 @@
 ```js
 // add (+) :: Num a => a -> a -> a
-const add = a => b => a + b;
+const add = a =>
+  // Curried addition.
+  b => a + b;
 ```

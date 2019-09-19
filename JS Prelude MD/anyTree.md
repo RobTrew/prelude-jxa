@@ -1,7 +1,7 @@
 ```js
 // anyTree :: (a -> Bool) -> Tree a -> Bool
-const anyTree = p => tree =>
-    foldTree(x => xs => p(x) || xs.some(Boolean))(
-        tree
-    );
+const anyTree = p =>
+    // True if p holds for any node of the
+    // tree to which anyTree(p) is applied.
+    foldTree(x => xs => p(x) || xs.some(Boolean));
 ```

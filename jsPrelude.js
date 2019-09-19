@@ -74,41 +74,48 @@ function TupleN() {
 
 // abs :: Num -> Num
 const abs = Math.abs;
+// Absolute value of a given number - without the sign. 
 
 // add (+) :: Num a => a -> a -> a
-const add = a => b => a + b;
+const add = a =>
+  // Curried addition.
+  b => a + b;
 
-// True if all elements of the list 
-// satisfy the predicate.
 // all :: (a -> Bool) -> [a] -> Bool
-const all = p => xs => xs.every(p);
+const all = p =>
+  // True if p(x) holds for every x in xs.
+  xs => xs.every(p);
 
 // allTree :: (a -> Bool) -> Tree a -> Bool
 const allTree = p => tree =>
+    // True if p holds for all nodes of the
+    // tree to which allTree(p) is applied.
     foldTree(x => xs => p(x) && xs.every(Boolean))(
         tree
     );
 
 // and :: [Bool] -> Bool
 const and = xs =>
-    // True unless any contained value is false.
+    // True unless any value in xs is false.
     xs.every(Boolean);
 
-// | True if any contained element satisfies the predicate.
 // any :: (a -> Bool) -> [a] -> Bool
-const any = p => xs => xs.some(p);
+const any = p =>
+  // True if p(x) holds for at least
+  // one item in xs.
+  xs => xs.some(p);
 
 // anyTree :: (a -> Bool) -> Tree a -> Bool
-const anyTree = p => tree =>
-    foldTree(x => xs => p(x) || xs.some(Boolean))(
-        tree
-    );
+const anyTree = p =>
+    // True if p holds for any node of the
+    // tree to which anyTree(p) is applied.
+    foldTree(x => xs => p(x) || xs.some(Boolean));
 
-// Applies wrapped functions to wrapped values, 
-// for example applying a list of functions to a list of values
-// or applying Just(f) to Just(x), Right(f) to Right(x), etc
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = mf => mx => {
+    // Applies wrapped functions to wrapped values, 
+    // for example applying a list of functions to a list of values
+    // or applying Just(f) to Just(x), Right(f) to Right(x), etc
     const t = mx.type;
     return (
         undefined !== t ? (
@@ -131,7 +138,10 @@ const apFn = f =>
     g => x => f(x)(g(x))
 
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
-const apLR = flr => liftA2LR(identity)(flr)
+const apLR = flr =>
+  // Either application of a possible function in Either
+  // to a possible value in Either, or a Left value.
+  liftA2LR(identity)(flr)
 
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
 const apList = fs => xs =>
@@ -143,6 +153,8 @@ const apList = fs => xs =>
 
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 const apMay = mf =>
+    // Just an application of Maybe a function to
+    // to Maybe a value, or Nothing.
     liftA2May(x => x)(mf)
 
 // apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
@@ -155,10 +167,15 @@ const apTuple = tpl =>
 
 // append (++) :: [a] -> [a] -> [a]
 // append (++) :: String -> String -> String
-const append = xs => ys => xs.concat(ys);
+const append = xs =>
+  // A list or string composed by
+  // the concatenation of two others.
+  ys => xs.concat(ys);
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
+    // A new generator composed from the 
+    // concatenation of two existing generators.
     function* (ys) {
         for (let vs of [xs, ys]) {
             let nxt = vs.next()
@@ -2933,10 +2950,12 @@ function sj() {
 // snd :: (a, b) -> b
 const snd = tpl => tpl[1];
 
-// Mirror image of cons
-// New copy of the list, with an atom added at the end
 // snoc :: [a] -> a -> [a]
-const snoc = xs => x => xs.concat(x);
+const snoc = xs =>
+    // The mirror image of cons
+    // A new copy of the given list, 
+    // with an atom appended at the end.
+    x => xs.concat(x);
 
 // sort :: Ord a => [a] -> [a]
 const sort = xs => xs.slice()
@@ -3000,12 +3019,14 @@ const sortOn = f => xs => {
 //
 // span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
-const span = p => xs =>
-    splitAt(
-        until(i => !p(xs[i]))(
+const span = p => xs => {
+    const iLast = xs.length - 1;
+    return splitAt(
+        until(i => i > iLast || !p(xs[i]))(
             i => 1 + i
         )(0)
     )(xs);
+};
 
 // Compose a function (from a tuple to a tuple), 
 // (with separate transformations for fst and snd)

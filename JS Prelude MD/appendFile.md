@@ -1,11 +1,12 @@
 ```js
 // appendFile :: FilePath -> String -> IO Bool
-const appendFile = strPath => txt => {
+const appendFile = fp => txt => {
+    // The file at fp updated with a new string
+    // appended to its existing contents.
     const
-        oFullPath = ObjC.wrap(strPath)
+        oFullPath = ObjC.wrap(fp)
         .stringByStandardizingPath,
         ref = Ref();
-  
     return $.NSFileManager.defaultManager
         .fileExistsAtPathIsDirectory(
             oFullPath
@@ -25,7 +26,7 @@ const appendFile = strPath => txt => {
                     true // value.
                 );
             })() : false // Text appending to directory is undefined
-        ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(strPath))) ? (
+        ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (
             writeFile(oFullPath)(txt), // Effect, and
             true // value.
         ) : false;
