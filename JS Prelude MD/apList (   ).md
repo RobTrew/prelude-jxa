@@ -1,9 +1,9 @@
 ```js
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
-const apList = fs => xs =>
+const apList = fs =>
     // The sequential application of each of a list
     // of functions to each of a list of values.
-    fs.flatMap(
+    xs => fs.flatMap(
         f => xs.map(f)
     );
 ```

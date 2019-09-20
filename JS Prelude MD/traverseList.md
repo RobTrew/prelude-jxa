@@ -17,7 +17,7 @@ const traverseList = f => xs => {
             t = vLast.type || 'List';
         return xs.slice(0, -1).reduceRight(
             (ys, x) => liftA2(cons)(f(x))(ys),
-            liftA2(cons)(vLast)(pureT(t, []))
+            liftA2(cons)(vLast)(pureT(t)([]))
         );
     })() : [[]];
 };

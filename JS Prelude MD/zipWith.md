@@ -8,7 +8,8 @@
 const zipWith = f => xs => ys => {
     const lng = Math.min(length(xs), length(ys));
     return Infinity > lng ? (() => {
-        as = take(lng)(xs),
+       const
+            as = take(lng)(xs),
             bs = take(lng)(ys);
         return Array.from({
             length: lng

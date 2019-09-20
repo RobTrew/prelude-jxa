@@ -1,7 +1,7 @@
 ```js
 // show :: a -> String
 // show :: a -> Int -> Indented String
-const show = x => n => {
+const show = x => {
     const
         e = ('function' !== typeof x) ? (
             x
@@ -32,6 +32,6 @@ const show = x => n => {
         ) : 'string' !== typeof v ? (
             v
         ) : "'" + v + "'";
-    }, n)
+    }, 2)
 };
 ```

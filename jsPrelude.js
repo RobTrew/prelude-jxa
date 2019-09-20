@@ -1,12 +1,13 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
 // Action :: (a -> b) -> a -> Action b
-const Action = f => x => ({
+const Action = f =>
     // Constructor for an action.
-    type: 'Action',
-    act: f,
-    arg: x
-});
+    x => ({
+        type: 'Action',
+        act: f,
+        arg: x
+    });
 
 // Just :: a -> Maybe a
 const Just = x => ({
@@ -78,19 +79,19 @@ const abs = Math.abs;
 
 // add (+) :: Num a => a -> a -> a
 const add = a =>
-  // Curried addition.
-  b => a + b;
+    // Curried addition.
+    b => a + b;
 
 // all :: (a -> Bool) -> [a] -> Bool
 const all = p =>
-  // True if p(x) holds for every x in xs.
-  xs => xs.every(p);
+    // True if p(x) holds for every x in xs.
+    xs => xs.every(p);
 
 // allTree :: (a -> Bool) -> Tree a -> Bool
-const allTree = p => tree =>
+const allTree = p =>
     // True if p holds for all nodes of the
     // tree to which allTree(p) is applied.
-    foldTree(x => xs => p(x) && xs.every(Boolean))(
+    tree => foldTree(x => xs => p(x) && xs.every(Boolean))(
         tree
     );
 
@@ -101,9 +102,9 @@ const and = xs =>
 
 // any :: (a -> Bool) -> [a] -> Bool
 const any = p =>
-  // True if p(x) holds for at least
-  // one item in xs.
-  xs => xs.some(p);
+    // True if p(x) holds for at least
+    // one item in xs.
+    xs => xs.some(p);
 
 // anyTree :: (a -> Bool) -> Tree a -> Bool
 const anyTree = p =>
@@ -112,25 +113,26 @@ const anyTree = p =>
     foldTree(x => xs => p(x) || xs.some(Boolean));
 
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
-const ap = mf => mx => {
+const ap = mf =>
     // Applies wrapped functions to wrapped values, 
     // for example applying a list of functions to a list of values
     // or applying Just(f) to Just(x), Right(f) to Right(x), etc
-    const t = mx.type;
-    return (
-        undefined !== t ? (
-            'Either' === t ? (
-                apLR
-            ) : 'Maybe' === t ? (
-                apMay
-            ) : 'Node' === t ? (
-                apTree
-            ) : 'Tuple' === t ? (
-                apTuple
+    mx => {
+        const t = mx.type;
+        return (
+            undefined !== t ? (
+                'Either' === t ? (
+                    apLR
+                ) : 'Maybe' === t ? (
+                    apMay
+                ) : 'Node' === t ? (
+                    apTree
+                ) : 'Tuple' === t ? (
+                    apTuple
+                ) : apList
             ) : apList
-        ) : apList
-    )(mf)(mx);
-};
+        )(mf)(mx);
+    };
 
 // apFn :: (a -> b -> c) -> (a -> b) -> a -> c
 const apFn = f =>
@@ -144,10 +146,10 @@ const apLR = flr =>
   liftA2LR(identity)(flr)
 
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
-const apList = fs => xs =>
+const apList = fs =>
     // The sequential application of each of a list
     // of functions to each of a list of values.
-    fs.flatMap(
+    xs => fs.flatMap(
         f => xs.map(f)
     );
 
@@ -155,7 +157,7 @@ const apList = fs => xs =>
 const apMay = mf =>
     // Just an application of Maybe a function to
     // to Maybe a value, or Nothing.
-    liftA2May(x => x)(mf)
+    liftA2May(x => x)(mf);
 
 // apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 const apTree = tf =>
@@ -168,9 +170,9 @@ const apTuple = tpl =>
 // append (++) :: [a] -> [a] -> [a]
 // append (++) :: String -> String -> String
 const append = xs =>
-  // A list or string composed by
-  // the concatenation of two others.
-  ys => xs.concat(ys);
+    // A list or string composed by
+    // the concatenation of two others.
+    ys => xs.concat(ys);
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
@@ -187,7 +189,9 @@ const appendGen = xs =>
     };
 
 // apply ($) :: (a -> b) -> a -> b
-const apply = f => x => f(x);
+const apply = f =>
+    // Application operator.
+    x => f(x);
 
 // applyN :: Int -> (a -> a) -> a -> a
 const applyN = n => f => x =>
@@ -610,7 +614,7 @@ const div = x => y => Math.floor(x / y);
 const draw = node => {
     // shift :: String -> String -> [String] -> [String]
     const shifted = (first, other, xs) =>
-        zipWith(append)(
+        zipWithList(append)(
             cons(first)(
               replicate(xs.length - 1)(
                 other
@@ -653,19 +657,18 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         // Lefts, Middle, Rights
         lmrFromStrings = xs => {
             const [ls, rs] = Array.from(splitAt(
-                Math.floor(xs.length / 2),
-                xs
-            ));
-            return Tuple3(ls)(
-              rs[0]
-            )(rs.slice(1));
+                Math.floor(xs.length / 2)
+            )(xs));
+            return Tuple3(ls)(rs[0])(
+                rs.slice(1)
+            );
         },
         stringsFromLMR = lmr =>
         Array.from(lmr).reduce((a, x) => a.concat(x), []),
         fghOverLMR = (f, g, h) => lmr => {
             const [ls, m, rs] = Array.from(lmr);
             return Tuple3(ls.map(f))(
-              g(m)
+                g(m)
             )(rs.map(h));
         };
 
@@ -679,10 +682,10 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         // LEAF NODE --------------------------------------
         return 0 === lng ? (
             Tuple3([])(
-              '─'.repeat(w - nChars) + x
+                '─'.repeat(w - nChars) + x
             )([])
 
-        // NODE WITH SINGLE CHILD -------------------------
+            // NODE WITH SINGLE CHILD -------------------------
         ) : 1 === lng ? (() => {
             const indented = leftPad(1 + w);
             return fghOverLMR(
@@ -691,11 +694,12 @@ const drawTree2 = blnCompact => blnPruned => tree => {
                 indented
             )(f(xs[0]));
 
-        // NODE WITH CHILDREN -----------------------------
+            // NODE WITH CHILDREN -----------------------------
         })() : (() => {
             const
                 cFix = x => xs => x + xs,
-                treeFix = (l, m, r) => compose(stringsFromLMR)(
+                treeFix = (l, m, r) => compose(
+                    stringsFromLMR,
                     fghOverLMR(cFix(l), cFix(m), cFix(r))
                 ),
                 _x = '─'.repeat(w - nChars) + x,
@@ -724,10 +728,12 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         })();
     };
     const
-        measuredTree = fmapTree(v => {
-          const s = ' ' + v + ' ';
-          return Tuple(s.length, s)
-        })(tree),
+        measuredTree = fmapTree(
+            v => {
+                const s = ' ' + v + ' ';
+                return Tuple(s.length)(s)
+            }
+        )(tree),
         levelWidths = init(levels(measuredTree))
         .reduce(
             (a, level) => a.concat(maximum(level.map(fst))),
@@ -2105,6 +2111,28 @@ const maybeToList = mb =>
 const mean = xs =>
   xs.reduce((a, x) => a + x, 0) / xs.length;
 
+// measuredTree :: Tree a -> Tree (a, (Int, Int))
+const measuredTree = tree =>
+    // A tree in which each node is decorated with 
+    // a (Width, Height) measure of its sub-tree.
+    foldTree(
+        x => xs => Node(
+            Tuple(x)(
+                0 < xs.length ? secondArrow(succ)(
+                    xs.reduce(
+                        (tplAcc, node) => {
+                            const tplX = node.root[1];
+                            return Tuple(
+                                tplAcc[0] + tplX[0]
+                            )(max(tplAcc[1])(tplX[1]));
+                        },
+                        Tuple(0)(0)
+                    )
+                ) : Tuple(1)(1)
+            )
+        )(xs)
+    )(tree);
+
 // member :: Key -> Dict -> Bool
 const member = k => dct => k in dct;
 
@@ -2386,7 +2414,7 @@ const pureT = t => x =>
 const pureTree = x => Node(x)([]);
 
 // pureTuple :: a -> (a, a)
-const pureTuple = x => Tuple('', x);
+const pureTuple = x => Tuple('')(x);
 
 // Included only for comparison with AppleScript
 // sort and sortBy are faster and more flexible
@@ -2716,10 +2744,11 @@ const scanr1 = f => xs =>
         ) 
     ) : [];
 
-// Lift a simple function to one which applies to a tuple, 
-// transforming only the second item of the tuple
 // secondArrow :: (a -> b) -> ((c, a) -> (c, b))
-const secondArrow = f => xy => 
+const secondArrow = f => xy =>
+    // A function over a simple value lifted 
+    // to a function over a tuple.
+    // f (a, b) -> (a, f(b))
     Tuple(xy[0])(
         f(xy[1])
     );
@@ -2758,7 +2787,7 @@ const shift = n => xs => {
 
 // show :: a -> String
 // show :: a -> Int -> Indented String
-const show = x => n => {
+const show = x => {
     const
         e = ('function' !== typeof x) ? (
             x
@@ -2789,7 +2818,7 @@ const show = x => n => {
         ) : 'string' !== typeof v ? (
             v
         ) : "'" + v + "'";
-    }, n)
+    }, 2)
 };
 
 // showBinary :: Int -> String
@@ -2825,7 +2854,7 @@ const showIntAtBase = base => toChr => n => rs => {
     const go = ([n, d], r) => {
         const r_ = toChr(d) + r;
         return 0 !== n ? (
-            go(Array.from(quotRem(n, base)), r_)
+            go(Array.from(quotRem(n)(base)), r_)
         ) : r_;
     };
     return 1 >= base ? (
@@ -2908,9 +2937,7 @@ const showSet = oSet =>
 // showTree :: Tree a -> String
 const showTree = x =>
     drawTree2(false)(true)(
-        fmapTree(show)(
-            x
-        )
+        fmap(show)(x)
     );
 
 // showTuple :: Tuple -> String
@@ -3590,7 +3617,7 @@ const traverseList = f => xs => {
             t = vLast.type || 'List';
         return xs.slice(0, -1).reduceRight(
             (ys, x) => liftA2(cons)(f(x))(ys),
-            liftA2(cons)(vLast)(pureT(t, []))
+            liftA2(cons)(vLast)(pureT(t)([]))
         );
     })() : [[]];
 };
@@ -3752,11 +3779,14 @@ const uncons = xs => {
     ) : Nothing();
 };
 
-// Given a curried/default function, returns an
-// equivalent function on a tuple or list pair.
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
-    (a, b) => f(a)(b)
+    // Converts a function of more than one argument
+    // to a function on Tuple type (Tuple ... TupleN)
+    // or array which contains those arguments.
+    // This implementation uses the fact that the Tuple
+    // constructors create an object with a private `length` property.
+    args => f.apply(null, args);
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
@@ -3987,7 +4017,8 @@ function zipN() {
 const zipWith = f => xs => ys => {
     const lng = Math.min(length(xs), length(ys));
     return Infinity > lng ? (() => {
-        as = take(lng)(xs),
+       const
+            as = take(lng)(xs),
             bs = take(lng)(ys);
         return Array.from({
             length: lng

@@ -1,9 +1,10 @@
 ```js
 // Action :: (a -> b) -> a -> Action b
-const Action = f => x => ({
+const Action = f =>
     // Constructor for an action.
-    type: 'Action',
-    act: f,
-    arg: x
-});
+    x => ({
+        type: 'Action',
+        act: f,
+        arg: x
+    });
 ```

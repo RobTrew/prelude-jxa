@@ -3,7 +3,7 @@
 const draw = node => {
     // shift :: String -> String -> [String] -> [String]
     const shifted = (first, other, xs) =>
-        zipWith(append)(
+        zipWithList(append)(
             cons(first)(
               replicate(xs.length - 1)(
                 other

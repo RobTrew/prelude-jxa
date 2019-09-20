@@ -1,10 +1,13 @@
 ```js
-// Given a curried/default function, returns an
-// equivalent function on a tuple or list pair.
+// uncurry :: (a -> b -> c) -> ((a, b) -> c)
 ```
 
 ```js
-// uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
-    (a, b) => f(a)(b)
+    // Converts a function of more than one argument
+    // to a function on Tuple type (Tuple ... TupleN)
+    // or array which contains those arguments.
+    // This implementation uses the fact that the Tuple
+    // constructors create an object with a private `length` property.
+    args => f.apply(null, args);
 ```

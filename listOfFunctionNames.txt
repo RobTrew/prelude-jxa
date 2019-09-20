@@ -260,6 +260,7 @@ maximumMay :: Ord a => [a] -> Maybe a
 maybe :: b -> (a -> b) -> Maybe a -> b
 maybeToList :: Maybe a -> [a]
 mean :: [Num] -> Num
+measuredTree :: Tree a -> Tree (a, (Int, Int))
 member :: Key -> Dict -> Bool
 min :: Ord a => a -> a -> a
 minBound :: a -> a
@@ -371,7 +372,7 @@ showOutline :: Tree String -> String
 showPrecision :: Int -> Float -> String
 showRatio :: Ratio -> String
 showSet :: Set a -> String
-showTree :: Tree a -> String
+showTree :: Tree String -> String
 showTuple :: Tuple -> String
 showUndefined :: () -> String
 signum :: Num -> Num

@@ -1,4 +1,6 @@
 ```js
 // apply ($) :: (a -> b) -> a -> b
-const apply = f => x => f(x);
+const apply = f =>
+    // Application operator.
+    x => f(x);
 ```

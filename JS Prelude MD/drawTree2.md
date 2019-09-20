@@ -7,19 +7,18 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         // Lefts, Middle, Rights
         lmrFromStrings = xs => {
             const [ls, rs] = Array.from(splitAt(
-                Math.floor(xs.length / 2),
-                xs
-            ));
-            return Tuple3(ls)(
-              rs[0]
-            )(rs.slice(1));
+                Math.floor(xs.length / 2)
+            )(xs));
+            return Tuple3(ls)(rs[0])(
+                rs.slice(1)
+            );
         },
         stringsFromLMR = lmr =>
         Array.from(lmr).reduce((a, x) => a.concat(x), []),
         fghOverLMR = (f, g, h) => lmr => {
             const [ls, m, rs] = Array.from(lmr);
             return Tuple3(ls.map(f))(
-              g(m)
+                g(m)
             )(rs.map(h));
         };
 
@@ -33,10 +32,10 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         // LEAF NODE --------------------------------------
         return 0 === lng ? (
             Tuple3([])(
-              '─'.repeat(w - nChars) + x
+                '─'.repeat(w - nChars) + x
             )([])
 
-        // NODE WITH SINGLE CHILD -------------------------
+            // NODE WITH SINGLE CHILD -------------------------
         ) : 1 === lng ? (() => {
             const indented = leftPad(1 + w);
             return fghOverLMR(
@@ -45,11 +44,12 @@ const drawTree2 = blnCompact => blnPruned => tree => {
                 indented
             )(f(xs[0]));
 
-        // NODE WITH CHILDREN -----------------------------
+            // NODE WITH CHILDREN -----------------------------
         })() : (() => {
             const
                 cFix = x => xs => x + xs,
-                treeFix = (l, m, r) => compose(stringsFromLMR)(
+                treeFix = (l, m, r) => compose(
+                    stringsFromLMR,
                     fghOverLMR(cFix(l), cFix(m), cFix(r))
                 ),
                 _x = '─'.repeat(w - nChars) + x,
@@ -78,10 +78,12 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         })();
     };
     const
-        measuredTree = fmapTree(v => {
-          const s = ' ' + v + ' ';
-          return Tuple(s.length, s)
-        })(tree),
+        measuredTree = fmapTree(
+            v => {
+                const s = ' ' + v + ' ';
+                return Tuple(s.length)(s)
+            }
+        )(tree),
         levelWidths = init(levels(measuredTree))
         .reduce(
             (a, level) => a.concat(maximum(level.map(fst))),

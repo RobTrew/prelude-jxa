@@ -4,7 +4,7 @@ const showIntAtBase = base => toChr => n => rs => {
     const go = ([n, d], r) => {
         const r_ = toChr(d) + r;
         return 0 !== n ? (
-            go(Array.from(quotRem(n, base)), r_)
+            go(Array.from(quotRem(n)(base)), r_)
         ) : r_;
     };
     return 1 >= base ? (
