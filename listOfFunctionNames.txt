@@ -173,7 +173,9 @@ identity :: a -> a
 if_ :: Bool -> a -> a -> a
 indented :: String -> String -> String
 index (!!) :: [a] -> Int -> Maybe a
+indexForest :: [Tree (a, { nodeSum :: Int })] -> Int ->
 indexOf :: Eq a => [a] -> [a] -> Maybe Int
+indexTree :: Tree (a, { nodeSum :: Int }) -> Int ->
 init :: [a] -> [a]
 initMay :: [a] -> Maybe [a]
 inits :: [a] -> [[a]]
@@ -260,7 +262,7 @@ maximumMay :: Ord a => [a] -> Maybe a
 maybe :: b -> (a -> b) -> Maybe a -> b
 maybeToList :: Maybe a -> [a]
 mean :: [Num] -> Num
-measuredTree :: Tree a -> Tree (a, (Int, Int))
+measuredTree :: Tree a -> Tree (a, (Int, Int, Int))
 member :: Key -> Dict -> Bool
 min :: Ord a => a -> a -> a
 minBound :: a -> a
@@ -286,6 +288,7 @@ ord :: Char -> Int
 ordering :: () -> Ordering
 outdented :: String -> String
 pairNestFromTree :: Tree a -> PairNest a
+parentIndexedTree :: Tree (a, {...index :: Int}) ->
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
 permutations :: [a] -> [[a]]
@@ -372,7 +375,7 @@ showOutline :: Tree String -> String
 showPrecision :: Int -> Float -> String
 showRatio :: Ratio -> String
 showSet :: Set a -> String
-showTree :: Tree String -> String
+showTree :: Tree a -> String
 showTuple :: Tuple -> String
 showUndefined :: () -> String
 signum :: Num -> Num

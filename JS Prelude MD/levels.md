@@ -1,7 +1,8 @@
 ```js
 // levels :: Tree a -> [[a]]
 const levels = tree =>
-    iterateUntil(xs => 1 > xs.length)(
-        ys => [].concat(...ys.map(nest))
-    )([tree]).map(xs => xs.map(root));
+    // A list of tree nodes grouped by level.
+    iterateUntil(isNull)(
+        concatMap(nest)
+    )([tree]).map(map(root));
 ```

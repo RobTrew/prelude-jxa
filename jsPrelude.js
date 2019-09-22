@@ -1437,6 +1437,20 @@ const index = xs => i => {
     })();
 };
 
+// indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->
+//                Maybe Tree (a,  { nodeSum :: Int })
+const indexForest = trees =>
+    // Index into a forest of measured trees.
+    // (see measuredTree)
+    i => 0 < trees.length ? (() => {
+        const
+            headNode = trees[0],
+            headSize = headNode.root[1].nodeSum;
+        return i > (headSize - 1) ? (
+            indexForest(trees.slice(1))(i - headSize)
+        ) : indexTree(headNode)(i);
+    })() : Nothing();
+
 // indexOf :: Eq a => [a] -> [a] -> Maybe Int
 // indexOf :: String -> String -> Maybe Int
 const indexOf = needle => haystack =>
@@ -1450,6 +1464,16 @@ const indexOf = needle => haystack =>
             Just(i)
         ) : Nothing();
     })();
+
+// indexTree :: Tree (a,  { nodeSum :: Int }) -> Int ->
+//              Maybe Tree (a,  { nodeSum :: Int })
+const indexTree = tree =>
+    // Index into a measured tree. (see measuredTree)
+    i => 0 !== i ? (
+        i > (tree.root[1].nodeSum - 1) ? (
+            Nothing()
+        ) : indexForest(tree.nest)(i - 1)
+    ) : Just(tree);
 
 // init :: [a] -> [a]
 const init = xs =>
@@ -1770,9 +1794,10 @@ const levelNodes = tree =>
 
 // levels :: Tree a -> [[a]]
 const levels = tree =>
-    iterateUntil(xs => 1 > xs.length)(
-        ys => [].concat(...ys.map(nest))
-    )([tree]).map(xs => xs.map(root));
+    // A list of tree nodes grouped by level.
+    iterateUntil(isNull)(
+        concatMap(nest)
+    )([tree]).map(map(root));
 
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
@@ -2111,27 +2136,54 @@ const maybeToList = mb =>
 const mean = xs =>
   xs.reduce((a, x) => a + x, 0) / xs.length;
 
-// measuredTree :: Tree a -> Tree (a, (Int, Int))
-const measuredTree = tree =>
-    // A tree in which each node is decorated with 
-    // a (Width, Height) measure of its sub-tree.
-    foldTree(
-        x => xs => Node(
-            Tuple(x)(
-                0 < xs.length ? secondArrow(succ)(
-                    xs.reduce(
-                        (tplAcc, node) => {
-                            const tplX = node.root[1];
-                            return Tuple(
-                                tplAcc[0] + tplX[0]
-                            )(max(tplAcc[1])(tplX[1]));
-                        },
-                        Tuple(0)(0)
-                    )
-                ) : Tuple(1)(1)
-            )
-        )(xs)
+// measuredTree :: Tree a -> Tree (a, (Int, Int, Int))
+const measuredTree = tree => {
+    // A tree in which each node is tupled with
+    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,
+    // where leafSum is the number of descendant leaves,
+    // and layerSum is the number of descendant levels,
+    // and nodeSum counts all nodes, including the root.
+    // Index is a position in a zero-based top-down
+    // left to right series. 
+    // For additional parent indices, see parentIndexedTree.
+    const whni = (w, h, n, i) => ({
+        leafSum: w,
+        layerSum: h,
+        nodeSum: n,
+        index: i
+    });
+    let i = 0;
+    return foldTree(
+        x => {
+            let topDown = i++;
+            return xs => Node(
+                Tuple(x)(
+                    0 < xs.length ? (() => {
+                        const dct = xs.reduce(
+                            (a, node) => {
+                                const dimns = node.root[1];
+                                return whni(
+                                    a.leafSum + dimns.leafSum,
+                                    max(a.layerSum)(
+                                        dimns.layerSum
+                                    ),
+                                    a.nodeSum + dimns.nodeSum,
+                                    topDown
+                                );
+                            }, whni(0, 0, 0, topDown)
+                        );
+                        return whni(
+                            dct.leafSum,
+                            1 + dct.layerSum,
+                            1 + dct.nodeSum,
+                            topDown
+                        );
+                    })() : whni(1, 0, 1, topDown)
+                )
+            )(xs);
+        }
     )(tree);
+};
 
 // member :: Key -> Dict -> Bool
 const member = k => dct => k in dct;
@@ -2265,6 +2317,25 @@ const outdented = s => {
 const pairNestFromTree = tree => {
     const go = node => [node.root, node.nest.map(go)];
     return go(tree);
+};
+
+// parentIndexedTree :: Tree (a, {...index :: Int}) ->
+// Tree (a, {...index :: Int, parent :: Maybe Int})
+const parentIndexedTree = tree => {
+    // A tree additionally decorated with parent indices,
+    // derived from a measured tree already decorated with
+    // node indices. (See measuredTree).
+    const go = mb => node => {
+        const
+            x = node.root,
+            measures = x[1];
+        return Node(Tuple(x[0])(
+            Object.assign(measures, {
+                parent: mb
+            })
+        ))(node.nest.map(go(Just(measures.index))));
+    };
+    return go(Nothing())(tree);
 };
 
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
