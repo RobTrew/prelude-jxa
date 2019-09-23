@@ -210,6 +210,7 @@ iso8601Local :: Date -> String
 iterate :: (a -> a) -> a -> Gen [a]
 iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
 join :: Monad m => m (m a) -> m a
+jsonFromTree :: Tree a -> JSON String
 jsonLog :: a -> IO ()
 jsonParseLR :: String -> Either String a
 justifyLeft :: Int -> Char -> String -> String
@@ -233,6 +234,8 @@ liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 lines :: String -> [String]
 listDirectory :: FilePath -> [FilePath]
+listFromMaybe :: Maybe a -> [a]
+listFromTree :: Tree a -> [a]
 listFromTuple :: (a, a ...) -> [a]
 listToMaybe :: [a] -> Maybe a
 log :: Float -> Float
@@ -260,7 +263,6 @@ maximumBy :: (a -> a -> Ordering) -> [a] -> a
 maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 maximumMay :: Ord a => [a] -> Maybe a
 maybe :: b -> (a -> b) -> Maybe a -> b
-maybeToList :: Maybe a -> [a]
 mean :: [Num] -> Num
 measuredTree :: Tree a -> Tree (a, (Int, Int, Int))
 member :: Key -> Dict -> Bool
@@ -287,7 +289,6 @@ or :: [Bool] -> Bool
 ord :: Char -> Int
 ordering :: () -> Ordering
 outdented :: String -> String
-pairNestFromTree :: Tree a -> PairNest a
 parentIndexedTree :: Tree (a, {...index :: Int}) ->
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
@@ -432,7 +433,6 @@ thenIO (>>) :: IO a -> IO b -> IO b
 thenList (>>) :: [a] -> [b] -> [b]
 thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
 toEnum :: a -> Int -> a
-toListTree :: Tree a -> [a]
 toLower :: String -> String
 toRatio :: Real -> Ratio
 toSentence :: String -> String
@@ -447,7 +447,7 @@ traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeFromDict :: String -> Dict -> Tree String
-treeFromPairNest :: PairNest a -> Tree a
+treeFromJSON :: JSON String -> Tree a
 treeLeaves :: Tree -> [Tree]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]

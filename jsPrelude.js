@@ -1716,6 +1716,15 @@ const join = x => bind(x)(
     identity
 );
 
+// jsonFromTree :: Tree a -> JSON String
+const jsonFromTree = tree => {
+    // A recursive [root, nest] JSON format,
+    // in which `root` is a value string, and `nest`
+    // is a possibly empty list of [`root`, `nest`] pairs.
+    const go = node => [node.root, node.nest.map(go)];
+    return JSON.stringify(go(tree));
+};
+
 // jsonLog :: a -> IO ()
 const jsonLog = (...args) =>
     console.log(
@@ -1878,6 +1887,21 @@ const liftMmay = f =>
 
 // lines :: String -> [String]
 const lines = s => s.split(/[\r\n]/);
+
+// listFromMaybe :: Maybe a -> [a]
+const listFromMaybe = mb =>
+    // A singleton list derived from a Just value, 
+    // or an empty list derived from Nothing.
+    mb.Nothing ? [] : [mb.Just];
+
+// listFromTree :: Tree a -> [a]
+const listFromTree = tree => {
+    const go = x => [
+      x.root,
+      ...[].concat.apply([], x.nest.map(go))
+    ];
+    return go(tree);
+};
 
 // listFromTuple :: (a, a ...) -> [a]
 const listFromTuple = tpl =>
@@ -2126,12 +2150,6 @@ const maximumMay = xs =>
 const maybe = v => f => m =>
     m.Nothing ? v : f(m.Just);
 
-// The maybeToList function returns an empty list when given
-// Nothing or a singleton list when not given Nothing.”
-// maybeToList :: Maybe a -> [a]
-const maybeToList = mb =>
-    mb.Nothing ? [] : [mb.Just];
-
 // mean :: [Num] -> Num
 const mean = xs =>
   xs.reduce((a, x) => a + x, 0) / xs.length;
@@ -2311,12 +2329,6 @@ const outdented = s => {
             xs.map(txt => rgx.exec(txt)[0])
         ));
     return unlines(map(drop(n))(xs));
-};
-
-// pairNestFromTree :: Tree a -> PairNest a
-const pairNestFromTree = tree => {
-    const go = node => [node.root, node.nest.map(go)];
-    return go(tree);
 };
 
 // parentIndexedTree :: Tree (a, {...index :: Int}) ->
@@ -3567,15 +3579,6 @@ const toEnum = e => x =>
         'object': v => e.min + v
     } [typeof e])(x);
 
-// toListTree :: Tree a -> [a]
-const toListTree = tree => {
-    const go = x => [
-      x.root,
-      ...[].concat.apply([], x.nest.map(go))
-    ];
-    return go(tree);
-};
-
 // toLower :: String -> String
 const toLower = s => s.toLocaleLowerCase();
 
@@ -3736,12 +3739,14 @@ const treeFromDict = rootLabel => dict => {
     );
 };
 
-// treeFromPairNest :: PairNest a -> Tree a
-const treeFromPairNest = vxs => {
-    const go = vxs => Node(vxs[0])(
-        vxs[1].map(go)
-    );
-    return go(vxs);
+// treeFromJSON :: JSON String -> Tree a
+const treeFromJSON = json => {
+    // Assumes a recursive [root, nest] JSON format,
+    // in which `root` is a parseable value string, and `nest`
+    // is a possibly empty list of [`root`, `nest`] pairs.
+    const go = ([root, nest]) =>
+        Node(root)(nest.map(go));
+    return go(JSON.parse(json));
 };
 
 // treeLeaves :: Tree -> [Tree]
