@@ -61,6 +61,7 @@ composeListR :: [(a -> a)] -> (a -> a)
 composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
+concatMapGen :: (a -> [b]) -> Gen [a] -> Gen [b]
 cons :: a -> [a] -> [a]
 const :: a -> b -> a
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
@@ -105,6 +106,7 @@ elems :: Map k a -> [a]
 encodedPath :: FilePath -> Percent Encoded String
 enumFrom :: Enum a => a -> [a]
 enumFromPairs :: String -> [(String, Int)] -> Dict
+enumFromThen :: Int -> Int -> Gen [Int]
 enumFromThenTo :: Int -> Int -> Int -> [Int]
 enumFromThenToChar :: Char -> Char -> Char -> [Char]
 enumFromTo :: Int -> Int -> [Int]

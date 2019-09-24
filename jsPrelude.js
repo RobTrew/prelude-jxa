@@ -447,6 +447,21 @@ const concat = xs =>
 const concatMap = f => xs =>
     xs.flatMap(f);
 
+// concatMapGen :: (a -> [b]) -> Gen [a] -> Gen [b]
+const concatMapGen = f =>
+    function*(xs) {
+        let
+            x = xs.next(),
+            v = undefined;
+        while (!x.done) {
+            v = f(x.value);
+            if (0 < v.length) {
+                yield v[0];
+            }
+            x = xs.next();
+        }
+    };
+
 // cons :: a -> [a] -> [a]
 const cons = x => xs =>
     Array.isArray(xs) ? (
@@ -920,6 +935,22 @@ const enumFromPairs = name => kvs => {
         }, {}
     );
 };
+
+// enumFromThen :: Int -> Int -> Gen [Int]
+const enumFromThen = x =>
+    // A non-finite stream of integers,
+    // starting with x and y, and continuing
+    // with the same interval.
+    function* (y) {
+        const d = y - x;
+        let v = y + d;
+        yield x;
+        yield y;
+        while (true) {
+            yield v;
+            v = d + v;
+        }
+    };
 
 // enumFromThenTo :: Int -> Int -> Int -> [Int]
 const enumFromThenTo = x1 => x2 => y => {
