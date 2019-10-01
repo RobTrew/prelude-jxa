@@ -61,7 +61,6 @@ composeListR :: [(a -> a)] -> (a -> a)
 composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
-concatMapGen :: (a -> [b]) -> Gen [a] -> Gen [b]
 cons :: a -> [a] -> [a]
 const :: a -> b -> a
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
@@ -244,6 +243,7 @@ log :: Float -> Float
 lookup :: Eq a => a -> Container -> Maybe b
 lookupDict :: a -> Dict -> Maybe b
 lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
+lt (<) :: Ord a => a -> a -> Bool
 mReturn :: First-class m => (a -> b) -> m (a -> b)
 map :: (a -> b) -> [a] -> [b]
 mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])

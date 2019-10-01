@@ -1,10 +1,8 @@
 ```js
-// Split a filename into directory and file. combine is the inverse.
-```
-
-```js
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
+    // Tuple of directory and file name, derived from file path.
+    // Inverse of combine.
     ('' !== strPath) ? (
          ('/' !== strPath[strPath.length - 1]) ? (() => {
             const

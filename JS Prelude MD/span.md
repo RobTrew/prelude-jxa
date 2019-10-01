@@ -14,8 +14,8 @@
 const span = p => xs => {
     const iLast = xs.length - 1;
     return splitAt(
-        until(i => i > iLast || !p(xs[i]))(
-            i => 1 + i
+        until(i => iLast < i || !p(xs[i]))(
+            succ
         )(0)
     )(xs);
 };

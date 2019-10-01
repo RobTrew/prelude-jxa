@@ -447,21 +447,6 @@ const concat = xs =>
 const concatMap = f => xs =>
     xs.flatMap(f);
 
-// concatMapGen :: (a -> [b]) -> Gen [a] -> Gen [b]
-const concatMapGen = f =>
-    function*(xs) {
-        let
-            x = xs.next(),
-            v = undefined;
-        while (!x.done) {
-            v = f(x.value);
-            if (0 < v.length) {
-                yield v[0];
-            }
-            x = xs.next();
-        }
-    };
-
 // cons :: a -> [a] -> [a]
 const cons = x => xs =>
     Array.isArray(xs) ? (
@@ -1971,6 +1956,9 @@ const lookupTuples = k => kvs =>
       )
     )(x => Just(snd(x)));
 
+// lt (<) :: Ord a => a -> a -> Bool
+const lt = a => b => a < b;
+
 // Not required in JS, which has first functions by default.
 // Included only for comparison with AS, which has to derive
 // first class functions by lifting 'handlers' into 'scripts'
@@ -3163,8 +3151,8 @@ const sortOn = f => xs => {
 const span = p => xs => {
     const iLast = xs.length - 1;
     return splitAt(
-        until(i => i > iLast || !p(xs[i]))(
-            i => 1 + i
+        until(i => iLast < i || !p(xs[i]))(
+            succ
         )(0)
     )(xs);
 };
@@ -3211,9 +3199,10 @@ const splitEvery = n => xs => {
     return [h].concat(splitEvery(n)(t));
 };
 
-// Split a filename into directory and file. combine is the inverse.
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
+    // Tuple of directory and file name, derived from file path.
+    // Inverse of combine.
     ('' !== strPath) ? (
          ('/' !== strPath[strPath.length - 1]) ? (() => {
             const
@@ -3887,13 +3876,9 @@ const uncons = xs => {
 };
 
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
+// uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
-    // Converts a function of more than one argument
-    // to a function on Tuple type (Tuple ... TupleN)
-    // or array which contains those arguments.
-    // This implementation uses the fact that the Tuple
-    // constructors create an object with a private `length` property.
-    args => f.apply(null, args);
+    (x, y) => f(x)(y);
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
