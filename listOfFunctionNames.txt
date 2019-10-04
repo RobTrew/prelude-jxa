@@ -174,9 +174,9 @@ identity :: a -> a
 if_ :: Bool -> a -> a -> a
 indented :: String -> String -> String
 index (!!) :: [a] -> Int -> Maybe a
-indexForest :: [Tree (a, { nodeSum :: Int })] -> Int ->
+indexForest :: [Tree (a, { nodeSum :: Int })] -> Int -> Maybe Tree (a, { nodeSum :: Int })
 indexOf :: Eq a => [a] -> [a] -> Maybe Int
-indexTree :: Tree (a, { nodeSum :: Int }) -> Int ->
+indexTree :: Tree (a, { nodeSum :: Int }) -> Int -> Maybe Tree (a, { nodeSum :: Int })
 init :: [a] -> [a]
 initMay :: [a] -> Maybe [a]
 inits :: [a] -> [[a]]
@@ -211,7 +211,7 @@ iso8601Local :: Date -> String
 iterate :: (a -> a) -> a -> Gen [a]
 iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
 join :: Monad m => m (m a) -> m a
-jsonFromTree :: Tree a -> JSON String
+jsonFromTree :: Tree a -> String
 jsonLog :: a -> IO ()
 jsonParseLR :: String -> Either String a
 justifyLeft :: Int -> Char -> String -> String
@@ -291,7 +291,7 @@ or :: [Bool] -> Bool
 ord :: Char -> Int
 ordering :: () -> Ordering
 outdented :: String -> String
-parentIndexedTree :: Tree (a, {...index :: Int}) ->
+parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
 permutations :: [a] -> [[a]]

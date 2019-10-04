@@ -1,6 +1,6 @@
 ```js
 // indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->
-//                Maybe Tree (a,  { nodeSum :: Int })
+// Maybe Tree (a, { nodeSum :: Int })
 const indexForest = trees =>
     // Index into a forest of measured trees.
     // (see measuredTree)

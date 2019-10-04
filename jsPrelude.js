@@ -1454,7 +1454,7 @@ const index = xs => i => {
 };
 
 // indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->
-//                Maybe Tree (a,  { nodeSum :: Int })
+// Maybe Tree (a, { nodeSum :: Int })
 const indexForest = trees =>
     // Index into a forest of measured trees.
     // (see measuredTree)
@@ -2243,7 +2243,7 @@ const minBound = x => {
 // minimum :: Ord a => [a] -> a
 const minimum = xs =>
     0 < xs.length ? (
-        foldl1(a => x => x < a ? x : a, xs)
+        foldl1(a => x => x < a ? x : a)(xs)
     ) : undefined;
 
 //Ordering: (LT|EQ|GT):
