@@ -464,8 +464,8 @@ const cons = x => xs =>
         }
     )();
 
-// const :: a -> b -> a
-const const_ = k => _ => k;
+// constant :: a -> b -> a
+const constant = k => _ => k;
 
 // Flexibly handles two or more arguments, applying
 // the function directly if the argument array
@@ -1732,7 +1732,7 @@ const join = x => bind(x)(
     identity
 );
 
-// jsonFromTree :: Tree a -> JSON String
+// jsonFromTree :: Tree a -> String
 const jsonFromTree = tree => {
     // A recursive [root, nest] JSON format,
     // in which `root` is a value string, and `nest`
@@ -1980,8 +1980,8 @@ const map = f => xs =>
 // accumulator together with the new list.
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f => acc => xs =>
-    xs.reduce((a, x, i) => {
-        const pair = f(a[0])(x)(i);
+    xs.reduce((a, x) => {
+        const pair = f(a[0])(x);
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
 

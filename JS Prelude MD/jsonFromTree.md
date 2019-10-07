@@ -1,5 +1,5 @@
 ```js
-// jsonFromTree :: Tree a -> JSON String
+// jsonFromTree :: Tree a -> String
 const jsonFromTree = tree => {
     // A recursive [root, nest] JSON format,
     // in which `root` is a value string, and `nest`
