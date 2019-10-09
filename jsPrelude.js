@@ -1530,7 +1530,7 @@ const insertBy = cmp => x => ys => {
 
 // insertDict :: String -> a -> Dict -> Dict
 const insertDict = k => v => dct =>
-    Object.assign(dct, {
+    Object.assign({}, dct, {
         [k]: v
     });
 
@@ -1599,8 +1599,8 @@ const isChar = x =>
 
 // isDigit :: Char -> Bool
 const isDigit = c => {
-  const n = ord(c);
-  return 48 <= n && 57 >= n;
+    const n = c.codePointAt(0);
+    return 48 <= n && 57 >= n;
 };
 
 // isInfixOf :: (Eq a) => [a] -> [a] -> Bool
@@ -1975,9 +1975,9 @@ const map = f => xs =>
     ) : xs.split('')).map(f);
 
 // Map-accumulation is a combination of map and a catamorphism;
-// it applies a function to each element of a list, passing an accumulating 
-// parameter from left to right, and returning a final value of this 
-// accumulator together with the new list.
+// it applies a function to each element of a list, passing an
+// accumulating parameter from left to right, and returning a final
+// value of this accumulator together with the new list.
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f => acc => xs =>
     xs.reduce((a, x) => {

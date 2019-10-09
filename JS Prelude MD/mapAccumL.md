@@ -1,8 +1,8 @@
 ```js
 // Map-accumulation is a combination of map and a catamorphism;
-// it applies a function to each element of a list, passing an accumulating 
-// parameter from left to right, and returning a final value of this 
-// accumulator together with the new list.
+// it applies a function to each element of a list, passing an
+// accumulating parameter from left to right, and returning a final
+// value of this accumulator together with the new list.
 ```
 
 ```js
