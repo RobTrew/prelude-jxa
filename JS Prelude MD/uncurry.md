@@ -1,9 +1,12 @@
 ```js
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
-```
-
-```js
-// uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
-    (x, y) => f(x)(y);
+    function() {
+        const
+            args = Array.from(arguments),
+            a = 1 < args.length ? (
+                args
+            ) : args[0]; // Tuple object.
+        return f(a[0])(a[1]);
+    };
 ```

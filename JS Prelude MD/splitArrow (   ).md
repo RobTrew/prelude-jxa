@@ -5,5 +5,8 @@
 
 ```js
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
-const splitArrow = f => g => tpl => Tuple(f(tpl[0]), g(tpl[1]));
+const splitArrow = f => g => 
+    tpl => Tuple(f(tpl[0]))(
+        g(tpl[1])
+    );
 ```

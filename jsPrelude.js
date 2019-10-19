@@ -1136,9 +1136,12 @@ const findTree = p => tree => {
 // Lift a simple function to one which applies to a tuple, 
 // transforming only the first item of the tuple
 // firstArrow :: (a -> b) -> ((a, c) -> (b, c))
-const firstArrow = f => xy => Tuple(f(xy[0]))(
-    xy[1]
-);
+const firstArrow = f => 
+    // A simple function lifted to one which applies
+    // to a tuple, transforming only its first item.
+    xy => Tuple(f(xy[0]))(
+       xy[1]
+    );
 
 // flatten :: NestedList a -> [a]
 const flatten = nest => nest.flat(Infinity);
@@ -3160,7 +3163,10 @@ const span = p => xs => {
 // Compose a function (from a tuple to a tuple), 
 // (with separate transformations for fst and snd)
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
-const splitArrow = f => g => tpl => Tuple(f(tpl[0]), g(tpl[1]));
+const splitArrow = f => g => 
+    tpl => Tuple(f(tpl[0]))(
+        g(tpl[1])
+    );
 
 // splitAt :: Int -> [a] -> ([a], [a])
 const splitAt = n => xs => 
@@ -3876,9 +3882,15 @@ const uncons = xs => {
 };
 
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
-// uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
-    (x, y) => f(x)(y);
+    function() {
+        const
+            args = Array.from(arguments),
+            a = 1 < args.length ? (
+                args
+            ) : args[0]; // Tuple object.
+        return f(a[0])(a[1]);
+    };
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
