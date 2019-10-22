@@ -62,7 +62,7 @@ composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
-const :: a -> b -> a
+constant :: a -> b -> a
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
 curry :: ((a, b) -> c) -> a -> b -> c
 curry2 :: ((a, b) -> c) -> a -> b -> c
@@ -266,7 +266,7 @@ maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 maximumMay :: Ord a => [a] -> Maybe a
 maybe :: b -> (a -> b) -> Maybe a -> b
 mean :: [Num] -> Num
-measuredTree :: Tree a -> Tree (a, (Int, Int, Int))
+measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
 member :: Key -> Dict -> Bool
 min :: Ord a => a -> a -> a
 minBound :: a -> a

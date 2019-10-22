@@ -1244,11 +1244,8 @@ const foldTree = f => tree => {
 };
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
-const foldl = f => a => xs => {
-    let v = a;
-    xs.forEach(x => v = f(v)(x));
-    return v;
-};
+const foldl = f => a => xs =>
+    xs.reduce(uncurry(f), a);
 
 // foldl1 :: (a -> a -> a) -> [a] -> a
 const foldl1 = f => xs =>
@@ -1821,11 +1818,15 @@ const levelNodes = tree =>
   )([tree]);
 
 // levels :: Tree a -> [[a]]
-const levels = tree =>
-    // A list of tree nodes grouped by level.
-    iterateUntil(isNull)(
-        concatMap(nest)
-    )([tree]).map(map(root));
+const levels = tree => {
+    const xs = [[root(tree)]];
+    let level = [tree].flatMap(nest);
+    while (0 < level.length) {
+        xs.push(level.map(root));
+        level = level.flatMap(nest);
+    }
+    return xs;
+};
 
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
@@ -2176,7 +2177,7 @@ const maybe = v => f => m =>
 const mean = xs =>
   xs.reduce((a, x) => a + x, 0) / xs.length;
 
-// measuredTree :: Tree a -> Tree (a, (Int, Int, Int))
+// measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
 const measuredTree = tree => {
     // A tree in which each node is tupled with
     // a (leafSum, layerSum, nodeSum) measure of its sub-tree,
