@@ -841,10 +841,11 @@ const either = fl => fr => e =>
     ) : undefined;
 
 // elem :: Eq a => a -> [a] -> Bool
-const elem = x => xs => xs.some(eq(x))
-
-// OR for primitive data types:
-// xs.includes(x)
+// elem :: Char -> String -> Bool
+const elem = x =>
+    xs => Array.isArray(xs) ? (
+        xs.some(eq(x))
+    ) : xs.includes(x);
 
 // If x is a dictionary, then the Int is read as an 
 // index into the lexically sorted keys of the Dict, 
