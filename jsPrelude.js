@@ -1848,7 +1848,7 @@ const liftA2 = f => a => b => {
                 liftA2Tree
             ) : liftA2List
         ) : liftA2List
-    )(...[f, a, b]);
+    )(f)(a)(b);
 };
 
 // liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c

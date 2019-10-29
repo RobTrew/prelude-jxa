@@ -21,6 +21,6 @@ const liftA2 = f => a => b => {
                 liftA2Tree
             ) : liftA2List
         ) : liftA2List
-    )(...[f, a, b]);
+    )(f)(a)(b);
 };
 ```
