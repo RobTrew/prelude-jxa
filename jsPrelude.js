@@ -1,5 +1,7 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
+
+
 // Action :: (a -> b) -> a -> Action b
 const Action = f =>
     // Constructor for an action.
@@ -444,8 +446,8 @@ const concat = xs =>
     })() : [];
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
-const concatMap = f => xs =>
-    xs.flatMap(f);
+const concatMap = f =>
+    xs => xs.flatMap(f);
 
 // cons :: a -> [a] -> [a]
 const cons = x => xs =>
@@ -1094,12 +1096,15 @@ const findIndex = p => xs => {
 };
 
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
-const findIndexR = p => xs => {
-    const i = reverse(xs).findIndex(p);
-    return -1 !== i ? (
-        Just(xs.length - (1 + i))
-    ) : Nothing();
-};
+const findIndexR = p =>
+    xs => {
+        const i = reverse('string' !== typeof xs ? (
+            xs
+        ) : xs.split('')).findIndex(p);
+        return -1 !== i ? (
+            Just(xs.length - (1 + i))
+        ) : Nothing();
+    };
 
 // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
 //-> {2, 5}
@@ -2280,6 +2285,9 @@ const mod = n => d => n % d;
 
 // mul (*) :: Num a => a -> a -> a
 const mul = a => b => a * b;
+
+// ne :: a -> a -> Bool
+const ne = a => b => a !== b;
 
 // negate :: Num -> Num
 const negate = n => -n;

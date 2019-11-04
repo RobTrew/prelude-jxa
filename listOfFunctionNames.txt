@@ -277,6 +277,7 @@ minimumMay :: [a] -> Maybe a
 mod :: Int -> Int -> Int
 modificationTime :: FilePath -> Either String Date
 mul (*) :: Num a => a -> a -> a
+ne :: a -> a -> Bool
 negate :: Num -> Num
 nest :: Tree a -> [a]
 newUUID :: () -> IO UUID String
