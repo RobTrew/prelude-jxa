@@ -1,5 +1,4 @@
 {
-  "": "",
   "Action": "// Action :: (a -> b) -> a -> Action b\nconst Action = f =>\n    // Constructor for an action.\n    x => ({\n        type: 'Action',\n        act: f,\n        arg: x\n    });",
   "Just": "// Just :: a -> Maybe a\nconst Just = x => ({\n    type: 'Maybe',\n    Nothing: false,\n    Just: x\n});",
   "Left": "// Left :: a -> Either a b\nconst Left = x => ({\n    type: 'Either',\n    Left: x\n});",
@@ -211,7 +210,7 @@
   "isUpper": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    /[A-Z]/.test(c);",
   "iso8601Local": "// iso8601Local :: Date -> String\nconst iso8601Local = dte =>\n    new Date(dte - (6E4 * dte.getTimezoneOffset()))\n    .toISOString();",
   "iterate": "// iterate :: (a -> a) -> a -> Gen [a]\nconst iterate = f =>\n    function* (x) {\n        let v = x;\n        while (true) {\n            yield(v);\n            v = f(v);\n        }\n    };",
-  "iterateUntil": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p => f => x => {\n    const vs = [x];\n    let h = x;\n    while (!p(h))(h = f(h), vs.push(h));\n    return vs;\n};",
+  "iterateUntil": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p => f =>\n    function*(x) {\n        let v = x;\n        while (!p(v)) {\n            yield(v);\n            v = f(v);\n        }\n    };",
   "join": "// join :: Monad m => m (m a) -> m a\nconst join = x => bind(x)(\n    identity\n);",
   "jsonFromTree": "// jsonFromTree :: Tree a -> String\nconst jsonFromTree = tree => {\n    // A recursive [root, nest] JSON format,\n    // in which `root` is a value string, and `nest`\n    // is a possibly empty list of [`root`, `nest`] pairs.\n    const go = node => [node.root, node.nest.map(go)];\n    return JSON.stringify(go(tree));\n};",
   "jsonLog": "// jsonLog :: a -> IO ()\nconst jsonLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",

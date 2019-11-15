@@ -1,7 +1,5 @@
 // JS PRELUDE – GENERIC FUNCTIONS
 
-
-
 // Action :: (a -> b) -> a -> Action b
 const Action = f =>
     // Constructor for an action.
@@ -1726,12 +1724,14 @@ const iterate = f =>
     };
 
 // iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
-const iterateUntil = p => f => x => {
-    const vs = [x];
-    let h = x;
-    while (!p(h))(h = f(h), vs.push(h));
-    return vs;
-};
+const iterateUntil = p => f =>
+    function*(x) {
+        let v = x;
+        while (!p(v)) {
+            yield(v);
+            v = f(v);
+        }
+    };
 
 // join :: Monad m => m (m a) -> m a
 const join = x => bind(x)(
