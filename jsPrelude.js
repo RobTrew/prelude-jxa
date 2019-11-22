@@ -2823,8 +2823,8 @@ const safeMay = p => f => x =>
 // scanl :: (b -> a -> b) -> b -> [a] -> [b]
 const scanl = f => startValue => xs =>
     xs.reduce((a, x) => {
-        const v = f(a[0], x);
-        return Tuple(v, a[1].concat(v));
+        const v = f(a[0])(x);
+        return Tuple(v)(a[1].concat(v));
     }, Tuple(startValue)([startValue]))[1];
 
 // scanl1 is a variant of scanl that has no starting value argument
@@ -2839,16 +2839,9 @@ const scanl1 = f => xs =>
 // scanr :: (b -> a -> b) -> b -> [a] -> [b]
 const scanr = f => startValue => xs =>
     xs.reduceRight((a, x) => {
-        const v = f(a.acc)(x);
-        return {
-            acc: v,
-            scan: [v].concat(a.scan)
-        };
-    }, {
-        acc: startValue,
-        scan: [startValue]
-    })
-    .scan;
+        const v = f(x)(a[0]);
+        return Tuple(v)(a[1].concat(v));
+    }, Tuple(startValue)([startValue]))[1];
 
 // scanr1 is a variant of scanr that has no starting value argument
 // scanr1 :: (a -> a -> a) -> [a] -> [a]
