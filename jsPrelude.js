@@ -1021,7 +1021,7 @@ const even = n => 0 === n % 2;
 // exp :: Float -> Float
 const exp = Math.exp;
 
-// fTable :: String -> (a -> String) -> (b -> String) 
+// fTable :: String -> (a -> String) -> (b -> String)
 //                      -> (a -> b) -> [a] -> String
 const fTable = s => xShow => fxShow => f => xs => {
     // Heading -> x display function ->
@@ -1031,7 +1031,7 @@ const fTable = s => xShow => fxShow => f => xs => {
         ys = xs.map(xShow),
         w = Math.max(...ys.map(length));
     return s + '\n' + zipWith(
-        (a, b) => a.padStart(w, ' ') + ' -> ' + b
+        a => b => a.padStart(w, ' ') + ' -> ' + b
     )(ys)(
         xs.map(x => fxShow(f(x)))
     ).join('\n');
@@ -1338,10 +1338,19 @@ const gcd = x => y => {
 const genericIndexMay = xs => i =>
     (i < xs.length && 0 <= i) ? Just(xs[i]) : Nothing();
 
-// group :: Eq a => [a] -> [[a]]
-const group = xs => groupBy(a => b => a === b)(
-    xs
-);
+// group :: [a] -> [[a]]
+const group = xs => {
+    const go = xs =>
+        0 < xs.length ? (() => {
+            const
+                h = xs[0],
+                i = xs.findIndex(x => h !== x);
+            return i !== -1 ? (
+                [xs.slice(0, i)].concat(go(xs.slice(i)))
+            ) : [xs];
+        })() : [];
+    return go(xs);
+};
 
 // Typical usage: groupBy(on(eq, f), xs)
 // Typical usage: groupBy(on(eq)(f), xs)

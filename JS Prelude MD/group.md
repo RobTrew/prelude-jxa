@@ -1,6 +1,15 @@
 ```js
-// group :: Eq a => [a] -> [[a]]
-const group = xs => groupBy(a => b => a === b)(
-    xs
-);
+// group :: [a] -> [[a]]
+const group = xs => {
+    const go = xs =>
+        0 < xs.length ? (() => {
+            const
+                h = xs[0],
+                i = xs.findIndex(x => h !== x);
+            return i !== -1 ? (
+                [xs.slice(0, i)].concat(go(xs.slice(i)))
+            ) : [xs];
+        })() : [];
+    return go(xs);
+};
 ```
