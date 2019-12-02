@@ -7,9 +7,9 @@ const treeMenu = tree => {
             subs = t.nest,
             menu = subs.map(root),
             blnMore = 0 < subs.flatMap(nest).length;
-        return until( tpl => !fst(tpl) || !isNull(snd(tpl)))(
+        return until(tpl => !fst(tpl) || !isNull(snd(tpl)))(
             tpl => either(x => Tuple(false)([]))(
-                x => Tuple(true, x)
+                Tuple(true)
             )(
                 bindLR(showMenuLR(!blnMore, strTitle, menu))(
                     ks => {
@@ -19,7 +19,7 @@ const treeMenu = tree => {
                                 JSON.stringify(ks)
                             )
                         )(
-                            Right 
+                            Right
                         )(
                             bindMay(find(x => k === x.root)(subs))(
                                 chosen => Just(
