@@ -2026,11 +2026,9 @@ const mapAccumL_Tree = f => acc => tree => {
 // accumulator together with the new list.' (See Hoogle)
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumR = f => acc => xs =>
-    xs.reduceRight((a, x, i) => {
-        const pair = f(a[0])(x)(i);
-        return Tuple(pair[0])(
-            [pair[1]].concat(a[1])
-        );
+    xs.reduceRight((a, x) => {
+        const pair = f(a[0])(x);
+        return Tuple(pair[0])([pair[1]].concat(a[1]));
     }, Tuple(acc)([]));
 
 // A function mapped over the keys of a record
