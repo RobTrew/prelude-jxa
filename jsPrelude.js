@@ -25,7 +25,7 @@ const Left = x => ({
 // Node :: a -> [Tree a] -> Tree a
 const Node = v => xs => ({
     type: 'Node',
-    root: v, // any type of value (consistent across tree)
+    root: v,
     nest: xs || []
 });
 
@@ -268,9 +268,10 @@ const bindFn = f => bop =>
     // Binary operator applied over f x and x.
     x => bop(f(x))(x);
 
-// bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
-const bindLR = m => mf =>
-    undefined !== m.Left ? (
+// bindLR (>>=) :: Either a -> 
+// (a -> Either b) -> Either b
+const bindLR = m =>
+    mf => undefined !== m.Left ? (
         m
     ) : mf(m.Right);
 
@@ -833,8 +834,8 @@ const dropWhileGen = p => xs => {
 };
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
-const either = fl => fr => e =>
-    'Either' === e.type ? (
+const either = fl =>
+    fr => e => 'Either' === e.type ? (
         undefined !== e.Left ? (
             fl(e.Left)
         ) : fr(e.Right)
