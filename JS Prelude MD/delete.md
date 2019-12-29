@@ -5,13 +5,12 @@
 ```js
 // delete :: Eq a => a -> [a] -> [a]
 const delete_ = x => xs => {
-    const go = xs => {
-        return 0 < xs.length ? (
+    const go = xs =>
+        0 < xs.length ? (
             (x === xs[0]) ? (
                 xs.slice(1)
             ) : [xs[0]].concat(go(xs.slice(1)))
         ) : [];
-    }
     return go(xs);
 };
 ```

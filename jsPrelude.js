@@ -63,7 +63,7 @@ function TupleN() {
     const
         args = Array.from(arguments),
         n = args.length;
-    return n > 1 ? Object.assign(
+    return 1 < n ? Object.assign(
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
@@ -74,8 +74,9 @@ function TupleN() {
 };
 
 // abs :: Num -> Num
-const abs = Math.abs;
-// Absolute value of a given number - without the sign. 
+const abs = 
+// Absolute value of a given number - without the sign.
+  Math.abs;
 
 // add (+) :: Num a => a -> a -> a
 const add = a =>
@@ -513,13 +514,12 @@ const degrees = r =>
 // xs with first instance of x (if any) removed
 // delete :: Eq a => a -> [a] -> [a]
 const delete_ = x => xs => {
-    const go = xs => {
-        return 0 < xs.length ? (
+    const go = xs =>
+        0 < xs.length ? (
             (x === xs[0]) ? (
                 xs.slice(1)
             ) : [xs[0]].concat(go(xs.slice(1)))
         ) : [];
-    }
     return go(xs);
 };
 
@@ -1041,9 +1041,10 @@ const fTable = s => xShow => fxShow => f => xs => {
 // Compose a function from a simple value to a tuple of
 // the separate outputs of two different functions
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
-const fanArrow = f => g => x => Tuple(f(x))(
-        g(x)
-      );
+const fanArrow = f =>
+    // Compose a function from a simple value to a tuple of
+    // the separate outputs of two different functions.
+    g => x => Tuple(f(x))(g(x));
 
 // filePathTree :: filePath -> [Tree String] -> Tree FilePath
 const filePathTree = fpAnchor => trees => {
@@ -1818,11 +1819,11 @@ const lefts = xs =>
         ) : []
     );
 
-// Returns Infinity over objects without finite length.
-// This enables zip and zipWith to choose the shorter
-// argument when one is non-finite, like cycle, repeat etc
 // length :: [a] -> Int
 const length = xs =>
+    // Returns Infinity over objects without finite length.
+    // This enables zip and zipWith to choose the shorter
+    // argument when one is non-finite, like cycle, repeat etc
     (Array.isArray(xs) || 'string' === typeof xs) ? (
         xs.length
     ) : Infinity;
@@ -2182,10 +2183,10 @@ const maximumMay = xs =>
             .reduce((a, x) => (x > a ? x : a), xs[0]))
     ) : Nothing();
 
-// Default value (v) if m.Nothing, or f(m.Just)
 // maybe :: b -> (a -> b) -> Maybe a -> b
-const maybe = v => f => m =>
-    m.Nothing ? v : f(m.Just);
+const maybe = v =>
+    // Default value (v) if m is Nothing, or f(m.Just)
+    f => m => m.Nothing ? v : f(m.Just);
 
 // mean :: [Num] -> Num
 const mean = xs =>
@@ -4071,10 +4072,11 @@ const words = s => s.split(/\s+/);
 // lists - i.e. generators like cycle, repeat, iterate.
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs => ys => {
-    const lng = Math.min(length(xs), length(ys));
-    return Infinity !== lng ? (
-        zipList(xs)(ys)
-    ) : zipGen(xs)(ys);
+    const
+        lng = Math.min(length(xs), length(xs)),
+        vs = take(lng)(ys);
+    return take(lng)(xs)
+    .map((x, i) => Tuple(x)(vs[i]));
 };
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
@@ -4096,7 +4098,7 @@ const zipGen = ga => gb => {
         while(!a.Nothing && !b.Nothing) {
             let
                 ta = a.Just,
-                tb = b.Just
+                tb = b.Just;
             yield(
                 Tuple(fst(ta))(
                     fst(tb)
@@ -4110,10 +4112,13 @@ const zipGen = ga => gb => {
 };
 
 // zipList :: [a] -> [b] -> [(a, b)]
-const zipList = xs => ys =>
-    xs.slice(
-        0, Math.min(xs.length, ys.length)
-    ).map((x, i) => Tuple(x)(ys[i]));
+const zipList = xs => ys => {
+    const
+        lng = Math.min(length(xs), length(ys)),
+        vs = take(lng)(ys);
+    return take(lng)(xs)
+        .map((x, i) => Tuple(x)(vs[i]));
+};
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
@@ -4176,10 +4181,14 @@ const zipWithGen = f => ga => gb => {
 };
 
 // zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
-const zipWithList = f => xs => ys =>
-    xs.slice(
-        0, Math.min(xs.length, ys.length)
-    ).map((x, i) => f(x)(ys[i]));
+const zipWithList = f =>
+    xs => ys => {
+        const
+            lng = Math.min(length(xs), length(ys)),
+            vs = take(lng)(ys);
+        return take(lng)(xs)
+        .map((x, i) => f(x)(vs[i]));
+    };
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 const zipWithM = f => xs => ys =>

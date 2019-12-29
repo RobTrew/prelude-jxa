@@ -8,7 +8,7 @@ const zipGen = ga => gb => {
         while(!a.Nothing && !b.Nothing) {
             let
                 ta = a.Just,
-                tb = b.Just
+                tb = b.Just;
             yield(
                 Tuple(fst(ta))(
                     fst(tb)

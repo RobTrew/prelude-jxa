@@ -4,7 +4,7 @@ function TupleN() {
     const
         args = Array.from(arguments),
         n = args.length;
-    return n > 1 ? Object.assign(
+    return 1 < n ? Object.assign(
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
