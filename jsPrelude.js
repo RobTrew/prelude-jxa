@@ -3111,49 +3111,16 @@ const sortBy = f => xs =>
     xs.slice()
     .sort(uncurry(f));
 
-// Sort a list by comparing the results of a key function applied to each
-// element. sortOn f is equivalent to sortBy (comparing f), but has the
-// performance advantage of only evaluating f once for each element in
-// the input list. This is called the decorate-sort-undecorate paradigm,
-// or Schwartzian transform.
-// Elements are arranged from from lowest to highest.
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
-const sortOn = f => xs => {
-    // Functions and matching bools derived from argument f
-    // which may be a single key function, or a list of key functions
-    // each of which may or may not be followed by a direction bool.
-    const fsbs = unzip(
-            flatten([f])
-            .reduceRight((a, x) =>
-                ('boolean' === typeof x) ? {
-                    asc: x,
-                    fbs: a.fbs
-                } : {
-                    asc: true,
-                    fbs: [
-                        [x, a.asc]
-                    ].concat(a.fbs)
-                }, {
-                    asc: true,
-                    fbs: []
-                })
-            .fbs
-        ),
-        [fs, bs] = [fsbs[0], fsbs[1]],
-        iLast = fs.length;
-    // decorate-sort-undecorate
-    return sortBy(mappendComparing_(
-            // functions that access pre-calculated values
-            // by position in the decorated ('Schwartzian')
-            // version of xs
-            zip(fs.map((_, i) => x => x[i]))(bs)
-        ), xs.map( // xs decorated with precalculated values
-            x => fs.reduceRight(
-                (a, g) => [g(x)].concat(a), [
-                    x
-                ])))
-        .map(x => x[iLast]); // undecorated version of data, post sort.
-};
+const sortOn = f =>
+    // 'Schwartzian' decorate-sort-undecorate.
+    // Equivalent to sortBy(comparing(f)), but with 
+    // f x evaluated only once for each element in xs.
+    xs => xs.map(
+        x => [f(x), x]
+    ).sort(
+        (a, b) => a[0] < b[0] ? -1 : (a[0] > b[0] ? 1 : 0)
+    ).map(x => x[1]);
 
 // span, applied to a predicate p and a list xs, returns a tuple of xs of 
 // elements that satisfy p and second element is the remainder of the list:
@@ -3896,14 +3863,9 @@ const uncons = xs => {
 
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
-    function() {
-        const
-            args = Array.from(arguments),
-            a = 1 < args.length ? (
-                args
-            ) : args[0]; // Tuple object.
-        return f(a[0])(a[1]);
-    };
+    // A function over a pair, derived
+    // from a curried function.
+    (x, y) => f(x)(y);
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
@@ -4068,16 +4030,18 @@ const variance = xs => {
 // words :: String -> [String]
 const words = s => s.split(/\s+/);
 
-// Use of `take` and `length` here allows for zipping with non-finite 
-// lists - i.e. generators like cycle, repeat, iterate.
 // zip :: [a] -> [b] -> [(a, b)]
-const zip = xs => ys => {
-    const
-        lng = Math.min(length(xs), length(xs)),
-        vs = take(lng)(ys);
-    return take(lng)(xs)
-    .map((x, i) => Tuple(x)(vs[i]));
-};
+const zip = xs =>
+    // Use of `take` and `length` here allows for zipping with non-finite 
+    // lists - i.e. generators like cycle, repeat, iterate.
+    ys => {
+        const
+            lng = Math.min(length(xs), length(ys)),
+            vs = take(lng)(ys);
+        return take(lng)(xs).map(
+            (x, i) => Tuple(x)(vs[i])
+        );
+    };
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs => ys => zs =>
