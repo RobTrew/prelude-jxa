@@ -205,8 +205,8 @@ const applyN = n =>
 
 // approxRatio :: Float -> Float -> Ratio
 const approxRatio = epsilon =>
-    // A ratio derived by approximation
-    // (at granularity epsilon), to the float n.
+    // An ratio derived by approximation
+    // (at granularity epsilon) to the float n.
     n => {
         const
             gcde = (e, x, y) => {
