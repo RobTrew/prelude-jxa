@@ -195,28 +195,32 @@ const apply = f =>
     x => f(x);
 
 // applyN :: Int -> (a -> a) -> a -> a
-const applyN = n => f => x =>
-    Array.from({
-        length: n
-    }, () => f)
-    .reduce((a, g) => g(a), x)
+const applyN = n =>
+    // The value of n applications of f to x.
+    // (Church numeral n)
+    f => x => Array.from({
+            length: n
+        }, () => f)
+        .reduce((a, g) => g(a), x);
 
-// Epsilon -> Float -> Ratio
 // approxRatio :: Float -> Float -> Ratio
-const approxRatio = eps => n => {
-  const
-    gcde = (e, x, y) => {
-      const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
-      return _gcd(abs(x), abs(y));
-    },
-    c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, abs(n)),
-    r = ratio(quot(abs(n))(c))(quot(1, c));
-  return {
-    type: 'Ratio',
-    n: r.n * signum(n),
-    d: r.d
-  };
-};
+const approxRatio = epsilon =>
+    // A ratio derived by approximation
+    // (at granularity epsilon), to the float n.
+    n => {
+        const
+            gcde = (e, x, y) => {
+                const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
+                return _gcd(abs(x), abs(y));
+            },
+            c = gcde(Boolean(epsilon) ? epsilon : (1 / 10000), 1, abs(n)),
+            r = ratio(quot(abs(n))(c))(quot(1, c));
+        return {
+            type: 'Ratio',
+            n: r.n * signum(n),
+            d: r.d
+        };
+    };
 
 // argvLength :: Function -> Int
 const argvLength = f => f.length;
@@ -3113,9 +3117,9 @@ const sortBy = f => xs =>
 
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
 const sortOn = f =>
-    // 'Schwartzian' decorate-sort-undecorate.
     // Equivalent to sortBy(comparing(f)), but with f(x)
     // evaluated only once for each x in xs.
+    // ('Schwartzian' decorate-sort-undecorate).
     xs => xs.map(
         x => [f(x), x]
     ).sort(
