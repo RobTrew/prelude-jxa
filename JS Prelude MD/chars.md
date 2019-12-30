@@ -1,4 +1,5 @@
 ```js
 // chars :: String -> [Char]
-const chars = s => s.split('');
+const chars = s =>
+    s.split('');
 ```

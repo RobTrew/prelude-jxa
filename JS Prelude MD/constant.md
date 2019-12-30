@@ -1,4 +1,5 @@
 ```js
 // constant :: a -> b -> a
-const constant = k => _ => k;
+const constant = k =>
+    _ => k;
 ```

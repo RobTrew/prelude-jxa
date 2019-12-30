@@ -223,7 +223,8 @@ const approxRatio = epsilon =>
     };
 
 // argvLength :: Function -> Int
-const argvLength = f => f.length;
+const argvLength = f =>
+    f.length;
 
 // assocs :: Map k a -> [(k, a)]
 const assocs = m =>
@@ -252,8 +253,8 @@ const base64encode = s =>
     );
 
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
-const bind = m => mf =>
-    (Array.isArray(m) ? (
+const bind = m =>
+    mf => (Array.isArray(m) ? (
         bindList
     ) : (() => {
         const t = m.type;
@@ -269,9 +270,9 @@ const bind = m => mf =>
     })()(m)(mf));
 
 // bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
-const bindFn = f => bop =>
+const bindFn = f =>
     // Binary operator applied over f x and x.
-    x => bop(f(x))(x);
+    bop => x => bop(f(x))(x);
 
 // bindLR (>>=) :: Either a -> 
 // (a -> Either b) -> Either b
@@ -281,37 +282,43 @@ const bindLR = m =>
     ) : mf(m.Right);
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
-const bindList = xs => mf =>
-    xs.flatMap(mf);
+const bindList = xs =>
+    mf => xs.flatMap(mf);
 
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
-const bindMay = mb => mf =>
-    mb.Nothing ? mb : mf(mb.Just);
+const bindMay = mb =>
+    mf => mb.Nothing ? (
+        mb
+    ) : mf(mb.Just);
 
 // bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
-const bindTuple = tpl => f => {
-    const t2 = f(tpl[1]);
-    return Tuple(mappend(tpl[0])(t2[0]))(
-        t2[1]
-    );
-};
+const bindTuple = tpl =>
+    f => {
+        const t2 = f(tpl[1]);
+        return Tuple(mappend(tpl[0])(t2[0]))(
+            t2[1]
+        );
+    };
 
 // bool :: a -> a -> Bool -> a
-const bool = f => t => p =>
-    p ? t : f;
+const bool = f =>
+    t => p => p ? t : f;
 
 // break :: (a -> Bool) -> [a] -> ([a], [a])
-const break_ = p => xs => {
-  for (var i = 0, lng = xs.length; (i < lng) && !p(xs[i]); i++) {};
-  return Tuple(xs.slice(0, i))(
-    xs.slice(i)
-  );
-};
+const break_ = p =>
+    xs => {
+        for (var i = 0, lng = xs.length;
+            (i < lng) && !p(xs[i]); i++) {};
+        return Tuple(xs.slice(0, i))(
+            xs.slice(i)
+        );
+    };
 
-// Needle -> Haystack -> (prefix before match, match + rest)
+
 // breakOn :: String -> String -> (String, String)
-const breakOn = pat => src =>
-    0 < pat.length ? (() => {
+const breakOn = pat =>
+    // Needle -> Haystack -> (prefix before match, match + rest)
+    src => 0 < pat.length ? (() => {
         const xs = src.split(pat);
         return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
@@ -319,14 +326,14 @@ const breakOn = pat => src =>
     })() : undefined;
 
 // breakOnAll :: String -> String -> [(String, String)]
-const breakOnAll = pat => src =>
-    '' !== pat ? (
+const breakOnAll = pat =>
+    src => '' !== pat ? (
         src.split(pat)
         .reduce((a, x, i, xs) =>
             0 < i ? (
                 a.concat([
                     Tuple(xs.slice(0, i).join(pat))(
-                      pat + xs.slice(i).join(pat)
+                        pat + xs.slice(i).join(pat)
                     )
                 ])
             ) : a, [])
@@ -334,8 +341,8 @@ const breakOnAll = pat => src =>
 
 // Needle -> Haystack -> maybe (prefix before match, match + rest)
 // breakOnMay :: String -> String -> Maybe (String, String)
-const breakOnMay = pat => src =>
-    Boolean(pat) ? (() => {
+const breakOnMay = pat =>
+    src => Boolean(pat) ? (() => {
         const xs = src.split(pat);
         return Just(0 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
@@ -343,25 +350,28 @@ const breakOnMay = pat => src =>
     })() : Nothing();
 
 // bulleted :: String -> String -> String
-const bulleted = strTab => s =>
-    s.split(/[\r\n]/).map(
+const bulleted = strTab =>
+    s => s.split(/[\r\n]/).map(
         x => '' !== x ? strTab + '- ' + x : x
     ).join('\n');
 
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
-const cartesianProduct = xs => ys =>
-    xs.flatMap(x => ys.flatMap(y => Tuple(x)(y)));
+const cartesianProduct = xs =>
+    ys => xs.flatMap(
+        x => ys.flatMap(Tuple(x))
+    );
 
-// List of (Predicate, value) tuples -> Default value 
-//                        -> Value to test -> Output value
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
-const caseOf = pvs => otherwise => x => {
-    const mb = pvs.reduce((a, pv) =>
-        a.Nothing ? (
-            pv[0](x) ? Just(pv[1]) : a
-        ) : a, Nothing());
-    return mb.Nothing ? otherwise : mb.Just;
-};
+const caseOf = pvs =>
+    // List of (Predicate, value) tuples -> Default value 
+    //         -> Value to test -> Output value
+    otherwise => x => {
+        const mb = pvs.reduce((a, pv) =>
+            a.Nothing ? (
+                pv[0](x) ? Just(pv[1]) : a
+            ) : a, Nothing());
+        return mb.Nothing ? otherwise : mb.Just;
+    };
 
 // catMaybes :: [Maybe a] -> [a]
 const catMaybes = mbs =>
@@ -378,33 +388,40 @@ const ceiling = x => {
 
 // Size of space -> filler Char -> String -> Centered String
 // center :: Int -> Char -> String -> String
-const center = n => c => s => {
-  const
-    qr = quotRem(n - s.length)(2),
-    q = qr[0];
-  return replicateString(q)(c) +
-    s + replicateString(q + qr[1])(c);
-};
+const center = n =>
+    // Size of space -> filler Char -> String -> Centered String
+    c => s => {
+        const
+            qr = quotRem(n - s.length)(2),
+            q = qr[0];
+        return replicateString(q)(c) +
+            s + replicateString(q + qr[1])(c);
+    };
 
 // chars :: String -> [Char]
-const chars = s => s.split('');
+const chars = s =>
+    s.split('');
 
 // chop :: ([a] -> (b, [a])) -> [a] -> [b]
-const chop = f => as => {
-    const go = xs =>
-        0 < xs.length ? (() => {
-            const [b, ys] = Array.from(f(xs));
-            return cons(b)(go(ys))
-        })() : [];
-    return go(as);
-};
+const chop = f =>
+    // A segmentation of xs by tail recursion with a
+    // function which returns a (prefix, residue) tuple.
+    xs => {
+        const go = as =>
+            0 < as.length ? (() => {
+                const [b, bs] = Array.from(f(as));
+                return cons(b)(go(bs))
+            })() : [];
+        return go(xs);
+    };
 
 // chr :: Int -> Char
-const chr = x => String.fromCodePoint(x);
+const chr = x =>
+    String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
-const chunksOf = n => xs =>
-    enumFromThenTo(0)(n)(
+const chunksOf = n =>
+    xs => enumFromThenTo(0)(n)(
         xs.length - 1
     ).reduce(
         (a, i) => a.concat([xs.slice(i, (n + i))]),
@@ -412,8 +429,8 @@ const chunksOf = n => xs =>
     );
 
 // compare :: a -> a -> Ordering
-const compare = a => b =>
-    a < b ? -1 : (a > b ? 1 : 0);
+const compare = a =>
+  b => a < b ? -1 : (a > b ? 1 : 0);
 
 // comparing :: (a -> b) -> (a -> a -> Ordering)
 const comparing = f =>
@@ -437,7 +454,8 @@ const composeListR = fs =>
     x => fs.reduce((a, f) => f(a), x);
 
 // composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
-const composeR = f => g => x => f(g(x));
+const composeR = f =>
+    g => x => f(g(x));
 
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
@@ -454,13 +472,13 @@ const concatMap = f =>
     xs => xs.flatMap(f);
 
 // cons :: a -> [a] -> [a]
-const cons = x => xs =>
-    Array.isArray(xs) ? (
+const cons = x =>
+    xs => Array.isArray(xs) ? (
         [x].concat(xs)
     ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (
         x + xs
     ) : ( // Existing generator wrapped with one additional element
-        function* () {
+        function*() {
             yield x;
             let nxt = xs.next()
             while (!nxt.done) {
@@ -471,32 +489,30 @@ const cons = x => xs =>
     )();
 
 // constant :: a -> b -> a
-const constant = k => _ => k;
+const constant = k =>
+    _ => k;
 
-// Flexibly handles two or more arguments, applying
-// the function directly if the argument array
-// is long enough for complete saturation,
-// or recursing with a concatenation of any existing and
-// newly supplied arguments, if gaps remain.
 // curry :: ((a, b) -> c) -> a -> b -> c
-const curry = f => (...args) => {
-    const
-        n = f.length,
-        go = xs => n <= xs.length ? (
-            f(...xs)
-        ) : function() {
-            return go(xs.concat(Array.from(arguments)));
-        };
-    return go(args);
-};
+const curry = f =>
+    a => b => f(a, b);
 
-// Simpler 2 argument only version of curry
-// curry2 :: ((a, b) -> c) -> a -> b -> c
-const curry2 = f => a => b => f(a, b);
-
-// curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d
-const curry3 = f =>
-    a => b => c => f(a, b, c);
+// curryN :: ((a, b) -> c) -> a -> b -> c
+const curryN = f =>
+    // Flexibly handles two or more arguments, applying
+    // the function directly (if the argument array
+    // is long enough for complete saturation),
+    // or recursing with a concatenation of any existing and
+    // newly supplied arguments, while gaps remain.
+    (...args) => {
+        const
+            n = f.length,
+            go = xs => n <= xs.length ? (
+                f(...xs)
+            ) : function() {
+                return go(xs.concat(Array.from(arguments)));
+            };
+        return go(args);
+    };
 
 // cycle :: [a] -> Generator [a]
 function* cycle(xs) {
@@ -515,34 +531,36 @@ const decodedPath = decodeURI;
 const degrees = r =>
     (180 / Math.PI) * r;
 
-// xs with first instance of x (if any) removed
 // delete :: Eq a => a -> [a] -> [a]
-const delete_ = x => xs => {
-    const go = xs =>
-        0 < xs.length ? (
-            (x === xs[0]) ? (
-                xs.slice(1)
-            ) : [xs[0]].concat(go(xs.slice(1)))
-        ) : [];
-    return go(xs);
-};
+const delete_ = x =>
+    // xs with first instance of x (if any) removed.
+    xs => {
+        const go = xs =>
+            0 < xs.length ? (
+                (x === xs[0]) ? (
+                    xs.slice(1)
+                ) : [xs[0]].concat(go(xs.slice(1)))
+            ) : [];
+        return go(xs);
+    };
 
 // deleteAt :: Int -> [a] -> [a]
-const deleteAt = i => xs =>
-    i <= xs.length ? (() => {
+const deleteAt = i =>
+    xs => i <= xs.length ? (() => {
         const lr = splitAt(i)(xs);
         return lr[0].concat(lr[1].slice(1));
     })() : xs;
 
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
-const deleteBy = fEq => x => xs => {
-    const go = xs => 0 < xs.length ? (
-        fEq(x)(xs[0]) ? (
-            xs.slice(1)
-        ) : [xs[0]].concat(go(xs.slice(1)))
-    ) : [];
-    return go(xs);
-};
+const deleteBy = fEq =>
+    x => xs => {
+        const go = xs => 0 < xs.length ? (
+            fEq(x)(xs[0]) ? (
+                xs.slice(1)
+            ) : [xs[0]].concat(go(xs.slice(1)))
+        ) : [];
+        return go(xs);
+    };
 
 // deleteFirst :: a -> [a] -> [a]
 const deleteFirst = x => xs => {

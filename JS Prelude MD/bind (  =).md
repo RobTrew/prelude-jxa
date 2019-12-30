@@ -1,7 +1,7 @@
 ```js
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
-const bind = m => mf =>
-    (Array.isArray(m) ? (
+const bind = m =>
+    mf => (Array.isArray(m) ? (
         bindList
     ) : (() => {
         const t = m.type;

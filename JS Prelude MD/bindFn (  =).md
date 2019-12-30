@@ -1,6 +1,6 @@
 ```js
 // bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
-const bindFn = f => bop =>
+const bindFn = f =>
     // Binary operator applied over f x and x.
-    x => bop(f(x))(x);
+    bop => x => bop(f(x))(x);
 ```
