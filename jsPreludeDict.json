@@ -60,7 +60,7 @@
   "composeList": "// composeList :: [(a -> a)] -> (a -> a)\nconst composeList = fs =>\n    x => fs.reduceRight((a, f) => f(a), x, fs);",
   "composeListR": "// composeListR :: [(a -> a)] -> (a -> a)\nconst composeListR = fs =>\n    x => fs.reduce((a, f) => f(a), x);",
   "composeR": "// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c\nconst composeR = f =>\n    g => x => f(g(x));",
-  "concat": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    0 < xs.length ? (\n        xs.every(x => 'string' === typeof x) ? (\n            xs.join('')\n        ) : xs.flat()\n    ) : [];",
+  "concat": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    'string' !== typeof xs ? (\n        0 < xs.length ? (\n            xs.every(x => 'string' === typeof x) ? (\n                xs.join('')\n            ) : xs.flat()\n        ) : []\n    ) : xs;",
   "concatMap": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = f =>\n    xs => xs.flatMap(f);",
   "cons": "// cons :: a -> [a] -> [a]\nconst cons = x =>\n    xs => Array.isArray(xs) ? (\n        [x].concat(xs)\n    ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        x + xs\n    ) : ( // Existing generator wrapped with one additional element\n        function*() {\n            yield x;\n            let nxt = xs.next()\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = xs.next();\n            }\n        }\n    )();",
   "constant": "// constant :: a -> b -> a\nconst constant = k =>\n    _ => k;",
