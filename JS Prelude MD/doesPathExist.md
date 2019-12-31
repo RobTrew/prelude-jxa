@@ -1,8 +1,8 @@
 ```js
 // doesPathExist :: FilePath -> IO Bool
-const doesPathExist = strPath =>
+const doesPathExist = fp =>
 	$.NSFileManager.defaultManager
 	.fileExistsAtPath(
-		$(strPath).stringByStandardizingPath
+		$(fp).stringByStandardizingPath
 	);
 ```

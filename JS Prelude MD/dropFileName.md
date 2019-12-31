@@ -1,9 +1,9 @@
 ```js
 // dropFileName :: FilePath -> FilePath
-const dropFileName = strPath =>
-    '' !== strPath ? (() => {
+const dropFileName = fp =>
+    '' !== fp ? (() => {
         const
-          xs = (strPath.split('/'))
+          xs = (fp.split('/'))
           .slice(0, -1);
         return xs.length > 0 ? (
             xs.join('/') + '/'

@@ -105,20 +105,20 @@ const doesDirectoryExist = fp => {
 };
 
 // doesFileExist :: FilePath -> IO Bool
-const doesFileExist = strPath => {
+const doesFileExist = fp => {
     const ref = Ref();
     return $.NSFileManager.defaultManager
         .fileExistsAtPathIsDirectory(
-            $(strPath)
+            $(fp)
             .stringByStandardizingPath, ref
         ) && 1 !== ref[0];
 };
 
 // doesPathExist :: FilePath -> IO Bool
-const doesPathExist = strPath =>
+const doesPathExist = fp =>
 	$.NSFileManager.defaultManager
 	.fileExistsAtPath(
-		$(strPath).stringByStandardizingPath
+		$(fp).stringByStandardizingPath
 	);
 
 // filePath :: String -> FilePath

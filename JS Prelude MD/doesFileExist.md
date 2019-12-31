@@ -1,10 +1,10 @@
 ```js
 // doesFileExist :: FilePath -> IO Bool
-const doesFileExist = strPath => {
+const doesFileExist = fp => {
     const ref = Ref();
     return $.NSFileManager.defaultManager
         .fileExistsAtPathIsDirectory(
-            $(strPath)
+            $(fp)
             .stringByStandardizingPath, ref
         ) && 1 !== ref[0];
 };

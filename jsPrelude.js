@@ -563,32 +563,37 @@ const deleteBy = fEq =>
     };
 
 // deleteFirst :: a -> [a] -> [a]
-const deleteFirst = x => xs => {
-    const go = xs => 0 < xs.length ? (
-        x === xs[0] ? (
-            xs.slice(1)
-        ) : [xs[0]].concat(go(xs.slice(1)))
-    ) : [];
-    return go(xs);
-};
+const deleteFirst = x =>
+    xs => {
+        const go = xs => 0 < xs.length ? (
+            x === xs[0] ? (
+                xs.slice(1)
+            ) : [xs[0]].concat(go(xs.slice(1)))
+        ) : [];
+        return go(xs);
+    };
 
 // deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const deleteFirstsBy = fnEq => xs => ys =>
-    ys.reduce((x, y) => deleteBy(fnEq)(y)(x), xs);
+const deleteFirstsBy = fEq =>
+    // The first list purged of the first instance of
+    // each predicate-matching element in the second list.
+    foldl(flip(deleteBy(fEq)));
 
 // deleteKey :: String -> Dict -> Dict
-const deleteKey = k => dct =>
-    (delete dct[k], dct);
+const deleteKey = k =>
+    // A new dictionary, without the key k.
+    dct => (delete dct[k], dct);
 
 // dictFromList :: [(k, v)] -> Dict
 const dictFromList = kvs =>
     Object.fromEntries(kvs);
 
 // difference :: Eq a => [a] -> [a] -> [a]
-const difference = xs => ys => {
-    const s = new Set(ys);
-    return xs.filter(x => !s.has(x));
-};
+const difference = xs =>
+    ys => {
+        const s = new Set(ys);
+        return xs.filter(x => !s.has(x));
+    };
 
 // differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
 const differenceGen = ga => {
@@ -631,7 +636,8 @@ const digitToInt = c => {
 };
 
 // div :: Int -> Int -> Int
-const div = x => y => Math.floor(x / y);
+const div = x =>
+    y => Math.floor(x / y);
 
 // draw :: Tree String -> [String]
 const draw = node => {
@@ -673,129 +679,131 @@ const drawTree = tree =>
     unlines(draw(tree));
 
 // drawTree2 :: Bool -> Bool -> Tree String -> String
-const drawTree2 = blnCompact => blnPruned => tree => {
+const drawTree2 = blnCompact =>
     // Tree design and algorithm inspired by the Haskell snippet at:
     // https://doisinkidney.com/snippets/drawing-trees.html
-    const
-        // Lefts, Middle, Rights
-        lmrFromStrings = xs => {
-            const [ls, rs] = Array.from(splitAt(
-                Math.floor(xs.length / 2)
-            )(xs));
-            return Tuple3(ls)(rs[0])(
-                rs.slice(1)
-            );
-        },
-        stringsFromLMR = lmr =>
-        Array.from(lmr).reduce((a, x) => a.concat(x), []),
-        fghOverLMR = (f, g, h) => lmr => {
-            const [ls, m, rs] = Array.from(lmr);
-            return Tuple3(ls.map(f))(
-                g(m)
-            )(rs.map(h));
-        };
-
-    const lmrBuild = (f, w) => wsTree => {
+    blnPruned => tree => {
         const
-            leftPad = n => s => ' '.repeat(n) + s,
-            xs = wsTree.nest,
-            lng = xs.length,
-            [nChars, x] = Array.from(wsTree.root);
+            // Lefts, Middle, Rights
+            lmrFromStrings = xs => {
+                const [ls, rs] = Array.from(splitAt(
+                    Math.floor(xs.length / 2)
+                )(xs));
+                return Tuple3(ls)(rs[0])(
+                    rs.slice(1)
+                );
+            },
+            stringsFromLMR = lmr =>
+            Array.from(lmr).reduce((a, x) => a.concat(x), []),
+            fghOverLMR = (f, g, h) => lmr => {
+                const [ls, m, rs] = Array.from(lmr);
+                return Tuple3(ls.map(f))(
+                    g(m)
+                )(rs.map(h));
+            };
 
-        // LEAF NODE --------------------------------------
-        return 0 === lng ? (
-            Tuple3([])(
-                '─'.repeat(w - nChars) + x
-            )([])
-
-            // NODE WITH SINGLE CHILD -------------------------
-        ) : 1 === lng ? (() => {
-            const indented = leftPad(1 + w);
-            return fghOverLMR(
-                indented,
-                z => '─'.repeat(w - nChars) + x + '─' + z,
-                indented
-            )(f(xs[0]));
-
-            // NODE WITH CHILDREN -----------------------------
-        })() : (() => {
+        const lmrBuild = (f, w) => wsTree => {
             const
-                cFix = x => xs => x + xs,
-                treeFix = (l, m, r) => compose(
-                    stringsFromLMR,
-                    fghOverLMR(cFix(l), cFix(m), cFix(r))
-                ),
-                _x = '─'.repeat(w - nChars) + x,
-                indented = leftPad(w),
-                lmrs = xs.map(f);
-            return fghOverLMR(
-                indented,
-                s => _x + ({
-                    '┌': '┬',
-                    '├': '┼',
-                    '│': '┤',
-                    '└': '┴'
-                })[s[0]] + s.slice(1),
-                indented
-            )(lmrFromStrings(
-                intercalate(blnCompact ? [] : ['│'])(
-                    [treeFix(' ', '┌', '│')(lmrs[0])]
-                    .concat(init(lmrs.slice(1)).map(
-                        treeFix('│', '├', '│')
-                    ))
-                    .concat([treeFix('│', '└', ' ')(
-                        lmrs[lmrs.length - 1]
-                    )])
+                leftPad = n => s => ' '.repeat(n) + s,
+                xs = wsTree.nest,
+                lng = xs.length,
+                [nChars, x] = Array.from(wsTree.root);
+
+            // LEAF NODE --------------------------------------
+            return 0 === lng ? (
+                Tuple3([])(
+                    '─'.repeat(w - nChars) + x
+                )([])
+
+                // NODE WITH SINGLE CHILD -------------------------
+            ) : 1 === lng ? (() => {
+                const indented = leftPad(1 + w);
+                return fghOverLMR(
+                    indented,
+                    z => '─'.repeat(w - nChars) + x + '─' + z,
+                    indented
+                )(f(xs[0]));
+
+                // NODE WITH CHILDREN -----------------------------
+            })() : (() => {
+                const
+                    cFix = x => xs => x + xs,
+                    treeFix = (l, m, r) => compose(
+                        stringsFromLMR,
+                        fghOverLMR(cFix(l), cFix(m), cFix(r))
+                    ),
+                    _x = '─'.repeat(w - nChars) + x,
+                    indented = leftPad(w),
+                    lmrs = xs.map(f);
+                return fghOverLMR(
+                    indented,
+                    s => _x + ({
+                        '┌': '┬',
+                        '├': '┼',
+                        '│': '┤',
+                        '└': '┴'
+                    })[s[0]] + s.slice(1),
+                    indented
+                )(lmrFromStrings(
+                    intercalate(blnCompact ? [] : ['│'])(
+                        [treeFix(' ', '┌', '│')(lmrs[0])]
+                        .concat(init(lmrs.slice(1)).map(
+                            treeFix('│', '├', '│')
+                        ))
+                        .concat([treeFix('│', '└', ' ')(
+                            lmrs[lmrs.length - 1]
+                        )])
+                    )
+                ));
+            })();
+        };
+        const
+            measuredTree = fmapTree(
+                v => {
+                    const s = ' ' + v + ' ';
+                    return Tuple(s.length)(s)
+                }
+            )(tree),
+            levelWidths = init(levels(measuredTree))
+            .reduce(
+                (a, level) => a.concat(maximum(level.map(fst))),
+                []
+            ),
+            treeLines = stringsFromLMR(
+                levelWidths.reduceRight(
+                    lmrBuild, x => x
+                )(measuredTree)
+            );
+        return unlines(
+            blnPruned ? (
+                treeLines.filter(
+                    s => s.split('')
+                    .some(c => !' │'.includes(c))
                 )
-            ));
-        })();
-    };
-    const
-        measuredTree = fmapTree(
-            v => {
-                const s = ' ' + v + ' ';
-                return Tuple(s.length)(s)
-            }
-        )(tree),
-        levelWidths = init(levels(measuredTree))
-        .reduce(
-            (a, level) => a.concat(maximum(level.map(fst))),
-            []
-        ),
-        treeLines = stringsFromLMR(
-            levelWidths.reduceRight(
-                lmrBuild, x => x
-            )(measuredTree)
+            ) : treeLines
         );
-    return unlines(
-        blnPruned ? (
-            treeLines.filter(
-                s => s.split('')
-                .some(c => !' │'.includes(c))
-            )
-        ) : treeLines
-    );
-};
+    };
 
 // drop :: Int -> [a] -> [a]
 // drop :: Int -> Generator [a] -> Generator [a]
 // drop :: Int -> String -> String
-const drop = n => xs =>
-    Infinity > length(xs) ? (
+const drop = n =>
+    xs => Infinity > length(xs) ? (
         xs.slice(n)
     ) : (take(n)(xs), xs);
 
 // dropAround :: (a -> Bool) -> [a] -> [a]
 // dropAround :: (Char -> Bool) -> String -> String
-const dropAround = p => xs => dropWhile(p)(
-  dropWhileEnd(p)(xs)
-);
+const dropAround = p =>
+    xs => dropWhile(p)(
+        dropWhileEnd(p)(xs)
+    );
 
 // dropFileName :: FilePath -> FilePath
-const dropFileName = strPath =>
-    '' !== strPath ? (() => {
+const dropFileName = fp =>
+    '' !== fp ? (() => {
         const
-          xs = (strPath.split('/'))
+          xs = (fp.split('/'))
           .slice(0, -1);
         return xs.length > 0 ? (
             xs.join('/') + '/'
@@ -803,57 +811,62 @@ const dropFileName = strPath =>
     })() : './';
 
 // dropLength :: [a] -> [b] -> [b]
-const dropLength = xs => ys => {
-    const go = (x, y) =>
-        0 < x.length ? (
-            0 < y.length ? (
-                go(x.slice(1), y.slice(1))
-            ) : []
-        ) : y;
-    return go(xs, ys);
-};
+const dropLength = xs =>
+    ys => {
+        const go = (x, y) =>
+            0 < x.length ? (
+                0 < y.length ? (
+                    go(x.slice(1), y.slice(1))
+                ) : []
+            ) : y;
+        return go(xs, ys);
+    };
 
 // dropLengthMaybe :: [a] -> [b] -> Maybe [b]
-const dropLengthMaybe = xs => ys => {
-    const go = (x, y) =>
-        0 < x.length ? (
-            0 < y.length ? (
-                go(x.slice(1), y.slice(1))
-            ) : Nothing()
-        ) : Just(y);
-    return go(xs, ys);
-};
+const dropLengthMaybe = xs =>
+    ys => {
+        const go = (x, y) =>
+            0 < x.length ? (
+                0 < y.length ? (
+                    go(x.slice(1), y.slice(1))
+                ) : Nothing()
+            ) : Just(y);
+        return go(xs, ys);
+    };
 
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
-const dropWhile = p => xs => {
-    const lng = xs.length;
-    return 0 < lng ? xs.slice(
-        until(i => i === lng || !p(xs[i]))(
-            i => 1 + i
-        )(0)
-    ) : [];
-};
+const dropWhile = p =>
+    xs => {
+        const lng = xs.length;
+        return 0 < lng ? xs.slice(
+            until(i => i === lng || !p(xs[i]))(
+                i => 1 + i
+            )(0)
+        ) : [];
+    };
 
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
 // dropWhileEnd :: (Char -> Bool) -> String -> String
-const dropWhileEnd = p => xs => {
-    let i = xs.length;
-    while (i-- && p(xs[i])) {}
-    return xs.slice(0, i + 1);
-};
+const dropWhileEnd = p =>
+    xs => {
+        let i = xs.length;
+        while (i-- && p(xs[i])) {}
+        return xs.slice(0, i + 1);
+    };
 
 // dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-const dropWhileGen = p => xs => {
-    let
-        nxt = xs.next(),
-        v = nxt.value;
-    while (!nxt.done && p(v)) {
-        nxt = xs.next();
-        v = nxt.value;
-    }
-    return cons(v)(xs);
-};
+const dropWhileGen = p =>
+    xs => {
+        let
+            nxt = xs.next(),
+            v = nxt.value;
+        while (!nxt.done && p(v)) {
+            nxt = xs.next();
+            v = nxt.value;
+        }
+        return cons(v)(xs);
+    };
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = fl =>
@@ -870,35 +883,35 @@ const elem = x =>
         xs.some(eq(x))
     ) : xs.includes(x);
 
-// If x is a dictionary, then the Int is read as an 
-// index into the lexically sorted keys of the Dict, 
-// returning a Maybe (Key, Value) pair.
-// If x is a list, then returns a Maybe a.
-// (In either case, returns Nothing for an Int out of range)
 // elemAtMay :: Int -> Dict -> Maybe (String, a)
 // elemAtMay :: Int -> [a] -> Maybe a
-const elemAtMay = i => x => {
-    const
-        bln = Array.isArray(x),
-        k = bln ? i : Object.keys(x)
-        .sort()[i],
-        v = x[k];
-    return undefined !== v ? (
-        Just(bln ? v : Tuple(k, v))
-    ) : Nothing();
-};
+const elemAtMay = i =>
+    // Just the item at the indexed position in an array,
+    // or in the lexically sorted key-values of a dict,
+    // or Nothing, if the index is out of range.
+    x => {
+        const
+            bln = Array.isArray(x),
+            k = bln ? i : Object.keys(x)
+            .sort()[i],
+            v = x[k];
+        return undefined !== v ? (
+            Just(bln ? v : Tuple(k, v))
+        ) : Nothing();
+    };
 
 // elemIndex :: Eq a => a -> [a] -> Maybe Int
-const elemIndex = x => xs => {
-    const i = xs.indexOf(x);
-    return -1 === i ? (
-        Nothing()
-    ) : Just(i);
-};
+const elemIndex = x =>
+    xs => {
+        const i = xs.indexOf(x);
+        return -1 === i ? (
+            Nothing()
+        ) : Just(i);
+    };
 
 // elemIndices :: Eq a => a -> [a] -> [Int]
-const elemIndices = x => xs =>
-    xs.flatMap((y, i) => y === x ? (
+const elemIndices = x =>
+    xs => xs.flatMap((y, i) => y === x ? (
         [i]
     ) : []);
 
@@ -922,28 +935,29 @@ function* enumFrom(x) {
 }
 
 // enumFromPairs :: String -> [(String, Int)] -> Dict
-const enumFromPairs = name => kvs => {
-    const
-        iMax = kvs[kvs.length - 1][1],
-        iMin = kvs[0][1];
-    return kvs.reduce(
-        (a, kv) => {
-            return Object.assign(
-                a, {
-                    [kv[0]]: {
-                        'type': 'enum',
-                        'name': name,
-                        'key': kv[0],
-                        'max': iMax,
-                        'min': iMin,
-                        'value': kv[1]
-                    },
-                    [kv[1]]: kv[0]
-                }
-            )
-        }, {}
-    );
-};
+const enumFromPairs = name =>
+    kvs => {
+        const
+            iMax = kvs[kvs.length - 1][1],
+            iMin = kvs[0][1];
+        return kvs.reduce(
+            (a, kv) => {
+                return Object.assign(
+                    a, {
+                        [kv[0]]: {
+                            'type': 'enum',
+                            'name': name,
+                            'key': kv[0],
+                            'max': iMax,
+                            'min': iMin,
+                            'value': kv[1]
+                        },
+                        [kv[1]]: kv[0]
+                    }
+                )
+            }, {}
+        );
+    };
 
 // enumFromThen :: Int -> Int -> Gen [Int]
 const enumFromThen = x =>
@@ -962,26 +976,28 @@ const enumFromThen = x =>
     };
 
 // enumFromThenTo :: Int -> Int -> Int -> [Int]
-const enumFromThenTo = x1 => x2 => y => {
-    const d = x2 - x1;
-    return Array.from({
-        length: Math.floor(y - x2) / d + 2
-    }, (_, i) => x1 + (d * i));
-};
+const enumFromThenTo = x1 =>
+    x2 => y => {
+        const d = x2 - x1;
+        return Array.from({
+            length: Math.floor(y - x2) / d + 2
+        }, (_, i) => x1 + (d * i));
+    };
 
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
-const enumFromThenToChar = x1 => x2 => y => {
-    const [i1, i2, iY] = Array.from([x1, x2, y])
-        .map(x => x.charCodeAt(0)),
-        d = i2 - i1;
-    return Array.from({
-        length: (Math.floor(iY - i2) / d) + 2
-    }, (_, i) => String.fromCodePoint(i1 + (d * i)));
-};
+const enumFromThenToChar = x1 =>
+    x2 => y => {
+        const [i1, i2, iY] = Array.from([x1, x2, y])
+            .map(x => x.charCodeAt(0)),
+            d = i2 - i1;
+        return Array.from({
+            length: (Math.floor(iY - i2) / d) + 2
+        }, (_, i) => String.fromCodePoint(i1 + (d * i)));
+    };
 
 // enumFromTo :: Int -> Int -> [Int]
-const enumFromTo = m => n =>
-    Array.from({
+const enumFromTo = m =>
+    n => Array.from({
         length: 1 + n - m
     }, (_, i) => m + i);
 
@@ -2299,10 +2315,11 @@ const minimumBy = f => xs =>
     ), undefined);
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
-const minimumByMay = f => xs =>
-    xs.reduce((a, x) => a.Nothing ? Just(x) : (
-        f(x)(a.Just) < 0 ? Just(x) : a
-    ), Nothing());
+const minimumByMay = f =>
+    xs => xs.reduce((a, x) =>
+        a.Nothing ? Just(x) : (
+            f(x)(a.Just) < 0 ? Just(x) : a
+        ), Nothing());
 
 // minimumMay :: [a] -> Maybe a
 const minimumMay = xs =>
@@ -3273,9 +3290,7 @@ const strip = s => s.trim();
 
 // stripEnd :: String -> String
 const stripEnd = s =>
-  dropWhileEnd(isSpace)(
-      s
-  );
+    s.trimEnd();
 
 // stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 const stripPrefix = pfx => s => {
@@ -3295,9 +3310,7 @@ const stripPrefix = pfx => s => {
 
 // stripStart :: String -> String
 const stripStart = s =>
-    dropWhile(isSpace)(
-        s
-    );
+    s.trimStart();
 
 // subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
 const subTreeAtPath = tree => path => {
