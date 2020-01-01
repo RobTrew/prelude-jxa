@@ -447,7 +447,9 @@ const compose = (...fs) =>
 
 // composeList :: [(a -> a)] -> (a -> a)
 const composeList = fs =>
-    x => fs.reduceRight((a, f) => f(a), x, fs);
+    x => fs.reduceRight(
+        (a, f) => f(a), x
+    );
 
 // composeListR :: [(a -> a)] -> (a -> a)
 const composeListR = fs =>
@@ -460,13 +462,11 @@ const composeR = f =>
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
 const concat = xs =>
-    'string' !== typeof xs ? (
-        0 < xs.length ? (
-            xs.every(x => 'string' === typeof x) ? (
-                xs.join('')
-            ) : xs.flat()
+    0 < xs.length ? (
+        xs.every(x => 'string' === typeof x) ? (
+            ''
         ) : []
-    ) : xs;
+    ).concat(...xs) : xs;
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = f =>
