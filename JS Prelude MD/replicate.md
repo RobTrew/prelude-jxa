@@ -1,7 +1,8 @@
 ```js
 // replicate :: Int -> a -> [a]
-const replicate = n => x =>
-    Array.from({
+const replicate = n =>
+    // A list of n copies of x.
+    x => Array.from({
         length: n
     }, () => x);
 ```

@@ -928,6 +928,8 @@ const encodedPath = encodeURI;
 
 // enumFrom :: Enum a => a -> [a]
 function* enumFrom(x) {
+    // A non-finite succession of enumerable
+    // values, starting with the value x.
     let v = x;
     while (true) {
         yield v;
@@ -1021,21 +1023,24 @@ const enumFromTo_ = m => n => {
 };
 
 // eq (==) :: Eq a => a -> a -> Bool
-const eq = a => b => {
-    const t = typeof a;
-    return t !== typeof b ? (
-        false
-    ) : 'object' !== t ? (
-        'function' !== t ? (
-            a === b
-        ) : a.toString() === b.toString()
-    ) : (() => {
-        const kvs = Object.entries(a);
-        return kvs.length !== Object.keys(b).length ? (
+const eq = a =>
+    // True when a and b are equivalent in the terms
+    // defined below for their shared data type.
+    b => {
+        const t = typeof a;
+        return t !== typeof b ? (
             false
-        ) : kvs.every(([k, v]) => eq(v)(b[k]));
-    })();
-};
+        ) : 'object' !== t ? (
+            'function' !== t ? (
+                a === b
+            ) : a.toString() === b.toString()
+        ) : (() => {
+            const kvs = Object.entries(a);
+            return kvs.length !== Object.keys(b).length ? (
+                false
+            ) : kvs.every(([k, v]) => eq(v)(b[k]));
+        })();
+    };
 
 // evalJSLR :: String -> Either String a
 const evalJSLR = s => {
@@ -1480,7 +1485,9 @@ const headMay = xs =>
     0 < xs.length ? Just(xs[0]) : Nothing();
 
 // identity :: a -> a
-const identity = x => x;
+const identity = x =>
+    // The identity function. (`id`, in Haskell)
+    x;
 
 // if_ :: Bool -> a -> a -> a
 const if_ = bln => x => y => bln ? x : y;
@@ -1547,6 +1554,7 @@ const indexTree = tree =>
 
 // init :: [a] -> [a]
 const init = xs =>
+    // All elements of a list except the last.
     0 < xs.length ? (
         xs.slice(0, -1)
     ) : undefined;
@@ -1826,19 +1834,32 @@ const justifyRight = n => cFiller => s =>
         s.padStart(n, cFiller)
     ) : s;
 
+// kCompose (>=>) :: Monad m => 
+// [(a -> m a)] -> (a -> m a)
+const kCompose = (...fs) =>
+    // Left Right composition of a sequence
+    // of functions which lift a raw value
+    // of the same type into the same monad.
+    x => 0 < fs.length ? (
+        fs.slice(1).reduce(
+            (m, f) => bind(m)(f),
+            fs[0](x)
+        )
+    ) : x;
+
 // keys :: Dict -> [String]
 const keys = Object.keys;
 
-// Kleisli composition LR
-// kleisliCompose (>=>) :: Monad m => 
-// (a -> m b) -> (b -> m c) -> (a -> m c)
-const kleisliCompose = f => g =>
-    x => bind(f(x))(
-        g
-    );
+// kleisliCompose (>=>) :: Monad m => (a -> m b) ->
+// (b -> m c) -> (a -> m c)
+const kleisliCompose = f =>
+    // Kleisli composition of two functions which
+    // each lift their values into the same monad.
+    g => x => bind(f(x))(g);
 
 // last :: [a] -> a
 const last = xs =>
+    // The last item of a list.
     0 < xs.length ? xs.slice(-1)[0] : undefined;
 
 // lastMay :: [a] -> Maybe a
@@ -1962,7 +1983,10 @@ const liftMmay = f =>
     ) : Just(f(mb.Just))
 
 // lines :: String -> [String]
-const lines = s => s.split(/[\r\n]/);
+const lines = s =>
+    // A list of strings derived from a single
+    // newline-delimited string. 
+    s.split(/[\r\n]/);
 
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
@@ -2110,20 +2134,23 @@ const mapMaybeGen = mf =>
     };
 
 // mappend (<>) :: Monoid a => a -> a -> a
-const mappend = a => b => {
-    const t = a.type;
-    return (
-        Boolean(t) ? (
-            'Maybe' === t ? (
-                mappendMaybe
-            ) : 'Ordering' === t ? (
-                mappendOrd
-            ) : mappendTuple
-        ) : 'function' !== typeof a ? (
-            append
-        ) : mappendFn
-    )(a)(b);
-};
+const mappend = a =>
+    // Associative operation 
+    // defined for various monoid types.
+    b => {
+        const t = a.type;
+        return (
+            Boolean(t) ? (
+                'Maybe' === t ? (
+                    mappendMaybe
+                ) : 'Ordering' === t ? (
+                    mappendOrd
+                ) : mappendTuple
+            ) : 'function' !== typeof a ? (
+                append
+            ) : mappendFn
+        )(a)(b);
+    };
 
 // mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 const mappendFn = f => g =>
@@ -2793,8 +2820,9 @@ const replace = needle => strNew => strHaystack =>
     );
 
 // replicate :: Int -> a -> [a]
-const replicate = n => x =>
-    Array.from({
+const replicate = n =>
+    // A list of n copies of x.
+    x => Array.from({
         length: n
     }, () => x);
 

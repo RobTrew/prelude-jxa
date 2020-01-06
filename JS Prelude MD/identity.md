@@ -1,4 +1,6 @@
 ```js
 // identity :: a -> a
-const identity = x => x;
+const identity = x =>
+    // The identity function. (`id`, in Haskell)
+    x;
 ```
