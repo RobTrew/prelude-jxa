@@ -32,6 +32,6 @@ const show = x => {
         ) : 'string' !== typeof v ? (
             v
         ) : v;
-    }, 2)
+    })
 };
 ```
