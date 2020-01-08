@@ -31,7 +31,7 @@ const show = x => {
             f(v)
         ) : 'string' !== typeof v ? (
             v
-        ) : "'" + v + "'";
+        ) : v;
     }, 2)
 };
 ```
