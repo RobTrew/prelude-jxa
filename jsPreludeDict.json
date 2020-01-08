@@ -380,7 +380,7 @@
   "showPrecision": "// showPrecision :: Int -> Float -> String\nconst showPrecision = n => x => {\n    // A string showing a floating point number\n    // at a given degree of precision.\n    const d = Math.pow(10, n);\n    return str(Math.round(d * x) / d);\n};",
   "showRatio": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    'Ratio' !== r.type ? (\n        r.toString()\n    ) : r.n.toString() + (\n        1 !== r.d ? (\n            '/' + r.d.toString()\n        ) : ''\n    );",
   "showSet": "// showSet :: Set a -> String\nconst showSet = oSet =>\n    '{' + Array.from(oSet)\n    .map(x => x.toString())\n    .join(',') + '}';",
-  "showTree": "// showTree :: Tree a -> String\nconst showTree = x =>\n    drawTree2(false)(true)(\n        fmap(show)(x)\n    );",
+  "showTree": "// showTree :: Tree a -> String\nconst showTree = x =>\n    drawTree2(false)(true)(\n        fmapTree(show)(x)\n    );",
   "showTuple": "// showTuple :: Tuple -> String\nconst showTuple = tpl =>\n    '(' + enumFromTo(0)(tpl.length - 1)\n    .map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
   "showUndefined": "// showUndefined :: () -> String\nconst showUndefined = () => '(⊥)';",
   "signum": "// | Sign of a number.\n// The functions 'abs' and 'signum' should satisfy the law:\n//\n// > abs x * signum x == x\n//\n// For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)\n// or @1@ (positive).\n\n// signum :: Num -> Num\nconst signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);",
