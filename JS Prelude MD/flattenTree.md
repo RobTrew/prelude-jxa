@@ -1,13 +1,10 @@
 ```js
-// The root elements of a tree in pre-order.
-```
-
-```js
 // flattenTree :: Tree a -> [a]
-const flattenTree = t => {
+const flattenTree = tree => {
     const
-      go = (xs, x) => [x.root]
-      .concat(x.nest.reduceRight(go, xs));
-    return go([], t);
+        go = (xs, node) => [node.root].concat(
+            node.nest.reduceRight(go, xs)
+        );
+    return go([], tree);
 };
 ```

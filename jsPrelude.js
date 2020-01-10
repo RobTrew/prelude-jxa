@@ -23,11 +23,15 @@ const Left = x => ({
 });
 
 // Node :: a -> [Tree a] -> Tree a
-const Node = v => xs => ({
-    type: 'Node',
-    root: v,
-    nest: xs || []
-});
+const Node = v =>
+    // Constructor for a Tree node which connects a
+    // value of some kind to a list of zero or
+    // more child trees.
+    xs => ({
+        type: 'Node',
+        root: v,
+        nest: xs || []
+    });
 
 // Nothing :: Maybe a
 const Nothing = () => ({
@@ -583,7 +587,10 @@ const deleteFirstsBy = fEq =>
 // deleteKey :: String -> Dict -> Dict
 const deleteKey = k =>
     // A new dictionary, without the key k.
-    dct => (delete dct[k], dct);
+    dct => {
+        const dct2 = {...dct};
+        return (delete dct2[k], dct2);
+    };
 
 // dictFromList :: [(k, v)] -> Dict
 const dictFromList = kvs =>
@@ -1189,13 +1196,13 @@ const firstArrow = f =>
 // flatten :: NestedList a -> [a]
 const flatten = nest => nest.flat(Infinity);
 
-// The root elements of a tree in pre-order.
 // flattenTree :: Tree a -> [a]
-const flattenTree = t => {
+const flattenTree = tree => {
     const
-      go = (xs, x) => [x.root]
-      .concat(x.nest.reduceRight(go, xs));
-    return go([], t);
+        go = (xs, node) => [node.root].concat(
+            node.nest.reduceRight(go, xs)
+        );
+    return go([], tree);
 };
 
 // flip :: (a -> b -> c) -> b -> a -> c
@@ -3650,9 +3657,10 @@ const toLower = s => s.toLocaleLowerCase();
 const toRatio = n =>
     approxRatio(1e-12)(n);
 
-// Sentence case - initial string capitalized and rest lowercase
 // toSentence :: String -> String
 const toSentence = s =>
+    // Sentence case - initial string capitalized 
+    // and rest lowercase.
     (0 < s.length) ? (
         s[0].toUpperCase() + s.slice(1)
         .toLowerCase()
@@ -3740,25 +3748,25 @@ const traverseLR = f => lr =>
         f(lr.Right)
     );
 
-// - Map each element of a structure to an action,
-// - evaluate these actions from left to right,
-// - and collect the results.
-
-//    traverse f = List.foldr cons_f (pure [])
-//      where cons_f x ys = liftA2 (:) (f x) ys
 // traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
-const traverseList = f => xs => {
-    const lng = xs.length;
-    return 0 < lng ? (() => {
-        const
-            vLast = f(xs[lng - 1]),
-            t = vLast.type || 'List';
-        return xs.slice(0, -1).reduceRight(
-            (ys, x) => liftA2(cons)(f(x))(ys),
-            liftA2(cons)(vLast)(pureT(t)([]))
-        );
-    })() : [[]];
-};
+const traverseList = f =>
+    // Collected results of mapping each element
+    // of a structure to an action, and evaluating
+    // these actions from left to right.
+    xs => {
+        const lng = xs.length;
+        return 0 < lng ? (() => {
+            const
+                vLast = f(xs[lng - 1]),
+                t = vLast.type || 'List';
+            return xs.slice(0, -1).reduceRight(
+                (ys, x) => liftA2(cons)(f(x))(ys),
+                liftA2(cons)(vLast)(pureT(t)([]))
+            );
+        })() : [
+            []
+        ];
+    };
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 const traverseMay = f => mb =>
