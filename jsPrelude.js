@@ -1114,30 +1114,30 @@ const find = p => xs => {
     ) : Nothing();
 };
 
-//  Takes a predicate function and a list and
-//  returns Just( the 0-based index of the first
-//  element ) in the list satisfying the predicate
-//  or Nothing if there is no such element.
-// findIndex(isSpace, "hello world")
+// findIndex(isSpace)("hello world")
 //-> {"type":"Maybe","Nothing":false,"Just":5}
 
-// findIndex(even, [3, 5, 7, 8, 9])
+// findIndex(even)([3, 5, 7, 8, 9])
 //-> {"type":"Maybe","Nothing":false,"Just":3}
 
-// findIndex(isUpper, "all lower case")
+// findIndex(isUpper)("all lower case")
 //-> {"type":"Maybe","Nothing":true}
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
-const findIndex = p => xs => {
-    const
-        i = (
-            'string' !== typeof xs ? (
-                xs
-            ) : xs.split('')
-        ).findIndex(p);
-    return -1 !== i ? (
-        Just(i)
-    ) : Nothing();
-};
+const findIndex = p =>
+    //  Just the index of the first element in
+    //  xs for which p(x) is true, or 
+    //  Nothing if there is no such element.
+    xs => {
+        const
+            i = (
+                'string' !== typeof xs ? (
+                    xs
+                ) : xs.split('')
+            ).findIndex(p);
+        return -1 !== i ? (
+            Just(i)
+        ) : Nothing();
+    };
 
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 const findIndexR = p =>
@@ -3795,21 +3795,22 @@ const traverseTuple = f => tpl =>
     );
 
 // treeFromDict :: String -> Dict -> Tree String
-const treeFromDict = rootLabel => dict => {
-    const go = x =>
-        'object' !== typeof x ? [] : (
-            Array.isArray(x) ? (
-                x.map(v => Node(v, []))
-            ) : keys(x).map(
-                k => Node(k)(
-                    go(x[k])
+const treeFromDict = rootLabel =>
+    dict => {
+        const go = x =>
+            'object' !== typeof x ? [] : (
+                Array.isArray(x) ? (
+                    x.map(v => Node(v, []))
+                ) : keys(x).map(
+                    k => Node(k)(
+                        go(x[k])
+                    )
                 )
-            )
+            );
+        return Node(rootLabel)(
+            go(dict)
         );
-    return Node(rootLabel)(
-        go(dict)
-    );
-};
+    };
 
 // treeFromJSON :: JSON String -> Tree a
 const treeFromJSON = json => {
@@ -3819,6 +3820,54 @@ const treeFromJSON = json => {
     const go = ([root, nest]) =>
         Node(root)(nest.map(go));
     return go(JSON.parse(json));
+};
+
+// treeFromNestedDict -> Dict -> Either String Tree Dict
+const treeFromNestedDict = dict => {
+    // A generic Tree structure from a dict
+    // with keys assumed to include no more than
+    // one key to a *list* value,
+    // with this pattern applied recursively
+    // to each child dictionary in such a list.
+    const go = dct => {
+        const
+            kvs = Object.entries(dct),
+            lists = kvs.filter(
+                ([_, v]) => Array.isArray(v)
+            ),
+            lng = lists.length;
+        return 0 < lng ? (
+            1 < lng ? (
+                Left(
+                    'Ambiguous structure :: ' +
+                    lng.toString() + (
+                        ' multiple sublists in:\n  "' +
+                        dct.name + (
+                            '":\n' + bulleted('    ')(
+                                unlines(lists.map(fst))
+                            )
+                        )
+                    )
+                )
+            ) : (() => {
+                const [nestName, xs] = lists[0];
+                return bindLR(traverseList(go)(xs))(
+                    xs => Right(
+                        Node(
+                            Object.assign(
+                                deleteKey(nestName)(
+                                    dct
+                                ), {
+                                    'List title': nestName
+                                }
+                            )
+                        )(xs)
+                    )
+                );
+            })()
+        ) : Right(Node(dct)([]))
+    };
+    return go(dict);
 };
 
 // treeLeaves :: Tree -> [Tree]
