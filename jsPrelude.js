@@ -142,7 +142,9 @@ const ap = mf =>
 // apFn :: (a -> b -> c) -> (a -> b) -> a -> c
 const apFn = f =>
     // Applicative instance for functions.
-    g => x => f(x)(g(x))
+    g => x => f(x)(
+        g(x)
+    )
 
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 const apLR = flr =>
@@ -480,10 +482,11 @@ const concatMap = f =>
 const cons = x =>
     xs => Array.isArray(xs) ? (
         [x].concat(xs)
-    ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (
+    ) : 'GeneratorFunction' !== xs
+    .constructor.constructor.name ? (
         x + xs
-    ) : ( // Existing generator wrapped with one additional element
-        function*() {
+    ) : ( // cons(x)(Generator)
+        function* () {
             yield x;
             let nxt = xs.next()
             while (!nxt.done) {
@@ -512,7 +515,7 @@ const curryN = f =>
         const
             go = xs => f.length <= xs.length ? (
                 f(...xs)
-            ) : (...ys) => go([...xs, ...ys]);
+            ) : (...ys) => go(xs.concat(ys));
         return go(args);
     };
 
@@ -1102,6 +1105,14 @@ const filePathTree = fpAnchor => trees => {
 
 // filter :: (a -> Bool) -> [a] -> [a]
 const filter = f => xs => xs.filter(f);
+
+// filterTree (a -> Bool) -> Tree a -> [a]
+const filterTree = p =>
+    // List of all root values in the tree 
+    // which match the predicate p.
+    foldTree(x => xs =>
+        concat(p(x) ? [x, ...xs] : xs)
+    )
 
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = p => xs => {
@@ -1881,9 +1892,10 @@ const lefts = xs =>
 
 // length :: [a] -> Int
 const length = xs =>
-    // Returns Infinity over objects without finite length.
-    // This enables zip and zipWith to choose the shorter
-    // argument when one is non-finite, like cycle, repeat etc
+    // Returns Infinity over objects without finite 
+    // length. This enables zip and zipWith to choose 
+    // the shorter argument when one is non-finite, 
+    // like cycle, repeat etc
     (Array.isArray(xs) || 'string' === typeof xs) ? (
         xs.length
     ) : Infinity;
@@ -1935,12 +1947,12 @@ const liftA2Fn = op => f => g =>
     x => op(f(x))(g(x));
 
 // liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
-const liftA2LR = f => a => b =>
-     undefined !== a.Left ? (
-         a
-     ) : undefined !== b.Left ? (
-         b
-     ) : Right(f(a.Right)(b.Right))
+const liftA2LR = f =>
+    a => b => bindLR(a)(
+        x => bindLR(b)(
+            compose(Right, f(x))
+        )
+    );
 
 // liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 const liftA2List = f => xs => ys =>
@@ -3454,7 +3466,8 @@ const tails = xs => {
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
 const take = n => xs =>
-    'GeneratorFunction' !== xs.constructor.constructor.name ? (
+    'GeneratorFunction' !== xs
+    .constructor.constructor.name ? (
         xs.slice(0, n)
     ) : [].concat.apply([], Array.from({
         length: n
@@ -3800,7 +3813,7 @@ const treeFromDict = rootLabel =>
         const go = x =>
             'object' !== typeof x ? [] : (
                 Array.isArray(x) ? (
-                    x.map(v => Node(v, []))
+                    x.flatMap(go)
                 ) : keys(x).map(
                     k => Node(k)(
                         go(x[k])

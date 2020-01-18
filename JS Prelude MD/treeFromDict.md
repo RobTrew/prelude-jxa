@@ -5,7 +5,7 @@ const treeFromDict = rootLabel =>
         const go = x =>
             'object' !== typeof x ? [] : (
                 Array.isArray(x) ? (
-                    x.map(v => Node(v, []))
+                    x.flatMap(go)
                 ) : keys(x).map(
                     k => Node(k)(
                         go(x[k])
