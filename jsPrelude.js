@@ -1287,12 +1287,15 @@ const fmapMay = f => mb =>
     ) : Just(f(mb.Just));
 
 // fmapTree :: (a -> b) -> Tree a -> Tree b
-const fmapTree = f => tree => {
-    const go = node => Node(f(node.root))(
-        node.nest.map(go)
-    );
-    return go(tree);
-};
+const fmapTree = f =>
+    // A new tree. The result of a structure-preserving 
+    // application of f to each root in the existing tree.
+    tree => {
+        const go = x => Node(f(x.root))(
+            x.nest.map(go)
+        );
+        return go(tree);
+    };
 
 // fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
 const fmapTuple = f => tpl =>
@@ -1310,12 +1313,15 @@ const foldMapTree = f => node => {
 };
 
 // foldTree :: (a -> [b] -> b) -> Tree a -> b
-const foldTree = f => tree => {
-    const go = node => f(node.root)(
-        node.nest.map(go)
-    );
-    return go(tree);
-};
+const foldTree = f =>
+    // The catamorphism on trees. A summary
+    // value obtained by a depth-first fold.
+    tree => {
+        const go = x => f(x.root)(
+            x.nest.map(go)
+        );
+        return go(tree);
+    };
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = f => a => xs =>
@@ -1387,7 +1393,9 @@ const fromRight = def => lr =>
   isRight(lr) ? lr.Right : def;
 
 // fst :: (a, b) -> a
-const fst = tpl => tpl[0];
+const fst = tpl =>
+    // First member of a pair.
+    tpl[0];
 
 // Abbreviation for quick testing
 // ft :: (Int, Int) -> [Int]
@@ -2241,8 +2249,13 @@ const maxBound = x => {
 
 // maximum :: Ord a => [a] -> a
 const maximum = xs =>
+    // The largest value in a non-empty list.
     0 < xs.length ? (
-        xs.slice(1).reduce((a, x) => x > a ? x : a, xs[0])
+        xs.slice(1).reduce(
+            (a, x) => x > a ? (
+                x
+            ) : a, xs[0]
+        )
     ) : undefined;
 
 //  Ordering: (LT|EQ|GT):

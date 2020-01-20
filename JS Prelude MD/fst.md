@@ -1,4 +1,6 @@
 ```js
 // fst :: (a, b) -> a
-const fst = tpl => tpl[0];
+const fst = tpl =>
+    // First member of a pair.
+    tpl[0];
 ```
