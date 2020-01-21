@@ -14,7 +14,7 @@ const splitBy = p => xs =>
             h = ys[0],
             parts = ys.slice(1)
             .reduce(([acc, active, prev], x) =>
-                p(prev, x) ? (
+                p(prev)(x) ? (
                     [acc.concat([active]), [x], x]
                 ) : [acc, active.concat(x), x], [
                     [],

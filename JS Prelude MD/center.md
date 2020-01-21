@@ -1,16 +1,12 @@
 ```js
-// Size of space -> filler Char -> String -> Centered String
-```
-
-```js
 // center :: Int -> Char -> String -> String
 const center = n =>
     // Size of space -> filler Char -> String -> Centered String
     c => s => {
-        const
-            qr = quotRem(n - s.length)(2),
-            q = qr[0];
-        return replicateString(q)(c) +
-            s + replicateString(q + qr[1])(c);
+        const gap = n - s.length;
+        return 0 < gap ? (() => {
+            const pre = c.repeat(Math.floor(gap / 2));
+            return pre + s + pre + c.repeat(gap % 2);
+        })() : s
     };
 ```

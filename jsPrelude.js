@@ -168,6 +168,8 @@ const apMay = mf =>
 
 // apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 const apTree = tf =>
+    // A new tree derived by applying each of a tree
+    // of functions to each node value in another tree.
     liftA2Tree(x => x)(tf)
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
@@ -392,16 +394,15 @@ const ceiling = x => {
     return 0 < nr[1] ? 1 + n : n;
 };
 
-// Size of space -> filler Char -> String -> Centered String
 // center :: Int -> Char -> String -> String
 const center = n =>
     // Size of space -> filler Char -> String -> Centered String
     c => s => {
-        const
-            qr = quotRem(n - s.length)(2),
-            q = qr[0];
-        return replicateString(q)(c) +
-            s + replicateString(q + qr[1])(c);
+        const gap = n - s.length;
+        return 0 < gap ? (() => {
+            const pre = c.repeat(Math.floor(gap / 2));
+            return pre + s + pre + c.repeat(gap % 2);
+        })() : s
     };
 
 // chars :: String -> [Char]
@@ -3273,7 +3274,7 @@ const splitBy = p => xs =>
             h = ys[0],
             parts = ys.slice(1)
             .reduce(([acc, active, prev], x) =>
-                p(prev, x) ? (
+                p(prev)(x) ? (
                     [acc.concat([active]), [x], x]
                 ) : [acc, active.concat(x), x], [
                     [],
