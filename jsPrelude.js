@@ -1856,15 +1856,19 @@ const jsonParseLR = s => {
 };
 
 // justifyLeft :: Int -> Char -> String -> String
-const justifyLeft = n => cFiller => s =>
-    n > s.length ? (
-        s.padEnd(n ,cFiller)
+const justifyLeft = n =>
+    // The string s, followed by enough padding (with
+    // the character c) to reach the string length n.
+    c => s => n > s.length ? (
+        s.padEnd(n, c)
     ) : s;
 
 // justifyRight :: Int -> Char -> String -> String
-const justifyRight = n => cFiller => s =>
-    n > s.length ? (
-        s.padStart(n, cFiller)
+const justifyRight = n =>
+    // The string s, preceded by enough padding (with
+    // the character c) to reach the string length n.
+    c => s => n > s.length ? (
+        s.padStart(n, c)
     ) : s;
 
 // kCompose (>=>) :: Monad m => 
