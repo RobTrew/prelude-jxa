@@ -4,9 +4,11 @@
 
 ```js
 // takeCycle :: Int -> [a] -> [a]
-const takeCycle = n => xs => {
-    const lng = xs.length;
-    return (
+const takeCycle = n =>
+    // First n elements of a non-finite cycle of xs.
+    xs => {
+        const lng = xs.length;
+        return (
             n <= xs ? (
                 xs
             ) : concat(
@@ -14,7 +16,6 @@ const takeCycle = n => xs => {
                     xs
                 )
             )
-        )
-        .slice(0, n)
-};
+        ).slice(0, n)
+    };
 ```

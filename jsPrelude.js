@@ -2079,7 +2079,8 @@ const lookupTuples = k => kvs =>
     )(x => Just(snd(x)));
 
 // lt (<) :: Ord a => a -> a -> Bool
-const lt = a => b => a < b;
+const lt = a => 
+    b => a < b;
 
 // Not required in JS, which has first functions by default.
 // Included only for comparison with AS, which has to derive
@@ -2091,8 +2092,10 @@ const lt = a => b => a < b;
 const mReturn = x => identity(x);
 
 // map :: (a -> b) -> [a] -> [b]
-const map = f => xs =>
-    (Array.isArray(xs) ? (
+const map = f =>
+    // The list obtained by applying f to each element of xs.
+    // (The image of xs under f).
+    xs => (Array.isArray(xs) ? (
         xs
     ) : xs.split('')).map(f);
 
@@ -3266,12 +3269,12 @@ const splitAt = n => xs =>
       xs.slice(n)
   );
 
-// Splitting not on a delimiter, but wherever the relationship
-// between consecutive terms matches a binary predicate
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 // splitBy :: (String -> String -> Bool) -> String -> [String]
-const splitBy = p => xs =>
-    (xs.length < 2) ? [xs] : (() => {
+const splitBy = p =>
+    // Splitting not on a delimiter, but wherever the relationship
+    // between consecutive terms matches a binary predicate.
+    xs => (xs.length < 2) ? [xs] : (() => {
         const
             bln = 'string' === typeof xs,
             ys = bln ? xs.split('') : xs,
@@ -3289,13 +3292,6 @@ const splitBy = p => xs =>
             ps => ps.map(cs => ''.concat.apply('', cs))
         ) : x => x)(parts[0].concat([parts[1]]));
     })();
-
-// splitEvery :: Int -> [a] -> [[a]]
-const splitEvery = n => xs => {
-    if (xs.length <= n) return [xs];
-    const [h, t] = [xs.slice(0, n), xs.slice(n)];
-    return [h].concat(splitEvery(n)(t));
-};
 
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
@@ -3465,16 +3461,22 @@ const succMay = x => {
 };
 
 // sum :: [Num] -> Num
-const sum = xs => xs.reduce((a, x) => a + x, 0);
+const sum = xs =>
+    // The numeric sum of all values in xs.
+    xs.reduce((a, x) => a + x, 0);
 
 // swap :: (a, b) -> (b, a)
 const swap = ab =>
+    // The pair ab with its order reversed.
     Tuple(ab[1])(
         ab[0]
     );
 
 // tail :: [a] -> [a]
-const tail = xs => 0 < xs.length ? xs.slice(1) : [];
+const tail = xs =>
+    // A new list consisting of all
+    // items of xs except the first.
+    0 < xs.length ? xs.slice(1) : [];
 
 // tailMay :: [a] -> Maybe [a]
 const tailMay = xs =>
@@ -3496,8 +3498,10 @@ const tails = xs => {
 
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
-const take = n => xs =>
-    'GeneratorFunction' !== xs
+const take = n =>
+    // The first n elements of a list,
+    // string of characters, or stream.
+    xs => 'GeneratorFunction' !== xs
     .constructor.constructor.name ? (
         xs.slice(0, n)
     ) : [].concat.apply([], Array.from({
@@ -3528,9 +3532,11 @@ const takeBaseName = strPath =>
 
 // First n members of an infinite cycle of xs
 // takeCycle :: Int -> [a] -> [a]
-const takeCycle = n => xs => {
-    const lng = xs.length;
-    return (
+const takeCycle = n =>
+    // First n elements of a non-finite cycle of xs.
+    xs => {
+        const lng = xs.length;
+        return (
             n <= xs ? (
                 xs
             ) : concat(
@@ -3538,9 +3544,8 @@ const takeCycle = n => xs => {
                     xs
                 )
             )
-        )
-        .slice(0, n)
-};
+        ).slice(0, n)
+    };
 
 // takeDirectory :: FilePath -> FilePath
 const takeDirectory = strPath =>
