@@ -225,6 +225,8 @@ const newUUID = () =>
 
 // readFile :: FilePath -> IO String
 const readFile = fp => {
+    // The contents of a text file at the
+    // path file fp.
     const
         e = $(),
         ns = $.NSString.stringWithContentsOfFileEncodingError(

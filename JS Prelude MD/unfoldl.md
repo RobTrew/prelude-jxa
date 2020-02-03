@@ -6,8 +6,15 @@
 ```js
 // unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
 const unfoldl = f => v => {
+    // Dual to reduce or foldl.
+    // Where these reduce a list to a summary value, unfoldl
+    // builds a list from a seed value.
+    // Where f returns Just(a, b), a is appended to the list,
+    // and the residual b is used as the argument for the next
+    // application of f.
+    // Where f returns Nothing, the completed list is returned.
     let
-        xr = [v, v],
+    xr = [v, v],
         xs = [];
     while (true) {
         const mb = f(xr[0]);

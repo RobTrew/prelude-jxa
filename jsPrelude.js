@@ -1325,8 +1325,8 @@ const foldTree = f =>
     };
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
-const foldl = f => a => xs =>
-    xs.reduce(uncurry(f), a);
+const foldl = f => 
+    a => xs => xs.reduce((x, y) => f(x)(y), a);
 
 // foldl1 :: (a -> a -> a) -> [a] -> a
 const foldl1 = f => xs =>
@@ -3802,20 +3802,17 @@ const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating
     // these actions from left to right.
-    xs => {
-        const lng = xs.length;
-        return 0 < lng ? (() => {
-            const
-                vLast = f(xs[lng - 1]),
-                t = vLast.type || 'List';
-            return xs.slice(0, -1).reduceRight(
-                (ys, x) => liftA2(cons)(f(x))(ys),
-                liftA2(cons)(vLast)(pureT(t)([]))
-            );
-        })() : [
-            []
-        ];
-    };
+    xs => 0 < xs.length ? (() => {
+        const
+            vLast = f(xs.slice(-1)[0]),
+            t = vLast.type || 'List';
+        return xs.slice(0, -1).reduceRight(
+            (ys, x) => liftA2(cons)(f(x))(ys),
+            liftA2(cons)(vLast)(pureT(t)([]))
+        );
+    })() : [
+        []
+    ];
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 const traverseMay = f => mb =>
@@ -4051,8 +4048,15 @@ const unfoldTree = f => b => {
 // --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 // unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
 const unfoldl = f => v => {
+    // Dual to reduce or foldl.
+    // Where these reduce a list to a summary value, unfoldl
+    // builds a list from a seed value.
+    // Where f returns Just(a, b), a is appended to the list,
+    // and the residual b is used as the argument for the next
+    // application of f.
+    // Where f returns Nothing, the completed list is returned.
     let
-        xr = [v, v],
+    xr = [v, v],
         xs = [];
     while (true) {
         const mb = f(xr[0]);
@@ -4120,7 +4124,10 @@ const unionSet = s => s1 =>
     );
 
 // unlines :: [String] -> String
-const unlines = xs => xs.join('\n');
+const unlines = xs =>
+    // A linefeed-delimited string constructed
+    // from the list of lines in xs.
+    xs.join('\n');
 
 // If the list is empty returns Nothing, otherwise returns 
 // Just the init and the last.
