@@ -1305,13 +1305,16 @@ const fmapTuple = f => tpl =>
     );
 
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
-const foldMapTree = f => node => {
-    const go = x =>
-        0 < x.nest.length ? mappend(f(x.root))(
-            foldl1(mappend)(x.nest.map(go))
-        ) : f(x.root);
-    return go(node);
-};
+const foldMapTree = f =>
+    // Result of mapping each element of the tree to
+    // a monoid, and combining with mappend.
+    node => {
+        const go = x =>
+            0 < x.nest.length ? mappend(f(x.root))(
+                foldl1(mappend)(x.nest.map(go))
+            ) : f(x.root);
+        return go(node);
+    };
 
 // foldTree :: (a -> [b] -> b) -> Tree a -> b
 const foldTree = f =>
@@ -1329,8 +1332,11 @@ const foldl = f =>
     a => xs => xs.reduce((x, y) => f(x)(y), a);
 
 // foldl1 :: (a -> a -> a) -> [a] -> a
-const foldl1 = f => xs =>
-    1 < xs.length ? xs.slice(1)
+const foldl1 = f =>
+    // Left to right reduction of the non-empty list xs, 
+    // using the binary operator f, with the head of xs
+    // as the initial acccumulator value.
+    xs => 1 < xs.length ? xs.slice(1)
     .reduce(uncurry(f), xs[0]) : xs[0];
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
@@ -1419,6 +1425,8 @@ const genericIndexMay = xs => i =>
 
 // group :: [a] -> [[a]]
 const group = xs => {
+    // A list of lists, each containing only equal elements,
+    // such that the concatenation of these lists is xs.
     const go = xs =>
         0 < xs.length ? (() => {
             const
@@ -3098,7 +3106,9 @@ const showIntAtBase = base => toChr => n => rs => {
 };
 
 // showJSON :: a -> String
-const showJSON = x => JSON.stringify(x, null, 2);
+const showJSON = x =>
+    // Indented JSON representation of the value x.
+    JSON.stringify(x, null, 2);
 
 // showLR :: Either a b -> String
 const showLR = lr => {
@@ -4026,7 +4036,9 @@ const uncons = xs => {
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    (x, y) => f(x)(y);
+    (...args) => 1 < args.length ? (
+        (x, y) => f(x)(y)
+    ) : f(args[0][0])(args[0][1])
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]

@@ -1,6 +1,8 @@
 ```js
 // group :: [a] -> [[a]]
 const group = xs => {
+    // A list of lists, each containing only equal elements,
+    // such that the concatenation of these lists is xs.
     const go = xs =>
         0 < xs.length ? (() => {
             const
