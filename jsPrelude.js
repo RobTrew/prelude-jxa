@@ -2031,8 +2031,10 @@ const liftMmay = f =>
 // lines :: String -> [String]
 const lines = s =>
     // A list of strings derived from a single
-    // newline-delimited string. 
-    s.split(/[\r\n]/);
+    // newline-delimited string.
+    0 < s.length ? (
+        s.split(/[\r\n]/)
+    ) : [];
 
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
