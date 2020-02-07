@@ -1083,12 +1083,9 @@ const fTable = s => xShow => fxShow => f => xs => {
     ).join('\n');
 };
 
-// Compose a function from a simple value to a tuple of
-// the separate outputs of two different functions
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = f =>
-    // Compose a function from a simple value to a tuple of
-    // the separate outputs of two different functions.
+    // A function from x to a tuple of (f(x), g(x))
     g => x => Tuple(f(x))(g(x));
 
 // filePathTree :: filePath -> [Tree String] -> Tree FilePath
@@ -3267,11 +3264,10 @@ const span = p => xs => {
     )(xs);
 };
 
-// Compose a function (from a tuple to a tuple), 
-// (with separate transformations for fst and snd)
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
-const splitArrow = f => g => 
-    tpl => Tuple(f(tpl[0]))(
+const splitArrow = f =>
+    // A function from (x, y) to a tuple of (f(x), g(y))
+    g => tpl => Tuple(f(tpl[0]))(
         g(tpl[1])
     );
 
@@ -4021,6 +4017,8 @@ const unQuoted = s =>
 
 // uncons :: [a] -> Maybe (a, [a])
 const uncons = xs => {
+    // Just a tuple of the head of xs and its tail, 
+    // Or Nothing if xs is an empty list.
     const lng = length(xs);
     return (0 < lng) ? (
         Infinity > lng ? (
@@ -4038,9 +4036,12 @@ const uncons = xs => {
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    (...args) => 1 < args.length ? (
-        (x, y) => f(x)(y)
-    ) : f(args[0][0])(args[0][1])
+    (...args) => {
+        const xy = 1 < args.length ? (
+            args
+        ) : args[0];
+        return f(xy[0])(xy[1]);
+    };
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]

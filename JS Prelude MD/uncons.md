@@ -1,6 +1,8 @@
 ```js
 // uncons :: [a] -> Maybe (a, [a])
 const uncons = xs => {
+    // Just a tuple of the head of xs and its tail, 
+    // Or Nothing if xs is an empty list.
     const lng = length(xs);
     return (0 < lng) ? (
         Infinity > lng ? (

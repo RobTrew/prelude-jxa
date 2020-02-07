@@ -3,7 +3,10 @@
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    (...args) => 1 < args.length ? (
-        (x, y) => f(x)(y)
-    ) : f(args[0][0])(args[0][1])
+    (...args) => {
+        const xy = 1 < args.length ? (
+            args
+        ) : args[0];
+        return f(xy[0])(xy[1]);
+    };
 ```
