@@ -1112,6 +1112,17 @@ const filterTree = p =>
         concat(p(x) ? [x, ...xs] : xs)
     )
 
+// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
+const filteredSubTrees = p =>
+    tree => {
+        const go = subTree => (
+            p(subTree.root) ? (
+                [subTree]
+            ) : []
+        ).concat(subTree.nest.flatMap(go));
+        return go(tree);
+    };
+
 // filteredTree (a -> Bool) -> Tree a -> Tree a
 const filteredTree = p =>
     // A tree including only those children
