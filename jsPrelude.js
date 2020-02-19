@@ -46,12 +46,13 @@ const Right = x => ({
 });
 
 // Tuple (,) :: a -> b -> (a, b)
-const Tuple = a => b => ({
-  type: 'Tuple',
-  '0': a,
-  '1': b,
-  length: 2
-});
+const Tuple = a =>
+    b => ({
+        type: 'Tuple',
+        '0': a,
+        '1': b,
+        length: 2
+    });
 
 // Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 const Tuple3 = a => b => c => ({
@@ -1447,10 +1448,9 @@ const group = xs => {
     return go(xs);
 };
 
-// Typical usage: groupBy(on(eq, f), xs)
-// Typical usage: groupBy(on(eq)(f), xs)
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = fEq => xs =>
+    // // Typical usage: groupBy(on(eq)(f), xs)
     0 < xs.length ? (() => {
         const
             tpl = xs.slice(1).reduce(
@@ -1743,23 +1743,23 @@ const isMaybe = x =>
 const isNull = xs =>
     1 > xs.length;
 
-// isPrefixOf takes two lists or strings and returns 
-// true iff the first is a prefix of the second.
 // isPrefixOf :: [a] -> [a] -> Bool
 // isPrefixOf :: String -> String -> Bool
-const isPrefixOf = xs => ys => {
-    const go = (xs, ys) => {
-        const intX = xs.length;
-        return 0 < intX ? (
-            ys.length >= intX ? xs[0] === ys[0] && go(
-                xs.slice(1), ys.slice(1)
-            ) : false
-        ) : true;
+const isPrefixOf = xs =>
+    // True if and only if xs is a prefix of ys.
+    ys => {
+        const go = (xs, ys) => {
+            const intX = xs.length;
+            return 0 < intX ? (
+                ys.length >= intX ? xs[0] === ys[0] && go(
+                    xs.slice(1), ys.slice(1)
+                ) : false
+            ) : true;
+        };
+        return 'string' !== typeof xs ? (
+            go(xs, ys)
+        ) : ys.startsWith(xs);
     };
-    return 'string' !== typeof xs ? (
-        go(xs, ys)
-    ) : ys.startsWith(xs);
-};
 
 // isRight :: Either a b -> Bool
 const isRight = lr =>
@@ -2463,9 +2463,10 @@ const nubBy = fEq => xs => {
 // odd :: Int -> Bool
 const odd = n => !even(n);
 
-// e.g. sortBy(on(compare,length), xs)
 // on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
-const on = f => g => a => b => f(g(a))(g(b));
+const on = f =>
+    // e.g. sortBy(on(compare,length), xs)
+    g => a => b => f(g(a))(g(b));
 
 // Derive a function from the name of a JS infix operator
 // op :: String -> (a -> a -> b)
@@ -2847,14 +2848,15 @@ const recipMay = n =>
         Nothing()
     ) : Just(1 / n);
 
-// regexMatches :: String -> String -> [[String]]
-const regexMatches = strRgx => strHay => {
-    const rgx = new RegExp(strRgx, 'g');
-    let m = rgx.exec(strHay),
-        xs = [];
-    while (m)(xs.push(m), m = rgx.exec(strHay));
-    return xs;
-};
+// regexMatches :: Regex -> String -> [[String]]
+const regexMatches = rgx =>
+    // All matches of the given (global /g) regex in
+    strHay => {
+        let m = rgx.exec(strHay),
+            xs = [];
+        while (m)(xs.push(m), m = rgx.exec(strHay));
+        return xs;
+    };
 
 // rem :: Int -> Int -> Int
 const rem = n => m => n % m;
@@ -3242,8 +3244,8 @@ const sort = xs => xs.slice()
     .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const sortBy = f => xs =>
-    xs.slice()
+const sortBy = f =>
+    xs => xs.slice()
     .sort(uncurry(f));
 
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
@@ -3277,7 +3279,8 @@ const span = p => xs => {
 
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 const splitArrow = f =>
-    // A function from (x, y) to a tuple of (f(x), g(y))
+    // The functions f and g combined in a single function
+    // from a tuple (x, y) to a tuple of (f(x), g(y))
     g => tpl => Tuple(f(tpl[0]))(
         g(tpl[1])
     );

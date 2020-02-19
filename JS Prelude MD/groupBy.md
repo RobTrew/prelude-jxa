@@ -1,11 +1,7 @@
 ```js
-// Typical usage: groupBy(on(eq, f), xs)
-```
-
-```js
-// Typical usage: groupBy(on(eq)(f), xs)
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = fEq => xs =>
+    // // Typical usage: groupBy(on(eq)(f), xs)
     0 < xs.length ? (() => {
         const
             tpl = xs.slice(1).reduce(
