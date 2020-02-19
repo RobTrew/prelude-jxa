@@ -14,7 +14,7 @@ const unfoldl = f => v => {
     // application of f.
     // Where f returns Nothing, the completed list is returned.
     let
-    xr = [v, v],
+        xr = [v, v],
         xs = [];
     while (true) {
         const mb = f(xr[0]);

@@ -2850,12 +2850,17 @@ const recipMay = n =>
 
 // regexMatches :: Regex -> String -> [[String]]
 const regexMatches = rgx =>
-    // All matches of the given (global /g) regex in
-    strHay => {
-        let m = rgx.exec(strHay),
-            xs = [];
-        while (m)(xs.push(m), m = rgx.exec(strHay));
-        return xs;
+    // All matches for the given regular expression
+    // in the supplied string s.
+    s => {
+        // Recompiled to ensure that any supplied 
+        // regex is interpreted as global.
+        const r = new RegExp(rgx, 'g');
+        return unfoldr(
+            m => Boolean(m) ? (
+                Just(Tuple(m)(r.exec(s)))
+            ) : Nothing()
+        )(r.exec(s))
     };
 
 // rem :: Int -> Int -> Int
@@ -4086,7 +4091,7 @@ const unfoldl = f => v => {
     // application of f.
     // Where f returns Nothing, the completed list is returned.
     let
-    xr = [v, v],
+        xr = [v, v],
         xs = [];
     while (true) {
         const mb = f(xr[0]);
