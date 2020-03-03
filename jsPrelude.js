@@ -436,6 +436,16 @@ const chunksOf = n =>
         []
     );
 
+// combine :: FilePath -> FilePath -> FilePath
+const combine = folderPath =>
+    // A filePath composed from two parts,
+    // with intercalation of '/' if needed.
+    fileName => folderPath + (
+        folderPath.endsWith('/') || fileName.startsWith('/') ? (
+            ''
+        ) : '/'
+    ) + fileName;
+
 // compare :: a -> a -> Ordering
 const compare = a =>
   b => a < b ? -1 : (a > b ? 1 : 0);
@@ -1217,8 +1227,6 @@ const findTree = p => tree => {
     return go(tree);
 };
 
-// Lift a simple function to one which applies to a tuple, 
-// transforming only the first item of the tuple
 // firstArrow :: (a -> b) -> ((a, c) -> (b, c))
 const firstArrow = f => 
     // A simple function lifted to one which applies
@@ -3003,11 +3011,11 @@ const scanr1 = f => xs =>
     ) : [];
 
 // secondArrow :: (a -> b) -> ((c, a) -> (c, b))
-const secondArrow = f => xy =>
-    // A function over a simple value lifted 
+const secondArrow = f =>
+    // A function over a simple value lifted
     // to a function over a tuple.
     // f (a, b) -> (a, f(b))
-    Tuple(xy[0])(
+    xy => Tuple(xy[0])(
         f(xy[1])
     );
 
@@ -4361,12 +4369,11 @@ const zipWithList = f =>
     };
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
-const zipWithM = f => xs => ys =>
-    sequenceA(
-        zipWith(f)(
-            xs
-        )(ys)
-    );
+const zipWithM = f => 
+    xs => ys =>
+        sequenceA(
+            zipWith(f)(xs)(ys)
+        );
 
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 function zipWithN() {
