@@ -11,16 +11,14 @@ const treeMenu = tree => {
             tpl => either(x => Tuple(false)([]))(
                 Tuple(true)
             )(
-                bindLR(showMenuLR(!blnMore, strTitle, menu))(
+                bindLR(showMenuLR(!blnMore)(strTitle)(menu))(
                     ks => {
                         const k = ks[0];
                         return maybe(
                             Left(k + ': not found in ' +
                                 JSON.stringify(ks)
                             )
-                        )(
-                            Right
-                        )(
+                        )(Right)(
                             bindMay(find(x => k === x.root)(subs))(
                                 chosen => Just(
                                     isNull(chosen.nest) ? (

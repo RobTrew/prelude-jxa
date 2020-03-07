@@ -3160,6 +3160,29 @@ const showMaybe = mb =>
         'Nothing'
     ) : 'Just(' + unQuoted(show(mb.Just)) + ')';
 
+// showMenuLR :: Bool -> String -> [String] -> Either String [String]
+const showMenuLR = blnMult => title => xs =>
+    0 < xs.length ? (() => {
+        const sa = Object.assign(Application('System Events'), {
+            includeStandardAdditions: true
+        });
+        sa.activate();
+        const v = sa.chooseFromList(xs, {
+            withTitle: title,
+            withPrompt: 'Select' + (
+                blnMult ? ' one or more of ' + xs.length.toString() : ':'
+            ),
+            defaultItems: xs[0],
+            okButtonName: 'OK',
+            cancelButtonName: 'Cancel',
+            multipleSelectionsAllowed: blnMult,
+            emptySelectionAllowed: false
+        });
+        return Array.isArray(v) ? (
+            Right(v)
+        ) : Left('User cancelled ' + title + ' menu.');
+    })() : Left(title + ': No items to choose from.');
+
 // showOrdering :: Ordering -> String
 const showOrdering = e =>
     0 < e.value ? (
@@ -3983,16 +4006,14 @@ const treeMenu = tree => {
             tpl => either(x => Tuple(false)([]))(
                 Tuple(true)
             )(
-                bindLR(showMenuLR(!blnMore, strTitle, menu))(
+                bindLR(showMenuLR(!blnMore)(strTitle)(menu))(
                     ks => {
                         const k = ks[0];
                         return maybe(
                             Left(k + ': not found in ' +
                                 JSON.stringify(ks)
                             )
-                        )(
-                            Right
-                        )(
+                        )(Right)(
                             bindMay(find(x => k === x.root)(subs))(
                                 chosen => Just(
                                     isNull(chosen.nest) ? (
