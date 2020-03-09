@@ -8,7 +8,9 @@ const treeMenu = tree => {
             menu = subs.map(root),
             blnMore = 0 < subs.flatMap(nest).length;
         return until(tpl => !fst(tpl) || !isNull(snd(tpl)))(
-            tpl => either(x => Tuple(false)([]))(
+            tpl => either(
+                x => Tuple(false)([])
+            )(
                 Tuple(true)
             )(
                 bindLR(showMenuLR(!blnMore)(strTitle)(menu))(

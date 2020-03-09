@@ -3160,17 +3160,22 @@ const showMaybe = mb =>
         'Nothing'
     ) : 'Just(' + unQuoted(show(mb.Just)) + ')';
 
-// showMenuLR :: Bool -> String -> [String] -> Either String [String]
-const showMenuLR = blnMult => title => xs =>
-    0 < xs.length ? (() => {
-        const sa = Object.assign(Application('System Events'), {
-            includeStandardAdditions: true
-        });
+// showMenuLR :: Bool -> String -> [String] -> 
+// Either String [String]
+const showMenuLR = blnMult =>
+    title => xs => 0 < xs.length ? (() => {
+        const sa = Object.assign(
+            Application('System Events'), {
+                includeStandardAdditions: true
+            });
         sa.activate();
         const v = sa.chooseFromList(xs, {
             withTitle: title,
             withPrompt: 'Select' + (
-                blnMult ? ' one or more of ' + xs.length.toString() : ':'
+                blnMult ? (
+                    ' one or more of ' +
+                    xs.length.toString()
+                ) : ':'
             ),
             defaultItems: xs[0],
             okButtonName: 'OK',
@@ -4003,7 +4008,9 @@ const treeMenu = tree => {
             menu = subs.map(root),
             blnMore = 0 < subs.flatMap(nest).length;
         return until(tpl => !fst(tpl) || !isNull(snd(tpl)))(
-            tpl => either(x => Tuple(false)([]))(
+            tpl => either(
+                x => Tuple(false)([])
+            )(
                 Tuple(true)
             )(
                 bindLR(showMenuLR(!blnMore)(strTitle)(menu))(
