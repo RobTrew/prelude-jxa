@@ -288,10 +288,10 @@ const unwrap = ObjC.unwrap;
 const wrap = ObjC.wrap;
 
 // writeFile :: FilePath -> String -> IO ()
-const writeFile = strPath => strText =>
-    $.NSString.alloc.initWithUTF8String(strText)
+const writeFile = fp => s =>
+    $.NSString.alloc.initWithUTF8String(s)
     .writeToFileAtomicallyEncodingError(
-        $(strPath)
+        $(fp)
         .stringByStandardizingPath, false,
         $.NSUTF8StringEncoding, null
     );

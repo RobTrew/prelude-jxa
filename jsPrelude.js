@@ -2442,7 +2442,12 @@ const ne = a => b => a !== b;
 const negate = n => -n;
 
 // nest :: Tree a -> [a]
-const nest = tree => tree.nest;
+const nest = tree => {
+    const subs = tree.nest;
+    return 'function' !== typeof subs ? (
+        subs
+    ) : subs(tree.root);
+};
 
 // not :: Bool -> Bool
 const not = b => !b;
@@ -3287,7 +3292,7 @@ const sort = xs => xs.slice()
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
     xs => xs.slice()
-    .sort(uncurry(f));
+    .sort((a, b) => f(a)(b));
 
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
 const sortOn = f =>
@@ -3763,7 +3768,9 @@ const toEnum = e => x =>
     } [typeof e])(x);
 
 // toLower :: String -> String
-const toLower = s => s.toLocaleLowerCase();
+const toLower = s =>
+    // Lower-case version of string.
+    s.toLocaleLowerCase();
 
 // toRatio :: Real -> Ratio
 const toRatio = n =>

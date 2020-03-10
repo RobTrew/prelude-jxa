@@ -1,4 +1,6 @@
 ```js
 // toLower :: String -> String
-const toLower = s => s.toLocaleLowerCase();
+const toLower = s =>
+    // Lower-case version of string.
+    s.toLocaleLowerCase();
 ```
