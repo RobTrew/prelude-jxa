@@ -6,8 +6,8 @@ const ratio = x => y => {
       const d = gcd(x)(y);
       return {
         type: 'Ratio',
-        'n': quot(x, d), // numerator
-        'd': quot(y, d) // denominator
+        'n': quot(x)(d), // numerator
+        'd': quot(y)(d) // denominator
       };
     })() : undefined;
   return go(x * signum(y), abs(y));

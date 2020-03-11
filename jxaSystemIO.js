@@ -229,7 +229,8 @@ const readFile = fp => {
     // path file fp.
     const
         e = $(),
-        ns = $.NSString.stringWithContentsOfFileEncodingError(
+        ns = $.NSString
+        .stringWithContentsOfFileEncodingError(
             $(fp).stringByStandardizingPath,
             $.NSUTF8StringEncoding,
             e
@@ -245,7 +246,8 @@ const readFile = fp => {
 const readFileLR = fp => {
     const
         e = $(),
-        ns = $.NSString.stringWithContentsOfFileEncodingError(
+        ns = $.NSString
+        .stringWithContentsOfFileEncodingError(
             $(fp).stringByStandardizingPath,
             $.NSUTF8StringEncoding,
             e

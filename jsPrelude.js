@@ -600,7 +600,7 @@ const deleteFirstsBy = fEq =>
 const deleteKey = k =>
     // A new dictionary, without the key k.
     dct => {
-        const dct2 = {...dct};
+        const dct2 = Object.assign({}, dct2);
         return (delete dct2[k], dct2);
     };
 
@@ -1668,8 +1668,10 @@ const intercalate = sep => xs =>
     ) : concat(intersperse(sep)(xs));
 
 // intercalateS :: String -> [String] -> String
-const intercalateS = s => xs =>
-    xs.join(s);
+const intercalateS = s =>
+    // The concatenation of xs
+    // interspersed with copies of s.
+    xs => xs.join(s);
 
 // intersect :: (Eq a) => [a] -> [a] -> [a]
 const intersect = xs => ys => {
@@ -2782,8 +2784,8 @@ const ratio = x => y => {
       const d = gcd(x)(y);
       return {
         type: 'Ratio',
-        'n': quot(x, d), // numerator
-        'd': quot(y, d) // denominator
+        'n': quot(x)(d), // numerator
+        'd': quot(y)(d) // denominator
       };
     })() : undefined;
   return go(x * signum(y), abs(y));
@@ -2821,17 +2823,14 @@ const ratioMult = n1 => n2 => {
 };
 
 // ratioPlus :: Rational -> Rational -> Rational
-const ratioPlus = (n1, n2) => {
-    const [r1, r2] = map(rational)(
-        [n1, n2]
-    );
-    const d = lcm(r1.d)(
-        r2.d
-    );
-    return ratio((r1.n * (d / r1.d)) + (r2.n * (d / r2.d)))(
-        d
-    );
-};
+const ratioPlus = n1 =>
+    n2 => {
+        const [r1, r2] = [n1, n2].map(rational);
+        const d = lcm(r1.d)(r2.d);
+        return ratio((r1.n * (d / r1.d)) + (r2.n * (d / r2.d)))(
+            d
+        );
+    };
 
 // rational :: Num a => a -> Rational
 const rational = x =>
@@ -4033,6 +4032,64 @@ const treeMenu = tree => {
                                     isNull(chosen.nest) ? (
                                         ks // Choice made in leaf menu.
                                     ) : go(chosen)
+                                )
+                            )
+                        );
+                    }
+                )
+            )
+        )(Tuple(true)([]))[1]
+    };
+    return go(tree);
+};
+
+// treeMenuBy :: (a -> String) Tree a -> IO [a]
+const treeMenuBy = fNodeKey => tree => {
+    const go = t => {
+        const
+            strTitle = fNodeKey(t.root),
+            subTrees = nest(t),
+            menu = subTrees.map(
+                compose(fNodeKey, root)
+            ).sort();
+        return until(
+            tpl => !fst(tpl) || !isNull(snd(tpl))
+        )(
+            tpl => either(
+                x => Tuple(false)([])
+            )(
+                Tuple(true)
+            )(
+                bindLR(
+                    showMenuLR(true)(strTitle)(menu)
+                )(
+                    ks => {
+                        const k0 = ks[0];
+                        return maybe(
+                            Left(
+                                k0 + ': not found in ' +
+                                JSON.stringify(ks)
+                            )
+                        )(Right)(
+                            bindMay(
+                                find(
+                                    x => k0 === fNodeKey(
+                                        x.root
+                                    )
+                                )(subTrees)
+                            )(
+                                firstChosen => Just(
+                                    isNull(
+                                        nest(firstChosen)
+                                    ) ? (
+                                        ks.map(
+                                            k => find(
+                                                x => k === fNodeKey(
+                                                    x.root
+                                                )
+                                            )(subTrees).Just
+                                        )
+                                    ) : go(firstChosen)
                                 )
                             )
                         );

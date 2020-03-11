@@ -3,7 +3,8 @@
 const readFileLR = fp => {
     const
         e = $(),
-        ns = $.NSString.stringWithContentsOfFileEncodingError(
+        ns = $.NSString
+        .stringWithContentsOfFileEncodingError(
             $(fp).stringByStandardizingPath,
             $.NSUTF8StringEncoding,
             e
