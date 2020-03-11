@@ -1931,8 +1931,12 @@ const lastMay = xs => 0 < xs.length ? (
 ) : Nothing();
 
 // lcm :: Int -> Int -> Int
-const lcm = x => y =>
-   ( x === 0 || y === 0) ? 0 : Math.abs(Math.floor(x / gcd(x)(y)) * y);
+const lcm = x =>
+    // The smallest positive integer divisible
+    // without remainder by both x and y.
+    y => (x === 0 || y === 0) ? (
+        0
+    ) : Math.abs(Math.floor(x / gcd(x)(y)) * y);
 
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
@@ -2803,10 +2807,8 @@ const ratioDiv = n1 => n2 => {
 
 // ratioMinus :: Rational -> Rational -> Rational
 const ratioMinus = n1 => n2 => {
-    const [r1, r2] = map(rational)(
-        [n1, n2]
-    );
-    const d = lcm(r1.d, r2.d);
+    const [r1, r2] = [n1, n2].map(rational);
+    const d = lcm(r1.d)(r2.d);
     return ratio((r1.n * (d / r1.d)) - (r2.n * (d / r2.d)))(
         d
     );
