@@ -4169,15 +4169,15 @@ const uncurry = f =>
 const uncurryN = f =>
     // A function over a tuple of values, derived from
     // a curried function of any number of arguments.
-    (...args) => {
-        const
-            xy = Array.from(
-                1 < args.length ? (
-                    args
-                ) : args[0]
-            );
-        return xy.slice(1).reduce((a, x) => a(x), f(xy[0]))
-    };
+    (...args) => (
+        xs => xs.slice(1).reduce(
+            (a, x) => a(x), f(xs[0])
+        )
+    )(Array.from(
+        1 < args.length ? (
+            args
+        ) : args[0]
+    ));
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
