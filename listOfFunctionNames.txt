@@ -1,4 +1,6 @@
 
+
+
 Action :: (a -> b) -> a -> Action b
 Just :: a -> Maybe a
 Left :: a -> Either a b
@@ -54,6 +56,7 @@ chars :: String -> [Char]
 chop :: ([a] -> (b, [a])) -> [a] -> [b]
 chr :: Int -> Char
 chunksOf :: Int -> [a] -> [[a]]
+combine :: FilePath -> FilePath -> FilePath
 compare :: a -> a -> Ordering
 comparing :: (a -> b) -> (a -> a -> Ordering)
 compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
@@ -124,6 +127,7 @@ fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
 filter :: (a -> Bool) -> [a] -> [a]
+filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 find :: (a -> Bool) -> [a] -> Maybe a
 findIndex :: (a -> Bool) -> [a] -> Maybe Int
 findIndexR :: (a -> Bool) -> [a] -> Maybe Int
@@ -334,7 +338,7 @@ readFileLR :: FilePath -> Either String IO String
 readLR :: Read a => String -> Either String a
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
-regexMatches :: String -> String -> [[String]]
+regexMatches :: Regex -> String -> [[String]]
 rem :: Int -> Int -> Int
 removeFile :: FilePath -> Either String String
 renameFile :: FilePath -> FilePath -> IO ()
@@ -375,6 +379,7 @@ showLR :: Either a b -> String
 showList :: [a] -> String
 showLog :: a -> IO ()
 showMaybe :: Maybe a -> String
+showMenuLR :: Bool -> String -> [String] -> Either String [String]
 showOrdering :: Ordering -> String
 showOutline :: Tree String -> String
 showPrecision :: Int -> Float -> String
@@ -394,7 +399,6 @@ span :: (a -> Bool) -> [a] -> ([a], [a])
 splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 splitAt :: Int -> [a] -> ([a], [a])
 splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
-splitEvery :: Int -> [a] -> [[a]]
 splitFileName :: FilePath -> (String, String)
 splitOn :: [a] -> [a] -> [[a]]
 splitRegex :: Regex -> String -> [String]
@@ -455,6 +459,7 @@ treeFromJSON :: JSON String -> Tree a
 treeLeaves :: Tree -> [Tree]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]
+treeMenuBy :: (a -> String) Tree a -> IO [a]
 truncate :: Num -> Int
 tupleFromList :: [a] -> (a, a ...)
 typeName :: a -> String

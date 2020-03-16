@@ -516,13 +516,10 @@ const constant = k =>
 const curry = f =>
     a => b => f(a, b);
 
-// curryN :: ((a, b) -> c) -> a -> b -> c
+// curryN :: Curry a b => a -> b
 const curryN = f =>
-    // Flexibly handles two or more arguments, applying
-    // the function directly (if the argument list
-    // is long enough for complete saturation),
-    // or recursing with a concatenation of any existing and
-    // newly supplied arguments, while gaps remain.
+    // A curried function derived from a
+    // function over a tuple of any order.
     (...args) => {
         const
             go = xs => f.length <= xs.length ? (
@@ -1364,7 +1361,8 @@ const foldl1May = f => xs =>
     ) : Nothing();
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
-const foldlTree = f => acc => node => {
+const foldlTree = f => 
+    acc => node => {
   const go = (a, x) =>
     x.nest.reduce(go, f(a)(x));
   return go(acc, node);
@@ -2776,7 +2774,9 @@ function range() {
         an = as.length;
     return (an === bs.length) ? (
         1 < an ? (
-            sequenceAList(as.map((_, i) => enumFromTo(as[i])(bs[i])))
+            traverseList(x => x)(
+                as.map((_, i) => enumFromTo(as[i])(bs[i]))
+            )
         ) : enumFromTo(as[0])(bs[0])
     ) : [];
 };
@@ -4165,6 +4165,20 @@ const uncurry = f =>
         return f(xy[0])(xy[1]);
     };
 
+// uncurryN :: Curry a b => b -> a
+const uncurryN = f =>
+    // A function over a tuple of values, derived from
+    // a curried function of any number of arguments.
+    (...args) => {
+        const
+            xy = Array.from(
+                1 < args.length ? (
+                    args
+                ) : args[0]
+            );
+        return xy.slice(1).reduce((a, x) => a(x), f(xy[0]))
+    };
+
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 const unfoldForest = f => x =>
@@ -4262,8 +4276,8 @@ const unionSet = s => s1 =>
 
 // unlines :: [String] -> String
 const unlines = xs =>
-    // A linefeed-delimited string constructed
-    // from the list of lines in xs.
+    // A single string formed by the intercalation
+    // of a list of strings with the newline character.
     xs.join('\n');
 
 // If the list is empty returns Nothing, otherwise returns 
@@ -4282,7 +4296,10 @@ const until = p => f => x => {
 };
 
 // unwords :: [String] -> String
-const unwords = xs => xs.join(' ');
+const unwords = xs =>
+    // A space-separated string derived
+    // from a list of words.
+    xs.join(' ');
 
 // unzip :: [(a,b)] -> ([a],[b])
 const unzip = xys =>
@@ -4454,6 +4471,9 @@ const zipWithGen = f => ga => gb => {
 
 // zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWithList = f =>
+    // A list constructed by zipping with a
+    // custom function, rather than with the
+    // default tuple constructor.
     xs => ys => {
         const
             lng = Math.min(length(xs), length(ys)),

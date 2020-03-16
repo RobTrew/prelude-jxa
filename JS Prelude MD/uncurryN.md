@@ -1,12 +1,15 @@
 ```js
-// uncurryN :: (a -> b -> c) -> ((a, b) -> c)
+// uncurryN :: Curry a b => b -> a
 const uncurryN = f =>
-    function() {
+    // A function over a tuple of values, derived from
+    // a curried function of any number of arguments.
+    (...args) => {
         const
-            args = Array.from(arguments),
-            a = 1 < args.length ? (
-                args
-            ) : args[0]; // Tuple object.
-        return f(a[0])(a[1]);
+            xy = Array.from(
+                1 < args.length ? (
+                    args
+                ) : args[0]
+            );
+        return xy.slice(1).reduce((a, x) => a(x), f(xy[0]))
     };
 ```

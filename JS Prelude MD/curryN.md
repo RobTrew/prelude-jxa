@@ -1,11 +1,8 @@
 ```js
-// curryN :: ((a, b) -> c) -> a -> b -> c
+// curryN :: Curry a b => a -> b
 const curryN = f =>
-    // Flexibly handles two or more arguments, applying
-    // the function directly (if the argument list
-    // is long enough for complete saturation),
-    // or recursing with a concatenation of any existing and
-    // newly supplied arguments, while gaps remain.
+    // A curried function derived from a
+    // function over a tuple of any order.
     (...args) => {
         const
             go = xs => f.length <= xs.length ? (

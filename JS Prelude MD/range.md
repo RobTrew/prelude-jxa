@@ -27,7 +27,9 @@ function range() {
         an = as.length;
     return (an === bs.length) ? (
         1 < an ? (
-            sequenceAList(as.map((_, i) => enumFromTo(as[i])(bs[i])))
+            traverseList(x => x)(
+                as.map((_, i) => enumFromTo(as[i])(bs[i]))
+            )
         ) : enumFromTo(as[0])(bs[0])
     ) : [];
 };
