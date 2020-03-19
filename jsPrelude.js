@@ -889,9 +889,12 @@ const either = fl =>
 // elem :: Eq a => a -> [a] -> Bool
 // elem :: Char -> String -> Bool
 const elem = x =>
-    xs => Array.isArray(xs) ? (
-        xs.some(eq(x))
-    ) : xs.includes(x);
+    xs => {
+        const t = xs.constructor.name;
+        return 'Array' !== t ? (
+            xs['Set' !== t ? 'includes' : 'has'](x)
+        ) : xs.some(eq(x));
+    };
 
 // elemAtMay :: Int -> Dict -> Maybe (String, a)
 // elemAtMay :: Int -> [a] -> Maybe a
@@ -2935,9 +2938,9 @@ const reverse = xs =>
 // rights :: [Either a b] -> [b]
 const rights = xs =>
     xs.flatMap(
-        x => ('Either' === x.type) && (undefined !== x.Right) ? (
-            [x.Right]
-        ) : []
+        x => ('Either' === x.type) && (
+            undefined !== x.Right
+        ) ? [x.Right] : []
     );
 
 // root :: Tree a -> a
@@ -4171,7 +4174,8 @@ const uncurryN = f =>
     // a curried function of any number of arguments.
     (...args) => (
         xs => xs.slice(1).reduce(
-            (a, x) => a(x), f(xs[0])
+            (a, x) => a(x), 
+            f(xs[0])
         )
     )(Array.from(
         1 < args.length ? (
