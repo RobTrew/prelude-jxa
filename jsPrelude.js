@@ -2450,10 +2450,14 @@ const negate = n => -n;
 
 // nest :: Tree a -> [a]
 const nest = tree => {
-    const subs = tree.nest;
-    return 'function' !== typeof subs ? (
-        subs
-    ) : subs(tree.root);
+    // Allowing for lazy (on-demand) evaluation.
+    // If the nest turns out to be a function –
+    // rather than a list – that function is applied
+    // here to the root, and returns a list.
+    const children = tree.nest;
+    return 'function' !== typeof children ? (
+        children
+    ) : children(tree.root);
 };
 
 // not :: Bool -> Bool
