@@ -2126,11 +2126,14 @@ const mReturn = x => identity(x);
 
 // map :: (a -> b) -> [a] -> [b]
 const map = f =>
-    // The list obtained by applying f to each element of xs.
+    // The list obtained by applying f 
+    // to each element of xs.
     // (The image of xs under f).
-    xs => (Array.isArray(xs) ? (
-        xs
-    ) : xs.split('')).map(f);
+    xs => (
+        Array.isArray(xs) ? (
+            xs
+        ) : xs.split('')
+    ).map(f);
 
 // Map-accumulation is a combination of map and a catamorphism;
 // it applies a function to each element of a list, passing an
@@ -2159,12 +2162,11 @@ const mapAccumL_Tree = f => acc => tree => {
     return go(acc, tree);
 };
 
-// 'The mapAccumR function behaves like a combination of map and foldr; 
-// it applies a function to each element of a list, passing an accumulating 
-// parameter from right to left, and returning a final value of this 
-// accumulator together with the new list.' (See Hoogle)
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumR = f => acc => xs =>
+    // A tuple of an accumulation and a list derived by a
+    // combined map and fold,
+    // with accumulation from right to left.
     xs.reduceRight((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])([pair[1]].concat(a[1]));
