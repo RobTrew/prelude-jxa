@@ -6,11 +6,11 @@
 
 ```js
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
-const treeMatches = p => tree => {
-    const go = node =>
-        p(node.root) ? (
-            [node]
-        ) : node.nest.flatMap(go);
-    return go(tree);
+const treeMatches = p => {
+    const go = tree =>
+        p(tree.root) ? (
+            [tree]
+        ) : tree.nest.flatMap(go);
+    return go;
 };
 ```

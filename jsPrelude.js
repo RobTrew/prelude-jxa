@@ -411,17 +411,16 @@ const chars = s =>
     s.split('');
 
 // chop :: ([a] -> (b, [a])) -> [a] -> [b]
-const chop = f =>
+const chop = f => {
     // A segmentation of xs by tail recursion with a
     // function which returns a (prefix, residue) tuple.
-    xs => {
-        const go = as =>
-            0 < as.length ? (() => {
-                const [b, bs] = Array.from(f(as));
-                return cons(b)(go(bs))
-            })() : [];
-        return go(xs);
-    };
+    const go = xs =>
+        0 < xs.length ? (() => {
+            const [b, bs] = Array.from(f(xs));
+            return cons(b)(go(bs))
+        })() : [];
+    return go;
+};
 
 // chr :: Int -> Char
 const chr = x =>
@@ -546,17 +545,16 @@ const degrees = r =>
     (180 / Math.PI) * r;
 
 // delete :: Eq a => a -> [a] -> [a]
-const delete_ = x =>
+const delete_ = x => {
     // xs with first instance of x (if any) removed.
-    xs => {
-        const go = xs =>
-            0 < xs.length ? (
-                (x === xs[0]) ? (
-                    xs.slice(1)
-                ) : [xs[0]].concat(go(xs.slice(1)))
-            ) : [];
-        return go(xs);
-    };
+    const go = xs =>
+        0 < xs.length ? (
+            (x === xs[0]) ? (
+                xs.slice(1)
+            ) : [xs[0]].concat(go(xs.slice(1)))
+        ) : [];
+    return go;
+};
 
 // deleteAt :: Int -> [a] -> [a]
 const deleteAt = i =>
@@ -567,25 +565,24 @@ const deleteAt = i =>
 
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 const deleteBy = fEq =>
-    x => xs => {
+    x => {
         const go = xs => 0 < xs.length ? (
             fEq(x)(xs[0]) ? (
                 xs.slice(1)
             ) : [xs[0]].concat(go(xs.slice(1)))
         ) : [];
-        return go(xs);
+        return go;
     };
 
 // deleteFirst :: a -> [a] -> [a]
-const deleteFirst = x =>
-    xs => {
-        const go = xs => 0 < xs.length ? (
-            x === xs[0] ? (
-                xs.slice(1)
-            ) : [xs[0]].concat(go(xs.slice(1)))
-        ) : [];
-        return go(xs);
-    };
+const deleteFirst = x => {
+    const go = xs => 0 < xs.length ? (
+        x === xs[0] ? (
+            xs.slice(1)
+        ) : [xs[0]].concat(go(xs.slice(1)))
+    ) : [];
+    return go;
+};
 
 // deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const deleteFirstsBy = fEq =>
@@ -1124,15 +1121,14 @@ const filterTree = p =>
     )
 
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
-const filteredSubTrees = p =>
-    tree => {
-        const go = subTree => (
-            p(subTree.root) ? (
-                [subTree]
-            ) : []
-        ).concat(subTree.nest.flatMap(go));
-        return go(tree);
-    };
+const filteredSubTrees = p => {
+    const go = tree => (
+        p(tree.root) ? (
+            [tree]
+        ) : []
+    ).concat(tree.nest.flatMap(go));
+    return go;
+};
 
 // filteredTree (a -> Bool) -> Tree a -> Tree a
 const filteredTree = p =>
@@ -1206,25 +1202,25 @@ const findIndices = p => xs =>
 // The first of any nodes in the tree which match the predicate p
 // (For all matches, see treeMatches)
 // findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
-const findTree = p => tree => {
-    const go = node =>
-        p(node.root) ? (
-            Just(node)
+const findTree = p => {
+    const go = tree =>
+        p(tree.root) ? (
+            Just(tree)
         ) : (() => {
             const
-                xs = node.nest,
+                xs = tree.nest,
                 lng = xs.length;
             return 0 < lng ? until(tpl => lng <= tpl[0] || !tpl[1].Nothing)(
                 tpl => Tuple(1 + tpl[0])(
-                  go(xs[tpl[0]])
+                    go(xs[tpl[0]])
                 )
             )(
                 Tuple(0)(
-                  Nothing()
+                    Nothing()
                 )
             )[1] : Nothing()
         })();
-    return go(tree);
+    return go;
 };
 
 // firstArrow :: (a -> b) -> ((a, c) -> (b, c))
@@ -1305,15 +1301,14 @@ const fmapMay = f => mb =>
     ) : Just(f(mb.Just));
 
 // fmapTree :: (a -> b) -> Tree a -> Tree b
-const fmapTree = f =>
-    // A new tree. The result of a structure-preserving 
+const fmapTree = f => {
+    // A new tree. The result of a structure-preserving
     // application of f to each root in the existing tree.
-    tree => {
-        const go = x => Node(f(x.root))(
-            x.nest.map(go)
-        );
-        return go(tree);
-    };
+    const go = tree => Node(f(tree.root))(
+        tree.nest.map(go)
+    );
+    return go;
+};
 
 // fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
 const fmapTuple = f => tpl =>
@@ -1322,27 +1317,25 @@ const fmapTuple = f => tpl =>
     );
 
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
-const foldMapTree = f =>
+const foldMapTree = f => {
     // Result of mapping each element of the tree to
     // a monoid, and combining with mappend.
-    node => {
-        const go = x =>
-            0 < x.nest.length ? mappend(f(x.root))(
-                foldl1(mappend)(x.nest.map(go))
-            ) : f(x.root);
-        return go(node);
-    };
+    const go = tree =>
+        0 < tree.nest.length ? mappend(f(tree.root))(
+            foldl1(mappend)(tree.nest.map(go))
+        ) : f(tree.root);
+    return go;
+};
 
 // foldTree :: (a -> [b] -> b) -> Tree a -> b
-const foldTree = f =>
+const foldTree = f => {
     // The catamorphism on trees. A summary
     // value obtained by a depth-first fold.
-    tree => {
-        const go = x => f(x.root)(
-            x.nest.map(go)
-        );
-        return go(tree);
-    };
+    const go = tree => f(tree.root)(
+        tree.nest.map(go)
+    );
+    return go;
+};
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = f => 
@@ -2059,6 +2052,10 @@ const lines = s =>
         s.split(/[\r\n]/)
     ) : [];
 
+// list :: TupleN(a) -> [a]
+const list = tpl =>
+    Array.from(tpl);
+
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
     // A singleton list derived from a Just value, 
@@ -2474,7 +2471,7 @@ const nub = xs =>
   nubBy(eq)(xs);
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = fEq => xs => {
+const nubBy = fEq => {
     const go = xs => 0 < xs.length ? (() => {
         const x = xs[0];
         return [x].concat(
@@ -2483,7 +2480,7 @@ const nubBy = fEq => xs => {
             )
         )
     })() : [];
-    return go(xs);
+    return go;
 };
 
 // odd :: Int -> Bool
@@ -2653,7 +2650,8 @@ const print = x => {
 };
 
 // product :: [Num] -> Num
-const product = xs => xs.reduce((a, x) => a * x, 1);
+const product = xs =>
+    xs.reduce((a, x) => a * x, 1);
 
 // properFracRatio :: Ratio -> (Int, Ratio)
 const properFracRatio = nd => {
@@ -2694,10 +2692,12 @@ const pureT = t => x =>
     ) : pureList(x);
 
 // pureTree :: a -> Tree a
-const pureTree = x => Node(x)([]);
+const pureTree = x =>
+    Node(x)([]);
 
 // pureTuple :: a -> (a, a)
-const pureTuple = x => Tuple('')(x);
+const pureTuple = x =>
+    Tuple('')(x);
 
 // Included only for comparison with AppleScript
 // sort and sortBy are faster and more flexible
@@ -2730,7 +2730,8 @@ const quickSortBy = cmp => xs =>
     })() : xs;
 
 // quot :: Int -> Int -> Int
-const quot = n => m => Math.floor(n / m);
+const quot = n =>
+    m => Math.floor(n / m);
 
 // quotRem :: Int -> Int -> (Int, Int)
 const quotRem = m => n => 
@@ -3430,30 +3431,33 @@ const sqrtMay = n =>
     ) : Just(Math.sqrt(n));
 
 // str :: a -> String
-const str = x => x.toString();
+const str = x =>
+    x.toString();
 
 // strip :: String -> String
-const strip = s => s.trim();
+const strip = s =>
+    s.trim();
 
 // stripEnd :: String -> String
 const stripEnd = s =>
     s.trimEnd();
 
 // stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
-const stripPrefix = pfx => s => {
-    const
-        blnString = 'string' === typeof pfx,
-        [xs, ys] = blnString ? (
-            [pfx.split(''), s.split('')]
-        ) : [pfx, s];
-    const
-        sp_ = (xs, ys) => 0 === xs.length ? (
-            Just(blnString ? ys.join('') : ys)
-        ) : (0 === ys.length || xs[0] !== ys[0]) ? (
-            Nothing()
-        ) : sp_(xs.slice(1), ys.slice(1));
-    return sp_(xs, ys);
-};
+const stripPrefix = pfx =>
+    s => {
+        const
+            blnString = 'string' === typeof pfx,
+            [xs, ys] = blnString ? (
+                [pfx.split(''), s.split('')]
+            ) : [pfx, s];
+        const
+            sp_ = (xs, ys) => 0 === xs.length ? (
+                Just(blnString ? ys.join('') : ys)
+            ) : (0 === ys.length || xs[0] !== ys[0]) ? (
+                Nothing()
+            ) : sp_(xs.slice(1), ys.slice(1));
+        return sp_(xs, ys);
+    };
 
 // stripStart :: String -> String
 const stripStart = s =>
@@ -3510,7 +3514,8 @@ const subsets = xs => {
 };
 
 // subtract :: Num -> Num -> Num
-const subtract = x => y => y - x;
+const subtract = x =>
+    y => y - x;
 
 // succ :: Enum a => a -> a
 const succ = x => {
@@ -3804,7 +3809,8 @@ const toTitle = s =>
     .join('');
 
 // toUpper :: String -> String
-const toUpper = s => s.toLocaleUpperCase();
+const toUpper = s =>
+    s.toLocaleUpperCase();
 
 // If some of the rows are shorter than the following rows, 
 // their elements are skipped:
@@ -3903,15 +3909,15 @@ const traverseMay = f => mb =>
     );
 
 // traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
-const traverseTree = f => node => {
+const traverseTree = f => {
     // traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)
-    const go = x =>
-        liftA2(Node)(f(x.root))(
+    const go = tree =>
+        liftA2(Node)(f(tree.root))(
             traverseList(go)(
-                x.nest
+                tree.nest
             )
         );
-    return go(node);
+    return go;
 };
 
 // traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
@@ -4008,12 +4014,12 @@ const treeLeaves = tree => {
 // a predicate p.
 // For the first match only, see findTree.
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
-const treeMatches = p => tree => {
-    const go = node =>
-        p(node.root) ? (
-            [node]
-        ) : node.nest.flatMap(go);
-    return go(tree);
+const treeMatches = p => {
+    const go = tree =>
+        p(tree.root) ? (
+            [tree]
+        ) : tree.nest.flatMap(go);
+    return go;
 };
 
 // treeMenu :: Tree String -> IO [String]
@@ -4055,11 +4061,11 @@ const treeMenu = tree => {
 };
 
 // treeMenuBy :: (a -> String) Tree a -> IO [a]
-const treeMenuBy = fNodeKey => tree => {
-    const go = t => {
+const treeMenuBy = fNodeKey => {
+    const go = tree => {
         const
-            strTitle = fNodeKey(t.root),
-            subTrees = nest(t),
+            strTitle = fNodeKey(tree.root),
+            subTrees = nest(tree),
             menu = subTrees.map(
                 compose(fNodeKey, root)
             ).sort();
@@ -4109,7 +4115,7 @@ const treeMenuBy = fNodeKey => tree => {
             )
         )(Tuple(true)([]))[1]
     };
-    return go(tree);
+    return go;
 };
 
 // truncate :: Num -> Int

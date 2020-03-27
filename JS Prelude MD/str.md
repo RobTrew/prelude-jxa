@@ -1,4 +1,5 @@
 ```js
 // str :: a -> String
-const str = x => x.toString();
+const str = x =>
+    x.toString();
 ```

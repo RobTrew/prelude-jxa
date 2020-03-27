@@ -1,4 +1,5 @@
 ```js
 // strip :: String -> String
-const strip = s => s.trim();
+const strip = s =>
+    s.trim();
 ```

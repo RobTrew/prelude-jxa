@@ -1,6 +1,6 @@
 ```js
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = fEq => xs => {
+const nubBy = fEq => {
     const go = xs => 0 < xs.length ? (() => {
         const x = xs[0];
         return [x].concat(
@@ -9,6 +9,6 @@ const nubBy = fEq => xs => {
             )
         )
     })() : [];
-    return go(xs);
+    return go;
 };
 ```

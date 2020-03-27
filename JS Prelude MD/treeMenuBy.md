@@ -1,10 +1,10 @@
 ```js
 // treeMenuBy :: (a -> String) Tree a -> IO [a]
-const treeMenuBy = fNodeKey => tree => {
-    const go = t => {
+const treeMenuBy = fNodeKey => {
+    const go = tree => {
         const
-            strTitle = fNodeKey(t.root),
-            subTrees = nest(t),
+            strTitle = fNodeKey(tree.root),
+            subTrees = nest(tree),
             menu = subTrees.map(
                 compose(fNodeKey, root)
             ).sort();
@@ -54,6 +54,6 @@ const treeMenuBy = fNodeKey => tree => {
             )
         )(Tuple(true)([]))[1]
     };
-    return go(tree);
+    return go;
 };
 ```
