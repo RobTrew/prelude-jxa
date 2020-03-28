@@ -2145,7 +2145,7 @@ const mapAccumL = f => acc => xs =>
 
 // mapAccumL_Tree :: (acc -> x -> (acc, y))
 // -> acc -> Tree -> (acc, Tree)
-const mapAccumL_Tree = f => acc => tree => {
+const mapAccumL_Tree = f => {
     const go = a => x => {
         const
             pair = f(a)(root(x)),
@@ -2154,7 +2154,7 @@ const mapAccumL_Tree = f => acc => tree => {
             Node(pair[1])(tpl[1])
         );
     };
-    return go(acc)(tree);
+    return go;
 };
 
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
@@ -2451,10 +2451,10 @@ const nest = tree => {
     // If the nest turns out to be a function –
     // rather than a list – that function is applied
     // here to the root, and returns a list.
-    const children = tree.nest;
-    return 'function' !== typeof children ? (
-        children
-    ) : children(tree.root);
+    const xs = tree.nest;
+    return 'function' !== typeof xs ? (
+        xs
+    ) : xs(root(x));
 };
 
 // not :: Bool -> Bool

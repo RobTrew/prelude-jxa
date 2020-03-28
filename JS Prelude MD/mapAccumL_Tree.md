@@ -1,7 +1,7 @@
 ```js
 // mapAccumL_Tree :: (acc -> x -> (acc, y))
 // -> acc -> Tree -> (acc, Tree)
-const mapAccumL_Tree = f => acc => tree => {
+const mapAccumL_Tree = f => {
     const go = a => x => {
         const
             pair = f(a)(root(x)),
@@ -10,6 +10,6 @@ const mapAccumL_Tree = f => acc => tree => {
             Node(pair[1])(tpl[1])
         );
     };
-    return go(acc)(tree);
+    return go;
 };
 ```

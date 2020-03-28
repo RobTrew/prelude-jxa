@@ -5,9 +5,9 @@ const nest = tree => {
     // If the nest turns out to be a function –
     // rather than a list – that function is applied
     // here to the root, and returns a list.
-    const children = tree.nest;
-    return 'function' !== typeof children ? (
-        children
-    ) : children(tree.root);
+    const xs = tree.nest;
+    return 'function' !== typeof xs ? (
+        xs
+    ) : xs(root(x));
 };
 ```
