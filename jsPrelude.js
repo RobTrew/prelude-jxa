@@ -2595,12 +2595,12 @@ const pi = Math.PI;
 // plus :: Num -> Num -> Num
 const plus = a => b => a + b;
 
-// Root elements of tree flattened bottom-up
-// into a postorder list.
 // postorder :: Tree a -> [a]
 const postorder = t => {
+    // List of reoot elements of tree flattened
+    // bottom-up into a postorder list.
     const go = (xs, x) =>
-        x.nest.reduce(go, xs).concat(x.root);
+        nest(x).reduce(go, xs).concat(root(x));
     return go([], t);
 };
 
@@ -3015,13 +3015,15 @@ const scanr = f => startValue => xs =>
         return Tuple(v)(a[1].concat(v));
     }, Tuple(startValue)([startValue]))[1];
 
-// scanr1 is a variant of scanr that has no starting value argument
 // scanr1 :: (a -> a -> a) -> [a] -> [a]
-const scanr1 = f => xs =>
-    xs.length > 0 ? (
+const scanr1 = f =>
+    // scanr1 is a variant of scanr that has no 
+    // seed-value argument, and assumes that
+    // xs is not empty.
+    xs => xs.length > 0 ? (
         scanr(f)(
-            xs.slice(-1)[0], xs.slice(0, -1)
-        ) 
+            xs.slice(-1)[0]
+        )(xs.slice(0, -1))
     ) : [];
 
 // secondArrow :: (a -> b) -> ((c, a) -> (c, b))
@@ -3326,9 +3328,9 @@ const sortOn = f =>
 const span = p => xs => {
     const iLast = xs.length - 1;
     return splitAt(
-        until(i => iLast < i || !p(xs[i]))(
-            succ
-        )(0)
+        until(
+            i => iLast < i || !p(xs[i])
+        )(succ)(0)
     )(xs);
 };
 
