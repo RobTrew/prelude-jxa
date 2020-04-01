@@ -3,6 +3,6 @@
 const scanr = f => startValue => xs =>
     xs.reduceRight((a, x) => {
         const v = f(x)(a[0]);
-        return Tuple(v)(a[1].concat(v));
+        return Tuple(v)([v].concat(a[1]));
     }, Tuple(startValue)([startValue]))[1];
 ```
