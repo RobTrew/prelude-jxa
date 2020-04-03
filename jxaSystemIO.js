@@ -75,7 +75,7 @@ const appendFileMay = strPath =>
     };
 
 // createDirectoryIfMissingLR :: Bool -> FilePath -> 
-// Either String String
+// Either String FilePath
 const createDirectoryIfMissingLR = blnParents =>
     dirPath => {
         const fp = filePath(dirPath);

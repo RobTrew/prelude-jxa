@@ -511,6 +511,32 @@ const cons = x =>
 const constant = k =>
     _ => k;
 
+// copyFileLR :: FilePath -> FilePath -> Either String IO ()
+const copyFileLR = fpFrom =>
+    fpTo => {
+        const fpTargetFolder = takeDirectory(fpTo);
+        return doesFileExist(fpFrom) ? (
+            doesDirectoryExist(fpTargetFolder) ? (() => {
+                const
+                    e = $(),
+                    blnCopied = ObjC.unwrap(
+                        $.NSFileManager.defaultManager
+                        .copyItemAtPathToPathError(
+                            $(fpFrom).stringByStandardizingPath,
+                            $(fpTo).stringByStandardizingPath,
+                            e
+                        )
+                    );
+                return blnCopied ? (
+                    Right(blnCopied)
+                ) : Left(ObjC.unwrap(e.localizedDescription));
+
+            })() : Left(
+                'Target folder not found: ' + fpTargetFolder
+            )
+        ) : Left('Source file not found: ' + fpFrom);
+    };
+
 // curry :: ((a, b) -> c) -> a -> b -> c
 const curry = f =>
     a => b => f(a, b);
@@ -1388,6 +1414,19 @@ const foldrTree = f => acc => node => {
         x.nest.reduceRight(go, f(x.root)(a));
     return go(acc, node);
 };
+
+// fpAppend :: FilePath -> FilePath -> FilePath
+const fpAppend = fp =>
+    // Two paths combined with a path separator. 
+    // Just the second path if that starts 
+    // with a path separator.
+    fp1 => Boolean(fp) && Boolean(fp1) ? (
+        '/' === fp1.slice(0, 1) ? (
+            fp1
+        ) : '/' === fp.slice(-1) ? (
+            fp + fp1
+        ) : fp + '/' + fp1
+    ) : fp + fp1;
 
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
