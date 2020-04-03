@@ -57,7 +57,7 @@
   "combine": "// combine :: FilePath -> FilePath -> FilePath\nconst combine = folderPath =>\n    // A filePath composed from two parts,\n    // with intercalation of '/' if needed.\n    fileName => folderPath + (\n        folderPath.endsWith('/') || fileName.startsWith('/') ? (\n            ''\n        ) : '/'\n    ) + fileName;",
   "compare": "// compare :: a -> a -> Ordering\nconst compare = a =>\n  b => a < b ? -1 : (a > b ? 1 : 0);",
   "comparing": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
-  "compose": "// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (...fs) =>\n    x => fs.reduceRight((a, f) => f(a), x);",
+  "compose": "// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (...fs) =>\n    fs.reduce((f, g) => x => f(g(x)), x => x);",
   "composeList": "// composeList :: [(a -> a)] -> (a -> a)\nconst composeList = fs =>\n    x => fs.reduceRight(\n        (a, f) => f(a), x\n    );",
   "composeListR": "// composeListR :: [(a -> a)] -> (a -> a)\nconst composeListR = fs =>\n    x => fs.reduce((a, f) => f(a), x);",
   "composeR": "// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c\nconst composeR = f =>\n    g => x => f(g(x));",
