@@ -1533,7 +1533,7 @@ const groupSortOn = f =>
     compose(
         map(map(snd)),
         groupBy(on(eq)(fst)),
-        sortOn(fst),
+        sortBy(comparing(fst)),
         map(fanArrow(f)(identity))
     );
 
