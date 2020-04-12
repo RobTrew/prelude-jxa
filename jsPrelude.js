@@ -3343,10 +3343,10 @@ const sortOn = f =>
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
     xs => xs.map(
-        x => [f(x), x]
-    ).sort(
-        (a, b) => a[0] < b[0] ? -1 : (a[0] > b[0] ? 1 : 0)
-    ).map(x => x[1]);
+        fanArrow(f)(identity)
+    )
+    .sort(uncurry(comparing(fst)))
+    .map(snd);
 
 // span, applied to a predicate p and a list xs, returns a tuple of xs of 
 // elements that satisfy p and second element is the remainder of the list:
