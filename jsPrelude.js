@@ -171,7 +171,9 @@ const apMay = mf =>
 const apTree = tf =>
     // A new tree derived by applying each of a tree
     // of functions to each node value in another tree.
-    liftA2Tree(x => x)(tf)
+    liftA2Tree(
+        x => x
+    )(tf)
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 const apTuple = tpl => 
@@ -460,12 +462,9 @@ const comparing = f =>
 
 // compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 const compose = (...fs) =>
-    fs.reduce((f, g) => x => f(g(x)), x => x);
-
-// composeList :: [(a -> a)] -> (a -> a)
-const composeList = fs =>
-    x => fs.reduceRight(
-        (a, f) => f(a), x
+    fs.reduce(
+        (f, g) => x => f(g(x)), 
+        x => x
     );
 
 // composeListR :: [(a -> a)] -> (a -> a)
@@ -1170,12 +1169,26 @@ const filteredTree = p =>
     );
 
 // find :: (a -> Bool) -> [a] -> Maybe a
-const find = p => xs => {
-    const i = xs.findIndex(p);
-    return -1 !== i ? (
-        Just(xs[i])
-    ) : Nothing();
-};
+const find = p =>
+    xs => Array.isArray(xs) ? (() => {
+        const i = xs.findIndex(p);
+        return -1 !== i ? (
+            Just(xs[i])
+        ) : Nothing();
+    })() : (() => {
+        const
+            mb = until(tpl => {
+                const nxt = tpl[0];
+                return nxt.done || p(nxt.value);
+            })(
+                tpl => Tuple(tpl[1].next())(
+                    tpl[1]
+                )
+            )(Tuple(xs.next())(xs))[0];
+        return mb.done ? (
+            Nothing()
+        ) : Just(mb.value);
+    })();
 
 // findIndex(isSpace)("hello world")
 //-> {"type":"Maybe","Nothing":false,"Just":5}
@@ -1543,7 +1556,7 @@ const groupSortOn = f => xs => {
     // decorate-sort-group-undecorate
     return groupBy(p => q => p[0] === q[0])(
             sortBy(
-                mappendComparing(
+                mappend(
                     // functions that access pre-calculated values by position
                     // in the decorated ('Schwartzian') version of xs
                     zip(fs.map((_, i) => x => x[i]), bs)
@@ -2253,12 +2266,12 @@ const mappend = a =>
             Boolean(t) ? (
                 'Maybe' === t ? (
                     mappendMaybe
-                ) : 'Ordering' === t ? (
-                    mappendOrd
                 ) : mappendTuple
             ) : 'function' !== typeof a ? (
                 append
-            ) : mappendFn
+            ) : a.toString() !== 'x => y => f(y)(x)' ? (
+                mappendFn
+            ) : mappendOrd
         )(a)(b);
     };
 
@@ -2281,7 +2294,13 @@ const mappendMaybe = a => b =>
     );
 
 // mappendOrd (<>) :: Ordering -> Ordering -> Ordering
-const mappendOrd = a => b => a !== 0 ? a : b;
+const mappendOrd = cmp => cmp1 =>
+    a => b => {
+        const x = cmp(a)(b);
+        return 0 !== x ? (
+            x
+        ) : cmp1(a)(b);
+    };
 
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 const mappendTuple = t => t2 =>

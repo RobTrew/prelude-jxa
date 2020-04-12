@@ -9,12 +9,12 @@ const mappend = a =>
             Boolean(t) ? (
                 'Maybe' === t ? (
                     mappendMaybe
-                ) : 'Ordering' === t ? (
-                    mappendOrd
                 ) : mappendTuple
             ) : 'function' !== typeof a ? (
                 append
-            ) : mappendFn
+            ) : a.toString() !== 'x => y => f(y)(x)' ? (
+                mappendFn
+            ) : mappendOrd
         )(a)(b);
     };
 ```

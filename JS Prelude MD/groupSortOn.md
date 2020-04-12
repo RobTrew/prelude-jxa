@@ -37,7 +37,7 @@ const groupSortOn = f => xs => {
     // decorate-sort-group-undecorate
     return groupBy(p => q => p[0] === q[0])(
             sortBy(
-                mappendComparing(
+                mappend(
                     // functions that access pre-calculated values by position
                     // in the decorated ('Schwartzian') version of xs
                     zip(fs.map((_, i) => x => x[i]), bs)

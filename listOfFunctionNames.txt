@@ -60,16 +60,16 @@ combine :: FilePath -> FilePath -> FilePath
 compare :: a -> a -> Ordering
 comparing :: (a -> b) -> (a -> a -> Ordering)
 compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
-composeList :: [(a -> a)] -> (a -> a)
 composeListR :: [(a -> a)] -> (a -> a)
 composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
 constant :: a -> b -> a
-createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String
+copyFileLR :: FilePath -> FilePath -> Either String IO ()
+createDirectoryIfMissingLR :: Bool -> FilePath -> Either String FilePath
 curry :: ((a, b) -> c) -> a -> b -> c
-curryN :: ((a, b) -> c) -> a -> b -> c
+curryN :: Curry a b => a -> b
 cycle :: [a] -> Generator [a]
 decodedPath :: Percent Encoded String -> FilePath
 degrees :: Float x => Radians x -> Degrees x
@@ -154,6 +154,7 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr1 :: (a -> a -> a) -> [a] -> a
 foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 foldrTree :: (a -> b -> b) -> b -> Tree a -> b
+fpAppend :: FilePath -> FilePath -> FilePath
 fromEnum :: Enum a => a -> Int
 fromLeft :: a -> Either a b -> a
 fromMaybe :: a -> Maybe a -> a
@@ -239,6 +240,7 @@ liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 lines :: String -> [String]
+list :: TupleN(a) -> [a]
 listDirectory :: FilePath -> [FilePath]
 listFromMaybe :: Maybe a -> [a]
 listFromTree :: Tree a -> [a]
@@ -466,6 +468,7 @@ typeName :: a -> String
 unQuoted :: String -> String
 uncons :: [a] -> Maybe (a, [a])
 uncurry :: (a -> b -> c) -> ((a, b) -> c)
+uncurryN :: Curry a b => b -> a
 unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
