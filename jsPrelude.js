@@ -1523,20 +1523,18 @@ const groupBy = fEq => xs =>
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
-    xs => groupBy(a => b => 0 == f(a)(b))(
-        sortBy(f)(xs)
+    compose(
+        groupBy(a => b => 0 == f(a)(b)),
+        sortBy(f)
     );
 
 // groupSortOn :: (a -> b) -> [a] -> [[a]]
 const groupSortOn = f =>
-    xs => map(map(snd))(
-        groupBy(on(eq)(fst))(
-            sortOn(fst)(
-                map(fanArrow(f)(identity))(
-                    xs
-                )
-            )
-        )
+    compose(
+        map(map(snd)),
+        groupBy(on(eq)(fst)),
+        sortOn(fst),
+        map(fanArrow(f)(identity))
     );
 
 // gt :: Ord a => a -> a -> Bool
