@@ -2388,6 +2388,17 @@ const maybe = v =>
     // Default value (v) if m is Nothing, or f(m.Just)
     f => m => m.Nothing ? v : f(m.Just);
 
+// mconcatOrd :: [Ordering] -> Ordering
+const mconcatOrd = cmps =>
+    // A sort compare function derived from
+    // a list of such functions, providing
+    // for composition of n-ary sorts.
+    0 < cmps.length ? (
+        foldl(
+            mappendOrd
+        )(cmps[0])(cmps.slice(1))
+    ) : compare;
+
 // mean :: [Num] -> Num
 const mean = xs =>
   xs.reduce((a, x) => a + x, 0) / xs.length;
