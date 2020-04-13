@@ -1972,15 +1972,14 @@ const levelNodes = tree =>
   )([tree]);
 
 // levels :: Tree a -> [[a]]
-const levels = tree => {
-    const xs = [[root(tree)]];
-    let level = [tree].flatMap(nest);
-    while (0 < level.length) {
-        xs.push(level.map(root));
-        level = level.flatMap(nest);
-    }
-    return xs;
-};
+const levels = tree =>
+    map(map(root))(
+        takeWhile(xs => 0 < xs.length)(
+            iterate(concatMap(nest))([
+                tree
+            ])
+        )
+    );
 
 // Lift a binary function to actions.
 // liftA2 f a b = fmap f a <*> b
