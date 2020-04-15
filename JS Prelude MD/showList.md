@@ -1,4 +1,7 @@
 ```js
 // showList :: [a] -> String
-const showList = x => show(x);
+const showList = xs =>
+    '[' + xs.map(show)
+    .join(', ')
+    .replace(/[\"]/g, '') + ']';
 ```

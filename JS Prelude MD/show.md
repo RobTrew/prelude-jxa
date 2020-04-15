@@ -25,6 +25,8 @@ const show = x => {
                     showRatio
                 ) : 'string' === typeof t && t.startsWith('Tuple') ? (
                     showTuple
+                ) : Array.isArray(v) ? (
+                    showList
                 ) : undefined;
             })() : showUndefined;
         return Boolean(f) ? (

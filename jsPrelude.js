@@ -3124,6 +3124,8 @@ const show = x => {
                     showRatio
                 ) : 'string' === typeof t && t.startsWith('Tuple') ? (
                     showTuple
+                ) : Array.isArray(v) ? (
+                    showList
                 ) : undefined;
             })() : showUndefined;
         return Boolean(f) ? (
@@ -3191,7 +3193,10 @@ const showLR = lr => {
 };
 
 // showList :: [a] -> String
-const showList = x => show(x);
+const showList = xs =>
+    '[' + xs.map(show)
+    .join(', ')
+    .replace(/[\"]/g, '') + ']';
 
 // showLog :: a -> IO ()
 const showLog = (...args) =>
