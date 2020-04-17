@@ -15,12 +15,9 @@ the JavaScriptCore interpreter used on macOS and iOS is fast enough
 to allow for import of the whole of the [jsPrelude.js](https://github.com/RobTrew/prelude-jxa/blob/master/jsPrelude.js) file and,
 in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jxa/blob/master/jxaSystemIO.js) file as well.
 
-(c. 380 generic and file-system functions in total)
+(c. 500 generic and file-system functions in total)
 
 **Display a menu of functions to copy to the clipboard**
-
-( Example of a JavaScript for Automation script which uses imported library
- file(s) – see the `usingLibs` function called at the end )
 
  ![Menu of functions](./functionMenu.png)
 
@@ -28,28 +25,13 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
 (() => {
     'use strict';
 
-    // Rob Trew (c) 2018 MIT
-
-    // macOS menu for choosing a set of Prelude functions to paste.
-
-    // Edit these file paths to match your system.
-    const
-        // Library files at:
-        // https://github.com/RobTrew/prelude-jxa
-        jsonPath = '~/prelude-jxa/jsPreludeDict.json',
-        jsPreludeLibPath = '~/prelude-jxa/jsPrelude.js',
-        jxaSystemLibPath = '~/prelude-jxa/jxaSystemIO.js';
+    // Library files at:
+    // https://github.com/RobTrew/prelude-jxa
+    const jsonPath = '~/prelude-jxa/jsPreludeDict.json';
 
     // main :: IO ()
-    const main = () => {
-
-        // standardSEAdditions :: () -> Application
-        const standardSEAdditions = () =>
-            Object.assign(Application('System Events'), {
-                includeStandardAdditions: true
-            });
-
-        return bindLR(
+    const main = () =>
+        bindLR(
             bindLR(
                 doesFileExist(jsonPath) ? (
                     readFileLR(jsonPath)
@@ -79,30 +61,31 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
                         .join('\n\n');
                     return (
                         sa.setTheClipboardTo(strFns),
-                        strFns
+                        Right(strFns)
                     );
-                })() : '';
+                })() : Left('User cancelled.');
             }
         );
-    };
 
-    // LIBRARY IMPORT --------------------------------------
+    // GENERIC FUNCTIONS --------------------------------------
 
-    // Evaluate a function f :: (() -> a)
-    // in the context of the JS libraries whose source
-    // filePaths are listed in fps :: [FilePath]
+    // Left :: a -> Either a b
+    const Left = x => ({
+        type: 'Either',
+        Left: x
+    });
 
-    // usingLibs :: [FilePath] -> (() -> a) -> a
-    const usingLibs = (fps, f) =>
-        fps.every(doesFileExist) ? (
-            eval(`(() => {
-                'use strict';
-                ${fps.map(readFile).join('\n\n')}
-                return (${f})();
-            })();`)
-        ) : 'Library not found at: ' + [].concat(...fps.map(
-            fp => doesFileExist(fp) ? [] : [fp]
-        )).join('\n');
+    // Right :: b -> Either a b
+    const Right = x => ({
+        type: 'Either',
+        Right: x
+    });
+
+    // bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
+    const bindLR = (m, mf) =>
+        m.Right !== undefined ? (
+            mf(m.Right)
+        ) : m;
 
     // doesFileExist :: FilePath -> IO Bool
     const doesFileExist = strPath => {
@@ -114,9 +97,19 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
             ) && ref[0] !== 1;
     };
 
-    // readFile :: FilePath -> IO String
-    const readFile = strPath => {
-        let error = $(),
+    // jsonParseLR :: String -> Either String a
+    const jsonParseLR = s => {
+        try {
+            return Right(JSON.parse(s));
+        } catch (e) {
+            return Left(`${e.message} (line:${e.line} col:${e.column})`);
+        }
+    };
+
+    // readFileLR :: FilePath -> Either String String
+    const readFileLR = strPath => {
+        const
+            error = $(),
             str = ObjC.unwrap(
                 $.NSString.stringWithContentsOfFileEncodingError(
                     $(strPath)
@@ -126,18 +119,19 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
                 )
             );
         return Boolean(error.code) ? (
-            ObjC.unwrap(error.localizedDescription)
-        ) : str;
+            Left(error.message)
+        ) : Right(str);
     };
 
-    // MAIN ------------------------------------------------
-    return usingLibs(
-        [
-            jsPreludeLibPath,
-            jxaSystemLibPath
-            // '~/Library/Script Libraries/BBDrafts.js'
-        ],
-        main
-    );
+    // JXA   ---
+
+    // standardSEAdditions :: () -> Application
+    const standardSEAdditions = () =>
+        Object.assign(Application('System Events'), {
+            includeStandardAdditions: true
+        });
+
+    // MAIN ---
+    return main();
 })();
 ```
