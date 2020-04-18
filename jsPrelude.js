@@ -146,6 +146,7 @@ const ap = mf =>
 // apFn :: (a -> b -> c) -> (a -> b) -> a -> c
 const apFn = f =>
     // Applicative instance for functions.
+    // f(x) applied to g(x).
     g => x => f(x)(
         g(x)
     )
@@ -2007,11 +2008,13 @@ const liftA2 = f => a => b => {
 };
 
 // liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c
-const liftA2Fn = op => f => g =>
+const liftA2Fn = op =>
     // Lift a binary function to a composition
     // over two other functions.
     // liftA2 (*) (+ 2) (+ 3) 7 == 90
-    x => op(f(x))(g(x));
+    f => g => x => op(f(x))(
+        g(x)
+    );
 
 // liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 const liftA2LR = f =>
