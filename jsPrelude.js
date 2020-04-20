@@ -1400,12 +1400,12 @@ const foldl1May = f => xs =>
     ) : Nothing();
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
-const foldlTree = f => 
+const foldlTree = f =>
     acc => node => {
-  const go = (a, x) =>
-    x.nest.reduce(go, f(a)(x));
-  return go(acc, node);
-};
+        const go = (a, x) =>
+            x.nest.reduce(go, f(a)(x.root));
+        return go(acc, node);
+    };
 
 // Note that that the Haskell signature of foldr differs from that of
 // foldl - the positions of accumulator and current value are reversed
@@ -1426,11 +1426,14 @@ const foldr1May = f => xs =>
     ) : Nothing();
 
 // foldrTree :: (a -> b -> b) -> b -> Tree a -> b
-const foldrTree = f => acc => node => {
-    const go = (a, x) =>
-        x.nest.reduceRight(go, f(x.root)(a));
-    return go(acc, node);
-};
+const foldrTree = f =>
+    acc => node => {
+        const go = (a, x) =>
+            f(x.root)(
+                x.nest.reduceRight(go, a)
+            );
+        return go(acc, node);
+    };
 
 // fpAppend :: FilePath -> FilePath -> FilePath
 const fpAppend = fp =>
