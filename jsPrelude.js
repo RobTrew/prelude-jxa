@@ -1551,11 +1551,16 @@ const gt = x => y =>
     ) : (x > y);
 
 // head :: [a] -> a
-const head = xs => xs.length ? xs[0] : undefined;
+const head = xs => 
+    xs.length ? (
+        xs[0]
+    ) : undefined;
 
 // headMay :: [a] -> Maybe a
 const headMay = xs =>
-    0 < xs.length ? Just(xs[0]) : Nothing();
+    0 < xs.length ? (
+        Just(xs[0]) 
+    ) : Nothing();
 
 // identity :: a -> a
 const identity = x =>
@@ -1563,11 +1568,14 @@ const identity = x =>
     x;
 
 // if_ :: Bool -> a -> a -> a
-const if_ = bln => x => y => bln ? x : y;
+const if_ = bln => 
+    x => y => bln ? (
+        x
+    ) : y;
 
 // indented :: String -> String -> String
-const indented = strIndent => s =>
-    s.split(/[\r\n]/).map(
+const indented = strIndent =>
+    s => s.split(/[\r\n]/).map(
         x => '' !== x ? strIndent + x : x
     ).join('\n')
 
@@ -4219,13 +4227,13 @@ const uncons = xs => {
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    (...args) => {
+    x => ((...args) => {
         const
             xy = 1 < args.length ? (
                 args
             ) : args[0];
         return f(xy[0])(xy[1]);
-    };
+    })(x);
 
 // uncurryN :: Curry a b => b -> a
 const uncurryN = f =>
@@ -4295,20 +4303,20 @@ const unfoldl = f => v => {
 
 // (x => Maybe [value, remainder] -> initial value -> values
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
-const unfoldr = f => v => {
-    let
-        xr = [v, v],
-        xs = [];
-    while (true) {
-        const mb = f(xr[1]);
-        if (mb.Nothing) {
-            return xs
-        } else {
-            xr = mb.Just;
-            xs.push(xr[0])
+const unfoldr = f =>
+    v => {
+        const xs = [];
+        let xr = [v, v];
+        while (true) {
+            const mb = f(xr[1]);
+            if (mb.Nothing) {
+                return xs
+            } else {
+                xr = mb.Just;
+                xs.push(xr[0])
+            }
         }
-    }
-};
+    };
 
 // union :: [a] -> [a] -> [a]
 const union = xs => ys =>

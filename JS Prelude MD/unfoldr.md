@@ -14,18 +14,18 @@
 
 ```js
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
-const unfoldr = f => v => {
-    let
-        xr = [v, v],
-        xs = [];
-    while (true) {
-        const mb = f(xr[1]);
-        if (mb.Nothing) {
-            return xs
-        } else {
-            xr = mb.Just;
-            xs.push(xr[0])
+const unfoldr = f =>
+    v => {
+        const xs = [];
+        let xr = [v, v];
+        while (true) {
+            const mb = f(xr[1]);
+            if (mb.Nothing) {
+                return xs
+            } else {
+                xr = mb.Just;
+                xs.push(xr[0])
+            }
         }
-    }
-};
+    };
 ```
