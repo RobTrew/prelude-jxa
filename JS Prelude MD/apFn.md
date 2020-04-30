@@ -5,5 +5,5 @@ const apFn = f =>
     // f(x) applied to g(x).
     g => x => f(x)(
         g(x)
-    )
+    );
 ```

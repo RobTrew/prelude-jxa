@@ -3,8 +3,9 @@
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    x => ((...args) => {
+    x => (function () {
         const
+            args = Array.from(arguments),
             xy = 1 < args.length ? (
                 args
             ) : args[0];

@@ -149,7 +149,7 @@ const apFn = f =>
     // f(x) applied to g(x).
     g => x => f(x)(
         g(x)
-    )
+    );
 
 // apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b
 const apLR = flr =>
@@ -4227,8 +4227,9 @@ const uncons = xs => {
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    x => ((...args) => {
+    x => (function () {
         const
+            args = Array.from(arguments),
             xy = 1 < args.length ? (
                 args
             ) : args[0];
