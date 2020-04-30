@@ -8,7 +8,7 @@ const uncurry = f =>
             args = Array.from(arguments),
             xy = 2 !== args.length ? (
                 args[0]
-            ) : args
-        return f(xy[0])(xy[1])
+            ) : args;
+        return f(xy[0])(xy[1]);
     };
 ```

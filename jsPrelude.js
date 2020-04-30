@@ -1587,12 +1587,7 @@ const index = xs => i => {
     return 'GeneratorFunction' !== s ? (() => {
         const v = xs[i];
         return undefined !== v ? Just(v) : Nothing();
-    })() : (() => {
-        const v = until(x => x.done || i <= fst(x.value))(
-            () => xs.next()
-        )(xs.next());
-        return v.done ? Nothing() : Just(snd(v.value));
-    })();
+    })() : (take(i)(xs), xs.next().value);
 };
 
 // indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->
@@ -4232,8 +4227,8 @@ const uncurry = f =>
             args = Array.from(arguments),
             xy = 2 !== args.length ? (
                 args[0]
-            ) : args
-        return f(xy[0])(xy[1])
+            ) : args;
+        return f(xy[0])(xy[1]);
     };
 
 // uncurryN :: Curry a b => b -> a

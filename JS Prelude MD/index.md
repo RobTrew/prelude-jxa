@@ -7,11 +7,6 @@ const index = xs => i => {
     return 'GeneratorFunction' !== s ? (() => {
         const v = xs[i];
         return undefined !== v ? Just(v) : Nothing();
-    })() : (() => {
-        const v = until(x => x.done || i <= fst(x.value))(
-            () => xs.next()
-        )(xs.next());
-        return v.done ? Nothing() : Just(snd(v.value));
-    })();
+    })() : (take(i)(xs), xs.next().value);
 };
 ```
