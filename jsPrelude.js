@@ -4227,14 +4227,14 @@ const uncons = xs => {
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    x => (function () {
+    function() {
         const
             args = Array.from(arguments),
-            xy = 1 < args.length ? (
-                args
-            ) : args[0];
-        return f(xy[0])(xy[1]);
-    })(x);
+            xy = 2 !== args.length ? (
+                args[0]
+            ) : args
+        return f(xy[0])(xy[1])
+    };
 
 // uncurryN :: Curry a b => b -> a
 const uncurryN = f =>
