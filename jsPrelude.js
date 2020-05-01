@@ -474,6 +474,13 @@ const compose = (...fs) =>
         x => x
     );
 
+// composeList :: [(a -> a)] -> (a -> a)
+const composeList = fs =>
+    fs.reduce(
+        (f, g) => x => f(g(x)),
+        x => x
+    );
+
 // composeListR :: [(a -> a)] -> (a -> a)
 const composeListR = fs =>
     x => fs.reduce((a, f) => f(a), x);
@@ -2074,10 +2081,6 @@ const lines = s =>
         s.split(/[\r\n]/)
     ) : [];
 
-// list :: TupleN(a) -> [a]
-const list = tpl =>
-    Array.from(tpl);
-
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
     // A singleton list derived from a Just value, 
@@ -3374,7 +3377,7 @@ const span = p => xs => {
     return splitAt(
         until(
             i => iLast < i || !p(xs[i])
-        )(succ)(0)
+        )(i => 1 + i)(0)
     )(xs);
 };
 

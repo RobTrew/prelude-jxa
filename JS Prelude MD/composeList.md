@@ -1,7 +1,8 @@
 ```js
 // composeList :: [(a -> a)] -> (a -> a)
 const composeList = fs =>
-    x => fs.reduceRight(
-        (a, f) => f(a), x
+    fs.reduce(
+        (f, g) => x => f(g(x)),
+        x => x
     );
 ```
