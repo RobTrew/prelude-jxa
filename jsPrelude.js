@@ -4223,11 +4223,10 @@ const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
     function() {
-        const
-            args = Array.from(arguments),
-            xy = 2 !== args.length ? (
-                args[0]
-            ) : args;
+        const args = Array.from(arguments);
+        const xy = [2, 4].includes(args.length) ? (
+            args
+        ) : args[0];
         return f(xy[0])(xy[1]);
     };
 
