@@ -56,7 +56,7 @@ chars :: String -> [Char]
 chop :: ([a] -> (b, [a])) -> [a] -> [b]
 chr :: Int -> Char
 chunksOf :: Int -> [a] -> [[a]]
-combine :: FilePath -> FilePath -> FilePath
+combine (</>) :: FilePath -> FilePath -> FilePath
 compare :: a -> a -> Ordering
 comparing :: (a -> b) -> (a -> a -> Ordering)
 compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
@@ -154,7 +154,6 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr1 :: (a -> a -> a) -> [a] -> a
 foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 foldrTree :: (a -> b -> b) -> b -> Tree a -> b
-fpAppend :: FilePath -> FilePath -> FilePath
 fromEnum :: Enum a => a -> Int
 fromLeft :: a -> Either a b -> a
 fromMaybe :: a -> Maybe a -> a

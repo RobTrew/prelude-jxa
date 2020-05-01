@@ -322,13 +322,13 @@ const bool = f =>
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     xs => {
-        for (var i = 0, lng = xs.length;
-            (i < lng) && !p(xs[i]); i++) {};
-        return Tuple(xs.slice(0, i))(
-            xs.slice(i)
-        );
+        const iLast = xs.length - 1;
+        return splitAt(
+            until(i => iLast < i || p(xs[i]))(
+                i => 1 + i
+            )(0)
+        )(xs);
     };
-
 
 // breakOn :: String -> String -> (String, String)
 const breakOn = pat =>
@@ -354,9 +354,9 @@ const breakOnAll = pat =>
             ) : a, [])
     ) : undefined;
 
-// Needle -> Haystack -> maybe (prefix before match, match + rest)
 // breakOnMay :: String -> String -> Maybe (String, String)
 const breakOnMay = pat =>
+    // Needle -> Haystack -> maybe (prefix before match, match + rest)
     src => Boolean(pat) ? (() => {
         const xs = src.split(pat);
         return Just(0 < xs.length ? Tuple(
@@ -392,12 +392,12 @@ const caseOf = pvs =>
 const catMaybes = mbs =>
     mbs.flatMap(m => m.Nothing ? [] : [m.Just]);
 
-// The least integer not less than x
 // ceiling :: Num -> Int
 const ceiling = x => {
+    // The least integer not less than x.
     const
-      nr = properFraction(x),
-      n = nr[0]
+        nr = properFraction(x),
+        n = nr[0]
     return 0 < nr[1] ? 1 + n : n;
 };
 
@@ -441,15 +441,18 @@ const chunksOf = n =>
         []
     );
 
-// combine :: FilePath -> FilePath -> FilePath
-const combine = folderPath =>
-    // A filePath composed from two parts,
-    // with intercalation of '/' if needed.
-    fileName => folderPath + (
-        folderPath.endsWith('/') || fileName.startsWith('/') ? (
-            ''
-        ) : '/'
-    ) + fileName;
+// combine (</>) :: FilePath -> FilePath -> FilePath
+const combine = fp =>
+    // Two paths combined with a path separator. 
+    // Just the second path if that starts 
+    // with a path separator.
+    fp1 => Boolean(fp) && Boolean(fp1) ? (
+        '/' === fp1.slice(0, 1) ? (
+            fp1
+        ) : '/' === fp.slice(-1) ? (
+            fp + fp1
+        ) : fp + '/' + fp1
+    ) : fp + fp1;
 
 // compare :: a -> a -> Ordering
 const compare = a =>
@@ -1111,19 +1114,20 @@ const exp = Math.exp;
 
 // fTable :: String -> (a -> String) -> (b -> String)
 //                      -> (a -> b) -> [a] -> String
-const fTable = s => xShow => fxShow => f => xs => {
+const fTable = s =>
     // Heading -> x display function ->
     //           fx display function ->
     //    f -> values -> tabular string
-    const
-        ys = xs.map(xShow),
-        w = Math.max(...ys.map(length));
-    return s + '\n' + zipWith(
-        a => b => a.padStart(w, ' ') + ' -> ' + b
-    )(ys)(
-        xs.map(x => fxShow(f(x)))
-    ).join('\n');
-};
+    xShow => fxShow => f => xs => {
+        const
+            ys = xs.map(xShow),
+            w = Math.max(...ys.map(length));
+        return s + '\n' + zipWith(
+            a => b => a.padStart(w, ' ') + ' -> ' + b
+        )(ys)(
+            xs.map(x => fxShow(f(x)))
+        ).join('\n');
+    };
 
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = f =>
@@ -1144,7 +1148,8 @@ const filePathTree = fpAnchor => trees => {
 };
 
 // filter :: (a -> Bool) -> [a] -> [a]
-const filter = f => xs => xs.filter(f);
+const filter = f =>
+    xs => xs.filter(f);
 
 // filterTree (a -> Bool) -> Tree a -> [a]
 const filterTree = p =>
@@ -1199,14 +1204,6 @@ const find = p =>
         ) : Just(mb.value);
     })();
 
-// findIndex(isSpace)("hello world")
-//-> {"type":"Maybe","Nothing":false,"Just":5}
-
-// findIndex(even)([3, 5, 7, 8, 9])
-//-> {"type":"Maybe","Nothing":false,"Just":3}
-
-// findIndex(isUpper)("all lower case")
-//-> {"type":"Maybe","Nothing":true}
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
 const findIndex = p =>
     //  Just the index of the first element in
@@ -1238,8 +1235,6 @@ const findIndexR = p =>
         ) : Nothing();
     };
 
-// findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
-//-> {2, 5}
 // findIndices :: (a -> Bool) -> [a] -> [Int]
 // findIndices :: (String -> Bool) -> String -> [Int]
 const findIndices = p => xs =>
@@ -1247,10 +1242,10 @@ const findIndices = p => xs =>
         [i]
     ) : []);
 
-// The first of any nodes in the tree which match the predicate p
-// (For all matches, see treeMatches)
 // findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
 const findTree = p => {
+    // The first of any nodes in the tree which match the predicate p
+    // (For all matches, see treeMatches)
     const go = tree =>
         p(tree.root) ? (
             Just(tree)
@@ -1280,7 +1275,8 @@ const firstArrow = f =>
     );
 
 // flatten :: NestedList a -> [a]
-const flatten = nest => nest.flat(Infinity);
+const flatten = nest => 
+    nest.flat(Infinity);
 
 // flattenTree :: Tree a -> [a]
 const flattenTree = tree => {
@@ -1412,20 +1408,20 @@ const foldlTree = f =>
         return go(acc, node);
     };
 
-// Note that that the Haskell signature of foldr differs from that of
-// foldl - the positions of accumulator and current value are reversed
 // foldr :: (a -> b -> b) -> b -> [a] -> b
-const foldr = f => a => xs =>
-    xs.reduceRight((a, x) => f(x)(a), a);
+const foldr = f =>
+    // Note that that the Haskell signature of foldr differs from that of
+    // foldl - the positions of accumulator and current value are reversed
+    a => xs => xs.reduceRight((a, x) => f(x)(a), a);
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
-const foldr1 = f => xs =>
-    0 < xs.length ? init(xs)
+const foldr1 = f =>
+    xs => 0 < xs.length ? init(xs)
     .reduceRight(uncurry(f), last(xs)) : [];
 
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
-const foldr1May = f => xs =>
-    0 < xs.length ? (
+const foldr1May = f =>
+    xs => 0 < xs.length ? (
         Just(xs.slice(0, -1)
             .reduceRight(uncurr(f), xs.slice(-1)[0]))
     ) : Nothing();
@@ -1440,19 +1436,6 @@ const foldrTree = f =>
         return go(acc, node);
     };
 
-// fpAppend :: FilePath -> FilePath -> FilePath
-const fpAppend = fp =>
-    // Two paths combined with a path separator. 
-    // Just the second path if that starts 
-    // with a path separator.
-    fp1 => Boolean(fp) && Boolean(fp1) ? (
-        '/' === fp1.slice(0, 1) ? (
-            fp1
-        ) : '/' === fp.slice(-1) ? (
-            fp + fp1
-        ) : fp + '/' + fp1
-    ) : fp + fp1;
-
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
     typeof x !== 'string' ? (
@@ -1461,18 +1444,20 @@ const fromEnum = x =>
         ) : parseInt(Number(x))
     ) : x.codePointAt(0);
 
-// | Return the contents of a 'Left'-value or a default value otherwise.
 // fromLeft :: a -> Either a b -> a
-const fromLeft = def => lr =>
-  isLeft(lr) ? lr.Left : def;
+const fromLeft = def =>
+    // The contents of a 'Left' value, or otherwise a default value.
+    lr => isLeft(lr) ? lr.Left : def;
 
 // fromMaybe :: a -> Maybe a -> a
-const fromMaybe = def => mb => mb.Nothing ? def : mb.Just;
+const fromMaybe = def =>
+    mb => mb.Nothing ? def : mb.Just;
 
-// | Return the contents of a 'Right'-value or a default value otherwise.
+
 // fromRight :: b -> Either a b -> b
-const fromRight = def => lr =>
-  isRight(lr) ? lr.Right : def;
+const fromRight = def =>
+    // The contents of a 'Right' value or otherwise a default value.
+    lr => isRight(lr) ? lr.Right : def;
 
 // fst :: (a, b) -> a
 const fst = tpl =>
@@ -1481,22 +1466,25 @@ const fst = tpl =>
 
 // Abbreviation for quick testing
 // ft :: (Int, Int) -> [Int]
-const ft = m => n =>
-    Array.from({
+const ft = m =>
+    n => Array.from({
         length: 1 + n - m
     }, (_, i) => m + i);
 
 // gcd :: Int -> Int -> Int
-const gcd = x => y => {
-    const
-        _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
-        abs = Math.abs;
-    return _gcd(abs(x), abs(y));
-};
+const gcd = x =>
+    y => {
+        const
+            _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
+            abs = Math.abs;
+        return _gcd(abs(x), abs(y));
+    };
 
 // genericIndexMay :: [a] -> Int -> Maybe a
-const genericIndexMay = xs => i =>
-    (i < xs.length && 0 <= i) ? Just(xs[i]) : Nothing();
+const genericIndexMay = xs =>
+    i => (i < xs.length && 0 <= i) ? (
+        Just(xs[i])
+    ) : Nothing();
 
 // group :: [a] -> [[a]]
 const group = xs => {
@@ -1515,9 +1503,9 @@ const group = xs => {
 };
 
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = fEq => xs =>
-    // // Typical usage: groupBy(on(eq)(f), xs)
-    0 < xs.length ? (() => {
+const groupBy = fEq =>
+    // Typical usage: groupBy(on(eq)(f), xs)
+    xs => 0 < xs.length ? (() => {
         const
             tpl = xs.slice(1).reduce(
                 (gw, x) => {
@@ -1587,13 +1575,14 @@ const indented = strIndent =>
 // index (!!) :: [a] -> Int -> Maybe a
 // index (!!) :: Generator (Int, a) -> Int -> Maybe a
 // index (!!) :: String -> Int -> Maybe Char
-const index = xs => i => {
-    const s = xs.constructor.constructor.name;
-    return 'GeneratorFunction' !== s ? (() => {
-        const v = xs[i];
-        return undefined !== v ? Just(v) : Nothing();
-    })() : (take(i)(xs), xs.next().value);
-};
+const index = xs =>
+    i => {
+        const s = xs.constructor.constructor.name;
+        return 'GeneratorFunction' !== s ? (() => {
+            const v = xs[i];
+            return undefined !== v ? Just(v) : Nothing();
+        })() : (take(i)(xs), xs.next().value);
+    };
 
 // indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->
 // Maybe Tree (a, { nodeSum :: Int })
@@ -1611,10 +1600,10 @@ const indexForest = trees =>
 
 // indexOf :: Eq a => [a] -> [a] -> Maybe Int
 // indexOf :: String -> String -> Maybe Int
-const indexOf = needle => haystack =>
-    'string' !== typeof haystack ? (
+const indexOf = needle =>
+    haystack => 'string' !== typeof haystack ? (
         findIndex(xs => isPrefixOf(needle)(xs))(
-          tails(haystack)
+            tails(haystack)
         )
     ) : (() => {
         const i = haystack.indexOf(needle);
@@ -1642,7 +1631,9 @@ const init = xs =>
 
 // initMay :: [a] -> Maybe [a]
 const initMay = xs =>
-    0 < xs.length ? Just(xs.slice(0, -1)) : Nothing();
+    0 < xs.length ? (
+        Just(xs.slice(0, -1))
+    ) : Nothing();
 
 // inits([1, 2, 3]) -> [[], [1], [1, 2], [1, 2, 3]
 // inits('abc') -> ["", "a", "ab", "abc"]
@@ -1655,13 +1646,11 @@ const inits = xs => [
         .map((_, i, lst) => lst.slice(0, 1 + i)));
 
 // insert :: Ord a => a -> [a] -> [a]
-const insert = x => ys => {
-    const cmp = (a, b) => a < b ? -1 : (a > b ? 1 : 0);
-    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};
-    return ys.slice(0, i)
-        .concat(x)
-        .concat(ys.slice(i));
-};
+const insert = x =>
+    ys => {
+        const [pre, post] = Array.from(break_(y => y >= x)(ys));
+        return [...pre, x, ...post];
+    };
 
 // insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
 const insertBy = cmp => x => ys => {

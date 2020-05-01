@@ -1,8 +1,8 @@
 ```js
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = fEq => xs =>
-    // // Typical usage: groupBy(on(eq)(f), xs)
-    0 < xs.length ? (() => {
+const groupBy = fEq =>
+    // Typical usage: groupBy(on(eq)(f), xs)
+    xs => 0 < xs.length ? (() => {
         const
             tpl = xs.slice(1).reduce(
                 (gw, x) => {

@@ -1,11 +1,8 @@
 ```js
-// The first of any nodes in the tree which match the predicate p
-// (For all matches, see treeMatches)
-```
-
-```js
 // findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
 const findTree = p => {
+    // The first of any nodes in the tree which match the predicate p
+    // (For all matches, see treeMatches)
     const go = tree =>
         p(tree.root) ? (
             Just(tree)

@@ -145,9 +145,9 @@ const fileStatus = fp => {
     ) : Right(ObjC.deepUnwrap(dct));
 };
 
-// ObjC.import('AppKit')
 // fileUTI :: FilePath -> Either String String
 const fileUTI = fp => {
+    // ObjC.import('AppKit')
     const
         e = $(),
         uti = $.NSWorkspace.sharedWorkspace

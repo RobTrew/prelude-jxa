@@ -1,10 +1,7 @@
 ```js
-// ObjC.import('AppKit')
-```
-
-```js
 // fileUTI :: FilePath -> Either String String
 const fileUTI = fp => {
+    // ObjC.import('AppKit')
     const
         e = $(),
         uti = $.NSWorkspace.sharedWorkspace
