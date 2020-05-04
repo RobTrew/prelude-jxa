@@ -1861,8 +1861,8 @@ const iterate = f =>
     };
 
 // iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
-const iterateUntil = p => f =>
-    function*(x) {
+const iterateUntil = p =>
+    f => function*(x) {
         let v = x;
         while (!p(v)) {
             yield(v);
@@ -1871,9 +1871,8 @@ const iterateUntil = p => f =>
     };
 
 // join :: Monad m => m (m a) -> m a
-const join = x => bind(x)(
-    identity
-);
+const join = x =>
+    bind(x)(identity);
 
 // jsonFromTree :: Tree a -> String
 const jsonFromTree = tree => {
@@ -1992,27 +1991,28 @@ const levels = tree =>
         )
     );
 
-// Lift a binary function to actions.
-// liftA2 f a b = fmap f a <*> b
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = f => a => b => {
-    const t = typeName(a);
-    return (
-        'Bottom' !== t ? (
-            '(a -> b)' === t ? (
-                liftA2Fn
-            ) : 'Either' === t ? (
-                liftA2LR
-            ) : 'Maybe' === t ? (
-                liftA2May
-            ) : 'Tuple' === t ? (
-                liftA2Tuple
-            ) : 'Node' === t ? (
-                liftA2Tree
+const liftA2 = f =>
+    // Lift a binary function to actions.
+    // liftA2 f a b = fmap f a <*> b
+    a => b => {
+        const t = typeName(a);
+        return (
+            'Bottom' !== t ? (
+                '(a -> b)' === t ? (
+                    liftA2Fn
+                ) : 'Either' === t ? (
+                    liftA2LR
+                ) : 'Maybe' === t ? (
+                    liftA2May
+                ) : 'Tuple' === t ? (
+                    liftA2Tuple
+                ) : 'Node' === t ? (
+                    liftA2Tree
+                ) : liftA2List
             ) : liftA2List
-        ) : liftA2List
-    )(f)(a)(b);
-};
+        )(f)(a)(b);
+    };
 
 // liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c
 const liftA2Fn = op =>
@@ -2043,27 +2043,32 @@ const liftA2List = f => xs => ys =>
     );
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-const liftA2May = f => a => b =>
-    a.Nothing ? a : b.Nothing ? b : Just(f(a.Just)(b.Just));
+const liftA2May = f =>
+    a => b => a.Nothing ? (
+        a
+    ) : b.Nothing ? (
+        b
+    ) : Just(f(a.Just)(b.Just));
 
 // liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
-const liftA2Tree = f => tx => ty => {
-    const go = tx =>
-        Node(f(tx.root)(ty.root))(
-            Boolean(ty.nest) ? (
-                ty.nest.map(
-                    fmapTree(f(tx.root))
-                )
-                .concat(tx.nest.map(go))
-            ) : []
-        );
-    return go(tx);
-};
+const liftA2Tree = f =>
+    tx => ty => {
+        const go = t =>
+            Node(f(t.root)(ty.root))(
+                Boolean(ty.nest) ? (
+                    ty.nest.map(
+                        fmapTree(f(t.root))
+                    )
+                    .concat(t.nest.map(go))
+                ) : []
+            );
+        return go(tx);
+    };
 
-// liftA2Tuple :: Monoid m => 
+// liftA2Tuple :: Monoid m =>
 // (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
-const liftA2Tuple = f => a => b =>
-    Tuple(mappend(a[0])(b[0]))(
+const liftA2Tuple = f =>
+    a => b => Tuple(mappend(a[0])(b[0]))(
         f(a[1])(b[1])
     );
 
@@ -2112,25 +2117,26 @@ const listToMaybe = xs =>
 const log = Math.log;
 
 // lookup :: Eq a => a -> Container -> Maybe b
-const lookup = k => m =>
-    (Array.isArray(m) ? (
+const lookup = k =>
+    m => (Array.isArray(m) ? (
         lookupTuples
     ) : lookupDict)(k)(m);
 
 // lookupDict :: a -> Dict -> Maybe b
-const lookupDict = k => dct => {
-    const v = dct[k];
-    return undefined !== v ? (
-        Just(v)
-    ) : Nothing();
-};
+const lookupDict = k =>
+    dct => {
+        const v = dct[k];
+        return undefined !== v ? (
+            Just(v)
+        ) : Nothing();
+    };
 
 // lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
-const lookupTuples = k => kvs =>
-    bindMay(
-      find(x => k === fst(x))(
-        kvs
-      )
+const lookupTuples = k =>
+    kvs => bindMay(
+        find(x => k === fst(x))(
+            kvs
+        )
     )(x => Just(snd(x)));
 
 // lt (<) :: Ord a => a -> a -> Bool
@@ -2157,13 +2163,13 @@ const map = f =>
         ) : xs.split('')
     ).map(f);
 
-// Map-accumulation is a combination of map and a catamorphism;
-// it applies a function to each element of a list, passing an
-// accumulating parameter from left to right, and returning a final
-// value of this accumulator together with the new list.
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-const mapAccumL = f => acc => xs =>
-    xs.reduce((a, x) => {
+const mapAccumL = f =>
+    // Map-accumulation is a combination of map and a catamorphism;
+    // it applies a function to each element of a list, passing an
+    // accumulating parameter from left to right, and returning a
+    // final value of this accumulator together with the new list.
+    acc => xs => xs.reduce((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
@@ -2183,20 +2189,21 @@ const mapAccumL_Tree = f => {
 };
 
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-const mapAccumR = f => acc => xs =>
+const mapAccumR = f =>
     // A tuple of an accumulation and a list derived by a
     // combined map and fold,
     // with accumulation from right to left.
-    xs.reduceRight((a, x) => {
+    acc => xs => xs.reduceRight((a, x) => {
         const pair = f(a[0])(x);
-        return Tuple(pair[0])([pair[1]].concat(a[1]));
+        return Tuple(pair[0])(
+            [pair[1]].concat(a[1])
+        );
     }, Tuple(acc)([]));
 
-// A function mapped over the keys of a record
-// A function mapped over the keys of a record
 // mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
-const mapKeys = f => dct =>
-    mapFromList(
+const mapKeys = f =>
+    // A function mapped over the keys of a record.
+    dct => mapFromList(
         map(kv => [f(read(kv[0]))(kv[1])])(
             zip(keys(dct))(
                 elems(dct)
@@ -2204,22 +2211,21 @@ const mapKeys = f => dct =>
         )
     );
 
-// The mapMaybe function is a version of map which can throw out
-// elements. In particular, the functional argument returns
-// something of type Maybe b. If this is Nothing, no element is
-// added on to the result list. If it just Just b, then b is
-// included in the result list.
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]
-const mapMaybe = mf => xs =>
-  xs.reduce(
-    (a, x) => maybe(a)(
-        j => a.concat(j)
-    )(mf(x)),
-    []
-  );
+const mapMaybe = mf =>
+    // A filtered map, retaining only the contents
+    // of Just values. (Nothing values discarded).
+    xs => xs.reduce(
+        (a, x) => maybe(a)(
+            j => a.concat(j)
+        )(mf(x)),
+        []
+    );
 
 // mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 const mapMaybeGen = mf =>
+    // A filtered map over a generator, returning only the
+    // contents of Just values. (Nothing values discarded).
     function*(gen) {
         let v = take(1, gen);
         while (0 < v.length) {
@@ -2249,14 +2255,14 @@ const mappend = a =>
     };
 
 // mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
-const mappendFn = f => g =>
-    x => mappend(f(x))(
+const mappendFn = f =>
+    g => x => mappend(f(x))(
         g(x)
     );
 
 // mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
-const mappendMaybe = a => b =>
-    a.Nothing ? (
+const mappendMaybe = a =>
+     b => a.Nothing ? (
         b
     ) : b.Nothing ? (
         a
@@ -2267,8 +2273,8 @@ const mappendMaybe = a => b =>
     );
 
 // mappendOrd (<>) :: Ordering -> Ordering -> Ordering
-const mappendOrd = cmp => cmp1 =>
-    a => b => {
+const mappendOrd = cmp =>
+    cmp1 => a => b => {
         const x = cmp(a)(b);
         return 0 !== x ? (
             x
@@ -2302,7 +2308,10 @@ const matching = pat => {
 };
 
 // max :: Ord a => a -> a -> a
-const max = a => b => gt(b)(a) ? b : a;
+const max = a =>
+    b => gt(b)(a) ? (
+        b
+    ) : a;
 
 // maxBound :: a -> a
 const maxBound = x => {
@@ -2327,15 +2336,15 @@ const maximum = xs =>
         )
     ) : undefined;
 
-//  Ordering: (LT|EQ|GT):
-//  GT: 1 (or other positive n)
-//	EQ: 0
-//  LT: -1 (or other negative n) 
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
-const maximumBy = f => xs =>
-    0 < xs.length ? (
-        xs.slice(1)
-        .reduce((a, x) => 0 < f(x)(a) ? x : a, xs[0])
+const maximumBy = f =>
+    xs => 0 < xs.length ? (
+        xs.slice(1).reduce(
+            (a, x) => 0 < f(x)(a) ? (
+                x
+            ) : a,
+            xs[0]
+        )
     ) : undefined;
 
 //Ordering: (LT|EQ|GT):
