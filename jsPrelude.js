@@ -1139,7 +1139,9 @@ const fTable = s =>
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = f =>
     // A function from x to a tuple of (f(x), g(x))
-    g => x => Tuple(f(x))(g(x));
+    g => x => Tuple(f(x))(
+        g(x)
+    );
 
 // filePathTree :: filePath -> [Tree String] -> Tree FilePath
 const filePathTree = fpAnchor => trees => {
@@ -1160,11 +1162,13 @@ const filter = f =>
 
 // filterTree (a -> Bool) -> Tree a -> [a]
 const filterTree = p =>
-    // List of all root values in the tree 
+    // List of all root values in the tree
     // which match the predicate p.
-    foldTree(x => xs =>
-        concat(p(x) ? [x, ...xs] : xs)
-    )
+    foldTree(x => xs => concat(
+        p(x) ? (
+            [[x], ...xs]
+        ) : xs
+    ));
 
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 const filteredSubTrees = p => {
