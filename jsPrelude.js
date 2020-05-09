@@ -1165,9 +1165,9 @@ const filterTree = p =>
     // List of all root values in the tree
     // which match the predicate p.
     foldTree(x => xs => concat(
-        p(x) ? (
-            [[x], ...xs]
-        ) : xs
+        p(x) ? [
+            [x], ...xs
+        ] : xs
     ));
 
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
@@ -2243,20 +2243,15 @@ const mapMaybeGen = mf =>
 const mappend = a =>
     // Associative operation 
     // defined for various monoid types.
-    b => {
-        const t = a.type;
-        return (
-            Boolean(t) ? (
-                'Maybe' === t ? (
-                    mappendMaybe
-                ) : mappendTuple
-            ) : 'function' !== typeof a ? (
-                append
-            ) : a.toString() !== 'x => y => f(y)(x)' ? (
-                mappendFn
-            ) : mappendOrd
-        )(a)(b);
-    };
+    b => (t => (Boolean(t) ? (
+        'Maybe' === t ? (
+            mappendMaybe
+        ) : mappendTuple
+    ) : 'function' !== typeof a ? (
+        append
+    ) : a.toString() !== 'x => y => f(y)(x)' ? (
+        mappendFn
+    ) : mappendOrd)(a)(b))(a.type);
 
 // mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 const mappendFn = f =>
@@ -2305,8 +2300,7 @@ const matching = pat => {
         bln = 0 < lng,
         h = bln ? pat[0] : undefined;
     return x => i => src =>
-        bln && h == x &&
-        eq(pat)(
+        bln && h == x && eq(pat)(
             src.slice(i, lng + i)
         );
 };
@@ -3619,7 +3613,9 @@ const swap = ab =>
 const tail = xs =>
     // A new list consisting of all
     // items of xs except the first.
-    0 < xs.length ? xs.slice(1) : [];
+    'GeneratorFunction' !== xs.constructor.constructor.name ? (
+        0 < xs.length ? xs.slice(1) : []
+    ) : (take(1)(xs), xs);
 
 // tailMay :: [a] -> Maybe [a]
 const tailMay = xs =>
@@ -3691,14 +3687,12 @@ const takeCycle = n =>
     };
 
 // takeDirectory :: FilePath -> FilePath
-const takeDirectory = strPath =>
-    ('' !== strPath) ? (() => {
-        const xs = (strPath.split('/'))
-            .slice(0, -1);
-        return xs.length > 0 ? (
-            xs.join('/')
-        ) : '.';
-    })() : '.';
+const takeDirectory = fp =>
+    '' !== fp ? (
+        (xs => xs.length > 0 ? xs.join('/') : '.')(
+            fp.split('/').slice(0, -1)
+        )
+    ) : '.';
 
 // take N Members of an infinite cycle of xs, starting from index I
 // take N Members of an infinite cycle of xs, starting from index I
@@ -3721,24 +3715,21 @@ const takeDropCycle = n => i => xs => {
 };
 
 // takeExtension :: FilePath -> String
-const takeExtension = fp => {
-    const fs = fp.split('/');
-    return 0 < fs.length ? (() => {
-        const
-            xs = fs.slice(-1)[0].split('.'),
-            ext = 1 < xs.length ? (
-                xs.slice(-1)[0]
-            ) : '';
-        return '.' + ext;
-    })() : '';
-};
+const takeExtension = fp => (
+    fs => 0 < fs.length ? (
+        xs => '.' + 1 < xs.length ? (
+            xs.slice(-1)[0]
+        ) : ''
+    )(
+        fs.slice(-1)[0].split('.')
+    ) : ''
+)(fp.split('/'));
 
 // takeFileName :: FilePath -> FilePath
-const takeFileName = strPath =>
-    '' !== strPath ? (
-        ('/' !== strPath[strPath.length - 1]) ? (
-            strPath.split('/')
-            .slice(-1)[0]
+const takeFileName = fp =>
+    '' !== fp ? (
+        '/' !== fp[fp.length - 1] ? (
+            fp.split('/').slice(-1)[0]
         ) : ''
     ) : '';
 

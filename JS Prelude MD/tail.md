@@ -3,5 +3,7 @@
 const tail = xs =>
     // A new list consisting of all
     // items of xs except the first.
-    0 < xs.length ? xs.slice(1) : [];
+    'GeneratorFunction' !== xs.constructor.constructor.name ? (
+        0 < xs.length ? xs.slice(1) : []
+    ) : (take(1)(xs), xs);
 ```
