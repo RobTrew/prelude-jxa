@@ -78,6 +78,8 @@ function TupleN() {
     ) : args[0];
 };
 
+
+
 // abs :: Num -> Num
 const abs = 
 // Absolute value of a given number - without the sign.
@@ -1160,6 +1162,21 @@ const filePathTree = fpAnchor => trees => {
 const filter = f =>
     xs => xs.filter(f);
 
+// filter :: (a -> Bool) -> Gen [a] -> [a]
+const filterGen = p => xs => {
+    function* go() {
+        let x = xs.next();
+        while (!x.done) {
+            let v = x.value;
+            if (p(v)) {
+                yield v
+            }
+            x = xs.next();
+        }
+    }
+    return go(xs);
+}
+
 // filterTree (a -> Bool) -> Tree a -> [a]
 const filterTree = p =>
     // List of all root values in the tree
@@ -2158,14 +2175,10 @@ const mReturn = x => identity(x);
 
 // map :: (a -> b) -> [a] -> [b]
 const map = f =>
-    // The list obtained by applying f 
+    // The list obtained by applying f
     // to each element of xs.
     // (The image of xs under f).
-    xs => (
-        Array.isArray(xs) ? (
-            xs
-        ) : xs.split('')
-    ).map(f);
+    xs => Array.from(xs).map(f);
 
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f =>
