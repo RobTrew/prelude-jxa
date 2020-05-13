@@ -1132,6 +1132,18 @@ const fTable = s =>
         ).join('\n');
     };
 
+// fType :: (a -> f b) -> f
+const fType = g => {
+    const s = g.toString();
+    return s.includes('Left') ? (
+        Right
+    ) : s.includes('Nothing') ? (
+        Just
+    ) : s.includes('Node') ? (
+        flip(Node)([])
+    ) : x => [x]
+};
+
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = f =>
     // A function from x to a tuple of (f(x), g(x))
@@ -4006,17 +4018,17 @@ const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating
     // these actions from left to right.
-    xs => 0 < xs.length ? (() => {
-        const
-            vLast = f(xs.slice(-1)[0]),
-            t = vLast.type || 'List';
-        return xs.slice(0, -1).reduceRight(
-            (ys, x) => liftA2(cons)(f(x))(ys),
-            liftA2(cons)(vLast)(pureT(t)([]))
-        );
-    })() : [
-        []
-    ];
+    xs => (
+        zs => 0 < zs.length ? (() => {
+            const
+                vLast = f(zs.slice(-1)[0]),
+                t = vLast.type || 'List';
+            return zs.slice(0, -1).reduceRight(
+                (ys, z) => liftA2(cons)(f(z))(ys),
+                liftA2(cons)(vLast)(pureT(t)([]))
+            );
+        })() : fType(f)([])
+    )(list(xs));
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 const traverseMay = f => mb =>
@@ -4494,23 +4506,25 @@ const words = s => s.split(/\s+/);
 const zip = xs =>
     // Use of `take` and `length` here allows for zipping with non-finite
     // lists - i.e. generators like cycle, repeat, iterate.
-    ys => ((xs_, ys_) => {
+    ys => (([xs_, ys_]) => {
         const
-            lng = Math.min(length(xs_), length(ys_)),
-            vs = take(lng)(ys_);
-        return take(lng)(xs_).map(
+            n = Math.min(...[xs_, ys_].map(length)),
+            vs = take(n)(ys_);
+        return take(n)(xs_).map(
             (x, i) => Tuple(x)(vs[i])
         );
-    })(list(xs), list(ys));
+    })([xs, ys].map(list));
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
-const zip3 = xs => ys => zs =>
-    xs.slice(0, Math.min(length(xs), length(ys), length(zs)))
+const zip3 = xs =>
+    ys => zs => list(xs)
+    .slice(0, Math.min(...[xs, ys, zs].map(length)))
     .map((x, i) => TupleN(x, ys[i], zs[i]));
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
-const zip4 = ws => xs => ys => zs =>
-    ws.slice(0, minimum([ws, xs, ys, zs].map(length)))
+const zip4 = ws =>
+    xs => ys => zs => list(ws)
+    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))
     .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 
 // zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
@@ -4538,9 +4552,9 @@ const zipGen = ga => gb => {
 // zipList :: [a] -> [b] -> [(a, b)]
 const zipList = xs => ys => {
     const
-        lng = Math.min(length(xs), length(ys)),
-        vs = take(lng)(ys);
-    return take(lng)(xs)
+        n = Math.min(length(xs), length(ys)),
+        vs = take(n)(list(ys));
+    return take(n)(list(xs))
         .map((x, i) => Tuple(x)(vs[i]));
 };
 
