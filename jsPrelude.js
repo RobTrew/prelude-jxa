@@ -1987,14 +1987,19 @@ const kleisliCompose = f =>
     g => x => bind(f(x))(g);
 
 // last :: [a] -> a
-const last = xs =>
+const last = xs => (
     // The last item of a list.
-    0 < xs.length ? xs.slice(-1)[0] : undefined;
+    ys => 0 < ys.length ? (
+        ys.slice(-1)[0]
+    ) : undefined
+)(list(xs));
 
 // lastMay :: [a] -> Maybe a
-const lastMay = xs => 0 < xs.length ? (
-    Just(xs.slice(-1)[0])
-) : Nothing();
+const lastMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys.slice(-1)[0])
+    ) : Nothing()
+)(list(xs));
 
 // lcm :: Int -> Int -> Int
 const lcm = x =>
@@ -2135,6 +2140,8 @@ const lines = s =>
 
 // list :: StringOrArrayLike b => b -> [a]
 const list = xs =>
+    // xs itself, if it is an Array, 
+    // or an Array derived from xs.
     Array.isArray(xs) ? (
         xs
     ) : Array.from(xs);
@@ -2218,7 +2225,7 @@ const mapAccumL = f =>
     // it applies a function to each element of a list, passing an
     // accumulating parameter from left to right, and returning a
     // final value of this accumulator together with the new list.
-    acc => xs => xs.reduce((a, x) => {
+    acc => xs => list(xs).reduce((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
@@ -2242,7 +2249,7 @@ const mapAccumR = f =>
     // A tuple of an accumulation and a list derived by a
     // combined map and fold,
     // with accumulation from right to left.
-    acc => xs => xs.reduceRight((a, x) => {
+    acc => xs => list(xs).reduceRight((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])(
             [pair[1]].concat(a[1])
@@ -2264,7 +2271,7 @@ const mapKeys = f =>
 const mapMaybe = mf =>
     // A filtered map, retaining only the contents
     // of Just values. (Nothing values discarded).
-    xs => xs.reduce(
+    xs => list(xs).reduce(
         (a, x) => maybe(a)(
             j => a.concat(j)
         )(mf(x)),
@@ -2369,44 +2376,52 @@ const maxBound = x => {
 };
 
 // maximum :: Ord a => [a] -> a
-const maximum = xs =>
+const maximum = xs => (
     // The largest value in a non-empty list.
-    0 < xs.length ? (
-        xs.slice(1).reduce(
-            (a, x) => x > a ? (
-                x
-            ) : a, xs[0]
+    ys => 0 < ys.length ? (
+        ys.slice(1).reduce(
+            (a, y) => y > a ? (
+                y
+            ) : a, ys[0]
         )
-    ) : undefined;
+    ) : undefined
+)(list(xs));
 
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
 const maximumBy = f =>
-    xs => 0 < xs.length ? (
-        xs.slice(1).reduce(
-            (a, x) => 0 < f(x)(a) ? (
-                x
-            ) : a,
-            xs[0]
-        )
-    ) : undefined;
+    xs => (
+        ys => 0 < ys.length ? (
+            ys.slice(1).reduce(
+                (a, y) => 0 < f(y)(a) ? (
+                    y
+                ) : a,
+                ys[0]
+            )
+        ) : undefined
+    )(list(xs));
 
 //Ordering: (LT|EQ|GT):
 //  GT: 1 (or other positive n)
 //	EQ: 0
 //  LT: -1 (or other negative n) 
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
-const maximumByMay = f => xs =>
-    xs.length > 0 ? (
-        Just(xs.slice(1)
-            .reduce((a, x) => 0 < f(x, a) ? x : a, xs[0]))
-    ) : Nothing();
+const maximumByMay = f =>
+    xs => (
+        ys => ys.length > 0 ? (
+            Just(ys.slice(1)
+                .reduce((a, y) => 0 < f(a)(y) ? (
+                    a
+                ) : y, ys[0]))
+        ) : Nothing()
+    )(list(xs));
 
 // maximumMay :: Ord a => [a] -> Maybe a
-const maximumMay = xs =>
-    0 < xs.length ? (
-        Just(xs.slice(1)
-            .reduce((a, x) => (x > a ? x : a), xs[0]))
-    ) : Nothing();
+const maximumMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys.slice(1)
+            .reduce((a, y) => (y > a ? y : a), ys[0]))
+    ) : Nothing()
+)(list(xs));
 
 // maybe :: b -> (a -> b) -> Maybe a -> b
 const maybe = v =>
@@ -2425,8 +2440,9 @@ const mconcatOrd = cmps =>
     ) : compare;
 
 // mean :: [Num] -> Num
-const mean = xs =>
-  xs.reduce((a, x) => a + x, 0) / xs.length;
+const mean = xs => (
+    ys => ys.reduce((a, y) => a + y, 0) / ys.length
+)(list(xs));
 
 // measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
 const measuredTree = tree => {
@@ -2496,11 +2512,13 @@ const minBound = x => {
 };
 
 // minimum :: Ord a => [a] -> a
-const minimum = xs =>
-    0 < xs.length ? (
-        xs.slice(1)
-        .reduce((a, x) => x < a ? x : a, xs[0])
-    ) : undefined;
+const minimum = xs => (
+    // The least value of xs.
+    ys => 0 < ys.length ? (
+        ys.slice(1)
+        .reduce((a, y) => y < a ? y : a, ys[0])
+    ) : undefined
+)(list(xs));
 
 //Ordering: (LT|EQ|GT):
 //  GT: 1 (or other positive n)
@@ -2641,7 +2659,7 @@ const parentIndexedTree = tree => {
 
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
 const partition = p => xs =>
-    xs.reduce(
+    list(xs).reduce(
         (a, x) =>
         p(x) ? (
             Tuple(a[0].concat(x))(a[1])
@@ -2743,7 +2761,7 @@ const print = x => {
 
 // product :: [Num] -> Num
 const product = xs =>
-    xs.reduce((a, x) => a * x, 1);
+    list(xs).reduce((a, x) => a * x, 1);
 
 // properFracRatio :: Ratio -> (Int, Ratio)
 const properFracRatio = nd => {

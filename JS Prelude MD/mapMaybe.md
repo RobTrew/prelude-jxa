@@ -3,7 +3,7 @@
 const mapMaybe = mf =>
     // A filtered map, retaining only the contents
     // of Just values. (Nothing values discarded).
-    xs => xs.reduce(
+    xs => list(xs).reduce(
         (a, x) => maybe(a)(
             j => a.concat(j)
         )(mf(x)),

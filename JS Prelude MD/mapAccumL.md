@@ -5,7 +5,7 @@ const mapAccumL = f =>
     // it applies a function to each element of a list, passing an
     // accumulating parameter from left to right, and returning a
     // final value of this accumulator together with the new list.
-    acc => xs => xs.reduce((a, x) => {
+    acc => xs => list(xs).reduce((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
