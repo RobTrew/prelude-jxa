@@ -371,7 +371,6 @@ const bulleted = strTab =>
     ).join('\n');
 
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
-// cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
     ys => (
         bs => list(xs).flatMap(
@@ -2547,24 +2546,25 @@ const minimum = xs => (
 //  LT: -1 (or other negative n)
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = f => xs =>
-    xs.reduce((a, x) => undefined === a ? x : (
+    list(xs).reduce((a, x) => undefined === a ? x : (
         0 > f(x)(a) ? x : a
     ), undefined);
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const minimumByMay = f =>
-    xs => xs.reduce((a, x) =>
+    xs => list(xs).reduce((a, x) =>
         a.Nothing ? Just(x) : (
             f(x)(a.Just) < 0 ? Just(x) : a
         ), Nothing());
 
 // minimumMay :: [a] -> Maybe a
-const minimumMay = xs =>
-    0 < xs.length ? (
-        Just(xs.slice(1)
-            .reduce((a, x) => x < a ? x : a, xs[0])
+const minimumMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys.slice(1)
+            .reduce((a, y) => y < a ? y : a, ys[0])
         )
-    ) : Nothing();
+    ) : Nothing()
+)(list(xs));
 
 // mod :: Int -> Int -> Int
 const mod = n => d => n % d;
@@ -2611,7 +2611,7 @@ const nubBy = fEq => {
             )
         )
     })() : [];
-    return go;
+    return compose(go, list);
 };
 
 // odd :: Int -> Bool

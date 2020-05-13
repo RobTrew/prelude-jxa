@@ -9,6 +9,6 @@ const nubBy = fEq => {
             )
         )
     })() : [];
-    return go;
+    return compose(go, list);
 };
 ```

@@ -1,6 +1,5 @@
 ```js
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
-// cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
     ys => (
         bs => list(xs).flatMap(
