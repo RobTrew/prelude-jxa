@@ -1,12 +1,12 @@
 ```js
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
-    const args = Array.from(arguments);
-    return 1 < args.length ? map(
-        (x, i) => TupleN(...map(y => y[i], args)),
+    const args = Array.from(arguments).map(list);
+    return 1 < args.length ? (
         take(
-            Math.min(...map(length, args)),
-            args[0]
+            Math.min(...args.map(length))
+        )(args[0]).map(
+            (x, i) => TupleN(...args.map(y => y[i]))
         )
     ) : args;
 }

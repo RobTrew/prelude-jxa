@@ -2023,11 +2023,11 @@ const lefts = xs =>
 
 // length :: [a] -> Int
 const length = xs =>
-    // Returns Infinity over objects without finite 
-    // length. This enables zip and zipWith to choose 
-    // the shorter argument when one is non-finite, 
+    // Returns Infinity over objects without finite
+    // length. This enables zip and zipWith to choose
+    // the shorter argument when one is non-finite,
     // like cycle, repeat etc
-    (Array.isArray(xs) || 'string' === typeof xs) ? (
+    'GeneratorFunction' !== xs.constructor.constructor.name ? (
         xs.length
     ) : Infinity;
 
@@ -4492,16 +4492,16 @@ const words = s => s.split(/\s+/);
 
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs =>
-    // Use of `take` and `length` here allows for zipping with non-finite 
+    // Use of `take` and `length` here allows for zipping with non-finite
     // lists - i.e. generators like cycle, repeat, iterate.
-    ys => {
+    ys => ((xs_, ys_) => {
         const
-            lng = Math.min(length(xs), length(ys)),
-            vs = take(lng)(ys);
-        return take(lng)(xs).map(
+            lng = Math.min(length(xs_), length(ys_)),
+            vs = take(lng)(ys_);
+        return take(lng)(xs_).map(
             (x, i) => Tuple(x)(vs[i])
         );
-    };
+    })(list(xs), list(ys));
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs => ys => zs =>
@@ -4546,12 +4546,12 @@ const zipList = xs => ys => {
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
-    const args = Array.from(arguments);
-    return 1 < args.length ? map(
-        (x, i) => TupleN(...map(y => y[i], args)),
+    const args = Array.from(arguments).map(list);
+    return 1 < args.length ? (
         take(
-            Math.min(...map(length, args)),
-            args[0]
+            Math.min(...args.map(length))
+        )(args[0]).map(
+            (x, i) => TupleN(...args.map(y => y[i]))
         )
     ) : args;
 }
@@ -4559,30 +4559,34 @@ function zipN() {
 // Use of `take` and `length` here allows zipping with non-finite lists
 // i.e. generators like cycle, repeat, iterate.
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-const zipWith = f => xs => ys => {
-    const lng = Math.min(length(xs), length(ys));
-    return Infinity > lng ? (() => {
-       const
-            as = take(lng)(xs),
-            bs = take(lng)(ys);
-        return Array.from({
-            length: lng
-        }, (_, i) => f(as[i])(
-            bs[i]
-        ));
-    })() : zipWithGen(f)(xs)(ys);
-};
+const zipWith = f =>
+    xs => ys => {
+        const n = Math.min(length(xs), length(ys));
+        return Infinity > n ? (
+            (([as, bs]) => Array.from({
+                length: n
+            }, (_, i) => f(as[i])(
+                bs[i]
+            )))([xs, ys].map(
+                compose(take(n), list)
+            ))
+        ) : zipWithGen(f)(xs)(ys);
+    };
 
 // zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
-const zipWith3 = f => xs => ys => zs =>
-    Array.from({
-        length: Math.min(length(xs), length(ys), length(zs))
+const zipWith3 = f =>
+    xs => ys => zs => Array.from({
+        length: Math.min(
+            ...[xs, ys, zs].map(x => x.length)
+        )
     }, (_, i) => f(xs[i])(ys[i])(zs[i]));
 
 // zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
-const zipWith4 = f => ws => xs => ys => zs =>
-    Array.from({
-        length: minimum([ws, xs, ys, zs].map(length))
+const zipWith4 = f =>
+    ws => xs => ys => zs => Array.from({
+        length: Math.min(
+            ...[ws, xs, ys, zs].map(x => x.length)
+        )
     }, (_, i) => f(ws[i])(xs[i])(ys[i])(zs[i]));
 
 // zipWithGen :: (a -> b -> c) -> 
@@ -4609,40 +4613,33 @@ const zipWithList = f =>
     // A list constructed by zipping with a
     // custom function, rather than with the
     // default tuple constructor.
-    xs => ys => {
-        const
-            lng = Math.min(length(xs), length(ys)),
-            vs = take(lng)(ys);
-        return take(lng)(xs)
-        .map((x, i) => f(x)(vs[i]));
-    };
+    xs => ys => ((xs_, ys_) => {
+        const lng = Math.min(length(xs_), length(ys_));
+        return take(lng)(xs_).map(
+            (x, i) => f(x)(ys_[i])
+        );
+    })(list(xs), list(ys));
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 const zipWithM = f => 
     xs => ys =>
         sequenceA(
-            zipWith(f)(xs)(ys)
+            zipWith(f)(
+                list(xs)
+            )(list(ys))
         );
 
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 function zipWithN() {
     const
         args = Array.from(arguments),
-        rows = args.slice(1),
-        f = args[0];
-    return 1 < rows.length ? map(
-        i => f(...map(r => r[i], rows)),
-        enumFromTo(
-            0,
-            Math.min(...map(length, rows)) -1,
-        )
-    ) : rows;
-}
-
-// or
-
-// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
-// const zipWithN = (f, tplLists) =>
-//     map(x => f(...Array.from(x)),
-//         zipN(...Array.from(tplLists))
-//     );
+        rows = args.slice(1).map(list),
+        f = compose(uncurryN(args[0]), TupleN),
+        n = Math.min(...rows.map(x => x.length));
+    return 0 < n ? (
+        take(n))(rows[0]).map(
+        (x, i) => f(rows.flatMap(
+            x => x[i]
+        ))
+    ) : [];
+};

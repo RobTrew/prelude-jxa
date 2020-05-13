@@ -3,6 +3,8 @@
 const zipWithM = f => 
     xs => ys =>
         sequenceA(
-            zipWith(f)(xs)(ys)
+            zipWith(f)(
+                list(xs)
+            )(list(ys))
         );
 ```

@@ -3,22 +3,14 @@
 function zipWithN() {
     const
         args = Array.from(arguments),
-        rows = args.slice(1),
-        f = args[0];
-    return 1 < rows.length ? map(
-        i => f(...map(r => r[i], rows)),
-        enumFromTo(
-            0,
-            Math.min(...map(length, rows)) -1,
-        )
-    ) : rows;
-}
-
-// or
-
-// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
-// const zipWithN = (f, tplLists) =>
-//     map(x => f(...Array.from(x)),
-//         zipN(...Array.from(tplLists))
-//     );
+        rows = args.slice(1).map(list),
+        f = compose(uncurryN(args[0]), TupleN),
+        n = Math.min(...rows.map(x => x.length));
+    return 0 < n ? (
+        take(n))(rows[0]).map(
+        (x, i) => f(rows.flatMap(
+            x => x[i]
+        ))
+    ) : [];
+};
 ```

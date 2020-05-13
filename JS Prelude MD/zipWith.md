@@ -5,17 +5,17 @@
 
 ```js
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-const zipWith = f => xs => ys => {
-    const lng = Math.min(length(xs), length(ys));
-    return Infinity > lng ? (() => {
-       const
-            as = take(lng)(xs),
-            bs = take(lng)(ys);
-        return Array.from({
-            length: lng
-        }, (_, i) => f(as[i])(
-            bs[i]
-        ));
-    })() : zipWithGen(f)(xs)(ys);
-};
+const zipWith = f =>
+    xs => ys => {
+        const n = Math.min(length(xs), length(ys));
+        return Infinity > n ? (
+            (([as, bs]) => Array.from({
+                length: n
+            }, (_, i) => f(as[i])(
+                bs[i]
+            )))([xs, ys].map(
+                compose(take(n), list)
+            ))
+        ) : zipWithGen(f)(xs)(ys);
+    };
 ```
