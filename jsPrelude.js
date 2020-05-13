@@ -493,21 +493,17 @@ const composeR = f =>
 
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
-const concat = xs =>
-    0 < xs.length ? (
-        xs.every(x => 'string' === typeof x) ? (
+const concat = xs => (
+    ys => 0 < ys.length ? (
+        ys.every(x => 'string' === typeof x) ? (
             ''
         ) : []
-    ).concat(...xs) : xs;
+    ).concat(...ys) : ys
+)(list(xs));
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = f =>
-    xs => {
-        const ys = xs.flatMap(f);
-        return ys.some(x => 'String' !== x.constructor.name) ? (
-            ys
-        ) : ys.join('');
-    };
+    xs => list(xs).flatMap(f);
 
 // cons :: a -> [a] -> [a]
 const cons = x =>
@@ -1411,22 +1407,26 @@ const foldTree = f => {
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = f => 
-    a => xs => xs.reduce((x, y) => f(x)(y), a);
+    a => xs => list(xs).reduce((x, y) => f(x)(y), a);
 
 // foldl1 :: (a -> a -> a) -> [a] -> a
 const foldl1 = f =>
-    // Left to right reduction of the non-empty list xs, 
+    // Left to right reduction of the non-empty list xs,
     // using the binary operator f, with the head of xs
     // as the initial acccumulator value.
-    xs => 1 < xs.length ? xs.slice(1)
-    .reduce(uncurry(f), xs[0]) : xs[0];
+    xs => (
+        ys => 1 < ys.length ? ys.slice(1)
+        .reduce(uncurry(f), ys[0]) : ys[0]
+    )(list(xs));
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
-const foldl1May = f => xs =>
-    0 < xs.length ? (
-        Just(xs.slice(1)
-            .reduce(uncurry(f), xs[0]))
-    ) : Nothing();
+const foldl1May = f =>
+    xs => (
+        ys => 0 < ys.length ? (
+            Just(ys.slice(1)
+                .reduce(uncurry(f), ys[0]))
+        ) : Nothing()
+    )(list(xs));
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
 const foldlTree = f =>
@@ -1440,12 +1440,16 @@ const foldlTree = f =>
 const foldr = f =>
     // Note that that the Haskell signature of foldr differs from that of
     // foldl - the positions of accumulator and current value are reversed
-    a => xs => xs.reduceRight((a, x) => f(x)(a), a);
+    a => xs => list(xs).reduceRight((a, x) => f(x)(a), a);
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = f =>
-    xs => 0 < xs.length ? init(xs)
-    .reduceRight(uncurry(f), last(xs)) : [];
+    xs => (ys => 0 < ys.length ? (
+        init(ys).reduceRight(
+            uncurry(f),
+            last(ys)
+        )
+    ) : [])(list(xs));
 
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldr1May = f =>
@@ -2107,6 +2111,12 @@ const lines = s =>
         s.split(/[\r\n]/)
     ) : [];
 
+// list :: StringOrArrayLike b => b -> [a]
+const list = xs =>
+    Array.isArray(xs) ? (
+        xs
+    ) : Array.from(xs);
+
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
     // A singleton list derived from a Just value, 
@@ -2178,11 +2188,7 @@ const map = f =>
     // The list obtained by applying f
     // to each element of xs.
     // (The image of xs under f).
-    xs => (
-        Array.isArray(xs) ? (
-            xs
-        ) : Array.from(xs)
-    ).map(f);
+    xs => list(xs).map(f);
 
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f =>

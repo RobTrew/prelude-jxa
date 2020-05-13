@@ -1,5 +1,7 @@
 ```js
-// list :: TupleN(a) -> [a]
-const list = tpl =>
-    Array.from(tpl);
+// list :: StringOrArrayLike b => b -> [a]
+const list = xs =>
+    Array.isArray(xs) ? (
+        xs
+    ) : Array.from(xs);
 ```

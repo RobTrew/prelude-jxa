@@ -1,10 +1,11 @@
 ```js
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
-const concat = xs =>
-    0 < xs.length ? (
-        xs.every(x => 'string' === typeof x) ? (
+const concat = xs => (
+    ys => 0 < ys.length ? (
+        ys.every(x => 'string' === typeof x) ? (
             ''
         ) : []
-    ).concat(...xs) : xs;
+    ).concat(...ys) : ys
+)(list(xs));
 ```
