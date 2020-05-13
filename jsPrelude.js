@@ -162,7 +162,7 @@ const apList = fs =>
     // The sequential application of each of a list
     // of functions to each of a list of values.
     xs => fs.flatMap(
-        f => list(xs).map(f)
+        flip(map)(xs)
     );
 
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
@@ -2554,7 +2554,9 @@ const minimumBy = f => xs =>
 const minimumByMay = f =>
     xs => list(xs).reduce((a, x) =>
         a.Nothing ? Just(x) : (
-            f(x)(a.Just) < 0 ? Just(x) : a
+            f(x)(a.Just) < 0 ? (
+                Just(x)
+            ) : a
         ), Nothing());
 
 // minimumMay :: [a] -> Maybe a

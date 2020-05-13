@@ -3,6 +3,8 @@
 const minimumByMay = f =>
     xs => list(xs).reduce((a, x) =>
         a.Nothing ? Just(x) : (
-            f(x)(a.Just) < 0 ? Just(x) : a
+            f(x)(a.Just) < 0 ? (
+                Just(x)
+            ) : a
         ), Nothing());
 ```
