@@ -1,7 +1,8 @@
 ```js
 // headMay :: [a] -> Maybe a
-const headMay = xs =>
-    0 < xs.length ? (
-        Just(xs[0]) 
-    ) : Nothing();
+const headMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys[0])
+    ) : Nothing()
+)(list(xs));
 ```

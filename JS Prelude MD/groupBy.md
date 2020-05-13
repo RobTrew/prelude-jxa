@@ -2,9 +2,9 @@
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = fEq =>
     // Typical usage: groupBy(on(eq)(f), xs)
-    xs => 0 < xs.length ? (() => {
+    xs => (ys => 0 < ys.length ? (() => {
         const
-            tpl = xs.slice(1).reduce(
+            tpl = ys.slice(1).reduce(
                 (gw, x) => {
                     const
                         gps = gw[0],
@@ -13,8 +13,8 @@ const groupBy = fEq =>
                         Tuple(gps)(wkg.concat([x]))
                     ) : Tuple(gps.concat([wkg]))([x]);
                 },
-                Tuple([])([xs[0]])
+                Tuple([])([ys[0]])
             );
         return tpl[0].concat([tpl[1]])
-    })() : [];
+    })() : [])(list(xs));
 ```

@@ -7,8 +7,7 @@
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
 const inits = xs => [
-        []
-    ]
-    .concat(('string' === typeof xs ? xs.split('') : xs)
-        .map((_, i, lst) => lst.slice(0, 1 + i)));
+    []
+].concat((list(xs))
+    .map((_, i, ys) => ys.slice(0, 1 + i)));
 ```

@@ -1,7 +1,12 @@
 ```js
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const intersectBy = eq => xs => ys => {
-    return (0 < xs.length && 0 < ys.length) ?
-    xs.filter(x => ys.some(eq(x))) : [];
-};
+const intersectBy = eq =>
+    // The intersection of the lists xs and ys
+    // in terms of the equality defined by eq.
+    xs => ys => {
+        const zs = list(ys);
+        return list(xs).filter(
+            x => zs.some(eq(x))
+        );
+    };
 ```

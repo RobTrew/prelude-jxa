@@ -1453,10 +1453,15 @@ const foldr1 = f =>
 
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldr1May = f =>
-    xs => 0 < xs.length ? (
-        Just(xs.slice(0, -1)
-            .reduceRight(uncurr(f), xs.slice(-1)[0]))
-    ) : Nothing();
+    // Nothing if xs is empty, or Just a right
+    // fold of f over the list using the last
+    // item of xs as the initial accumulator value.
+    xs => (
+        ys => 0 < ys.length ? (
+            Just(ys.slice(0, -1)
+                .reduceRight(uncurry(f), ys.slice(-1)[0]))
+        ) : Nothing()
+    )(list(xs));
 
 // foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 const foldrTree = f =>
@@ -1531,15 +1536,15 @@ const group = xs => {
                 [xs.slice(0, i)].concat(go(xs.slice(i)))
             ) : [xs];
         })() : [];
-    return go(xs);
+    return go(list(xs));
 };
 
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = fEq =>
     // Typical usage: groupBy(on(eq)(f), xs)
-    xs => 0 < xs.length ? (() => {
+    xs => (ys => 0 < ys.length ? (() => {
         const
-            tpl = xs.slice(1).reduce(
+            tpl = ys.slice(1).reduce(
                 (gw, x) => {
                     const
                         gps = gw[0],
@@ -1548,17 +1553,17 @@ const groupBy = fEq =>
                         Tuple(gps)(wkg.concat([x]))
                     ) : Tuple(gps.concat([wkg]))([x]);
                 },
-                Tuple([])([xs[0]])
+                Tuple([])([ys[0]])
             );
         return tpl[0].concat([tpl[1]])
-    })() : [];
+    })() : [])(list(xs));
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
-    compose(
+    xs => compose(
         groupBy(a => b => 0 == f(a)(b)),
         sortBy(f)
-    );
+    )(list(xs));
 
 // groupSortOn :: (a -> b) -> [a] -> [[a]]
 const groupSortOn = f =>
@@ -1576,16 +1581,18 @@ const gt = x => y =>
     ) : (x > y);
 
 // head :: [a] -> a
-const head = xs => 
-    xs.length ? (
-        xs[0]
-    ) : undefined;
+const head = xs => (
+    ys => ys.length ? (
+        ys[0]
+    ) : undefined
+)(list(xs));
 
 // headMay :: [a] -> Maybe a
-const headMay = xs =>
-    0 < xs.length ? (
-        Just(xs[0]) 
-    ) : Nothing();
+const headMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys[0])
+    ) : Nothing()
+)(list(xs));
 
 // identity :: a -> a
 const identity = x =>
@@ -1655,27 +1662,28 @@ const indexTree = tree =>
     ) : Just(tree);
 
 // init :: [a] -> [a]
-const init = xs =>
+const init = xs => (
     // All elements of a list except the last.
-    0 < xs.length ? (
-        xs.slice(0, -1)
-    ) : undefined;
+    ys => 0 < ys.length ? (
+        ys.slice(0, -1)
+    ) : undefined
+)(list(xs));
 
 // initMay :: [a] -> Maybe [a]
-const initMay = xs =>
-    0 < xs.length ? (
-        Just(xs.slice(0, -1))
-    ) : Nothing();
+const initMay = xs => (
+    0 < ys.length ? (
+        Just(ys.slice(0, -1))
+    ) : Nothing()
+)(list(xs));
 
 // inits([1, 2, 3]) -> [[], [1], [1, 2], [1, 2, 3]
 // inits('abc') -> ["", "a", "ab", "abc"]
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
 const inits = xs => [
-        []
-    ]
-    .concat(('string' === typeof xs ? xs.split('') : xs)
-        .map((_, i, lst) => lst.slice(0, 1 + i)));
+    []
+].concat((list(xs))
+    .map((_, i, ys) => ys.slice(0, 1 + i)));
 
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
@@ -1685,12 +1693,18 @@ const insert = x =>
     };
 
 // insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
-const insertBy = cmp => x => ys => {
-    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};
-    return ys.slice(0, i)
-        .concat(x)
-        .concat(ys.slice(i));
-};
+const insertBy = cmp =>
+    x => xs => {
+        const go = y => ys =>
+            0 < ys.length ? (
+                0 < cmp(y)(ys[0]) ? (
+                    cons(ys[0])(
+                        go(y)(ys.slice(1))
+                    )
+                ) : cons(y)(ys)
+            ) : [y];
+        return go(x)(list(xs));
+    };
 
 // insertDict :: String -> a -> Dict -> Dict
 const insertDict = k => v => dct =>
@@ -1719,21 +1733,28 @@ const intercalateS = s =>
     xs => xs.join(s);
 
 // intersect :: (Eq a) => [a] -> [a] -> [a]
-const intersect = xs => ys => {
-    const s = new Set(ys);
-    return xs.filter(x => s.has(x));
-};
+const intersect = xs =>
+    // The intersection of lists xs and ys.
+    ys => {
+        const s = new Set(list(ys));
+        return list(xs).filter(x => s.has(x));
+    };
 
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const intersectBy = eq => xs => ys => {
-    return (0 < xs.length && 0 < ys.length) ?
-    xs.filter(x => ys.some(eq(x))) : [];
-};
+const intersectBy = eq =>
+    // The intersection of the lists xs and ys
+    // in terms of the equality defined by eq.
+    xs => ys => {
+        const zs = list(ys);
+        return list(xs).filter(
+            x => zs.some(eq(x))
+        );
+    };
 
 // intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
 const intersectListsBy = eq => xs =>
     foldr1((a => x => intersectBy(eq)(a)(x)))(
-        xs
+        list(xs)
     );
 
 // intersection :: Ord a => Set a -> Set a -> Set a
@@ -1832,19 +1853,23 @@ const isSpace = c => /\s/.test(c);
 
 // isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
 // isSubsequenceOf :: String -> String -> Bool
-const isSubsequenceOf = xs => ys => {
-    const iss = (a, b) =>
-        a.length > 0 ? (
-            b.length > 0 ? (
-                iss((a[0] === b[0] ? a.slice(1) : a), b.slice(1))
-            ) : false
-        ) : true;
-    return iss.apply(
-        null, 'string' === typeof xs ? [
-            xs.split(''), ys.split('')
-        ] : [xs, ys]
-    );
-};
+const isSubsequenceOf = xs =>
+    // True if xs is a sub-sequence of ys.
+    ys => {
+        const go = a => b =>
+            0 < a.length ? (
+                0 < b.length ? (
+                    go(
+                        a[0] === b[0] ? (
+                            a.slice(1)
+                        ) : a
+                    )(b.slice(1))
+                ) : false
+            ) : true;
+        return go(list(xs))(
+            list(ys)
+        );
+    };
 
 // isSubsetOf :: Ord a => Set a -> Set a -> Bool
 const isSubsetOf = a => b => {
@@ -1856,15 +1881,12 @@ const isSubsetOf = a => b => {
 
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
-const isSuffixOf = ns => hs => {
-    const go = delta =>
-        eq(ns)(dropLength(delta)(hs));
-    return 'string' !== typeof hs ? (
-        bindMay(dropLengthMaybe(ns)(hs))(
-          go
-        )
-    ) : hs.endsWith(ns);
-};
+const isSuffixOf = ns => hs =>
+    'string' !== typeof hs ? (
+        (xs, ys) => bindMay(
+            dropLengthMaybe(xs)(ys)
+        )(d => eq(xs)(dropLength(d)(ys)))
+    )(list(ns), list(hs)) : hs.endsWith(ns);
 
 // isUpper :: Char -> Bool
 const isUpper = c =>
@@ -3420,10 +3442,10 @@ const splitArrow = f =>
     );
 
 // splitAt :: Int -> [a] -> ([a], [a])
-const splitAt = n => xs => 
-  Tuple(xs.slice(0, n))(
-      xs.slice(n)
-  );
+const splitAt = n =>
+    xs => Tuple(xs.slice(0, n))(
+        xs.slice(n)
+    );
 
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 // splitBy :: (String -> String -> Bool) -> String -> [String]

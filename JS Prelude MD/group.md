@@ -12,6 +12,6 @@ const group = xs => {
                 [xs.slice(0, i)].concat(go(xs.slice(i)))
             ) : [xs];
         })() : [];
-    return go(xs);
+    return go(list(xs));
 };
 ```
