@@ -501,12 +501,7 @@ const concat = xs => (
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = f =>
-    xs => {
-        const v = list(xs).flatMap(f);
-        return 'string' !== typeof xs ? (
-            v
-        ) : v.join('');
-    };
+    xs => list(xs).flatMap(f);
 
 // cons :: a -> [a] -> [a]
 const cons = x =>
@@ -2226,12 +2221,7 @@ const map = f =>
     // The list obtained by applying f
     // to each element of xs.
     // (The image of xs under f).
-    xs => {
-        const v = list(xs).map(f);
-        return 'string' !== typeof xs ? (
-            v
-        ) : v.join('');
-    };
+    xs => list(xs).map(f);
 
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f =>

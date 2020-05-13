@@ -4,10 +4,5 @@ const map = f =>
     // The list obtained by applying f
     // to each element of xs.
     // (The image of xs under f).
-    xs => {
-        const v = list(xs).map(f);
-        return 'string' !== typeof xs ? (
-            v
-        ) : v.join('');
-    };
+    xs => list(xs).map(f);
 ```
