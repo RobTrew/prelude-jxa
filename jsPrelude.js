@@ -370,11 +370,16 @@ const bulleted = strTab =>
         x => '' !== x ? strTab + '- ' + x : x
     ).join('\n');
 
-// cartesianProduct :: [a] -> [b] -> [(a, b)]
+// cartesianProduct :: [a] -> [b] -> [[a, b]]
+// cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
-    ys => list(xs).flatMap(
-        x => list(ys).flatMap(Tuple(x))
-    );
+    ys => (
+        bs => list(xs).flatMap(
+            x => bs.flatMap(b => [
+                [x].concat(b)
+            ])
+        )
+    )(list(ys));
 
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
 const caseOf = pvs =>
@@ -1427,7 +1432,7 @@ const foldl1 = f =>
     xs => (
         ys => 1 < ys.length ? ys.slice(1)
         .reduce(uncurry(f), ys[0]) : ys[0]
-    )(list(xs));
+    )(list(xs));    
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
@@ -2693,29 +2698,19 @@ const partitionEithers = xs =>
     );
 
 // permutations :: [a] -> [[a]]
-const permutations = xs =>
-    xs.reduceRight(
-        (a, x) => a.flatMap(
-            xs => Array.from({
-                length: 1 + xs.length
+const permutations = xs => (
+    ys => ys.reduceRight(
+        (a, y) => a.flatMap(
+            ys => Array.from({
+                length: 1 + ys.length
             }, (_, i) => i)
-            .map(n => xs.slice(0, n)
-                .concat(x)
-                .concat(xs.slice(n))
+            .map(n => ys.slice(0, n)
+                .concat(y)
+                .concat(ys.slice(n))
             )
-        ),
-        [[]]
-    );
-
-// permutationsWithRepetition :: Int -> [a] -> [[a]]
-const permutationsWithRepetition = n => xs =>
-    0 < xs.length ? (
-        map(flatten)(
-            foldl1(x => cartesianProduct(xs, x))(
-                replicate(n)(xs)
-            )
-        )
-    ) : [];
+        ),[[]]
+    )
+)(list(xs));
 
 // pi :: Float
 const pi = Math.PI;
@@ -2847,11 +2842,11 @@ const quickSortBy = cmp => xs =>
     xs.length > 1 ? (() => {
         const
             h = xs[0],
-            lessMore = partition(x => 1 !== cmp(x, h))(
+            lessMore = partition(x => 1 !== cmp(x)(h))(
                 xs.slice(1)
             );
         return [].concat.apply(
-            [], [quickSortBy(cmp, lessMore[0]), h, quickSortBy(cmp, lessMore[1])]
+            [], [quickSortBy(cmp)(lessMore[0]), h, quickSortBy(cmp)(lessMore[1])]
         );
     })() : xs;
 

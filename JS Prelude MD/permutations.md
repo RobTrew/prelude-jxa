@@ -1,16 +1,16 @@
 ```js
 // permutations :: [a] -> [[a]]
-const permutations = xs =>
-    xs.reduceRight(
-        (a, x) => a.flatMap(
-            xs => Array.from({
-                length: 1 + xs.length
+const permutations = xs => (
+    ys => ys.reduceRight(
+        (a, y) => a.flatMap(
+            ys => Array.from({
+                length: 1 + ys.length
             }, (_, i) => i)
-            .map(n => xs.slice(0, n)
-                .concat(x)
-                .concat(xs.slice(n))
+            .map(n => ys.slice(0, n)
+                .concat(y)
+                .concat(ys.slice(n))
             )
-        ),
-        [[]]
-    );
+        ),[[]]
+    )
+)(list(xs));
 ```
