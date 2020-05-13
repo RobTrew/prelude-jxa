@@ -3,7 +3,8 @@
 const apList = fs =>
     // The sequential application of each of a list
     // of functions to each of a list of values.
-    xs => fs.flatMap(
-        flip(map)(xs)
+    compose(
+        flip(concatMap)(fs),
+        flip(map)
     );
 ```
