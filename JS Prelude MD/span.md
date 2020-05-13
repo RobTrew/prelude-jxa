@@ -12,6 +12,8 @@
 ```js
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p => xs => {
+    // Longest prefix of xs consisting of elements which
+    // all satisfy p, tupled with the remainder of xs.
     const iLast = xs.length - 1;
     return splitAt(
         until(

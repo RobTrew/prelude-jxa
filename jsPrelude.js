@@ -3053,7 +3053,7 @@ const replicateM = n => xs => {
     const go = x => 0 >= x ? [
         []
     ] : liftA2List(cons)(
-        xs
+        list(xs)
     )(go(x - 1));
     return go(n);
 };
@@ -3081,6 +3081,7 @@ const root = tree => tree.root;
 
 // rotate :: Int -> [a] -> [a]
 const rotate = n => xs => {
+    // Rightward rotation of xs by n positions.
     const lng = xs.length;
     return Infinity > lng ? (
         take(lng)(
@@ -3122,7 +3123,7 @@ const safeMay = p => f => x =>
 
 // scanl :: (b -> a -> b) -> b -> [a] -> [b]
 const scanl = f => startValue => xs =>
-    xs.reduce((a, x) => {
+    list(xs).reduce((a, x) => {
         const v = f(a[0])(x);
         return Tuple(v)(a[1].concat(v));
     }, Tuple(startValue)([startValue]))[1];
@@ -3138,7 +3139,7 @@ const scanl1 = f => xs =>
 
 // scanr :: (b -> a -> b) -> b -> [a] -> [b]
 const scanr = f => startValue => xs =>
-    xs.reduceRight((a, x) => {
+    list(xs).reduceRight((a, x) => {
         const v = f(x)(a[0]);
         return Tuple(v)([v].concat(a[1]));
     }, Tuple(startValue)([startValue]))[1];
@@ -3427,15 +3428,15 @@ const snoc = xs =>
     // The mirror image of cons
     // A new copy of the given list, 
     // with an atom appended at the end.
-    x => xs.concat(x);
+    x => list(xs).concat(x);
 
 // sort :: Ord a => [a] -> [a]
-const sort = xs => xs.slice()
+const sort = xs => list(xs).slice()
     .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
-    xs => xs.slice()
+    xs => list(xs).slice()
     .sort((a, b) => f(a)(b));
 
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
@@ -3443,7 +3444,7 @@ const sortOn = f =>
     // Equivalent to sortBy(comparing(f)), but with f(x)
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
-    xs => xs.map(
+    xs => list(xs).map(
         fanArrow(f)(identity)
     )
     .sort(uncurry(comparing(fst)))
@@ -3459,6 +3460,8 @@ const sortOn = f =>
 // span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p => xs => {
+    // Longest prefix of xs consisting of elements which
+    // all satisfy p, tupled with the remainder of xs.
     const iLast = xs.length - 1;
     return splitAt(
         until(
@@ -3520,10 +3523,6 @@ const splitFileName = strPath =>
         })() : Tuple(strPath)('')
     ) : Tuple('./')('');
 
-// splitOn("\r\n", "a\r\nb\r\nd\r\ne") //--> ["a", "b", "d", "e"]
-// splitOn("aaa", "aaaXaaaXaaaXaaa") //--> ["", "X", "X", "X", ""]
-// splitOn("x", "x") //--> ["", ""]
-// splitOn([3, 1], [1,2,3,1,2,3,1,2,3]) //--> [[1,2],[2],[2,3]]
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
 const splitOn = pat => src =>
@@ -3610,11 +3609,11 @@ const subTreeAtPath = tree => path => {
     return go([tree], path);
 };
 
-// subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
-// subsequences('abc') -> ["","a","b","ab","c","ac","bc","abc"]
 // subsequences :: [a] -> [[a]]
 // subsequences :: String -> [String]
 const subsequences = xs => {
+    // subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+    // subsequences('abc') -> ["","a","b","ab","c","ac","bc","abc"]
     const
         // nonEmptySubsequences :: [a] -> [[a]]
         nonEmptySubsequences = xxs => {

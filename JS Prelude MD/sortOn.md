@@ -4,7 +4,7 @@ const sortOn = f =>
     // Equivalent to sortBy(comparing(f)), but with f(x)
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
-    xs => xs.map(
+    xs => list(xs).map(
         fanArrow(f)(identity)
     )
     .sort(uncurry(comparing(fst)))

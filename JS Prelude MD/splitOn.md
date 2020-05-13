@@ -1,11 +1,4 @@
 ```js
-// splitOn("\r\n", "a\r\nb\r\nd\r\ne") //--> ["a", "b", "d", "e"]
-// splitOn("aaa", "aaaXaaaXaaaXaaa") //--> ["", "X", "X", "X", ""]
-// splitOn("x", "x") //--> ["", ""]
-// splitOn([3, 1], [1,2,3,1,2,3,1,2,3]) //--> [[1,2],[2],[2,3]]
-```
-
-```js
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
 const splitOn = pat => src =>
