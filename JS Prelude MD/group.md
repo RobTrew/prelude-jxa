@@ -12,6 +12,9 @@ const group = xs => {
                 [xs.slice(0, i)].concat(go(xs.slice(i)))
             ) : [xs];
         })() : [];
-    return go(list(xs));
+    const v = go(list(xs));
+    return 'string' === typeof xs ? (
+        v.map(x => x.join(''))
+    ) : v;
 };
 ```

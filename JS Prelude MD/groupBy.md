@@ -14,7 +14,10 @@ const groupBy = fEq =>
                     ) : Tuple(gps.concat([wkg]))([x]);
                 },
                 Tuple([])([ys[0]])
-            );
-        return tpl[0].concat([tpl[1]])
+            ),
+            v = tpl[0].concat([tpl[1]]);
+        return 'string' !== typeof xs ? (
+            v
+        ) : v.map(x => x.join(''))
     })() : [])(list(xs));
 ```

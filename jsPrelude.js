@@ -78,8 +78,6 @@ function TupleN() {
     ) : args[0];
 };
 
-
-
 // abs :: Num -> Num
 const abs = 
 // Absolute value of a given number - without the sign.
@@ -1536,7 +1534,10 @@ const group = xs => {
                 [xs.slice(0, i)].concat(go(xs.slice(i)))
             ) : [xs];
         })() : [];
-    return go(list(xs));
+    const v = go(list(xs));
+    return 'string' === typeof xs ? (
+        v.map(x => x.join(''))
+    ) : v;
 };
 
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
@@ -1554,8 +1555,11 @@ const groupBy = fEq =>
                     ) : Tuple(gps.concat([wkg]))([x]);
                 },
                 Tuple([])([ys[0]])
-            );
-        return tpl[0].concat([tpl[1]])
+            ),
+            v = tpl[0].concat([tpl[1]]);
+        return 'string' !== typeof xs ? (
+            v
+        ) : v.map(x => x.join(''))
     })() : [])(list(xs));
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
@@ -4312,8 +4316,8 @@ const uncurryN = f =>
 
 // | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
-const unfoldForest = f => x =>
-    xs.map(unfoldTree(f));
+const unfoldForest = f => 
+    x => xs => xs.map(unfoldTree(f));
 
 // | Build a tree from a seed value
 // unfoldTree :: (b -> (a, [b])) -> b -> Tree a
@@ -4381,8 +4385,8 @@ const unfoldr = f =>
 // union :: [a] -> [a] -> [a]
 const union = xs => ys =>
   unionBy(a => b => a === b)(
-      xs
-  )(ys);
+      list(xs)
+  )(list(ys));
 
 // unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const unionBy = fnEq => xs => ys => {
