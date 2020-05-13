@@ -93,7 +93,7 @@ const add = a =>
 // all :: (a -> Bool) -> [a] -> Bool
 const all = p =>
     // True if p(x) holds for every x in xs.
-    xs => xs.every(p);
+    xs => list(xs).every(p);
 
 // allTree :: (a -> Bool) -> Tree a -> Bool
 const allTree = p =>
@@ -112,7 +112,7 @@ const and = xs =>
 const any = p =>
     // True if p(x) holds for at least
     // one item in xs.
-    xs => xs.some(p);
+    xs => list(xs).some(p);
 
 // anyTree :: (a -> Bool) -> Tree a -> Bool
 const anyTree = p =>
@@ -164,7 +164,7 @@ const apList = fs =>
     // The sequential application of each of a list
     // of functions to each of a list of values.
     xs => fs.flatMap(
-        f => xs.map(f)
+        f => list(xs).map(f)
     );
 
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
@@ -300,7 +300,7 @@ const bindLR = m =>
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 const bindList = xs =>
-    mf => xs.flatMap(mf);
+    mf => list(xs).flatMap(mf);
 
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 const bindMay = mb =>
@@ -374,8 +374,8 @@ const bulleted = strTab =>
 
 // cartesianProduct :: [a] -> [b] -> [(a, b)]
 const cartesianProduct = xs =>
-    ys => xs.flatMap(
-        x => ys.flatMap(Tuple(x))
+    ys => list(xs).flatMap(
+        x => list(ys).flatMap(Tuple(x))
     );
 
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
@@ -1156,7 +1156,7 @@ const filePathTree = fpAnchor => trees => {
 
 // filter :: (a -> Bool) -> [a] -> [a]
 const filter = f =>
-    xs => xs.filter(f);
+    xs => list(xs).filter(f);
 
 // filter :: (a -> Bool) -> Gen [a] -> [a]
 const filterGen = p => xs => {
