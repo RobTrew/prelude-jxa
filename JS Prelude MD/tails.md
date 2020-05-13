@@ -1,13 +1,9 @@
 ```js
 // tails :: [a] -> [[a]]
-const tails = xs => {
-    const
-        es = ('string' === typeof xs) ? (
-            xs.split('')
-        ) : xs;
-    return es.map((_, i) => es.slice(i))
-        .concat([
-            []
-        ]);
-};
+const tails = xs => (
+    es => es.map((_, i) => es.slice(i))
+    .concat([
+        []
+    ])
+)(list(xs));
 ```

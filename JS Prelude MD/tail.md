@@ -4,6 +4,8 @@ const tail = xs =>
     // A new list consisting of all
     // items of xs except the first.
     'GeneratorFunction' !== xs.constructor.constructor.name ? (
-        0 < xs.length ? xs.slice(1) : []
+        (ys => 0 < ys.length ? ys.slice(1) : [])(
+            list(xs)
+        )
     ) : (take(1)(xs), xs);
 ```

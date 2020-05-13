@@ -3693,26 +3693,25 @@ const tail = xs =>
     // A new list consisting of all
     // items of xs except the first.
     'GeneratorFunction' !== xs.constructor.constructor.name ? (
-        0 < xs.length ? xs.slice(1) : []
+        (ys => 0 < ys.length ? ys.slice(1) : [])(
+            list(xs)
+        )
     ) : (take(1)(xs), xs);
 
 // tailMay :: [a] -> Maybe [a]
-const tailMay = xs =>
-    0 < xs.length ? (
-        Just(xs.slice(1))
-    ) : Nothing();
+const tailMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys.slice(1))
+    ) : Nothing()
+)(list(xs));
 
 // tails :: [a] -> [[a]]
-const tails = xs => {
-    const
-        es = ('string' === typeof xs) ? (
-            xs.split('')
-        ) : xs;
-    return es.map((_, i) => es.slice(i))
-        .concat([
-            []
-        ]);
-};
+const tails = xs => (
+    es => es.map((_, i) => es.slice(i))
+    .concat([
+        []
+    ])
+)(list(xs));
 
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
@@ -3748,7 +3747,6 @@ const takeBaseName = strPath =>
     })() : ''
   ) : '';
 
-// First n members of an infinite cycle of xs
 // takeCycle :: Int -> [a] -> [a]
 const takeCycle = n =>
     // First n elements of a non-finite cycle of xs.
@@ -3773,25 +3771,12 @@ const takeDirectory = fp =>
         )
     ) : '.';
 
-// take N Members of an infinite cycle of xs, starting from index I
-// take N Members of an infinite cycle of xs, starting from index I
 // takeDropCycle :: Int -> [a] -> [a]
-const takeDropCycle = n => i => xs => {
-    const
-        lng = xs.length,
-        m = n + i;
-    return drop(i)(
-        take(m)(
-            lng >= m ? (
-                xs
-            ) : concat(
-                replicate(Math.ceil(m / lng)(
-                    xs
-                ))
-            )
-        )
-    )
-};
+const takeDropCycle = n =>
+    // N Members of an infinite cycle of xs, starting from index I
+    i => xs => drop(i)(
+        take(n + i)(cycle(xs))
+    );
 
 // takeExtension :: FilePath -> String
 const takeExtension = fp => (
@@ -3895,7 +3880,7 @@ const thenIO = ma => mb => mb;
 
 // thenList (>>) :: [a] -> [b] -> [b]
 const thenList = xs => ys =>
-    xs.flatMap(_ => ys);
+    list(xs).flatMap(_ => list(ys));
 
 // thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
 const thenMay = mbx => mby =>
