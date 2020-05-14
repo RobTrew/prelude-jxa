@@ -7,7 +7,7 @@
   "Right": "// Right :: b -> Either a b\nconst Right = x => ({\n    type: 'Either',\n    Right: x\n});",
   "Tuple": "// Tuple (,) :: a -> b -> (a, b)\nconst Tuple = a =>\n    b => ({\n        type: 'Tuple',\n        '0': a,\n        '1': b,\n        length: 2\n    });",
   "Tuple3": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n  type: 'Tuple3',\n  '0': a,\n  '1': b,\n  '2': c,\n  length: 3\n});",
-  "TupleN": "// TupleN :: a -> b ...  -> (a, b ... )\nfunction TupleN() {\n    const\n        args = Array.from(arguments),\n        n = args.length;\n    return 1 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 'Tuple' + (2 < n ? n.toString() : ''),\n            length: n\n        })\n    ) : args[0];\n};",
+  "TupleN": "// TupleN :: a -> b ...  -> (a, b ... )\nfunction TupleN() {\n    const\n        args = Array.from(arguments),\n        n = args.length;\n    return 2 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 'Tuple' + n.toString(),\n            length: n\n        })\n    ) : args.reduce((f, x) => f(x), Tuple);\n};",
   "abs": "// abs :: Num -> Num\nconst abs = \n// Absolute value of a given number - without the sign.\n  Math.abs;",
   "add": "// add (+) :: Num a => a -> a -> a\nconst add = a =>\n    // Curried addition.\n    b => a + b;",
   "all": "// all :: (a -> Bool) -> [a] -> Bool\nconst all = p =>\n    // True if p(x) holds for every x in xs.\n    xs => list(xs).every(p);",
