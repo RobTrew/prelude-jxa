@@ -35,6 +35,9 @@ argvLength :: Function -> Int
 assocs :: Map k a -> [(k, a)]
 base64decode :: String -> String
 base64encode :: String -> String
+bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)
+bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d
+bimapN :: (a -> b) -> (c -> d) -> TupleN -> TupleN
 bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
 bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
 bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
@@ -47,7 +50,7 @@ breakOn :: String -> String -> (String, String)
 breakOnAll :: String -> String -> [(String, String)]
 breakOnMay :: String -> String -> Maybe (String, String)
 bulleted :: String -> String -> String
-cartesianProduct :: [a] -> [b] -> [(a, b)]
+cartesianProduct :: [a] -> [b] -> [[a, b]]
 caseOf :: [(a -> Bool, b)] -> b -> a -> b
 catMaybes :: [Maybe a] -> [a]
 ceiling :: Num -> Int
@@ -121,12 +124,14 @@ evalJSMay :: String -> Maybe a
 even :: Int -> Bool
 exp :: Float -> Float
 fTable :: String -> (a -> String) -> (b -> String) -> (a -> b) -> [a] -> String
+fType :: (a -> f b) -> f
 fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 filePath :: String -> FilePath
 filePathTree :: filePath -> [Tree String] -> Tree FilePath
 fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
+filter :: (a -> Bool) -> Gen [a] -> [a]
 filter :: (a -> Bool) -> [a] -> [a]
 filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 find :: (a -> Bool) -> [a] -> Maybe a
@@ -134,7 +139,7 @@ findIndex :: (a -> Bool) -> [a] -> Maybe Int
 findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 findIndices :: (a -> Bool) -> [a] -> [Int]
 findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
-firstArrow :: (a -> b) -> ((a, c) -> (b, c))
+first :: (a -> b) -> ((a, c) -> (b, c))
 flatten :: NestedList a -> [a]
 flattenTree :: Tree a -> [a]
 flip :: (a -> b -> c) -> b -> a -> c
@@ -241,6 +246,7 @@ liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 lines :: String -> [String]
+list :: StringOrArrayLike b => b -> [a]
 listDirectory :: FilePath -> [FilePath]
 listFromMaybe :: Maybe a -> [a]
 listFromTree :: Tree a -> [a]
@@ -304,7 +310,6 @@ parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, p
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
 permutations :: [a] -> [[a]]
-permutationsWithRepetition :: Int -> [a] -> [[a]]
 pi :: Float
 plus :: Num -> Num -> Num
 postorder :: Tree a -> [a]
@@ -362,7 +367,7 @@ scanl :: (b -> a -> b) -> b -> [a] -> [b]
 scanl1 :: (a -> a -> a) -> [a] -> [a]
 scanr :: (b -> a -> b) -> b -> [a] -> [b]
 scanr1 :: (a -> a -> a) -> [a] -> [a]
-secondArrow :: (a -> b) -> ((c, a) -> (c, b))
+second :: (a -> b) -> ((c, a) -> (c, b))
 sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 setCurrentDirectory :: String -> IO ()
 setFromList :: Ord a => [a] -> Set a
