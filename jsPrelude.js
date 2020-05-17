@@ -2317,7 +2317,7 @@ const mapAccumR = f =>
     // A tuple of an accumulation and a list derived by a
     // combined map and fold,
     // with accumulation from right to left.
-    acc => xs => list(xs).reduceRight((a, x) => {
+    acc => xs => [...xs].reduceRight((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])(
             [pair[1]].concat(a[1])
@@ -4661,15 +4661,15 @@ const zipWithList = f =>
         return take(lng)(xs_).map(
             (x, i) => f(x)(ys_[i])
         );
-    })(list(xs), list(ys));
+    })([...xs], [...ys]);
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 const zipWithM = f => 
     xs => ys =>
         sequenceA(
             zipWith(f)(
-                list(xs)
-            )(list(ys))
+                [...xs]
+            )([...ys])
         );
 
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]

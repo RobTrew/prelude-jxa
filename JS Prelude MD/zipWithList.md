@@ -9,5 +9,5 @@ const zipWithList = f =>
         return take(lng)(xs_).map(
             (x, i) => f(x)(ys_[i])
         );
-    })(list(xs), list(ys));
+    })([...xs], [...ys]);
 ```

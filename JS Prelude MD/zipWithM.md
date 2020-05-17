@@ -4,7 +4,7 @@ const zipWithM = f =>
     xs => ys =>
         sequenceA(
             zipWith(f)(
-                list(xs)
-            )(list(ys))
+                [...xs]
+            )([...ys])
         );
 ```
