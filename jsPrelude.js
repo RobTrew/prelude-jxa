@@ -1212,7 +1212,7 @@ const filePathTree = fpAnchor => trees => {
 
 // filter :: (a -> Bool) -> [a] -> [a]
 const filter = f =>
-    xs => list(xs).filter(f);
+    xs => [...xs].filter(f);
 
 // filter :: (a -> Bool) -> Gen [a] -> [a]
 const filterGen = p => xs => {
@@ -1463,7 +1463,10 @@ const foldTree = f => {
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = f => 
-    a => xs => list(xs).reduce((x, y) => f(x)(y), a);
+    a => xs => [...xs].reduce(
+        (x, y) => f(x)(y),
+        a
+    );
 
 // foldl1 :: (a -> a -> a) -> [a] -> a
 const foldl1 = f =>
@@ -1496,7 +1499,10 @@ const foldlTree = f =>
 const foldr = f =>
     // Note that that the Haskell signature of foldr differs from that of
     // foldl - the positions of accumulator and current value are reversed
-    a => xs => list(xs).reduceRight((a, x) => f(x)(a), a);
+    a => xs => [...xs].reduceRight(
+        (a, x) => f(x)(a),
+        a
+    );
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = f =>
@@ -2279,7 +2285,7 @@ const map = f =>
     // The list obtained by applying f
     // to each element of xs.
     // (The image of xs under f).
-    xs => list(xs).map(f);
+    xs => [...xs].map(f);
 
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f =>
@@ -2287,7 +2293,7 @@ const mapAccumL = f =>
     // it applies a function to each element of a list, passing an
     // accumulating parameter from left to right, and returning a
     // final value of this accumulator together with the new list.
-    acc => xs => list(xs).reduce((a, x) => {
+    acc => xs => [...xs].reduce((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
