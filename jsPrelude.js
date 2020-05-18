@@ -1264,6 +1264,9 @@ const filteredTree = p =>
 
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = p =>
+    // Just the first element in xs which 
+    // matches the predicate p, or
+    // Nothing if no match is found.
     xs => xs.constructor.constructor.name !== (
         'GeneratorFunction'
     ) ? (() => {
@@ -1273,7 +1276,14 @@ const find = p =>
         return -1 !== i ? (
             Just(ys[i])
         ) : Nothing();
-    })() : (() => {
+    })() : findGen(p)(xs);
+
+// find :: (a -> Bool) -> Gen [a] -> Maybe a
+const findGen = p =>
+    // Just the first match for the predicate p
+    // in the generator stream xs, or Nothing
+    // if no match is found.
+    xs => {
         const
             mb = until(tpl => {
                 const nxt = tpl[0];
@@ -1286,7 +1296,7 @@ const find = p =>
         return mb.done ? (
             Nothing()
         ) : Just(mb.value);
-    })();
+    };
 
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
 const findIndex = p =>
