@@ -1264,10 +1264,14 @@ const filteredTree = p =>
 
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = p =>
-    xs => Array.isArray(xs) ? (() => {
-        const i = xs.findIndex(p);
+    xs => xs.constructor.constructor.name !== (
+        'GeneratorFunction'
+    ) ? (() => {
+        const
+            ys = list(xs),
+            i = ys.findIndex(p);
         return -1 !== i ? (
-            Just(xs[i])
+            Just(ys[i])
         ) : Nothing();
     })() : (() => {
         const
