@@ -4,5 +4,5 @@
 const append = xs =>
     // A list or string composed by
     // the concatenation of two others.
-    ys => xs.concat(ys);
+    ys => [...xs].concat([...ys]);
 ```

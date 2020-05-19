@@ -194,7 +194,7 @@ const apTuple = tpl =>
 const append = xs =>
     // A list or string composed by
     // the concatenation of two others.
-    ys => xs.concat(ys);
+    ys => [...xs].concat([...ys]);
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
@@ -1095,9 +1095,11 @@ const enumFromThenToChar = x1 =>
 
 // enumFromTo :: Int -> Int -> [Int]
 const enumFromTo = m =>
-    n => Array.from({
-        length: 1 + n - m
-    }, (_, i) => m + i);
+    n => !isNaN(m) ? (
+        Array.from({
+            length: 1 + n - m
+        }, (_, i) => m + i)
+    ) : enumFromTo_(m)(n);
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = m => n => {
@@ -1111,7 +1113,7 @@ const enumFromToChar = m => n => {
 const enumFromTo_ = m => n => {
     const
         [x, y] = [m, n].map(fromEnum),
-        b = x + ('number' !== typeof m ? 0 : m - x);
+        b = x + (isNaN(m) ? 0 : m - x);
     return Array.from({
         length: 1 + (y - x)
     }, (_, i) => toEnum(m)(b + i));
