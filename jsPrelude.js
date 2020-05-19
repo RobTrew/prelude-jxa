@@ -91,7 +91,7 @@ const add = a =>
 // all :: (a -> Bool) -> [a] -> Bool
 const all = p =>
     // True if p(x) holds for every x in xs.
-    xs => list(xs).every(p);
+    xs => [...xs].every(p);
 
 // allTree :: (a -> Bool) -> Tree a -> Bool
 const allTree = p =>
@@ -104,13 +104,13 @@ const allTree = p =>
 // and :: [Bool] -> Bool
 const and = xs =>
     // True unless any value in xs is false.
-    xs.every(Boolean);
+    [...xs].every(Boolean);
 
 // any :: (a -> Bool) -> [a] -> Bool
 const any = p =>
     // True if p(x) holds for at least
     // one item in xs.
-    xs => list(xs).some(p);
+    xs => [...xs].some(p);
 
 // anyTree :: (a -> Bool) -> Tree a -> Bool
 const anyTree = p =>
@@ -192,7 +192,7 @@ const apTuple = tpl =>
 // append (++) :: [a] -> [a] -> [a]
 // append (++) :: String -> String -> String
 const append = xs =>
-    // A list or string composed by
+    // A list or string obtained by
     // the concatenation of two others.
     ys => [...xs].concat([...ys]);
 
@@ -340,7 +340,7 @@ const bindLR = m =>
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 const bindList = xs =>
-    mf => list(xs).flatMap(mf);
+    mf => [...xs].flatMap(mf);
 
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 const bindMay = mb =>
@@ -364,12 +364,14 @@ const bool = f =>
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     xs => {
-        const iLast = xs.length - 1;
+        const 
+            iLast = xs.length - 1,
+            ys = [...xs];
         return splitAt(
-            until(i => iLast < i || p(xs[i]))(
+            until(i => iLast < i || p(ys[i]))(
                 i => 1 + i
             )(0)
-        )(xs);
+        )(ys);
     };
 
 // breakOn :: String -> String -> (String, String)
@@ -415,12 +417,12 @@ const bulleted = strTab =>
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
     ys => (
-        bs => list(xs).flatMap(
+        bs => [...xs].flatMap(
             x => bs.flatMap(b => [
                 [x].concat(b)
             ])
         )
-    )(list(ys));
+    )([...ys]);
 
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
 const caseOf = pvs =>
@@ -463,16 +465,17 @@ const chars = s =>
     s.split('');
 
 // chop :: ([a] -> (b, [a])) -> [a] -> [b]
-const chop = f => {
+const chop = f =>
     // A segmentation of xs by tail recursion with a
     // function which returns a (prefix, residue) tuple.
-    const go = xs =>
-        0 < xs.length ? (() => {
-            const [b, bs] = Array.from(f(xs));
-            return cons(b)(go(bs))
-        })() : [];
-    return go;
-};
+    xs => {
+        const go = xs =>
+            0 < xs.length ? (() => {
+                const [b, bs] = Array.from(f(xs));
+                return cons(b)(go(bs))
+            })() : [];
+        return go([...xs])
+    };
 
 // chr :: Int -> Char
 const chr = x =>

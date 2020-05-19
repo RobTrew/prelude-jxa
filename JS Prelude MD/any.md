@@ -3,5 +3,5 @@
 const any = p =>
     // True if p(x) holds for at least
     // one item in xs.
-    xs => list(xs).some(p);
+    xs => [...xs].some(p);
 ```
