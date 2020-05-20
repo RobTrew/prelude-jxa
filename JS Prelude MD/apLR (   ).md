@@ -3,5 +3,5 @@
 const apLR = flr =>
   // Either a Left value, or the application of a
   // function in Either to a value in Either.
-  liftA2LR(identity)(flr)
+  liftA2LR(x => x)(flr)
 ```

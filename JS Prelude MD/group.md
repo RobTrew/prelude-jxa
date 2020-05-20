@@ -1,5 +1,5 @@
 ```js
-// group :: [a] -> [[a]]
+// group :: Eq a => [a] -> [[a]]
 const group = xs => {
     // A list of lists, each containing only equal elements,
     // such that the concatenation of these lists is xs.

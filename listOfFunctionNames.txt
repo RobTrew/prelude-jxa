@@ -131,10 +131,11 @@ filePathTree :: filePath -> [Tree String] -> Tree FilePath
 fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
-filter :: (a -> Bool) -> Gen [a] -> [a]
 filter :: (a -> Bool) -> [a] -> [a]
+filterGen :: (a -> Bool) -> Gen [a] -> [a]
 filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 find :: (a -> Bool) -> [a] -> Maybe a
+findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 findIndex :: (a -> Bool) -> [a] -> Maybe Int
 findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 findIndices :: (a -> Bool) -> [a] -> [Int]
@@ -174,10 +175,10 @@ getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
 getFinderDirectory :: IO FilePath
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath
-group :: [a] -> [[a]]
+group :: Eq a => [a] -> [[a]]
 groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
-groupSortOn :: (a -> b) -> [a] -> [[a]]
+groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 gt :: Ord a => a -> a -> Bool
 head :: [a] -> a
 headMay :: [a] -> Maybe a

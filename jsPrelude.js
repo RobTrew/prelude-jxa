@@ -155,7 +155,7 @@ const apFn = f =>
 const apLR = flr =>
   // Either a Left value, or the application of a
   // function in Either to a value in Either.
-  liftA2LR(identity)(flr)
+  liftA2LR(x => x)(flr)
 
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
 const apList = fs =>
@@ -163,13 +163,7 @@ const apList = fs =>
     // of functions to each of a list of values.
     // apList([x => 2 * x, x => 20 + x])([1, 2, 3])
     //     -> [2, 4, 6, 21, 22, 23]
-    compose(
-        flip(concatMap)(fs),
-        flip(map)
-    );
-    
-    
-    
+    xs => fs.flatMap(f => xs.map(x => f(x)))
 
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 const apMay = mf =>
@@ -1219,7 +1213,7 @@ const filePathTree = fpAnchor => trees => {
 const filter = f =>
     xs => [...xs].filter(f);
 
-// filter :: (a -> Bool) -> Gen [a] -> [a]
+// filterGen :: (a -> Bool) -> Gen [a] -> [a]
 const filterGen = p => xs => {
     function* go() {
         let x = xs.next();
@@ -1283,7 +1277,7 @@ const find = p =>
         ) : Nothing();
     })() : findGen(p)(xs);
 
-// find :: (a -> Bool) -> Gen [a] -> Maybe a
+// findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 const findGen = p =>
     // Just the first match for the predicate p
     // in the generator stream xs, or Nothing
@@ -1604,7 +1598,7 @@ const genericIndexMay = xs =>
         Just(xs[i])
     ) : Nothing();
 
-// group :: [a] -> [[a]]
+// group :: Eq a => [a] -> [[a]]
 const group = xs => {
     // A list of lists, each containing only equal elements,
     // such that the concatenation of these lists is xs.
@@ -1652,7 +1646,7 @@ const groupSortBy = f =>
         sortBy(f)
     )(list(xs));
 
-// groupSortOn :: (a -> b) -> [a] -> [[a]]
+// groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 const groupSortOn = f =>
     compose(
         map(map(snd)),

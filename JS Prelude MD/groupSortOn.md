@@ -1,5 +1,5 @@
 ```js
-// groupSortOn :: (a -> b) -> [a] -> [[a]]
+// groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 const groupSortOn = f =>
     compose(
         map(map(snd)),

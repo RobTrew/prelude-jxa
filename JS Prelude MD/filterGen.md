@@ -1,5 +1,5 @@
 ```js
-// filter :: (a -> Bool) -> Gen [a] -> [a]
+// filterGen :: (a -> Bool) -> Gen [a] -> [a]
 const filterGen = p => xs => {
     function* go() {
         let x = xs.next();

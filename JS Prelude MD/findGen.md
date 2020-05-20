@@ -1,5 +1,5 @@
 ```js
-// find :: (a -> Bool) -> Gen [a] -> Maybe a
+// findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 const findGen = p =>
     // Just the first match for the predicate p
     // in the generator stream xs, or Nothing
