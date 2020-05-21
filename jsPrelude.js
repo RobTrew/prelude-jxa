@@ -338,6 +338,8 @@ const bindList = xs =>
 
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 const bindMay = mb =>
+    // Nothing if mb is Nothing, or the application of the
+    // (a -> Maybe b) function mf to the contents of mb.
     mf => mb.Nothing ? (
         mb
     ) : mf(mb.Just);
@@ -473,6 +475,7 @@ const chop = f =>
 
 // chr :: Int -> Char
 const chr = x =>
+    // The character at unix code-point x.
     String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
@@ -512,8 +515,10 @@ const comparing = f =>
 
 // compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 const compose = (...fs) =>
+    // A function defined by the right-to-left
+    // composition of all the functions in fs.
     fs.reduce(
-        (f, g) => x => f(g(x)), 
+        (f, g) => x => f(g(x)),
         x => x
     );
 
@@ -548,6 +553,8 @@ const concatMap = f =>
 
 // cons :: a -> [a] -> [a]
 const cons = x =>
+    // A list constructed from the item x,
+    // followed by the existing list xs.
     xs => Array.isArray(xs) ? (
         [x].concat(xs)
     ) : 'GeneratorFunction' !== xs
@@ -4542,7 +4549,9 @@ const variance = xs => {
 };
 
 // words :: String -> [String]
-const words = s => s.split(/\s+/);
+const words = s =>
+    // List of space-delimited sub-strings.
+    s.split(/\s+/);
 
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs =>

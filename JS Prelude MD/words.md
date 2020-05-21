@@ -1,4 +1,6 @@
 ```js
 // words :: String -> [String]
-const words = s => s.split(/\s+/);
+const words = s =>
+    // List of space-delimited sub-strings.
+    s.split(/\s+/);
 ```
