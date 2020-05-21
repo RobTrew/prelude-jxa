@@ -1572,7 +1572,6 @@ const fromLeft = def =>
 const fromMaybe = def =>
     mb => mb.Nothing ? def : mb.Just;
 
-
 // fromRight :: b -> Either a b -> b
 const fromRight = def =>
     // The contents of a 'Right' value or otherwise a default value.
@@ -1583,7 +1582,6 @@ const fst = tpl =>
     // First member of a pair.
     tpl[0];
 
-// Abbreviation for quick testing
 // ft :: (Int, Int) -> [Int]
 const ft = m =>
     n => Array.from({
@@ -1849,10 +1847,10 @@ const intersectListsBy = eq => xs =>
 const intersection = s => s1 =>
     new Set([...s].filter(x => s1.has(x)));
 
-// intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
 // intersperse :: a -> [a] -> [a]
 // intersperse :: Char -> String -> String
 const intersperse = sep => xs => {
+    // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
     const bln = 'string' === typeof xs;
     return xs.length > 1 ? (
         (bln ? concat : x => x)(
@@ -1930,14 +1928,20 @@ const isRight = lr =>
   ('undefined' !== typeof lr) && 
   ('Either' === lr.type) && (undefined !== lr.Right);
 
-// The 'isSortedBy' function returns true iff the predicate returns true
-// for all adjacent pairs of elements in the list.
 // isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
-const isSortedBy = cmp => xs =>
-    xs.length < 2 || all(x => x < 1, zipWith(cmp, xs, tail(xs)));
+const isSortedBy = p =>
+    // True if all adjacent pairs of elements in
+    // the list return True under the predicate p.
+    xs => xs.length < 2 || all(x => x < 1)(
+        zipWith(p)(
+            xs
+        )(tail(xs))
+    );
 
 // isSpace :: Char -> Bool
-const isSpace = c => /\s/.test(c);
+const isSpace = c =>
+    // True if c is a white space character.
+    /\s/.test(c);
 
 // isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
 // isSubsequenceOf :: String -> String -> Bool
@@ -1978,6 +1982,7 @@ const isSuffixOf = ns => hs =>
 
 // isUpper :: Char -> Bool
 const isUpper = c =>
+    // True if c is an upper case character.
     /[A-Z]/.test(c);
 
 // iso8601Local :: Date -> String
@@ -1987,6 +1992,7 @@ const iso8601Local = dte =>
 
 // iterate :: (a -> a) -> a -> Gen [a]
 const iterate = f =>
+    // An infinite list of repeated applications of f to x.
     function* (x) {
         let v = x;
         while (true) {
@@ -2253,10 +2259,9 @@ const listFromTree = tree => {
 const listFromTuple = tpl =>
     Array.from(tpl);
 
-// The listToMaybe function returns Nothing on 
-// an empty list or Just the head of the list.
 // listToMaybe :: [a] -> Maybe a
 const listToMaybe = xs =>
+    // Nothing if xs is empty, or Just the head of xs.
     0 < xs.length ? (
         Just(xs[0])
     ) : Nothing();
@@ -2266,6 +2271,8 @@ const log = Math.log;
 
 // lookup :: Eq a => a -> Container -> Maybe b
 const lookup = k =>
+    // Just of value of the key k in m,
+    // or Nothing if m does not contain k.
     m => (Array.isArray(m) ? (
         lookupTuples
     ) : lookupDict)(k)(m);
@@ -2291,14 +2298,14 @@ const lookupTuples = k =>
 const lt = a => 
     b => a < b;
 
-// Not required in JS, which has first functions by default.
-// Included only for comparison with AS, which has to derive
-// first class functions by lifting 'handlers' into 'scripts'
-// as anonymous |λ|() functions.
-
-// In JS, mReturn is just an alternate name for identity.
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
-const mReturn = x => identity(x);
+const mReturn = x =>
+    // Not required in JS, which has first functions by default.
+    // Included only for comparison with AS, which has to derive
+    // first class functions by lifting 'handlers' into 'scripts'
+    // as anonymous |λ|() functions.
+    // In JS, mReturn is just an alias of identity.
+    identity(x);
 
 // map :: (a -> b) -> [a] -> [b]
 const map = f =>
@@ -2430,11 +2437,11 @@ const mappendTuple = t => t2 =>
         t1[1]
     ));
 
-// Returns a sequence-matching function for findIndices etc
-// findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
-// -> [1, 4]
 // matching :: [a] -> (a -> Int -> [a] -> Bool)
 const matching = pat => {
+    // A sequence-matching function for findIndices etc
+    // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
+    // -> [1, 4]
     const
         lng = pat.length,
         bln = 0 < lng,
@@ -2447,6 +2454,8 @@ const matching = pat => {
 
 // max :: Ord a => a -> a -> a
 const max = a =>
+    // b if its greater than a,
+    // otherwise a.
     b => gt(b)(a) ? (
         b
     ) : a;
@@ -2488,10 +2497,6 @@ const maximumBy = f =>
         ) : undefined
     )(list(xs));
 
-//Ordering: (LT|EQ|GT):
-//  GT: 1 (or other positive n)
-//	EQ: 0
-//  LT: -1 (or other negative n) 
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const maximumByMay = f =>
     xs => (
@@ -2608,10 +2613,6 @@ const minimum = xs => (
     ) : undefined
 )(list(xs));
 
-//Ordering: (LT|EQ|GT):
-//  GT: 1 (or other positive n)
-//	EQ: 0
-//  LT: -1 (or other negative n)
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = f => xs =>
     list(xs).reduce((a, x) => undefined === a ? x : (
@@ -2640,13 +2641,16 @@ const minimumMay = xs => (
 const mod = n => d => n % d;
 
 // mul (*) :: Num a => a -> a -> a
-const mul = a => b => a * b;
+const mul = a =>
+    b => a * b;
 
 // ne :: a -> a -> Bool
-const ne = a => b => a !== b;
+const ne = a =>
+    b => a !== b;
 
 // negate :: Num -> Num
-const negate = n => -n;
+const negate = n =>
+    -n;
 
 // nest :: Tree a -> [a]
 const nest = tree => {
@@ -2661,11 +2665,12 @@ const nest = tree => {
 };
 
 // not :: Bool -> Bool
-const not = b => !b;
+const not = b =>
+    !b;
 
 // notElem :: Eq a => a -> [a] -> Bool
-const notElem = x => xs =>
-    !xs.includes(x);
+const notElem = x => 
+    xs => !xs.includes(x);
 
 // nub :: [a] -> [a]
 const nub = xs => 
@@ -2685,7 +2690,8 @@ const nubBy = fEq => {
 };
 
 // odd :: Int -> Bool
-const odd = n => !even(n);
+const odd = n =>
+    !even(n);
 
 // on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 const on = f =>
@@ -2702,7 +2708,8 @@ const or = xs =>
     xs.some(Boolean);
 
 // ord :: Char -> Int
-const ord = c => c.codePointAt(0);
+const ord = c =>
+    c.codePointAt(0);
 
 // ordering :: () -> Ordering
 const
@@ -2749,8 +2756,10 @@ const parentIndexedTree = tree => {
 };
 
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
-const partition = p => xs =>
-    list(xs).reduce(
+const partition = p =>
+    // A tuple of two lists - those elements in 
+    // xs which match p, and those which don't.
+    xs => list(xs).reduce(
         (a, x) =>
         p(x) ? (
             Tuple(a[0].concat(x))(a[1])
@@ -2890,10 +2899,10 @@ const pureTree = x =>
 const pureTuple = x =>
     Tuple('')(x);
 
-// Included only for comparison with AppleScript
-// sort and sortBy are faster and more flexible
 // quickSort :: (Ord a) => [a] -> [a]
 const quickSort = xs =>
+    // Included only for comparison with AppleScript
+    // sort and sortBy are faster and more flexible
     xs.length > 1 ? (() => {
         const
             h = xs[0],
@@ -2905,11 +2914,11 @@ const quickSort = xs =>
         );
     })() : xs;
 
-// Included only for comparison with AppleScript
-// sort and sortBy are faster and more flexible
 // quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const quickSortBy = cmp => xs =>
-    xs.length > 1 ? (() => {
+const quickSortBy = cmp =>
+    // Included only for comparison with AppleScript
+    // sort and sortBy are faster and more flexible
+    xs => xs.length > 1 ? (() => {
         const
             h = xs[0],
             lessMore = partition(x => 1 !== cmp(x)(h))(
@@ -2941,17 +2950,17 @@ const radians = x =>
     (Math.PI / 180) * x;
 
 // raise :: Num -> Int -> Num
-const raise = n => e => Math.pow(n, e);
+const raise = n =>
+    e => Math.pow(n, e);
 
 // e.g. map(randomRInt(1, 10), ft(1, 20))
 // randomRInt :: Int -> Int -> IO () -> Int
-const randomRInt = low => high => () =>
-    low + Math.floor(
+const randomRInt = low => 
+    high => () => low + Math.floor(
         (Math.random() * ((high - low) + 1))
     );
 
 // The list of values in the subrange defined by a bounding pair.
-
 // range([0, 2]) -> [0,1,2]
 // range([[0,0], [2,2]]) 
 //  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
@@ -3112,16 +3121,17 @@ const replicate = n =>
         length: n
     }, () => x);
 
-// Instance for lists (arrays) only here
 // replicateM :: Int -> [a] -> [[a]]
-const replicateM = n => xs => {
-    const go = x => 0 >= x ? [
-        []
-    ] : liftA2List(cons)(
-        list(xs)
-    )(go(x - 1));
-    return go(n);
-};
+const replicateM = n =>
+    // Instance for lists (arrays) only here.
+    xs => {
+        const go = x => 0 >= x ? [
+            []
+        ] : liftA2List(cons)(
+            list(xs)
+        )(go(x - 1));
+        return go(n);
+    };
 
 // replicateString :: Int -> String -> String
 const replicateString = n => 
@@ -3193,18 +3203,18 @@ const scanl = f => startValue => xs =>
         return Tuple(v)(a[1].concat(v));
     }, Tuple(startValue)([startValue]))[1];
 
-// scanl1 is a variant of scanl that has no starting value argument
 // scanl1 :: (a -> a -> a) -> [a] -> [a]
-const scanl1 = f => xs =>
-    xs.length > 0 ? (
+const scanl1 = f =>
+    // scanl1 is a variant of scanl that has no starting value argument.
+    xs => xs.length > 0 ? (
         scanl(f)(
             xs[0]
         )(xs.slice(1))
     ) : [];
 
 // scanr :: (b -> a -> b) -> b -> [a] -> [b]
-const scanr = f => startValue => xs =>
-    list(xs).reduceRight((a, x) => {
+const scanr = f =>
+    startValue => xs => list(xs).reduceRight((a, x) => {
         const v = f(x)(a[0]);
         return Tuple(v)([v].concat(a[1]));
     }, Tuple(startValue)([startValue]))[1];
@@ -3460,15 +3470,20 @@ const showTuple = tpl =>
 // showUndefined :: () -> String
 const showUndefined = () => '(⊥)';
 
-// | Sign of a number.
-// The functions 'abs' and 'signum' should satisfy the law:
-//
-// > abs x * signum x == x
-//
-// For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)
-// or @1@ (positive).
 // signum :: Num -> Num
-const signum = n => 0 > n ? -1 : (0 < n ? 1 : 0);
+const signum = n =>
+    // | Sign of a number.
+    // The functions 'abs' and 'signum' should satisfy the law:
+    //
+    // > abs x * signum x == x
+    //
+    // For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)
+    // or @1@ (positive).
+    0 > n ? (
+        -1
+    ) : (
+        0 < n ? 1 : 0
+    );
 
 // Abbreviation of showJSON for quick testing.
 // Default indent size is two, which can be
@@ -3950,11 +3965,11 @@ const thenList = xs => ys =>
 const thenMay = mbx => mby =>
     mbx.Nothing ? mbx : mby;
 
-// The first argument is a sample of the type
-// allowing the function to make the right mapping
 // toEnum :: a -> Int -> a
-const toEnum = e => x =>
-    ({
+const toEnum = e =>
+    // The first argument is a sample of the type
+    // allowing the function to make the right mapping
+    x => ({
         'number': Number,
         'string': String.fromCodePoint,
         'boolean': Boolean,
@@ -3979,10 +3994,10 @@ const toSentence = s =>
         .toLowerCase()
     ) : s;
 
-// NB this does not model any regional or cultural conventions.
-// It simply simply capitalizes the first character of each word.
 // toTitle :: String -> String
 const toTitle = s =>
+    // NB this does not model any regional or cultural conventions.
+    // It simply simply capitalizes the first character of each word.
     regexMatches(/(\w)(\w*)(\b[\W]*|$)/g)(s)
     .map(ms => ms[1].toUpperCase() + ms[2].toLowerCase() + ms[3])
     .join('');
@@ -3991,11 +4006,11 @@ const toTitle = s =>
 const toUpper = s =>
     s.toLocaleUpperCase();
 
-// If some of the rows are shorter than the following rows, 
-// their elements are skipped:
-// > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]
 // transpose :: [[a]] -> [[a]]
 const transpose = xss => {
+    // If some of the rows are shorter than the following rows, 
+    // their elements are skipped:
+    // > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]
     const go = xss =>
         0 < xss.length ? (() => {
             const
@@ -4050,13 +4065,13 @@ const traverse = f => tx => {
     )(f)(tx)
 };
 
-// instance Traversable (Either a) where
-//    traverse _ (Left x) = pure (Left x)
-//    traverse f (Right y) = Right <$> f y
 // traverseLR :: Applicative f => 
 // (t -> f b) -> Either a t -> f (Either a b)
-const traverseLR = f => lr =>
-    undefined !== lr.Left ? (
+const traverseLR = f =>
+    // instance of Traversable (Either a) where
+    //    traverse _ (Left x) = pure (Left x)
+    //    traverse f (Right y) = Right <$> f y
+    lr => undefined !== lr.Left ? (
         [lr]
     ) : fmap(Right)(
         f(lr.Right)
@@ -4189,11 +4204,11 @@ const treeLeaves = tree => {
   ) : [tree];
 };
 
-// A list of all nodes in the tree which match 
-// a predicate p.
-// For the first match only, see findTree.
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 const treeMatches = p => {
+    // A list of all nodes in the tree which match 
+    // a predicate p.
+    // For the first match only, see findTree.
     const go = tree =>
         p(tree.root) ? (
             [tree]
@@ -4375,21 +4390,22 @@ const uncurryN = f =>
         ) : args[0]
     ));
 
-// | Build a forest from a list of seed values
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
-const unfoldForest = f => 
+const unfoldForest = f =>
+    // A forest built from a list of seed values.
     x => xs => xs.map(unfoldTree(f));
 
-// | Build a tree from a seed value
 // unfoldTree :: (b -> (a, [b])) -> b -> Tree a
-const unfoldTree = f => b => {
-    const tpl = f(b);
-    return Node(tpl[0])(
-        unfoldForest(f)(
-            tpl[1]
-        )
-    );
-};
+const unfoldTree = f =>
+    // A tree built from a seed value
+    b => {
+        const tpl = f(b);
+        return Node(tpl[0])(
+            unfoldForest(f)(
+                tpl[1]
+            )
+        );
+    };
 
 // unfoldl(x => 0 !== x ? Just([x - 1, x]) : Nothing(), 10);
 // --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -4425,7 +4441,6 @@ const unfoldl = f => v => {
 //
 // unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);
 // --> [10,9,8,7,6,5,4,3,2,1]
-
 // (x => Maybe [value, remainder] -> initial value -> values
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
 const unfoldr = f =>
@@ -4476,7 +4491,7 @@ const unlines = xs =>
     // of a list of strings with the newline character.
     xs.join('\n');
 
-// If the list is empty returns Nothing, otherwise returns 
+// Nothing if the list is empty, otherwise
 // Just the init and the last.
 // unsnoc :: [a] -> Maybe ([a], a)
 const unsnoc = xs =>
@@ -4621,10 +4636,10 @@ function zipN() {
     ) : args;
 }
 
-// Use of `take` and `length` here allows zipping with non-finite lists
-// i.e. generators like cycle, repeat, iterate.
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith = f =>
+    // Use of `take` and `length` here allows zipping with non-finite lists
+    // i.e. generators like cycle, repeat, iterate.
     xs => ys => {
         const n = Math.min(length(xs), length(ys));
         return Infinity > n ? (

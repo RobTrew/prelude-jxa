@@ -274,10 +274,10 @@ const setCurrentDirectory = strPath =>
         .stringByStandardizingPath
     );
 
-// File name template to temporary path
-// Random digit sequence inserted between template base and extension
 // tempFilePath :: String -> IO FilePath
 const tempFilePath = template =>
+  // File name template to temporary path
+  // Random digit sequence inserted between template base and extension
   ObjC.unwrap($.NSTemporaryDirectory()) +
     takeBaseName(template) + Math.random()
     .toString()
@@ -313,9 +313,9 @@ const writeFileLR = strPath => strText => {
         ) : Left(ObjC.unwrap(e.localizedDescription));
 };
 
-// File name template -> string data -> IO temporary path
 // writeTempFile :: String -> String -> IO FilePath
 const writeTempFile = template =>
+    // File name template -> string data -> IO temporary path
     txt => {
         const
             strPath = ObjC.unwrap($.NSTemporaryDirectory()) +
