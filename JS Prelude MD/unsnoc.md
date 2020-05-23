@@ -1,5 +1,5 @@
 ```js
-// If the list is empty returns Nothing, otherwise returns 
+// Nothing if the list is empty, otherwise
 // Just the init and the last.
 ```
 

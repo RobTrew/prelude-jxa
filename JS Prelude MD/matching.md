@@ -1,12 +1,9 @@
 ```js
-// Returns a sequence-matching function for findIndices etc
-// findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
-// -> [1, 4]
-```
-
-```js
 // matching :: [a] -> (a -> Int -> [a] -> Bool)
 const matching = pat => {
+    // A sequence-matching function for findIndices etc
+    // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
+    // -> [1, 4]
     const
         lng = pat.length,
         bln = 0 < lng,

@@ -967,6 +967,9 @@ const dropWhileGen = p =>
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = fl =>
+    // Application of the function fl to the
+    // contents of any Left value in e, or
+    // the application of fr to its Right value.
     fr => e => 'Either' === e.type ? (
         undefined !== e.Left ? (
             fl(e.Left)
@@ -974,8 +977,8 @@ const either = fl =>
     ) : undefined;
 
 // elem :: Eq a => a -> [a] -> Bool
-// elem :: Char -> String -> Bool
 const elem = x =>
+    // True if xs contains an instance of x.
     xs => {
         const t = xs.constructor.name;
         return 'Array' !== t ? (
@@ -1011,9 +1014,12 @@ const elemIndex = x =>
 
 // elemIndices :: Eq a => a -> [a] -> [Int]
 const elemIndices = x =>
-    xs => xs.flatMap((y, i) => y === x ? (
-        [i]
-    ) : []);
+    // The indices at which x occurs in xs.
+    xs => [...xs].flatMap(
+        (y, i) => y === x ? (
+            [i]
+        ) : []
+    );
 
 // elems :: Map k a -> [a]
 // elems :: Set a -> [a]
@@ -1217,8 +1223,10 @@ const filePathTree = fpAnchor => trees => {
 };
 
 // filter :: (a -> Bool) -> [a] -> [a]
-const filter = f =>
-    xs => [...xs].filter(f);
+const filter = p =>
+    // The elements of xs which match
+    // the predicate p.
+    xs => [...xs].filter(p);
 
 // filterGen :: (a -> Bool) -> Gen [a] -> [a]
 const filterGen = p => xs => {
@@ -1324,12 +1332,10 @@ const findIndex = p =>
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 const findIndexR = p =>
     //  Just the index of the last element in
-    //  xs for which p(x) is true, or 
+    //  xs for which p(x) is true, or
     //  Nothing if there is no such element.
     xs => {
-        const i = reverse('string' !== typeof xs ? (
-            xs
-        ) : xs.split('')).findIndex(p);
+        const i = reverse([...xs]).findIndex(p);
         return -1 !== i ? (
             Just(xs.length - (1 + i))
         ) : Nothing();
@@ -1388,10 +1394,11 @@ const flattenTree = tree => {
 };
 
 // flip :: (a -> b -> c) -> b -> a -> c
-const flip = f =>
-    1 < f.length ? (
-        (a, b) => f(b, a)
-    ) : (x => y => f(y)(x));
+const flip = op =>
+    // The binary function op with its arguments reversed.
+    1 < op.length ? (
+        (a, b) => op(b, a)
+    ) : (x => y => op(y)(x));
 
 // floor :: Num -> Int
 const floor = x => {
@@ -1866,6 +1873,14 @@ const intersperse = sep => xs => {
 const isAlpha = c =>
     /[A-Za-z\u00C0-\u00FF]/.test(c);
 
+// isAlphaNum :: Char -> Bool
+const isAlphaNum = c => {
+    const n = c.codePointAt(0);
+    return (48 <= n && 57 >= n) || (
+        /[A-Za-z\u00C0-\u00FF]/.test(c)
+    );
+};
+
 // isChar :: a -> Bool
 const isChar = x =>
     ('string' === typeof x) && (1 === x.length);
@@ -2102,6 +2117,11 @@ const lcm = x =>
     y => (x === 0 || y === 0) ? (
         0
     ) : Math.abs(Math.floor(x / gcd(x)(y)) * y);
+
+// le :: Ord a => a -> a -> a
+const le = x =>
+    // True if x <= y;
+    y => x <= y;
 
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
@@ -2709,6 +2729,7 @@ const or = xs =>
 
 // ord :: Char -> Int
 const ord = c =>
+    // Unicode ordinal value of the character.
     c.codePointAt(0);
 
 // ordering :: () -> Ordering
@@ -3052,6 +3073,11 @@ const rational = x =>
 
 // read :: Read a => String -> a
 const read = JSON.parse;
+
+// readHex :: String -> Int
+const readHex = s =>
+    // Integer value of hexadecimal expression.
+    parseInt(s, 16);
 
 // readLR :: Read a => String -> Either String a
 const readLR = s => {
@@ -3646,6 +3672,11 @@ const sqrtMay = n =>
 const str = x =>
     x.toString();
 
+// stringFromList :: [Char] -> String
+const stringFromList = cs =>
+    // A String derived from a list of characters.
+    cs.join('');
+
 // strip :: String -> String
 const strip = s =>
     s.trim();
@@ -3932,11 +3963,15 @@ const takeWhileGen = p => xs => {
 };
 
 // takeWhileR :: (a -> Bool) -> [a] -> [a]
-const takeWhileR = p => xs => {
-    let i = xs.length;
-    while (i-- && p(xs[i])) {}
-    return xs.slice(i + 1);
-};
+const takeWhileR = p =>
+    // The longest suffix of xs in which
+    // all elements satisfy p.
+    xs => {
+        const ys = list(xs);
+        let i = ys.length;
+        while (i-- && p(ys[i])) {}
+        return ys.slice(i + 1);
+    };
 
 // taskPaperDateString :: Date -> String
 const taskPaperDateString = dte => {

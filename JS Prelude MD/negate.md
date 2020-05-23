@@ -1,4 +1,5 @@
 ```js
 // negate :: Num -> Num
-const negate = n => -n;
+const negate = n =>
+    -n;
 ```

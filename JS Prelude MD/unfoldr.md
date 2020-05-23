@@ -8,7 +8,6 @@
 //
 // unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);
 // --> [10,9,8,7,6,5,4,3,2,1]
-
 // (x => Maybe [value, remainder] -> initial value -> values
 ```
 

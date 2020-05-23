@@ -1,4 +1,5 @@
 ```js
 // ne :: a -> a -> Bool
-const ne = a => b => a !== b;
+const ne = a =>
+    b => a !== b;
 ```

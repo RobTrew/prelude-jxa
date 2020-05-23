@@ -1,6 +1,7 @@
 ```js
 // iterate :: (a -> a) -> a -> Gen [a]
 const iterate = f =>
+    // An infinite list of repeated applications of f to x.
     function* (x) {
         let v = x;
         while (true) {

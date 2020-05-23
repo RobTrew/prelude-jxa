@@ -1,12 +1,9 @@
 ```js
-// If some of the rows are shorter than the following rows, 
-// their elements are skipped:
-// > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]
-```
-
-```js
 // transpose :: [[a]] -> [[a]]
 const transpose = xss => {
+    // If some of the rows are shorter than the following rows, 
+    // their elements are skipped:
+    // > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]
     const go = xss =>
         0 < xss.length ? (() => {
             const

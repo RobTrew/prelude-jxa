@@ -1,4 +1,5 @@
 ```js
 // odd :: Int -> Bool
-const odd = n => !even(n);
+const odd = n =>
+    !even(n);
 ```

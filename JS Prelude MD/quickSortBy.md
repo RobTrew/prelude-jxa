@@ -1,12 +1,9 @@
 ```js
-// Included only for comparison with AppleScript
-// sort and sortBy are faster and more flexible
-```
-
-```js
 // quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const quickSortBy = cmp => xs =>
-    xs.length > 1 ? (() => {
+const quickSortBy = cmp =>
+    // Included only for comparison with AppleScript
+    // sort and sortBy are faster and more flexible
+    xs => xs.length > 1 ? (() => {
         const
             h = xs[0],
             lessMore = partition(x => 1 !== cmp(x)(h))(

@@ -1,11 +1,8 @@
 ```js
-// Included only for comparison with AppleScript
-// sort and sortBy are faster and more flexible
-```
-
-```js
 // quickSort :: (Ord a) => [a] -> [a]
 const quickSort = xs =>
+    // Included only for comparison with AppleScript
+    // sort and sortBy are faster and more flexible
     xs.length > 1 ? (() => {
         const
             h = xs[0],

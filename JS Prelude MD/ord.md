@@ -1,4 +1,6 @@
 ```js
 // ord :: Char -> Int
-const ord = c => c.codePointAt(0);
+const ord = c =>
+    // Unicode ordinal value of the character.
+    c.codePointAt(0);
 ```

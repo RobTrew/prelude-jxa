@@ -1,10 +1,7 @@
 ```js
-// File name template -> string data -> IO temporary path
-```
-
-```js
 // writeTempFile :: String -> String -> IO FilePath
 const writeTempFile = template =>
+    // File name template -> string data -> IO temporary path
     txt => {
         const
             strPath = ObjC.unwrap($.NSTemporaryDirectory()) +

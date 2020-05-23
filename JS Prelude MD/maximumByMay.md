@@ -1,11 +1,4 @@
 ```js
-//Ordering: (LT|EQ|GT):
-//  GT: 1 (or other positive n)
-//	EQ: 0
-//  LT: -1 (or other negative n) 
-```
-
-```js
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const maximumByMay = f =>
     xs => (
