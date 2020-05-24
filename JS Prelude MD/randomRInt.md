@@ -4,8 +4,8 @@
 
 ```js
 // randomRInt :: Int -> Int -> IO () -> Int
-const randomRInt = low => 
+const randomRInt = low =>
     high => () => low + Math.floor(
-        (Math.random() * ((high - low) + 1))
+        Math.random() * (1 + (high - low))
     );
 ```

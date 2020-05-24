@@ -2976,9 +2976,9 @@ const raise = n =>
 
 // e.g. map(randomRInt(1, 10), ft(1, 20))
 // randomRInt :: Int -> Int -> IO () -> Int
-const randomRInt = low => 
+const randomRInt = low =>
     high => () => low + Math.floor(
-        (Math.random() * ((high - low) + 1))
+        Math.random() * (1 + (high - low))
     );
 
 // The list of values in the subrange defined by a bounding pair.
