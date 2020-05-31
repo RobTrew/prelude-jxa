@@ -1,5 +1,6 @@
 ```js
 // raise :: Num -> Int -> Num
-const raise = n =>
-    e => Math.pow(n, e);
+const raise = x =>
+    // X to the power of n.
+    n => Math.pow(x, n);
 ```

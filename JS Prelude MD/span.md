@@ -14,11 +14,13 @@
 const span = p => xs => {
     // Longest prefix of xs consisting of elements which
     // all satisfy p, tupled with the remainder of xs.
-    const iLast = xs.length - 1;
+    const
+        ys = list(xs),
+        iLast = ys.length - 1;
     return splitAt(
         until(
-            i => iLast < i || !p(xs[i])
+            i => iLast < i || !p(ys[i])
         )(i => 1 + i)(0)
-    )(xs);
+    )(ys);
 };
 ```

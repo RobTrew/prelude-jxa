@@ -2204,8 +2204,8 @@ const liftA2List = f => xs => ys =>
     // The binary operator f lifted to a function over two
     // lists. f applied to each pair of arguments in the
     // cartesian product of xs and ys.
-    xs.flatMap(
-        x => ys.map(f(x))
+    list(xs).flatMap(
+        x => list(ys).map(f(x))
     );
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
@@ -2971,12 +2971,16 @@ const radians = x =>
     (Math.PI / 180) * x;
 
 // raise :: Num -> Int -> Num
-const raise = n =>
-    e => Math.pow(n, e);
+const raise = x =>
+    // X to the power of n.
+    n => Math.pow(x, n);
 
-// e.g. map(randomRInt(1, 10), ft(1, 20))
 // randomRInt :: Int -> Int -> IO () -> Int
 const randomRInt = low =>
+    // The return value of randomRInt is itself
+    // a function, which, whenever evaluated,
+    // yields a a new pseudo-random integer
+    // in the range [m..n].
     high => () => low + Math.floor(
         Math.random() * (1 + (high - low))
     );
@@ -3568,12 +3572,14 @@ const sortOn = f =>
 const span = p => xs => {
     // Longest prefix of xs consisting of elements which
     // all satisfy p, tupled with the remainder of xs.
-    const iLast = xs.length - 1;
+    const
+        ys = list(xs),
+        iLast = ys.length - 1;
     return splitAt(
         until(
-            i => iLast < i || !p(xs[i])
+            i => iLast < i || !p(ys[i])
         )(i => 1 + i)(0)
-    )(xs);
+    )(ys);
 };
 
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))

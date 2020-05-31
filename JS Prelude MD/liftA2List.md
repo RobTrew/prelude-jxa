@@ -4,7 +4,7 @@ const liftA2List = f => xs => ys =>
     // The binary operator f lifted to a function over two
     // lists. f applied to each pair of arguments in the
     // cartesian product of xs and ys.
-    xs.flatMap(
-        x => ys.map(f(x))
+    list(xs).flatMap(
+        x => list(ys).map(f(x))
     );
 ```
