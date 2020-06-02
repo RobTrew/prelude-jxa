@@ -1,10 +1,10 @@
 ```js
 // showOutline :: Tree String -> String
 const showOutline = tree => {
-    const go = indent => tree =>
+    const go = indent => x =>
         unlines(
-            [indent + tree.root]
-            .concat(tree.nest.flatMap(go('    ' + indent)))
+            [indent + x.root]
+            .concat(x.nest.flatMap(go('    ' + indent)))
         );
     return go('')(tree);
 };

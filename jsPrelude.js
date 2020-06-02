@@ -1205,6 +1205,7 @@ const fType = g => {
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = f =>
     // A function from x to a tuple of (f(x), g(x))
+    // ((,) . f <*> g)
     g => x => Tuple(f(x))(
         g(x)
     );
@@ -2980,7 +2981,7 @@ const randomRInt = low =>
     // The return value of randomRInt is itself
     // a function, which, whenever evaluated,
     // yields a a new pseudo-random integer
-    // in the range [m..n].
+    // in the range [low..high].
     high => () => low + Math.floor(
         Math.random() * (1 + (high - low))
     );
@@ -3453,10 +3454,10 @@ const showOrdering = e =>
 
 // showOutline :: Tree String -> String
 const showOutline = tree => {
-    const go = indent => tree =>
+    const go = indent => x =>
         unlines(
-            [indent + tree.root]
-            .concat(tree.nest.flatMap(go('    ' + indent)))
+            [indent + x.root]
+            .concat(x.nest.flatMap(go('    ' + indent)))
         );
     return go('')(tree);
 };
@@ -3586,6 +3587,7 @@ const span = p => xs => {
 const splitArrow = f =>
     // The functions f and g combined in a single function
     // from a tuple (x, y) to a tuple of (f(x), g(y))
+    // (see bimap)
     g => tpl => Tuple(f(tpl[0]))(
         g(tpl[1])
     );
