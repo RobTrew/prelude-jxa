@@ -1830,8 +1830,8 @@ const intercalateS = s =>
 const intersect = xs =>
     // The intersection of lists xs and ys.
     ys => {
-        const s = new Set(list(ys));
-        return list(xs).filter(x => s.has(x));
+        const dct = ys.reduce((a, x) => (a[x] = 1, a), {})
+        return list(xs).filter(x => dct[x]);
     };
 
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
