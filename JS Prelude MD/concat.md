@@ -3,9 +3,9 @@
 // concat :: [String] -> String
 const concat = xs => (
     ys => 0 < ys.length ? (
-        ys.every(x => 'string' === typeof x) ? (
-            ''
-        ) : []
+        ys.every(Array.isArray) ? (
+            []
+        ) : ''
     ).concat(...ys) : ys
 )(list(xs));
 ```

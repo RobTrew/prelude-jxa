@@ -184,10 +184,9 @@ const apTuple = tpl =>
   liftA2Tuple(x => x)(tpl)
 
 // append (++) :: [a] -> [a] -> [a]
-// append (++) :: String -> String -> String
 const append = xs =>
-    // A list or string obtained by
-    // the concatenation of two others.
+    // A list obtained by the
+    // concatenation of two others.
     ys => [...xs].concat([...ys]);
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
@@ -541,9 +540,9 @@ const composeR = f =>
 // concat :: [String] -> String
 const concat = xs => (
     ys => 0 < ys.length ? (
-        ys.every(x => 'string' === typeof x) ? (
-            ''
-        ) : []
+        ys.every(Array.isArray) ? (
+            []
+        ) : ''
     ).concat(...ys) : ys
 )(list(xs));
 
@@ -1316,15 +1315,10 @@ const findGen = p =>
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
 const findIndex = p =>
     //  Just the index of the first element in
-    //  xs for which p(x) is true, or 
+    //  xs for which p(x) is true, or
     //  Nothing if there is no such element.
     xs => {
-        const
-            i = (
-                'string' !== typeof xs ? (
-                    xs
-                ) : xs.split('')
-            ).findIndex(p);
+        const i = [...xs].findIndex(p);
         return -1 !== i ? (
             Just(i)
         ) : Nothing();
@@ -1344,10 +1338,11 @@ const findIndexR = p =>
 
 // findIndices :: (a -> Bool) -> [a] -> [Int]
 // findIndices :: (String -> Bool) -> String -> [Int]
-const findIndices = p => xs =>
-    xs.flatMap((x, i) => p(x, i, xs) ? (
+const findIndices = p => xs => (
+    ys => ys.flatMap((y, i) => p(y, i, ys) ? (
         [i]
-    ) : []);
+    ) : [])
+)([...xs]);
 
 // findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
 const findTree = p => {
@@ -3675,7 +3670,11 @@ const sqrtMay = n =>
 
 // str :: a -> String
 const str = x =>
-    x.toString();
+   Array.isArray(x) && x.every(
+       v => ('string' === typeof v) && (1 === v.length)
+   ) ? (
+       x.join('')
+   ) : x.toString();
 
 // stringFromList :: [Char] -> String
 const stringFromList = cs =>
