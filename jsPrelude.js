@@ -3563,18 +3563,19 @@ const sortOn = f =>
 //
 // span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
-const span = p => xs => {
+const span = p =>
     // Longest prefix of xs consisting of elements which
     // all satisfy p, tupled with the remainder of xs.
-    const
-        ys = list(xs),
-        iLast = ys.length - 1;
-    return splitAt(
-        until(
-            i => iLast < i || !p(ys[i])
-        )(i => 1 + i)(0)
-    )(ys);
-};
+    xs => {
+        const
+            ys = list(xs),
+            iLast = ys.length - 1;
+        return splitAt(
+            until(
+                i => iLast < i || !p(ys[i])
+            )(i => 1 + i)(0)
+        )(ys);
+    };
 
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 const splitArrow = f =>

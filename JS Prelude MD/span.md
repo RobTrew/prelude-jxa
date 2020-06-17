@@ -11,16 +11,17 @@
 
 ```js
 // span :: (a -> Bool) -> [a] -> ([a], [a])
-const span = p => xs => {
+const span = p =>
     // Longest prefix of xs consisting of elements which
     // all satisfy p, tupled with the remainder of xs.
-    const
-        ys = list(xs),
-        iLast = ys.length - 1;
-    return splitAt(
-        until(
-            i => iLast < i || !p(ys[i])
-        )(i => 1 + i)(0)
-    )(ys);
-};
+    xs => {
+        const
+            ys = list(xs),
+            iLast = ys.length - 1;
+        return splitAt(
+            until(
+                i => iLast < i || !p(ys[i])
+            )(i => 1 + i)(0)
+        )(ys);
+    };
 ```
