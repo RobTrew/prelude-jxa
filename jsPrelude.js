@@ -629,6 +629,12 @@ const curryN = f =>
         return go(args);
     };
 
+// curryT :: ((a, b) -> c) -> a -> b -> c
+const curryT = f =>
+    // Curried function over a tuple.
+    // curryT(Just)(7)(8) -> Just((7, 8))
+    a => b => f(Tuple(a)(b));
+
 // cycle :: [a] -> Generator [a]
 function* cycle(xs) {
     const lng = xs.length;
@@ -1159,6 +1165,16 @@ const eq = a =>
                 false
             ) : kvs.every(([k, v]) => eq(v)(b[k]));
         })();
+    };
+
+// eqDate :: Date -> Date -> Bool
+const eqDate = dte =>
+    // True if the date parts of two date-time objects
+    // (ignoring the time parts) are the same.
+    dte1 => {
+        const dayOnly = dateTime =>
+            new Date(dateTime).setUTCHours(0, 0, 0, 0);
+        return dayOnly(dte) === dayOnly(dte1);
     };
 
 // evalJSLR :: String -> Either String a
@@ -2665,7 +2681,8 @@ const minimumMay = xs => (
 )(list(xs));
 
 // mod :: Int -> Int -> Int
-const mod = n => d => n % d;
+const mod = m => n =>
+  ((m % n) + n) % n
 
 // mul (*) :: Num a => a -> a -> a
 const mul = a =>
@@ -2958,7 +2975,7 @@ const quickSortBy = cmp =>
 
 // quot :: Int -> Int -> Int
 const quot = n =>
-    m => Math.floor(n / m);
+    m => Math.trunc(n / m);
 
 // quotRem :: Int -> Int -> (Int, Int)
 const quotRem = m => n => 

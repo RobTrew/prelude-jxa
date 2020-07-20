@@ -1,4 +1,5 @@
 ```js
 // mod :: Int -> Int -> Int
-const mod = n => d => n % d;
+const mod = m => n =>
+  ((m % n) + n) % n
 ```
