@@ -74,6 +74,7 @@ copyFileLR :: FilePath -> FilePath -> Either String IO ()
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String FilePath
 curry :: ((a, b) -> c) -> a -> b -> c
 curryN :: Curry a b => a -> b
+curryT :: ((a, b) -> c) -> a -> b -> c
 cycle :: [a] -> Generator [a]
 decodedPath :: Percent Encoded String -> FilePath
 degrees :: Float x => Radians x -> Degrees x
@@ -88,6 +89,7 @@ difference :: Eq a => [a] -> [a] -> [a]
 differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
 digitToInt :: Char -> Int
 div :: Int -> Int -> Int
+divMod :: Int -> Int -> (Int, Int)
 doesDirectoryExist :: FilePath -> IO Bool
 doesFileExist :: FilePath -> IO Bool
 doesPathExist :: FilePath -> IO Bool
@@ -119,6 +121,7 @@ enumFromTo :: Int -> Int -> [Int]
 enumFromToChar :: Char -> Char -> [Char]
 enumFromTo_ :: Enum a => a -> a -> [a]
 eq (==) :: Eq a => a -> a -> Bool
+eqDate :: Date -> Date -> Bool
 evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a
 even :: Int -> Bool
@@ -204,6 +207,7 @@ intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
 intersection :: Ord a => Set a -> Set a -> Set a
 intersperse :: a -> [a] -> [a]
 isAlpha :: Char -> Bool
+isAlphaNum :: Char -> Bool
 isChar :: a -> Bool
 isDigit :: Char -> Bool
 isInfixOf :: (Eq a) => [a] -> [a] -> Bool
@@ -234,6 +238,7 @@ kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
 last :: [a] -> a
 lastMay :: [a] -> Maybe a
 lcm :: Int -> Int -> Int
+le :: Ord a => a -> a -> a
 lefts :: [Either a b] -> [a]
 length :: [a] -> Int
 levelNodes :: Tree a -> [[Tree a]]
@@ -344,6 +349,7 @@ rational :: Num a => a -> Rational
 read :: Read a => String -> a
 readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String IO String
+readHex :: String -> Int
 readLR :: Read a => String -> Either String a
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
@@ -415,6 +421,7 @@ sqrt :: Num -> Num
 sqrtLR :: Num -> Either String Num
 sqrtMay :: Num -> Maybe Num
 str :: a -> String
+stringFromList :: [Char] -> String
 strip :: String -> String
 stripEnd :: String -> String
 stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]

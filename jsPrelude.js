@@ -761,6 +761,17 @@ const digitToInt = c => {
 const div = x =>
     y => Math.floor(x / y);
 
+// divMod :: Int -> Int -> (Int, Int)
+const divMod = n => d => {
+    // Integer division, truncated toward negative infinity,
+    // and integer modulus such that:
+    // (x `div` y)*y + (x `mod` y) == x
+    const [q, r] = [Math.trunc(n / d), n % d];
+    return signum(n) === signum(-d) ? (
+        Tuple(q - 1)(r + d)
+    ) : Tuple(q)(r);
+};
+
 // draw :: Tree String -> [String]
 const draw = node => {
     // shift :: String -> String -> [String] -> [String]
@@ -2681,8 +2692,12 @@ const minimumMay = xs => (
 )(list(xs));
 
 // mod :: Int -> Int -> Int
-const mod = m => n =>
-  ((m % n) + n) % n
+const mod = n =>
+    d => (n % d) + (
+        signum(n) === signum(-d) ? (
+            d
+        ) : 0
+    );
 
 // mul (*) :: Num a => a -> a -> a
 const mul = a =>
@@ -2979,7 +2994,7 @@ const quot = n =>
 
 // quotRem :: Int -> Int -> (Int, Int)
 const quotRem = m => n => 
-  Tuple(Math.floor(m / n))(
+  Tuple(Math.trunc(m / n))(
       m % n
   );
 

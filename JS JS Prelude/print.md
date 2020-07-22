@@ -1,0 +1,18 @@
+```js
+// print :: a -> IO ()
+const print = x => {
+    const s = show(x);
+    return (
+        typeof document !== 'undefined' ? (
+            document.writeln(s)
+        ) : typeof draft !== 'undefined' ? (
+            editor.setText(
+                editor.getText() + '\n' + s
+            )
+        ) : (
+            console.log(s),
+            s
+        )
+    );
+};
+```
