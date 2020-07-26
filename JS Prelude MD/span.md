@@ -16,7 +16,9 @@ const span = p =>
     // all satisfy p, tupled with the remainder of xs.
     xs => {
         const
-            ys = list(xs),
+            ys = 'string' !== typeof xs ? (
+                list(xs)
+            ) : xs,
             iLast = ys.length - 1;
         return splitAt(
             until(

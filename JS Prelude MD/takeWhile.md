@@ -10,6 +10,6 @@ const takeWhile = p => xs =>
             until(i => lng === i || !p(xs[i]))(
                 i => 1 + i
             )(0)
-        ) : [];
+        ) : xs.slice(0);
     })() : takeWhileGen(p)(xs);
 ```

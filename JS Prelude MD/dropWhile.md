@@ -8,6 +8,6 @@ const dropWhile = p =>
             until(i => i === lng || !p(xs[i]))(
                 i => 1 + i
             )(0)
-        ) : [];
+        ) : xs.slice(0);
     };
 ```

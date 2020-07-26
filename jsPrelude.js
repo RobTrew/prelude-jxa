@@ -969,7 +969,7 @@ const dropWhile = p =>
             until(i => i === lng || !p(xs[i]))(
                 i => 1 + i
             )(0)
-        ) : [];
+        ) : xs.slice(0);
     };
 
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
@@ -3612,7 +3612,9 @@ const span = p =>
     // all satisfy p, tupled with the remainder of xs.
     xs => {
         const
-            ys = list(xs),
+            ys = 'string' !== typeof xs ? (
+                list(xs)
+            ) : xs,
             iLast = ys.length - 1;
         return splitAt(
             until(
@@ -3995,7 +3997,7 @@ const takeWhile = p => xs =>
             until(i => lng === i || !p(xs[i]))(
                 i => 1 + i
             )(0)
-        ) : [];
+        ) : xs.slice(0);
     })() : takeWhileGen(p)(xs);
 
 // takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
