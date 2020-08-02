@@ -76,7 +76,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         measuredTree = fmapTree(
             v => {
                 const s = ' ' + v + ' ';
-                return Tuple(s.length)(s)
+                return Tuple(s.length)(s);
             })(tree),
         levelWidths = levels(measuredTree)
         .reduce(

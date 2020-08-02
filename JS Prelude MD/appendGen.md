@@ -5,10 +5,10 @@ const appendGen = xs =>
     // concatenation of two existing generators.
     function* (ys) {
         for (let vs of [xs, ys]) {
-            let nxt = vs.next()
+            let nxt = vs.next();
             while (!nxt.done) {
-                yield nxt.value
-                nxt = vs.next()
+                yield nxt.value;
+                nxt = vs.next();
             }
         }
     };

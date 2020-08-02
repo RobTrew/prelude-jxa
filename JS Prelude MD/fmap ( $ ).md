@@ -13,6 +13,6 @@ const fmap = f => fa =>
             fmapTree(f)(fa)
         ) : 'Tuple' === t ? (
             fmapTuple(f)(fa)
-        ) : undefined)
+        ) : undefined);
     })() : fa.split('').map(f);
 ```

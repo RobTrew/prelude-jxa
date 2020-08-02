@@ -8,6 +8,6 @@ const fType = g => {
         Just
     ) : s.includes('Node') ? (
         flip(Node)([])
-    ) : x => [x]
+    ) : x => [x];
 };
 ```

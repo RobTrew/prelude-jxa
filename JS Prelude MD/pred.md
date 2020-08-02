@@ -6,9 +6,9 @@ const pred = x => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
         return i > mn ? (
             toEnum(x)(i - 1)
-        ) : Error('succ :: enum out of range.')
+        ) : Error('succ :: enum out of range.');
     })() : x > Number.MIN_SAFE_INTEGER ? (
         x - 1
-    ) : Error('succ :: Num out of range.')
+    ) : Error('succ :: Num out of range.');
 };
 ```

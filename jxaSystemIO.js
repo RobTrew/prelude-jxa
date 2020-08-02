@@ -84,10 +84,10 @@ const createDirectoryIfMissingLR = blnParents =>
         ) : (() => {
             const
                 e = $(),
-                blnOK = $.NSFileManager.defaultManager[
-                    'createDirectoryAtPath' +
-                    'WithIntermediateDirectoriesAttributesError'
-                ](fp, blnParents, undefined, e);
+                blnOK = $.NSFileManager
+                .defaultManager
+                .createDirectoryAtPathWithIntermediateDirectoriesAttributesError
+                (fp, blnParents, undefined, e);
             return blnOK ? (
                 Right(fp)
             ) : Left(e.localizedDescription);
@@ -182,7 +182,7 @@ const getDirectoryContentsLR = fp => {
         );
     return xs.isNil() ? (
         Left(ObjC.unwrap(error.localizedDescription))
-    ) : Right(ObjC.deepUnwrap(xs))
+    ) : Right(ObjC.deepUnwrap(xs));
 };
 
 // getFinderDirectory :: IO FilePath

@@ -12,5 +12,5 @@ function TupleN() {
             length: n
         })
     ) : args.reduce((f, x) => f(x), Tuple);
-};
+}
 ```

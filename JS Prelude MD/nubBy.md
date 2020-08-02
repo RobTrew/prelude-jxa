@@ -7,7 +7,7 @@ const nubBy = fEq => {
             go(xs.slice(1)
                 .filter(y => !fEq(x)(y))
             )
-        )
+        );
     })() : [];
     return compose(go, list);
 };

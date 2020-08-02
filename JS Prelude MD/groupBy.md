@@ -18,6 +18,6 @@ const groupBy = fEq =>
             v = tpl[0].concat([tpl[1]]);
         return 'string' !== typeof xs ? (
             v
-        ) : v.map(x => x.join(''))
+        ) : v.map(x => x.join(''));
     })() : [])(list(xs));
 ```

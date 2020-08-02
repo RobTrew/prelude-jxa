@@ -4,7 +4,7 @@ function* cycle(xs) {
     const lng = xs.length;
     let i = 0;
     while (true) {
-        yield(xs[i])
+        yield(xs[i]);
         i = (1 + i) % lng;
     }
 }

@@ -9,10 +9,10 @@ const createDirectoryIfMissingLR = blnParents =>
         ) : (() => {
             const
                 e = $(),
-                blnOK = $.NSFileManager.defaultManager[
-                    'createDirectoryAtPath' +
-                    'WithIntermediateDirectoriesAttributesError'
-                ](fp, blnParents, undefined, e);
+                blnOK = $.NSFileManager
+                .defaultManager
+                .createDirectoryAtPathWithIntermediateDirectoriesAttributesError
+                (fp, blnParents, undefined, e);
             return blnOK ? (
                 Right(fp)
             ) : Left(e.localizedDescription);

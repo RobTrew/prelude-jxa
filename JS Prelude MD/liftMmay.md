@@ -3,5 +3,5 @@
 const liftMmay = f =>
     mb => mb.Nothing ? (
         mb
-    ) : Just(f(mb.Just))
+    ) : Just(f(mb.Just));
 ```

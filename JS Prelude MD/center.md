@@ -7,6 +7,6 @@ const center = n =>
         return 0 < gap ? (() => {
             const pre = c.repeat(Math.floor(gap / 2));
             return pre + s + pre + c.repeat(gap % 2);
-        })() : s
+        })() : s;
     };
 ```

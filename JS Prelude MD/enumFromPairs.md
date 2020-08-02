@@ -19,7 +19,7 @@ const enumFromPairs = name =>
                         },
                         [kv[1]]: kv[0]
                     }
-                )
+                );
             }, {}
         );
     };

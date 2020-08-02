@@ -5,5 +5,5 @@ const apTree = tf =>
     // of functions to each node value in another tree.
     liftA2Tree(
         x => x
-    )(tf)
+    )(tf);
 ```

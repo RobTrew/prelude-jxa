@@ -6,11 +6,11 @@ const filterGen = p => xs => {
         while (!x.done) {
             let v = x.value;
             if (p(v)) {
-                yield v
+                yield v;
             }
             x = xs.next();
         }
     }
     return go(xs);
-}
+};
 ```

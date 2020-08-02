@@ -10,6 +10,6 @@ const getDirectoryContentsLR = fp => {
         );
     return xs.isNil() ? (
         Left(ObjC.unwrap(error.localizedDescription))
-    ) : Right(ObjC.deepUnwrap(xs))
+    ) : Right(ObjC.deepUnwrap(xs));
 };
 ```

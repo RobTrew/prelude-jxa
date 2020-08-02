@@ -76,7 +76,7 @@ function TupleN() {
             length: n
         })
     ) : args.reduce((f, x) => f(x), Tuple);
-};
+}
 
 // abs :: Num -> Num
 const abs = 
@@ -155,7 +155,7 @@ const apFn = f =>
 const apLR = flr =>
   // Either a Left value, or the application of a
   // function in Either to a value in Either.
-  liftA2LR(x => x)(flr)
+  liftA2LR(x => x)(flr);
 
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
 const apList = fs =>
@@ -163,7 +163,7 @@ const apList = fs =>
     // of functions to each of a list of values.
     // apList([x => 2 * x, x => 20 + x])([1, 2, 3])
     //     -> [2, 4, 6, 21, 22, 23]
-    xs => fs.flatMap(f => xs.map(x => f(x)))
+    xs => fs.flatMap(f => xs.map(x => f(x)));
 
 // apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 const apMay = mf =>
@@ -177,11 +177,11 @@ const apTree = tf =>
     // of functions to each node value in another tree.
     liftA2Tree(
         x => x
-    )(tf)
+    )(tf);
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 const apTuple = tpl => 
-  liftA2Tuple(x => x)(tpl)
+  liftA2Tuple(x => x)(tpl);
 
 // append (++) :: [a] -> [a] -> [a]
 const append = xs =>
@@ -195,10 +195,10 @@ const appendGen = xs =>
     // concatenation of two existing generators.
     function* (ys) {
         for (let vs of [xs, ys]) {
-            let nxt = vs.next()
+            let nxt = vs.next();
             while (!nxt.done) {
-                yield nxt.value
-                nxt = vs.next()
+                yield nxt.value;
+                nxt = vs.next();
             }
         }
     };
@@ -440,7 +440,7 @@ const ceiling = x => {
     // The least integer not less than x.
     const
         nr = properFraction(x),
-        n = nr[0]
+        n = nr[0];
     return 0 < nr[1] ? 1 + n : n;
 };
 
@@ -452,7 +452,7 @@ const center = n =>
         return 0 < gap ? (() => {
             const pre = c.repeat(Math.floor(gap / 2));
             return pre + s + pre + c.repeat(gap % 2);
-        })() : s
+        })() : s;
     };
 
 // chars :: String -> [Char]
@@ -467,9 +467,9 @@ const chop = f =>
         const go = xs =>
             0 < xs.length ? (() => {
                 const [b, bs] = Array.from(f(xs));
-                return cons(b)(go(bs))
+                return cons(b)(go(bs));
             })() : [];
-        return go([...xs])
+        return go([...xs]);
     };
 
 // chr :: Int -> Char
@@ -575,7 +575,7 @@ const cons = x =>
     ) : ( // cons(x)(Generator)
         function* () {
             yield x;
-            let nxt = xs.next()
+            let nxt = xs.next();
             while (!nxt.done) {
                 yield nxt.value;
                 nxt = xs.next();
@@ -640,7 +640,7 @@ function* cycle(xs) {
     const lng = xs.length;
     let i = 0;
     while (true) {
-        yield(xs[i])
+        yield(xs[i]);
         i = (1 + i) % lng;
     }
 }
@@ -702,7 +702,7 @@ const deleteFirstsBy = fEq =>
 const deleteKey = k =>
     // A new dictionary, without the key k.
     dct => {
-        const dct2 = Object.assign({}, dct2);
+        const dct2 = Object.assign({}, dct);
         return (delete dct2[k], dct2);
     };
 
@@ -732,7 +732,7 @@ const differenceGen = ga => {
             if (!sb.has(x)) yield x;
             xy = take(1)(stream);
         }
-    }
+    };
 };
 
 // digitToInt :: Char -> Int
@@ -888,7 +888,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         measuredTree = fmapTree(
             v => {
                 const s = ' ' + v + ' ';
-                return Tuple(s.length)(s)
+                return Tuple(s.length)(s);
             })(tree),
         levelWidths = levels(measuredTree)
         .reduce(
@@ -1091,7 +1091,7 @@ const enumFromPairs = name =>
                         },
                         [kv[1]]: kv[0]
                     }
-                )
+                );
             }, {}
         );
     };
@@ -1191,19 +1191,19 @@ const eqDate = dte =>
 // evalJSLR :: String -> Either String a
 const evalJSLR = s => {
     try {
-        return Right(eval('(' + s + ')'))
+        return Right(eval('(' + s + ')'));
     } catch (e) {
         return Left(e.message);
-    };
+    }
 };
 
 // evalJSMay :: String -> Maybe a
 const evalJSMay = s => {
     try {
-        return Just(eval('(' + s + ')'))
+        return Just(eval('(' + s + ')'));
     } catch (e) {
         return Nothing();
-    };
+    }
 };
 
 // even :: Int -> Bool
@@ -1238,7 +1238,7 @@ const fType = g => {
         Just
     ) : s.includes('Node') ? (
         flip(Node)([])
-    ) : x => [x]
+    ) : x => [x];
 };
 
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
@@ -1275,13 +1275,13 @@ const filterGen = p => xs => {
         while (!x.done) {
             let v = x.value;
             if (p(v)) {
-                yield v
+                yield v;
             }
             x = xs.next();
         }
     }
     return go(xs);
-}
+};
 
 // filterTree (a -> Bool) -> Tree a -> [a]
 const filterTree = p =>
@@ -1383,7 +1383,7 @@ const findIndices = p =>
         ys => ys.flatMap((y, i) => p(y, i, ys) ? (
             [i]
         ) : [])
-    )([...xs])
+    )([...xs]);
 
 // findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
 const findTree = p => {
@@ -1396,7 +1396,9 @@ const findTree = p => {
             const
                 xs = tree.nest,
                 lng = xs.length;
-            return 0 < lng ? until(tpl => lng <= tpl[0] || !tpl[1].Nothing)(
+            return 0 < lng ? until(
+                tpl => lng <= tpl[0] || !tpl[1].Nothing
+            )(
                 tpl => Tuple(1 + tpl[0])(
                     go(xs[tpl[0]])
                 )
@@ -1404,7 +1406,7 @@ const findTree = p => {
                 Tuple(0)(
                     Nothing()
                 )
-            )[1] : Nothing()
+            )[1] : Nothing();
         })();
     return go;
 };
@@ -1463,7 +1465,7 @@ const fmap = f => fa =>
             fmapTree(f)(fa)
         ) : 'Tuple' === t ? (
             fmapTuple(f)(fa)
-        ) : undefined)
+        ) : undefined);
     })() : fa.split('').map(f);
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
@@ -1471,8 +1473,8 @@ const fmapGen = f =>
     function*(gen) {
         let v = take(1)(gen);
         while (0 < v.length) {
-            yield(f(v[0]))
-            v = take(1)(gen)
+            yield(f(v[0]));
+            v = take(1)(gen);
         }
     };
 
@@ -1685,7 +1687,7 @@ const groupBy = fEq =>
             v = tpl[0].concat([tpl[1]]);
         return 'string' !== typeof xs ? (
             v
-        ) : v.map(x => x.join(''))
+        ) : v.map(x => x.join(''));
     })() : [])(list(xs));
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
@@ -1739,7 +1741,7 @@ const if_ = bln =>
 const indented = strIndent =>
     s => s.split(/[\r\n]/).map(
         x => '' !== x ? strIndent + x : x
-    ).join('\n')
+    ).join('\n');
 
 // index (!!) :: [a] -> Int -> Maybe a
 // index (!!) :: Generator (Int, a) -> Int -> Maybe a
@@ -2276,7 +2278,7 @@ const liftA2Tuple = f =>
 const liftMmay = f =>
     mb => mb.Nothing ? (
         mb
-    ) : Just(f(mb.Just))
+    ) : Just(f(mb.Just));
 
 // lines :: String -> [String]
 const lines = s =>
@@ -2435,7 +2437,7 @@ const mapMaybeGen = mf =>
         let v = take(1, gen);
         while (0 < v.length) {
             let mb = mf(v[0]);
-            if (!mb.Nothing) yield mb.Just
+            if (!mb.Nothing) yield mb.Just;
             v = take(1, gen);
         }
     };
@@ -2743,7 +2745,7 @@ const nubBy = fEq => {
             go(xs.slice(1)
                 .filter(y => !fEq(x)(y))
             )
-        )
+        );
     })() : [];
     return compose(go, list);
 };
@@ -2872,10 +2874,10 @@ const pred = x => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
         return i > mn ? (
             toEnum(x)(i - 1)
-        ) : Error('succ :: enum out of range.')
+        ) : Error('succ :: enum out of range.');
     })() : x > Number.MIN_SAFE_INTEGER ? (
         x - 1
-    ) : Error('succ :: Num out of range.')
+    ) : Error('succ :: Num out of range.');
 };
 
 // predMay :: Enum a => a -> Maybe a
@@ -2885,10 +2887,10 @@ const predMay = x => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
         return i > mn ? (
             Just(toEnum(x)(i - 1))
-        ) : Nothing()
+        ) : Nothing();
     })() : x > Number.MIN_SAFE_INTEGER ? (
         Just(x - 1)
-    ) : Nothing()
+    ) : Nothing();
 };
 
 // print :: a -> IO ()
@@ -3002,7 +3004,7 @@ const quotRem = m => n =>
 const quoted = c =>
     // A string flanked on both sides
     // by a specified quote character.
-    s => c + s + c
+    s => c + s + c;
 
 // radians :: Float x => Degrees x -> Radians x
 const radians = x =>
@@ -3942,13 +3944,12 @@ const takeDropCycle = n =>
 
 // takeExtension :: FilePath -> String
 const takeExtension = fp => (
-    fs => 0 < fs.length ? (
-        xs => '.' + 1 < xs.length ? (
-            xs.slice(-1)[0]
-        ) : ''
-    )(
-        fs.slice(-1)[0].split('.')
-    ) : ''
+    fs => {
+        const fn = last(fs);
+        return fn.includes('.') ? (
+            '.' + last(fn.split('.'))
+        ) : '';
+    }
 )(fp.split('/'));
 
 // takeFileName :: FilePath -> FilePath

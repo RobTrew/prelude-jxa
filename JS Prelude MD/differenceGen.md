@@ -14,6 +14,6 @@ const differenceGen = ga => {
             if (!sb.has(x)) yield x;
             xy = take(1)(stream);
         }
-    }
+    };
 };
 ```

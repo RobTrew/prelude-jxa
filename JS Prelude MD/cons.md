@@ -11,7 +11,7 @@ const cons = x =>
     ) : ( // cons(x)(Generator)
         function* () {
             yield x;
-            let nxt = xs.next()
+            let nxt = xs.next();
             while (!nxt.done) {
                 yield nxt.value;
                 nxt = xs.next();
