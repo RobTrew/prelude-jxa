@@ -2088,7 +2088,9 @@ const jsonParseLR = s => {
     try {
         return Right(JSON.parse(s));
     } catch (e) {
-        return Left(`${e.message} (line:${e.line} col:${e.column})`);
+        return Left(
+            `${e.message} (line:${e.line} col:${e.column})`
+        );
     }
 };
 
@@ -2756,7 +2758,7 @@ const odd = n =>
 
 // on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 const on = f =>
-    // e.g. sortBy(on(compare,length), xs)
+    // e.g. groupBy(on(eq)(length))
     g => a => b => f(g(a))(g(b));
 
 // Derive a function from the name of a JS infix operator
@@ -3571,7 +3573,9 @@ function sj() {
 }
 
 // snd :: (a, b) -> b
-const snd = tpl => tpl[1];
+const snd = tpl =>
+    // Second member of a pair.
+    tpl[1];
 
 // snoc :: [a] -> a -> [a]
 const snoc = xs =>
