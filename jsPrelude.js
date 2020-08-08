@@ -93,12 +93,18 @@ const all = p =>
     // True if p(x) holds for every x in xs.
     xs => [...xs].every(p);
 
+// allSame :: [a] -> Bool
+const allSame = xs =>
+    2 > xs.length || (
+        h => xs.slice(1).every(x => h === x)
+    )(xs[0]);
+
 // allTree :: (a -> Bool) -> Tree a -> Bool
 const allTree = p =>
     // True if p holds for all nodes of the
     // tree to which allTree(p) is applied.
-    tree => foldTree(x => xs => p(x) && xs.every(Boolean))(
-        tree
+    foldTree(
+        x => xs => p(x) && xs.every(Boolean)
     );
 
 // and :: [Bool] -> Bool
