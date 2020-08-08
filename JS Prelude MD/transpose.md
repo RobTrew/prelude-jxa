@@ -9,20 +9,18 @@ const transpose = xss => {
             const
                 h = xss[0],
                 t = xss.slice(1);
-            return 0 < h.length ? (
-                [
-                    [h[0]].concat(t.reduce(
-                        (a, xs) => a.concat(
-                            0 < xs.length ? (
-                                [xs[0]]
-                            ) : []
-                        ),
-                        []
-                    ))
-                ].concat(go([h.slice(1)].concat(
-                    t.map(xs => xs.slice(1))
-                )))
-            ) : go(t);
+            return 0 < h.length ? [
+                [h[0]].concat(t.reduce(
+                    (a, xs) => a.concat(
+                        0 < xs.length ? (
+                            [xs[0]]
+                        ) : []
+                    ),
+                    []
+                ))
+            ].concat(go([h.slice(1)].concat(
+                t.map(xs => xs.slice(1))
+            ))) : go(t);
         })() : [];
     return go(xss);
 };

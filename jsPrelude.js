@@ -193,7 +193,7 @@ const apTuple = tpl =>
 const append = xs =>
     // A list obtained by the
     // concatenation of two others.
-    ys => [...xs].concat([...ys]);
+    ys => xs.concat(ys);
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
@@ -1218,8 +1218,8 @@ const even = n => 0 === n % 2;
 // exp :: Float -> Float
 const exp = Math.exp;
 
-// fTable :: String -> (a -> String) -> (b -> String)
-//                      -> (a -> b) -> [a] -> String
+// fTable :: String -> (a -> String) -> 
+// (b -> String) -> (a -> b) -> [a] -> String
 const fTable = s =>
     // Heading -> x display function ->
     //           fx display function ->
@@ -4114,20 +4114,18 @@ const transpose = xss => {
             const
                 h = xss[0],
                 t = xss.slice(1);
-            return 0 < h.length ? (
-                [
-                    [h[0]].concat(t.reduce(
-                        (a, xs) => a.concat(
-                            0 < xs.length ? (
-                                [xs[0]]
-                            ) : []
-                        ),
-                        []
-                    ))
-                ].concat(go([h.slice(1)].concat(
-                    t.map(xs => xs.slice(1))
-                )))
-            ) : go(t);
+            return 0 < h.length ? [
+                [h[0]].concat(t.reduce(
+                    (a, xs) => a.concat(
+                        0 < xs.length ? (
+                            [xs[0]]
+                        ) : []
+                    ),
+                    []
+                ))
+            ].concat(go([h.slice(1)].concat(
+                t.map(xs => xs.slice(1))
+            ))) : go(t);
         })() : [];
     return go(xss);
 };
