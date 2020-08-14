@@ -2389,8 +2389,8 @@ const mapAccumL = f =>
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
 
-// mapAccumL_Tree :: (acc -> x -> (acc, y))
-// -> acc -> Tree -> (acc, Tree)
+// mapAccumL_Tree :: (acc -> x -> (acc, y)) ->
+// acc -> Tree -> (acc, Tree)
 const mapAccumL_Tree = f => {
     const go = a => x => {
         const
