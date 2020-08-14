@@ -778,6 +778,11 @@ const divMod = n => d => {
     ) : Tuple(q)(r);
 };
 
+// dot (.) :: (b -> c) -> (a -> b) -> a -> c
+const dot = f =>
+    // The composition of two functions.
+    g => x => f(g(x));
+
 // draw :: Tree String -> [String]
 const draw = node => {
     // shift :: String -> String -> [String] -> [String]
