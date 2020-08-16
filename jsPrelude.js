@@ -2592,12 +2592,12 @@ const maximumOn = f =>
     // returns the highest value.
     xs => 0 < xs.length ? (() => {
         const x = xs[0];
-        return xs.reduce(
+        return xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
                 return v > tpl[1] ? [
                     x, v
-                ] : tpl
+                    ] : tpl;
             },
             [x, f(x)]
         )[0];
@@ -2738,12 +2738,12 @@ const minimumOn = f =>
     // returns the highest value.
     xs => 0 < xs.length ? (() => {
         const x = xs[0];
-        return xs.reduce(
+        return xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
                 return v < tpl[1] ? [
                     x, v
-                ] : tpl
+                ] : tpl;
             },
             [x, f(x)]
         )[0];
