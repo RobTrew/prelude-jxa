@@ -3,15 +3,16 @@
 const maximumOn = f =>
     // The item in xs for which f 
     // returns the highest value.
-    xs => {
-        const pairs = xs.map(x => [f(x), x]);
-        return 0 < pairs.length ? (
-            pairs.slice(1).reduce(
-                (a, tpl) => tpl[0] > a[0] ? (
-                    tpl
-                ) : a,
-                pairs[0]
-            )[1]
-        ) : undefined
-    };
+    xs => 0 < xs.length ? (() => {
+        const x = xs[0];
+        return xs.reduce(
+            (tpl, x) => {
+                const v = f(x);
+                return v > tpl[1] ? [
+                    x, v
+                ] : tpl
+            },
+            [x, f(x)]
+        )[0];
+    })() : undefined;
 ```
