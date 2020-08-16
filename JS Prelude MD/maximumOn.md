@@ -10,7 +10,7 @@ const maximumOn = f =>
                 const v = f(x);
                 return v > tpl[1] ? [
                     x, v
-                    ] : tpl;
+                ] : tpl;
             },
             [x, f(x)]
         )[0];
