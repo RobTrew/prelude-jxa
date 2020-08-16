@@ -1,7 +1,15 @@
 ```js
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
-const minimumBy = f => xs =>
-    list(xs).reduce((a, x) => undefined === a ? x : (
-        0 > f(x)(a) ? x : a
-    ), undefined);
+const minimumBy = f =>
+    xs => {
+        const ys = list(xs);
+        return 0 < ys.length ? (
+            ys.slice(1).reduce(
+                (a, y) => 0 > f(y)(a) ? (
+                    y
+                ) : a,
+                ys[0]
+            )
+        ) : undefined
+    };
 ```

@@ -2555,8 +2555,9 @@ const maximum = xs => (
 
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
 const maximumBy = f =>
-    xs => (
-        ys => 0 < ys.length ? (
+    xs => {
+        const ys = list(xs);
+        return 0 < ys.length ? (
             ys.slice(1).reduce(
                 (a, y) => 0 < f(y)(a) ? (
                     y
@@ -2564,7 +2565,7 @@ const maximumBy = f =>
                 ys[0]
             )
         ) : undefined
-    )(list(xs));
+    };
 
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const maximumByMay = f =>
@@ -2683,10 +2684,18 @@ const minimum = xs => (
 )(list(xs));
 
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
-const minimumBy = f => xs =>
-    list(xs).reduce((a, x) => undefined === a ? x : (
-        0 > f(x)(a) ? x : a
-    ), undefined);
+const minimumBy = f =>
+    xs => {
+        const ys = list(xs);
+        return 0 < ys.length ? (
+            ys.slice(1).reduce(
+                (a, y) => 0 > f(y)(a) ? (
+                    y
+                ) : a,
+                ys[0]
+            )
+        ) : undefined
+    };
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const minimumByMay = f =>

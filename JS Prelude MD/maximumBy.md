@@ -1,8 +1,9 @@
 ```js
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
 const maximumBy = f =>
-    xs => (
-        ys => 0 < ys.length ? (
+    xs => {
+        const ys = list(xs);
+        return 0 < ys.length ? (
             ys.slice(1).reduce(
                 (a, y) => 0 < f(y)(a) ? (
                     y
@@ -10,5 +11,5 @@ const maximumBy = f =>
                 ys[0]
             )
         ) : undefined
-    )(list(xs));
+    };
 ```
