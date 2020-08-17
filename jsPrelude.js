@@ -2592,18 +2592,17 @@ const maximumMay = xs => (
 const maximumOn = f =>
     // The item in xs for which f 
     // returns the highest value.
-    xs => 0 < xs.length ? (() => {
-        const h = xs[0];
-        return xs.slice(1).reduce(
+    xs => 0 < xs.length ? (
+        xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
                 return v > tpl[1] ? [
                     x, v
                 ] : tpl;
             },
-            [h, f(h)]
-        )[0];
-    })() : undefined;
+            (h => [h, f(h)])(xs[0])
+        )[0]
+    ) : undefined;
 
 // maybe :: b -> (a -> b) -> Maybe a -> b
 const maybe = v =>
@@ -2765,18 +2764,17 @@ const minimumMay = xs => (
 const minimumOn = f =>
     // The item in xs for which f 
     // returns the highest value.
-    xs => 0 < xs.length ? (() => {
-        const h = xs[0];
-        return xs.slice(1).reduce(
+    xs => 0 < xs.length ? (
+        xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
                 return v < tpl[1] ? [
                     x, v
                 ] : tpl;
             },
-            [h, f(h)]
-        )[0];
-    })() : undefined;
+            (h => [h, f(h)])(xs[0])
+        )[0]
+    ) : undefined;
 
 // mod :: Int -> Int -> Int
 const mod = n =>
