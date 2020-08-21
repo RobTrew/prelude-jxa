@@ -5,5 +5,5 @@ const apList = fs =>
     // of functions to each of a list of values.
     // apList([x => 2 * x, x => 20 + x])([1, 2, 3])
     //     -> [2, 4, 6, 21, 22, 23]
-    xs => fs.flatMap(f => xs.map(x => f(x)));
+    xs => fs.flatMap(f => xs.map(f));
 ```
