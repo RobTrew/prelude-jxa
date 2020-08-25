@@ -191,7 +191,7 @@ const apTuple = tpl =>
 
 // append (++) :: [a] -> [a] -> [a]
 const append = xs =>
-    // A list obtained by the
+    // A list defined by the
     // concatenation of two others.
     ys => xs.concat(ys);
 
@@ -1138,7 +1138,7 @@ const enumFromThenTo = x1 =>
 const enumFromThenToChar = x1 =>
     x2 => y => {
         const [i1, i2, iY] = Array.from([x1, x2, y])
-            .map(x => x.charCodeAt(0)),
+            .map(x => x.codePointAt(0)),
             d = i2 - i1;
         return Array.from({
             length: (Math.floor(iY - i2) / d) + 2
@@ -1155,7 +1155,7 @@ const enumFromTo = m =>
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = m => n => {
-    const [intM, intN] = [m, n].map(x => x.charCodeAt(0));
+    const [intM, intN] = [m, n].map(x => x.codePointAt(0));
     return Array.from({
         length: Math.floor(intN - intM) + 1
     }, (_, i) => String.fromCodePoint(intM + i));
@@ -1447,7 +1447,8 @@ const flattenTree = tree => {
 
 // flip :: (a -> b -> c) -> b -> a -> c
 const flip = op =>
-    // The binary function op with its arguments reversed.
+    // The binary function op with 
+    // its arguments reversed.
     1 < op.length ? (
         (a, b) => op(b, a)
     ) : (x => y => op(y)(x));
@@ -1741,7 +1742,7 @@ const headMay = xs => (
 
 // identity :: a -> a
 const identity = x =>
-    // The identity function. (`id`, in Haskell)
+    // The identity function.
     x;
 
 // if_ :: Bool -> a -> a -> a
@@ -2705,7 +2706,8 @@ const mergeBy = f =>
     };
 
 // min :: Ord a => a -> a -> a
-const min = a => b => b < a ? b : a;
+const min = a => 
+    b => b < a ? b : a;
 
 // minBound :: a -> a
 const minBound = x => {
@@ -3358,7 +3360,8 @@ const scanl = f => startValue => xs =>
 
 // scanl1 :: (a -> a -> a) -> [a] -> [a]
 const scanl1 = f =>
-    // scanl1 is a variant of scanl that has no starting value argument.
+    // scanl1 is a variant of scanl that has no 
+    // starting value argument.
     xs => xs.length > 0 ? (
         scanl(f)(
             xs[0]
