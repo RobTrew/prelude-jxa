@@ -2539,7 +2539,7 @@ const maxBound = x => {
         e[e[x.max]]
     ) : {
         'number': Number.MAX_SAFE_INTEGER,
-        'string': String.fromCodePoint(65535),
+        'string': String.fromCodePoint(0x10FFFF),
         'boolean': true
     }[typeof x];
 };
