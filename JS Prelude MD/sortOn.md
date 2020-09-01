@@ -5,7 +5,7 @@ const sortOn = f =>
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
     xs => list(xs).map(
-        fanArrow(f)(identity)
+        bimap(f)(identity)
     )
     .sort(uncurry(comparing(fst)))
     .map(snd);

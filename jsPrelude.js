@@ -2178,20 +2178,20 @@ const le = x =>
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
     xs.flatMap(
-        x => ('Either' === x.type) && (undefined !== x.Left) ? (
-            [x.Left]
-        ) : []
+        x => ('Either' === x.type) && (
+            undefined !== x.Left
+        ) ? [x.Left] : []
     );
 
 // length :: [a] -> Int
 const length = xs =>
-    // Returns Infinity over objects without finite
-    // length. This enables zip and zipWith to choose
-    // the shorter argument when one is non-finite,
-    // like cycle, repeat etc
-    'GeneratorFunction' !== xs.constructor.constructor.name ? (
-        xs.length
-    ) : Infinity;
+    // Returns Infinity over objects without 
+    // finite length, enabling zip and zipWith
+    // to choose the shorter argument when one 
+    // is non-finite, like a cycle or repeat.
+    'GeneratorFunction' !== (
+        xs.constructor.constructor.name
+    ) ? xs.length : Infinity;
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
@@ -2472,6 +2472,16 @@ const mappend = a =>
         mappendFn
     ) : mappendOrd)(a)(b))(a.type);
 
+// mappendComparing (<>) :: (a -> a -> Bool)
+// (a -> a -> Bool) -> (a -> a -> Bool)
+const mappendComparing = cmp =>
+    cmp1 => a => b => {
+        const x = cmp(a)(b);
+        return 0 !== x ? (
+            x
+        ) : cmp1(a)(b);
+    };
+
 // mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 const mappendFn = f =>
     g => x => mappend(f(x))(
@@ -2490,14 +2500,11 @@ const mappendMaybe = a =>
         )
     );
 
-// mappendOrd (<>) :: Ordering -> Ordering -> Ordering
-const mappendOrd = cmp =>
-    cmp1 => a => b => {
-        const x = cmp(a)(b);
-        return 0 !== x ? (
-            x
-        ) : cmp1(a)(b);
-    };
+// mappendOrd :: Ordering -> Ordering -> Ordering
+const mappendOrd = x =>
+    y => 0 !== x ? (
+        x
+    ) : y;
 
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 const mappendTuple = t => t2 =>
@@ -3683,7 +3690,7 @@ const sortOn = f =>
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
     xs => list(xs).map(
-        fanArrow(f)(identity)
+        bimap(f)(identity)
     )
     .sort(uncurry(comparing(fst)))
     .map(snd);
