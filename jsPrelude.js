@@ -2466,11 +2466,11 @@ const mappend = a =>
         'Maybe' === t ? (
             mappendMaybe
         ) : mappendTuple
-    ) : 'function' !== typeof a ? (
+    ) : Array.isArray(a) ? (
         append
-    ) : a.toString() !== 'x => y => f(y)(x)' ? (
+    ) : 'function' === typeof a ? (
         mappendFn
-    ) : mappendOrd)(a)(b))(a.type);
+    ) : mappendOrd)(a)(b))(a.type)
 
 // mappendComparing (<>) :: (a -> a -> Bool)
 // (a -> a -> Bool) -> (a -> a -> Bool)
