@@ -12,5 +12,5 @@ function zipWithN() {
             x => x[i]
         ))
     ) : [];
-};
+}
 ```

@@ -13,7 +13,7 @@ const splitOn = pat => src =>
                 (a, i) => Tuple(
                     fst(a).concat([src.slice(snd(a), i)])
                 )(lng + i),
-                Tuple([])(0),
+                Tuple([])(0)
             );
         return fst(tpl).concat([src.slice(snd(tpl))]);
     })();

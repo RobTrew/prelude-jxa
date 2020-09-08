@@ -11,6 +11,6 @@ const regexMatches = rgx =>
             m => Boolean(m) ? (
                 Just(Tuple(m)(r.exec(s)))
             ) : Nothing()
-        )(r.exec(s))
+        )(r.exec(s));
     };
 ```

@@ -31,5 +31,5 @@ function range() {
             )
         ) : enumFromTo(as[0])(bs[0])
     ) : [];
-};
+}
 ```

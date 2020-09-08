@@ -11,5 +11,5 @@ const mappend = a =>
         append
     ) : 'function' === typeof a ? (
         mappendFn
-    ) : mappendOrd)(a)(b))(a.type)
+    ) : mappendOrd)(a)(b))(a.type);
 ```

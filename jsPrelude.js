@@ -2388,10 +2388,9 @@ const map = f =>
 
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f =>
-    // Map-accumulation is a combination of map and a catamorphism;
-    // it applies a function to each element of a list, passing an
-    // accumulating parameter from left to right, and returning a
-    // final value of this accumulator together with the new list.
+    // A tuple of an accumulation and a list 
+    // obtained by a combined map and fold,
+    // with accumulation from left to right.
     acc => xs => [...xs].reduce((a, x) => {
         const pair = f(a[0])(x);
         return Tuple(pair[0])(a[1].concat(pair[1]));
@@ -2413,8 +2412,8 @@ const mapAccumL_Tree = f => {
 
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumR = f =>
-    // A tuple of an accumulation and a list derived by a
-    // combined map and fold,
+    // A tuple of an accumulation and a list 
+    // obtained by a combined map and fold,
     // with accumulation from right to left.
     acc => xs => [...xs].reduceRight((a, x) => {
         const pair = f(a[0])(x);
@@ -2470,7 +2469,7 @@ const mappend = a =>
         append
     ) : 'function' === typeof a ? (
         mappendFn
-    ) : mappendOrd)(a)(b))(a.type)
+    ) : mappendOrd)(a)(b))(a.type);
 
 // mappendComparing (<>) :: (a -> a -> Bool)
 // (a -> a -> Bool) -> (a -> a -> Bool)
@@ -2574,7 +2573,7 @@ const maximumBy = f =>
                 ) : a,
                 ys[0]
             )
-        ) : undefined
+        ) : undefined;
     };
 
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
@@ -2748,7 +2747,7 @@ const minimumBy = f =>
                 ) : a,
                 ys[0]
             )
-        ) : undefined
+        ) : undefined;
     };
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
@@ -3146,7 +3145,7 @@ function range() {
             )
         ) : enumFromTo(as[0])(bs[0])
     ) : [];
-};
+}
 
 // ratio :: Int -> Int -> Ratio Int
 const ratio = x => y => {
@@ -3218,10 +3217,10 @@ const readHex = s =>
 // readLR :: Read a => String -> Either String a
 const readLR = s => {
     try {
-        return Right(JSON.parse(s))
+        return Right(JSON.parse(s));
     } catch (e) {
         return Left(e.message);
-    };
+    }
 };
 
 // recip :: Num -> Num
@@ -3246,7 +3245,7 @@ const regexMatches = rgx =>
             m => Boolean(m) ? (
                 Just(Tuple(m)(r.exec(s)))
             ) : Nothing()
-        )(r.exec(s))
+        )(r.exec(s));
     };
 
 // rem :: Int -> Int -> Int
@@ -3352,7 +3351,7 @@ const roundTo = n => x => {
 // runAction :: Action a -> a
 const runAction = act =>
     // Evaluation of an action.
-    act['act'](act['arg']);
+    act.act(act.arg);
 
 // safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 const safeMay = p => f => x =>
@@ -3469,7 +3468,7 @@ const show = x => {
         ) : 'string' !== typeof v ? (
             v
         ) : v;
-    })
+    });
 };
 
 // showBinary :: Int -> String
@@ -3788,7 +3787,7 @@ const splitOn = pat => src =>
                 (a, i) => Tuple(
                     fst(a).concat([src.slice(snd(a), i)])
                 )(lng + i),
-                Tuple([])(0),
+                Tuple([])(0)
             );
         return fst(tpl).concat([src.slice(snd(tpl))]);
     })();
@@ -4122,7 +4121,7 @@ const takeWhileR = p =>
 
 // taskPaperDateString :: Date -> String
 const taskPaperDateString = dte => {
-    const [d, t] = iso8601Local(new Date()).split('T');
+    const [d, t] = iso8601Local(dte).split('T');
     return [d, t.slice(0, 5)].join(' ');
 };
 
@@ -4903,4 +4902,4 @@ function zipWithN() {
             x => x[i]
         ))
     ) : [];
-};
+}

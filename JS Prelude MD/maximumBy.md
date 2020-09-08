@@ -10,6 +10,6 @@ const maximumBy = f =>
                 ) : a,
                 ys[0]
             )
-        ) : undefined
+        ) : undefined;
     };
 ```
