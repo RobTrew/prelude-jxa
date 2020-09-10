@@ -42,7 +42,7 @@ const treeFromNestedDict = dict => {
                     )
                 );
             })()
-        ) : Right(Node(dct)([]))
+        ) : Right(Node(dct)([]));
     };
     return go(dict);
 };

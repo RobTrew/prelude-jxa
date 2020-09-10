@@ -8,7 +8,7 @@ const takeWhileGen = p => xs => {
     while (!nxt.done && p(v)) {
         ys.push(v);
         nxt = xs.next();
-        v = nxt.value
+        v = nxt.value;
     }
     return ys;
 };

@@ -19,7 +19,7 @@ const unfoldl = f => v => {
     while (true) {
         const mb = f(xr[0]);
         if (mb.Nothing) {
-            return xs
+            return xs;
         } else {
             xr = mb.Just;
             xs = [xr[1]].concat(xs);

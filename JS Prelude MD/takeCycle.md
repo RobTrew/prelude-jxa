@@ -12,6 +12,6 @@ const takeCycle = n =>
                     xs
                 )
             )
-        ).slice(0, n)
+        ).slice(0, n);
     };
 ```

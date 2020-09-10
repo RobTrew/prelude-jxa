@@ -3067,19 +3067,23 @@ const quickSort = xs =>
     })() : xs;
 
 // quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const quickSortBy = cmp =>
-    // Included only for comparison with AppleScript
-    // sort and sortBy are faster and more flexible
-    xs => xs.length > 1 ? (() => {
+const quickSortBy = cmp => {
+    // Included only for comparison with AppleScript.
+    // sort and sortBy are faster and more flexible.
+    const go = xs => xs.length > 1 ? (() => {
         const
             h = xs[0],
-            lessMore = partition(x => 1 !== cmp(x)(h))(
-                xs.slice(1)
-            );
-        return [].concat.apply(
-            [], [quickSortBy(cmp)(lessMore[0]), h, quickSortBy(cmp)(lessMore[1])]
-        );
+            lessMore = partition(
+                x => 1 !== cmp(x)(h)
+            )(xs.slice(1));
+        return [].concat.apply([], [
+            go(lessMore[0]),
+            h,
+            go(lessMore[1])
+        ]);
     })() : xs;
+    return go;
+};
 
 // quot :: Int -> Int -> Int
 const quot = n =>
@@ -3915,10 +3919,10 @@ const succ = x => {
         const [i, mx] = [x, maxBound(x)].map(fromEnum);
         return i < mx ? (
             toEnum(x)(1 + i)
-        ) : Error('succ :: enum out of range.')
+        ) : Error('succ :: enum out of range.');
     })() : x < Number.MAX_SAFE_INTEGER ? (
         1 + x
-    ) : Error('succ :: Num out of range.')
+    ) : Error('succ :: Num out of range.');
 };
 
 // succMay :: Enum a => a -> Maybe a
@@ -3928,10 +3932,10 @@ const succMay = x => {
         const [i, mx] = [x, maxBound(x)].map(fromEnum);
         return i < mx ? (
             Just(toEnum(x)(1 + i))
-        ) : Nothing()
+        ) : Nothing();
     })() : x < Number.MAX_SAFE_INTEGER ? (
         Just(1 + x)
-    ) : Nothing()
+    ) : Nothing();
 };
 
 // sum :: [Num] -> Num
@@ -4018,7 +4022,7 @@ const takeCycle = n =>
                     xs
                 )
             )
-        ).slice(0, n)
+        ).slice(0, n);
     };
 
 // takeDirectory :: FilePath -> FilePath
@@ -4103,7 +4107,7 @@ const takeWhileGen = p => xs => {
     while (!nxt.done && p(v)) {
         ys.push(v);
         nxt = xs.next();
-        v = nxt.value
+        v = nxt.value;
     }
     return ys;
 };
@@ -4133,7 +4137,7 @@ const then = ma => mb =>
         thenMay
     ) : thenIO)(
         ...[ma, mb]
-    )
+    );
 
 // thenIO (>>) :: IO a -> IO b -> IO b
 const thenIO = ma => 
@@ -4242,7 +4246,7 @@ const traverse = f => tx => {
                 traverseTuple
             ) : traverseList
         ) : traverseList
-    )(f)(tx)
+    )(f)(tx);
 };
 
 // traverseLR :: Applicative f => 
@@ -4371,7 +4375,7 @@ const treeFromNestedDict = dict => {
                     )
                 );
             })()
-        ) : Right(Node(dct)([]))
+        ) : Right(Node(dct)([]));
     };
     return go(dict);
 };
@@ -4429,7 +4433,7 @@ const treeMenu = tree => {
                     }
                 )
             )
-        )(Tuple(true)([]))[1]
+        )(Tuple(true)([]))[1];
     };
     return go(tree);
 };
@@ -4487,7 +4491,7 @@ const treeMenuBy = fNodeKey => {
                     }
                 )
             )
-        )(Tuple(true)([]))[1]
+        )(Tuple(true)([]))[1];
     };
     return go;
 };
@@ -4604,7 +4608,7 @@ const unfoldl = f => v => {
     while (true) {
         const mb = f(xr[0]);
         if (mb.Nothing) {
-            return xs
+            return xs;
         } else {
             xr = mb.Just;
             xs = [xr[1]].concat(xs);
@@ -4630,10 +4634,10 @@ const unfoldr = f =>
         while (true) {
             const mb = f(xr[1]);
             if (mb.Nothing) {
-                return xs
+                return xs;
             } else {
                 xr = mb.Just;
-                xs.push(xr[0])
+                xs.push(xr[0]);
             }
         }
     };
@@ -4859,7 +4863,7 @@ const zipWithGen = f => ga => gb => {
         while (!a.Nothing && !b.Nothing) {
             let
                 ta = a.Just,
-                tb = b.Just
+                tb = b.Just;
             yield(f(fst(ta))(fst(tb)));
             a = uncons(snd(ta));
             b = uncons(snd(tb));

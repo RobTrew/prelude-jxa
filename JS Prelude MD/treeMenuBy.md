@@ -52,7 +52,7 @@ const treeMenuBy = fNodeKey => {
                     }
                 )
             )
-        )(Tuple(true)([]))[1]
+        )(Tuple(true)([]))[1];
     };
     return go;
 };

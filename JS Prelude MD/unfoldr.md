@@ -20,10 +20,10 @@ const unfoldr = f =>
         while (true) {
             const mb = f(xr[1]);
             if (mb.Nothing) {
-                return xs
+                return xs;
             } else {
                 xr = mb.Just;
-                xs.push(xr[0])
+                xs.push(xr[0]);
             }
         }
     };

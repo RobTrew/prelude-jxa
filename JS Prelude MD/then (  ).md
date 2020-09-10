@@ -7,5 +7,5 @@ const then = ma => mb =>
         thenMay
     ) : thenIO)(
         ...[ma, mb]
-    )
+    );
 ```

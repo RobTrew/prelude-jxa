@@ -32,7 +32,7 @@ const treeMenu = tree => {
                     }
                 )
             )
-        )(Tuple(true)([]))[1]
+        )(Tuple(true)([]))[1];
     };
     return go(tree);
 };

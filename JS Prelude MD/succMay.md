@@ -6,9 +6,9 @@ const succMay = x => {
         const [i, mx] = [x, maxBound(x)].map(fromEnum);
         return i < mx ? (
             Just(toEnum(x)(1 + i))
-        ) : Nothing()
+        ) : Nothing();
     })() : x < Number.MAX_SAFE_INTEGER ? (
         Just(1 + x)
-    ) : Nothing()
+    ) : Nothing();
 };
 ```

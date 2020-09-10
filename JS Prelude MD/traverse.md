@@ -15,6 +15,6 @@ const traverse = f => tx => {
                 traverseTuple
             ) : traverseList
         ) : traverseList
-    )(f)(tx)
+    )(f)(tx);
 };
 ```
