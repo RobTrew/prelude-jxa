@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (f, g) => x => f(g(x));"
+      "data": "// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (...fs) =>\n    // A function defined by the right-to-left\n    // composition of all the functions in fs.\n    fs.reduce(\n        (f, g) => x => f(g(x)),\n        x => x\n    );"
     }
   ]
 }

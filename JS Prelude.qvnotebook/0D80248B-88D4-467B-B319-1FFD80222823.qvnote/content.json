@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// odd :: Int -> Bool\nconst odd = n => !even(n);"
+      "data": "// odd :: Int -> Bool\nconst odd = n =>\n    !even(n);"
     }
   ]
 }

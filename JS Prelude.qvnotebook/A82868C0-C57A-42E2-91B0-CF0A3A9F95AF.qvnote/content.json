@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = (a, b) =>\n    a.Nothing ? b : b.Nothing ? a :\n    Just(mappend(a.Just, b.Just));"
+      "data": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = a =>\n     b => a.Nothing ? (\n        b\n    ) : b.Nothing ? (\n        a\n    ) : Just(\n        mappend(a.Just)(\n            b.Just\n        )\n    );"
     }
   ]
 }

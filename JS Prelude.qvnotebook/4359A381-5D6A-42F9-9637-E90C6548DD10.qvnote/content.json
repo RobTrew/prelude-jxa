@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// renameFile :: FilePath -> FilePath -> IO ()\nconst renameFile = (fp, fp2) => {\n    const error = $();\n    return $.NSFileManager.defaultManager\n        .moveItemAtPathToPathError(fp, fp2, error) ? (\n            Right('Moved to: ' + fp2)\n        ) : Left(ObjC.unwrap(error.localizedDescription));\n};"
+      "data": "// renameFile :: FilePath -> FilePath -> IO ()\nconst renameFile = fp => fp2 => {\n    const error = $();\n    return $.NSFileManager.defaultManager\n        .moveItemAtPathToPathError(fp, fp2, error) ? (\n            Right('Moved to: ' + fp2)\n        ) : Left(ObjC.unwrap(error.localizedDescription));\n};"
     }
   ]
 }

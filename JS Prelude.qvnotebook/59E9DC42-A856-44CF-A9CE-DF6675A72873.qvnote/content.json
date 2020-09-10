@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// setMember :: Ord a => a -> Set a -> Bool\nconst setMember = (x, set) =>\n    set.has(x);"
+      "data": "// setMember :: Ord a => a -> Set a -> Bool\nconst setMember = x => oSet =>\n    oSet.has(x);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// toUpper :: String -> String\nconst toUpper = s => s.toLocaleUpperCase();"
+      "data": "// toUpper :: String -> String\nconst toUpper = s =>\n    s.toLocaleUpperCase();"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input \n    // rows of even length.\n    0 < rows.length ? rows[0].map(\n        (x, i) => concatMap(\n            x => x[i],\n            rows\n        )\n    ) : [];"
+      "data": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input \n    // rows of even length.\n    0 < rows.length ? rows[0].map(\n        (x, i) => rows.flatMap(\n            x => x[i]\n        )\n    ) : [];"
     }
   ]
 }

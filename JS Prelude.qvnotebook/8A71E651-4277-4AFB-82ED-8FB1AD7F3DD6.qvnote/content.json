@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = flr => liftA2LR(id)(flr)"
+      "data": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = flr =>\n  // Either a Left value, or the application of a\n  // function in Either to a value in Either.\n  liftA2LR(x => x)(flr);"
     }
   ]
 }

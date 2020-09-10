@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// replicateString :: Int -> String -> String\nconst replicateString = (n, s) => s.repeat(n);"
+      "data": "// replicateString :: Int -> String -> String\nconst replicateString = n => \n    s => s.repeat(n);"
     }
   ]
 }

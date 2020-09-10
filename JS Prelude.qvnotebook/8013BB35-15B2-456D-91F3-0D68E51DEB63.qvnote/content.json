@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// dropAround :: (a -> Bool) -> [a] -> [a]\n// dropAround :: (Char -> Bool) -> String -> String\nconst dropAround = (p, xs) => dropWhile(p, dropWhileEnd(p, xs));"
+      "data": "// dropAround :: (a -> Bool) -> [a] -> [a]\n// dropAround :: (Char -> Bool) -> String -> String\nconst dropAround = p =>\n    xs => dropWhile(p)(\n        dropWhileEnd(p)(xs)\n    );"
     }
   ]
 }

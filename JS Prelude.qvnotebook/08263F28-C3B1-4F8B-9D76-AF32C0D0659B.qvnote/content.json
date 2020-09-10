@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = (a, b) => {\n    const t = a.type;\n    return (\n        Boolean(t) ? (\n            'Maybe' === t ? (\n                mappendMaybe\n            ) : 'Ordering' === t ? (\n                mappendOrdering\n            ) : mappendTuple\n        ) : 'function' !== typeof a ? (\n            append\n        ) : mappendFn\n    )(a, b);\n};"
+      "data": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation \n    // defined for various monoid types.\n    b => (t => (Boolean(t) ? (\n        'Maybe' === t ? (\n            mappendMaybe\n        ) : mappendTuple\n    ) : Array.isArray(a) ? (\n        append\n    ) : 'function' === typeof a ? (\n        mappendFn\n    ) : mappendOrd)(a)(b))(a.type);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = (mb, mf) =>\n    mb.Nothing ? mb : mf(mb.Just);"
+      "data": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing ? (\n        mb\n    ) : mf(mb.Just);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dropWhileGen = (p, xs) => {\n    let\n        nxt = xs.next(),\n        v = nxt.value;\n    while (!nxt.done && p(v)) {\n        nxt = xs.next();\n        v = nxt.value;\n    }\n    return cons(v, xs);\n};"
+      "data": "// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dropWhileGen = p =>\n    xs => {\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n        while (!nxt.done && p(v)) {\n            nxt = xs.next();\n            v = nxt.value;\n        }\n        return cons(v)(xs);\n    };"
     }
   ]
 }

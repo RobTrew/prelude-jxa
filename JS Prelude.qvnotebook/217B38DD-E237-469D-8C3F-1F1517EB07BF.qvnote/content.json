@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b\nconst apTree = (tf, tx) => {\n    const go = t =>\n        Node(\n            t.root(tx.root),\n            tx.nest.map(\n                curry(fmapTree)(t.root)\n            ).concat(t.nest.map(go))\n        );\n    return go(tf);\n};"
+      "data": "// apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b\nconst apTree = tf =>\n    // A new tree derived by applying each of a tree\n    // of functions to each node value in another tree.\n    liftA2Tree(\n        x => x\n    )(tf);"
     }
   ]
 }

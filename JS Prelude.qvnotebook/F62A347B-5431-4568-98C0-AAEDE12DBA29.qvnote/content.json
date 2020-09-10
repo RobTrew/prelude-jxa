@@ -1,0 +1,10 @@
+{
+  "title": "dot",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// dot (.) :: (b -> c) -> (a -> b) -> a -> c\nconst dot = f =>\n    // The composition of two functions.\n    g => x => f(g(x));"
+    }
+  ]
+}

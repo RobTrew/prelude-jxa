@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// filePath :: String -> FilePath\nconst filePath = s =>\n    ObjC.unwrap(ObjC.wrap(s)\n        .stringByStandardizingPath);"
+      "data": "// filePath :: String -> FilePath\nconst filePath = s =>\n    // The given file path with any tilde expanded\n    // to the full user directory path.\n    ObjC.unwrap(ObjC.wrap(s)\n        .stringByStandardizingPath);"
     }
   ]
 }

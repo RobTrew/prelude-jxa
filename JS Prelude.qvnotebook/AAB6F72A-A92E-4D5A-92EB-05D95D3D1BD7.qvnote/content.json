@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]\nconst zipGen = (ga, gb) => {\n    function* go(ma, mb) {\n        let\n            a = ma,\n            b = mb;\n        while(!a.Nothing && !b.Nothing) {\n            let\n                ta = a.Just,\n                tb = b.Just\n            yield(Tuple(fst(ta), fst(tb)));\n            a = uncons(snd(ta));\n            b = uncons(snd(tb));\n        }\n    }\n    return go(uncons(ga), uncons(gb));\n};"
+      "data": "// zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]\nconst zipGen = ga => gb => {\n    function* go(ma, mb) {\n        let\n            a = ma,\n            b = mb;\n        while(!a.Nothing && !b.Nothing) {\n            let\n                ta = a.Just,\n                tb = b.Just;\n            yield(\n                Tuple(fst(ta))(\n                    fst(tb)\n                )\n            );\n            a = uncons(snd(ta));\n            b = uncons(snd(tb));\n        }\n    }\n    return go(uncons(ga), uncons(gb));\n};"
     }
   ]
 }

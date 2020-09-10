@@ -1,0 +1,10 @@
+{
+  "title": "mul",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mul (*) :: Num a => a -> a -> a\nconst mul = a =>\n    b => a * b;"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// indexOf :: Eq a => [a] -> [a] -> Maybe Int\n// indexOf :: String -> String -> Maybe Int\nconst indexOf = (needle, haystack) =>\n    'string' !== typeof haystack ? (\n        findIndex(xs => isPrefixOf(needle, xs), tails(haystack))\n    ) : (() => {\n        const i = haystack.indexOf(needle);\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    })();"
+      "data": "// indexOf :: Eq a => [a] -> [a] -> Maybe Int\n// indexOf :: String -> String -> Maybe Int\nconst indexOf = needle =>\n    haystack => 'string' !== typeof haystack ? (\n        findIndex(xs => isPrefixOf(needle)(xs))(\n            tails(haystack)\n        )\n    ) : (() => {\n        const i = haystack.indexOf(needle);\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    })();"
     }
   ]
 }

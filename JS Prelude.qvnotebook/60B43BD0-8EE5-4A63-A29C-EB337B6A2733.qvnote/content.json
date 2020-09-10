@@ -1,0 +1,10 @@
+{
+  "title": "runAction",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// runAction :: Action a -> a\nconst runAction = act =>\n    // Evaluation of an action.\n    act.act(act.arg);"
+    }
+  ]
+}

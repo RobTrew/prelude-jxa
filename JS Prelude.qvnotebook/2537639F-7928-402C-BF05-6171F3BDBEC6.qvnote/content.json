@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unfoldl :: (b -> Maybe (b, a)) -> b -> [a]\nconst unfoldl = (f, v) => {\n    let\n        xr = [v, v],\n        xs = [];\n    while (true) {\n        const mb = f(xr[0]);\n        if (mb.Nothing) {\n            return xs\n        } else {\n            xr = mb.Just;\n            xs = [xr[1]].concat(xs);\n        }\n    }\n};"
+      "data": "// unfoldl :: (b -> Maybe (b, a)) -> b -> [a]\nconst unfoldl = f => v => {\n    // Dual to reduce or foldl.\n    // Where these reduce a list to a summary value, unfoldl\n    // builds a list from a seed value.\n    // Where f returns Just(a, b), a is appended to the list,\n    // and the residual b is used as the argument for the next\n    // application of f.\n    // Where f returns Nothing, the completed list is returned.\n    let\n        xr = [v, v],\n        xs = [];\n    while (true) {\n        const mb = f(xr[0]);\n        if (mb.Nothing) {\n            return xs;\n        } else {\n            xr = mb.Just;\n            xs = [xr[1]].concat(xs);\n        }\n    }\n};"
     }
   ]
 }

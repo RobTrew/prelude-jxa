@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = (p, xs) => {\n  for (var i = 0, lng = xs.length; (i < lng) && !p(xs[i]); i++) {};\n  return Tuple(xs.slice(0, i), xs.slice(i));\n};"
+      "data": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    xs => {\n        const \n            iLast = xs.length - 1,\n            ys = [...xs];\n        return splitAt(\n            until(i => iLast < i || p(ys[i]))(\n                i => 1 + i\n            )(0)\n        )(ys);\n    };"
     }
   ]
 }

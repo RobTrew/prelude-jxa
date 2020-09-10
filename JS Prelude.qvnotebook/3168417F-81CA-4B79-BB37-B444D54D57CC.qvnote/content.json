@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// takeAround :: (a -> Bool) -> [a] -> [a]\nconst takeAround = (p, xs) => {\n    const ys = takeWhile(p, xs);\n    return ys.length < xs.length ? (\n        ys.concat(takeWhileR(p, xs))\n    ) : ys;\n};"
+      "data": "// takeAround :: (a -> Bool) -> [a] -> [a]\nconst takeAround = p => xs => {\n    const ys = takeWhile(p)(xs);\n    return ys.length < xs.length ? (\n        ys.concat(takeWhileR(p)(xs))\n    ) : ys;\n};"
     }
   ]
 }

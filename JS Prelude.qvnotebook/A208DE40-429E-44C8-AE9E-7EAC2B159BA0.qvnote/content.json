@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// not :: Bool -> Bool\nconst not = b => !b;"
+      "data": "// not :: Bool -> Bool\nconst not = b =>\n    !b;"
     }
   ]
 }

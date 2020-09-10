@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// writeFileLR :: FilePath -> Either String IO FilePath\nconst writeFileLR = (strPath, strText) => {\n    const\n        e = $(),\n        fp = $(strPath)\n        .stringByStandardizingPath;\n    return $.NSString.alloc.initWithUTF8String(strText)\n        .writeToFileAtomicallyEncodingError(\n            fp, false,\n            $.NSUTF8StringEncoding, e\n        ) ? (\n            Right(ObjC.unwrap(fp))\n        ) : Left(ObjC.unwrap(e.localizedDescription));\n};"
+      "data": "// writeFileLR :: FilePath -> Either String IO FilePath\nconst writeFileLR = fp =>\n    s => {\n        const\n            e = $(),\n            efp = $(fp)\n            .stringByStandardizingPath;\n        return $.NSString.alloc.initWithUTF8String(s)\n            .writeToFileAtomicallyEncodingError(\n                efp, false,\n                $.NSUTF8StringEncoding, e\n            ) ? (\n                Right(ObjC.unwrap(efp))\n            ) : Left(ObjC.unwrap(e.localizedDescription));\n    };"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// properFraction :: Real -> (Int, Real)\nconst properFraction = n => {\n    const i = Math.floor(n) + (n < 0 ? 1 : 0);\n    return Tuple(i, n - i);\n};"
+      "data": "// properFraction :: Real -> (Int, Real)\nconst properFraction = n => {\n    const i = Math.floor(n) + (n < 0 ? 1 : 0);\n    return Tuple(i)(n - i);\n};"
     }
   ]
 }

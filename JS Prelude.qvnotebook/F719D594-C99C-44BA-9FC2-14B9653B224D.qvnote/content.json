@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// compare :: a -> a -> Ordering\nconst compare = (a, b) =>\n    a < b ? -1 : (a > b ? 1 : 0);"
+      "data": "// compare :: a -> a -> Ordering\nconst compare = a =>\n  b => a < b ? -1 : (a > b ? 1 : 0);"
     }
   ]
 }

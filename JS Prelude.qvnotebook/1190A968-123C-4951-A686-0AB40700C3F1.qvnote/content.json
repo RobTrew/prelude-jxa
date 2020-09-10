@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// safeMay :: (a -> Bool) -> (a -> b) -> Maybe b\nconst safeMay = (p, f, x) =>\n    p(x) ? Just(f(x)) : Nothing();"
+      "data": "// safeMay :: (a -> Bool) -> (a -> b) -> Maybe b\nconst safeMay = p => f => x =>\n    p(x) ? Just(f(x)) : Nothing();"
     }
   ]
 }

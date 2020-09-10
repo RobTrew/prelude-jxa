@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    concatMap(\n        x => ('Either' === x.type) && (undefined !== x.Right) ? (\n            [x.Right]\n        ) : [], xs\n    );"
+      "data": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    xs.flatMap(\n        x => ('Either' === x.type) && (\n            undefined !== x.Right\n        ) ? [x.Right] : []\n    );"
     }
   ]
 }

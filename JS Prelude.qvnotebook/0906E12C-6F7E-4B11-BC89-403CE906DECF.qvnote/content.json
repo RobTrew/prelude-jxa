@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// showJSON :: a -> String\nconst showJSON = x => JSON.stringify(x, null, 2);"
+      "data": "// showJSON :: a -> String\nconst showJSON = x =>\n    // Indented JSON representation of the value x.\n    JSON.stringify(x, null, 2);"
     }
   ]
 }

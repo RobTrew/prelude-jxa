@@ -1,10 +1,10 @@
 {
-  "title": "toListTree",
+  "title": "listFromTree",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// toListTree :: Tree a -> [a]\nconst toListTree = tree => {\n    const go = x => [\n      x.root,\n      ...[].concat.apply([], x.nest.map(go))\n    ];\n    return go(tree);\n};"
+      "data": "// listFromTree :: Tree a -> [a]\nconst listFromTree = tree => {\n    const go = x => [\n      x.root,\n      ...[].concat.apply([], x.nest.map(go))\n    ];\n    return go(tree);\n};"
     }
   ]
 }

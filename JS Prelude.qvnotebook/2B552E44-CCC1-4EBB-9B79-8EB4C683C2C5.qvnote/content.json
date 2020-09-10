@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// notElem :: Eq a => a -> [a] -> Bool\nconst notElem = (x, xs) => -1 === xs.indexOf(x);"
+      "data": "// notElem :: Eq a => a -> [a] -> Bool\nconst notElem = x => \n    xs => !xs.includes(x);"
     }
   ]
 }

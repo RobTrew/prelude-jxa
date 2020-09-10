@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// pureTree :: a -> Tree a\nconst pureTree = x => Node(x, []);"
+      "data": "// pureTree :: a -> Tree a\nconst pureTree = x =>\n    Node(x)([]);"
     }
   ]
 }

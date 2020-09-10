@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = (f, xs) =>\n    0 < xs.length ? (\n        Just(xs.slice(1)\n            .reduce(f, xs[0]))\n    ) : Nothing();"
+      "data": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => (\n        ys => 0 < ys.length ? (\n            Just(ys.slice(1)\n                .reduce(uncurry(f), ys[0]))\n        ) : Nothing()\n    )(list(xs));"
     }
   ]
 }

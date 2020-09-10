@@ -9,7 +9,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = (p, xs) =>\n    splitAt(until(\n        i => !p(xs[i]),\n        i => 1 + i,\n        0\n    ), xs);"
+      "data": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const\n            ys = 'string' !== typeof xs ? (\n                list(xs)\n            ) : xs,\n            iLast = ys.length - 1;\n        return splitAt(\n            until(\n                i => iLast < i || !p(ys[i])\n            )(i => 1 + i)(0)\n        )(ys);\n    };"
     }
   ]
 }

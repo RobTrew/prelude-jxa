@@ -1,0 +1,10 @@
+{
+  "title": "filteredTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// filteredTree (a -> Bool) -> Tree a -> Tree a\nconst filteredTree = p =>\n    // A tree including only those children\n    // which either match the predicate p, or have\n    // descendants which match the predicate p.\n    foldTree(x => xs =>\n        Node(x)(xs.filter(\n            tree => (0 < tree.nest.length) || (\n                p(tree.root)\n            )\n        ))\n    );"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// modificationTime :: FilePath -> Either String Date\nconst modificationTime = fp =>\n    bindLR(\n       fileStatus(fp),\n       dct => Right(ObjC.unwrap(dct.NSFileModificationDate))\n    );"
+      "data": "// modificationTime :: FilePath -> Either String Date\nconst modificationTime = fp =>\n    bindLR(fileStatus(fp))(\n       dct => Right(ObjC.unwrap(dct.NSFileModificationDate))\n    );"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    0 < xs.length ? Just(xs[0]) : Nothing();"
+      "data": "// headMay :: [a] -> Maybe a\nconst headMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys[0])\n    ) : Nothing()\n)(list(xs));"
     }
   ]
 }

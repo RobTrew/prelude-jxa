@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// | Build a forest from a list of seed values"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]\nconst unfoldForest = (f, xs) =>\n    xs.map(b => unfoldTree(f, b));"
+      "data": "// unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]\nconst unfoldForest = f =>\n    // A forest built from a list of seed values.\n    x => xs => xs.map(unfoldTree(f));"
     }
   ]
 }

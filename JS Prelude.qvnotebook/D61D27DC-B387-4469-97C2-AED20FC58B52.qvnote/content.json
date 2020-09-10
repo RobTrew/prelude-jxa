@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// lefts :: [Either a b] -> [a]\nconst lefts = xs =>\n    concatMap(\n        x => ('Either' === x.type) && (undefined !== x.Left) ? (\n            [x.Left]\n        ) : [], xs\n    );"
+      "data": "// lefts :: [Either a b] -> [a]\nconst lefts = xs =>\n    xs.flatMap(\n        x => ('Either' === x.type) && (\n            undefined !== x.Left\n        ) ? [x.Left] : []\n    );"
     }
   ]
 }

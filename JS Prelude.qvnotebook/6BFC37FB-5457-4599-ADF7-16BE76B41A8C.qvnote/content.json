@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// sort :: Ord a => [a] -> [a]\nconst sort = xs => xs.slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));"
+      "data": "// sort :: Ord a => [a] -> [a]\nconst sort = xs => list(xs).slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));"
     }
   ]
 }

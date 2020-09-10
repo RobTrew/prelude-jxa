@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// ratio :: Int -> Int -> Ratio Int\nconst ratio = (x, y) => {\n  const go = (x, y) =>\n    0 !== y ? (() => {\n      const d = gcd(x, y);\n      return {\n        type: 'Ratio',\n        'n': quot(x, d), // numerator\n        'd': quot(y, d) // denominator\n      };\n    })() : undefined;\n  return go(x * signum(y), abs(y));\n};"
+      "data": "// ratio :: Int -> Int -> Ratio Int\nconst ratio = x => y => {\n  const go = (x, y) =>\n    0 !== y ? (() => {\n      const d = gcd(x)(y);\n      return {\n        type: 'Ratio',\n        'n': quot(x)(d), // numerator\n        'd': quot(y)(d) // denominator\n      };\n    })() : undefined;\n  return go(x * signum(y), abs(y));\n};"
     }
   ]
 }

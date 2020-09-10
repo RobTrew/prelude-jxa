@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// insert :: Ord a => a -> [a] -> [a]\nconst insert = (x, ys) => {\n    const cmp = (a, b) => a < b ? -1 : (a > b ? 1 : 0);\n    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};\n    return ys.slice(0, i)\n        .concat(x)\n        .concat(ys.slice(i));\n};"
+      "data": "// insert :: Ord a => a -> [a] -> [a]\nconst insert = x =>\n    ys => {\n        const [pre, post] = Array.from(break_(y => y >= x)(ys));\n        return [...pre, x, ...post];\n    };"
     }
   ]
 }

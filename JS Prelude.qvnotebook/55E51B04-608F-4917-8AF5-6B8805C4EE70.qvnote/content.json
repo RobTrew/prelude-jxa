@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// applyN :: Int -> (a -> a) -> a -> a\nconst applyN = (n, f, x) =>\n    Array.from({\n        length: n\n    }, () => f)\n    .reduce((a, g) => g(a), x)"
+      "data": "// applyN :: Int -> (a -> a) -> a -> a\nconst applyN = n =>\n    // The value of n applications of f to x.\n    // (Church numeral n)\n    f => x => Array.from({\n            length: n\n        }, () => f)\n        .reduce((a, g) => g(a), x);"
     }
   ]
 }

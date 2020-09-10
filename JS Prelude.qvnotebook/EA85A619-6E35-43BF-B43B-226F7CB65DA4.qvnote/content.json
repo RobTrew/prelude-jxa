@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// subtract :: Num -> Num -> Num\nconst subtract = (x, y) => y - x;"
+      "data": "// subtract :: Num -> Num -> Num\nconst subtract = x =>\n    y => y - x;"
     }
   ]
 }

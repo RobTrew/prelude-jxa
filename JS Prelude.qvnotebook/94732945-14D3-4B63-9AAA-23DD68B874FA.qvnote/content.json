@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nfunction zipWithN() {\n    const\n        args = Array.from(arguments),\n        rows = args.slice(1),\n        f = args[0];\n    return 1 < rows.length ? map(\n        i => f(...map(r => r[i], rows)),\n        enumFromTo(\n            0,\n            Math.min(...map(length, rows)) -1,\n        )\n    ) : rows;\n}\n\n// or\n\n// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\n// const zipWithN = (f, tplLists) =>\n//     map(x => f(...Array.from(x)),\n//         zipN(...Array.from(tplLists))\n//     );"
+      "data": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nfunction zipWithN() {\n    const\n        args = Array.from(arguments),\n        rows = args.slice(1).map(list),\n        f = compose(uncurryN(args[0]), TupleN),\n        n = Math.min(...rows.map(x => x.length));\n    return 0 < n ? (\n        take(n))(rows[0]).map(\n        (x, i) => f(rows.flatMap(\n            x => x[i]\n        ))\n    ) : [];\n}"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// filter :: (a -> Bool) -> [a] -> [a]\nconst filter = (f, xs) => xs.filter(f);"
+      "data": "// filter :: (a -> Bool) -> [a] -> [a]\nconst filter = p =>\n    // The elements of xs which match\n    // the predicate p.\n    xs => [...xs].filter(p);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst deleteFirstsBy = (fnEq, xs, ys) =>\n    ys.reduce((x, y) => deleteBy(fnEq, y, x), xs);"
+      "data": "// deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst deleteFirstsBy = fEq =>\n    // The first list purged of the first instance of\n    // each predicate-matching element in the second list.\n    foldl(flip(deleteBy(fEq)));"
     }
   ]
 }

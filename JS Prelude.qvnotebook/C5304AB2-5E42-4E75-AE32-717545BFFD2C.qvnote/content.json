@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// pureTuple :: a -> (a, a)\nconst pureTuple = x => Tuple('', x);"
+      "data": "// pureTuple :: a -> (a, a)\nconst pureTuple = x =>\n    Tuple('')(x);"
     }
   ]
 }

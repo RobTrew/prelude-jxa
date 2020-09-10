@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// dropWhileEnd :: (a -> Bool) -> [a] -> [a]\n// dropWhileEnd :: (Char -> Bool) -> String -> String\nconst dropWhileEnd = (p, xs) => {\n    let i = xs.length;\n    while (i-- && p(xs[i])) {}\n    return xs.slice(0, i + 1);\n};"
+      "data": "// dropWhileEnd :: (a -> Bool) -> [a] -> [a]\n// dropWhileEnd :: (Char -> Bool) -> String -> [Char]\nconst dropWhileEnd = p =>\n    // xs without the longest suffix for which\n    // p returns true for all elements.\n    xs => {\n        let i = xs.length;\n        while (i-- && p(xs[i])) {}\n        return xs.slice(0, i + 1);\n    };"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]\nconst zipWithM = (f, xs, ys) =>\n    sequenceA(zipWith(f, xs, ys));"
+      "data": "// zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]\nconst zipWithM = f => \n    xs => ys =>\n        sequenceA(\n            zipWith(f)(\n                [...xs]\n            )([...ys])\n        );"
     }
   ]
 }

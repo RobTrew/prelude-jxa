@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// chop :: ([a] -> (b, [a])) -> [a] -> [b]\nconst chop = (f, as) => {\n    const go = xs =>\n        0 < xs.length ? (() => {\n            const [b, ys] = Array.from(f(xs));\n            return cons(b, go(ys))\n        })() : [];\n    return go(as);\n};"
+      "data": "// chop :: ([a] -> (b, [a])) -> [a] -> [b]\nconst chop = f =>\n    // A segmentation of xs by tail recursion with a\n    // function which returns a (prefix, residue) tuple.\n    xs => {\n        const go = xs =>\n            0 < xs.length ? (() => {\n                const [b, bs] = Array.from(f(xs));\n                return cons(b)(go(bs));\n            })() : [];\n        return go([...xs]);\n    };"
     }
   ]
 }

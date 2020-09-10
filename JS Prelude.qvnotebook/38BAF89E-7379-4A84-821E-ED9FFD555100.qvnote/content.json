@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// The root elements of a tree in pre-order."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// flattenTree :: Tree a -> [a]\nconst flattenTree = t => {\n    const\n      go = (xs, x) => [x.root]\n      .concat(x.nest.reduceRight(go, xs));\n    return go([], t);\n};"
+      "data": "// flattenTree :: Tree a -> [a]\nconst flattenTree = tree => {\n    const\n        go = (xs, node) => [node.root].concat(\n            node.nest.reduceRight(go, xs)\n        );\n    return go([], tree);\n};"
     }
   ]
 }

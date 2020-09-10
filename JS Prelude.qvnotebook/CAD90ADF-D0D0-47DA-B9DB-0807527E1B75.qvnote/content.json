@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// abs :: Num -> Num\nconst abs = Math.abs;"
+      "data": "// abs :: Num -> Num\nconst abs = \n// Absolute value of a given number - without the sign.\n  Math.abs;"
     }
   ]
 }

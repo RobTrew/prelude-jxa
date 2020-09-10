@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apList (<*>) :: [a -> b] -> [a] -> [b]\nconst apList = fs =>\n    // The application of each of a list of functions,\n    // to each of a list of values.\n    xs => liftA2List(x => x)(fs)(xs)"
+      "data": "// apList (<*>) :: [(a -> b)] -> [a] -> [b]\nconst apList = fs =>\n    // The sequential application of each of a list\n    // of functions to each of a list of values.\n    // apList([x => 2 * x, x => 20 + x])([1, 2, 3])\n    //     -> [2, 4, 6, 21, 22, 23]\n    xs => fs.flatMap(f => xs.map(f));"
     }
   ]
 }

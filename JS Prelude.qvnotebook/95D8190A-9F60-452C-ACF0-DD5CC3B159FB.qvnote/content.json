@@ -1,0 +1,10 @@
+{
+  "title": "encodedPath",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// encodedPath :: FilePath -> Percent Encoded String\nconst encodedPath = encodeURI;"
+    }
+  ]
+}

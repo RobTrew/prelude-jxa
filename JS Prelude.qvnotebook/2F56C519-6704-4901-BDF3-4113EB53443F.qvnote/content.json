@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// doesFileExist :: FilePath -> IO Bool\nconst doesFileExist = strPath => {\n    const ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(strPath)\n            .stringByStandardizingPath, ref\n        ) && 1 !== ref[0];\n};"
+      "data": "// doesFileExist :: FilePath -> IO Bool\nconst doesFileExist = fp => {\n    const ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(fp)\n            .stringByStandardizingPath, ref\n        ) && 1 !== ref[0];\n};"
     }
   ]
 }

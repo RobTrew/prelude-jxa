@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// str :: a -> String\nconst str = x => x.toString();"
+      "data": "// str :: a -> String\nconst str = x =>\n   Array.isArray(x) && x.every(\n       v => ('string' === typeof v) && (1 === v.length)\n   ) ? (\n       x.join('')\n   ) : x.toString();"
     }
   ]
 }

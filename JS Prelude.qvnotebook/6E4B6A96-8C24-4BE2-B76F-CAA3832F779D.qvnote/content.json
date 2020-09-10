@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Typical usage: groupBy(on(eq, f), xs)"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = (f, xs) => {\n    const tpl = xs.slice(1)\n        .reduce((a, x) => {\n            const h = a[1].length > 0 ? a[1][0] : undefined;\n            return (undefined !== h) && f(h, x) ? (\n                Tuple(a[0], a[1].concat([x]))\n            ) : Tuple(a[0].concat([a[1]]), [x]);\n        }, Tuple([], 0 < xs.length ? [xs[0]] : []));\n    return tpl[0].concat([tpl[1]]);\n};"
+      "data": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = fEq =>\n    // Typical usage: groupBy(on(eq)(f), xs)\n    xs => (ys => 0 < ys.length ? (() => {\n        const\n            tpl = ys.slice(1).reduce(\n                (gw, x) => {\n                    const\n                        gps = gw[0],\n                        wkg = gw[1];\n                    return fEq(wkg[0])(x) ? (\n                        Tuple(gps)(wkg.concat([x]))\n                    ) : Tuple(gps.concat([wkg]))([x]);\n                },\n                Tuple([])([ys[0]])\n            ),\n            v = tpl[0].concat([tpl[1]]);\n        return 'string' !== typeof xs ? (\n            v\n        ) : v.map(x => x.join(''));\n    })() : [])(list(xs));"
     }
   ]
 }

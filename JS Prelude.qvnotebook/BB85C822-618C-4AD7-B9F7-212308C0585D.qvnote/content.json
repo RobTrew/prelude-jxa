@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    (x, y) => {\n        const\n            a = f(x),\n            b = f(y);\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };"
+      "data": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };"
     }
   ]
 }

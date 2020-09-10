@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// product :: [Num] -> Num\nconst product = xs => xs.reduce((a, x) => a * x, 1);"
+      "data": "// product :: [Num] -> Num\nconst product = xs =>\n    list(xs).reduce((a, x) => a * x, 1);"
     }
   ]
 }

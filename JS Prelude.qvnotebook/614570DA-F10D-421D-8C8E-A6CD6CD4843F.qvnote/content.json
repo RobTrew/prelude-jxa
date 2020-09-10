@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// evalJSLR :: String -> Either String a\nconst evalJSLR = s => {\n    try {\n        return Right(eval('(' + s + ')'))\n    } catch (e) {\n        return Left(e.message);\n    };\n};"
+      "data": "// evalJSLR :: String -> Either String a\nconst evalJSLR = s => {\n    try {\n        return Right(eval('(' + s + ')'));\n    } catch (e) {\n        return Left(e.message);\n    }\n};"
     }
   ]
 }

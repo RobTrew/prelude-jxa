@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    xs.reduce(\n        (a, x) => undefined !== x.Left ? (\n            Tuple(a[0].concat(x.Left), a[1])\n        ) : Tuple(a[0], a[1].concat(x.Right)),\n        Tuple([], [])\n    );"
+      "data": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    xs.reduce(\n        (a, x) => undefined !== x.Left ? (\n            Tuple(a[0].concat(x.Left))(a[1])\n        ) : Tuple(a[0])(a[1].concat(x.Right)),\n        Tuple([])([])\n    );"
     }
   ]
 }

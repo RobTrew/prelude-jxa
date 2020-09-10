@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// List of (Predicate, value) tuples -> Default value \n//                        -> Value to test -> Output value"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// caseOf :: [(a -> Bool, b)] -> b -> a ->  b\nconst caseOf = (pvs, otherwise, x) => {\n    const mb = pvs.reduce((a, pv) =>\n        a.Nothing ? (\n            pv[0](x) ? Just(pv[1]) : a\n        ) : a, Nothing());\n    return mb.Nothing ? otherwise : mb.Just;\n};"
+      "data": "// caseOf :: [(a -> Bool, b)] -> b -> a ->  b\nconst caseOf = pvs =>\n    // List of (Predicate, value) tuples -> Default value \n    //         -> Value to test -> Output value\n    otherwise => x => {\n        const mb = pvs.reduce((a, pv) =>\n            a.Nothing ? (\n                pv[0](x) ? Just(pv[1]) : a\n            ) : a, Nothing());\n        return mb.Nothing ? otherwise : mb.Just;\n    };"
     }
   ]
 }

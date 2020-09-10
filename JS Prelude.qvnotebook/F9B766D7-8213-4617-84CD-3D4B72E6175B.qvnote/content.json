@@ -1,0 +1,10 @@
+{
+  "title": "zipList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// zipList :: [a] -> [b] -> [(a, b)]\nconst zipList = xs => ys => {\n    const\n        n = Math.min(length(xs), length(ys)),\n        vs = take(n)(list(ys));\n    return take(n)(list(xs))\n        .map((x, i) => Tuple(x)(vs[i]));\n};"
+    }
+  ]
+}

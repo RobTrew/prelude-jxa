@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// stripEnd :: String -> String\nconst stripEnd = s => dropWhileEnd(isSpace, s);"
+      "data": "// stripEnd :: String -> String\nconst stripEnd = s =>\n    s.trimEnd();"
     }
   ]
 }

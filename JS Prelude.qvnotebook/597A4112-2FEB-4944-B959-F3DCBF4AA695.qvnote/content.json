@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// regexMatches :: String -> String -> [[String]]\nconst regexMatches = (strRgx, strHay) => {\n    const rgx = new RegExp(strRgx, 'g');\n    let m = rgx.exec(strHay),\n        xs = [];\n    while (m)(xs.push(m), m = rgx.exec(strHay));\n    return xs;\n};"
+      "data": "// regexMatches :: Regex -> String -> [[String]]\nconst regexMatches = rgx =>\n    // All matches for the given regular expression\n    // in the supplied string s.\n    s => {\n        // Recompiled to ensure that any supplied \n        // regex is interpreted as global.\n        const r = new RegExp(rgx, 'g');\n        return unfoldr(\n            m => Boolean(m) ? (\n                Just(Tuple(m)(r.exec(s)))\n            ) : Nothing()\n        )(r.exec(s));\n    };"
     }
   ]
 }

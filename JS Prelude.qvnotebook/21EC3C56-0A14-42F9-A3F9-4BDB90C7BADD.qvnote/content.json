@@ -1,0 +1,10 @@
+{
+  "title": "filteredSubTrees",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    const go = tree => (\n        p(tree.root) ? (\n            [tree]\n        ) : []\n    ).concat(tree.nest.flatMap(go));\n    return go;\n};"
+    }
+  ]
+}

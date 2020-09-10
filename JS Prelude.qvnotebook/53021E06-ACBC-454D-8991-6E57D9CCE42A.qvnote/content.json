@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// negate :: Num -> Num\nconst negate = n => -n;"
+      "data": "// negate :: Num -> Num\nconst negate = n =>\n    -n;"
     }
   ]
 }

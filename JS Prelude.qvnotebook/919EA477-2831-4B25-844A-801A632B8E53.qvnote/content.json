@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fst :: (a, b) -> a\nconst fst = tpl => tpl[0];"
+      "data": "// fst :: (a, b) -> a\nconst fst = tpl =>\n    // First member of a pair.\n    tpl[0];"
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "title": "stringFromList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// stringFromList :: [Char] -> String\nconst stringFromList = cs =>\n    // A String derived from a list of characters.\n    cs.join('');"
+    }
+  ]
+}

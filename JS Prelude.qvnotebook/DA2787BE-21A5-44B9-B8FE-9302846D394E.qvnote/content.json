@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = (fEq, x, xs) => {\n    const go = xs => 0 < xs.length ? (\n        fEq(x, xs[0]) ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(go(xs.slice(1)))\n    ) : [];\n    return go(xs);\n};"
+      "data": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = fEq =>\n    x => {\n        const go = xs => 0 < xs.length ? (\n            fEq(x)(xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n        return go;\n    };"
     }
   ]
 }

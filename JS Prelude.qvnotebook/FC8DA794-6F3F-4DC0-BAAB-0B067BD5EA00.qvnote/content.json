@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// enumFromToChar :: Char -> Char -> [Char]\nconst enumFromToChar = (m, n) => {\n    const [intM, intN] = [m, n].map(x => x.charCodeAt(0));\n    return Array.from({\n        length: Math.floor(intN - intM) + 1\n    }, (_, i) => String.fromCodePoint(intM + i));\n};"
+      "data": "// enumFromToChar :: Char -> Char -> [Char]\nconst enumFromToChar = m => n => {\n    const [intM, intN] = [m, n].map(x => x.codePointAt(0));\n    return Array.from({\n        length: Math.floor(intN - intM) + 1\n    }, (_, i) => String.fromCodePoint(intM + i));\n};"
     }
   ]
 }

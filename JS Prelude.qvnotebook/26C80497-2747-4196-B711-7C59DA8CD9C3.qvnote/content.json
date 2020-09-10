@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// findIndexR :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndexR = (p, xs) => {\n    const i = reverse(xs).findIndex(p);\n    return -1 !== i ? (\n        Just(xs.length - (1 + i))\n    ) : Nothing();\n};"
+      "data": "// findIndexR :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndexR = p =>\n    //  Just the index of the last element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = reverse([...xs]).findIndex(p);\n        return -1 !== i ? (\n            Just(xs.length - (1 + i))\n        ) : Nothing();\n    };"
     }
   ]
 }

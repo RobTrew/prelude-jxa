@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// min :: Ord a => a -> a -> a\nconst min = (a, b) => b < a ? b : a;"
+      "data": "// min :: Ord a => a -> a -> a\nconst min = a => \n    b => b < a ? b : a;"
     }
   ]
 }

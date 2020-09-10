@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// thenMay (>>) :: Maybe a -> Maybe b -> Maybe b\nconst thenMay = (mbx, mby) =>\n    mbx.Nothing ? mbx : mby;"
+      "data": "// thenMay (>>) :: Maybe a -> Maybe b -> Maybe b\nconst thenMay = mbx => mby =>\n    mbx.Nothing ? mbx : mby;"
     }
   ]
 }

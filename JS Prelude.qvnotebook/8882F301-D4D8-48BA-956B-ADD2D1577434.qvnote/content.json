@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]\nconst zip4 = (ws, xs, ys, zs) =>\n    ws.slice(0, minimum([ws, xs, ys, zs].map(length)))\n    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));"
+      "data": "// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]\nconst zip4 = ws =>\n    xs => ys => zs => list(ws)\n    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))\n    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));"
     }
   ]
 }

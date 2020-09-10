@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = (f, xs) =>\n    xs.reduce((a, x) => a.concat(f(x)), []);\n    \n// Briefer but slower:\n// concatMap :: (a -> [b]) -> [a] -> [b]\n// const concatMap = (f, xs) =>\n//     [].concat(...xs.map(f))"
+      "data": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = f =>\n    // Where (a -> [b]) returns an Array, this \n    // is equivalent to .flatMap, which should be\n    // used by default.\n    // but if (a -> [b]) returns String rather than [Char], \n    // the monoid unit is '' in place of [], and a \n    // concatenated string is returned.\n    xs => {\n        const ys = list(xs).map(f);\n        return 0 < ys.length ? (\n            ys.some(y => 'string' !== typeof y) ? (\n                []\n            ) : ''\n        ).concat(...ys) : ys;\n    };"
     }
   ]
 }

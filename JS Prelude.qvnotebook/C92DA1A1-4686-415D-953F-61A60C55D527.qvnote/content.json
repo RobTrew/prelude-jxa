@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// drop :: Int -> [a] -> [a]\n// drop :: Int -> Generator [a] -> Generator [a]\n// drop :: Int -> String -> String\nconst drop = (n, xs) =>\n    Infinity > length(xs) ? (\n        xs.slice(n)\n    ) : (take(n, xs), xs);"
+      "data": "// drop :: Int -> [a] -> [a]\n// drop :: Int -> Generator [a] -> Generator [a]\n// drop :: Int -> String -> String\nconst drop = n =>\n    xs => Infinity > length(xs) ? (\n        xs.slice(n)\n    ) : (take(n)(xs), xs);"
     }
   ]
 }

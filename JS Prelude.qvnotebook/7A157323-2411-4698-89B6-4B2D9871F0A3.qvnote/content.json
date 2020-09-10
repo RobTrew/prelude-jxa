@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = strPath =>\n    '' !== strPath ? (() => {\n        const\n          xs = (strPath.split('/'))\n          .slice(0, -1);\n        return xs.length > 0 ? (\n            xs.join('/') + '/'\n        ) : './';\n    })() : './';"
+      "data": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = fp =>\n    '' !== fp ? (() => {\n        const\n          xs = (fp.split('/'))\n          .slice(0, -1);\n        return xs.length > 0 ? (\n            xs.join('/') + '/'\n        ) : './';\n    })() : './';"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// insertDict :: Dict -> String -> a -> Dict\nconst insertDict = (dct, k, v) =>\n  Object.assign(dct, {[k]: v});"
+      "data": "// insertDict :: String -> a -> Dict -> Dict\nconst insertDict = k => v => dct =>\n    Object.assign({}, dct, {\n        [k]: v\n    });"
     }
   ]
 }

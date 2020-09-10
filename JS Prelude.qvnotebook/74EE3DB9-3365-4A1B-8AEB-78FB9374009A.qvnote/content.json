@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c\nconst liftA2Tree = (f, tx, ty) => {\n    const go = tx =>\n        Node(\n            f(tx.root, ty.root),\n            Boolean(ty.nest) ? (\n                ty.nest.map(\n                    curry(fmapTree)(\n                        curry(f)(tx.root)\n                    )\n                )\n                .concat(\n                    tx.nest.map(go)\n                )\n            ) : []\n        );\n    return go(tx);\n};"
+      "data": "// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c\nconst liftA2Tree = f =>\n    tx => ty => {\n        const go = t =>\n            Node(f(t.root)(ty.root))(\n                Boolean(ty.nest) ? (\n                    ty.nest.map(\n                        fmapTree(f(t.root))\n                    )\n                    .concat(t.nest.map(go))\n                ) : []\n            );\n        return go(tx);\n    };"
     }
   ]
 }

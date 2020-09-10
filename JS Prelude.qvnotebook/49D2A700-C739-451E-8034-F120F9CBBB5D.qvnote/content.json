@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// head :: [a] -> a\nconst head = xs => xs.length ? xs[0] : undefined;"
+      "data": "// head :: [a] -> a\nconst head = xs => (\n    ys => ys.length ? (\n        ys[0]\n    ) : undefined\n)(list(xs));"
     }
   ]
 }

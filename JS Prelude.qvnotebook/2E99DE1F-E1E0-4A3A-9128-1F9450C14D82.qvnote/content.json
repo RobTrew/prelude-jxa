@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// xs with first instance of x (if any) removed"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = (x, xs) => {\n    const go = xs => {\n        return 0 < xs.length ? (\n            (x === xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n    }\n    return go(xs);\n};"
+      "data": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = x => {\n    // xs with first instance of x (if any) removed.\n    const go = xs =>\n        0 < xs.length ? (\n            (x === xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n    return go;\n};"
     }
   ]
 }

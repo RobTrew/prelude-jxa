@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// if_ :: Bool -> a -> a -> a\nconst if_ = (bln, x, y) =>\n    bln ? x : y;"
+      "data": "// if_ :: Bool -> a -> a -> a\nconst if_ = bln => \n    x => y => bln ? (\n        x\n    ) : y;"
     }
   ]
 }

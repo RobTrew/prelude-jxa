@@ -1,0 +1,10 @@
+{
+  "title": "bimapN",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// bimapN :: (a -> b) -> (c -> d) -> TupleN -> TupleN\nconst bimapN = f =>\n    // An n-tuple instance of bimap.\n    // An n-tuple of unchanged dimension in which\n    // the final value is an application of g\n    // and the penultimate value is an application of f.\n    g => tpln => {\n        const n = tpln.length;\n        return undefined !== n ? (\n            TupleN(\n                ...Array.from(tpln).slice(0, n - 2),\n                f(tpln[n - 2]), g(tpln[n - 1])\n            )\n        ) : undefined;\n    };"
+    }
+  ]
+}

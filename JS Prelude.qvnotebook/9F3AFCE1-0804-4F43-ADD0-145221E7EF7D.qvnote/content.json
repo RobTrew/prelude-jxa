@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Applies wrapped functions to wrapped values, \n// for example applying a list of functions to a list of values\n// or applying Just(f) to Just(x), Right(f) to Right(x), etc"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = (mf, mx) => {\n    const t = mx.type;\n    return (\n        undefined !== t ? (\n            'Either' === t ? (\n                apLR\n            ) : 'Maybe' === t ? (\n                apMay\n            ) : 'Node' === t ? (\n                apTree\n            ) : 'Tuple' === t ? (\n                apTuple\n            ) : apList\n        ) : apList\n    )(mf, mx);\n};"
+      "data": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list of values\n    // or applying Just(f) to Just(x), Right(f) to Right(x), \n    // f(x) to g(x) etc.\n    mx => {\n        const t = mx.type;\n        return (\n            undefined !== t ? (\n                'Either' === t ? (\n                    apLR\n                ) : 'Maybe' === t ? (\n                    apMay\n                ) : 'Node' === t ? (\n                    apTree\n                ) : 'Tuple' === t ? (\n                    apTuple\n                ) : apList\n            ) : Array.isArray(mf) ? (\n                apList\n            ) : apFn\n        )(mf)(mx);\n    };"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = (m, n) =>\n    Array.from({\n        length: 1 + n - m\n    }, (_, i) => m + i);"
+      "data": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = m =>\n    n => !isNaN(m) ? (\n        Array.from({\n            length: 1 + n - m\n        }, (_, i) => m + i)\n    ) : enumFromTo_(m)(n);"
     }
   ]
 }

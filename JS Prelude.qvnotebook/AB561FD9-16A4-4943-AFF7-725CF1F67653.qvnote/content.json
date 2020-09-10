@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unlines :: [String] -> String\nconst unlines = xs => xs.join('\\n');"
+      "data": "// unlines :: [String] -> String\nconst unlines = xs =>\n    // A single string formed by the intercalation\n    // of a list of strings with the newline character.\n    xs.join('\\n');"
     }
   ]
 }

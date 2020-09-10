@@ -1,0 +1,10 @@
+{
+  "title": "le",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// le :: Ord a => a -> a -> a\nconst le = x =>\n    // True if x <= y;\n    y => x <= y;"
+    }
+  ]
+}

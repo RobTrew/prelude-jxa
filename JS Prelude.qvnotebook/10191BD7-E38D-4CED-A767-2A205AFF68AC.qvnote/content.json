@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// evalJSMay :: String -> Maybe a\nconst evalJSMay = s => {\n    try {\n        return Just(eval('(' + s + ')'))\n    } catch (e) {\n        return Nothing();\n    };\n};"
+      "data": "// evalJSMay :: String -> Maybe a\nconst evalJSMay = s => {\n    try {\n        return Just(eval('(' + s + ')'));\n    } catch (e) {\n        return Nothing();\n    }\n};"
     }
   ]
 }

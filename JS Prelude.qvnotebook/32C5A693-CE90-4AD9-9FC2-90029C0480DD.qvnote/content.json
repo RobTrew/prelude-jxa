@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// tails :: [a] -> [[a]]\nconst tails = xs => {\n    const\n        es = ('string' === typeof xs) ? (\n            xs.split('')\n        ) : xs;\n    return es.map((_, i) => es.slice(i))\n        .concat([\n            []\n        ]);\n};"
+      "data": "// tails :: [a] -> [[a]]\nconst tails = xs => (\n    es => es.map((_, i) => es.slice(i))\n    .concat([\n        []\n    ])\n)(list(xs));"
     }
   ]
 }

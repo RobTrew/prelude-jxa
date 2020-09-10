@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]\nconst takeFromThenTo = (a, b, z, xs) => {\n    const ixs = enumFromThenTo(a, b, z);\n    return 'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        map(i => xs[i], ixs)\n    ) : (() => {\n        const g = zipGen(enumFrom(0), take(z, xs));\n        return concatMap(i => {\n            const mb = index(g)(i);\n            return mb.Nothing ? [] : [mb.Just];\n        }, ixs);\n    })();\n};"
+      "data": "// takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]\nconst takeFromThenTo = a => b => z => xs => {\n    const ixs = enumFromThenTo(a)(b)(z);\n    return 'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        ixs.map(i => xs[i])\n    ) : (() => {\n        const g = zipGen(enumFrom(0))(\n            take(z)(xs)\n        );\n        return ixs.flatMap(i => {\n            const mb = index(g)(i);\n            return mb.Nothing ? [] : [mb.Just];\n        });\n    })();\n};"
     }
   ]
 }

@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// scanr1 is a variant of scanr that has no starting value argument"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = (f, xs) =>\n    xs.length > 0 ? scanr(f, xs.slice(-1)[0], xs.slice(0, -1)) : [];"
+      "data": "// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = f =>\n    // scanr1 is a variant of scanr that has no \n    // seed-value argument, and assumes that\n    // xs is not empty.\n    xs => xs.length > 0 ? (\n        scanr(f)(\n            xs.slice(-1)[0]\n        )(xs.slice(0, -1))\n    ) : [];"
     }
   ]
 }

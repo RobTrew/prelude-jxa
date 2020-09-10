@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Given a curried/default function, returns an\n// equivalent function on a tuple or list pair."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f => args =>\n    1 < f.length ? (\n        f(args[0], args[1])\n    ) : f(args[0])(args[1]);"
+      "data": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a pair, derived\n    // from a curried function.\n    function() {\n        const\n            args = arguments,\n            xy = Boolean(args.length % 2) ? (\n                args[0]\n            ) : args;\n        return f(xy[0])(xy[1]);\n    };"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// last :: [a] -> a\nconst last = xs =>\n    0 < xs.length ? xs.slice(-1)[0] : undefined;"
+      "data": "// last :: [a] -> a\nconst last = xs => (\n    // The last item of a list.\n    ys => 0 < ys.length ? (\n        ys.slice(-1)[0]\n    ) : undefined\n)(list(xs));"
     }
   ]
 }

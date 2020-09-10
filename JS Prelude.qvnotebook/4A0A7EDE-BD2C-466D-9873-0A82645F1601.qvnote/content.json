@@ -1,0 +1,10 @@
+{
+  "title": "mappendOrd (<>)",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mappendOrd (<>) :: Ordering -> Ordering -> Ordering\nconst mappendOrd = x =>\n    y => 0 !== x ? (\n        x\n    ) : y;"
+    }
+  ]
+}

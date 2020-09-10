@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// File name template -> string data -> IO temporary path"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// writeTempFile :: String -> String -> IO FilePath\nconst writeTempFile = (template, txt) => {\n    const\n        strPath = ObjC.unwrap($.NSTemporaryDirectory()) +\n        takeBaseName(template) + Math.random()\n        .toString()\n        .substring(3) + takeExtension(template);\n    return (writeFile(strPath, txt), strPath);\n};"
+      "data": "// writeTempFile :: String -> String -> IO FilePath\nconst writeTempFile = template =>\n    // File name template -> string data -> IO temporary path\n    txt => {\n        const\n            strPath = ObjC.unwrap($.NSTemporaryDirectory()) +\n            takeBaseName(template) + Math.random()\n            .toString()\n            .substring(3) + takeExtension(template);\n        return (writeFile(strPath)(txt), strPath);\n    };"
     }
   ]
 }

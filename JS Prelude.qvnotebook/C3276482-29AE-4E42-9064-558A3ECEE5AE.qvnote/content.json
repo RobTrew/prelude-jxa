@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fTable :: String -> (a -> String) -> (b -> String) -> (a -> b) -> [a] -> String\nconst fTable = (s, xShow, fxShow, f, xs) => {\n    // Heading -> x display function ->\n    //           fx display function ->\n    //    f -> values -> tabular string\n    const\n        ys = xs.map(xShow),\n        w = Math.max(...ys.map(length));\n    return s + '\\n' + zipWith(\n        (a, b) => a.padStart(w, ' ') + ' -> ' + b,\n        ys,\n        xs.map(x => fxShow(f(x)))\n    ).join('\\n');\n};"
+      "data": "// fTable :: String -> (a -> String) -> \n// (b -> String) -> (a -> b) -> [a] -> String\nconst fTable = s =>\n    // Heading -> x display function ->\n    //           fx display function ->\n    //    f -> values -> tabular string\n    xShow => fxShow => f => xs => {\n        const\n            ys = xs.map(xShow),\n            w = Math.max(...ys.map(length));\n        return s + '\\n' + zipWith(\n            a => b => a.padStart(w, ' ') + ' -> ' + b\n        )(ys)(\n            xs.map(x => fxShow(f(x)))\n        ).join('\\n');\n    };"
     }
   ]
 }

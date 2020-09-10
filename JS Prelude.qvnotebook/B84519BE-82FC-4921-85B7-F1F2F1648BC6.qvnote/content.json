@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    0 < xs.length ? (() => {\n        const unit = 'string' !== typeof xs[0] ? (\n            []\n        ) : '';\n        return unit.concat.apply(unit, xs);\n    })() : [];"
+      "data": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs => (\n    ys => 0 < ys.length ? (\n        ys.every(Array.isArray) ? (\n            []\n        ) : ''\n    ).concat(...ys) : ys\n)(list(xs));"
     }
   ]
 }

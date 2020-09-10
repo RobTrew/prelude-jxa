@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = strPath =>\n\tObjC.unwrap(\n\t\t$.NSFileManager.defaultManager\n\t\t.contentsOfDirectoryAtPathError(\n\t\t\tObjC.wrap(strPath)\n\t\t\t.stringByStandardizingPath,\n\t\t\tnull\n\t\t))\n\t.map(ObjC.unwrap);"
+      "data": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = fp =>\n\tObjC.unwrap(\n\t\t$.NSFileManager.defaultManager\n\t\t.contentsOfDirectoryAtPathError(\n\t\t\tObjC.wrap(fp)\n\t\t\t.stringByStandardizingPath,\n\t\t\tnull\n\t\t))\n\t.map(ObjC.unwrap);"
     }
   ]
 }

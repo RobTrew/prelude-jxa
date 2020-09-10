@@ -1,0 +1,10 @@
+{
+  "title": "mconcatOrd",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// mconcatOrd :: [Ordering] -> Ordering\nconst mconcatOrd = cmps =>\n    // A sort compare function derived from\n    // a list of such functions, providing\n    // for composition of n-ary sorts.\n    0 < cmps.length ? (\n        foldl(\n            mappendOrd\n        )(cmps[0])(cmps.slice(1))\n    ) : compare;"
+    }
+  ]
+}

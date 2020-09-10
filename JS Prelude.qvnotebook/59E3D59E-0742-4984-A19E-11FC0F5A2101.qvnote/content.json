@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// The first of any nodes in the tree which match the predicate p\n// (For all matches, see treeMatches)"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = (p, tree) => {\n    const go = node =>\n        p(node.root) ? (\n            Just(node)\n        ) : (() => {\n            const\n                xs = node.nest,\n                lng = xs.length;\n                \n            return 0 < lng ? until(\n                tpl => lng <= tpl[0] || !tpl[1].Nothing,\n                tpl => Tuple(1 + tpl[0], go(xs[tpl[0]])),\n                Tuple(0, Nothing())\n            )[1] : Nothing()\n        })();\n    return go(tree);\n};"
+      "data": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match the predicate p\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                lng = xs.length;\n            return 0 < lng ? until(\n                tpl => lng <= tpl[0] || !tpl[1].Nothing\n            )(\n                tpl => Tuple(1 + tpl[0])(\n                    go(xs[tpl[0]])\n                )\n            )(\n                Tuple(0)(\n                    Nothing()\n                )\n            )[1] : Nothing();\n        })();\n    return go;\n};"
     }
   ]
 }

@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// | True if any contained element satisfies the predicate."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// any :: (a -> Bool) -> [a] -> Bool\nconst any = (p, xs) => xs.some(p);"
+      "data": "// any :: (a -> Bool) -> [a] -> Bool\nconst any = p =>\n    // True if p(x) holds for at least\n    // one item in xs.\n    xs => [...xs].some(p);"
     }
   ]
 }

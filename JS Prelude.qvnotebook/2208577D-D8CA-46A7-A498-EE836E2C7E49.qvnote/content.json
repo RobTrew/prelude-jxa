@@ -4,17 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "//  Takes a predicate function and a list and\n//  returns Just( the 0-based index of the first\n//  element ) in the list satisfying the predicate\n//  or Nothing if there is no such element."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// findIndex(isSpace, \"hello world\")\n//-> {\"type\":\"Maybe\",\"Nothing\":false,\"Just\":5}\n\n// findIndex(even, [3, 5, 7, 8, 9])\n//-> {\"type\":\"Maybe\",\"Nothing\":false,\"Just\":3}\n\n// findIndex(isUpper, \"all lower case\")\n//-> {\"type\":\"Maybe\",\"Nothing\":true}"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// findIndex :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndex = (p, xs) => {\n    const\n        i = (\n            'string' !== typeof xs ? (\n                xs\n            ) : xs.split('')\n        ).findIndex(p);\n    return -1 !== i ? (\n        Just(i)\n    ) : Nothing();\n};"
+      "data": "// findIndex :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndex = p =>\n    //  Just the index of the first element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = [...xs].findIndex(p);\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    };"
     }
   ]
 }

@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Size of space -> filler Char -> String -> Centered String"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// center :: Int -> Char -> String -> String\nconst center = (n, c, s) => {\n  const\n    qr = quotRem(n - s.length, 2),\n    q = qr[0];\n  return replicateString(q, c) +\n    s + replicateString(q + qr[1], c);\n};"
+      "data": "// center :: Int -> Char -> String -> String\nconst center = n =>\n    // Size of space -> filler Char -> String -> Centered String\n    c => s => {\n        const gap = n - s.length;\n        return 0 < gap ? (() => {\n            const pre = c.repeat(Math.floor(gap / 2));\n            return pre + s + pre + c.repeat(gap % 2);\n        })() : s;\n    };"
     }
   ]
 }

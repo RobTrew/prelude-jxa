@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]\nconst stripPrefix = (pfx, s) => {\n    const\n        blnString = 'string' === typeof pfx,\n        [xs, ys] = blnString ? (\n            [pfx.split(''), s.split('')]\n        ) : [pfx, s];\n    const\n        sp_ = (xs, ys) => 0 === xs.length ? (\n            Just(blnString ? ys.join('') : ys)\n        ) : (0 === ys.length || xs[0] !== ys[0]) ? (\n            Nothing()\n        ) : sp_(xs.slice(1), ys.slice(1));\n    return sp_(xs, ys);\n};"
+      "data": "// stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]\nconst stripPrefix = pfx =>\n    s => {\n        const\n            blnString = 'string' === typeof pfx,\n            [xs, ys] = blnString ? (\n                [pfx.split(''), s.split('')]\n            ) : [pfx, s];\n        const\n            sp_ = (xs, ys) => 0 === xs.length ? (\n                Just(blnString ? ys.join('') : ys)\n            ) : (0 === ys.length || xs[0] !== ys[0]) ? (\n                Nothing()\n            ) : sp_(xs.slice(1), ys.slice(1));\n        return sp_(xs, ys);\n    };"
     }
   ]
 }

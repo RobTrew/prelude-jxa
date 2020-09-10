@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// thenIO (>>) :: IO a -> IO b -> IO b\nconst thenIO = (ma, mb) => mb;"
+      "data": "// thenIO (>>) :: IO a -> IO b -> IO b\nconst thenIO = ma => \n    mb => mb;"
     }
   ]
 }

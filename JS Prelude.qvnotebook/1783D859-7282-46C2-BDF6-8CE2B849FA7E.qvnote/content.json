@@ -1,15 +1,10 @@
 {
-  "title": "curry",
+  "title": "curryN",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Flexibly handles two or more arguments, applying\n// the function directly if the argument array\n// is long enough for complete saturation,\n// or recursing with a concatenation of any existing and\n// newly supplied arguments, if gaps remain."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// curry :: ((a, b) -> c) -> a -> b -> c\nconst curry = (f, ...args) => {\n    const\n        n = f.length,\n        go = xs => n <= xs.length ? (\n            f(...xs)\n        ) : function() {\n            return go(xs.concat(Array.from(arguments)));\n        };\n    return go(args);\n};"
+      "data": "// curryN :: Curry a b => a -> b\nconst curryN = f =>\n    // A curried function derived from a\n    // function over a tuple of any order.\n    (...args) => {\n        const\n            go = xs => f.length <= xs.length ? (\n                f(...xs)\n            ) : (...ys) => go(xs.concat(ys));\n        return go(args);\n    };"
     }
   ]
 }

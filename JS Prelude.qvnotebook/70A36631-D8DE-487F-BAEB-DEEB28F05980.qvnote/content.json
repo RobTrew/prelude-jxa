@@ -1,0 +1,10 @@
+{
+  "title": "uncurryN",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// uncurryN :: Curry a b => b -> a\nconst uncurryN = f =>\n    // A function over a tuple of values, derived from\n    // a curried function of any number of arguments.\n    (...args) => (\n        xs => xs.slice(1).reduce(\n            (a, x) => a(x), \n            f(xs[0])\n        )\n    )(Array.from(\n        1 < args.length ? (\n            args\n        ) : args[0]\n    ));"
+    }
+  ]
+}

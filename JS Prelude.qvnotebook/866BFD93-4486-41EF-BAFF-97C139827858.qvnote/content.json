@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// rational :: Num a => a -> Rational\nconst rational = x =>\n    isNaN(x) ? x : Number.isInteger(x) ? (\n        ratio(x, 1)\n    ) : approxRatio(undefined)(x);"
+      "data": "// rational :: Num a => a -> Rational\nconst rational = x =>\n    isNaN(x) ? x : Number.isInteger(x) ? (\n        ratio(x)(1)\n    ) : approxRatio(undefined)(x);"
     }
   ]
 }

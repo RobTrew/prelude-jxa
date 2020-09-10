@@ -1,0 +1,10 @@
+{
+  "title": "measuredTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series. \n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n    return foldTree(\n        x => {\n            let topDown = i++;\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};"
+    }
+  ]
+}

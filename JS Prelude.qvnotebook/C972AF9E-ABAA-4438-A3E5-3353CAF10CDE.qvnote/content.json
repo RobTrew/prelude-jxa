@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apply ($) :: (a -> b) -> a -> b\nconst apply = (f, x) => f(x);"
+      "data": "// apply ($) :: (a -> b) -> a -> b\nconst apply = f =>\n    // Application operator.\n    x => f(x);"
     }
   ]
 }

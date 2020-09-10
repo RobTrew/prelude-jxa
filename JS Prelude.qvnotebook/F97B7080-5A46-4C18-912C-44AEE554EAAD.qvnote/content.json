@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// chars :: String -> [Char]\nconst chars = s => s.split('');"
+      "data": "// chars :: String -> [Char]\nconst chars = s =>\n    s.split('');"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)\nconst traverseTree = (f, node) => {\n    const go = x =>\n        liftA2(\n            Node, f(x.root),\n            traverseList(go, x.nest)\n        );\n    return go(node);\n};"
+      "data": "// traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)\nconst traverseTree = f => {\n    // traverse f (Node x ts) = liftA2 Node (f x) (traverse (traverse f) ts)\n    const go = tree =>\n        liftA2(Node)(f(tree.root))(\n            traverseList(go)(\n                tree.nest\n            )\n        );\n    return go;\n};"
     }
   ]
 }

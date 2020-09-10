@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b\nconst fmapLR = (f, lr) =>\n    undefined === lr.Left ? (\n        Right(f(lr.Right))\n    ) : lr;"
+      "data": "// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b\nconst fmapLR = f => lr =>\n    undefined === lr.Left ? (\n        Right(f(lr.Right))\n    ) : lr;"
     }
   ]
 }

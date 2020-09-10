@@ -1,0 +1,10 @@
+{
+  "title": "allTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// allTree :: (a -> Bool) -> Tree a -> Bool\nconst allTree = p =>\n    // True if p holds for all nodes of the\n    // tree to which allTree(p) is applied.\n    foldTree(\n        x => xs => p(x) && xs.every(Boolean)\n    );"
+    }
+  ]
+}

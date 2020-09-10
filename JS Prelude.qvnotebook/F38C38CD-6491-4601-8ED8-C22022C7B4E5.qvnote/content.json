@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// createDirectoryIfMissingLR :: Bool -> FilePath -> Either String String\nconst createDirectoryIfMissingLR = (blnParents, fp) =>\n    doesPathExist(fp) ? (\n        Right(`Found: '${fp}'`)\n    ) : (() => {\n        const\n            e = $(),\n            blnOK = $.NSFileManager.defaultManager[\n                'createDirectoryAtPath' +\n                'WithIntermediateDirectoriesAttributesError'\n            ]($(fp)\n                .stringByStandardizingPath,\n                blnParents, undefined, e\n            );\n        return blnOK ? (\n            Right(fp)\n        ) : Left(e.localizedDescription);\n    })();"
+      "data": "// createDirectoryIfMissingLR :: Bool -> FilePath -> \n// Either String FilePath\nconst createDirectoryIfMissingLR = blnParents =>\n    dirPath => {\n        const fp = filePath(dirPath);\n        return doesPathExist(fp) ? (\n            Right(fp)\n        ) : (() => {\n            const\n                e = $(),\n                blnOK = $.NSFileManager\n                .defaultManager\n                .createDirectoryAtPathWithIntermediateDirectoriesAttributesError\n                (fp, blnParents, undefined, e);\n            return blnOK ? (\n                Right(fp)\n            ) : Left(e.localizedDescription);\n        })();\n    };"
     }
   ]
 }

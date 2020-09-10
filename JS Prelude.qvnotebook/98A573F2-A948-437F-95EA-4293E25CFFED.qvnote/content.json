@@ -1,0 +1,10 @@
+{
+  "title": "list",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// list :: StringOrArrayLike b => b -> [a]\nconst list = xs =>\n    // xs itself, if it is an Array,\n    // or an Array derived from xs.\n    Array.isArray(xs) ? (\n        xs\n    ) : Array.from(xs || []);"
+    }
+  ]
+}

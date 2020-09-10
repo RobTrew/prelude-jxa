@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = (cmp, x, ys) => {\n    for (var i = 0, lng = ys.length; i < lng && cmp(x, ys[i]) > 0; i++) {};\n    return ys.slice(0, i)\n        .concat(x)\n        .concat(ys.slice(i));\n};"
+      "data": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            0 < ys.length ? (\n                0 < cmp(y)(ys[0]) ? (\n                    cons(ys[0])(\n                        go(y)(ys.slice(1))\n                    )\n                ) : cons(y)(ys)\n            ) : [y];\n        return go(x)(list(xs));\n    };"
     }
   ]
 }

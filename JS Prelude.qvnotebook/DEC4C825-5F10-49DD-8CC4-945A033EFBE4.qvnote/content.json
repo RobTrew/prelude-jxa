@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = (tpl, f) => {\n    const t2 = f(tpl[1]);\n    return Tuple(\n        mappend(tpl[0], t2[0]),\n        t2[1]\n    );\n};"
+      "data": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = tpl =>\n    f => {\n        const t2 = f(tpl[1]);\n        return Tuple(mappend(tpl[0])(t2[0]))(\n            t2[1]\n        );\n    };"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// max :: Ord a => a -> a -> a\nconst max = (a, b) => gt(b, a) ? b : a;"
+      "data": "// max :: Ord a => a -> a -> a\nconst max = a =>\n    // b if its greater than a,\n    // otherwise a.\n    b => gt(b)(a) ? (\n        b\n    ) : a;"
     }
   ]
 }

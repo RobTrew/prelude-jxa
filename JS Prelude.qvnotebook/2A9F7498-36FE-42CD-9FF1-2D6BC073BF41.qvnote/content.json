@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// elemIndices :: Eq a => a -> [a] -> [Int]\nconst elemIndices = (x, xs) =>\n    concatMap((y, i) => y === x ? (\n        [i]\n    ) : [], xs);"
+      "data": "// elemIndices :: Eq a => a -> [a] -> [Int]\nconst elemIndices = x =>\n    // The indices at which x occurs in xs.\n    xs => [...xs].flatMap(\n        (y, i) => y === x ? (\n            [i]\n        ) : []\n    );"
     }
   ]
 }

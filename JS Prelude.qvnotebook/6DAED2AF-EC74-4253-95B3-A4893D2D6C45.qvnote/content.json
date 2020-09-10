@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fromMaybe :: a -> Maybe a -> a\nconst fromMaybe = (def, mb) => mb.Nothing ? def : mb.Just;"
+      "data": "// fromMaybe :: a -> Maybe a -> a\nconst fromMaybe = def =>\n    mb => mb.Nothing ? def : mb.Just;"
     }
   ]
 }

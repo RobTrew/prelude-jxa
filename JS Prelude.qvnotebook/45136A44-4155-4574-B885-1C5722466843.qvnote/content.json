@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Node :: a -> [Tree a] -> Tree a\nconst Node = (v, xs) => ({\n    type: 'Node',\n    root: v, // any type of value (consistent across tree)\n    nest: xs || []\n});"
+      "data": "// Node :: a -> [Tree a] -> Tree a\nconst Node = v =>\n    // Constructor for a Tree node which connects a\n    // value of some kind to a list of zero or\n    // more child trees.\n    xs => ({\n        type: 'Node',\n        root: v,\n        nest: xs || []\n    });"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// and :: [Bool] -> Bool\nconst and = xs =>\n    // True unless any contained value is false.\n    xs.every(Boolean);"
+      "data": "// and :: [Bool] -> Bool\nconst and = xs =>\n    // True unless any value in xs is false.\n    [...xs].every(Boolean);"
     }
   ]
 }

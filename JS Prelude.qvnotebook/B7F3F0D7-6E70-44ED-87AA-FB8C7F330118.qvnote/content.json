@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = (f, xs) =>\n    1 < xs.length ? xs.slice(1)\n    .reduce(f, xs[0]) : xs[0];"
+      "data": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f =>\n    // Left to right reduction of the non-empty list xs,\n    // using the binary operator f, with the head of xs\n    // as the initial acccumulator value.\n    xs => (\n        ys => 1 < ys.length ? ys.slice(1)\n        .reduce(uncurry(f), ys[0]) : ys[0]\n    )(list(xs));    "
     }
   ]
 }

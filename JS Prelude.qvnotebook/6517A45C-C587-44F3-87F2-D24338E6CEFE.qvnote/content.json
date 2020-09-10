@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// splitOn(\"\\r\\n\", \"a\\r\\nb\\r\\nd\\r\\ne\") //--> [\"a\", \"b\", \"d\", \"e\"]\n// splitOn(\"aaa\", \"aaaXaaaXaaaXaaa\") //--> [\"\", \"X\", \"X\", \"X\", \"\"]\n// splitOn(\"x\", \"x\") //--> [\"\", \"\"]\n// splitOn([3, 1], [1,2,3,1,2,3,1,2,3]) //--> [[1,2],[2],[2,3]]"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// splitOn :: [a] -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = (pat, src) =>\n    /* A list of the strings delimited by\n       instances of a given pattern in s. */\n    ('string' === typeof src) ? (\n        src.split(pat)\n    ) : (() => {\n        const\n            lng = pat.length,\n            tpl = foldl((a, i) =>\n                Tuple(\n                    fst(a).concat([src.slice(snd(a), i)]),\n                    lng + i\n                ), Tuple([], 0),\n                findIndices(matching(pat), src)\n            );\n        return fst(tpl).concat([src.slice(snd(tpl))]);\n    })();"
+      "data": "// splitOn :: [a] -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = pat => src =>\n    /* A list of the strings delimited by\n       instances of a given pattern in s. */\n    ('string' === typeof src) ? (\n        src.split(pat)\n    ) : (() => {\n        const\n            lng = pat.length,\n            tpl = findIndices(matching(pat))(src).reduce(\n                (a, i) => Tuple(\n                    fst(a).concat([src.slice(snd(a), i)])\n                )(lng + i),\n                Tuple([])(0)\n            );\n        return fst(tpl).concat([src.slice(snd(tpl))]);\n    })();"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = (f, xs) =>\n    0 < xs.length ? init(xs)\n    .reduceRight(f, last(xs)) : [];"
+      "data": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = f =>\n    xs => (ys => 0 < ys.length ? (\n        init(ys).reduceRight(\n            uncurry(f),\n            last(ys)\n        )\n    ) : [])(list(xs));"
     }
   ]
 }

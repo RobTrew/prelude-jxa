@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = (x, xs) => xs.includes(x);"
+      "data": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = x =>\n    // True if xs contains an instance of x.\n    xs => {\n        const t = xs.constructor.name;\n        return 'Array' !== t ? (\n            xs['Set' !== t ? 'includes' : 'has'](x)\n        ) : xs.some(eq(x));\n    };"
     }
   ]
 }

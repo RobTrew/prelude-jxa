@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// gt :: Ord a => a -> a -> Bool\nconst gt = (x, y) =>\n    'Tuple' === x.type ? (\n        x[0] > y[0]\n    ) : (x > y);"
+      "data": "// gt :: Ord a => a -> a -> Bool\nconst gt = x => y =>\n    'Tuple' === x.type ? (\n        x[0] > y[0]\n    ) : (x > y);"
     }
   ]
 }

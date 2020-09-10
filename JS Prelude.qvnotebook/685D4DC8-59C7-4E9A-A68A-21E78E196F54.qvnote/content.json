@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    map(xs => map(x => x.root, xs),\n        iterateUntil(\n            xs => 1 > xs.length,\n            xs => concatMap(x => x.nest, xs), [tree]\n        )\n    );"
+      "data": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    map(map(root))(\n        takeWhile(xs => 0 < xs.length)(\n            iterate(concatMap(nest))([\n                tree\n            ])\n        )\n    );"
     }
   ]
 }

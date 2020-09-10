@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = tpl => \n  liftA2Tuple(x => x)(tpl)"
+      "data": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = tpl => \n  liftA2Tuple(x => x)(tpl);"
     }
   ]
 }

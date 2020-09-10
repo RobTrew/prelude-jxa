@@ -1,0 +1,10 @@
+{
+  "title": "ne",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// ne :: a -> a -> Bool\nconst ne = a =>\n    b => a !== b;"
+    }
+  ]
+}

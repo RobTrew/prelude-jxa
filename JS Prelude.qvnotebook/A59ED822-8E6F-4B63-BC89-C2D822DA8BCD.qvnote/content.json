@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// cartesianProduct :: [a] -> [b] -> [(a, b)]\nconst cartesianProduct = (xs, ys) =>\n    apList(xs.map(x => y => Tuple(x, y)), ys);"
+      "data": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => (\n        bs => [...xs].flatMap(\n            x => bs.flatMap(b => [\n                [x].concat(b)\n            ])\n        )\n    )([...ys]);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mod :: Int -> Int -> Int\nconst mod = (n, d) => n % d;"
+      "data": "// mod :: Int -> Int -> Int\nconst mod = n =>\n    d => (n % d) + (\n        signum(n) === signum(-d) ? (\n            d\n        ) : 0\n    );"
     }
   ]
 }

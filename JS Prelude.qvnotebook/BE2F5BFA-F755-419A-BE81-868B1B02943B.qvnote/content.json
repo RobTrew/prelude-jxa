@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// shift :: Int -> [a] -> [a]\nconst shift = (n, xs) => {\n    const lng = length(xs);\n    return Infinity > lng ? (\n        take(lng, drop(n, cycle(xs)))\n    ) : (drop(n, xs), xs);\n};"
+      "data": "// shift :: Int -> [a] -> [a]\nconst shift = n => xs => {\n    const lng = length(xs);\n    return Infinity > lng ? (\n        take(lng)(\n          drop(n)(cycle(xs))\n        )\n    ) : (drop(n)(xs), xs);\n};"
     }
   ]
 }

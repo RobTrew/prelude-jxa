@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Sort and group a list by comparing the results of a key function\n// applied to each element. groupSortOn f is equivalent to\n// groupBy eq $ sortBy (comparing f),\n// but has the performance advantage of only evaluating f once for each\n// element in the input list.\n// This is a decorate-(group.sort)-undecorate pattern, as in the\n// so-called 'Schwartzian transform'.\n// Groups are arranged from from lowest to highest."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// groupSortOn :: Ord b => (a -> b) -> [a] -> [a]\n// groupSortOn :: Ord b => [((a -> b), Bool)]  -> [a] -> [a]\nconst groupSortOn = (f, xs) => {\n    // Functions and matching bools derived from argument f\n    // which is a single key function\n    const fsbs = unzip(\n            flatten([f])\n            .reduceRight((a, x) =>\n                'boolean' === typeof x ? {\n                    asc: x,\n                    fbs: a.fbs\n                } : {\n                    asc: true,\n                    fbs: [\n                        [x, a.asc]\n                    ].concat(a.fbs)\n                }, {\n                    asc: true,\n                    fbs: []\n                })\n            .fbs\n        ),\n        [fs, bs] = [fsbs[0], fsbs[1]],\n        iLast = fs.length;\n    // decorate-sort-group-undecorate\n    return groupBy(\n            (p, q) => p[0] === q[0],\n            sortBy(\n                mappendComparing(\n                    // functions that access pre-calculated values by position\n                    // in the decorated ('Schwartzian') version of xs\n                    zip(fs.map((_, i) => x => x[i]), bs)\n                ), xs.map( // xs decorated with precalculated key function values\n                    x => fs.reduceRight(\n                        (a, g) => [g(x)].concat(a), [\n                            x\n                        ]\n                    )\n                )\n            )\n        )\n        .map(gp => gp.map(x => x[iLast])); // undecorated version of data, post sort\n};"
+      "data": "// groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]\nconst groupSortOn = f =>\n    compose(\n        map(map(snd)),\n        groupBy(on(eq)(fst)),\n        sortBy(comparing(fst)),\n        map(fanArrow(f)(identity))\n    );"
     }
   ]
 }

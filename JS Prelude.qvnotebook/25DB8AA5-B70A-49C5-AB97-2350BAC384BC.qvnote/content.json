@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)\nconst mappendFn = (f, g) =>\n    x => mappend(f(x), g(x));"
+      "data": "// mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)\nconst mappendFn = f =>\n    g => x => mappend(f(x))(\n        g(x)\n    );"
     }
   ]
 }

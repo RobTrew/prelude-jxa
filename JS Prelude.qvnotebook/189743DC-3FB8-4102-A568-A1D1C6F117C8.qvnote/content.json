@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = (f, mb) =>\n    mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));"
+      "data": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = f => mb =>\n    mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));"
     }
   ]
 }

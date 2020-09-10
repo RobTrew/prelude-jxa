@@ -1,0 +1,10 @@
+{
+  "title": "bulleted",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// bulleted :: String -> String -> String\nconst bulleted = strTab =>\n    s => s.split(/[\\r\\n]/).map(\n        x => '' !== x ? strTab + '- ' + x : x\n    ).join('\\n');"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)\nconst liftMmay = f =>\n    mb => mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just))"
+      "data": "// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)\nconst liftMmay = f =>\n    mb => mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));"
     }
   ]
 }

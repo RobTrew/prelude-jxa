@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    const lng = length(xs);\n    return (0 < lng) ? (\n        lng < Infinity ? (\n            Just(Tuple(xs[0], xs.slice(1))) // Finite list\n        ) : (() => {\n            const nxt = take(1, xs);\n            return 0 < nxt.length ? (\n                Just(Tuple(nxt[0], xs))\n            ) : Nothing();\n        })() // Lazy generator\n    ) : Nothing();\n};"
+      "data": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    // Just a tuple of the head of xs and its tail, \n    // Or Nothing if xs is an empty list.\n    const lng = length(xs);\n    return (0 < lng) ? (\n        Infinity > lng ? (\n            Just(Tuple(xs[0])(xs.slice(1))) // Finite list\n        ) : (() => {\n            const nxt = take(1)(xs);\n            return 0 < nxt.length ? (\n                Just(Tuple(nxt[0])(xs))\n            ) : Nothing();\n        })() // Lazy generator\n    ) : Nothing();\n};"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// setInsert :: Ord a => a -> Set a -> Set a\nconst setInsert = (x, set) =>\n    set.add(x);"
+      "data": "// setInsert :: Ord a => a -> Set a -> Set a\nconst setInsert = x => oSet =>\n    oSet.add(x);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// bool :: a -> a -> Bool -> a\nconst bool = f => t => p =>\n    p ? t : f;"
+      "data": "// bool :: a -> a -> Bool -> a\nconst bool = f =>\n    t => p => p ? t : f;"
     }
   ]
 }

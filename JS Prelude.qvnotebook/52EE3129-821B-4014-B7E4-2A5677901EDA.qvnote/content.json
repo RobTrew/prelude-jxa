@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// scanl1 is a variant of scanl that has no starting value argument"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// scanl1 :: (a -> a -> a) -> [a] -> [a]\nconst scanl1 = (f, xs) =>\n    xs.length > 0 ? scanl(f, xs[0], xs.slice(1)) : [];"
+      "data": "// scanl1 :: (a -> a -> a) -> [a] -> [a]\nconst scanl1 = f =>\n    // scanl1 is a variant of scanl that has no \n    // starting value argument.\n    xs => xs.length > 0 ? (\n        scanl(f)(\n            xs[0]\n        )(xs.slice(1))\n    ) : [];"
     }
   ]
 }

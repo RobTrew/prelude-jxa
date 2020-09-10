@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// toLower :: String -> String\nconst toLower = s => s.toLocaleLowerCase();"
+      "data": "// toLower :: String -> String\nconst toLower = s =>\n    // Lower-case version of string.\n    s.toLocaleLowerCase();"
     }
   ]
 }

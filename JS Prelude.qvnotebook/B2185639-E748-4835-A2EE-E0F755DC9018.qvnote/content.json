@@ -1,0 +1,10 @@
+{
+  "title": "Action",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Action :: (a -> b) -> a -> Action b\nconst Action = f =>\n    // Constructor for an action.\n    x => ({\n        type: 'Action',\n        act: f,\n        arg: x\n    });"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isSpace :: Char -> Bool\nconst isSpace = c => /\\s/.test(c);"
+      "data": "// isSpace :: Char -> Bool\nconst isSpace = c =>\n    // True if c is a white space character.\n    /\\s/.test(c);"
     }
   ]
 }

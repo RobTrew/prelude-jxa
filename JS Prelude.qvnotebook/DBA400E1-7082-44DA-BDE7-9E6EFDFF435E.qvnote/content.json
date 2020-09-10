@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// cycle :: [a] -> Generator [a]\nfunction* cycle(xs) {\n    const lng = xs.length;\n    let i = 0;\n    while (true) {\n        yield(xs[i])\n        i = (1 + i) % lng;\n    }\n}"
+      "data": "// cycle :: [a] -> Generator [a]\nfunction* cycle(xs) {\n    const lng = xs.length;\n    let i = 0;\n    while (true) {\n        yield(xs[i]);\n        i = (1 + i) % lng;\n    }\n}"
     }
   ]
 }

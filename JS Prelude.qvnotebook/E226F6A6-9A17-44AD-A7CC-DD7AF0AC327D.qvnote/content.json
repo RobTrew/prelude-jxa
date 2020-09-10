@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Needle -> Haystack -> (prefix before match, match + rest)"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// breakOn :: String -> String -> (String, String)\nconst breakOn = (pat, src) =>\n    0 < pat.length ? (() => {\n        const xs = src.split(pat);\n        return 1 < xs.length ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src, '');\n    })() : undefined;"
+      "data": "// breakOn :: String -> String -> (String, String)\nconst breakOn = pat =>\n    // Needle -> Haystack -> (prefix before match, match + rest)\n    src => 0 < pat.length ? (() => {\n        const xs = src.split(pat);\n        return 1 < xs.length ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)('');\n    })() : undefined;"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// flatten :: NestedList a -> [a]\nconst flatten = t => {\n\tconst go = x => \n    \tArray.isArray(x) ? (\n        \t[].concat(...x.map(go))\n    \t) : x;\n\treturn go(t);\n};"
+      "data": "// flatten :: NestedList a -> [a]\nconst flatten = nest => \n    nest.flat(Infinity);"
     }
   ]
 }

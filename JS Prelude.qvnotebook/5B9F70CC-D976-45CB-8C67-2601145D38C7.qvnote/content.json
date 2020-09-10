@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// scanr :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanr = (f, startValue, xs) =>\n    xs.reduceRight((a, x) => {\n        const v = f(a.acc, x);\n        return {\n            acc: v,\n            scan: [v].concat(a.scan)\n        };\n    }, {\n        acc: startValue,\n        scan: [startValue]\n    })\n    .scan;"
+      "data": "// scanr :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => list(xs).reduceRight((a, x) => {\n        const v = f(x)(a[0]);\n        return Tuple(v)([v].concat(a[1]));\n    }, Tuple(startValue)([startValue]))[1];"
     }
   ]
 }

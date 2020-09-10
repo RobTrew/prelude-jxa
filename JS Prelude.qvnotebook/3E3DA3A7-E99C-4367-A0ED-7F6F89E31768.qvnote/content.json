@@ -1,0 +1,10 @@
+{
+  "title": "base64encode",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// base64encode :: String -> String\nconst base64encode = s =>\n    ObjC.unwrap(\n        $.NSString.stringWithString(s)\n        .dataUsingEncoding(\n            $.NSUTF8StringEncoding\n        ).base64EncodedStringWithOptions(0)\n    );"
+    }
+  ]
+}

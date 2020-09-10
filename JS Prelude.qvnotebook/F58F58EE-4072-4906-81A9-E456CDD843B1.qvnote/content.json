@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unwords :: [String] -> String\nconst unwords = xs => xs.join(' ');"
+      "data": "// unwords :: [String] -> String\nconst unwords = xs =>\n    // A space-separated string derived\n    // from a list of words.\n    xs.join(' ');"
     }
   ]
 }

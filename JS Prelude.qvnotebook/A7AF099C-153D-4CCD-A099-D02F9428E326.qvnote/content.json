@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Sentence case - initial string capitalized and rest lowercase"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// toSentence :: String -> String\nconst toSentence = s =>\n    (0 < s.length) ? (\n        s[0].toUpperCase() + s.slice(1)\n        .toLowerCase()\n    ) : s;"
+      "data": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - initial string capitalized \n    // and rest lowercase.\n    (0 < s.length) ? (\n        s[0].toUpperCase() + s.slice(1)\n        .toLowerCase()\n    ) : s;"
     }
   ]
 }

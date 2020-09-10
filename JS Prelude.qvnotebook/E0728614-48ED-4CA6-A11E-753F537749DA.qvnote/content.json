@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = (f, xs) =>\n    xs.reduce((a, x) => a.Nothing ? Just(x) : (\n        f(x, a.Just) < 0 ? Just(x) : a\n    ), Nothing());"
+      "data": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = f =>\n    xs => list(xs).reduce((a, x) =>\n        a.Nothing ? Just(x) : (\n            f(x)(a.Just) < 0 ? (\n                Just(x)\n            ) : a\n        ), Nothing());"
     }
   ]
 }

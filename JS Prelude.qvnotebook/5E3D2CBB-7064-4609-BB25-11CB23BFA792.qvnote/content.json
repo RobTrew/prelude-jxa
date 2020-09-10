@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// splitRegex :: Regex -> String -> [String]\nconst splitRegex = (needle, haystack) =>\n    haystack.split(needle);"
+      "data": "// splitRegex :: Regex -> String -> [String]\nconst splitRegex = needle => haystack =>\n    haystack.split(needle);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = f =>\n    1 < f.length ? (\n        (a, b) => f(b, a)\n    ) : (x => y => f(y)(x));"
+      "data": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with \n    // its arguments reversed.\n    1 < op.length ? (\n        (a, b) => op(b, a)\n    ) : (x => y => op(y)(x));"
     }
   ]
 }

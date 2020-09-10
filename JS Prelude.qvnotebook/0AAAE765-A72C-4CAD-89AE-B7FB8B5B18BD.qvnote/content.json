@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// breakOnAll \"::\" \"\"\n// ==> []\n// breakOnAll \"/\" \"a/b/c/\"\n// ==> [(\"a\", \"/b/c/\"), (\"a/b\", \"/c/\"), (\"a/b/c\", \"/\")]"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = (pat, src) =>\n    '' !== pat ? (\n        src.split(pat)\n        .reduce((a, x, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(xs.slice(0, i)\n                        .join(pat), pat + xs.slice(i)\n                        .join(pat)\n                    )\n                ])\n            ) : a, [])\n    ) : undefined;"
+      "data": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = pat =>\n    src => '' !== pat ? (\n        src.split(pat)\n        .reduce((a, x, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(xs.slice(0, i).join(pat))(\n                        pat + xs.slice(i).join(pat)\n                    )\n                ])\n            ) : a, [])\n    ) : undefined;"
     }
   ]
 }

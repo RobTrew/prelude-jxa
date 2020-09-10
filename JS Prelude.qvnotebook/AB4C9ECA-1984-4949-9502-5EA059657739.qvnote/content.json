@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// showBinary :: Int -> String\nconst showBinary = n => {\n    const binaryChar = n => 0 !== n ? '1' : '0';\n    return showIntAtBase(2, binaryChar, n, '');\n};"
+      "data": "// showBinary :: Int -> String\nconst showBinary = n => {\n    const binaryChar = n => 0 !== n ? '1' : '0';\n    return showIntAtBase(2)(\n        binaryChar\n    )(n)('');\n};"
     }
   ]
 }

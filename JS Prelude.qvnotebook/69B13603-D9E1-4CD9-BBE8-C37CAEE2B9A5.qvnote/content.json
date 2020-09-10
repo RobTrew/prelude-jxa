@@ -1,0 +1,10 @@
+{
+  "title": "filterGen",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// filterGen :: (a -> Bool) -> Gen [a] -> [a]\nconst filterGen = p => xs => {\n    function* go() {\n        let x = xs.next();\n        while (!x.done) {\n            let v = x.value;\n            if (p(v)) {\n                yield v;\n            }\n            x = xs.next();\n        }\n    }\n    return go(xs);\n};"
+    }
+  ]
+}

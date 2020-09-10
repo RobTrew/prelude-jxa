@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// readLR :: Read a => String -> Either String a\nconst readLR = s => {\n    try {\n        return Right(JSON.parse(s))\n    } catch (e) {\n        return Left(e.message);\n    };\n};"
+      "data": "// readLR :: Read a => String -> Either String a\nconst readLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(e.message);\n    }\n};"
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "title": "showForest",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// showForest :: [Tree a] -> String\nconst showForest = xs =>\n    unlines(xs.map(x => drawTree2(false)(true)(\n        fmapTree(show)(\n            x\n        )\n    )));"
+    }
+  ]
+}

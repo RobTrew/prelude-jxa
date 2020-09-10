@@ -1,0 +1,10 @@
+{
+  "title": "findGen",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// findGen :: (a -> Bool) -> Gen [a] -> Maybe a\nconst findGen = p =>\n    // Just the first match for the predicate p\n    // in the generator stream xs, or Nothing\n    // if no match is found.\n    xs => {\n        const\n            mb = until(tpl => {\n                const nxt = tpl[0];\n                return nxt.done || p(nxt.value);\n            })(\n                tpl => Tuple(tpl[1].next())(\n                    tpl[1]\n                )\n            )(Tuple(xs.next())(xs))[0];\n        return mb.done ? (\n            Nothing()\n        ) : Just(mb.value);\n    };"
+    }
+  ]
+}

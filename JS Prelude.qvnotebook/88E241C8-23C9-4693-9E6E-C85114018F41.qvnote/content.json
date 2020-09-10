@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// init :: [a] -> [a]\nconst init = xs =>\n    0 < xs.length ? (\n        xs.slice(0, -1)\n    ) : undefined;"
+      "data": "// init :: [a] -> [a]\nconst init = xs => (\n    // All elements of a list except the last.\n    ys => 0 < ys.length ? (\n        ys.slice(0, -1)\n    ) : undefined\n)(list(xs));"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// swap :: (a, b) -> (b, a)\nconst swap = ab =>\n    Tuple(ab[1], ab[0]);"
+      "data": "// swap :: (a, b) -> (b, a)\nconst swap = ab =>\n    // The pair ab with its order reversed.\n    Tuple(ab[1])(\n        ab[0]\n    );"
     }
   ]
 }

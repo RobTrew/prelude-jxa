@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// draw :: Tree String -> [String]\nconst draw = node => {\n    // shift :: String -> String -> [String] -> [String]\n    const shift = (first, other, xs) =>\n        zipWith(\n            append,\n            cons(first, replicate(xs.length - 1, other)),\n            xs\n        );\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const lng = xs.length;\n        return 0 < lng ? (\n            1 < lng ? append(\n                cons(\n                    '│',\n                    shift('├─ ', '│  ', draw(xs[0]))\n                ),\n                drawSubTrees(xs.slice(1))\n            ) : cons('│', shift('└─ ', '   ', draw(xs[0])))\n        ) : [];\n    };\n    return append(\n        lines(node.root),\n        drawSubTrees(node.nest)\n    );\n};"
+      "data": "// draw :: Tree String -> [String]\nconst draw = node => {\n    // shift :: String -> String -> [String] -> [String]\n    const shifted = (first, other, xs) =>\n        zipWithList(append)(\n            cons(first)(\n              replicate(xs.length - 1)(\n                other\n              )\n            )\n        )(xs);\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const lng = xs.length;\n        return 0 < lng ? (\n            1 < lng ? append(\n                cons('│')(\n                    shifted('├─ ', '│  ', draw(xs[0]))\n                )\n            )(\n                drawSubTrees(xs.slice(1))\n            ) : cons('│')(\n              shifted('└─ ', '   ', draw(xs[0]))\n            )\n        ) : [];\n    };\n    return append(lines(node.root))(\n        drawSubTrees(node.nest)\n    );\n};"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs => 0 < xs.length ? (\n    Just(xs.slice(-1)[0])\n) : Nothing();"
+      "data": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(-1)[0])\n    ) : Nothing()\n)(list(xs));"
     }
   ]
 }

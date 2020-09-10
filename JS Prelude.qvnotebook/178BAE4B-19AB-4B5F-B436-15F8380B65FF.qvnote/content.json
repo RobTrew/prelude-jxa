@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fileSize :: FilePath -> Either String Int\nconst fileSize = fp =>\n  bindLR(\n    fileStatus(fp),\n    dct => Right(ObjC.unwrap(dct.NSFileSize))\n  );"
+      "data": "// fileSize :: FilePath -> Either String Int\nconst fileSize = fp =>\n    bindLR(fileStatus(fp))(\n        dct => Right(ObjC.unwrap(dct.NSFileSize))\n    );"
     }
   ]
 }

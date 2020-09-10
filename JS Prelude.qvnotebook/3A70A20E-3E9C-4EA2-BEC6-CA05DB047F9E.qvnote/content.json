@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// isInfixOf :: (Eq a) => [a] -> [a] -> Bool\n// isInfixOf :: String -> String -> Bool\nconst isInfixOf = (needle, haystack) =>\n    'string' !== typeof haystack ? (() => {\n        const\n            lng = needle.length,\n            go = xs => lng <= xs.length ? (\n                isPrefixOf(needle, xs) || go(xs.slice(1))\n            ) : false;\n        return go(haystack);\n    })() : haystack.includes(needle);"
+      "data": "// isInfixOf :: (Eq a) => [a] -> [a] -> Bool\n// isInfixOf :: String -> String -> Bool\nconst isInfixOf = needle => haystack =>\n    'string' !== typeof haystack ? (() => {\n        const\n            lng = needle.length,\n            go = xs => lng <= xs.length ? (\n                isPrefixOf(needle)(xs) || go(xs.slice(1))\n            ) : false;\n        return go(haystack);\n    })() : haystack.includes(needle);"
     }
   ]
 }

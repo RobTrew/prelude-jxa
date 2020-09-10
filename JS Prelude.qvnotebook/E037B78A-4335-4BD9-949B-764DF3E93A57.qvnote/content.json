@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n  const\n    error = $(),\n    dct = $.NSFileManager.defaultManager\n    .attributesOfItemAtPathError(fp, error).js;\n  return undefined !== dct ? (\n    Right(dct)\n  ) : Left(ObjC.unwrap(error.localizedDescription));\n};"
+      "data": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(fp, e);\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};"
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "title": "taskPaperDateString",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// taskPaperDateString :: Date -> String\nconst taskPaperDateString = dte => {\n    const [d, t] = iso8601Local(dte).split('T');\n    return [d, t.slice(0, 5)].join(' ');\n};"
+    }
+  ]
+}

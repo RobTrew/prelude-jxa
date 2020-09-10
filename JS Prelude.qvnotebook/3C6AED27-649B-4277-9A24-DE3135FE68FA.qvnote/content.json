@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = (k, kvs) =>\n    bindMay(\n        find(x => k === fst(x), kvs),\n        x => Just(snd(x))\n    );"
+      "data": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = k =>\n    kvs => bindMay(\n        find(x => k === fst(x))(\n            kvs\n        )\n    )(x => Just(snd(x)));"
     }
   ]
 }

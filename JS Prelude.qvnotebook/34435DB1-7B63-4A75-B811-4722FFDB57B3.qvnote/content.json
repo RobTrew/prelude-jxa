@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c\nconst liftA2Fn = op => f => g =>\n    // Lift a binary function to a composition\n    // over two other functions.\n    // liftA2 (*) (+ 2) (+ 3) 7 == 90\n    x => op(f(x))(g(x));"
+      "data": "// liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c\nconst liftA2Fn = op =>\n    // Lift a binary function to a composition\n    // over two other functions.\n    // liftA2 (*) (+ 2) (+ 3) 7 == 90\n    f => g => x => op(f(x))(\n        g(x)\n    );"
     }
   ]
 }

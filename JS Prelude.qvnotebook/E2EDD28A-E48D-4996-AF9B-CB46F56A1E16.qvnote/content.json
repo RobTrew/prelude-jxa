@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// cons :: a -> [a] -> [a]\nconst cons = (x, xs) =>\n    Array.isArray(xs) ? (\n        [x].concat(xs)\n    ) : 'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        x + xs\n    ) : ( // Existing generator wrapped with one additional element\n        function* () {\n            yield x;\n            let nxt = xs.next()\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = xs.next();\n            }\n        }\n    )();"
+      "data": "// cons :: a -> [a] -> [a]\nconst cons = x =>\n    // A list constructed from the item x,\n    // followed by the existing list xs.\n    xs => Array.isArray(xs) ? (\n        [x].concat(xs)\n    ) : 'GeneratorFunction' !== xs\n    .constructor.constructor.name ? (\n        x + xs\n    ) : ( // cons(x)(Generator)\n        function* () {\n            yield x;\n            let nxt = xs.next();\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = xs.next();\n            }\n        }\n    )();"
     }
   ]
 }

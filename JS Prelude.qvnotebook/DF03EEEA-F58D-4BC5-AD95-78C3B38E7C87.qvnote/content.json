@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = (p, f, x) => {\n    let v = x;\n    while (!p(v)) v = f(v);\n    return v;\n};"
+      "data": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p => f => x => {\n    let v = x;\n    while (!p(v)) v = f(v);\n    return v;\n};"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// difference :: Eq a => [a] -> [a] -> [a]\nconst difference = (xs, ys) => {\n    const s = new Set(ys);\n    return xs.filter(x => !s.has(x));\n};"
+      "data": "// difference :: Eq a => [a] -> [a] -> [a]\nconst difference = xs =>\n    ys => {\n        const s = new Set(ys);\n        return xs.filter(x => !s.has(x));\n    };"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// raise :: Num -> Int -> Num\nconst raise = (n, e) => Math.pow(n, e);"
+      "data": "// raise :: Num -> Int -> Num\nconst raise = x =>\n    // X to the power of n.\n    n => Math.pow(x, n);"
     }
   ]
 }

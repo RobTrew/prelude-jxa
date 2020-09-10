@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// differenceGen :: Gen [a] -> Gen [a] -> Gen [a]\nfunction* differenceGen(ga, gb) {\n    // All values of generator stream ga except any\n    // already seen in generator stream gb.\n    const\n        stream = zipGen(ga, gb),\n        sb = new Set([]);\n    let xy = take(1, stream);\n    while (0 < xy.length) {\n        const [x, y] = Array.from(xy[0]);\n        sb.add(y);\n        if (!sb.has(x)) yield x;\n        xy = take(1, stream);\n    }\n};"
+      "data": "// differenceGen :: Gen [a] -> Gen [a] -> Gen [a]\nconst differenceGen = ga => {\n    return function*(gb) {\n        // All values of generator stream ga except any\n        // already seen in generator stream gb.\n        const\n            stream = zipGen(ga)(gb),\n            sb = new Set([]);\n        let xy = take(1)(stream);\n        while (0 < xy.length) {\n            const [x, y] = Array.from(xy[0]);\n            sb.add(y);\n            if (!sb.has(x)) yield x;\n            xy = take(1)(stream);\n        }\n    };\n};"
     }
   ]
 }

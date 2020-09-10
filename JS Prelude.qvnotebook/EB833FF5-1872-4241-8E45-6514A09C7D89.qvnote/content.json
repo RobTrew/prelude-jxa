@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Instance for lists (arrays) only here"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = (n, xs) => {\n    const go = x => 0 >= x ? [\n        []\n    ] : liftA2List(cons, xs, go(x - 1));\n    return go(n);\n};"
+      "data": "// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = n =>\n    // Instance for lists (arrays) only here.\n    xs => {\n        const go = x => 0 >= x ? [\n            []\n        ] : liftA2List(cons)(\n            list(xs)\n        )(go(x - 1));\n        return go(n);\n    };"
     }
   ]
 }

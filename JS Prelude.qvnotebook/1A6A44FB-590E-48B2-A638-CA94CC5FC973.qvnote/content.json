@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = (n, cFiller, s) =>\n    n > s.length ? (\n        s.padStart(n, cFiller)\n    ) : s;"
+      "data": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = n =>\n    // The string s, preceded by enough padding (with\n    // the character c) to reach the string length n.\n    c => s => n > s.length ? (\n        s.padStart(n, c)\n    ) : s;"
     }
   ]
 }

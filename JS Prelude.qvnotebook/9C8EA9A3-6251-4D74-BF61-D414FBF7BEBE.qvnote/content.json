@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// chr :: Int -> Char\nconst chr = x => String.fromCodePoint(x);"
+      "data": "// chr :: Int -> Char\nconst chr = x =>\n    // The character at unix code-point x.\n    String.fromCodePoint(x);"
     }
   ]
 }

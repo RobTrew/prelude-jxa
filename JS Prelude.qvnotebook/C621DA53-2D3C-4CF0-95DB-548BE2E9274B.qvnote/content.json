@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mean :: [Num] -> Num\nconst mean = xs =>\n  xs.reduce((a, x) => a + x, 0) / xs.length;"
+      "data": "// mean :: [Num] -> Num\nconst mean = xs => (\n    ys => ys.reduce((a, y) => a + y, 0) / ys.length\n)(list(xs));"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// ord :: Char -> Int\nconst ord = c => c.codePointAt(0);"
+      "data": "// ord :: Char -> Int\nconst ord = c =>\n    // Unicode ordinal value of the character.\n    c.codePointAt(0);"
     }
   ]
 }

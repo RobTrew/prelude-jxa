@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = (p, xs) => {\n    const go = xs => 0 < xs.length ? (() => {\n        const x = xs[0];\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !p(x, y))\n            )\n        )\n    })() : [];\n    return go(xs);\n};"
+      "data": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = fEq => {\n    const go = xs => 0 < xs.length ? (() => {\n        const x = xs[0];\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !fEq(x)(y))\n            )\n        );\n    })() : [];\n    return compose(go, list);\n};"
     }
   ]
 }

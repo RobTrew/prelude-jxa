@@ -1,15 +1,10 @@
 {
-  "title": "maybeToList",
+  "title": "listFromMaybe",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// The maybeToList function returns an empty list when given\n// Nothing or a singleton list when not given Nothing.”"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// maybeToList :: Maybe a -> [a]\nconst maybeToList = mb =>\n    mb.Nothing ? [] : [mb.Just];"
+      "data": "// listFromMaybe :: Maybe a -> [a]\nconst listFromMaybe = mb =>\n    // A singleton list derived from a Just value, \n    // or an empty list derived from Nothing.\n    mb.Nothing ? [] : [mb.Just];"
     }
   ]
 }

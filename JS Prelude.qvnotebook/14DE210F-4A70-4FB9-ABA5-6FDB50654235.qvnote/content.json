@@ -1,0 +1,10 @@
+{
+  "title": "indexTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// indexTree :: Tree (a,  { nodeSum :: Int }) -> Int ->\n//              Maybe Tree (a,  { nodeSum :: Int })\nconst indexTree = tree =>\n    // Index into a measured tree. (see measuredTree)\n    i => 0 !== i ? (\n        i > (tree.root[1].nodeSum - 1) ? (\n            Nothing()\n        ) : indexForest(tree.nest)(i - 1)\n    ) : Just(tree);"
+    }
+  ]
+}

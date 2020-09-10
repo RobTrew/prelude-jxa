@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// maximum :: Ord a => [a] -> a\nconst maximum = xs =>\n    0 < xs.length ? (\n        foldl1((a, x) => x > a ? x : a, xs)\n    ) : undefined;"
+      "data": "// maximum :: Ord a => [a] -> a\nconst maximum = xs => (\n    // The largest value in a non-empty list.\n    ys => 0 < ys.length ? (\n        ys.slice(1).reduce(\n            (a, y) => y > a ? (\n                y\n            ) : a, ys[0]\n        )\n    ) : undefined\n)(list(xs));"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// foldTree :: (a -> [b] -> b) -> Tree a -> b\nconst foldTree = (f, tree) => {\n    const go = node => f(node.root, node.nest.map(go));\n    return go(tree);\n};"
+      "data": "// foldTree :: (a -> [b] -> b) -> Tree a -> b\nconst foldTree = f => {\n    // The catamorphism on trees. A summary\n    // value obtained by a depth-first fold.\n    const go = tree => f(tree.root)(\n        tree.nest.map(go)\n    );\n    return go;\n};"
     }
   ]
 }

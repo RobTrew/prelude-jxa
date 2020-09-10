@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// apFn :: (a -> b -> c) -> (a -> b) -> a -> c\nconst apFn = f =>\n    // Applicative instance for functions.\n    g => x => f(x)(g(x))"
+      "data": "// apFn :: (a -> b -> c) -> (a -> b) -> a -> c\nconst apFn = f =>\n    // Applicative instance for functions.\n    // f(x) applied to g(x).\n    g => x => f(x)(\n        g(x)\n    );"
     }
   ]
 }

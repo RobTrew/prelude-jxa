@@ -1,0 +1,10 @@
+{
+  "title": "isAlphaNum",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// isAlphaNum :: Char -> Bool\nconst isAlphaNum = c => {\n    const n = c.codePointAt(0);\n    return (48 <= n && 57 >= n) || (\n        /[A-Za-z\\u00C0-\\u00FF]/.test(c)\n    );\n};"
+    }
+  ]
+}

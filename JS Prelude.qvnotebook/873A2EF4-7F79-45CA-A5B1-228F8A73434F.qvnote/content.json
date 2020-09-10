@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// e.g. sortBy(on(compare,length), xs)"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// on :: (b -> b -> c) -> (a -> b) -> a -> a -> c\nconst on = (f, g) => (a, b) => f(g(a), g(b));"
+      "data": "// on :: (b -> b -> c) -> (a -> b) -> a -> a -> c\nconst on = f =>\n    // e.g. groupBy(on(eq)(length))\n    g => a => b => f(g(a))(g(b));"
     }
   ]
 }

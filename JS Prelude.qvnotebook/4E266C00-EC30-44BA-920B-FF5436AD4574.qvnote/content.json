@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => (x > a ? x : a), xs[0]))\n    ) : Nothing();"
+      "data": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(1)\n            .reduce((a, y) => (y > a ? y : a), ys[0]))\n    ) : Nothing()\n)(list(xs));"
     }
   ]
 }

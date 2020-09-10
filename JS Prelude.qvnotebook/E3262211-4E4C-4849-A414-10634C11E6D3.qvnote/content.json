@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// succMay :: Enum a => a -> Maybe a\nconst succMay = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mx] = [x, maxBound(x)].map(fromEnum);\n        return i < mx ? (\n            Just(toEnum(x)(1 + i))\n        ) : Nothing()\n    })() : x < Number.MAX_SAFE_INTEGER ? (\n        Just(1 + x)\n    ) : Nothing()\n};"
+      "data": "// succMay :: Enum a => a -> Maybe a\nconst succMay = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mx] = [x, maxBound(x)].map(fromEnum);\n        return i < mx ? (\n            Just(toEnum(x)(1 + i))\n        ) : Nothing();\n    })() : x < Number.MAX_SAFE_INTEGER ? (\n        Just(1 + x)\n    ) : Nothing();\n};"
     }
   ]
 }

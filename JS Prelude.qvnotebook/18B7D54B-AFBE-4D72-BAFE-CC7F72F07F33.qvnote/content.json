@@ -1,0 +1,10 @@
+{
+  "title": "readHex",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// readHex :: String -> Int\nconst readHex = s =>\n    // Integer value of hexadecimal expression.\n    parseInt(s, 16);"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// intersection :: Ord a => Set a -> Set a -> Set a\nconst intersection = (s, s1) =>\n    new Set([...s].filter(x => s1.has(x)));"
+      "data": "// intersection :: Ord a => Set a -> Set a -> Set a\nconst intersection = s => s1 =>\n    new Set([...s].filter(x => s1.has(x)));"
     }
   ]
 }

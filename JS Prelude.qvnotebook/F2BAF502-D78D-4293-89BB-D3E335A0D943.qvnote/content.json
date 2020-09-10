@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = strPath =>\n    '' !== strPath ? (\n        ('/' !== strPath[strPath.length - 1]) ? (\n            strPath.split('/')\n            .slice(-1)[0]\n        ) : ''\n    ) : '';"
+      "data": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = fp =>\n    '' !== fp ? (\n        '/' !== fp[fp.length - 1] ? (\n            fp.split('/').slice(-1)[0]\n        ) : ''\n    ) : '';"
     }
   ]
 }

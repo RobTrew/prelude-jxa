@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String\nconst showIntAtBase = (base, toChr, n, rs) => {\n    const go = ([n, d], r) => {\n        const r_ = toChr(d) + r;\n        return 0 !== n ? (\n            go(Array.from(quotRem(n, base)), r_)\n        ) : r_;\n    };\n    return 1 >= base ? (\n        'error: showIntAtBase applied to unsupported base'\n    ) : 0 > n ? (\n        'error: showIntAtBase applied to negative number'\n    ) : go(Array.from(quotRem(n, base)), rs);\n};"
+      "data": "// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String\nconst showIntAtBase = base => toChr => n => rs => {\n    const go = ([n, d], r) => {\n        const r_ = toChr(d) + r;\n        return 0 !== n ? (\n            go(Array.from(quotRem(n)(base)), r_)\n        ) : r_;\n    };\n    return 1 >= base ? (\n        'error: showIntAtBase applied to unsupported base'\n    ) : 0 > n ? (\n        'error: showIntAtBase applied to negative number'\n    ) : go(Array.from(quotRem(n)(base)), rs);\n};"
     }
   ]
 }

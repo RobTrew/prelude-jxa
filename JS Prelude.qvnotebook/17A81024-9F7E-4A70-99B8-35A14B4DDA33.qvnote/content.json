@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// enumFrom :: Enum a => a -> [a]\nfunction* enumFrom(x) {\n    let v = x;\n    while (true) {\n        yield v;\n        v = succ(v);\n    }\n}"
+      "data": "// enumFrom :: Enum a => a -> [a]\nfunction* enumFrom(x) {\n    // A non-finite succession of enumerable\n    // values, starting with the value x.\n    let v = x;\n    while (true) {\n        yield v;\n        v = succ(v);\n    }\n}"
     }
   ]
 }

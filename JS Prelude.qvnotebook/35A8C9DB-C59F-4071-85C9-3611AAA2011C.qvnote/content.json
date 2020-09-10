@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// append (++) :: [a] -> [a] -> [a]\n// append (++) :: String -> String -> String\nconst append = (xs, ys) => xs.concat(ys);"
+      "data": "// append (++) :: [a] -> [a] -> [a]\nconst append = xs =>\n    // A list defined by the\n    // concatenation of two others.\n    ys => xs.concat(ys);"
     }
   ]
 }

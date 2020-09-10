@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// intersperse :: a -> [a] -> [a]\n// intersperse :: Char -> String -> String\nconst intersperse = (sep, xs) => {\n    const bln = 'string' === typeof xs;\n    return xs.length > 1 ? (\n        (bln ? concat : x => x)(\n            (bln ? (\n                xs.split('')\n            ) : xs)\n            .slice(1)\n            .reduce((a, x) => a.concat([sep, x]), [xs[0]])\n        )) : xs;\n};"
+      "data": "// intersperse :: a -> [a] -> [a]\n// intersperse :: Char -> String -> String\nconst intersperse = sep => xs => {\n    // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]\n    const bln = 'string' === typeof xs;\n    return xs.length > 1 ? (\n        (bln ? concat : x => x)(\n            (bln ? (\n                xs.split('')\n            ) : xs)\n            .slice(1)\n            .reduce((a, x) => a.concat([sep, x]), [xs[0]])\n        )) : xs;\n};"
     }
   ]
 }

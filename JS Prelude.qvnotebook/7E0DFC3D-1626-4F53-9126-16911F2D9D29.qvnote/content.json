@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Not required in JS, which has first functions by default.\n// Included only for comparison with AS, which has to derive\n// first class functions by lifting 'handlers' into 'scripts'\n// as anonymous |λ|() functions.\n\n// In JS, mReturn is just an alternate name for id."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// mReturn :: First-class m => (a -> b) -> m (a -> b)\nconst mReturn = x => id(x);"
+      "data": "// mReturn :: First-class m => (a -> b) -> m (a -> b)\nconst mReturn = x =>\n    // Not required in JS, which has first functions by default.\n    // Included only for comparison with AS, which has to derive\n    // first class functions by lifting 'handlers' into 'scripts'\n    // as anonymous |λ|() functions.\n    // In JS, mReturn is just an alias of identity.\n    identity(x);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// replicate :: Int -> a -> [a]\nconst replicate = (n, x) =>\n    Array.from({\n        length: n\n    }, () => x);"
+      "data": "// replicate :: Int -> a -> [a]\nconst replicate = n =>\n    // A list of n copies of x.\n    x => Array.from({\n        length: n\n    }, () => x);"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// words :: String -> [String]\nconst words = s => s.split(/\\s+/);"
+      "data": "// words :: String -> [String]\nconst words = s =>\n    // List of space-delimited sub-strings.\n    s.split(/\\s+/);"
     }
   ]
 }

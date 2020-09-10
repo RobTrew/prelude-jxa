@@ -1,0 +1,10 @@
+{
+  "title": "composeList",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// composeList :: [(a -> a)] -> (a -> a)\nconst composeList = fs =>\n    fs.reduce(\n        (f, g) => x => f(g(x)),\n        x => x\n    );"
+    }
+  ]
+}

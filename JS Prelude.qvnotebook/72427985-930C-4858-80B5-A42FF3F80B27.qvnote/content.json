@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// sum :: [Num] -> Num\nconst sum = xs => xs.reduce((a, x) => a + x, 0);"
+      "data": "// sum :: [Num] -> Num\nconst sum = xs =>\n    // The numeric sum of all values in xs.\n    xs.reduce((a, x) => a + x, 0);"
     }
   ]
 }

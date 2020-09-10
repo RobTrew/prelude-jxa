@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = (n, xs) =>\n    enumFromThenTo(0, n - 1, xs.length - 1)\n    .reduce(\n        (a, i) => a.concat([xs.slice(i, i + n)]),\n        []\n    );"
+      "data": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    xs => enumFromThenTo(0)(n)(\n        xs.length - 1\n    ).reduce(\n        (a, i) => a.concat([xs.slice(i, (n + i))]),\n        []\n    );"
     }
   ]
 }

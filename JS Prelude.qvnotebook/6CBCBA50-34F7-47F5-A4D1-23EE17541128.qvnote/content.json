@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Determines whether all elements of the structure \n// satisfy the predicate."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// all :: (a -> Bool) -> [a] -> Bool\nconst all = (p, xs) => xs.every(p);"
+      "data": "// all :: (a -> Bool) -> [a] -> Bool\nconst all = p =>\n    // True if p(x) holds for every x in xs.\n    xs => [...xs].every(p);"
     }
   ]
 }

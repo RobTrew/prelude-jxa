@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// permutations :: [a] -> [[a]]\nconst permutations = xs =>\n    xs.reduceRight(\n        (a, x) => concatMap(\n            xs => enumFromTo(0, xs.length)\n            .map(n => xs.slice(0, n)\n                .concat(x)\n                .concat(xs.slice(n))\n            ),\n            a\n        ),\n        [[]]\n    );\n\n// OR\n// // permutations :: [a] -> [[a]]\n// const permutations = xs => {\n//     const go = xs =>\n//         xs.length ? concatMap(x => concatMap(ys => [\n//                 [x].concat(ys)\n//             ],\n//             go(delete_(x, xs))), xs) : [\n//             []\n//         ];\n//     return go(xs);\n// };"
+      "data": "// permutations :: [a] -> [[a]]\nconst permutations = xs => (\n    ys => ys.reduceRight(\n        (a, y) => a.flatMap(\n            ys => Array.from({\n                length: 1 + ys.length\n            }, (_, i) => i)\n            .map(n => ys.slice(0, n)\n                .concat(y)\n                .concat(ys.slice(n))\n            )\n        ),[[]]\n    )\n)(list(xs));"
     }
   ]
 }

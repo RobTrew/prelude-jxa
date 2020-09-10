@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// | Return the contents of a 'Left'-value or a default value otherwise."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// fromLeft :: a -> Either a b -> a\nconst fromLeft = (def, lr) =>\n  isLeft(lr) ? lr.Left : def;"
+      "data": "// fromLeft :: a -> Either a b -> a\nconst fromLeft = def =>\n    // The contents of a 'Left' value, or otherwise a default value.\n    lr => isLeft(lr) ? lr.Left : def;"
     }
   ]
 }

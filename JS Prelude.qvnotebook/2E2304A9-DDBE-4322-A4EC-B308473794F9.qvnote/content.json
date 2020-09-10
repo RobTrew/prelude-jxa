@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// If x is a dictionary, then the Int is read as an \n// index into the lexically sorted keys of the Dict, \n// returning a Maybe (Key, Value) pair.\n// If x is a list, then returns a Maybe a.\n// (In either case, returns Nothing for an Int out of range)"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = (i, x) => {\n    const\n        bln = Array.isArray(x),\n        k = bln ? i : Object.keys(x)\n        .sort()[i],\n        v = x[k];\n    return undefined !== v ? (\n        Just(bln ? v : Tuple(k, v))\n    ) : Nothing();\n};"
+      "data": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = i =>\n    // Just the item at the indexed position in an array,\n    // or in the lexically sorted key-values of a dict,\n    // or Nothing, if the index is out of range.\n    x => {\n        const\n            bln = Array.isArray(x),\n            k = bln ? i : Object.keys(x)\n            .sort()[i],\n            v = x[k];\n        return undefined !== v ? (\n            Just(bln ? v : Tuple(k, v))\n        ) : Nothing();\n    };"
     }
   ]
 }

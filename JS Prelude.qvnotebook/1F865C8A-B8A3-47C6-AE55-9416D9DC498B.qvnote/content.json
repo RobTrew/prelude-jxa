@@ -1,0 +1,10 @@
+{
+  "title": "jsonFromTree",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// jsonFromTree :: Tree a -> String\nconst jsonFromTree = tree => {\n    // A recursive [root, nest] JSON format,\n    // in which `root` is a value string, and `nest`\n    // is a possibly empty list of [`root`, `nest`] pairs.\n    const go = node => [node.root, node.nest.map(go)];\n    return JSON.stringify(go(tree));\n};"
+    }
+  ]
+}

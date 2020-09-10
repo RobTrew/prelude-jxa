@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = (p, xs) => {\n    const i = xs.findIndex(p);\n    return -1 !== i ? (\n        Just(xs[i])\n    ) : Nothing();\n};"
+      "data": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which \n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        'GeneratorFunction'\n    ) ? (() => {\n        const\n            ys = list(xs),\n            i = ys.findIndex(p);\n        return -1 !== i ? (\n            Just(ys[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);"
     }
   ]
 }

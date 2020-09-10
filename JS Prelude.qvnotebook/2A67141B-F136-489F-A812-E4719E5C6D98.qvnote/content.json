@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// iterate :: (a -> a) -> a -> Gen [a]\nfunction* iterate(f, x) {\n    let v = x;\n    while (true) {\n        yield(v);\n        v = f(v);\n    }\n}"
+      "data": "// iterate :: (a -> a) -> a -> Gen [a]\nconst iterate = f =>\n    // An infinite list of repeated applications of f to x.\n    function* (x) {\n        let v = x;\n        while (true) {\n            yield(v);\n            v = f(v);\n        }\n    };"
     }
   ]
 }

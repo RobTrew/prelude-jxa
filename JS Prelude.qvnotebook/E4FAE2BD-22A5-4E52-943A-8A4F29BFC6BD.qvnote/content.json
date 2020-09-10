@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectListsBy = (eq, xs) =>\n    foldr1(((a, x) => intersectBy(eq, a, x)), xs);"
+      "data": "// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectListsBy = eq => xs =>\n    foldr1((a => x => intersectBy(eq)(a)(x)))(\n        list(xs)\n    );"
     }
   ]
 }

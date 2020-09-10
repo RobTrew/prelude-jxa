@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// intercalateS :: String -> [String] -> String\nconst intercalateS = (s, xs) =>\n    xs.join(s);"
+      "data": "// intercalateS :: String -> [String] -> String\nconst intercalateS = s =>\n    // The concatenation of xs\n    // interspersed with copies of s.\n    xs => xs.join(s);"
     }
   ]
 }

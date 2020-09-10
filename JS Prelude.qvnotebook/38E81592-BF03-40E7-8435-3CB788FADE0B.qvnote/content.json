@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// dropLengthMaybe :: [a] -> [b] -> Maybe [b]\nconst dropLengthMaybe = (xs, ys) => {\n    const go = (x, y) =>\n        0 < x.length ? (\n            0 < y.length ? (\n                go(x.slice(1), y.slice(1))\n            ) : Nothing()\n        ) : Just(y);\n    return go(xs, ys);\n};"
+      "data": "// dropLengthMaybe :: [a] -> [b] -> Maybe [b]\nconst dropLengthMaybe = xs =>\n    ys => {\n        const go = (x, y) =>\n            0 < x.length ? (\n                0 < y.length ? (\n                    go(x.slice(1), y.slice(1))\n                ) : Nothing()\n            ) : Just(y);\n        return go(xs, ys);\n    };"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = (m, n) => {\n    const\n        [x, y] = [m, n].map(fromEnum),\n        b = x + ('number' !== typeof m ? 0 : m - x);\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};"
+      "data": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = m => n => {\n    const\n        [x, y] = [m, n].map(fromEnum),\n        b = x + (isNaN(m) ? 0 : m - x);\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};"
     }
   ]
 }

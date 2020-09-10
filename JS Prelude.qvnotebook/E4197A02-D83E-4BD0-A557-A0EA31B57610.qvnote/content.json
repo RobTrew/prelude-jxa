@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Root elements of tree flattened bottom-up\n// into a postorder list."
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// postorder :: Tree a -> [a]\nconst postorder = t => {\n    const go = (xs, x) =>\n        x.nest.reduce(go, xs).concat(x.root);\n    return go([], t);\n};"
+      "data": "// postorder :: Tree a -> [a]\nconst postorder = t => {\n    // List of reoot elements of tree flattened\n    // bottom-up into a postorder list.\n    const go = (xs, x) =>\n        nest(x).reduce(go, xs).concat(root(x));\n    return go([], t);\n};"
     }
   ]
 }

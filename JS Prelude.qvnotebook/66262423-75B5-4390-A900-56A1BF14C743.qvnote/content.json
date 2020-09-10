@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = (m, mf) =>\n    (Array.isArray(m) ? (\n        bindList\n    ) : (() => {\n        const t = m.type;\n        return 'Either' === t ? (\n            bindLR\n        ) : 'Maybe' === t ? (\n            bindMay\n        ) : 'Tuple' === t ? (\n            bindTuple\n        ) : ('function' === typeof m) ? (\n            bindFn\n        ) : undefined;\n    })()(m, mf));"
+      "data": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = m =>\n    mf => (Array.isArray(m) ? (\n        bindList\n    ) : (() => {\n        const t = m.type;\n        return 'Either' === t ? (\n            bindLR\n        ) : 'Maybe' === t ? (\n            bindMay\n        ) : 'Tuple' === t ? (\n            bindTuple\n        ) : ('function' === typeof m) ? (\n            bindFn\n        ) : undefined;\n    })()(m)(mf));"
     }
   ]
 }

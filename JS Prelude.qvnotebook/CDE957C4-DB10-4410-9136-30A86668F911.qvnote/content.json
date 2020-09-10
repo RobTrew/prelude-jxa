@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// maxBound :: a -> a\nconst maxBound = x => {\n    const e = x.enum;\n    return Boolean(e) ? (\n        e[e[x.max]]\n    ) : {\n        'number': Number.MAX_SAFE_INTEGER,\n        'string': String.fromCodePoint(65535),\n        'boolean': true\n    }[typeof x];\n};"
+      "data": "// maxBound :: a -> a\nconst maxBound = x => {\n    const e = x.enum;\n    return Boolean(e) ? (\n        e[e[x.max]]\n    ) : {\n        'number': Number.MAX_SAFE_INTEGER,\n        'string': String.fromCodePoint(0x10FFFF),\n        'boolean': true\n    }[typeof x];\n};"
     }
   ]
 }

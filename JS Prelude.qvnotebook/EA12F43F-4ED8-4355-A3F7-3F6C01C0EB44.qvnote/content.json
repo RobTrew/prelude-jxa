@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// genericIndexMay :: [a] -> Int -> Maybe a\nconst genericIndexMay = (xs, i) =>\n    (i < xs.length && 0 <= i) ? Just(xs[i]) : Nothing();"
+      "data": "// genericIndexMay :: [a] -> Int -> Maybe a\nconst genericIndexMay = xs =>\n    i => (i < xs.length && 0 <= i) ? (\n        Just(xs[i])\n    ) : Nothing();"
     }
   ]
 }

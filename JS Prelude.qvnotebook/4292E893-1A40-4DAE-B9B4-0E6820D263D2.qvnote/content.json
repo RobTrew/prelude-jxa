@@ -4,12 +4,12 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// If the list is empty returns Nothing, otherwise returns \n// Just the init and the last."
+      "data": "// Nothing if the list is empty, otherwise\n// Just the init and the last."
     },
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    (0 < xs.length) ? (\n        Just(Tuple(xs.slice(0, -1), xs.slice(-1)[0]))\n    ) : Nothing();"
+      "data": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    (0 < xs.length) ? (\n        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))\n    ) : Nothing();"
     }
   ]
 }

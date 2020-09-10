@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// replace :: String -> String -> String -> String\n// replace :: Regex -> String -> String -> String\nconst replace = (needle, strNew, strHaystack) =>\n    strHaystack.replace(\n      'string' !== typeof needle ? (\n        needle\n      ) : new RegExp(needle, 'g'),\n      strNew\n    );"
+      "data": "// replace :: String -> String -> String -> String\n// replace :: Regex -> String -> String -> String\nconst replace = needle => strNew => strHaystack =>\n    strHaystack.replace(\n      'string' !== typeof needle ? (\n        needle\n      ) : new RegExp(needle, 'g'),\n      strNew\n    );"
     }
   ]
 }

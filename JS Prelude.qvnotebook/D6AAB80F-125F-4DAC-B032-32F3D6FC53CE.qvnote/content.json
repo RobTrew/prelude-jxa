@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = (xs, ys) => {\n    const s = new Set(ys);\n    return xs.filter(x => s.has(x));\n};"
+      "data": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = xs =>\n    // The intersection of lists xs and ys.\n    ys => xs.filter(x => ys.includes(x));"
     }
   ]
 }

@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nfunction* fmapGen(f, gen) {\n    let v = take(1, gen);\n    while (0 < v.length) {\n        yield(f(v[0]))\n        v = take(1, gen)\n    }\n}"
+      "data": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    function*(gen) {\n        let v = take(1)(gen);\n        while (0 < v.length) {\n            yield(f(v[0]));\n            v = take(1)(gen);\n        }\n    };"
     }
   ]
 }

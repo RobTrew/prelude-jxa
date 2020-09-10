@@ -1,15 +1,10 @@
 {
-  "title": "secondArrow",
+  "title": "second",
   "cells": [
     {
       "type": "code",
       "language": "javascript",
-      "data": "// Lift a simple function to one which applies to a tuple, \n// transforming only the second item of the tuple"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// secondArrow :: (a -> b) -> ((c, a) -> (c, b))\nconst secondArrow = f => xy => Tuple(xy[0], f(xy[1]));"
+      "data": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => Tuple(xy[0])(\n        f(xy[1])\n    );"
     }
   ]
 }

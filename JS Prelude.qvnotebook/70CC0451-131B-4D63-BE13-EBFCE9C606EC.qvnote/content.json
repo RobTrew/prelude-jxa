@@ -1,0 +1,10 @@
+{
+  "title": "allSame",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// allSame :: [a] -> Bool\nconst allSame = xs =>\n    2 > xs.length || (\n        h => xs.slice(1).every(x => h === x)\n    )(xs[0]);"
+    }
+  ]
+}
