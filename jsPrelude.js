@@ -1733,6 +1733,14 @@ const head = xs => (
     ) : undefined
 )(list(xs));
 
+// headDef :: a -> [a] -> a
+const headDef = v =>
+    // The first item of a non-empty list,
+    // or a default value if the list is empty.
+    xs => 0 < xs.length ? (
+        xs[0]
+    ) : v;
+
 // headMay :: [a] -> Maybe a
 const headMay = xs => (
     ys => 0 < ys.length ? (
