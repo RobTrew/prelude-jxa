@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// length :: [a] -> Int\nconst length = xs =>\n    // Returns Infinity over objects without \n    // finite length, enabling zip and zipWith\n    // to choose the shorter argument when one \n    // is non-finite, like a cycle or repeat.\n    'GeneratorFunction' !== (\n        xs.constructor.constructor.name\n    ) ? xs.length : Infinity;"
+      "data": "// length :: [a] -> Int\nconst length = xs =>\n    // Returns Infinity over objects without finite\n    // length. This enables zip and zipWith to choose\n    // the shorter argument when one is non-finite,\n    // like cycle, repeat etc\n    'GeneratorFunction' !== xs.constructor\n    .constructor.name ? (\n        xs.length\n    ) : Infinity;"
     }
   ]
 }

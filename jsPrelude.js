@@ -2193,13 +2193,14 @@ const lefts = xs =>
 
 // length :: [a] -> Int
 const length = xs =>
-    // Returns Infinity over objects without 
-    // finite length, enabling zip and zipWith
-    // to choose the shorter argument when one 
-    // is non-finite, like a cycle or repeat.
-    'GeneratorFunction' !== (
-        xs.constructor.constructor.name
-    ) ? xs.length : Infinity;
+    // Returns Infinity over objects without finite
+    // length. This enables zip and zipWith to choose
+    // the shorter argument when one is non-finite,
+    // like cycle, repeat etc
+    'GeneratorFunction' !== xs.constructor
+    .constructor.name ? (
+        xs.length
+    ) : Infinity;
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
@@ -3700,8 +3701,8 @@ const sortOn = f =>
     // Equivalent to sortBy(comparing(f)), but with f(x)
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
-    xs => list(xs).map(
-        bimap(f)(identity)
+    xs => xs.map(
+        x => Tuple(f(x))(x)
     )
     .sort(uncurry(comparing(fst)))
     .map(snd);
