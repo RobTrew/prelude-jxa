@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// headMay :: [a] -> Maybe a\nconst headMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys[0])\n    ) : Nothing()\n)(list(xs));"
+      "data": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    // Just the first item of xs, or\n    // Nothing if xs is an empty list.\n    0 < xs.length ? (\n        Just(xs[0])\n    ) : Nothing();"
     }
   ]
 }

@@ -187,7 +187,7 @@
   "gt": "// gt :: Ord a => a -> a -> Bool\nconst gt = x => y =>\n    'Tuple' === x.type ? (\n        x[0] > y[0]\n    ) : (x > y);",
   "head": "// head :: [a] -> a\nconst head = xs => (\n    ys => ys.length ? (\n        ys[0]\n    ) : undefined\n)(list(xs));",
   "headDef": "// headDef :: a -> [a] -> a\nconst headDef = v =>\n    // The first item of a non-empty list,\n    // or a default value if the list is empty.\n    xs => 0 < xs.length ? (\n        xs[0]\n    ) : v;",
-  "headMay": "// headMay :: [a] -> Maybe a\nconst headMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys[0])\n    ) : Nothing()\n)(list(xs));",
+  "headMay": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    // Just the first item of xs, or\n    // Nothing if xs is an empty list.\n    0 < xs.length ? (\n        Just(xs[0])\n    ) : Nothing();",
   "identity": "// identity :: a -> a\nconst identity = x =>\n    // The identity function.\n    x;",
   "if_": "// if_ :: Bool -> a -> a -> a\nconst if_ = bln => \n    x => y => bln ? (\n        x\n    ) : y;",
   "indented": "// indented :: String -> String -> String\nconst indented = strIndent =>\n    s => s.split(/[\\r\\n]/).map(\n        x => '' !== x ? strIndent + x : x\n    ).join('\\n');",
