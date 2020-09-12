@@ -1,6 +1,3 @@
-
-
-
 Action :: (a -> b) -> a -> Action b
 Just :: a -> Maybe a
 Left :: a -> Either a b
@@ -13,6 +10,7 @@ TupleN :: a -> b ... -> (a, b ... )
 abs :: Num -> Num
 add (+) :: Num a => a -> a -> a
 all :: (a -> Bool) -> [a] -> Bool
+allSame :: [a] -> Bool
 allTree :: (a -> Bool) -> Tree a -> Bool
 and :: [Bool] -> Bool
 any :: (a -> Bool) -> [a] -> Bool
@@ -93,6 +91,7 @@ divMod :: Int -> Int -> (Int, Int)
 doesDirectoryExist :: FilePath -> IO Bool
 doesFileExist :: FilePath -> IO Bool
 doesPathExist :: FilePath -> IO Bool
+dot (.) :: (b -> c) -> (a -> b) -> a -> c
 draw :: Tree String -> [String]
 drawForest :: [Tree String] -> String
 drawTree :: Tree String -> String
@@ -184,6 +183,7 @@ groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 gt :: Ord a => a -> a -> Bool
 head :: [a] -> a
+headDef :: a -> [a] -> a
 headMay :: [a] -> Maybe a
 identity :: a -> a
 if_ :: Bool -> a -> a -> a
@@ -272,6 +272,7 @@ mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 mappend (<>) :: Monoid a => a -> a -> a
+mappendComparing (<>) :: (a -> a -> Bool) (a -> a -> Bool) -> (a -> a -> Bool)
 mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 mappendOrd (<>) :: Ordering -> Ordering -> Ordering
@@ -283,17 +284,21 @@ maximum :: Ord a => [a] -> a
 maximumBy :: (a -> a -> Ordering) -> [a] -> a
 maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 maximumMay :: Ord a => [a] -> Maybe a
+maximumOn :: (Ord b) => (a -> b) -> [a] -> a
 maybe :: b -> (a -> b) -> Maybe a -> b
 mconcatOrd :: [Ordering] -> Ordering
 mean :: [Num] -> Num
 measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
 member :: Key -> Dict -> Bool
+merge :: Ord a => [a] -> [a] -> [a]
+mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 min :: Ord a => a -> a -> a
 minBound :: a -> a
 minimum :: Ord a => [a] -> a
 minimumBy :: (a -> a -> Ordering) -> [a] -> a
 minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 minimumMay :: [a] -> Maybe a
+minimumOn :: (Ord b) => (a -> b) -> [a] -> a
 mod :: Int -> Int -> Int
 modificationTime :: FilePath -> Either String Date
 mul (*) :: Num a => a -> a -> a
