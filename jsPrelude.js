@@ -610,7 +610,7 @@ const copyFileLR = fpFrom =>
                         )
                     );
                 return blnCopied ? (
-                    Right(blnCopied)
+                    Right(fpTo)
                 ) : Left(ObjC.unwrap(e.localizedDescription));
 
             })() : Left(
