@@ -3601,8 +3601,9 @@ const showOrdering = e =>
 const showOutline = tree => {
     const go = indent => x =>
         unlines(
-            [indent + x.root]
-            .concat(x.nest.flatMap(go('    ' + indent)))
+            [indent + x.root].concat(
+                x.nest.flatMap(go('    ' + indent))
+            )
         );
     return go('')(tree);
 };
@@ -4138,6 +4139,12 @@ const taskPaperDateString = dte => {
     const [d, t] = iso8601Local(dte).split('T');
     return [d, t.slice(0, 5)].join(' ');
 };
+
+// taskPaperDayString :: Date -> String
+const taskPaperDayString = dte =>
+    take(10)(
+        taskPaperDateString(dte)
+    );
 
 // then (>>) :: Monad m => m a -> m b -> m b
 const then = ma => mb =>
