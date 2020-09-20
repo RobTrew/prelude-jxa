@@ -76,6 +76,7 @@
   "curryT": "// curryT :: ((a, b) -> c) -> a -> b -> c\nconst curryT = f =>\n    // Curried function over a tuple.\n    // curryT(Just)(7)(8) -> Just((7, 8))\n    a => b => f(Tuple(a)(b));",
   "cycle": "// cycle :: [a] -> Generator [a]\nfunction* cycle(xs) {\n    const lng = xs.length;\n    let i = 0;\n    while (true) {\n        yield(xs[i]);\n        i = (1 + i) % lng;\n    }\n}",
   "decodedPath": "// decodedPath :: Percent Encoded String -> FilePath\nconst decodedPath = decodeURI;",
+  "defaultOrFromFirst": "// defaultOrFromFirst :: b -> (a -> b) -> [a] -> b\nconst defaultOrFromFirst = v =>\n    // Equivalent of maybe | either for\n    // the list monad. \n    f => xs => 0 < xs.length ? (\n        f(xs[0])\n    ) : v;",
   "degrees": "// degrees :: Float x => Radians x -> Degrees x\nconst degrees = r =>\n    (180 / Math.PI) * r;",
   "delete": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = x => {\n    // xs with first instance of x (if any) removed.\n    const go = xs =>\n        0 < xs.length ? (\n            (x === xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n    return go;\n};",
   "deleteAt": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = i =>\n    xs => i <= xs.length ? (() => {\n        const lr = splitAt(i)(xs);\n        return lr[0].concat(lr[1].slice(1));\n    })() : xs;",

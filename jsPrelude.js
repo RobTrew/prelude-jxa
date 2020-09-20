@@ -654,6 +654,14 @@ function* cycle(xs) {
 // decodedPath :: Percent Encoded String -> FilePath
 const decodedPath = decodeURI;
 
+// defaultOrFromFirst :: b -> (a -> b) -> [a] -> b
+const defaultOrFromFirst = v =>
+    // Equivalent of maybe | either for
+    // the list monad. 
+    f => xs => 0 < xs.length ? (
+        f(xs[0])
+    ) : v;
+
 // degrees :: Float x => Radians x -> Degrees x
 const degrees = r =>
     (180 / Math.PI) * r;
