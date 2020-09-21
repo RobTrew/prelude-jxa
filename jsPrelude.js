@@ -1,5 +1,3 @@
-// JS PRELUDE – GENERIC FUNCTIONS
-
 // Action :: (a -> b) -> a -> Action b
 const Action = f =>
     // Constructor for an action.
@@ -4608,9 +4606,9 @@ const unfoldForest = f =>
 
 // unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 const unfoldTree = f =>
-    // A tree built from a seed value
-    // in breadth-first order.
-    // f is applied to the tree Node b [], and 
+    // A tree constructed in breadth-first order
+    // from a seed value.
+    // f is applied to the tree Node b [], and then
     // to each root value in the tree's leaves, to 
     // generate its sub-forest (nest).
     b => uncurry(Node)(

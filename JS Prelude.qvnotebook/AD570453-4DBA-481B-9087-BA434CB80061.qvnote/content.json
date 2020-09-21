@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// unfoldTree :: (b -> (a, [b])) -> b -> Tree a\nconst unfoldTree = f =>\n    // A tree built from a seed value\n    // in breadth-first order.\n    // f is applied to the tree Node b [], and \n    // to each root value in the tree's leaves, to \n    // generate its sub-forest (nest).\n    b => uncurry(Node)(\n        second(unfoldForest(f))(\n            f(b)\n        )\n    );"
+      "data": "// unfoldTree :: (b -> (a, [b])) -> b -> Tree a\nconst unfoldTree = f =>\n    // A tree constructed in breadth-first order\n    // from a seed value.\n    // f is applied to the tree Node b [], and then\n    // to each root value in the tree's leaves, to \n    // generate its sub-forest (nest).\n    b => uncurry(Node)(\n        second(unfoldForest(f))(\n            f(b)\n        )\n    );"
     }
   ]
 }

@@ -1,5 +1,3 @@
-// JXA SYSTEMIO GENERIC FUNCTIONS
-
 // appendFile :: FilePath -> String -> IO Bool
 const appendFile = fp =>
     // The file at fp updated with a new string
