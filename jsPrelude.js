@@ -1291,6 +1291,8 @@ const filter = p =>
 
 // filterGen :: (a -> Bool) -> Gen [a] -> [a]
 const filterGen = p => xs => {
+    // Non-finite stream of values which are 
+    // drawn from gen, and satisfy p
     function* go() {
         let x = xs.next();
         while (!x.done) {
@@ -4602,19 +4604,20 @@ const uncurryN = f =>
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 const unfoldForest = f =>
     // A forest built from a list of seed values.
-    x => xs => xs.map(unfoldTree(f));
+    xs => xs.map(unfoldTree(f));
 
 // unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 const unfoldTree = f =>
     // A tree built from a seed value
-    b => {
-        const tpl = f(b);
-        return Node(tpl[0])(
-            unfoldForest(f)(
-                tpl[1]
-            )
-        );
-    };
+    // in breadth-first order.
+    // f is applied to the tree Node b [], and 
+    // to each root value in the tree's leaves, to 
+    // generate its sub-forest (nest).
+    b => uncurry(Node)(
+        second(unfoldForest(f))(
+            f(b)
+        )
+    );
 
 // unfoldl(x => 0 !== x ? Just([x - 1, x]) : Nothing(), 10);
 // --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
