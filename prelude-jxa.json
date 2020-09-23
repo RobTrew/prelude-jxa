@@ -73,7 +73,7 @@
       "tree"
     ]
   },
-  "ap (<*>)": {
+  "ap": {
     "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list of values\n    // or applying Just(f) to Just(x), Right(f) to Right(x), \n    // f(x) to g(x) etc.\n    mx => {\n        const t = mx.type;\n        return (\n            undefined !== t ? (\n                'Either' === t ? (\n                    apLR\n                ) : 'Maybe' === t ? (\n                    apMay\n                ) : 'Node' === t ? (\n                    apTree\n                ) : 'Tuple' === t ? (\n                    apTuple\n                ) : apList\n            ) : Array.isArray(mf) ? (\n                apList\n            ) : apFn\n        )(mf)(mx);\n    };",
     "tags": []
   },
@@ -81,29 +81,29 @@
     "code": "// apFn :: (a -> b -> c) -> (a -> b) -> a -> c\nconst apFn = f =>\n    // Applicative instance for functions.\n    // f(x) applied to g(x).\n    g => x => f(x)(\n        g(x)\n    );",
     "tags": []
   },
-  "apLR (<*>)": {
+  "apLR": {
     "code": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = flr =>\n  // Either a Left value, or the application of a\n  // function in Either to a value in Either.\n  liftA2LR(x => x)(flr);",
     "tags": []
   },
-  "apList (<*>)": {
+  "apList": {
     "code": "// apList (<*>) :: [(a -> b)] -> [a] -> [b]\nconst apList = fs =>\n    // The sequential application of each of a list\n    // of functions to each of a list of values.\n    // apList([x => 2 * x, x => 20 + x])([1, 2, 3])\n    //     -> [2, 4, 6, 21, 22, 23]\n    xs => fs.flatMap(f => xs.map(f));",
     "tags": []
   },
-  "apMay (<*>)": {
+  "apMay": {
     "code": "// apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMay = mf =>\n    // Just an application of Maybe a function to\n    // to Maybe a value, or Nothing.\n    liftA2May(x => x)(mf);",
     "tags": []
   },
-  "apTree (<*>)": {
+  "apTree": {
     "code": "// apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b\nconst apTree = tf =>\n    // A new tree derived by applying each of a tree\n    // of functions to each node value in another tree.\n    liftA2Tree(\n        x => x\n    )(tf);",
     "tags": [
       "tree"
     ]
   },
-  "apTuple (<*>)": {
+  "apTuple": {
     "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = tpl => \n  liftA2Tuple(x => x)(tpl);",
     "tags": []
   },
-  "append (++)": {
+  "append": {
     "code": "// append (++) :: [a] -> [a] -> [a]\nconst append = xs =>\n    // A list defined by the\n    // concatenation of two others.\n    ys => xs.concat(ys);",
     "tags": []
   },
@@ -123,7 +123,7 @@
     "code": "// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]\nconst appendGen = xs =>\n    // A new generator composed from the \n    // concatenation of two existing generators.\n    function* (ys) {\n        for (let vs of [xs, ys]) {\n            let nxt = vs.next();\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = vs.next();\n            }\n        }\n    };",
     "tags": []
   },
-  "apply ($)": {
+  "apply": {
     "code": "// apply ($) :: (a -> b) -> a -> b\nconst apply = f =>\n    // Application operator.\n    x => f(x);",
     "tags": []
   },
@@ -163,27 +163,27 @@
     "code": "// bimapN :: (a -> b) -> (c -> d) -> TupleN -> TupleN\nconst bimapN = f =>\n    // An n-tuple instance of bimap.\n    // An n-tuple of unchanged dimension in which\n    // the final value is an application of g\n    // and the penultimate value is an application of f.\n    g => tpln => {\n        const n = tpln.length;\n        return undefined !== n ? (\n            TupleN(\n                ...Array.from(tpln).slice(0, n - 2),\n                f(tpln[n - 2]), g(tpln[n - 1])\n            )\n        ) : undefined;\n    };",
     "tags": []
   },
-  "bind (>>=)": {
+  "bind": {
     "code": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = m =>\n    mf => (Array.isArray(m) ? (\n        bindList\n    ) : (() => {\n        const t = m.type;\n        return 'Either' === t ? (\n            bindLR\n        ) : 'Maybe' === t ? (\n            bindMay\n        ) : 'Tuple' === t ? (\n            bindTuple\n        ) : ('function' === typeof m) ? (\n            bindFn\n        ) : undefined;\n    })()(m)(mf));",
     "tags": []
   },
-  "bindFn (>>=)": {
+  "bindFn": {
     "code": "// bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c\nconst bindFn = f =>\n    // Binary operator applied over f x and x.\n    bop => x => bop(f(x))(x);",
     "tags": []
   },
-  "bindLR (>>=)": {
+  "bindLR": {
     "code": "// bindLR (>>=) :: Either a -> \n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    mf => undefined !== m.Left ? (\n        m\n    ) : mf(m.Right);",
     "tags": []
   },
-  "bindList (>>=)": {
+  "bindList": {
     "code": "// bindList (>>=) :: [a] -> (a -> [b]) -> [b]\nconst bindList = xs =>\n    mf => [...xs].flatMap(mf);",
     "tags": []
   },
-  "bindMay (>>=)": {
+  "bindMay": {
     "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing ? (\n        mb\n    ) : mf(mb.Just);",
     "tags": []
   },
-  "bindTuple (>>=)": {
+  "bindTuple": {
     "code": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = tpl =>\n    f => {\n        const t2 = f(tpl[1]);\n        return Tuple(mappend(tpl[0])(t2[0]))(\n            t2[1]\n        );\n    };",
     "tags": []
   },
@@ -259,7 +259,7 @@
     "code": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
     "tags": []
   },
-  "compose (<<<)": {
+  "compose": {
     "code": "// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (...fs) =>\n    // A function defined by the right-to-left\n    // composition of all the functions in fs.\n    fs.reduce(\n        (f, g) => x => f(g(x)),\n        x => x\n    );",
     "tags": []
   },
@@ -271,7 +271,7 @@
     "code": "// composeListR :: [(a -> a)] -> (a -> a)\nconst composeListR = fs =>\n    x => fs.reduce((a, f) => f(a), x);",
     "tags": []
   },
-  "composeR (>>>)": {
+  "composeR": {
     "code": "// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c\nconst composeR = f =>\n    g => x => f(g(x));",
     "tags": []
   },
@@ -513,7 +513,7 @@
     "code": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = m => n => {\n    const\n        [x, y] = [m, n].map(fromEnum),\n        b = x + (isNaN(m) ? 0 : m - x);\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};",
     "tags": []
   },
-  "eq (==)": {
+  "eq": {
     "code": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = a =>\n    // True when a and b are equivalent in the terms\n    // defined below for their shared data type.\n    b => {\n        const t = typeof a;\n        return t !== typeof b ? (\n            false\n        ) : 'object' !== t ? (\n            'function' !== t ? (\n                a === b\n            ) : a.toString() === b.toString()\n        ) : (() => {\n            const kvs = Object.entries(a);\n            return kvs.length !== Object.keys(b).length ? (\n                false\n            ) : kvs.every(([k, v]) => eq(v)(b[k]));\n        })();\n    };",
     "tags": []
   },
@@ -545,7 +545,7 @@
     "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    const s = g.toString();\n    return s.includes('Left') ? (\n        Right\n    ) : s.includes('Nothing') ? (\n        Just\n    ) : s.includes('Node') ? (\n        flip(Node)([])\n    ) : x => [x];\n};",
     "tags": []
   },
-  "fanArrow (&&&)": {
+  "fanArrow": {
     "code": "// fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))\nconst fanArrow = f =>\n    // A function from x to a tuple of (f(x), g(x))\n    // ((,) . f <*> g)\n    g => x => Tuple(f(x))(\n        g(x)\n    );",
     "tags": []
   },
@@ -653,29 +653,29 @@
     "code": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            'Ratio' !== x.type ? (\n                properFraction\n            ) : properFracRatio\n        )(x),\n        n = nr[0];\n    return 0 > nr[1] ? n - 1 : n;\n};",
     "tags": []
   },
-  "fmap (<$>)": {
+  "fmap": {
     "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f => fa =>\n    Array.isArray(fa) ? (\n        fa.map(f)\n    ) : 'string' !== typeof fa ? (() => {\n        const t = fa.type;\n        return ('Either' === t ? (\n            fmapLR(f)(fa)\n        ) : 'Maybe' === t ? (\n            fmapMay(f)(fa)\n        ) : 'Node' === t ? (\n            fmapTree(f)(fa)\n        ) : 'Tuple' === t ? (\n            fmapTuple(f)(fa)\n        ) : undefined);\n    })() : fa.split('').map(f);",
     "tags": []
   },
-  "fmapGen <$>": {
+  "fmapGen": {
     "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    function*(gen) {\n        let v = take(1)(gen);\n        while (0 < v.length) {\n            yield(f(v[0]));\n            v = take(1)(gen);\n        }\n    };",
     "tags": []
   },
-  "fmapLR (<$>)": {
+  "fmapLR": {
     "code": "// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b\nconst fmapLR = f => lr =>\n    undefined === lr.Left ? (\n        Right(f(lr.Right))\n    ) : lr;",
     "tags": []
   },
-  "fmapMay (<$>)": {
+  "fmapMay": {
     "code": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = f => mb =>\n    mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));",
     "tags": []
   },
-  "fmapTree (<$>)": {
+  "fmapTree": {
     "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a structure-preserving\n    // application of f to each root in the existing tree.\n    const go = tree => Node(f(tree.root))(\n        tree.nest.map(go)\n    );\n    return go;\n};",
     "tags": [
       "tree"
     ]
   },
-  "fmapTuple (<$>)": {
+  "fmapTuple": {
     "code": "// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)\nconst fmapTuple = f => tpl =>\n    Tuple(tpl[0])(\n        f(tpl[1])\n    );",
     "tags": []
   },
@@ -1029,7 +1029,7 @@
     "code": "// keys :: Dict -> [String]\nconst keys = Object.keys;",
     "tags": []
   },
-  "kleisliCompose (>=>)": {
+  "kleisliCompose": {
     "code": "// kleisliCompose (>=>) :: Monad m => (a -> m b) ->\n// (b -> m c) -> (a -> m c)\nconst kleisliCompose = f =>\n    // Kleisli composition of two functions which\n    // each lift their values into the same monad.\n    g => x => bind(f(x))(g);",
     "tags": []
   },
@@ -1189,11 +1189,11 @@
     "code": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nconst mapMaybeGen = mf =>\n    // A filtered map over a generator, returning only the\n    // contents of Just values. (Nothing values discarded).\n    function*(gen) {\n        let v = take(1, gen);\n        while (0 < v.length) {\n            let mb = mf(v[0]);\n            if (!mb.Nothing) yield mb.Just;\n            v = take(1, gen);\n        }\n    };",
     "tags": []
   },
-  "mappend (<>)": {
+  "mappend": {
     "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation \n    // defined for various monoid types.\n    b => (t => (Boolean(t) ? (\n        'Maybe' === t ? (\n            mappendMaybe\n        ) : mappendTuple\n    ) : Array.isArray(a) ? (\n        append\n    ) : 'function' === typeof a ? (\n        mappendFn\n    ) : mappendOrd)(a)(b))(a.type);",
     "tags": []
   },
-  "mappendComparing (<>)": {
+  "mappendComparing": {
     "code": "// mappendComparing (<>) :: (a -> a -> Bool)\n// (a -> a -> Bool) -> (a -> a -> Bool)\nconst mappendComparing = cmp =>\n    cmp1 => a => b => {\n        const x = cmp(a)(b);\n        return 0 !== x ? (\n            x\n        ) : cmp1(a)(b);\n    };",
     "tags": []
   },
@@ -1201,15 +1201,15 @@
     "code": "// mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)\nconst mappendFn = f =>\n    g => x => mappend(f(x))(\n        g(x)\n    );",
     "tags": []
   },
-  "mappendMaybe (<>)": {
+  "mappendMaybe": {
     "code": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = a =>\n     b => a.Nothing ? (\n        b\n    ) : b.Nothing ? (\n        a\n    ) : Just(\n        mappend(a.Just)(\n            b.Just\n        )\n    );",
     "tags": []
   },
-  "mappendOrd (<>)": {
+  "mappendOrd": {
     "code": "// mappendOrd (<>) :: Ordering -> Ordering -> Ordering\nconst mappendOrd = x =>\n    y => 0 !== x ? (\n        x\n    ) : y;",
     "tags": []
   },
-  "mappendTuple (<>)": {
+  "mappendTuple": {
     "code": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = t => t2 =>\n    Tuple(\n        mappend(t[0])(\n            t1[0]\n        )\n    )(mappend(t[1])(\n        t1[1]\n    ));",
     "tags": []
   },
@@ -1795,7 +1795,7 @@
     "code": "// span, applied to a predicate p and a list xs, returns a tuple of xs of \n// elements that satisfy p and second element is the remainder of the list:\n//\n// > span (< 3) [1,2,3,4,1,2,3,4] == ([1,2],[3,4,1,2,3,4])\n// > span (< 9) [1,2,3] == ([1,2,3],[])\n// > span (< 0) [1,2,3] == ([],[1,2,3])\n//\n// span p xs is equivalent to (takeWhile p xs, dropWhile p xs) \n// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const\n            ys = 'string' !== typeof xs ? (\n                list(xs)\n            ) : xs,\n            iLast = ys.length - 1;\n        return splitAt(\n            until(\n                i => iLast < i || !p(ys[i])\n            )(i => 1 + i)(0)\n        )(ys);\n    };",
     "tags": []
   },
-  "splitArrow (***)": {
+  "splitArrow": {
     "code": "// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))\nconst splitArrow = f =>\n    // The functions f and g combined in a single function\n    // from a tuple (x, y) to a tuple of (f(x), g(y))\n    // (see bimap)\n    g => tpl => Tuple(f(tpl[0]))(\n        g(tpl[1])\n    );",
     "tags": []
   },
@@ -1967,19 +1967,19 @@
       "jxa"
     ]
   },
-  "then (>>)": {
+  "then": {
     "code": "// then (>>) :: Monad m => m a -> m b -> m b\nconst then = ma => mb =>\n    (Array.isArray(ma) ? (\n        thenList\n    ) : isMaybe(ma) ? (\n        thenMay\n    ) : thenIO)(\n        ...[ma, mb]\n    );",
     "tags": []
   },
-  "thenIO (>>)": {
+  "thenIO": {
     "code": "// thenIO (>>) :: IO a -> IO b -> IO b\nconst thenIO = ma => \n    mb => mb;",
     "tags": []
   },
-  "thenList (>>)": {
+  "thenList": {
     "code": "// thenList (>>) :: [a] -> [b] -> [b]\nconst thenList = xs => ys =>\n    list(xs).flatMap(_ => list(ys));",
     "tags": []
   },
-  "thenMay (>>)": {
+  "thenMay": {
     "code": "// thenMay (>>) :: Maybe a -> Maybe b -> Maybe b\nconst thenMay = mbx => mby =>\n    mbx.Nothing ? mbx : mby;",
     "tags": []
   },
