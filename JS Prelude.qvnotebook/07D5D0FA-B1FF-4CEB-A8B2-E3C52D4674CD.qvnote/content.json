@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        (ys => 0 < ys.length ? ys.slice(1) : [])(\n            list(xs)\n        )\n    ) : (take(1)(xs), xs);"
+      "data": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    'GeneratorFunction' !== xs.constructor\n    .constructor.name ? (\n        (ys => 0 < ys.length ? ys.slice(1) : [])(\n            list(xs)\n        )\n    ) : (take(1)(xs), xs);"
     }
   ]
 }

@@ -1890,7 +1890,7 @@
     "tags": []
   },
   "tail": {
-    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        (ys => 0 < ys.length ? ys.slice(1) : [])(\n            list(xs)\n        )\n    ) : (take(1)(xs), xs);",
+    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    'GeneratorFunction' !== xs.constructor\n    .constructor.name ? (\n        (ys => 0 < ys.length ? ys.slice(1) : [])(\n            list(xs)\n        )\n    ) : (take(1)(xs), xs);",
     "tags": []
   },
   "tailMay": {
@@ -2215,7 +2215,7 @@
     ]
   },
   "zip": {
-    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // Use of `take` and `length` here allows for zipping with non-finite\n    // lists - i.e. generators like cycle, repeat, iterate.\n    ys => (([xs_, ys_]) => {\n        const\n            n = Math.min(...[xs_, ys_].map(length)),\n            vs = take(n)(ys_);\n        return take(n)(xs_).map(\n            (x, i) => Tuple(x)(vs[i])\n        );\n    })([xs, ys].map(list));",
+    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // Use of `take` and `length` here allows for \n    // zipping with non-finite lists - i.e. generators \n    // like cycle, repeat, iterate.\n    ys => (([xs_, ys_]) => {\n        const\n            n = Math.min(...[xs_, ys_].map(length)),\n            vs = take(n)(ys_);\n        return take(n)(xs_).map(\n            (x, i) => Tuple(x)(vs[i])\n        );\n    })([xs, ys].map(list));",
     "tags": []
   },
   "zip3": {

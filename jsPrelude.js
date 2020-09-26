@@ -3973,7 +3973,8 @@ const swap = ab =>
 const tail = xs =>
     // A new list consisting of all
     // items of xs except the first.
-    'GeneratorFunction' !== xs.constructor.constructor.name ? (
+    'GeneratorFunction' !== xs.constructor
+    .constructor.name ? (
         (ys => 0 < ys.length ? ys.slice(1) : [])(
             list(xs)
         )
@@ -4780,8 +4781,9 @@ const words = s =>
 
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs =>
-    // Use of `take` and `length` here allows for zipping with non-finite
-    // lists - i.e. generators like cycle, repeat, iterate.
+    // Use of `take` and `length` here allows for 
+    // zipping with non-finite lists - i.e. generators 
+    // like cycle, repeat, iterate.
     ys => (([xs_, ys_]) => {
         const
             n = Math.min(...[xs_, ys_].map(length)),
