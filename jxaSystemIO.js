@@ -157,7 +157,10 @@ const fileUTI = fp => {
 
 // getCurrentDirectory :: IO FilePath
 const getCurrentDirectory = () =>
-    ObjC.unwrap($.NSFileManager.defaultManager.currentDirectoryPath);
+    ObjC.unwrap(
+        $.NSFileManager.defaultManager
+        .currentDirectoryPath
+    );
 
 // getDirectoryContents :: FilePath -> IO [FilePath]
 const getDirectoryContents = fp =>
@@ -182,15 +185,6 @@ const getDirectoryContentsLR = fp => {
         Left(ObjC.unwrap(error.localizedDescription))
     ) : Right(ObjC.deepUnwrap(xs));
 };
-
-// getFinderDirectory :: IO FilePath
-const getFinderDirectory = () =>
-    decodeURIComponent(
-        Application('Finder')
-        .insertionLocation()
-        .url()
-        .slice(7)
-    );
 
 // getHomeDirectory :: IO FilePath
 const getHomeDirectory = () =>

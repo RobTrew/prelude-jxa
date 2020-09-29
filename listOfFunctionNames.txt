@@ -1,3 +1,6 @@
+
+
+
 Action :: (a -> b) -> a -> Action b
 Just :: a -> Maybe a
 Left :: a -> Either a b
@@ -75,6 +78,7 @@ curryN :: Curry a b => a -> b
 curryT :: ((a, b) -> c) -> a -> b -> c
 cycle :: [a] -> Generator [a]
 decodedPath :: Percent Encoded String -> FilePath
+defaultOrFromFirst :: b -> (a -> b) -> [a] -> b
 degrees :: Float x => Radians x -> Degrees x
 delete :: Eq a => a -> [a] -> [a]
 deleteAt :: Int -> [a] -> [a]
@@ -174,7 +178,6 @@ genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
 getDirectoryContents :: FilePath -> IO [FilePath]
 getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
-getFinderDirectory :: IO FilePath
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath
 group :: Eq a => [a] -> [[a]]
@@ -456,6 +459,7 @@ takeWhile :: (a -> Bool) -> [a] -> [a]
 takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 takeWhileR :: (a -> Bool) -> [a] -> [a]
 taskPaperDateString :: Date -> String
+taskPaperDayString :: Date -> String
 tempFilePath :: String -> IO FilePath
 then (>>) :: Monad m => m a -> m b -> m b
 thenIO (>>) :: IO a -> IO b -> IO b

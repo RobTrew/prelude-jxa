@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// repeat :: a -> Generator [a]\nfunction* repeat(xs) {\n    while(true) yield xs;\n}"
+      "data": "// repeat :: a -> Generator [a]\nfunction* repeat(x) {\n    while(true) yield x;\n}"
     }
   ]
 }

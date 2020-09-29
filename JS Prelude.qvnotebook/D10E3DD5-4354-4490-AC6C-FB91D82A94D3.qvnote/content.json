@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// getCurrentDirectory :: IO FilePath\nconst getCurrentDirectory = () =>\n    ObjC.unwrap($.NSFileManager.defaultManager.currentDirectoryPath);"
+      "data": "// getCurrentDirectory :: IO FilePath\nconst getCurrentDirectory = () =>\n    ObjC.unwrap(\n        $.NSFileManager.defaultManager\n        .currentDirectoryPath\n    );"
     }
   ]
 }

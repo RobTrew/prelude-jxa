@@ -633,12 +633,6 @@ const curryN = f =>
         return go(args);
     };
 
-// curryT :: ((a, b) -> c) -> a -> b -> c
-const curryT = f =>
-    // Curried function over a tuple.
-    // curryT(Just)(7)(8) -> Just((7, 8))
-    a => b => f(Tuple(a)(b));
-
 // cycle :: [a] -> Generator [a]
 function* cycle(xs) {
     const lng = xs.length;
@@ -651,14 +645,6 @@ function* cycle(xs) {
 
 // decodedPath :: Percent Encoded String -> FilePath
 const decodedPath = decodeURI;
-
-// defaultOrFromFirst :: b -> (a -> b) -> [a] -> b
-const defaultOrFromFirst = v =>
-    // Equivalent of maybe | either for
-    // the list monad. 
-    f => xs => 0 < xs.length ? (
-        f(xs[0])
-    ) : v;
 
 // degrees :: Float x => Radians x -> Degrees x
 const degrees = r =>
@@ -3264,7 +3250,7 @@ const regexMatches = rgx =>
         // regex is interpreted as global.
         const r = new RegExp(rgx, 'g');
         return unfoldr(
-            m => Boolean(m) ? (
+            m => !!m ? (
                 Just(Tuple(m)(r.exec(s)))
             ) : Nothing()
         )(r.exec(s));
@@ -3283,8 +3269,8 @@ const renameFile = fp => fp2 => {
 };
 
 // repeat :: a -> Generator [a]
-function* repeat(xs) {
-    while(true) yield xs;
+function* repeat(x) {
+    while(true) yield x;
 }
 
 // replace :: String -> String -> String -> String
@@ -4607,11 +4593,11 @@ const unfoldForest = f =>
 
 // unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 const unfoldTree = f =>
-    // A tree constructed in breadth-first order
+    // A tree unfolded in breadth-first order
     // from a seed value.
-    // f is applied to the tree Node b [], and then
-    // to each root value in the tree's leaves, to 
-    // generate its sub-forest (nest).
+    // Given a seed value, f defines a tuple:
+    // (Node root value, [seed])
+    // Empty seed lists conclude recursion.
     b => uncurry(Node)(
         second(unfoldForest(f))(
             f(b)
@@ -4711,11 +4697,12 @@ const unsnoc = xs =>
     ) : Nothing();
 
 // until :: (a -> Bool) -> (a -> a) -> a -> a
-const until = p => f => x => {
-    let v = x;
-    while (!p(v)) v = f(v);
-    return v;
-};
+const until = p => 
+    f => x => {
+        let v = x;
+        while (!p(v)) v = f(v);
+        return v;
+    };
 
 // unwords :: [String] -> String
 const unwords = xs =>
