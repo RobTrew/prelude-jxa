@@ -75,10 +75,8 @@ copyFileLR :: FilePath -> FilePath -> Either String IO ()
 createDirectoryIfMissingLR :: Bool -> FilePath -> Either String FilePath
 curry :: ((a, b) -> c) -> a -> b -> c
 curryN :: Curry a b => a -> b
-curryT :: ((a, b) -> c) -> a -> b -> c
 cycle :: [a] -> Generator [a]
 decodedPath :: Percent Encoded String -> FilePath
-defaultOrFromFirst :: b -> (a -> b) -> [a] -> b
 degrees :: Float x => Radians x -> Degrees x
 delete :: Eq a => a -> [a] -> [a]
 deleteAt :: Int -> [a] -> [a]
