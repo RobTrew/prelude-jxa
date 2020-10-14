@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// pureMay :: a -> Maybe a\nconst pureMay = x => Just(x);"
+      "data": "// pureMay :: a -> Maybe a\nconst pureMay = x =>\n    Just(x);"
     }
   ]
 }

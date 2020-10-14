@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// pureLR :: a -> Either e a\nconst pureLR = x => Right(x);"
+      "data": "// pureLR :: a -> Either e a\nconst pureLR = x =>\n    Right(x);"
     }
   ]
 }

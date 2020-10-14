@@ -834,7 +834,7 @@
     ]
   },
   "filterTree": {
-    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all root values in the tree\n    // which match the predicate p.\n    foldTree(x => xs => concat(\n        p(x) ? [\n            [x], ...xs\n        ] : xs\n    ));",
+    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all values in the tree\n    // which match the predicate p.\n    foldTree(x => xs => concat(\n        p(x) ? [\n            [x], ...xs\n        ] : xs\n    ));",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1710,7 +1710,7 @@
     ]
   },
   "mappendTuple": {
-    "code": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = t => t2 =>\n    Tuple(\n        mappend(t[0])(\n            t1[0]\n        )\n    )(mappend(t[1])(\n        t1[1]\n    ));",
+    "code": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = t => t1 =>\n    Tuple(\n        mappend(t[0])(t1[0])\n    )(\n        mappend(t[1])(t1[1])\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1954,7 +1954,7 @@
     ]
   },
   "outdented": {
-    "code": "// All lines in the string outdented by the same amount\n// (just enough to ensure that the least indented lines \n//  have no remaining indent)\n// All relative indents are left unchanged\n// outdented :: String -> String\nconst outdented = s => {\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n    return unlines(map(drop(n))(xs));\n};",
+    "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines \n    //  have no remaining indent)\n    // All relative indents are left unchanged\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n    return unlines(map(drop(n))(xs));\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2039,25 +2039,25 @@
     ]
   },
   "pureLR": {
-    "code": "// pureLR :: a -> Either e a\nconst pureLR = x => Right(x);",
+    "code": "// pureLR :: a -> Either e a\nconst pureLR = x =>\n    Right(x);",
     "tags": [
       "JS Prelude"
     ]
   },
   "pureList": {
-    "code": "// pureList :: a -> [a]\nconst pureList = x => [x];",
+    "code": "// pureList :: a -> [a]\nconst pureList = x => \n    [x];",
     "tags": [
       "JS Prelude"
     ]
   },
   "pureMay": {
-    "code": "// pureMay :: a -> Maybe a\nconst pureMay = x => Just(x);",
+    "code": "// pureMay :: a -> Maybe a\nconst pureMay = x =>\n    Just(x);",
     "tags": [
       "JS Prelude"
     ]
   },
   "pureT": {
-    "code": "// Given a type name string, returns a \n// specialised 'pure', where\n// 'pure' lifts a value into a particular functor.\n// pureT :: String -> f a -> (a -> f a)\nconst pureT = t => x =>\n    'List' !== t ? (\n        'Either' === t ? (\n            pureLR(x)\n        ) : 'Maybe' === t ? (\n            pureMay(x)\n        ) : 'Node' === t ? (\n            pureTree(x)\n        ) : 'Tuple' === t ? (\n            pureTuple(x)\n        ) : pureList(x)\n    ) : pureList(x);",
+    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a \n    // specialised 'pure', where\n    // 'pure' lifts a value into a particular functor.\n    x => 'List' !== t ? (\n        'Either' === t ? (\n            pureLR(x)\n        ) : 'Maybe' === t ? (\n            pureMay(x)\n        ) : 'Node' === t ? (\n            pureTree(x)\n        ) : 'Tuple' === t ? (\n            pureTuple(x)\n        ) : pureList(x)\n    ) : pureList(x);",
     "tags": [
       "JS Prelude"
     ]
@@ -2094,7 +2094,7 @@
     ]
   },
   "quotRem": {
-    "code": "// quotRem :: Int -> Int -> (Int, Int)\nconst quotRem = m => n => \n  Tuple(Math.trunc(m / n))(\n      m % n\n  );",
+    "code": "// quotRem :: Int -> Int -> (Int, Int)\nconst quotRem = m =>\n    // The quotient, tupled with the remainder.\n    n => Tuple(\n        Math.trunc(m / n)\n    )(m % n);",
     "tags": [
       "JS Prelude"
     ]
@@ -2768,13 +2768,13 @@
     ]
   },
   "takeFromThenTo": {
-    "code": "// takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]\nconst takeFromThenTo = a => b => z => xs => {\n    const ixs = enumFromThenTo(a)(b)(z);\n    return 'GeneratorFunction' !== xs.constructor.constructor.name ? (\n        ixs.map(i => xs[i])\n    ) : (() => {\n        const g = zipGen(enumFrom(0))(\n            take(z)(xs)\n        );\n        return ixs.flatMap(i => {\n            const mb = index(g)(i);\n            return mb.Nothing ? [] : [mb.Just];\n        });\n    })();\n};",
+    "code": "// takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]\nconst takeFromThenTo = a => b => z => xs => {\n    const ixs = enumFromThenTo(a)(b)(z);\n    return 'GeneratorFunction' !== xs.constructor\n    .constructor.name ? (\n        ixs.map(i => xs[i])\n    ) : (() => {\n        const g = zipGen(enumFrom(0))(\n            take(z)(xs)\n        );\n        return ixs.flatMap(i => {\n            const mb = index(g)(i);\n            return mb.Nothing ? [] : [mb.Just];\n        });\n    })();\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "takeIterate": {
-    "code": "// takeIterate n f x == [x, f x, f (f x), ...]\n// takeIterate n f x == [x, f x, f (f x), ...]\n// takeIterate :: Int -> (a -> a) -> a -> [a]\nconst takeIterate = n => f => x =>\n    snd(mapAccumL(a => _ => i => {\n        const v = 0 !== i ? f(a) : x;\n        return [v, v];\n    }, x, Array.from({\n        length: n\n    })));",
+    "code": "// takeIterate n f x == [x, f x, f (f x), ...]\n// takeIterate :: Int -> (a -> a) -> a -> [a]\nconst takeIterate = n => f => x =>\n    snd(mapAccumL(a => _ => i => {\n        const v = 0 !== i ? f(a) : x;\n        return [v, v];\n    }, x, Array.from({\n        length: n\n    })));",
     "tags": [
       "JS Prelude"
     ]
@@ -3068,7 +3068,7 @@
     ]
   },
   "unsnoc": {
-    "code": "// Nothing if the list is empty, otherwise\n// Just the init and the last.\n// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    (0 < xs.length) ? (\n        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))\n    ) : Nothing();",
+    "code": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    // Nothing if the list is empty, otherwise\n    // Just the init and the last.\n    (0 < xs.length) ? (\n        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]

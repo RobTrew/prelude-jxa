@@ -4,12 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// All lines in the string outdented by the same amount\n// (just enough to ensure that the least indented lines \n//  have no remaining indent)\n// All relative indents are left unchanged"
-    },
-    {
-      "type": "code",
-      "language": "javascript",
-      "data": "// outdented :: String -> String\nconst outdented = s => {\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n    return unlines(map(drop(n))(xs));\n};"
+      "data": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines \n    //  have no remaining indent)\n    // All relative indents are left unchanged\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n    return unlines(map(drop(n))(xs));\n};"
     }
   ]
 }

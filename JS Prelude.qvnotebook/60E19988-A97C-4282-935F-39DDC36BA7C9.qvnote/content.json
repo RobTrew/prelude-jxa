@@ -4,7 +4,7 @@
     {
       "type": "code",
       "language": "javascript",
-      "data": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = t => t2 =>\n    Tuple(\n        mappend(t[0])(\n            t1[0]\n        )\n    )(mappend(t[1])(\n        t1[1]\n    ));"
+      "data": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = t => t1 =>\n    Tuple(\n        mappend(t[0])(t1[0])\n    )(\n        mappend(t[1])(t1[1])\n    );"
     }
   ]
 }

@@ -1292,7 +1292,7 @@ const filterGen = p => xs => {
 
 // filterTree (a -> Bool) -> Tree a -> [a]
 const filterTree = p =>
-    // List of all root values in the tree
+    // List of all values in the tree
     // which match the predicate p.
     foldTree(x => xs => concat(
         p(x) ? [
@@ -2510,14 +2510,12 @@ const mappendOrd = x =>
     ) : y;
 
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
-const mappendTuple = t => t2 =>
+const mappendTuple = t => t1 =>
     Tuple(
-        mappend(t[0])(
-            t1[0]
-        )
-    )(mappend(t[1])(
-        t1[1]
-    ));
+        mappend(t[0])(t1[0])
+    )(
+        mappend(t[1])(t1[1])
+    );
 
 // matching :: [a] -> (a -> Int -> [a] -> Bool)
 const matching = pat => {
@@ -2878,12 +2876,12 @@ const
     EQ = ordering.EQ,
     GT = ordering.GT;
 
-// All lines in the string outdented by the same amount
-// (just enough to ensure that the least indented lines 
-//  have no remaining indent)
-// All relative indents are left unchanged
 // outdented :: String -> String
 const outdented = s => {
+    // All lines in the string outdented by the same amount
+    // (just enough to ensure that the least indented lines 
+    //  have no remaining indent)
+    // All relative indents are left unchanged
     const
         rgx = /^ */, // Leading space characters.
         xs = lines(s),
@@ -3022,20 +3020,23 @@ const properFraction = n => {
 };
 
 // pureLR :: a -> Either e a
-const pureLR = x => Right(x);
+const pureLR = x =>
+    Right(x);
 
 // pureList :: a -> [a]
-const pureList = x => [x];
+const pureList = x => 
+    [x];
 
 // pureMay :: a -> Maybe a
-const pureMay = x => Just(x);
+const pureMay = x =>
+    Just(x);
 
-// Given a type name string, returns a 
-// specialised 'pure', where
-// 'pure' lifts a value into a particular functor.
 // pureT :: String -> f a -> (a -> f a)
-const pureT = t => x =>
-    'List' !== t ? (
+const pureT = t =>
+    // Given a type name string, returns a 
+    // specialised 'pure', where
+    // 'pure' lifts a value into a particular functor.
+    x => 'List' !== t ? (
         'Either' === t ? (
             pureLR(x)
         ) : 'Maybe' === t ? (
@@ -3094,10 +3095,11 @@ const quot = n =>
     m => Math.trunc(n / m);
 
 // quotRem :: Int -> Int -> (Int, Int)
-const quotRem = m => n => 
-  Tuple(Math.trunc(m / n))(
-      m % n
-  );
+const quotRem = m =>
+    // The quotient, tupled with the remainder.
+    n => Tuple(
+        Math.trunc(m / n)
+    )(m % n);
 
 // quoted :: Char -> String -> String
 const quoted = c =>
@@ -4067,7 +4069,8 @@ const takeFileName = fp =>
 // takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
 const takeFromThenTo = a => b => z => xs => {
     const ixs = enumFromThenTo(a)(b)(z);
-    return 'GeneratorFunction' !== xs.constructor.constructor.name ? (
+    return 'GeneratorFunction' !== xs.constructor
+    .constructor.name ? (
         ixs.map(i => xs[i])
     ) : (() => {
         const g = zipGen(enumFrom(0))(
@@ -4080,7 +4083,6 @@ const takeFromThenTo = a => b => z => xs => {
     })();
 };
 
-// takeIterate n f x == [x, f x, f (f x), ...]
 // takeIterate n f x == [x, f x, f (f x), ...]
 // takeIterate :: Int -> (a -> a) -> a -> [a]
 const takeIterate = n => f => x =>
@@ -4688,10 +4690,10 @@ const unlines = xs =>
     // of a list of strings with the newline character.
     xs.join('\n');
 
-// Nothing if the list is empty, otherwise
-// Just the init and the last.
 // unsnoc :: [a] -> Maybe ([a], a)
 const unsnoc = xs =>
+    // Nothing if the list is empty, otherwise
+    // Just the init and the last.
     (0 < xs.length) ? (
         Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))
     ) : Nothing();
