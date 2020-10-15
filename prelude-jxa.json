@@ -2229,7 +2229,7 @@
     ]
   },
   "renameFile": {
-    "code": "// renameFile :: FilePath -> FilePath -> IO ()\nconst renameFile = fp => fp2 => {\n    const error = $();\n    return $.NSFileManager.defaultManager\n        .moveItemAtPathToPathError(fp, fp2, error) ? (\n            Right('Moved to: ' + fp2)\n        ) : Left(ObjC.unwrap(error.localizedDescription));\n};",
+    "code": "// renamedFile :: FilePath -> FilePath -> \n// Either String IO String\nconst renamedFile = fp =>\n    // Either a message detailing a problem, or\n    // confirmation of a filename change in the OS.\n    fp1 => {\n        const error = $();\n        return $.NSFileManager.defaultManager\n            .moveItemAtPathToPathError(fp, fp1, error) ? (\n                Right('Moved to: ' + fp1)\n            ) : Left(ObjC.unwrap(\n                error.localizedDescription\n            ));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -3157,7 +3157,7 @@
     ]
   },
   "zip": {
-    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // Use of `take` and `length` here allows for \n    // zipping with non-finite lists - i.e. generators \n    // like cycle, repeat, iterate.\n    ys => (([xs_, ys_]) => {\n        const\n            n = Math.min(...[xs_, ys_].map(length)),\n            vs = take(n)(ys_);\n        return take(n)(xs_).map(\n            (x, i) => Tuple(x)(vs[i])\n        );\n    })([xs, ys].map(list));",
+    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs => ys =>\n    // Use of `take` and `length` here allows for \n    // zipping with non-finite lists - i.e. generators \n    // like cycle, repeat, iterate.\n    Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => Tuple(xs[i])(ys[i]));",
     "tags": [
       "JS Prelude"
     ]
@@ -3230,6 +3230,12 @@
   },
   "zipWithN": {
     "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nfunction zipWithN() {\n    const\n        args = Array.from(arguments),\n        rows = args.slice(1).map(list),\n        f = compose(uncurryN(args[0]), TupleN),\n        n = Math.min(...rows.map(x => x.length));\n    return 0 < n ? (\n        take(n))(rows[0]).map(\n        (x, i) => f(rows.flatMap(\n            x => x[i]\n        ))\n    ) : [];\n}",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "zipWith_": {
+    "code": "// zipWith_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => xs.slice(\n        0, Math.min(xs.length, ys.length)\n    ).map((x, i) => f(x)(ys[i]));",
     "tags": [
       "JS Prelude"
     ]

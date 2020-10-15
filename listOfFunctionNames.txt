@@ -1,6 +1,3 @@
-
-
-
 Action :: (a -> b) -> a -> Action b
 Just :: a -> Maybe a
 Left :: a -> Either a b

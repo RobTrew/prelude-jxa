@@ -3261,14 +3261,20 @@ const regexMatches = rgx =>
 // rem :: Int -> Int -> Int
 const rem = n => m => n % m;
 
-// renameFile :: FilePath -> FilePath -> IO ()
-const renameFile = fp => fp2 => {
-    const error = $();
-    return $.NSFileManager.defaultManager
-        .moveItemAtPathToPathError(fp, fp2, error) ? (
-            Right('Moved to: ' + fp2)
-        ) : Left(ObjC.unwrap(error.localizedDescription));
-};
+// renamedFile :: FilePath -> FilePath -> 
+// Either String IO String
+const renamedFile = fp =>
+    // Either a message detailing a problem, or
+    // confirmation of a filename change in the OS.
+    fp1 => {
+        const error = $();
+        return $.NSFileManager.defaultManager
+            .moveItemAtPathToPathError(fp, fp1, error) ? (
+                Right('Moved to: ' + fp1)
+            ) : Left(ObjC.unwrap(
+                error.localizedDescription
+            ));
+    };
 
 // repeat :: a -> Generator [a]
 function* repeat(x) {
@@ -4769,18 +4775,13 @@ const words = s =>
     s.split(/\s+/);
 
 // zip :: [a] -> [b] -> [(a, b)]
-const zip = xs =>
+const zip = xs => ys =>
     // Use of `take` and `length` here allows for 
     // zipping with non-finite lists - i.e. generators 
     // like cycle, repeat, iterate.
-    ys => (([xs_, ys_]) => {
-        const
-            n = Math.min(...[xs_, ys_].map(length)),
-            vs = take(n)(ys_);
-        return take(n)(xs_).map(
-            (x, i) => Tuple(x)(vs[i])
-        );
-    })([xs, ys].map(list));
+    Array.from({
+        length: Math.min(xs.length, ys.length)
+    }, (_, i) => Tuple(xs[i])(ys[i]));
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>
@@ -4924,3 +4925,12 @@ function zipWithN() {
         ))
     ) : [];
 }
+
+// zipWith_ :: (a -> b -> c) -> [a] -> [b] -> [c]
+const zipWith_ = f =>
+    // A list constructed by zipping with a
+    // custom function, rather than with the
+    // default tuple constructor.
+    xs => ys => xs.slice(
+        0, Math.min(xs.length, ys.length)
+    ).map((x, i) => f(x)(ys[i]));

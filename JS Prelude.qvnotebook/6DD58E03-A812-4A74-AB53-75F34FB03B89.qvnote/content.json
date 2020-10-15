@@ -1,0 +1,10 @@
+{
+  "title": "zipWith_",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// zipWith_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => xs.slice(\n        0, Math.min(xs.length, ys.length)\n    ).map((x, i) => f(x)(ys[i]));"
+    }
+  ]
+}
