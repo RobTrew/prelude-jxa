@@ -24,50 +24,103 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
 ```javascript
 (() => {
     'use strict';
+    
+    // Display a menu of functions to select and copy.
+    // Rob Trew @2020
 
-    // Library files at:
-    // https://github.com/RobTrew/prelude-jxa
-    const jsonPath = '~/prelude-jxa/jsPreludeDict.json';
+    ObjC.import('AppKit')
 
-    // main :: IO ()
-    const main = () =>
-        bindLR(
-            bindLR(
-                doesFileExist(jsonPath) ? (
-                    readFileLR(jsonPath)
-                ) : Left(`File not found at path: '${fp}'`),
-                jsonParseLR
-            ),
-            dctFns => {
-                const
-                    sa = standardSEAdditions(),
-                    ks = Object.keys(dctFns),
-                    choice = (
-                        sa.activate(),
-                        sa.chooseFromList(
-                            ks, {
-                                withTitle: 'JS Prelude',
-                                withPrompt: `( ${ks.length} functions )` +
-                                    '\n\nChoose one or more to paste:',
-                                defaultItems: ks[0],
-                                multipleSelectionsAllowed: true,
-                                emptySelectionAllowed: true
-                            }
+    // ---------------------- MAIN ----------------------
+    const main = () => {
+        const inner = () => {
+            const
+                fpFolder = '~/prelude-jxa',
+                menuJSONFile = 'jsPreludeMenu.json';
+            return either(
+                alert('JavaScript functions')
+            )(
+                // Copied to clipboard and returned.
+                x => (
+                    copyText(x),
+                    x
+                )
+            )(
+                bindLR(
+                    readFileLR(
+                        combine(fpFolder)(menuJSONFile)
+                    )
+                )(
+                    json => bindLR(
+                        jsonParseLR(json)
+                    )(
+                        dict => bindLR(
+                            showMenuLR(true)(
+                                'Functions'
+                            )(Object.keys(dict))
+                        )(
+                            ks => Right(
+                                ks.map(k => dict[k])
+                                .join('\n\n\n')
+                            )
                         )
-                    );
-                return choice ? (() => {
-                    const
-                        strFns = choice.map(k => dctFns[k])
-                        .join('\n\n');
-                    return (
-                        sa.setTheClipboardTo(strFns),
-                        Right(strFns)
-                    );
-                })() : Left('User cancelled.');
-            }
-        );
+                    )
+                )
+            )
+        };
 
-    // GENERIC FUNCTIONS --------------------------------------
+        // alert :: String => String -> IO String
+        const alert = title =>
+            s => {
+                const sa = Object.assign(
+                    Application('System Events'), {
+                        includeStandardAdditions: true
+                    });
+                return (
+                    sa.activate(),
+                    sa.displayDialog(s, {
+                        withTitle: title,
+                        buttons: ['OK'],
+                        defaultButton: 'OK'
+                    }),
+                    s
+                );
+            };
+
+        // copyText :: String -> IO String
+        const copyText = s => {
+            const pb = $.NSPasteboard.generalPasteboard;
+            return (
+                pb.clearContents,
+                pb.setStringForType(
+                    $(s),
+                    $.NSPasteboardTypeString
+                ),
+                s
+            );
+        };
+
+        return inner();
+    };
+
+    // ---------------- JS PRELUDE - JXA ----------------
+
+    // readFileLR :: FilePath -> Either String IO String
+    const readFileLR = fp => {
+        const
+            e = $(),
+            ns = $.NSString
+            .stringWithContentsOfFileEncodingError(
+                $(fp).stringByStandardizingPath,
+                $.NSUTF8StringEncoding,
+                e
+            );
+        return ns.isNil() ? (
+            Left(ObjC.unwrap(e.localizedDescription))
+        ) : Right(ObjC.unwrap(ns));
+    };
+
+
+    // ------------------- JS PRELUDE -------------------
 
     // Left :: a -> Either a b
     const Left = x => ({
@@ -81,57 +134,76 @@ in the case of macOS, the [jxaSystemIO.js](https://github.com/RobTrew/prelude-jx
         Right: x
     });
 
-    // bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
-    const bindLR = (m, mf) =>
-        m.Right !== undefined ? (
-            mf(m.Right)
-        ) : m;
+    // bindLR (>>=) :: Either a -> 
+    // (a -> Either b) -> Either b
+    const bindLR = m =>
+        mf => undefined !== m.Left ? (
+            m
+        ) : mf(m.Right);
 
-    // doesFileExist :: FilePath -> IO Bool
-    const doesFileExist = strPath => {
-        const ref = Ref();
-        return $.NSFileManager.defaultManager
-            .fileExistsAtPathIsDirectory(
-                $(strPath)
-                .stringByStandardizingPath, ref
-            ) && ref[0] !== 1;
-    };
+    // combine (</>) :: FilePath -> FilePath -> FilePath
+    const combine = fp =>
+        // Two paths combined with a path separator. 
+        // Just the second path if that starts 
+        // with a path separator.
+        fp1 => Boolean(fp) && Boolean(fp1) ? (
+            '/' === fp1.slice(0, 1) ? (
+                fp1
+            ) : '/' === fp.slice(-1) ? (
+                fp + fp1
+            ) : fp + '/' + fp1
+        ) : fp + fp1;
+
+    // either :: (a -> c) -> (b -> c) -> Either a b -> c
+    const either = fl =>
+        // Application of the function fl to the
+        // contents of any Left value in e, or
+        // the application of fr to its Right value.
+        fr => e => 'Either' === e.type ? (
+            undefined !== e.Left ? (
+                fl(e.Left)
+            ) : fr(e.Right)
+        ) : undefined;
 
     // jsonParseLR :: String -> Either String a
     const jsonParseLR = s => {
         try {
             return Right(JSON.parse(s));
         } catch (e) {
-            return Left(`${e.message} (line:${e.line} col:${e.column})`);
+            return Left(
+                `${e.message} (line:${e.line} col:${e.column})`
+            );
         }
     };
 
-    // readFileLR :: FilePath -> Either String String
-    const readFileLR = strPath => {
-        const
-            error = $(),
-            str = ObjC.unwrap(
-                $.NSString.stringWithContentsOfFileEncodingError(
-                    $(strPath)
-                    .stringByStandardizingPath,
-                    $.NSUTF8StringEncoding,
-                    error
-                )
-            );
-        return Boolean(error.code) ? (
-            Left(error.message)
-        ) : Right(str);
-    };
+    // showMenuLR :: Bool -> String -> [String] -> 
+    // Either String [String]
+    const showMenuLR = blnMult =>
+        title => xs => 0 < xs.length ? (() => {
+            const sa = Object.assign(
+                Application('System Events'), {
+                    includeStandardAdditions: true
+                });
+            sa.activate();
+            const v = sa.chooseFromList(xs, {
+                withTitle: title,
+                withPrompt: 'Select' + (
+                    blnMult ? (
+                        ' one or more of ' +
+                        xs.length.toString()
+                    ) : ':'
+                ),
+                defaultItems: xs[0],
+                okButtonName: 'OK',
+                cancelButtonName: 'Cancel',
+                multipleSelectionsAllowed: blnMult,
+                emptySelectionAllowed: false
+            });
+            return Array.isArray(v) ? (
+                Right(v)
+            ) : Left('User cancelled ' + title + ' menu.');
+        })() : Left(title + ': No items to choose from.');
 
-    // JXA   ---
-
-    // standardSEAdditions :: () -> Application
-    const standardSEAdditions = () =>
-        Object.assign(Application('System Events'), {
-            includeStandardAdditions: true
-        });
-
-    // MAIN ---
     return main();
 })();
 ```
