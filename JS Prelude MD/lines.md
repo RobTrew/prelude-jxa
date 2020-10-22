@@ -1,0 +1,9 @@
+```js
+// lines :: String -> [String]
+const lines = s =>
+    // A list of strings derived from a single
+    // newline-delimited string.
+    0 < s.length ? (
+        s.split(/[\r\n]/)
+    ) : [];
+```
