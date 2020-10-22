@@ -1,4 +1,4 @@
-```js
+```javascript
 // center :: Int -> Char -> String -> String
 const center = n =>
     // Size of space -> filler Char -> String -> Centered String

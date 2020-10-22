@@ -1,4 +1,4 @@
-```js
+```javascript
 // toTitle :: String -> String
 const toTitle = s =>
     // NB this does not model any regional or cultural conventions.

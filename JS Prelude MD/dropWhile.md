@@ -1,4 +1,4 @@
-```js
+```javascript
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = p =>

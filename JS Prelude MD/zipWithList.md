@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWithList = f =>
     // A list constructed by zipping with a

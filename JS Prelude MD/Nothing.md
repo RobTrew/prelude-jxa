@@ -1,4 +1,4 @@
-```js
+```javascript
 // Nothing :: Maybe a
 const Nothing = () => ({
     type: 'Maybe',

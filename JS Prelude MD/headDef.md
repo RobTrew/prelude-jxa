@@ -1,4 +1,4 @@
-```js
+```javascript
 // headDef :: a -> [a] -> a
 const headDef = v =>
     // The first item of a non-empty list,

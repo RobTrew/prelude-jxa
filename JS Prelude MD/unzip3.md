@@ -1,4 +1,4 @@
-```js
+```javascript
 // unzip3 :: [(a,b,c)] -> ([a],[b],[c])
 const unzip3 = xyzs =>
     xyzs.reduce(

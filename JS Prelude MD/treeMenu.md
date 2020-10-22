@@ -1,4 +1,4 @@
-```js
+```javascript
 // treeMenu :: Tree String -> IO [String]
 const treeMenu = tree => {
     const go = t => {

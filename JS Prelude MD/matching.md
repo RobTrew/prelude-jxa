@@ -1,4 +1,4 @@
-```js
+```javascript
 // matching :: [a] -> (a -> Int -> [a] -> Bool)
 const matching = pat => {
     // A sequence-matching function for findIndices etc

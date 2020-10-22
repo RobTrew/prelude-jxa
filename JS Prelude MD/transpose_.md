@@ -1,4 +1,4 @@
-```js
+```javascript
 // transpose_ :: [[a]] -> [[a]]
 const transpose_ = rows =>
     // The columns of the input transposed

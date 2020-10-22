@@ -1,4 +1,4 @@
-```js
+```javascript
 // headMay :: [a] -> Maybe a
 const headMay = xs =>
     // Just the first item of xs, or

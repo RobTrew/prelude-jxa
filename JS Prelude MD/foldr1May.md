@@ -1,4 +1,4 @@
-```js
+```javascript
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldr1May = f =>
     // Nothing if xs is empty, or Just a right

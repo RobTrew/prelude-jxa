@@ -1,4 +1,4 @@
-```js
+```javascript
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = n =>
     xs => enumFromThenTo(0)(n)(

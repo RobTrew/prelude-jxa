@@ -1,4 +1,4 @@
-```js
+```javascript
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const intersectBy = eq =>
     // The intersection of the lists xs and ys

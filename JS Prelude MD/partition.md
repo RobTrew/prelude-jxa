@@ -1,4 +1,4 @@
-```js
+```javascript
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
 const partition = p =>
     // A tuple of two lists - those elements in 

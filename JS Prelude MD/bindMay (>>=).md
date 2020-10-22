@@ -1,4 +1,4 @@
-```js
+```javascript
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 const bindMay = mb =>
     // Nothing if mb is Nothing, or the application of the

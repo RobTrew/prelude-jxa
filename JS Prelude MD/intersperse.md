@@ -1,4 +1,4 @@
-```js
+```javascript
 // intersperse :: a -> [a] -> [a]
 // intersperse :: Char -> String -> String
 const intersperse = sep => xs => {

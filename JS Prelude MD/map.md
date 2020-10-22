@@ -1,4 +1,4 @@
-```js
+```javascript
 // map :: (a -> b) -> [a] -> [b]
 const map = f =>
     // The list obtained by applying f

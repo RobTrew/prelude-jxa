@@ -1,4 +1,4 @@
-```js
+```javascript
 // lastMay :: [a] -> Maybe a
 const lastMay = xs => (
     ys => 0 < ys.length ? (

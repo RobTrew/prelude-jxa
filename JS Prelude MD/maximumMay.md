@@ -1,4 +1,4 @@
-```js
+```javascript
 // maximumMay :: Ord a => [a] -> Maybe a
 const maximumMay = xs => (
     ys => 0 < ys.length ? (

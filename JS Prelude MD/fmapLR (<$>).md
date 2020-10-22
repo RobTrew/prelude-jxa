@@ -1,4 +1,4 @@
-```js
+```javascript
 // fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 const fmapLR = f => lr =>
     undefined === lr.Left ? (

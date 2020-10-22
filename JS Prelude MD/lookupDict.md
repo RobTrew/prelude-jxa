@@ -1,4 +1,4 @@
-```js
+```javascript
 // lookupDict :: a -> Dict -> Maybe b
 const lookupDict = k =>
     dct => {

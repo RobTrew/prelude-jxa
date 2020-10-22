@@ -1,4 +1,4 @@
-```js
+```javascript
 // treeFromNestedDict -> Dict -> Either String Tree Dict
 const treeFromNestedDict = dict => {
     // A generic Tree structure from a dict

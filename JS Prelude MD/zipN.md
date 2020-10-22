@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 function zipN() {
     const args = Array.from(arguments).map(list);

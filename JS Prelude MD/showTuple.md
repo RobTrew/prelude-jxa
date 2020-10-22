@@ -1,4 +1,4 @@
-```js
+```javascript
 // showTuple :: Tuple -> String
 const showTuple = tpl =>
     '(' + enumFromTo(0)(tpl.length - 1)

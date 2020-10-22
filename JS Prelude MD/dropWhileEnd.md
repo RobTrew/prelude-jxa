@@ -1,4 +1,4 @@
-```js
+```javascript
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
 // dropWhileEnd :: (Char -> Bool) -> String -> [Char]
 const dropWhileEnd = p =>

@@ -1,4 +1,4 @@
-```js
+```javascript
 // subsequences :: [a] -> [[a]]
 // subsequences :: String -> [String]
 const subsequences = xs => {

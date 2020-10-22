@@ -1,4 +1,4 @@
-```js
+```javascript
 // isNull :: [a] -> Bool
 // isNull :: String -> Bool
 const isNull = xs =>

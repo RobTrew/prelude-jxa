@@ -1,4 +1,4 @@
-```js
+```javascript
 // intToDigit :: Int -> Char
 const intToDigit = n =>
     n >= 0 && n < 16 ? (

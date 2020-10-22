@@ -1,4 +1,4 @@
-```js
+```javascript
 // listDirectory :: FilePath -> [FilePath]
 const listDirectory = fp =>
 	ObjC.unwrap(

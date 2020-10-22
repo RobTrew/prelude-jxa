@@ -1,4 +1,4 @@
-```js
+```javascript
 // quotRem :: Int -> Int -> (Int, Int)
 const quotRem = m =>
     // The quotient, tupled with the remainder.

@@ -1,4 +1,4 @@
-```js
+```javascript
 // allSame :: [a] -> Bool
 const allSame = xs =>
     2 > xs.length || (

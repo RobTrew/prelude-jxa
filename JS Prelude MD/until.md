@@ -1,4 +1,4 @@
-```js
+```javascript
 // until :: (a -> Bool) -> (a -> a) -> a -> a
 const until = p => 
     f => x => {

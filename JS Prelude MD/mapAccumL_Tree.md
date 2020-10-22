@@ -1,4 +1,4 @@
-```js
+```javascript
 // mapAccumL_Tree :: (acc -> x -> (acc, y)) ->
 // acc -> Tree -> (acc, Tree)
 const mapAccumL_Tree = f => {

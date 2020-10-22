@@ -1,4 +1,4 @@
-```js
+```javascript
 // lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
 const lookupTuples = k =>
     kvs => bindMay(

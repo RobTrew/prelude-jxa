@@ -1,4 +1,4 @@
-```js
+```javascript
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
 const sortOn = f =>
     // Equivalent to sortBy(comparing(f)), but with f(x)

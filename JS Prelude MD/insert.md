@@ -1,4 +1,4 @@
-```js
+```javascript
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
     ys => {

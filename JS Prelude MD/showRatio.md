@@ -1,4 +1,4 @@
-```js
+```javascript
 // showRatio :: Ratio -> String
 const showRatio = r =>
     'Ratio' !== r.type ? (

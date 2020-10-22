@@ -1,4 +1,4 @@
-```js
+```javascript
 // fType :: (a -> f b) -> f
 const fType = g => {
     const s = g.toString();

@@ -1,4 +1,4 @@
-```js
+```javascript
 // swap :: (a, b) -> (b, a)
 const swap = ab =>
     // The pair ab with its order reversed.

@@ -1,4 +1,4 @@
-```js
+```javascript
 // minimumOn :: (Ord b) => (a -> b) -> [a] -> a
 const minimumOn = f =>
     // The item in xs for which f 

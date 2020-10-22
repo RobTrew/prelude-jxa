@@ -1,4 +1,4 @@
-```js
+```javascript
 // The 'unfoldr' function is a *dual* to 'foldr': while 'foldr'
 // reduces a list to a summary value, 'unfoldr' builds a list from
 // a seed value.  The function takes the element and returns 'Nothing'
@@ -9,9 +9,6 @@
 // unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);
 // --> [10,9,8,7,6,5,4,3,2,1]
 // (x => Maybe [value, remainder] -> initial value -> values
-```
-
-```js
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
 const unfoldr = f =>
     v => {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // if_ :: Bool -> a -> a -> a
 const if_ = bln => 
     x => y => bln ? (

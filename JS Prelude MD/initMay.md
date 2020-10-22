@@ -1,4 +1,4 @@
-```js
+```javascript
 // initMay :: [a] -> Maybe [a]
 const initMay = xs => (
     0 < ys.length ? (

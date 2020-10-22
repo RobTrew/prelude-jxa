@@ -1,4 +1,4 @@
-```js
+```javascript
 // scanr :: (b -> a -> b) -> b -> [a] -> [b]
 const scanr = f =>
     startValue => xs => list(xs).reduceRight((a, x) => {

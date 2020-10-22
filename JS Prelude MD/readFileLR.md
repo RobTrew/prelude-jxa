@@ -1,4 +1,4 @@
-```js
+```javascript
 // readFileLR :: FilePath -> Either String IO String
 const readFileLR = fp => {
     const

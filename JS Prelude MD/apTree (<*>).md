@@ -1,4 +1,4 @@
-```js
+```javascript
 // apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 const apTree = tf =>
     // A new tree derived by applying each of a tree

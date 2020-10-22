@@ -1,4 +1,4 @@
-```js
+```javascript
 // combine (</>) :: FilePath -> FilePath -> FilePath
 const combine = fp =>
     // Two paths combined with a path separator. 

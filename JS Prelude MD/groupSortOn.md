@@ -1,4 +1,4 @@
-```js
+```javascript
 // groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 const groupSortOn = f =>
     compose(

@@ -1,4 +1,4 @@
-```js
+```javascript
 // group :: Eq a => [a] -> [[a]]
 const group = xs => {
     // A list of lists, each containing only equal elements,

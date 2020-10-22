@@ -1,4 +1,4 @@
-```js
+```javascript
 // maximumOn :: (Ord b) => (a -> b) -> [a] -> a
 const maximumOn = f =>
     // The item in xs for which f 

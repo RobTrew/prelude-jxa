@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeWhileR :: (a -> Bool) -> [a] -> [a]
 const takeWhileR = p =>
     // The longest suffix of xs in which

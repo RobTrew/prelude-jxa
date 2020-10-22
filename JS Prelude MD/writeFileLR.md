@@ -1,4 +1,4 @@
-```js
+```javascript
 // writeFileLR :: FilePath -> Either String IO FilePath
 const writeFileLR = fp =>
     s => {

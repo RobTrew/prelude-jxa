@@ -1,4 +1,4 @@
-```js
+```javascript
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = a =>
     // Associative operation 

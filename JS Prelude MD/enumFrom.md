@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFrom :: Enum a => a -> [a]
 function* enumFrom(x) {
     // A non-finite succession of enumerable

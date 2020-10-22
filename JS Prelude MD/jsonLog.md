@@ -1,4 +1,4 @@
-```js
+```javascript
 // jsonLog :: a -> IO ()
 const jsonLog = (...args) =>
     console.log(

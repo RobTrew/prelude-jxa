@@ -1,4 +1,4 @@
-```js
+```javascript
 // unDigits :: [Int] -> Int
 const unDigits = ds =>
     // The integer with the given digits.

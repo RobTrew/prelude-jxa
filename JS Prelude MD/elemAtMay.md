@@ -1,4 +1,4 @@
-```js
+```javascript
 // elemAtMay :: Int -> Dict -> Maybe (String, a)
 // elemAtMay :: Int -> [a] -> Maybe a
 const elemAtMay = i =>

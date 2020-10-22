@@ -1,4 +1,4 @@
-```js
+```javascript
 // insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
 const insertBy = cmp =>
     x => xs => {

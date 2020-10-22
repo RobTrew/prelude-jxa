@@ -1,4 +1,4 @@
-```js
+```javascript
 // Node :: a -> [Tree a] -> Tree a
 const Node = v =>
     // Constructor for a Tree node which connects a

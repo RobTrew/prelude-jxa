@@ -1,4 +1,4 @@
-```js
+```javascript
 // deleteKey :: String -> Dict -> Dict
 const deleteKey = k =>
     // A new dictionary, without the key k.

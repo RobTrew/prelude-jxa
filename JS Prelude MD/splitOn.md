@@ -1,4 +1,4 @@
-```js
+```javascript
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
 const splitOn = pat => src =>

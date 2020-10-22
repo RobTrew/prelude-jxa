@@ -1,4 +1,4 @@
-```js
+```javascript
 // listToMaybe :: [a] -> Maybe a
 const listToMaybe = xs =>
     // Nothing if xs is empty, or Just the head of xs.

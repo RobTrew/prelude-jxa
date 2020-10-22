@@ -1,4 +1,4 @@
-```js
+```javascript
 // isDigit :: Char -> Bool
 const isDigit = c => {
     const n = c.codePointAt(0);

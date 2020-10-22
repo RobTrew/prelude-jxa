@@ -1,4 +1,4 @@
-```js
+```javascript
 // append (++) :: [a] -> [a] -> [a]
 const append = xs =>
     // A list defined by the

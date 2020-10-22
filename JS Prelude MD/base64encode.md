@@ -1,4 +1,4 @@
-```js
+```javascript
 // base64encode :: String -> String
 const base64encode = s =>
     ObjC.unwrap(

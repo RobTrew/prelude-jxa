@@ -1,4 +1,4 @@
-```js
+```javascript
 // print :: a -> IO ()
 const print = x => {
     const s = show(x);

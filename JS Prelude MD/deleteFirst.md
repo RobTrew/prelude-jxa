@@ -1,4 +1,4 @@
-```js
+```javascript
 // deleteFirst :: a -> [a] -> [a]
 const deleteFirst = x => {
     const go = xs => 0 < xs.length ? (

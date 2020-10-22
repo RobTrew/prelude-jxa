@@ -1,4 +1,4 @@
-```js
+```javascript
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     xs => {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // list :: StringOrArrayLike b => b -> [a]
 const list = xs =>
     // xs itself, if it is an Array,

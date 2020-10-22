@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeExtension :: FilePath -> String
 const takeExtension = fp => (
     fs => {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // minimum :: Ord a => [a] -> a
 const minimum = xs => (
     // The least value of xs.

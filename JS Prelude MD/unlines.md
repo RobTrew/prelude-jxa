@@ -1,4 +1,4 @@
-```js
+```javascript
 // unlines :: [String] -> String
 const unlines = xs =>
     // A single string formed by the intercalation

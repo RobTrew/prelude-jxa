@@ -1,4 +1,4 @@
-```js
+```javascript
 // sj :: a -> String
 function sj() {
     // Abbreviation of showJSON for quick testing.

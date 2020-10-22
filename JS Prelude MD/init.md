@@ -1,4 +1,4 @@
-```js
+```javascript
 // init :: [a] -> [a]
 const init = xs => (
     // All elements of a list except the last.

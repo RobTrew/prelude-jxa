@@ -1,4 +1,4 @@
-```js
+```javascript
 // round :: a -> Int
 const round = x => {
     const

@@ -1,4 +1,4 @@
-```js
+```javascript
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
 const caseOf = pvs =>
     // List of (Predicate, value) tuples -> Default value 

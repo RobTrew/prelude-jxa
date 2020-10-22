@@ -1,4 +1,4 @@
-```js
+```javascript
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 const splitArrow = f =>
     // The functions f and g combined in a single function

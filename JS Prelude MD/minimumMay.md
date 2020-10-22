@@ -1,4 +1,4 @@
-```js
+```javascript
 // minimumMay :: [a] -> Maybe a
 const minimumMay = xs => (
     ys => 0 < ys.length ? (

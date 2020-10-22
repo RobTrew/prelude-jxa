@@ -1,4 +1,4 @@
-```js
+```javascript
 // jsonFromTree :: Tree a -> String
 const jsonFromTree = tree => {
     // A recursive [root, nest] JSON format,

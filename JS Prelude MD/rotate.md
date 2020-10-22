@@ -1,4 +1,4 @@
-```js
+```javascript
 // rotate :: Int -> [a] -> [a]
 const rotate = n => xs => {
     // Rightward rotation of xs by n positions.

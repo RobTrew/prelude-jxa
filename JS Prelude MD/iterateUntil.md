@@ -1,4 +1,4 @@
-```js
+```javascript
 // iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
 const iterateUntil = p =>
     f => function*(x) {

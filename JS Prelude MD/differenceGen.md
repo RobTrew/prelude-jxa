@@ -1,4 +1,4 @@
-```js
+```javascript
 // differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
 const differenceGen = ga => {
     return function*(gb) {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // pred :: Enum a => a -> a
 const pred = x => {
     const t = typeof x;

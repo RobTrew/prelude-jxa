@@ -1,4 +1,4 @@
-```js
+```javascript
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
     function*(gen) {

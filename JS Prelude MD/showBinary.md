@@ -1,4 +1,4 @@
-```js
+```javascript
 // showBinary :: Int -> String
 const showBinary = n => {
     const

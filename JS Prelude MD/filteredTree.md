@@ -1,4 +1,4 @@
-```js
+```javascript
 // filteredTree (a -> Bool) -> Tree a -> Tree a
 const filteredTree = p =>
     // A tree including only those children

@@ -1,4 +1,4 @@
-```js
+```javascript
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 const filteredSubTrees = p => {
     const go = tree => (

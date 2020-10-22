@@ -1,4 +1,4 @@
-```js
+```javascript
 // rights :: [Either a b] -> [b]
 const rights = xs =>
     xs.flatMap(

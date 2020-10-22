@@ -1,4 +1,4 @@
-```js
+```javascript
 // variance :: [Num] -> Num
 const variance = xs => {
     const

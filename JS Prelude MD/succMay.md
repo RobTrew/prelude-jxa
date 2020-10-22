@@ -1,4 +1,4 @@
-```js
+```javascript
 // succMay :: Enum a => a -> Maybe a
 const succMay = x => {
     const t = typeof x;

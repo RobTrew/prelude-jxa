@@ -1,4 +1,4 @@
-```js
+```javascript
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 const findIndexR = p =>
     //  Just the index of the last element in

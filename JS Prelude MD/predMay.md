@@ -1,4 +1,4 @@
-```js
+```javascript
 // predMay :: Enum a => a -> Maybe a
 const predMay = x => {
     const t = typeof x;

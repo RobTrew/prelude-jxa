@@ -1,4 +1,4 @@
-```js
+```javascript
 // max :: Ord a => a -> a -> a
 const max = a =>
     // b if its greater than a,

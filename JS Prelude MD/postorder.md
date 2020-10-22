@@ -1,4 +1,4 @@
-```js
+```javascript
 // postorder :: Tree a -> [a]
 const postorder = t => {
     // List of root elements of tree flattened

@@ -1,4 +1,4 @@
-```js
+```javascript
 // fileStatus :: FilePath -> Either String Dict
 const fileStatus = fp => {
     const

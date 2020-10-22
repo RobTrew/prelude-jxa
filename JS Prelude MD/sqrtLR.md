@@ -1,4 +1,4 @@
-```js
+```javascript
 // sqrtLR :: Num -> Either String Num
 const sqrtLR = n =>
     0 > n ? (

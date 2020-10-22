@@ -1,4 +1,4 @@
-```js
+```javascript
 // apList (<*>) :: [(a -> b)] -> [a] -> [b]
 const apList = fs =>
     // The sequential application of each of a list

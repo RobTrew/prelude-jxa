@@ -1,4 +1,4 @@
-```js
+```javascript
 // listFromTree :: Tree a -> [a]
 const listFromTree = tree => {
     const go = x => [

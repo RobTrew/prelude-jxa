@@ -1,4 +1,4 @@
-```js
+```javascript
 // unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
 const unfoldl = f => v => {
     // Dual to reduce or foldl.

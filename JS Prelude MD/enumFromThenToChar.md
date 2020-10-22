@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
 const enumFromThenToChar = x1 =>
     x2 => y => {

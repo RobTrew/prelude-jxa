@@ -1,4 +1,4 @@
-```js
+```javascript
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = p =>
     // Just the first element in xs which 

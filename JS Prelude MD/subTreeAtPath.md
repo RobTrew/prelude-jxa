@@ -1,4 +1,4 @@
-```js
+```javascript
 // subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
 const subTreeAtPath = tree => path => {
     const go = (nest, xs) =>

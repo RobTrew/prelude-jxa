@@ -1,4 +1,4 @@
-```js
+```javascript
 // removeFile :: FilePath -> Either String String
 const removeFile = fp => {
   const error = $();

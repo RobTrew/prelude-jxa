@@ -1,4 +1,4 @@
-```js
+```javascript
 // ceiling :: Num -> Int
 const ceiling = x => {
     // The least integer not less than x.

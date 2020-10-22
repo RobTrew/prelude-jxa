@@ -1,4 +1,4 @@
-```js
+```javascript
 // breakOnMay :: String -> String -> Maybe (String, String)
 const breakOnMay = pat =>
     // Needle -> Haystack -> maybe (prefix before match, match + rest)

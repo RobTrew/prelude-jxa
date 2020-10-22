@@ -1,4 +1,4 @@
-```js
+```javascript
 // scanl1 :: (a -> a -> a) -> [a] -> [a]
 const scanl1 = f =>
     // scanl1 is a variant of scanl that has no 

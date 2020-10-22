@@ -1,4 +1,4 @@
-```js
+```javascript
 // stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 const stripPrefix = pfx =>
     s => {

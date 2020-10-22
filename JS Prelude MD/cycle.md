@@ -1,4 +1,4 @@
-```js
+```javascript
 // cycle :: [a] -> Generator [a]
 function* cycle(xs) {
     const lng = xs.length;

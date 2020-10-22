@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
 const zipGen = ga => gb => {
     function* go(ma, mb) {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
     xs => compose(

@@ -1,4 +1,4 @@
-```js
+```javascript
 // copyFileLR :: FilePath -> FilePath -> Either String IO ()
 const copyFileLR = fpFrom =>
     fpTo => {

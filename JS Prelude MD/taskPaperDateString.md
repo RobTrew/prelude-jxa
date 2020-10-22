@@ -1,4 +1,4 @@
-```js
+```javascript
 // taskPaperDateString :: Date -> String
 const taskPaperDateString = dte => {
     const [d, t] = iso8601Local(dte).split('T');

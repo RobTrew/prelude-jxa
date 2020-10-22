@@ -1,4 +1,4 @@
-```js
+```javascript
 // showOutline :: Tree String -> String
 const showOutline = tree => {
     const go = indent => x =>

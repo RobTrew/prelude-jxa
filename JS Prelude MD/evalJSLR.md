@@ -1,4 +1,4 @@
-```js
+```javascript
 // evalJSLR :: String -> Either String a
 const evalJSLR = s => {
     try {

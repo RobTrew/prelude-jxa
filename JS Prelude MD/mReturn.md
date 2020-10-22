@@ -1,4 +1,4 @@
-```js
+```javascript
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
 const mReturn = x =>
     // Not required in JS, which has first functions by default.

@@ -1,4 +1,4 @@
-```js
+```javascript
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 const deleteBy = fEq =>
     x => {

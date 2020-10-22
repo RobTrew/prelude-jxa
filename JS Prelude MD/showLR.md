@@ -1,4 +1,4 @@
-```js
+```javascript
 // showLR :: Either a b -> String
 const showLR = lr => {
     const k = undefined !== lr.Left ? (

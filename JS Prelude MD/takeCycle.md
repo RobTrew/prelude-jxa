@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeCycle :: Int -> [a] -> [a]
 const takeCycle = n =>
     // First n elements of a non-finite cycle of xs.

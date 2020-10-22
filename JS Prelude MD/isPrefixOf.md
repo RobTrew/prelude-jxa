@@ -1,4 +1,4 @@
-```js
+```javascript
 // isPrefixOf :: [a] -> [a] -> Bool
 // isPrefixOf :: String -> String -> Bool
 const isPrefixOf = xs =>

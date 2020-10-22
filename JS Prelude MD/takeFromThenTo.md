@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
 const takeFromThenTo = a => b => z => xs => {
     const ixs = enumFromThenTo(a)(b)(z);

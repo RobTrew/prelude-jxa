@@ -1,4 +1,4 @@
-```js
+```javascript
 // findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 const findGen = p =>
     // Just the first match for the predicate p

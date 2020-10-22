@@ -1,4 +1,4 @@
-```js
+```javascript
 // subsets :: [a] -> [[a]]
 const subsets = xs => {
     const go = ys =>

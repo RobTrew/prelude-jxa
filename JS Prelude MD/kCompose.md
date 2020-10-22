@@ -1,4 +1,4 @@
-```js
+```javascript
 // kCompose (>=>) :: Monad m => 
 // [(a -> m a)] -> (a -> m a)
 const kCompose = (...fs) =>

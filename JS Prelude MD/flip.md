@@ -1,4 +1,4 @@
-```js
+```javascript
 // flip :: (a -> b -> c) -> b -> a -> c
 const flip = op =>
     // The binary function op with 

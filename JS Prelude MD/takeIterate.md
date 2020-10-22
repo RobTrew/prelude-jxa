@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeIterate n f x == [x, f x, f (f x), ...]
 // takeIterate :: Int -> (a -> a) -> a -> [a]
 const takeIterate = n => f => x =>

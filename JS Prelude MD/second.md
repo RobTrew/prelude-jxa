@@ -1,4 +1,4 @@
-```js
+```javascript
 // second :: (a -> b) -> ((c, a) -> (c, b))
 const second = f =>
     // A function over a simple value lifted

@@ -1,4 +1,4 @@
-```js
+```javascript
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = fEq =>
     // Typical usage: groupBy(on(eq)(f), xs)

@@ -1,4 +1,4 @@
-```js
+```javascript
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = fl =>
     // Application of the function fl to the

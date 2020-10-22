@@ -1,4 +1,4 @@
-```js
+```javascript
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = f =>
     xs => {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // shift :: Int -> [a] -> [a]
 const shift = n => xs => {
     const lng = length(xs);

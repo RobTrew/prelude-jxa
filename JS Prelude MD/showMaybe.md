@@ -1,4 +1,4 @@
-```js
+```javascript
 // showMaybe :: Maybe a -> String
 const showMaybe = mb =>
     mb.Nothing ? (

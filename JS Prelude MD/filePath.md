@@ -1,4 +1,4 @@
-```js
+```javascript
 // filePath :: String -> FilePath
 const filePath = s =>
     // The given file path with any tilde expanded

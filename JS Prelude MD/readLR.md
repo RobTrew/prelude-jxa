@@ -1,4 +1,4 @@
-```js
+```javascript
 // readLR :: Read a => String -> Either String a
 const readLR = s => {
     try {

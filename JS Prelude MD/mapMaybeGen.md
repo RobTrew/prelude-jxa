@@ -1,4 +1,4 @@
-```js
+```javascript
 // mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 const mapMaybeGen = mf =>
     // A filtered map over a generator, returning only the

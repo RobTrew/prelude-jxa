@@ -1,4 +1,4 @@
-```js
+```javascript
 // curryN :: Curry a b => a -> b
 const curryN = f =>
     // A curried function derived from a

@@ -1,4 +1,4 @@
-```js
+```javascript
 // foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 const foldrTree = f =>
     acc => node => {

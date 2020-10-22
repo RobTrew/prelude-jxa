@@ -1,4 +1,4 @@
-```js
+```javascript
 // tempFilePath :: String -> IO FilePath
 const tempFilePath = template =>
   // File name template to temporary path

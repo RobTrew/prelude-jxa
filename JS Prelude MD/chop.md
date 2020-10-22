@@ -1,4 +1,4 @@
-```js
+```javascript
 // chop :: ([a] -> (b, [a])) -> [a] -> [b]
 const chop = f =>
     // A segmentation of xs by tail recursion with a

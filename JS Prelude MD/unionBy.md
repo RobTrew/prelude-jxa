@@ -1,4 +1,4 @@
-```js
+```javascript
 // unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const unionBy = fnEq => xs => ys => {
     const sx = nubBy(fnEq)(xs);

@@ -1,4 +1,4 @@
-```js
+```javascript
 // mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 const mappendMaybe = a =>
      b => a.Nothing ? (

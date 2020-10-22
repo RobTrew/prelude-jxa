@@ -1,4 +1,4 @@
-```js
+```javascript
 // sum :: [Num] -> Num
 const sum = xs =>
     // The numeric sum of all values in xs.

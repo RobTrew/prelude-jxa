@@ -1,4 +1,4 @@
-```js
+```javascript
 // treeFromDict :: String -> Dict -> Tree String
 const treeFromDict = rootLabel =>
     dict => {

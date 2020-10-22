@@ -1,4 +1,4 @@
-```js
+```javascript
 // chr :: Int -> Char
 const chr = x =>
     // The character at unix code-point x.

@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeDropCycle :: Int -> [a] -> [a]
 const takeDropCycle = n =>
     // N Members of an infinite cycle of xs, starting from index I

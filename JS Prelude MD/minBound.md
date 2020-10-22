@@ -1,4 +1,4 @@
-```js
+```javascript
 // minBound :: a -> a
 const minBound = x => {
     const e = x.enum;

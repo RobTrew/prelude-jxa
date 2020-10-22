@@ -1,4 +1,4 @@
-```js
+```javascript
 // gt :: Ord a => a -> a -> Bool
 const gt = x => y =>
     'Tuple' === x.type ? (

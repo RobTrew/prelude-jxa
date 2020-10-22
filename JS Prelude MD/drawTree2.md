@@ -1,4 +1,4 @@
-```js
+```javascript
 // drawTree2 :: Bool -> Bool -> Tree String -> String
 const drawTree2 = blnCompact => blnPruned => tree => {
     // Tree design and algorithm inspired by the Haskell snippet at:

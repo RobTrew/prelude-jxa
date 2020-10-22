@@ -1,4 +1,4 @@
-```js
+```javascript
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
     ys => (

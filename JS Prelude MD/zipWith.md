@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith = f =>
     // Use of `take` and `length` here allows 

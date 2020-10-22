@@ -1,4 +1,4 @@
-```js
+```javascript
 // dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 const dropWhileGen = p =>
     xs => {

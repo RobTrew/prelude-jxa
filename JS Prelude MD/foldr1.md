@@ -1,4 +1,4 @@
-```js
+```javascript
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = f =>
     xs => (ys => 0 < ys.length ? (

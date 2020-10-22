@@ -1,4 +1,4 @@
-```js
+```javascript
 // isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
 const isSortedBy = p =>
     // True if all adjacent pairs of elements in

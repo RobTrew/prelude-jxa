@@ -1,4 +1,4 @@
-```js
+```javascript
 // merge :: Ord a => [a] -> [a] -> [a]
 const merge = xs =>
     // An ordered list derived by merging

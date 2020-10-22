@@ -1,4 +1,4 @@
-```js
+```javascript
 // filterGen :: (a -> Bool) -> Gen [a] -> [a]
 const filterGen = p => xs => {
     // Non-finite stream of values which are 

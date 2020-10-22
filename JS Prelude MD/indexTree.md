@@ -1,4 +1,4 @@
-```js
+```javascript
 // indexTree :: Tree (a,  { nodeSum :: Int }) -> Int ->
 // Maybe Tree (a,  { nodeSum :: Int })
 const indexTree = tree =>

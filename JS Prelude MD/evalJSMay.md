@@ -1,4 +1,4 @@
-```js
+```javascript
 // evalJSMay :: String -> Maybe a
 const evalJSMay = s => {
     try {

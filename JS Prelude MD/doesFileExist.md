@@ -1,4 +1,4 @@
-```js
+```javascript
 // doesFileExist :: FilePath -> IO Bool
 const doesFileExist = fp => {
     const ref = Ref();

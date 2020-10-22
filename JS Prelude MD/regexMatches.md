@@ -1,4 +1,4 @@
-```js
+```javascript
 // regexMatches :: Regex -> String -> [[String]]
 const regexMatches = rgx =>
     // All matches for the given regular expression

@@ -1,4 +1,4 @@
-```js
+```javascript
 // gcd :: Int -> Int -> Int
 const gcd = x =>
     y => {

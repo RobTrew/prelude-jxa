@@ -1,4 +1,4 @@
-```js
+```javascript
 // permutations :: [a] -> [[a]]
 const permutations = xs => (
     ys => ys.reduceRight(

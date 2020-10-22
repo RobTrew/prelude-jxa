@@ -1,4 +1,4 @@
-```js
+```javascript
 // showLog :: a -> IO ()
 const showLog = (...args) =>
     console.log(

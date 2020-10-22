@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeFileName :: FilePath -> FilePath
 const takeFileName = fp =>
     '' !== fp ? (

@@ -1,4 +1,4 @@
-```js
+```javascript
 // filter :: (a -> Bool) -> [a] -> [a]
 const filter = p =>
     // The elements of xs which match

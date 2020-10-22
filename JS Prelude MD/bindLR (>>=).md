@@ -1,4 +1,4 @@
-```js
+```javascript
 // bindLR (>>=) :: Either a -> 
 // (a -> Either b) -> Either b
 const bindLR = m =>

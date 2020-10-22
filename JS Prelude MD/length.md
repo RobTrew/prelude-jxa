@@ -1,4 +1,4 @@
-```js
+```javascript
 // length :: [a] -> Int
 const length = xs =>
     // Returns Infinity over objects without finite

@@ -1,4 +1,4 @@
-```js
+```javascript
 // TupleN :: a -> b ...  -> (a, b ... )
 function TupleN() {
     const

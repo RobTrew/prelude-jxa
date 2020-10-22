@@ -1,4 +1,4 @@
-```js
+```javascript
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
     xs => (

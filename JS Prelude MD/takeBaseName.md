@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeBaseName :: FilePath -> String
 const takeBaseName = strPath =>
   ('' !== strPath) ? (

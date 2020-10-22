@@ -1,4 +1,4 @@
-```js
+```javascript
 // bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
 const bindTuple = tpl =>
     f => {

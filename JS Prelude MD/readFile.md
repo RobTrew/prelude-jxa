@@ -1,4 +1,4 @@
-```js
+```javascript
 // readFile :: FilePath -> IO String
 const readFile = fp => {
     // The contents of a text file at the

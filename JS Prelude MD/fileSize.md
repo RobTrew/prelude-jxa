@@ -1,4 +1,4 @@
-```js
+```javascript
 // fileSize :: FilePath -> Either String Int
 const fileSize = fp =>
     bindLR(fileStatus(fp))(

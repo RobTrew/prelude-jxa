@@ -1,4 +1,4 @@
-```js
+```javascript
 // unsnoc :: [a] -> Maybe ([a], a)
 const unsnoc = xs =>
     // Nothing if the list is empty, otherwise

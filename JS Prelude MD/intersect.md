@@ -1,4 +1,4 @@
-```js
+```javascript
 // intersect :: (Eq a) => [a] -> [a] -> [a]
 const intersect = xs =>
     // The intersection of lists xs and ys.

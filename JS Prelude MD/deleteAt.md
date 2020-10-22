@@ -1,4 +1,4 @@
-```js
+```javascript
 // deleteAt :: Int -> [a] -> [a]
 const deleteAt = i =>
     xs => i <= xs.length ? (() => {

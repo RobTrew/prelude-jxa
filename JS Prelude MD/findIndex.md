@@ -1,4 +1,4 @@
-```js
+```javascript
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
 const findIndex = p =>
     //  Just the index of the first element in

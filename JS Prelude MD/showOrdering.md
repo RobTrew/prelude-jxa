@@ -1,4 +1,4 @@
-```js
+```javascript
 // showOrdering :: Ordering -> String
 const showOrdering = e =>
     0 < e.value ? (

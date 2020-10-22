@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 function zipWithN() {
     const

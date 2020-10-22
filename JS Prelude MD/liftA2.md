@@ -1,4 +1,4 @@
-```js
+```javascript
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
     // Lift a binary function to actions.

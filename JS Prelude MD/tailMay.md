@@ -1,4 +1,4 @@
-```js
+```javascript
 // tailMay :: [a] -> Maybe [a]
 const tailMay = xs => (
     ys => 0 < ys.length ? (

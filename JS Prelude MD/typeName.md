@@ -1,4 +1,4 @@
-```js
+```javascript
 // typeName :: a -> String
 const typeName = v => {
     const t = typeof v;

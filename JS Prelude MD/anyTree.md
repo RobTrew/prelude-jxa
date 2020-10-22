@@ -1,4 +1,4 @@
-```js
+```javascript
 // anyTree :: (a -> Bool) -> Tree a -> Bool
 const anyTree = p =>
     // True if p holds for any node of the

@@ -1,4 +1,4 @@
-```js
+```javascript
 // breakOn :: String -> String -> (String, String)
 const breakOn = pat =>
     // Needle -> Haystack -> (prefix before match, match + rest)

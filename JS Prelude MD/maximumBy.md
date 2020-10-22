@@ -1,4 +1,4 @@
-```js
+```javascript
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
 const maximumBy = f =>
     xs => {

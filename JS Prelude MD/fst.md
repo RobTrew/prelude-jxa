@@ -1,4 +1,4 @@
-```js
+```javascript
 // fst :: (a, b) -> a
 const fst = tpl =>
     // First member of a pair.

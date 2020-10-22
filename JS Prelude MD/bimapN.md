@@ -1,4 +1,4 @@
-```js
+```javascript
 // bimapN :: (a -> b) -> (c -> d) -> TupleN -> TupleN
 const bimapN = f =>
     // An n-tuple instance of bimap.

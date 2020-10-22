@@ -1,4 +1,4 @@
-```js
+```javascript
 // runAction :: Action a -> a
 const runAction = act =>
     // Evaluation of an action.

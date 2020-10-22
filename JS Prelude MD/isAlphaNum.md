@@ -1,4 +1,4 @@
-```js
+```javascript
 // isAlphaNum :: Char -> Bool
 const isAlphaNum = c => {
     const n = c.codePointAt(0);

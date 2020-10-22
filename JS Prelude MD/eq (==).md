@@ -1,4 +1,4 @@
-```js
+```javascript
 // eq (==) :: Eq a => a -> a -> Bool
 const eq = a =>
     // True when a and b are equivalent in the terms

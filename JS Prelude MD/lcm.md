@@ -1,4 +1,4 @@
-```js
+```javascript
 // lcm :: Int -> Int -> Int
 const lcm = x =>
     // The smallest positive integer divisible

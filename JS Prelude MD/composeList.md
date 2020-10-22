@@ -1,4 +1,4 @@
-```js
+```javascript
 // composeList :: [(a -> a)] -> (a -> a)
 const composeList = fs =>
     fs.reduce(

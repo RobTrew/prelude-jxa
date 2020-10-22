@@ -1,4 +1,4 @@
-```js
+```javascript
 // indented :: String -> String -> String
 const indented = strIndent =>
     s => s.split(/[\r\n]/).map(

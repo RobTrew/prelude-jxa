@@ -1,4 +1,4 @@
-```js
+```javascript
 // isSubsetOf :: Ord a => Set a -> Set a -> Bool
 const isSubsetOf = a => b => {
     for (let x of a) {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // showMenuLR :: Bool -> String -> [String] -> 
 // Either String [String]
 const showMenuLR = blnMult =>

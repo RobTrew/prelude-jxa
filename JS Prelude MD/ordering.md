@@ -1,4 +1,4 @@
-```js
+```javascript
 // ordering :: () -> Ordering
 const
     ordering = enumFromPairs(

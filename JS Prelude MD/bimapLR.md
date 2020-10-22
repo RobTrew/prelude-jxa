@@ -1,4 +1,4 @@
-```js
+```javascript
 // bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d
 const bimapLR = f =>
     // Instance of bimap for Either values.

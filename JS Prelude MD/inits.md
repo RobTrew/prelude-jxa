@@ -1,4 +1,4 @@
-```js
+```javascript
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
 const inits = xs => 

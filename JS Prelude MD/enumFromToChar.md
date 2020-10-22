@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = m => n => {
     const [intM, intN] = [m, n].map(x => x.codePointAt(0));

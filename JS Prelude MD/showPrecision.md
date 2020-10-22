@@ -1,4 +1,4 @@
-```js
+```javascript
 // showPrecision :: Int -> Float -> String
 const showPrecision = n => x => {
     // A string showing a floating point number

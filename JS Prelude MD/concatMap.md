@@ -1,4 +1,4 @@
-```js
+```javascript
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = f =>
     // Where (a -> [b]) returns an Array, this 

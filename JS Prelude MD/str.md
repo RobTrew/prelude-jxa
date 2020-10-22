@@ -1,4 +1,4 @@
-```js
+```javascript
 // str :: a -> String
 const str = x =>
    Array.isArray(x) && x.every(

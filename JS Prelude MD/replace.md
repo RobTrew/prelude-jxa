@@ -1,4 +1,4 @@
-```js
+```javascript
 // replace :: String -> String -> String -> String
 // replace :: Regex -> String -> String -> String
 const replace = needle => strNew => strHaystack =>

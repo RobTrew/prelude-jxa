@@ -1,4 +1,4 @@
-```js
+```javascript
 // showList :: [a] -> String
 const showList = xs =>
     '[' + xs.map(show)

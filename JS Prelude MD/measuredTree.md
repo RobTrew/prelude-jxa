@@ -1,4 +1,4 @@
-```js
+```javascript
 // measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
 const measuredTree = tree => {
     // A tree in which each node is tupled with

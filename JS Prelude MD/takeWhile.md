@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeWhile :: (a -> Bool) -> [a] -> [a]
 // takeWhile :: (Char -> Bool) -> String -> String
 const takeWhile = p => xs =>

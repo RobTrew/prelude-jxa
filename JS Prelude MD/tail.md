@@ -1,4 +1,4 @@
-```js
+```javascript
 // tail :: [a] -> [a]
 const tail = xs =>
     // A new list consisting of all

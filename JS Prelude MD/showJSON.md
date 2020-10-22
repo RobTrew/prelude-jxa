@@ -1,4 +1,4 @@
-```js
+```javascript
 // showJSON :: a -> String
 const showJSON = x =>
     // Indented JSON representation of the value x.

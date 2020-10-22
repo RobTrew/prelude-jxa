@@ -1,4 +1,4 @@
-```js
+```javascript
 // writeTempFile :: String -> String -> IO FilePath
 const writeTempFile = template =>
     // File name template -> string data -> IO temporary path

@@ -1,4 +1,4 @@
-```js
+```javascript
 // elems :: Map k a -> [a]
 // elems :: Set a -> [a]
 const elems = x =>

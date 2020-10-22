@@ -1,4 +1,4 @@
-```js
+```javascript
 // show :: a -> String
 // show :: a -> Int -> Indented String
 const show = x => {

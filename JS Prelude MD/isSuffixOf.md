@@ -1,4 +1,4 @@
-```js
+```javascript
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
 const isSuffixOf = ns => hs =>

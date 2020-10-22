@@ -1,4 +1,4 @@
-```js
+```javascript
 // traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 const traverseList = f =>
     // Collected results of mapping each element

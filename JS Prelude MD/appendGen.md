@@ -1,4 +1,4 @@
-```js
+```javascript
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
     // A new generator composed from the 

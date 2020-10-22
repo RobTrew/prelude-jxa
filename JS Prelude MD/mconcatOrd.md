@@ -1,4 +1,4 @@
-```js
+```javascript
 // mconcatOrd :: [Ordering] -> Ordering
 const mconcatOrd = cmps =>
     // A sort compare function derived from

@@ -1,4 +1,4 @@
-```js
+```javascript
 // ratio :: Int -> Int -> Ratio Int
 const ratio = x => y => {
   const go = (x, y) =>

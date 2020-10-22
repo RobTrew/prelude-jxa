@@ -1,4 +1,4 @@
-```js
+```javascript
 // parentIndexedTree :: Tree (a, {...index :: Int}) ->
 // Tree (a, {...index :: Int, parent :: Maybe Int})
 const parentIndexedTree = tree => {

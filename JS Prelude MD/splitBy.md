@@ -1,4 +1,4 @@
-```js
+```javascript
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
 // splitBy :: (String -> String -> Bool) -> String -> [String]
 const splitBy = p =>

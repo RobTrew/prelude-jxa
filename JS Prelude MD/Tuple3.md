@@ -1,4 +1,4 @@
-```js
+```javascript
 // Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 const Tuple3 = a => b => c => ({
   type: 'Tuple3',

@@ -1,4 +1,4 @@
-```js
+```javascript
 // justifyLeft :: Int -> Char -> String -> String
 const justifyLeft = n =>
     // The string s, followed by enough padding (with

@@ -1,4 +1,4 @@
-```js
+```javascript
 // elemIndex :: Eq a => a -> [a] -> Maybe Int
 const elemIndex = x =>
     xs => {

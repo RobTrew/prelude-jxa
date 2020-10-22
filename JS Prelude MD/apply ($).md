@@ -1,4 +1,4 @@
-```js
+```javascript
 // apply ($) :: (a -> b) -> a -> b
 const apply = f =>
     // Application operator.

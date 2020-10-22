@@ -1,4 +1,4 @@
-```js
+```javascript
 // showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
 const showIntAtBase = base => toChr => n => rs => {
     const go = ([n, d], r) => {

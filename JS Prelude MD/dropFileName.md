@@ -1,4 +1,4 @@
-```js
+```javascript
 // dropFileName :: FilePath -> FilePath
 const dropFileName = fp =>
     '' !== fp ? (() => {

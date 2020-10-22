@@ -1,4 +1,4 @@
-```js
+```javascript
 // quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const quickSortBy = cmp => {
     // Included only for comparison with AppleScript.

@@ -1,4 +1,4 @@
-```js
+```javascript
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>
     ys => zs => list(xs)

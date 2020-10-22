@@ -1,4 +1,4 @@
-```js
+```javascript
 // mappendComparing (<>) :: (a -> a -> Bool)
 // (a -> a -> Bool) -> (a -> a -> Bool)
 const mappendComparing = cmp =>

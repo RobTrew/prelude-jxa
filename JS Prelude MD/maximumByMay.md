@@ -1,4 +1,4 @@
-```js
+```javascript
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const maximumByMay = f =>
     xs => (

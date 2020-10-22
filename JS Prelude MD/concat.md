@@ -1,4 +1,4 @@
-```js
+```javascript
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
 const concat = xs => (

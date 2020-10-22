@@ -1,4 +1,4 @@
-```js
+```javascript
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = pat =>
     src => '' !== pat ? (

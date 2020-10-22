@@ -1,4 +1,4 @@
-```js
+```javascript
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
     // A function over a pair, derived

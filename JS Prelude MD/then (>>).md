@@ -1,4 +1,4 @@
-```js
+```javascript
 // then (>>) :: Monad m => m a -> m b -> m b
 const then = ma => mb =>
     (Array.isArray(ma) ? (

@@ -1,4 +1,4 @@
-```js
+```javascript
 // rational :: Num a => a -> Rational
 const rational = x =>
     isNaN(x) ? x : Number.isInteger(x) ? (

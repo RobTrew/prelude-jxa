@@ -1,4 +1,4 @@
-```js
+```javascript
 // toEnum :: a -> Int -> a
 const toEnum = e =>
     // The first argument is a sample of the type

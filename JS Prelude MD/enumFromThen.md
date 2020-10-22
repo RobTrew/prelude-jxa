@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFromThen :: Int -> Int -> Gen [Int]
 const enumFromThen = x =>
     // A non-finite stream of integers,

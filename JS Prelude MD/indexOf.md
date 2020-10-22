@@ -1,4 +1,4 @@
-```js
+```javascript
 // indexOf :: Eq a => [a] -> [a] -> Maybe Int
 // indexOf :: String -> String -> Maybe Int
 const indexOf = needle =>

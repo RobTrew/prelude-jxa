@@ -1,4 +1,4 @@
-```js
+```javascript
 // drop :: Int -> [a] -> [a]
 // drop :: Int -> Generator [a] -> Generator [a]
 // drop :: Int -> String -> String

@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeAround :: (a -> Bool) -> [a] -> [a]
 const takeAround = p => xs => {
     const ys = takeWhile(p)(xs);

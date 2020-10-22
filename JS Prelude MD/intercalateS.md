@@ -1,4 +1,4 @@
-```js
+```javascript
 // intercalateS :: String -> [String] -> String
 const intercalateS = s =>
     // The concatenation of xs

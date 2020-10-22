@@ -1,4 +1,4 @@
-```js
+```javascript
 // ratioPlus :: Rational -> Rational -> Rational
 const ratioPlus = n1 =>
     n2 => {

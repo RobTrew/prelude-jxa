@@ -1,4 +1,4 @@
-```js
+```javascript
 // foldr :: (a -> b -> b) -> b -> [a] -> b
 const foldr = f =>
     // Note that that the Haskell signature of foldr differs from that of

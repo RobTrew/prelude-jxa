@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFromThenTo :: Int -> Int -> Int -> [Int]
 const enumFromThenTo = x1 =>
     x2 => y => {

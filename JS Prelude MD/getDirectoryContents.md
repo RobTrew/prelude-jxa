@@ -1,4 +1,4 @@
-```js
+```javascript
 // getDirectoryContents :: FilePath -> IO [FilePath]
 const getDirectoryContents = fp =>
     ObjC.deepUnwrap(

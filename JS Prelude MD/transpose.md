@@ -1,4 +1,4 @@
-```js
+```javascript
 // transpose :: [[a]] -> [[a]]
 const transpose = xss => {
     // If some of the rows are shorter than the following rows, 

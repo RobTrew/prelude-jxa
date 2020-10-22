@@ -1,4 +1,4 @@
-```js
+```javascript
 // head :: [a] -> a
 const head = xs => (
     ys => ys.length ? (

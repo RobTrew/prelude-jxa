@@ -1,4 +1,4 @@
-```js
+```javascript
 // getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
 const getDirectoryContentsLR = fp => {
     const

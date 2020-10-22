@@ -1,4 +1,4 @@
-```js
+```javascript
 // index (!!) :: [a] -> Int -> Maybe a
 // index (!!) :: Generator (Int, a) -> Int -> Maybe a
 // index (!!) :: String -> Int -> Maybe Char

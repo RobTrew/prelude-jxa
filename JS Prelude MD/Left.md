@@ -1,4 +1,4 @@
-```js
+```javascript
 // Left :: a -> Either a b
 const Left = x => ({
     type: 'Either',

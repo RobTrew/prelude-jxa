@@ -1,4 +1,4 @@
-```js
+```javascript
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
     xs => list(xs).slice()

@@ -1,4 +1,4 @@
-```js
+```javascript
 // comparing :: (a -> b) -> (a -> a -> Ordering)
 const comparing = f =>
     x => y => {

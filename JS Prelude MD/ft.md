@@ -1,4 +1,4 @@
-```js
+```javascript
 // ft :: (Int, Int) -> [Int]
 const ft = m =>
     n => Array.from({

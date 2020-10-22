@@ -1,4 +1,4 @@
-```js
+```javascript
 // floor :: Num -> Int
 const floor = x => {
     const

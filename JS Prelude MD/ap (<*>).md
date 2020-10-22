@@ -1,4 +1,4 @@
-```js
+```javascript
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = mf =>
     // Applies wrapped functions to wrapped values,

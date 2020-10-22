@@ -1,4 +1,4 @@
-```js
+```javascript
 // dropLength :: [a] -> [b] -> [b]
 const dropLength = xs =>
     ys => {

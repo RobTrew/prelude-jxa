@@ -1,4 +1,4 @@
-```js
+```javascript
 // treeMenuBy :: (a -> String) Tree a -> IO [a]
 const treeMenuBy = fNodeKey => {
     const go = tree => {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 const mergeBy = f =>
     // A single list defined by the ordered 

@@ -1,4 +1,4 @@
-```js
+```javascript
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 const mappendTuple = t => t1 =>
     Tuple(

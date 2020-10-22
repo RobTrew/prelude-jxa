@@ -1,4 +1,4 @@
-```js
+```javascript
 // doesDirectoryExist :: FilePath -> IO Bool
 const doesDirectoryExist = fp => {
     const ref = Ref();

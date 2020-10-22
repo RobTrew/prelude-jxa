@@ -1,4 +1,4 @@
-```js
+```javascript
 // elem :: Eq a => a -> [a] -> Bool
 const elem = x =>
     // True if xs contains an instance of x.

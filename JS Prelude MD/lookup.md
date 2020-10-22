@@ -1,4 +1,4 @@
-```js
+```javascript
 // lookup :: Eq a => a -> Container -> Maybe b
 const lookup = k =>
     // Just of value of the key k in m,

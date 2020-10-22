@@ -1,4 +1,4 @@
-```js
+```javascript
 // cons :: a -> [a] -> [a]
 const cons = x =>
     // A list constructed from the item x,

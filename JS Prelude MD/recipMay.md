@@ -1,4 +1,4 @@
-```js
+```javascript
 // recipMay :: Num -> Maybe Num
 const recipMay = n =>
     0 === n ? (

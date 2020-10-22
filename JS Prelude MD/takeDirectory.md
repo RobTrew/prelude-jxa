@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeDirectory :: FilePath -> FilePath
 const takeDirectory = fp =>
     '' !== fp ? (

@@ -1,4 +1,4 @@
-```js
+```javascript
 // divMod :: Int -> Int -> (Int, Int)
 const divMod = n => d => {
     // Integer division, truncated toward negative infinity,

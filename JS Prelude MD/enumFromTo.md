@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFromTo :: Int -> Int -> [Int]
 const enumFromTo = m =>
     n => !isNaN(m) ? (

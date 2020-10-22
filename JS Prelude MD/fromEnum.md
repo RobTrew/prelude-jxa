@@ -1,4 +1,4 @@
-```js
+```javascript
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
     typeof x !== 'string' ? (

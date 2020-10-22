@@ -1,4 +1,4 @@
-```js
+```javascript
 // outdented :: String -> String
 const outdented = s => {
     // All lines in the string outdented by the same amount

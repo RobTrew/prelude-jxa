@@ -1,4 +1,4 @@
-```js
+```javascript
 // fileUTI :: FilePath -> Either String String
 const fileUTI = fp => {
     // ObjC.import('AppKit')

@@ -1,4 +1,4 @@
-```js
+```javascript
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 const mapMaybe = mf =>
     // A filtered map, retaining only the contents

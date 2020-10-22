@@ -1,4 +1,4 @@
-```js
+```javascript
 // maximum :: Ord a => [a] -> a
 const maximum = xs => (
     // The largest value in a non-empty list.

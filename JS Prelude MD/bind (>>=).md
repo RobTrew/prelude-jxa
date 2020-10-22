@@ -1,4 +1,4 @@
-```js
+```javascript
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
 const bind = m =>
     mf => (Array.isArray(m) ? (

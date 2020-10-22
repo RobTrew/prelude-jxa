@@ -1,4 +1,4 @@
-```js
+```javascript
 // approxRatio :: Float -> Float -> Ratio
 const approxRatio = epsilon =>
     // An ratio derived by approximation

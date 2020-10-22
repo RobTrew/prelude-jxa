@@ -1,4 +1,4 @@
-```js
+```javascript
 // uncons :: [a] -> Maybe (a, [a])
 const uncons = xs => {
     // Just a tuple of the head of xs and its tail, 

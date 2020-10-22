@@ -1,4 +1,4 @@
-```js
+```javascript
 // maxBound :: a -> a
 const maxBound = x => {
     const e = x.enum;

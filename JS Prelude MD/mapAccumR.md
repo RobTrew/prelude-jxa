@@ -1,4 +1,4 @@
-```js
+```javascript
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumR = f =>
     // A tuple of an accumulation and a list 

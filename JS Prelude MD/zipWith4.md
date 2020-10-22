@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipWith4 :: (a -> b -> c -> d -> e) -> [a] -> [b] -> [c] -> [d] -> [e]
 const zipWith4 = f =>
     ws => xs => ys => zs => Array.from({

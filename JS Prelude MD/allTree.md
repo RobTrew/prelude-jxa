@@ -1,4 +1,4 @@
-```js
+```javascript
 // allTree :: (a -> Bool) -> Tree a -> Bool
 const allTree = p =>
     // True if p holds for all nodes of the

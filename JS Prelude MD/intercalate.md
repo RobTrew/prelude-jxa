@@ -1,4 +1,4 @@
-```js
+```javascript
 // intercalate :: [a] -> [[a]] -> [a]
 // intercalate :: String -> [String] -> String
 const intercalate = sep => xs =>

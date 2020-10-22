@@ -1,4 +1,4 @@
-```js
+```javascript
 // appendFileMay :: FilePath -> String -> Maybe IO FilePath
 const appendFileMay = strPath =>
     // Just the fully-expanded file path of 

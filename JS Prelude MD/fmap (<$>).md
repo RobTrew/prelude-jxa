@@ -1,4 +1,4 @@
-```js
+```javascript
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
 const fmap = f => fa =>
     Array.isArray(fa) ? (

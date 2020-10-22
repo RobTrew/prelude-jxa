@@ -1,4 +1,4 @@
-```js
+```javascript
 // difference :: Eq a => [a] -> [a] -> [a]
 const difference = xs =>
     ys => {

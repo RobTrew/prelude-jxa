@@ -1,4 +1,4 @@
-```js
+```javascript
 // toSentence :: String -> String
 const toSentence = s =>
     // Sentence case - initial string capitalized 

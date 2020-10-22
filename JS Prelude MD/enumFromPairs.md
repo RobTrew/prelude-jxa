@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFromPairs :: String -> [(String, Int)] -> Dict
 const enumFromPairs = name =>
     kvs => {

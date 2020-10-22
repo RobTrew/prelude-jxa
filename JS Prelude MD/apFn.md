@@ -1,4 +1,4 @@
-```js
+```javascript
 // apFn :: (a -> b -> c) -> (a -> b) -> a -> c
 const apFn = f =>
     // Applicative instance for functions.

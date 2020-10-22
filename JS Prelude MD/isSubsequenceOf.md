@@ -1,4 +1,4 @@
-```js
+```javascript
 // isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
 // isSubsequenceOf :: String -> String -> Bool
 const isSubsequenceOf = xs =>

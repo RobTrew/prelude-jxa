@@ -1,4 +1,4 @@
-```js
+```javascript
 // Tuple (,) :: a -> b -> (a, b)
 const Tuple = a =>
     b => ({

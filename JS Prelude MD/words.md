@@ -1,4 +1,4 @@
-```js
+```javascript
 // words :: String -> [String]
 const words = s =>
     // List of space-delimited sub-strings.

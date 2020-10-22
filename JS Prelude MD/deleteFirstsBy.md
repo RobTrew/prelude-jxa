@@ -1,4 +1,4 @@
-```js
+```javascript
 // deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const deleteFirstsBy = fEq =>
     // The first list purged of the first instance of

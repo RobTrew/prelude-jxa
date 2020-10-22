@@ -1,4 +1,4 @@
-```js
+```javascript
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
     s => s.split(/[\r\n]/).map(

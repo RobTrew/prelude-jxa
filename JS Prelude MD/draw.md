@@ -1,4 +1,4 @@
-```js
+```javascript
 // draw :: Tree String -> [String]
 const draw = node => {
     // shift :: String -> String -> [String] -> [String]

@@ -1,4 +1,4 @@
-```js
+```javascript
 // renamedFile :: FilePath -> FilePath -> 
 // Either String IO String
 const renamedFile = fp =>

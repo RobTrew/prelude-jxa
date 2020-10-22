@@ -1,4 +1,4 @@
-```js
+```javascript
 // truncate :: Num -> Int
 const truncate = x =>
     'Ratio' === x.type ? (

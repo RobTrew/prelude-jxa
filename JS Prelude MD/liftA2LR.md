@@ -1,4 +1,4 @@
-```js
+```javascript
 // liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 const liftA2LR = f =>
     // The binary function f lifted to a

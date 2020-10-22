@@ -1,4 +1,4 @@
-```js
+```javascript
 // flattenTree :: Tree a -> [a]
 const flattenTree = tree => {
     const

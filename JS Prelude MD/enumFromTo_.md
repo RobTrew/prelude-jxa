@@ -1,4 +1,4 @@
-```js
+```javascript
 // enumFromTo_ :: Enum a => a -> a -> [a]
 const enumFromTo_ = m => n => {
     const

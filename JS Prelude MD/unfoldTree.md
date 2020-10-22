@@ -1,4 +1,4 @@
-```js
+```javascript
 // unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 const unfoldTree = f =>
     // A tree unfolded in breadth-first order

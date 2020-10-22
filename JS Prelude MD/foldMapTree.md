@@ -1,4 +1,4 @@
-```js
+```javascript
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 const foldMapTree = f => {
     // Result of mapping each element of the tree to

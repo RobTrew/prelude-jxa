@@ -1,4 +1,4 @@
-```js
+```javascript
 // scanl :: (b -> a -> b) -> b -> [a] -> [b]
 const scanl = f => startValue => xs =>
     list(xs).reduce((a, x) => {

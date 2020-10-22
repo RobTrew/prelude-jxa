@@ -1,4 +1,4 @@
-```js
+```javascript
 // ratioMult :: Rational -> Rational -> Rational
 const ratioMult = n1 => n2 => {
     const [r1, r2] = map(rational)(

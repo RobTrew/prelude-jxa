@@ -1,4 +1,4 @@
-```js
+```javascript
 // replicateM :: Int -> [a] -> [[a]]
 const replicateM = n =>
     // Instance for lists (arrays) only here.

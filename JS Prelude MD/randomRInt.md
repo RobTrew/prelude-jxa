@@ -1,4 +1,4 @@
-```js
+```javascript
 // randomRInt :: Int -> Int -> IO () -> Int
 const randomRInt = low =>
     // The return value of randomRInt is itself

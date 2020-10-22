@@ -1,4 +1,4 @@
-```js
+```javascript
 // unzipN :: [(a,b,...)] -> ([a],[b],...)
 const unzipN = tpls =>
     TupleN(...tpls.reduce(

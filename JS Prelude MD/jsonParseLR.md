@@ -1,4 +1,4 @@
-```js
+```javascript
 // jsonParseLR :: String -> Either String a
 const jsonParseLR = s => {
     try {

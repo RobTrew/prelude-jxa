@@ -1,4 +1,4 @@
-```js
+```javascript
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 const treeMatches = p => {
     // A list of all nodes in the tree which match 

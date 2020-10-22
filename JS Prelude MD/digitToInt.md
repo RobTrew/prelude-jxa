@@ -1,4 +1,4 @@
-```js
+```javascript
 // digitToInt :: Char -> Int
 const digitToInt = c => {
     const

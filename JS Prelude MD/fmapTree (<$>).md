@@ -1,4 +1,4 @@
-```js
+```javascript
 // fmapTree :: (a -> b) -> Tree a -> Tree b
 const fmapTree = f => {
     // A new tree. The result of a structure-preserving

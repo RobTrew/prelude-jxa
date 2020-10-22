@@ -1,4 +1,4 @@
-```js
+```javascript
 // readHex :: String -> Int
 const readHex = s =>
     // Integer value of hexadecimal expression.

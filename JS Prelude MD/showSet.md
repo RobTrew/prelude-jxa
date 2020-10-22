@@ -1,4 +1,4 @@
-```js
+```javascript
 // showSet :: Set a -> String
 const showSet = oSet =>
     '{' + Array.from(oSet)

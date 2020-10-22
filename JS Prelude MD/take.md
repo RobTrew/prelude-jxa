@@ -1,4 +1,4 @@
-```js
+```javascript
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
 const take = n =>

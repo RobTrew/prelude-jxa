@@ -1,4 +1,4 @@
-```js
+```javascript
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
 const nubBy = fEq => {
     const go = xs => 0 < xs.length ? (() => {

@@ -1,4 +1,4 @@
-```js
+```javascript
 // partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>
     xs.reduce(

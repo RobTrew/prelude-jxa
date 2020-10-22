@@ -1,4 +1,4 @@
-```js
+```javascript
 // range :: Ix a => (a, a) -> [a]
 function range() {
     // The list of values in the subrange defined by a bounding pair.

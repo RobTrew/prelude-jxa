@@ -1,4 +1,4 @@
-```js
+```javascript
 // reverse :: [a] -> [a]
 const reverse = xs =>
     'string' !== typeof xs ? (

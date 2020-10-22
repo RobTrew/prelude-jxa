@@ -1,4 +1,4 @@
-```js
+```javascript
 // ratioDiv :: Rational -> Rational -> Rational
 const ratioDiv = n1 => n2 => {
     const [r1, r2] = map(rational)(

@@ -1,4 +1,4 @@
-```js
+```javascript
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs => ys =>
     // The paired members of xs and ys, up to

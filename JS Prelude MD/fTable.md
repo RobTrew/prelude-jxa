@@ -1,4 +1,4 @@
-```js
+```javascript
 // fTable :: String -> (a -> String) -> 
 // (b -> String) -> (a -> b) -> [a] -> String
 const fTable = s =>

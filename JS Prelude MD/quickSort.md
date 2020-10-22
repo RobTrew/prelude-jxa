@@ -1,4 +1,4 @@
-```js
+```javascript
 // quickSort :: (Ord a) => [a] -> [a]
 const quickSort = xs =>
     // Included only for comparison with AppleScript

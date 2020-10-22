@@ -1,4 +1,4 @@
-```js
+```javascript
 // takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 const takeWhileGen = p => xs => {
     const ys = [];

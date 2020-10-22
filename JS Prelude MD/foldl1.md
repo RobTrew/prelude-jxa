@@ -1,4 +1,4 @@
-```js
+```javascript
 // foldl1 :: (a -> a -> a) -> [a] -> a
 const foldl1 = f =>
     // Left to right reduction of the non-empty list xs,

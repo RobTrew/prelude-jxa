@@ -1,4 +1,4 @@
-```js
+```javascript
 // snoc :: [a] -> a -> [a]
 const snoc = xs =>
     // The mirror image of cons

@@ -1,4 +1,4 @@
-```js
+```javascript
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = tree => {
   const nest = tree.nest;

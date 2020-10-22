@@ -1,4 +1,4 @@
-```js
+```javascript
 // delete :: Eq a => a -> [a] -> [a]
 const delete_ = x => {
     // xs with first instance of x (if any) removed.

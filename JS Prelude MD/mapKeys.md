@@ -1,4 +1,4 @@
-```js
+```javascript
 // mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 const mapKeys = f =>
     // A function mapped over the keys of a record.

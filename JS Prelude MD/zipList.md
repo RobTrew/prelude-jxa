@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipList :: [a] -> [b] -> [(a, b)]
 const zipList = xs => ys => {
     const

@@ -1,4 +1,4 @@
-```js
+```javascript
 // zipWithGen :: (a -> b -> c) -> 
 // Gen [a] -> Gen [b] -> Gen [c]
 const zipWithGen = f => ga => gb => {

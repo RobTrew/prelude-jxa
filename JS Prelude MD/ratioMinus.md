@@ -1,4 +1,4 @@
-```js
+```javascript
 // ratioMinus :: Rational -> Rational -> Rational
 const ratioMinus = n1 => n2 => {
     const [r1, r2] = [n1, n2].map(rational);

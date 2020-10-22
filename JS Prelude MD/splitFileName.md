@@ -1,4 +1,4 @@
-```js
+```javascript
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
     // Tuple of directory and file name, derived from file path.

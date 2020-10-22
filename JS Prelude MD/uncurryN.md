@@ -1,4 +1,4 @@
-```js
+```javascript
 // uncurryN :: Curry a b => b -> a
 const uncurryN = f =>
     // A function over a tuple of values, derived from

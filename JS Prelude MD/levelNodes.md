@@ -1,4 +1,4 @@
-```js
+```javascript
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
   iterateUntil(xs => 1 > xs.length)(

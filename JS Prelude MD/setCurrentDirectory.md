@@ -1,4 +1,4 @@
-```js
+```javascript
 // setCurrentDirectory :: String -> IO ()
 const setCurrentDirectory = strPath =>
     $.NSFileManager.defaultManager

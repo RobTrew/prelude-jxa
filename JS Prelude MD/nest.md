@@ -1,4 +1,4 @@
-```js
+```javascript
 // nest :: Tree a -> [a]
 const nest = tree => {
     // Allowing for lazy (on-demand) evaluation.

@@ -1,4 +1,4 @@
-```js
+```javascript
 // first :: (a -> b) -> ((a, c) -> (b, c))
 const first = f => 
     // A simple function lifted to one which applies
