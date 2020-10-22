@@ -72,6 +72,52 @@ const appendFileMay = strPath =>
             ) : Nothing();
     };
 
+// base64decode :: String -> String
+const base64decode = s =>
+    ObjC.unwrap(
+        $.NSString.alloc.initWithDataEncoding(
+            $.NSData.alloc.initWithBase64EncodedStringOptions(
+                s, 0
+            ),
+            $.NSUTF8StringEncoding
+        )
+    );
+
+// base64encode :: String -> String
+const base64encode = s =>
+    ObjC.unwrap(
+        $.NSString.stringWithString(s)
+        .dataUsingEncoding(
+            $.NSUTF8StringEncoding
+        ).base64EncodedStringWithOptions(0)
+    );
+
+// copyFileLR :: FilePath -> FilePath -> Either String IO ()
+const copyFileLR = fpFrom =>
+    fpTo => {
+        const fpTargetFolder = takeDirectory(fpTo);
+        return doesFileExist(fpFrom) ? (
+            doesDirectoryExist(fpTargetFolder) ? (() => {
+                const
+                    e = $(),
+                    blnCopied = ObjC.unwrap(
+                        $.NSFileManager.defaultManager
+                        .copyItemAtPathToPathError(
+                            $(fpFrom).stringByStandardizingPath,
+                            $(fpTo).stringByStandardizingPath,
+                            e
+                        )
+                    );
+                return blnCopied ? (
+                    Right(fpTo)
+                ) : Left(ObjC.unwrap(e.localizedDescription));
+
+            })() : Left(
+                'Target folder not found: ' + fpTargetFolder
+            )
+        ) : Left('Source file not found: ' + fpFrom);
+    };
+
 // createDirectoryIfMissingLR :: Bool -> FilePath -> 
 // Either String FilePath
 const createDirectoryIfMissingLR = blnParents =>
@@ -83,9 +129,11 @@ const createDirectoryIfMissingLR = blnParents =>
             const
                 e = $(),
                 blnOK = $.NSFileManager
-                .defaultManager
-                .createDirectoryAtPathWithIntermediateDirectoriesAttributesError
-                (fp, blnParents, undefined, e);
+                .defaultManager[
+                    'createDirectoryAtPath' + (
+                        'WithIntermediateDirectories'
+                        ) + 'AttributesError'
+                ](fp, blnParents, undefined, e);
             return blnOK ? (
                 Right(fp)
             ) : Left(e.localizedDescription);
@@ -257,6 +305,21 @@ const removeFile = fp => {
       Right('Removed: ' + fp)
     ) : Left(ObjC.unwrap(error.localizedDescription));
 };
+
+// renamedFile :: FilePath -> FilePath -> 
+// Either String IO String
+const renamedFile = fp =>
+    // Either a message detailing a problem, or
+    // confirmation of a filename change in the OS.
+    fp1 => {
+        const error = $();
+        return $.NSFileManager.defaultManager
+            .moveItemAtPathToPathError(fp, fp1, error) ? (
+                Right('Moved to: ' + fp1)
+            ) : Left(ObjC.unwrap(
+                error.localizedDescription
+            ));
+    };
 
 // setCurrentDirectory :: String -> IO ()
 const setCurrentDirectory = strPath =>

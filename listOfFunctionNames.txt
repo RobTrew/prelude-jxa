@@ -1,4 +1,3 @@
-Action :: (a -> b) -> a -> Action b
 Just :: a -> Maybe a
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
@@ -6,7 +5,7 @@ Nothing :: Maybe a
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
-TupleN :: a -> b ... -> (a, b ... )
+TupleN :: a -> b ...  -> (a, b ... )
 abs :: Num -> Num
 add (+) :: Num a => a -> a -> a
 all :: (a -> Bool) -> [a] -> Bool
@@ -49,7 +48,7 @@ breakOnAll :: String -> String -> [(String, String)]
 breakOnMay :: String -> String -> Maybe (String, String)
 bulleted :: String -> String -> String
 cartesianProduct :: [a] -> [b] -> [[a, b]]
-caseOf :: [(a -> Bool, b)] -> b -> a -> b
+caseOf :: [(a -> Bool, b)] -> b -> a ->  b
 catMaybes :: [Maybe a] -> [a]
 ceiling :: Num -> Int
 center :: Int -> Char -> String -> String
@@ -69,7 +68,7 @@ concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
 constant :: a -> b -> a
 copyFileLR :: FilePath -> FilePath -> Either String IO ()
-createDirectoryIfMissingLR :: Bool -> FilePath -> Either String FilePath
+createDirectoryIfMissingLR :: Bool -> FilePath ->
 curry :: ((a, b) -> c) -> a -> b -> c
 curryN :: Curry a b => a -> b
 cycle :: [a] -> Generator [a]
@@ -134,7 +133,9 @@ fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
 filter :: (a -> Bool) -> [a] -> [a]
 filterGen :: (a -> Bool) -> Gen [a] -> [a]
+filterTree (a -> Bool) -> Tree a -> [a]
 filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
+filteredTree (a -> Bool) -> Tree a -> Tree a
 find :: (a -> Bool) -> [a] -> Maybe a
 findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 findIndex :: (a -> Bool) -> [a] -> Maybe Int
@@ -187,9 +188,9 @@ identity :: a -> a
 if_ :: Bool -> a -> a -> a
 indented :: String -> String -> String
 index (!!) :: [a] -> Int -> Maybe a
-indexForest :: [Tree (a, { nodeSum :: Int })] -> Int -> Maybe Tree (a, { nodeSum :: Int })
+indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int -> Maybe Tree (a, { nodeSum :: Int })
 indexOf :: Eq a => [a] -> [a] -> Maybe Int
-indexTree :: Tree (a, { nodeSum :: Int }) -> Int -> Maybe Tree (a, { nodeSum :: Int })
+indexTree :: Tree (a,  { nodeSum :: Int }) -> Int -> Maybe Tree (a,  { nodeSum :: Int })
 init :: [a] -> [a]
 initMay :: [a] -> Maybe [a]
 inits :: [a] -> [[a]]
@@ -310,7 +311,6 @@ nub :: [a] -> [a]
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 odd :: Int -> Bool
 on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
-op :: String -> (a -> a -> b)
 or :: [Bool] -> Bool
 ord :: Char -> Int
 ordering :: () -> Ordering
@@ -359,7 +359,7 @@ recipMay :: Num -> Maybe Num
 regexMatches :: Regex -> String -> [[String]]
 rem :: Int -> Int -> Int
 removeFile :: FilePath -> Either String String
-renameFile :: FilePath -> FilePath -> IO ()
+renamedFile :: FilePath -> FilePath ->
 repeat :: a -> Generator [a]
 replace :: String -> String -> String -> String
 replicate :: Int -> a -> [a]
@@ -397,7 +397,7 @@ showLR :: Either a b -> String
 showList :: [a] -> String
 showLog :: a -> IO ()
 showMaybe :: Maybe a -> String
-showMenuLR :: Bool -> String -> [String] -> Either String [String]
+showMenuLR :: Bool -> String -> [String] ->
 showOrdering :: Ordering -> String
 showOutline :: Tree String -> String
 showPrecision :: Int -> Float -> String
@@ -476,6 +476,7 @@ traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeFromDict :: String -> Dict -> Tree String
 treeFromJSON :: JSON String -> Tree a
+treeFromNestedDict -> Dict -> Either String Tree Dict
 treeLeaves :: Tree -> [Tree]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]
@@ -483,6 +484,7 @@ treeMenuBy :: (a -> String) Tree a -> IO [a]
 truncate :: Num -> Int
 tupleFromList :: [a] -> (a, a ...)
 typeName :: a -> String
+unDigits :: [Int] -> Int
 unQuoted :: String -> String
 uncons :: [a] -> Maybe (a, [a])
 uncurry :: (a -> b -> c) -> ((a, b) -> c)
@@ -490,7 +492,7 @@ uncurryN :: Curry a b => b -> a
 unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
-unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
+
 union :: [a] -> [a] -> [a]
 unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 unionSet :: Ord a => Set a -> Set a -> Set a
@@ -522,3 +524,4 @@ zipWithGen :: (a -> b -> c) -> Gen [a] -> Gen [b] -> Gen [c]
 zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
+zipWith_ :: (a -> b -> c) -> [a] -> [b] -> [c]

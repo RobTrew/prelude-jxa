@@ -1,12 +1,3 @@
-// Action :: (a -> b) -> a -> Action b
-const Action = f =>
-    // Constructor for an action.
-    x => ({
-        type: 'Action',
-        act: f,
-        arg: x
-    });
-
 // Just :: a -> Maybe a
 const Just = x => ({
     type: 'Maybe',
@@ -248,26 +239,6 @@ const argvLength = f =>
 const assocs = m =>
     Object.entries(m).map(
         kv => Tuple(...kv)
-    );
-
-// base64decode :: String -> String
-const base64decode = s =>
-    ObjC.unwrap(
-        $.NSString.alloc.initWithDataEncoding(
-            $.NSData.alloc.initWithBase64EncodedStringOptions(
-                s, 0
-            ),
-            $.NSUTF8StringEncoding
-        )
-    );
-
-// base64encode :: String -> String
-const base64encode = s =>
-    ObjC.unwrap(
-        $.NSString.stringWithString(s)
-        .dataUsingEncoding(
-            $.NSUTF8StringEncoding
-        ).base64EncodedStringWithOptions(0)
     );
 
 // bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)
@@ -590,32 +561,6 @@ const cons = x =>
 // constant :: a -> b -> a
 const constant = k =>
     _ => k;
-
-// copyFileLR :: FilePath -> FilePath -> Either String IO ()
-const copyFileLR = fpFrom =>
-    fpTo => {
-        const fpTargetFolder = takeDirectory(fpTo);
-        return doesFileExist(fpFrom) ? (
-            doesDirectoryExist(fpTargetFolder) ? (() => {
-                const
-                    e = $(),
-                    blnCopied = ObjC.unwrap(
-                        $.NSFileManager.defaultManager
-                        .copyItemAtPathToPathError(
-                            $(fpFrom).stringByStandardizingPath,
-                            $(fpTo).stringByStandardizingPath,
-                            e
-                        )
-                    );
-                return blnCopied ? (
-                    Right(fpTo)
-                ) : Left(ObjC.unwrap(e.localizedDescription));
-
-            })() : Left(
-                'Target folder not found: ' + fpTargetFolder
-            )
-        ) : Left('Source file not found: ' + fpFrom);
-    };
 
 // curry :: ((a, b) -> c) -> a -> b -> c
 const curry = f =>
@@ -1801,7 +1746,7 @@ const indexOf = needle =>
     })();
 
 // indexTree :: Tree (a,  { nodeSum :: Int }) -> Int ->
-//              Maybe Tree (a,  { nodeSum :: Int })
+// Maybe Tree (a,  { nodeSum :: Int })
 const indexTree = tree =>
     // Index into a measured tree. (see measuredTree)
     i => 0 !== i ? (
@@ -1825,13 +1770,14 @@ const initMay = xs => (
     ) : Nothing()
 )(list(xs));
 
-// inits([1, 2, 3]) -> [[], [1], [1, 2], [1, 2, 3]
-// inits('abc') -> ["", "a", "ab", "abc"]
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
-const inits = xs => [
-    []
-].concat((list(xs))
+const inits = xs => 
+    // All prefixes of the argument, 
+    // shortest first.
+    [
+        []
+    ].concat((list(xs))
     .map((_, i, ys) => ys.slice(0, 1 + i)));
 
 // insert :: Ord a => a -> [a] -> [a]
@@ -2852,11 +2798,6 @@ const on = f =>
     // e.g. groupBy(on(eq)(length))
     g => a => b => f(g(a))(g(b));
 
-// Derive a function from the name of a JS infix operator
-// op :: String -> (a -> a -> b)
-const op = strOp =>
-    eval(`(a, b) => a ${strOp} b`);
-
 // or :: [Bool] -> Bool
 const or = xs =>
     xs.some(Boolean);
@@ -2953,7 +2894,7 @@ const plus = a => b => a + b;
 
 // postorder :: Tree a -> [a]
 const postorder = t => {
-    // List of reoot elements of tree flattened
+    // List of root elements of tree flattened
     // bottom-up into a postorder list.
     const go = (xs, x) =>
         nest(x).reduce(go, xs).concat(root(x));
@@ -3126,14 +3067,14 @@ const randomRInt = low =>
         Math.random() * (1 + (high - low))
     );
 
-// The list of values in the subrange defined by a bounding pair.
-// range([0, 2]) -> [0,1,2]
-// range([[0,0], [2,2]]) 
-//  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
-// range([[0,0,0],[1,1,1]])
-//  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]
 // range :: Ix a => (a, a) -> [a]
 function range() {
+    // The list of values in the subrange defined by a bounding pair.
+    // range([0, 2]) -> [0,1,2]
+    // range([[0,0], [2,2]]) 
+    //  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
+    // range([[0,0,0],[1,1,1]])
+    //  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]
     const
         args = Array.from(arguments),
         ab = 1 !== args.length ? (
@@ -3260,21 +3201,6 @@ const regexMatches = rgx =>
 
 // rem :: Int -> Int -> Int
 const rem = n => m => n % m;
-
-// renamedFile :: FilePath -> FilePath -> 
-// Either String IO String
-const renamedFile = fp =>
-    // Either a message detailing a problem, or
-    // confirmation of a filename change in the OS.
-    fp1 => {
-        const error = $();
-        return $.NSFileManager.defaultManager
-            .moveItemAtPathToPathError(fp, fp1, error) ? (
-                Right('Moved to: ' + fp1)
-            ) : Left(ObjC.unwrap(
-                error.localizedDescription
-            ));
-    };
 
 // repeat :: a -> Generator [a]
 function* repeat(x) {
@@ -3489,7 +3415,10 @@ const show = x => {
 
 // showBinary :: Int -> String
 const showBinary = n => {
-    const binaryChar = n => 0 !== n ? '1' : '0';
+    const
+        binaryChar = n => 0 !== n ? (
+            '1'
+        ) : '0';
     return showIntAtBase(2)(
         binaryChar
     )(n)('');
@@ -3664,12 +3593,12 @@ const signum = n =>
         0 < n ? 1 : 0
     );
 
-// Abbreviation of showJSON for quick testing.
-// Default indent size is two, which can be
-// overriden by any integer supplied as the
-// first argument of more than one.
 // sj :: a -> String
 function sj() {
+    // Abbreviation of showJSON for quick testing.
+    // Default indent size is two, which can be
+    // overriden by any integer supplied as the
+    // first argument of more than one.
     const args = Array.from(arguments);
     return JSON.stringify.apply(
         null,
@@ -3711,14 +3640,6 @@ const sortOn = f =>
     .sort(uncurry(comparing(fst)))
     .map(snd);
 
-// span, applied to a predicate p and a list xs, returns a tuple of xs of 
-// elements that satisfy p and second element is the remainder of the list:
-//
-// > span (< 3) [1,2,3,4,1,2,3,4] == ([1,2],[3,4,1,2,3,4])
-// > span (< 9) [1,2,3] == ([1,2,3],[])
-// > span (< 0) [1,2,3] == ([],[1,2,3])
-//
-// span p xs is equivalent to (takeWhile p xs, dropWhile p xs) 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p =>
     // Longest prefix of xs consisting of elements which
@@ -4543,6 +4464,11 @@ const typeName = v => {
     } [t] || 'Bottom';
 };
 
+// unDigits :: [Int] -> Int
+const unDigits = ds =>
+    // The integer with the given digits.
+    ds.reduce((a, x) => 10 * a + x, 0);
+
 // unQuoted :: String -> String
 const unQuoted = s =>
     dropAround(x => 34 === x.codePointAt(0))(
@@ -4612,8 +4538,6 @@ const unfoldTree = f =>
         )
     );
 
-// unfoldl(x => 0 !== x ? Just([x - 1, x]) : Nothing(), 10);
-// --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 // unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
 const unfoldl = f => v => {
     // Dual to reduce or foldl.
@@ -4623,6 +4547,8 @@ const unfoldl = f => v => {
     // and the residual b is used as the argument for the next
     // application of f.
     // Where f returns Nothing, the completed list is returned.
+    // unfoldl(x => 0 !== x ? Just([x - 1, x]) : Nothing(), 10);
+    // --> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     let
         xr = [v, v],
         xs = [];
@@ -4776,9 +4702,8 @@ const words = s =>
 
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs => ys =>
-    // Use of `take` and `length` here allows for 
-    // zipping with non-finite lists - i.e. generators 
-    // like cycle, repeat, iterate.
+    // The paired members of xs and ys, up to
+    // the length of the shorter of the two lists.
     Array.from({
         length: Math.min(xs.length, ys.length)
     }, (_, i) => Tuple(xs[i])(ys[i]));
@@ -4840,7 +4765,8 @@ function zipN() {
 
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith = f =>
-    // Use of `take` and `length` here allows zipping with non-finite lists
+    // Use of `take` and `length` here allows 
+    // zipping with non-finite lists
     // i.e. generators like cycle, repeat, iterate.
     xs => ys => {
         const n = Math.min(length(xs), length(ys));
