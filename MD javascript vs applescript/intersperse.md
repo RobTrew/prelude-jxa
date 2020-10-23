@@ -1,8 +1,8 @@
 ```applescript
--- intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
 -- intersperse :: a -> [a] -> [a]
 -- intersperse :: Char -> String -> String
 on intersperse(sep, xs)
+    -- intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
     set lng to length of xs
     if lng > 1 then
         set acc to {item 1 of xs}

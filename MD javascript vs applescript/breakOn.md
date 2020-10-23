@@ -1,7 +1,7 @@
 ```applescript
--- non null needle -> haystack -> (prefix before match, match + rest)
 -- breakOn :: String -> String -> (String, String)
 on breakOn(pat, src)
+    -- non null needle -> haystack -> (prefix before match, match + rest)
     if pat ≠ "" then
         set {dlm, my text item delimiters} to {my text item delimiters, pat}
         

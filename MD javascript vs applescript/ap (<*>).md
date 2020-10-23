@@ -1,9 +1,9 @@
 ```applescript
--- Applies wrapped functions to wrapped values, 
--- for example applying a list of functions to a list of values
--- or applying Just(f) to Just(x), Right(f) to Right(x), etc
 -- ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 on ap(mf, mx)
+    -- Applies wrapped functions to wrapped values, 
+    -- for example applying a list of functions to a list of values
+    -- or applying Just(f) to Just(x), Right(f) to Right(x), etc
     if class of mx is list then
         apList(mf, mx)
     else
