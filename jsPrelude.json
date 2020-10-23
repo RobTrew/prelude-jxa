@@ -2,13 +2,15 @@
   "Just": {
     "code": "// Just :: a -> Maybe a\nconst Just = x => ({\n    type: 'Maybe',\n    Nothing: false,\n    Just: x\n});",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "Left": {
     "code": "// Left :: a -> Either a b\nconst Left = x => ({\n    type: 'Either',\n    Left: x\n});",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "Node": {
@@ -21,7 +23,8 @@
   "Nothing": {
     "code": "// Nothing :: Maybe a\nconst Nothing = () => ({\n    type: 'Maybe',\n    Nothing: true,\n});",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "Right": {
@@ -33,19 +36,22 @@
   "Tuple": {
     "code": "// Tuple (,) :: a -> b -> (a, b)\nconst Tuple = a =>\n    b => ({\n        type: 'Tuple',\n        '0': a,\n        '1': b,\n        length: 2\n    });",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "Tuple3": {
     "code": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n  type: 'Tuple3',\n  '0': a,\n  '1': b,\n  '2': c,\n  length: 3\n});",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "TupleN": {
     "code": "// TupleN :: a -> b ...  -> (a, b ... )\nfunction TupleN() {\n    const\n        args = Array.from(arguments),\n        n = args.length;\n    return 2 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 'Tuple' + n.toString(),\n            length: n\n        })\n    ) : args.reduce((f, x) => f(x), Tuple);\n}",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "abs": {
@@ -63,7 +69,8 @@
   "all": {
     "code": "// all :: (a -> Bool) -> [a] -> Bool\nconst all = p =>\n    // True if p(x) holds for every x in xs.\n    xs => [...xs].every(p);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "allSame": {
@@ -82,13 +89,15 @@
   "and": {
     "code": "// and :: [Bool] -> Bool\nconst and = xs =>\n    // True unless any value in xs is false.\n    [...xs].every(Boolean);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "any": {
     "code": "// any :: (a -> Bool) -> [a] -> Bool\nconst any = p =>\n    // True if p(x) holds for at least\n    // one item in xs.\n    xs => [...xs].some(p);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "anyTree": {
@@ -119,7 +128,8 @@
   "apList (<*>)": {
     "code": "// apList (<*>) :: [(a -> b)] -> [a] -> [b]\nconst apList = fs =>\n    // The sequential application of each of a list\n    // of functions to each of a list of values.\n    // apList([x => 2 * x, x => 20 + x])([1, 2, 3])\n    //     -> [2, 4, 6, 21, 22, 23]\n    xs => fs.flatMap(f => xs.map(f));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "apMay (<*>)": {
@@ -141,10 +151,11 @@
       "JS Prelude"
     ]
   },
-  "append (++)": {
-    "code": "// append (++) :: [a] -> [a] -> [a]\nconst append = xs =>\n    // A list defined by the\n    // concatenation of two others.\n    ys => xs.concat(ys);",
+  "append (<>)": {
+    "code": "// append (<>) :: [a] -> [a] -> [a]\nconst append = xs =>\n    // A list defined by the\n    // concatenation of two others.\n    ys => xs.concat(ys);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "appendFile": {
@@ -244,7 +255,8 @@
   "bindLR (>>=)": {
     "code": "// bindLR (>>=) :: Either a -> \n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    mf => undefined !== m.Left ? (\n        m\n    ) : mf(m.Right);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "bindList (>>=)": {
@@ -256,7 +268,8 @@
   "bindMay (>>=)": {
     "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing ? (\n        mb\n    ) : mf(mb.Just);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "bindTuple (>>=)": {
@@ -304,7 +317,8 @@
   "cartesianProduct": {
     "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => (\n        bs => [...xs].flatMap(\n            x => bs.flatMap(b => [\n                [x].concat(b)\n            ])\n        )\n    )([...ys]);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "caseOf": {
@@ -352,7 +366,8 @@
   "chunksOf": {
     "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    xs => enumFromThenTo(0)(n)(\n        xs.length - 1\n    ).reduce(\n        (a, i) => a.concat([xs.slice(i, (n + i))]),\n        []\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "combine": {
@@ -364,19 +379,22 @@
   "compare": {
     "code": "// compare :: a -> a -> Ordering\nconst compare = a =>\n  b => a < b ? -1 : (a > b ? 1 : 0);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "comparing": {
     "code": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "compose (<<<)": {
     "code": "// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (...fs) =>\n    // A function defined by the right-to-left\n    // composition of all the functions in fs.\n    fs.reduce(\n        (f, g) => x => f(g(x)),\n        x => x\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "composeList": {
@@ -400,19 +418,22 @@
   "concat": {
     "code": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs => (\n    ys => 0 < ys.length ? (\n        ys.every(Array.isArray) ? (\n            []\n        ) : ''\n    ).concat(...ys) : ys\n)(list(xs));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "concatMap": {
     "code": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = f =>\n    // Where (a -> [b]) returns an Array, this \n    // is equivalent to .flatMap, which should be\n    // used by default.\n    // but if (a -> [b]) returns String rather than [Char], \n    // the monoid unit is '' in place of [], and a \n    // concatenated string is returned.\n    xs => {\n        const ys = list(xs).map(f);\n        return 0 < ys.length ? (\n            ys.some(y => 'string' !== typeof y) ? (\n                []\n            ) : ''\n        ).concat(...ys) : ys;\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "cons": {
     "code": "// cons :: a -> [a] -> [a]\nconst cons = x =>\n    // A list constructed from the item x,\n    // followed by the existing list xs.\n    xs => Array.isArray(xs) ? (\n        [x].concat(xs)\n    ) : 'GeneratorFunction' !== xs\n    .constructor.constructor.name ? (\n        x + xs\n    ) : ( // cons(x)(Generator)\n        function* () {\n            yield x;\n            let nxt = xs.next();\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = xs.next();\n            }\n        }\n    )();",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "constant": {
@@ -456,7 +477,8 @@
   "decodedPath": {
     "code": "// decodedPath :: Percent Encoded String -> FilePath\nconst decodedPath = decodeURI;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "degrees": {
@@ -528,7 +550,8 @@
   "div": {
     "code": "// div :: Int -> Int -> Int\nconst div = x =>\n    y => Math.floor(x / y);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "divMod": {
@@ -594,7 +617,8 @@
   "drop": {
     "code": "// drop :: Int -> [a] -> [a]\n// drop :: Int -> Generator [a] -> Generator [a]\n// drop :: Int -> String -> String\nconst drop = n =>\n    xs => Infinity > length(xs) ? (\n        xs.slice(n)\n    ) : (take(n)(xs), xs);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "dropAround": {
@@ -624,7 +648,8 @@
   "dropWhile": {
     "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = p =>\n    xs => {\n        const n = xs.length;\n        return xs.slice(\n            0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "dropWhileEnd": {
@@ -642,13 +667,15 @@
   "either": {
     "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => 'Either' === e.type ? (\n        undefined !== e.Left ? (\n            fl(e.Left)\n        ) : fr(e.Right)\n    ) : undefined;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "elem": {
     "code": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = x =>\n    // True if xs contains an instance of x.\n    xs => {\n        const t = xs.constructor.name;\n        return 'Array' !== t ? (\n            xs['Set' !== t ? 'includes' : 'has'](x)\n        ) : xs.some(eq(x));\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "elemAtMay": {
@@ -660,7 +687,8 @@
   "elemIndex": {
     "code": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = x =>\n    xs => {\n        const i = xs.indexOf(x);\n        return -1 === i ? (\n            Nothing()\n        ) : Just(i);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "elemIndices": {
@@ -702,7 +730,8 @@
   "enumFromThenTo": {
     "code": "// enumFromThenTo :: Int -> Int -> Int -> [Int]\nconst enumFromThenTo = x1 =>\n    x2 => y => {\n        const d = x2 - x1;\n        return Array.from({\n            length: Math.floor(y - x2) / d + 2\n        }, (_, i) => x1 + (d * i));\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "enumFromThenToChar": {
@@ -714,7 +743,8 @@
   "enumFromTo": {
     "code": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = m =>\n    n => !isNaN(m) ? (\n        Array.from({\n            length: 1 + n - m\n        }, (_, i) => m + i)\n    ) : enumFromTo_(m)(n);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "enumFromToChar": {
@@ -738,7 +768,8 @@
   "eqDate": {
     "code": "// eqDate :: Date -> Date -> Bool\nconst eqDate = dte =>\n    // True if the date parts of two date-time objects\n    // (ignoring the time parts) are the same.\n    dte1 => {\n        const dayOnly = dateTime =>\n            new Date(dateTime).setUTCHours(0, 0, 0, 0);\n        return dayOnly(dte) === dayOnly(dte1);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "evalJSLR": {
@@ -756,7 +787,8 @@
   "even": {
     "code": "// even :: Int -> Bool\nconst even = n => 0 === n % 2;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "exp": {
@@ -821,7 +853,8 @@
   "filter": {
     "code": "// filter :: (a -> Bool) -> [a] -> [a]\nconst filter = p =>\n    // The elements of xs which match\n    // the predicate p.\n    xs => [...xs].filter(p);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "filterGen": {
@@ -854,7 +887,8 @@
   "find": {
     "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which \n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        'GeneratorFunction'\n    ) ? (() => {\n        const\n            ys = list(xs),\n            i = ys.findIndex(p);\n        return -1 !== i ? (\n            Just(ys[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "findGen": {
@@ -866,7 +900,8 @@
   "findIndex": {
     "code": "// findIndex :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndex = p =>\n    //  Just the index of the first element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = [...xs].findIndex(p);\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "findIndexR": {
@@ -897,7 +932,8 @@
   "flatten": {
     "code": "// flatten :: NestedList a -> [a]\nconst flatten = nest => \n    nest.flat(Infinity);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "flattenTree": {
@@ -910,7 +946,8 @@
   "flip": {
     "code": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with \n    // its arguments reversed.\n    1 < op.length ? (\n        (a, b) => op(b, a)\n    ) : (x => y => op(y)(x));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "floor": {
@@ -973,7 +1010,8 @@
   "foldl": {
     "code": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = f => \n    a => xs => [...xs].reduce(\n        (x, y) => f(x)(y),\n        a\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "foldl1": {
@@ -998,7 +1036,8 @@
   "foldr": {
     "code": "// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f =>\n    // Note that that the Haskell signature of foldr differs from that of\n    // foldl - the positions of accumulator and current value are reversed\n    a => xs => [...xs].reduceRight(\n        (a, x) => f(x)(a),\n        a\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "foldr1": {
@@ -1047,7 +1086,8 @@
   "fst": {
     "code": "// fst :: (a, b) -> a\nconst fst = tpl =>\n    // First member of a pair.\n    tpl[0];",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "ft": {
@@ -1112,7 +1152,8 @@
   "groupBy": {
     "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = fEq =>\n    // Typical usage: groupBy(on(eq)(f), xs)\n    xs => (ys => 0 < ys.length ? (() => {\n        const\n            tpl = ys.slice(1).reduce(\n                (gw, x) => {\n                    const\n                        gps = gw[0],\n                        wkg = gw[1];\n                    return fEq(wkg[0])(x) ? (\n                        Tuple(gps)(wkg.concat([x]))\n                    ) : Tuple(gps.concat([wkg]))([x]);\n                },\n                Tuple([])([ys[0]])\n            ),\n            v = tpl[0].concat([tpl[1]]);\n        return 'string' !== typeof xs ? (\n            v\n        ) : v.map(x => x.join(''));\n    })() : [])(list(xs));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "groupSortBy": {
@@ -1136,25 +1177,29 @@
   "head": {
     "code": "// head :: [a] -> a\nconst head = xs => (\n    ys => ys.length ? (\n        ys[0]\n    ) : undefined\n)(list(xs));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "headDef": {
     "code": "// headDef :: a -> [a] -> a\nconst headDef = v =>\n    // The first item of a non-empty list,\n    // or a default value if the list is empty.\n    xs => 0 < xs.length ? (\n        xs[0]\n    ) : v;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "headMay": {
     "code": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    // Just the first item of xs, or\n    // Nothing if xs is an empty list.\n    0 < xs.length ? (\n        Just(xs[0])\n    ) : Nothing();",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "identity": {
     "code": "// identity :: a -> a\nconst identity = x =>\n    // The identity function.\n    x;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "if_": {
@@ -1198,7 +1243,8 @@
   "init": {
     "code": "// init :: [a] -> [a]\nconst init = xs => (\n    // All elements of a list except the last.\n    ys => 0 < ys.length ? (\n        ys.slice(0, -1)\n    ) : undefined\n)(list(xs));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "initMay": {
@@ -1240,19 +1286,22 @@
   "intercalate": {
     "code": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = sep => xs =>\n    0 < xs.length && 'string' === typeof sep &&\n    'string' === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep)(xs));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "intercalateS": {
     "code": "// intercalateS :: String -> [String] -> String\nconst intercalateS = s =>\n    // The concatenation of xs\n    // interspersed with copies of s.\n    xs => xs.join(s);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "intersect": {
     "code": "// intersect :: (Eq a) => [a] -> [a] -> [a]\nconst intersect = xs =>\n    // The intersection of lists xs and ys.\n    ys => xs.filter(x => ys.includes(x));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "intersectBy": {
@@ -1336,7 +1385,8 @@
   "isPrefixOf": {
     "code": "// isPrefixOf :: [a] -> [a] -> Bool\n// isPrefixOf :: String -> String -> Bool\nconst isPrefixOf = xs =>\n    // True if and only if xs is a prefix of ys.\n    ys => {\n        const go = (xs, ys) => {\n            const intX = xs.length;\n            return 0 < intX ? (\n                ys.length >= intX ? xs[0] === ys[0] && go(\n                    xs.slice(1), ys.slice(1)\n                ) : false\n            ) : true;\n        };\n        return 'string' !== typeof xs ? (\n            go(xs, ys)\n        ) : ys.startsWith(xs);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "isRight": {
@@ -1384,13 +1434,15 @@
   "iso8601Local": {
     "code": "// iso8601Local :: Date -> String\nconst iso8601Local = dte =>\n    new Date(dte - (6E4 * dte.getTimezoneOffset()))\n    .toISOString();",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "iterate": {
     "code": "// iterate :: (a -> a) -> a -> Gen [a]\nconst iterate = f =>\n    // An infinite list of repeated applications of f to x.\n    function* (x) {\n        let v = x;\n        while (true) {\n            yield(v);\n            v = f(v);\n        }\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "iterateUntil": {
@@ -1427,13 +1479,15 @@
   "justifyLeft": {
     "code": "// justifyLeft :: Int -> Char -> String -> String\nconst justifyLeft = n =>\n    // The string s, followed by enough padding (with\n    // the character c) to reach the string length n.\n    c => s => n > s.length ? (\n        s.padEnd(n, c)\n    ) : s;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "justifyRight": {
     "code": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = n =>\n    // The string s, preceded by enough padding (with\n    // the character c) to reach the string length n.\n    c => s => n > s.length ? (\n        s.padStart(n, c)\n    ) : s;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "kCompose": {
@@ -1445,7 +1499,8 @@
   "keys": {
     "code": "// keys :: Dict -> [String]\nconst keys = Object.keys;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "kleisliCompose (>=>)": {
@@ -1487,7 +1542,8 @@
   "length": {
     "code": "// length :: [a] -> Int\nconst length = xs =>\n    // Returns Infinity over objects without finite\n    // length. This enables zip and zipWith to choose\n    // the shorter argument when one is non-finite,\n    // like cycle, repeat etc\n    'GeneratorFunction' !== xs.constructor\n    .constructor.name ? (\n        xs.length\n    ) : Infinity;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "levelNodes": {
@@ -1556,7 +1612,8 @@
   "lines": {
     "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single\n    // newline-delimited string.\n    0 < s.length ? (\n        s.split(/[\\r\\n]/)\n    ) : [];",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "list": {
@@ -1636,13 +1693,15 @@
   "map": {
     "code": "// map :: (a -> b) -> [a] -> [b]\nconst map = f =>\n    // The list obtained by applying f\n    // to each element of xs.\n    // (The image of xs under f).\n    xs => [...xs].map(f);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "mapAccumL": {
     "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list \n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce((a, x) => {\n        const pair = f(a[0])(x);\n        return Tuple(pair[0])(a[1].concat(pair[1]));\n    }, Tuple(acc)([]));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "mapAccumL_Tree": {
@@ -1655,7 +1714,8 @@
   "mapAccumR": {
     "code": "// mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumR = f =>\n    // A tuple of an accumulation and a list \n    // obtained by a combined map and fold,\n    // with accumulation from right to left.\n    acc => xs => [...xs].reduceRight((a, x) => {\n        const pair = f(a[0])(x);\n        return Tuple(pair[0])(\n            [pair[1]].concat(a[1])\n        );\n    }, Tuple(acc)([]));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "mapKeys": {
@@ -1721,7 +1781,8 @@
   "max": {
     "code": "// max :: Ord a => a -> a -> a\nconst max = a =>\n    // b if its greater than a,\n    // otherwise a.\n    b => gt(b)(a) ? (\n        b\n    ) : a;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "maxBound": {
@@ -1733,13 +1794,15 @@
   "maximum": {
     "code": "// maximum :: Ord a => [a] -> a\nconst maximum = xs => (\n    // The largest value in a non-empty list.\n    ys => 0 < ys.length ? (\n        ys.slice(1).reduce(\n            (a, y) => y > a ? (\n                y\n            ) : a, ys[0]\n        )\n    ) : undefined\n)(list(xs));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "maximumBy": {
     "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => {\n        const ys = list(xs);\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 < f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "maximumByMay": {
@@ -1763,7 +1826,8 @@
   "maybe": {
     "code": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = v =>\n    // Default value (v) if m is Nothing, or f(m.Just)\n    f => m => m.Nothing ? v : f(m.Just);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "mconcatOrd": {
@@ -1806,7 +1870,8 @@
   "min": {
     "code": "// min :: Ord a => a -> a -> a\nconst min = a => \n    b => b < a ? b : a;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "minBound": {
@@ -1818,13 +1883,15 @@
   "minimum": {
     "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs => (\n    // The least value of xs.\n    ys => 0 < ys.length ? (\n        ys.slice(1)\n        .reduce((a, y) => y < a ? y : a, ys[0])\n    ) : undefined\n)(list(xs));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "minimumBy": {
     "code": "// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = f =>\n    xs => {\n        const ys = list(xs);\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 > f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "minimumByMay": {
@@ -1848,7 +1915,8 @@
   "mod": {
     "code": "// mod :: Int -> Int -> Int\nconst mod = n =>\n    d => (n % d) + (\n        signum(n) === signum(-d) ? (\n            d\n        ) : 0\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "modificationTime": {
@@ -1905,13 +1973,15 @@
   "nub": {
     "code": "// nub :: [a] -> [a]\nconst nub = xs => \n  nubBy(eq)(xs);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "nubBy": {
     "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = fEq => {\n    const go = xs => 0 < xs.length ? (() => {\n        const x = xs[0];\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !fEq(x)(y))\n            )\n        );\n    })() : [];\n    return compose(go, list);\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "odd": {
@@ -1960,7 +2030,8 @@
   "partition": {
     "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in \n    // xs which match p, and those which don't.\n    xs => list(xs).reduce(\n        (a, x) => p(x) ? (\n            Tuple(a[0].concat(x))(a[1])\n        ) : Tuple(a[0])(a[1].concat(x)),\n        Tuple([])([])\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "partitionEithers": {
@@ -1996,7 +2067,8 @@
   "pred": {
     "code": "// pred :: Enum a => a -> a\nconst pred = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mn] = [x, minBound(x)].map(fromEnum);\n        return i > mn ? (\n            toEnum(x)(i - 1)\n        ) : Error('succ :: enum out of range.');\n    })() : x > Number.MIN_SAFE_INTEGER ? (\n        x - 1\n    ) : Error('succ :: Num out of range.');\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "predMay": {
@@ -2081,13 +2153,15 @@
   "quot": {
     "code": "// quot :: Int -> Int -> Int\nconst quot = n =>\n    m => Math.trunc(n / m);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "quotRem": {
     "code": "// quotRem :: Int -> Int -> (Int, Int)\nconst quotRem = m =>\n    // The quotient, tupled with the remainder.\n    n => Tuple(\n        Math.trunc(m / n)\n    )(m % n);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "quoted": {
@@ -2159,7 +2233,8 @@
   "read": {
     "code": "// read :: Read a => String -> a\nconst read = JSON.parse;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "readFile": {
@@ -2209,7 +2284,8 @@
   "rem": {
     "code": "// rem :: Int -> Int -> Int\nconst rem = n => m => n % m;",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "removeFile": {
@@ -2241,7 +2317,8 @@
   "replicate": {
     "code": "// replicate :: Int -> a -> [a]\nconst replicate = n =>\n    // A list of n copies of x.\n    x => Array.from({\n        length: n\n    }, () => x);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "replicateM": {
@@ -2253,13 +2330,15 @@
   "replicateString": {
     "code": "// replicateString :: Int -> String -> String\nconst replicateString = n => \n    s => s.repeat(n);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "reverse": {
     "code": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    'string' !== typeof xs ? (\n        xs.slice(0).reverse()\n    ) : xs.split('').reverse().join('');",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "rights": {
@@ -2308,7 +2387,8 @@
   "scanl": {
     "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    list(xs).reduce((a, x) => {\n        const v = f(a[0])(x);\n        return Tuple(v)(a[1].concat(v));\n    }, Tuple(startValue)([startValue]))[1];",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "scanl1": {
@@ -2320,7 +2400,8 @@
   "scanr": {
     "code": "// scanr :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => list(xs).reduceRight((a, x) => {\n        const v = f(x)(a[0]);\n        return Tuple(v)([v].concat(a[1]));\n    }, Tuple(startValue)([startValue]))[1];",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "scanr1": {
@@ -2521,7 +2602,8 @@
   "snd": {
     "code": "// snd :: (a, b) -> b\nconst snd = tpl =>\n    // Second member of a pair.\n    tpl[1];",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "snoc": {
@@ -2533,25 +2615,29 @@
   "sort": {
     "code": "// sort :: Ord a => [a] -> [a]\nconst sort = xs => list(xs).slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "sortBy": {
     "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    xs => list(xs).slice()\n    .sort((a, b) => f(a)(b));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "sortOn": {
     "code": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = f =>\n    // Equivalent to sortBy(comparing(f)), but with f(x)\n    // evaluated only once for each x in xs.\n    // ('Schwartzian' decorate-sort-undecorate).\n    xs => xs.map(\n        x => Tuple(f(x))(x)\n    )\n    .sort(uncurry(comparing(fst)))\n    .map(snd);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "span": {
     "code": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const\n            ys = 'string' !== typeof xs ? (\n                list(xs)\n            ) : xs,\n            iLast = ys.length - 1;\n        return splitAt(\n            until(\n                i => iLast < i || !p(ys[i])\n            )(i => 1 + i)(0)\n        )(ys);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "splitArrow (***)": {
@@ -2585,9 +2671,10 @@
     ]
   },
   "splitRegex": {
-    "code": "// splitRegex :: Regex -> String -> [String]\nconst splitRegex = needle => haystack =>\n    haystack.split(needle);",
+    "code": "// splitRegex :: Regex -> String -> [String]\nconst splitRegex = needle =>\n    haystack => haystack.split(needle);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "sqrt": {
@@ -2623,7 +2710,8 @@
   "strip": {
     "code": "// strip :: String -> String\nconst strip = s =>\n    s.trim();",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "stripEnd": {
@@ -2672,7 +2760,8 @@
   "succ": {
     "code": "// succ :: Enum a => a -> a\nconst succ = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mx] = [x, maxBound(x)].map(fromEnum);\n        return i < mx ? (\n            toEnum(x)(1 + i)\n        ) : Error('succ :: enum out of range.');\n    })() : x < Number.MAX_SAFE_INTEGER ? (\n        1 + x\n    ) : Error('succ :: Num out of range.');\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "succMay": {
@@ -2684,7 +2773,8 @@
   "sum": {
     "code": "// sum :: [Num] -> Num\nconst sum = xs =>\n    // The numeric sum of all values in xs.\n    xs.reduce((a, x) => a + x, 0);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "sum"
     ]
   },
   "swap": {
@@ -2696,7 +2786,8 @@
   "tail": {
     "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    'GeneratorFunction' !== xs.constructor\n    .constructor.name ? (\n        (ys => 0 < ys.length ? ys.slice(1) : [])(\n            list(xs)\n        )\n    ) : (take(1)(xs), xs);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "tailMay": {
@@ -2714,7 +2805,8 @@
   "take": {
     "code": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = n =>\n    // The first n elements of a list,\n    // string of characters, or stream.\n    xs => 'GeneratorFunction' !== xs\n    .constructor.constructor.name ? (\n        xs.slice(0, n)\n    ) : [].concat.apply([], Array.from({\n        length: n\n    }, () => {\n        const x = xs.next();\n        return x.done ? [] : [x.value];\n    }));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "takeAround": {
@@ -2774,7 +2866,8 @@
   "takeWhile": {
     "code": "// takeWhile :: (a -> Bool) -> [a] -> [a]\n// takeWhile :: (Char -> Bool) -> String -> String\nconst takeWhile = p => xs =>\n    xs.constructor.constructor.name !==\n    'GeneratorFunction' ? (() => {\n        const n = xs.length;\n        return xs.slice(\n            0, 0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    })() : takeWhileGen(p)(xs);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "takeWhileGen": {
@@ -2786,7 +2879,8 @@
   "takeWhileR": {
     "code": "// takeWhileR :: (a -> Bool) -> [a] -> [a]\nconst takeWhileR = p =>\n    // The longest suffix of xs in which\n    // all elements satisfy p.\n    xs => {\n        const ys = list(xs);\n        let i = ys.length;\n        while (i-- && p(ys[i])) {}\n        return ys.slice(i + 1);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "taskPaperDateString": {
@@ -2841,7 +2935,8 @@
   "toLower": {
     "code": "// toLower :: String -> String\nconst toLower = s =>\n    // Lower-case version of string.\n    s.toLocaleLowerCase();",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "toRatio": {
@@ -2865,7 +2960,8 @@
   "toUpper": {
     "code": "// toUpper :: String -> String\nconst toUpper = s =>\n    s.toLocaleUpperCase();",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "transpose": {
@@ -3035,7 +3131,7 @@
     ]
   },
   "unfoldr": {
-    "code": "// The 'unfoldr' function is a *dual* to 'foldr': while 'foldr'\n// reduces a list to a summary value, 'unfoldr' builds a list from\n// a seed value.  The function takes the element and returns 'Nothing'\n// if it is done producing the list or returns 'Just' @(a,b)@, in which\n// case, @a@ is a prepended to the list and @b@ is used as the next\n// element in a recursive call.\n//\n// unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);\n// --> [10,9,8,7,6,5,4,3,2,1]\n// (x => Maybe [value, remainder] -> initial value -> values\n// unfoldr :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldr = f =>\n    v => {\n        const xs = [];\n        let xr = [v, v];\n        while (true) {\n            const mb = f(xr[1]);\n            if (mb.Nothing) {\n                return xs;\n            } else {\n                xr = mb.Just;\n                xs.push(xr[0]);\n            }\n        }\n    };",
+    "code": "// unfoldr :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldr = f =>\n    // The 'unfoldr' function is a *dual* to 'foldr': while 'foldr'\n    // reduces a list to a summary value, 'unfoldr' builds a list from\n    // a seed value.  The function takes the element and returns 'Nothing'\n    // if it is done producing the list or returns 'Just' @(a,b)@, in which\n    // case, @a@ is a prepended to the list and @b@ is used as the next\n    // element in a recursive call.\n    //\n    // unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);\n    // --> [10,9,8,7,6,5,4,3,2,1]\n    // (x => Maybe [value, remainder] -> initial value -> values\n    v => {\n        const xs = [];\n        let xr = [v, v];\n        while (true) {\n            const mb = f(xr[1]);\n            if (mb.Nothing) {\n                return xs;\n            } else {\n                xr = mb.Just;\n                xs.push(xr[0]);\n            }\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -3043,13 +3139,15 @@
   "union": {
     "code": "// union :: [a] -> [a] -> [a]\nconst union = xs => ys =>\n  unionBy(a => b => a === b)(\n      list(xs)\n  )(list(ys));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "unionBy": {
     "code": "// unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst unionBy = fnEq => xs => ys => {\n    const sx = nubBy(fnEq)(xs);\n    return sx.concat(\n        sx.reduce(\n            (a, x) => deleteBy(fnEq)(\n                x\n            )(a),\n            nubBy(fnEq)(ys)\n        )\n    );\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "unionSet": {
@@ -3061,7 +3159,8 @@
   "unlines": {
     "code": "// unlines :: [String] -> String\nconst unlines = xs =>\n    // A single string formed by the intercalation\n    // of a list of strings with the newline character.\n    xs.join('\\n');",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "unsnoc": {
@@ -3073,13 +3172,15 @@
   "until": {
     "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p => \n    f => x => {\n        let v = x;\n        while (!p(v)) v = f(v);\n        return v;\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "unwords": {
     "code": "// unwords :: [String] -> String\nconst unwords = xs =>\n    // A space-separated string derived\n    // from a list of words.\n    xs.join(' ');",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "unwrap": {
@@ -3092,13 +3193,15 @@
   "unzip": {
     "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    xys.reduce(\n        (ab, xy) => Tuple(ab[0].concat(xy[0]))(\n            ab[1].concat(xy[1])\n        ),\n        Tuple([])([])\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "unzip3": {
     "code": "// unzip3 :: [(a,b,c)] -> ([a],[b],[c])\nconst unzip3 = xyzs =>\n    xyzs.reduce(\n        (a, x) => TupleN.apply(null, [0, 1, 2].map(\n            i => a[i].concat(x[i])\n        )),\n        TupleN([], [], [])\n    );",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "unzip4": {
@@ -3122,7 +3225,8 @@
   "words": {
     "code": "// words :: String -> [String]\nconst words = s =>\n    // List of space-delimited sub-strings.\n    s.split(/\\s+/);",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "wrap": {
@@ -3156,13 +3260,15 @@
   "zip": {
     "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    ys => Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => Tuple(xs[i])(ys[i]));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "zip3": {
     "code": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = xs =>\n    ys => zs => list(xs)\n    .slice(0, Math.min(...[xs, ys, zs].map(length)))\n    .map((x, i) => TupleN(x, ys[i], zs[i]));",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "zip4": {
@@ -3192,7 +3298,8 @@
   "zipWith": {
     "code": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = f =>\n    // Use of `take` and `length` here allows \n    // zipping with non-finite lists\n    // i.e. generators like cycle, repeat, iterate.\n    xs => ys => {\n        const n = Math.min(length(xs), length(ys));\n        return Infinity > n ? (\n            (([as, bs]) => Array.from({\n                length: n\n            }, (_, i) => f(as[i])(\n                bs[i]\n            )))([xs, ys].map(\n                compose(take(n), list)\n            ))\n        ) : zipWithGen(f)(xs)(ys);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "zipWith3": {

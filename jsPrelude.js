@@ -178,7 +178,7 @@ const apTree = tf =>
 const apTuple = tpl => 
   liftA2Tuple(x => x)(tpl);
 
-// append (++) :: [a] -> [a] -> [a]
+// append (<>) :: [a] -> [a] -> [a]
 const append = xs =>
     // A list defined by the
     // concatenation of two others.
@@ -3731,8 +3731,8 @@ const splitOn = pat => src =>
     })();
 
 // splitRegex :: Regex -> String -> [String]
-const splitRegex = needle => haystack =>
-    haystack.split(needle);
+const splitRegex = needle =>
+    haystack => haystack.split(needle);
 
 // sqrt :: Num -> Num
 const sqrt = n =>
@@ -4563,18 +4563,18 @@ const unfoldl = f => v => {
     }
 };
 
-// The 'unfoldr' function is a *dual* to 'foldr': while 'foldr'
-// reduces a list to a summary value, 'unfoldr' builds a list from
-// a seed value.  The function takes the element and returns 'Nothing'
-// if it is done producing the list or returns 'Just' @(a,b)@, in which
-// case, @a@ is a prepended to the list and @b@ is used as the next
-// element in a recursive call.
-//
-// unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);
-// --> [10,9,8,7,6,5,4,3,2,1]
-// (x => Maybe [value, remainder] -> initial value -> values
 // unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
 const unfoldr = f =>
+    // The 'unfoldr' function is a *dual* to 'foldr': while 'foldr'
+    // reduces a list to a summary value, 'unfoldr' builds a list from
+    // a seed value.  The function takes the element and returns 'Nothing'
+    // if it is done producing the list or returns 'Just' @(a,b)@, in which
+    // case, @a@ is a prepended to the list and @b@ is used as the next
+    // element in a recursive call.
+    //
+    // unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);
+    // --> [10,9,8,7,6,5,4,3,2,1]
+    // (x => Maybe [value, remainder] -> initial value -> values
     v => {
         const xs = [];
         let xr = [v, v];
