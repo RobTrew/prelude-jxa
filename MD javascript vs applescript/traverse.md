@@ -1,3 +1,25 @@
+```javascript
+// traverse :: (Applicative f, Traversable t) => 
+// (a -> f b) -> t a -> f (t b)
+const traverse = f => tx => {
+    const t = tx.type;
+    return (
+        undefined !== t ? (
+            'Either' === t ? (
+                traverseLR
+            ) : 'Maybe' === t ? (
+                traverseMay
+            ) : 'Node' === t ? (
+                traverseTree
+            ) : 'Tuple' === t ? (
+                traverseTuple
+            ) : traverseList
+        ) : traverseList
+    )(f)(tx);
+};
+```
+
+
 ```applescript
 -- traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
 on traverse(f, tx)
@@ -20,26 +42,4 @@ on traverse(f, tx)
         missing value
     end if
 end traverse
-```
-
-
-```javascript
-// traverse :: (Applicative f, Traversable t) => 
-// (a -> f b) -> t a -> f (t b)
-const traverse = f => tx => {
-    const t = tx.type;
-    return (
-        undefined !== t ? (
-            'Either' === t ? (
-                traverseLR
-            ) : 'Maybe' === t ? (
-                traverseMay
-            ) : 'Node' === t ? (
-                traverseTree
-            ) : 'Tuple' === t ? (
-                traverseTuple
-            ) : traverseList
-        ) : traverseList
-    )(f)(tx);
-};
 ```

@@ -1,3 +1,16 @@
+```javascript
+// breakOnMay :: String -> String -> Maybe (String, String)
+const breakOnMay = pat =>
+    // Needle -> Haystack -> maybe (prefix before match, match + rest)
+    src => Boolean(pat) ? (() => {
+        const xs = src.split(pat);
+        return Just(0 < xs.length ? Tuple(
+            xs[0], src.slice(xs[0].length)
+        ) : Tuple(src)(''));
+    })() : Nothing();
+```
+
+
 ```applescript
 -- needle -> haystack -> maybe (prefix before match, match + rest)
 -- breakOnMay :: String -> String -> Maybe (String, String)
@@ -19,17 +32,4 @@ on breakOnMay(pat, src)
         Nothing()
     end if
 end breakOnMay
-```
-
-
-```javascript
-// breakOnMay :: String -> String -> Maybe (String, String)
-const breakOnMay = pat =>
-    // Needle -> Haystack -> maybe (prefix before match, match + rest)
-    src => Boolean(pat) ? (() => {
-        const xs = src.split(pat);
-        return Just(0 < xs.length ? Tuple(
-            xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)(''));
-    })() : Nothing();
 ```

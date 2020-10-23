@@ -1,3 +1,24 @@
+```javascript
+// isPrefixOf :: [a] -> [a] -> Bool
+// isPrefixOf :: String -> String -> Bool
+const isPrefixOf = xs =>
+    // True if and only if xs is a prefix of ys.
+    ys => {
+        const go = (xs, ys) => {
+            const intX = xs.length;
+            return 0 < intX ? (
+                ys.length >= intX ? xs[0] === ys[0] && go(
+                    xs.slice(1), ys.slice(1)
+                ) : false
+            ) : true;
+        };
+        return 'string' !== typeof xs ? (
+            go(xs, ys)
+        ) : ys.startsWith(xs);
+    };
+```
+
+
 ```applescript
 -- isPrefixOf takes two lists or strings and returns 
 --  true if and only if the first is a prefix of the second.
@@ -21,25 +42,4 @@ on isPrefixOf(xs, ys)
     end script
     go's |λ|(xs, ys)
 end isPrefixOf
-```
-
-
-```javascript
-// isPrefixOf :: [a] -> [a] -> Bool
-// isPrefixOf :: String -> String -> Bool
-const isPrefixOf = xs =>
-    // True if and only if xs is a prefix of ys.
-    ys => {
-        const go = (xs, ys) => {
-            const intX = xs.length;
-            return 0 < intX ? (
-                ys.length >= intX ? xs[0] === ys[0] && go(
-                    xs.slice(1), ys.slice(1)
-                ) : false
-            ) : true;
-        };
-        return 'string' !== typeof xs ? (
-            go(xs, ys)
-        ) : ys.startsWith(xs);
-    };
 ```

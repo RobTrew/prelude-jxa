@@ -1,3 +1,14 @@
+```javascript
+// apList (<*>) :: [(a -> b)] -> [a] -> [b]
+const apList = fs =>
+    // The sequential application of each of a list
+    // of functions to each of a list of values.
+    // apList([x => 2 * x, x => 20 + x])([1, 2, 3])
+    //     -> [2, 4, 6, 21, 22, 23]
+    xs => fs.flatMap(f => xs.map(f));
+```
+
+
 ```applescript
 -- e.g. [(*2),(/2), sqrt] <*> [1,2,3]
 -- -->  ap([dbl, hlf, root], [1, 2, 3])
@@ -17,15 +28,4 @@ on apList(fs, xs)
     end repeat
     return lst
 end apList
-```
-
-
-```javascript
-// apList (<*>) :: [(a -> b)] -> [a] -> [b]
-const apList = fs =>
-    // The sequential application of each of a list
-    // of functions to each of a list of values.
-    // apList([x => 2 * x, x => 20 + x])([1, 2, 3])
-    //     -> [2, 4, 6, 21, 22, 23]
-    xs => fs.flatMap(f => xs.map(f));
 ```

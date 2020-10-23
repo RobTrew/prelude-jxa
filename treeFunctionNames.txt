@@ -1,0 +1,46 @@
+Node :: a -> [Tree a] -> Tree a
+allTree :: (a -> Bool) -> Tree a -> Bool
+anyTree :: (a -> Bool) -> Tree a -> Bool
+apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
+draw :: Tree String -> [String]
+drawForest :: [Tree String] -> String
+drawTree :: Tree String -> String
+drawTree2 :: Bool -> Bool -> Tree String -> String
+filePathTree :: filePath -> [Tree String] -> Tree FilePath
+filterTree (a -> Bool) -> Tree a -> [a]
+filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
+filteredTree (a -> Bool) -> Tree a -> Tree a
+findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
+flattenTree :: Tree a -> [a]
+fmapTree :: (a -> b) -> Tree a -> Tree b
+foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
+foldTree :: (a -> [b] -> b) -> Tree a -> b
+foldlTree :: (b -> a -> b) -> b -> Tree a -> b
+foldrTree :: (a -> b -> b) -> b -> Tree a -> b
+indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int -> Maybe Tree (a, { nodeSum :: Int })
+indexTree :: Tree (a,  { nodeSum :: Int }) -> Int -> Maybe Tree (a,  { nodeSum :: Int })
+jsonFromTree :: Tree a -> String
+levelNodes :: Tree a -> [[Tree a]]
+levels :: Tree a -> [[a]]
+liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
+listFromTree :: Tree a -> [a]
+mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
+measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
+nest :: Tree a -> [a]
+parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})
+postorder :: Tree a -> [a]
+pureTree :: a -> Tree a
+root :: Tree a -> a
+showForest :: [Tree a] -> String
+showTree :: Tree a -> String
+subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
+traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
+treeFromDict :: String -> Dict -> Tree String
+treeFromJSON :: JSON String -> Tree a
+treeFromNestedDict -> Dict -> Either String Tree Dict
+treeLeaves :: Tree -> [Tree]
+treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
+treeMenu :: Tree String -> IO [String]
+treeMenuBy :: (a -> String) Tree a -> IO [a]
+unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
+unfoldTree :: (b -> (a, [b])) -> b -> Tree a

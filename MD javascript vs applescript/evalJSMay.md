@@ -1,3 +1,15 @@
+```javascript
+// evalJSMay :: String -> Maybe a
+const evalJSMay = s => {
+    try {
+        return Just(eval('(' + s + ')'));
+    } catch (e) {
+        return Nothing();
+    }
+};
+```
+
+
 ```applescript
 -- use framework "Foundation"
 -- use framework "JavaScriptCore"
@@ -23,16 +35,4 @@ on evalJSMay(strJS)
         Just(v)
     end if
 end evalJSMay
-```
-
-
-```javascript
-// evalJSMay :: String -> Maybe a
-const evalJSMay = s => {
-    try {
-        return Just(eval('(' + s + ')'));
-    } catch (e) {
-        return Nothing();
-    }
-};
 ```

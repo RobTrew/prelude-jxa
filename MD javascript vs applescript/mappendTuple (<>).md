@@ -1,11 +1,3 @@
-```applescript
--- mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
-on mappendTuple(a, b)
-    Tuple(mappend(|1| of a, |1| of b), mappend(|2| of a, |2| of b))
-end mappendTuple
-```
-
-
 ```javascript
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 const mappendTuple = t => t1 =>
@@ -14,4 +6,12 @@ const mappendTuple = t => t1 =>
     )(
         mappend(t[1])(t1[1])
     );
+```
+
+
+```applescript
+-- mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
+on mappendTuple(a, b)
+    Tuple(mappend(|1| of a, |1| of b), mappend(|2| of a, |2| of b))
+end mappendTuple
 ```

@@ -1,0 +1,106 @@
+Just :: a -> Maybe a
+Left :: a -> Either a b
+Nothing :: Maybe a
+Tuple (,) :: a -> b -> (a, b)
+Tuple3 (,,) :: a -> b -> c -> (a, b, c)
+TupleN :: a -> b ...  -> (a, b ... )
+all :: (a -> Bool) -> [a] -> Bool
+and :: [Bool] -> Bool
+any :: (a -> Bool) -> [a] -> Bool
+apList (<*>) :: [(a -> b)] -> [a] -> [b]
+append (<>) :: [a] -> [a] -> [a]
+bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
+bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
+cartesianProduct :: [a] -> [b] -> [[a, b]]
+chunksOf :: Int -> [a] -> [[a]]
+compare :: a -> a -> Ordering
+comparing :: (a -> b) -> (a -> a -> Ordering)
+compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
+concat :: [[a]] -> [a]
+concatMap :: (a -> [b]) -> [a] -> [b]
+cons :: a -> [a] -> [a]
+decodedPath :: Percent Encoded String -> FilePath
+div :: Int -> Int -> Int
+drop :: Int -> [a] -> [a]
+dropWhile :: (a -> Bool) -> [a] -> [a]
+either :: (a -> c) -> (b -> c) -> Either a b -> c
+elem :: Eq a => a -> [a] -> Bool
+elemIndex :: Eq a => a -> [a] -> Maybe Int
+enumFromThenTo :: Int -> Int -> Int -> [Int]
+enumFromTo :: Int -> Int -> [Int]
+eqDate :: Date -> Date -> Bool
+even :: Int -> Bool
+filter :: (a -> Bool) -> [a] -> [a]
+find :: (a -> Bool) -> [a] -> Maybe a
+findIndex :: (a -> Bool) -> [a] -> Maybe Int
+flatten :: NestedList a -> [a]
+flip :: (a -> b -> c) -> b -> a -> c
+foldl :: (a -> b -> a) -> a -> [b] -> a
+foldr :: (a -> b -> b) -> b -> [a] -> b
+fst :: (a, b) -> a
+groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
+head :: [a] -> a
+headDef :: a -> [a] -> a
+headMay :: [a] -> Maybe a
+identity :: a -> a
+init :: [a] -> [a]
+intercalate :: [a] -> [[a]] -> [a]
+intercalateS :: String -> [String] -> String
+intersect :: (Eq a) => [a] -> [a] -> [a]
+isPrefixOf :: [a] -> [a] -> Bool
+iso8601Local :: Date -> String
+iterate :: (a -> a) -> a -> Gen [a]
+justifyLeft :: Int -> Char -> String -> String
+justifyRight :: Int -> Char -> String -> String
+keys :: Dict -> [String]
+length :: [a] -> Int
+lines :: String -> [String]
+map :: (a -> b) -> [a] -> [b]
+mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+max :: Ord a => a -> a -> a
+maximum :: Ord a => [a] -> a
+maximumBy :: (a -> a -> Ordering) -> [a] -> a
+maybe :: b -> (a -> b) -> Maybe a -> b
+min :: Ord a => a -> a -> a
+minimum :: Ord a => [a] -> a
+minimumBy :: (a -> a -> Ordering) -> [a] -> a
+mod :: Int -> Int -> Int
+nub :: [a] -> [a]
+nubBy :: (a -> a -> Bool) -> [a] -> [a]
+partition :: (a -> Bool) -> [a] -> ([a], [a])
+pred :: Enum a => a -> a
+quot :: Int -> Int -> Int
+quotRem :: Int -> Int -> (Int, Int)
+read :: Read a => String -> a
+rem :: Int -> Int -> Int
+replicate :: Int -> a -> [a]
+replicateString :: Int -> String -> String
+reverse :: [a] -> [a]
+scanl :: (b -> a -> b) -> b -> [a] -> [b]
+scanr :: (b -> a -> b) -> b -> [a] -> [b]
+snd :: (a, b) -> b
+sort :: Ord a => [a] -> [a]
+sortBy :: (a -> a -> Ordering) -> [a] -> [a]
+sortOn :: Ord b => (a -> b) -> [a] -> [a]
+span :: (a -> Bool) -> [a] -> ([a], [a])
+splitRegex :: Regex -> String -> [String]
+strip :: String -> String
+succ :: Enum a => a -> a
+tail :: [a] -> [a]
+take :: Int -> [a] -> [a]
+takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhileR :: (a -> Bool) -> [a] -> [a]
+toLower :: String -> String
+toUpper :: String -> String
+union :: [a] -> [a] -> [a]
+unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
+unlines :: [String] -> String
+until :: (a -> Bool) -> (a -> a) -> a -> a
+unwords :: [String] -> String
+unzip :: [(a,b)] -> ([a],[b])
+unzip3 :: [(a,b,c)] -> ([a],[b],[c])
+words :: String -> [String]
+zip :: [a] -> [b] -> [(a, b)]
+zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]

@@ -1,3 +1,17 @@
+```javascript
+// sortOn :: Ord b => (a -> b) -> [a] -> [a]
+const sortOn = f =>
+    // Equivalent to sortBy(comparing(f)), but with f(x)
+    // evaluated only once for each x in xs.
+    // ('Schwartzian' decorate-sort-undecorate).
+    xs => xs.map(
+        x => Tuple(f(x))(x)
+    )
+    .sort(uncurry(comparing(fst)))
+    .map(snd);
+```
+
+
 ```applescript
 -- Sort a list by comparing the results of a key function applied to each
 -- element. sortOn f is equivalent to sortBy(comparing(f), xs), but has the
@@ -73,18 +87,4 @@ on sortOn(f, xs)
     map(undec, ((ca's NSArray's arrayWithArray:map(dec, xs))'s ¬
         sortedArrayUsingDescriptors:map(descrip, bs)) as list)
 end sortOn
-```
-
-
-```javascript
-// sortOn :: Ord b => (a -> b) -> [a] -> [a]
-const sortOn = f =>
-    // Equivalent to sortBy(comparing(f)), but with f(x)
-    // evaluated only once for each x in xs.
-    // ('Schwartzian' decorate-sort-undecorate).
-    xs => xs.map(
-        x => Tuple(f(x))(x)
-    )
-    .sort(uncurry(comparing(fst)))
-    .map(snd);
 ```

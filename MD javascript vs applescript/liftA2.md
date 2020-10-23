@@ -1,3 +1,29 @@
+```javascript
+// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+const liftA2 = f =>
+    // Lift a binary function to actions.
+    // liftA2 f a b = fmap f a <*> b
+    a => b => {
+        const t = typeName(a);
+        return (
+            'Bottom' !== t ? (
+                '(a -> b)' === t ? (
+                    liftA2Fn
+                ) : 'Either' === t ? (
+                    liftA2LR
+                ) : 'Maybe' === t ? (
+                    liftA2May
+                ) : 'Tuple' === t ? (
+                    liftA2Tuple
+                ) : 'Node' === t ? (
+                    liftA2Tree
+                ) : liftA2List
+            ) : liftA2List
+        )(f)(a)(b);
+    };
+```
+
+
 ```applescript
 -- Lift a binary function to actions.
 -- e.g.
@@ -25,30 +51,4 @@ on liftA2(f, a, b)
         end if
     end if
 end liftA2
-```
-
-
-```javascript
-// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = f =>
-    // Lift a binary function to actions.
-    // liftA2 f a b = fmap f a <*> b
-    a => b => {
-        const t = typeName(a);
-        return (
-            'Bottom' !== t ? (
-                '(a -> b)' === t ? (
-                    liftA2Fn
-                ) : 'Either' === t ? (
-                    liftA2LR
-                ) : 'Maybe' === t ? (
-                    liftA2May
-                ) : 'Tuple' === t ? (
-                    liftA2Tuple
-                ) : 'Node' === t ? (
-                    liftA2Tree
-                ) : liftA2List
-            ) : liftA2List
-        )(f)(a)(b);
-    };
 ```

@@ -1,0 +1,32 @@
+appendFile :: FilePath -> String -> IO Bool
+appendFileMay :: FilePath -> String -> Maybe IO FilePath
+base64decode :: String -> String
+base64encode :: String -> String
+copyFileLR :: FilePath -> FilePath -> Either String IO ()
+createDirectoryIfMissingLR :: Bool -> FilePath ->
+doesDirectoryExist :: FilePath -> IO Bool
+doesFileExist :: FilePath -> IO Bool
+doesPathExist :: FilePath -> IO Bool
+filePath :: String -> FilePath
+fileSize :: FilePath -> Either String Int
+fileStatus :: FilePath -> Either String Dict
+fileUTI :: FilePath -> Either String String
+getCurrentDirectory :: IO FilePath
+getDirectoryContents :: FilePath -> IO [FilePath]
+getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
+getHomeDirectory :: IO FilePath
+getTemporaryDirectory :: IO FilePath
+listDirectory :: FilePath -> [FilePath]
+modificationTime :: FilePath -> Either String Date
+newUUID :: () -> IO UUID String
+readFile :: FilePath -> IO String
+readFileLR :: FilePath -> Either String IO String
+removeFile :: FilePath -> Either String String
+renamedFile :: FilePath -> FilePath ->
+setCurrentDirectory :: String -> IO ()
+tempFilePath :: String -> IO FilePath
+unwrap :: NSObject -> a
+wrap :: a -> NSObject
+writeFile :: FilePath -> String -> IO ()
+writeFileLR :: FilePath -> Either String IO FilePath
+writeTempFile :: String -> String -> IO FilePath

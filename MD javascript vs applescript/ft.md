@@ -1,3 +1,12 @@
+```javascript
+// ft :: (Int, Int) -> [Int]
+const ft = m =>
+    n => Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i);
+```
+
+
 ```applescript
 -- Abbreviation for quick testing
 -- ft :: (Int, Int) -> [Int]
@@ -12,13 +21,4 @@ on ft(m, n)
         return {}
     end if
 end ft
-```
-
-
-```javascript
-// ft :: (Int, Int) -> [Int]
-const ft = m =>
-    n => Array.from({
-        length: 1 + n - m
-    }, (_, i) => m + i);
 ```
