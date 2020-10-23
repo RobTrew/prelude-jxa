@@ -266,7 +266,7 @@ const newUUID = () =>
 // readFile :: FilePath -> IO String
 const readFile = fp => {
     // The contents of a text file at the
-    // path file fp.
+    // filepath fp.
     const
         e = $(),
         ns = $.NSString
@@ -284,6 +284,8 @@ const readFile = fp => {
 
 // readFileLR :: FilePath -> Either String IO String
 const readFileLR = fp => {
+    // Either a message or the contents of any
+    // text file at the given filepath.
     const
         e = $(),
         ns = $.NSString

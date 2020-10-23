@@ -1,8 +1,10 @@
 ```javascript
 // takeWhile :: (a -> Bool) -> [a] -> [a]
 // takeWhile :: (Char -> Bool) -> String -> String
-const takeWhile = p => xs =>
-    xs.constructor.constructor.name !==
+const takeWhile = p =>
+    // The longest prefix of xs in which
+    // every element satisfies p.
+    xs => xs.constructor.constructor.name !==
     'GeneratorFunction' ? (() => {
         const n = xs.length;
         return xs.slice(

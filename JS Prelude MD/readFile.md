@@ -2,7 +2,7 @@
 // readFile :: FilePath -> IO String
 const readFile = fp => {
     // The contents of a text file at the
-    // path file fp.
+    // filepath fp.
     const
         e = $(),
         ns = $.NSString

@@ -2048,6 +2048,8 @@ const jsonLog = (...args) =>
 
 // jsonParseLR :: String -> Either String a
 const jsonParseLR = s => {
+    // Either a message, or a JS value obtained
+    // from a successful parse of s.
     try {
         return Right(JSON.parse(s));
     } catch (e) {
@@ -3621,7 +3623,9 @@ const snoc = xs =>
     x => list(xs).concat(x);
 
 // sort :: Ord a => [a] -> [a]
-const sort = xs => list(xs).slice()
+const sort = xs =>
+    // An A-Z sorted copy of xs.
+    list(xs).slice()
     .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
@@ -4022,8 +4026,10 @@ const takeIterate = n => f => x =>
 
 // takeWhile :: (a -> Bool) -> [a] -> [a]
 // takeWhile :: (Char -> Bool) -> String -> String
-const takeWhile = p => xs =>
-    xs.constructor.constructor.name !==
+const takeWhile = p =>
+    // The longest prefix of xs in which
+    // every element satisfies p.
+    xs => xs.constructor.constructor.name !==
     'GeneratorFunction' ? (() => {
         const n = xs.length;
         return xs.slice(

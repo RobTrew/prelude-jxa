@@ -1,14 +1,3 @@
-```javascript
-// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
-const lookupTuples = k =>
-    kvs => bindMay(
-        find(x => k === fst(x))(
-            kvs
-        )
-    )(x => Just(snd(x)));
-```
-
-
 ```applescript
 -- lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
 on lookupTuples(k, xs)
@@ -26,4 +15,15 @@ on lookupTuples(k, xs)
     
     bindMay(find(keyMatch, xs), harvestMay)
 end lookupTuples
+```
+
+
+```javascript
+// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
+const lookupTuples = k =>
+    kvs => bindMay(
+        find(x => k === fst(x))(
+            kvs
+        )
+    )(x => Just(snd(x)));
 ```

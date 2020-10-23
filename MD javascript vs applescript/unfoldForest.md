@@ -1,11 +1,3 @@
-```javascript
-// unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
-const unfoldForest = f =>
-    // A forest built from a list of seed values.
-    xs => xs.map(unfoldTree(f));
-```
-
-
 ```applescript
 -- | Build a forest from a list of seed values
 -- unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
@@ -18,4 +10,12 @@ on unfoldForest(f, xs)
     end script
     map(result, xs)
 end unfoldForest
+```
+
+
+```javascript
+// unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
+const unfoldForest = f =>
+    // A forest built from a list of seed values.
+    xs => xs.map(unfoldTree(f));
 ```

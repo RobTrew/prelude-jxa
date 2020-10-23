@@ -1,3 +1,19 @@
+```applescript
+-- takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
+on takeWhileGen(p, xs)
+    set ys to {}
+    set v to |λ|() of xs
+    tell mReturn(p)
+        repeat while (|λ|(v))
+            set end of ys to v
+            set v to xs's |λ|()
+        end repeat
+    end tell
+    return ys
+end takeWhileGen
+```
+
+
 ```javascript
 // takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 const takeWhileGen = p => xs => {
@@ -12,20 +28,4 @@ const takeWhileGen = p => xs => {
     }
     return ys;
 };
-```
-
-
-```applescript
--- takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-on takeWhileGen(p, xs)
-    set ys to {}
-    set v to |λ|() of xs
-    tell mReturn(p)
-        repeat while (|λ|(v))
-            set end of ys to v
-            set v to xs's |λ|()
-        end repeat
-    end tell
-    return ys
-end takeWhileGen
 ```

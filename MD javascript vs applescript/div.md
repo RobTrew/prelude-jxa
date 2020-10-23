@@ -1,10 +1,3 @@
-```javascript
-// div :: Int -> Int -> Int
-const div = x =>
-    y => Math.floor(x / y);
-```
-
-
 ```applescript
 -- div :: Int -> Int -> Int
 on |div|(a, b)
@@ -16,4 +9,11 @@ on |div|(a, b)
         i
     end if
 end |div|
+```
+
+
+```javascript
+// div :: Int -> Int -> Int
+const div = x =>
+    y => Math.floor(x / y);
 ```

@@ -1,10 +1,3 @@
-```javascript
-// dictFromList :: [(k, v)] -> Dict
-const dictFromList = kvs =>
-    Object.fromEntries(kvs);
-```
-
-
 ```applescript
 -- dictFromList :: [(k, v)] -> Dict
 on dictFromList(kvs)
@@ -19,4 +12,11 @@ on dictFromList(kvs)
             forKeys:(my map(go, my fst(tpl))))) as record
     end tell
 end dictFromList
+```
+
+
+```javascript
+// dictFromList :: [(k, v)] -> Dict
+const dictFromList = kvs =>
+    Object.fromEntries(kvs);
 ```

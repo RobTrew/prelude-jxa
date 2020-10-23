@@ -1,11 +1,3 @@
-```javascript
-// sortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const sortBy = f =>
-    xs => list(xs).slice()
-    .sort((a, b) => f(a)(b));
-```
-
-
 ```applescript
 -- Enough for small scale sorts.
 -- Use instead sortOn (Ord b => (a -> b) -> [a] -> [a])
@@ -28,4 +20,12 @@ on sortBy(f, xs)
         xs
     end if
 end sortBy
+```
+
+
+```javascript
+// sortBy :: (a -> a -> Ordering) -> [a] -> [a]
+const sortBy = f =>
+    xs => list(xs).slice()
+    .sort((a, b) => f(a)(b));
 ```

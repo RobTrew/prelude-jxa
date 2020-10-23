@@ -590,7 +590,8 @@
   "draw": {
     "code": "// draw :: Tree String -> [String]\nconst draw = node => {\n    // shift :: String -> String -> [String] -> [String]\n    const shifted = (first, other, xs) =>\n        zipWithList(append)(\n            cons(first)(\n              replicate(xs.length - 1)(\n                other\n              )\n            )\n        )(xs);\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const lng = xs.length;\n        return 0 < lng ? (\n            1 < lng ? append(\n                cons('│')(\n                    shifted('├─ ', '│  ', draw(xs[0]))\n                )\n            )(\n                drawSubTrees(xs.slice(1))\n            ) : cons('│')(\n              shifted('└─ ', '   ', draw(xs[0]))\n            )\n        ) : [];\n    };\n    return append(lines(node.root))(\n        drawSubTrees(node.nest)\n    );\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "tree"
     ]
   },
   "drawForest": {
@@ -1471,7 +1472,7 @@
     ]
   },
   "jsonParseLR": {
-    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            `${e.message} (line:${e.line} col:${e.column})`\n        );\n    }\n};",
+    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    // Either a message, or a JS value obtained\n    // from a successful parse of s.\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            `${e.message} (line:${e.line} col:${e.column})`\n        );\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2061,7 +2062,8 @@
   "postorder": {
     "code": "// postorder :: Tree a -> [a]\nconst postorder = t => {\n    // List of root elements of tree flattened\n    // bottom-up into a postorder list.\n    const go = (xs, x) =>\n        nest(x).reduce(go, xs).concat(root(x));\n    return go([], t);\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "tree"
     ]
   },
   "pred": {
@@ -2238,14 +2240,14 @@
     ]
   },
   "readFile": {
-    "code": "// readFile :: FilePath -> IO String\nconst readFile = fp => {\n    // The contents of a text file at the\n    // path file fp.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n    return ObjC.unwrap(\n        ns.isNil() ? (\n            e.localizedDescription\n        ) : ns\n    );\n};",
+    "code": "// readFile :: FilePath -> IO String\nconst readFile = fp => {\n    // The contents of a text file at the\n    // filepath fp.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n    return ObjC.unwrap(\n        ns.isNil() ? (\n            e.localizedDescription\n        ) : ns\n    );\n};",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "readFileLR": {
-    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n    return ns.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(ns));\n};",
+    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    // Either a message or the contents of any\n    // text file at the given filepath.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n    return ns.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(ns));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2613,7 +2615,7 @@
     ]
   },
   "sort": {
-    "code": "// sort :: Ord a => [a] -> [a]\nconst sort = xs => list(xs).slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));",
+    "code": "// sort :: Ord a => [a] -> [a]\nconst sort = xs =>\n    // An A-Z sorted copy of xs.\n    list(xs).slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));",
     "tags": [
       "JS Prelude",
       "core"
@@ -2864,7 +2866,7 @@
     ]
   },
   "takeWhile": {
-    "code": "// takeWhile :: (a -> Bool) -> [a] -> [a]\n// takeWhile :: (Char -> Bool) -> String -> String\nconst takeWhile = p => xs =>\n    xs.constructor.constructor.name !==\n    'GeneratorFunction' ? (() => {\n        const n = xs.length;\n        return xs.slice(\n            0, 0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    })() : takeWhileGen(p)(xs);",
+    "code": "// takeWhile :: (a -> Bool) -> [a] -> [a]\n// takeWhile :: (Char -> Bool) -> String -> String\nconst takeWhile = p =>\n    // The longest prefix of xs in which\n    // every element satisfies p.\n    xs => xs.constructor.constructor.name !==\n    'GeneratorFunction' ? (() => {\n        const n = xs.length;\n        return xs.slice(\n            0, 0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    })() : takeWhileGen(p)(xs);",
     "tags": [
       "JS Prelude",
       "core"

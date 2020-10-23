@@ -1,15 +1,3 @@
-```javascript
-// findIndices :: (a -> Bool) -> [a] -> [Int]
-// findIndices :: (String -> Bool) -> String -> [Int]
-const findIndices = p =>
-    xs => (
-        ys => ys.flatMap((y, i) => p(y, i, ys) ? (
-            [i]
-        ) : [])
-    )([...xs]);
-```
-
-
 ```applescript
 -- findIndices :: (a -> Bool) -> [a] -> [Int]
 on findIndices(p, xs)
@@ -27,4 +15,16 @@ on findIndices(p, xs)
     end script
     concatMap(result, xs)
 end findIndices
+```
+
+
+```javascript
+// findIndices :: (a -> Bool) -> [a] -> [Int]
+// findIndices :: (String -> Bool) -> String -> [Int]
+const findIndices = p =>
+    xs => (
+        ys => ys.flatMap((y, i) => p(y, i, ys) ? (
+            [i]
+        ) : [])
+    )([...xs]);
 ```
