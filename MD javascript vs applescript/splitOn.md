@@ -1,12 +1,12 @@
 ```applescript
--- splitOn("\r\n", "a\r\nb\r\nd\r\ne") --> ["a","b","d","e"]
--- splitOn("aaa", "aaaXaaaXaaaXaaa") --> {"", "X", "X", "X", ""}
--- splitOn("x", "x") --> {"", ""}
--- splitOn([3, 1], [1, 2, 3, 1, 2, 3, 1, 2, 3])
---> {{1, 2}, {2}, {2, 3}}
 -- splitOn :: [a] -> [a] -> [[a]]
 -- splitOn :: String -> String -> [String]
 on splitOn(pat, src)
+    -- splitOn("\r\n", "a\r\nb\r\nd\r\ne") --> ["a","b","d","e"]
+    -- splitOn("aaa", "aaaXaaaXaaaXaaa") --> {"", "X", "X", "X", ""}
+    -- splitOn("x", "x") --> {"", ""}
+    -- splitOn([3, 1], [1, 2, 3, 1, 2, 3, 1, 2, 3])
+    --> {{1, 2}, {2}, {2, 3}}
     if class of src is text then
         set {dlm, my text item delimiters} to ¬
             {my text item delimiters, pat}

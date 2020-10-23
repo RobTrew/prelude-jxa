@@ -1,7 +1,7 @@
 ```applescript
--- Split a filename into directory and file. combine is the inverse.
 -- splitFileName :: FilePath -> (String, String)
 on splitFileName(strPath)
+    -- Split a filename into directory and file. combine is the inverse.
     if strPath ≠ "" then
         if last character of strPath ≠ "/" then
             set xs to splitOn("/", strPath)

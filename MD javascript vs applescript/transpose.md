@@ -1,9 +1,9 @@
 ```applescript
--- If some of the rows are shorter than the following rows, 
--- their elements are skipped:
--- transpose({{10,11},{20},{},{30,31,32}}) -> {{10, 20, 30}, {11, 31}, {32}}
 -- transpose :: [[a]] -> [[a]]
 on transpose(xxs)
+    -- If some of the rows are shorter than the following rows, 
+    -- their elements are skipped:
+    -- transpose({{10,11},{20},{},{30,31,32}}) -> {{10, 20, 30}, {11, 31}, {32}}
     set intMax to |length|(maximumBy(comparing(my |length|), xxs))
     set gaps to replicate(intMax, {})
     script padded

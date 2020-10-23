@@ -1,7 +1,9 @@
 ```applescript
--- quickSortBy(comparing(my |length|), {"alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu"})
 -- quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
 on quickSortBy(cmp, xs)
+    -- quickSortBy(comparing(my |length|), 
+    -- {"alpha", "beta", "gamma", "delta", "epsilon", "zeta", 
+    --  "eta", "theta", "iota", "kappa", "lambda", "mu"})
     if length of xs > 1 then
         set h to item 1 of xs
         script
