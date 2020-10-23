@@ -1,7 +1,7 @@
 ```applescript
--- Abbreviation for quick testing
 -- ft :: (Int, Int) -> [Int]
 on ft(m, n)
+    -- Abbreviation for quick testing
     if m ≤ n then
         set lst to {}
         repeat with i from m to n

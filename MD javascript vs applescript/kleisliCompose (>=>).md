@@ -1,5 +1,4 @@
 ```applescript
--- Kleisli composition LR
 -- kleisliCompose (>=>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
 on kleisliCompose(f, g)
     script

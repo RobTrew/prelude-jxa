@@ -1,8 +1,8 @@
 ```applescript
--- The first of any nodes in the tree which match the predicate p
--- (For all matches, see treeMatches)
 -- findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
 on findTree(p, tree)
+    -- The first of any nodes in the tree which match the predicate p
+    -- (For all matches, see treeMatches)
     script go
         property pf : mReturn(p)'s |λ|
         on |λ|(oNode)

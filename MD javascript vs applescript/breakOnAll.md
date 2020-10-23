@@ -1,8 +1,8 @@
 ```applescript
--- breakOnAll "/" "a/b/c/"
--- ==> [("a", "/b/c/"), ("a/b", "/c/"), ("a/b/c", "/")]
 -- breakOnAll :: String -> String -> [(String, String)]
 on breakOnAll(pat, src)
+    -- breakOnAll "/" "a/b/c/"
+    -- ==> [("a", "/b/c/"), ("a/b", "/c/"), ("a/b/c", "/")]
     if "" ≠ pat then
         script
             on |λ|(a, _, i, xs)

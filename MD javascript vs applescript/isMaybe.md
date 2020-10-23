@@ -1,8 +1,8 @@
 ```applescript
-use framework "Foundation"
-use scripting additions
 -- isMaybe :: a -> Bool
 on isMaybe(x)
+    -- use framework "Foundation"
+    -- use scripting additions
     if class of x is record then
         set ca to current application
         set v to ((ca's NSDictionary's ¬

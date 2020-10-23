@@ -1,9 +1,9 @@
 ```applescript
--- isPrefixOf takes two lists or strings and returns 
---  true if and only if the first is a prefix of the second.
 -- isPrefixOf :: [a] -> [a] -> Bool
 -- isPrefixOf :: String -> String -> Bool
 on isPrefixOf(xs, ys)
+    -- isPrefixOf takes two lists or strings and returns 
+    --  true if and only if the first is a prefix of the second.
     script go
         on |λ|(xs, ys)
             set intX to length of xs

@@ -1,8 +1,8 @@
 ```applescript
--- The 'isSortedBy' function returns true iff the predicate returns true
--- for all adjacent pairs of elements in the list.
 -- isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
 on isSortedBy(cmp, xs)
+    -- The 'isSortedBy' function returns true iff the predicate returns true
+    -- for all adjacent pairs of elements in the list.
     script LE
         on |λ|(x)
             x < 1

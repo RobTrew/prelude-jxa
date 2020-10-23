@@ -1,11 +1,11 @@
 ```applescript
--- The mapMaybe function is a version of map which can throw out
--- elements. In particular, the functional argument returns
--- something of type Maybe b. If this is Nothing, no element is
--- added on to the result list. If it just Just b, then b is
--- included in the result list.
 -- mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 on mapMaybe(mf, xs)
+    -- The mapMaybe function is a version of map which can throw out
+    -- elements. In particular, the functional argument returns
+    -- something of type Maybe b. If this is Nothing, no element is
+    -- added on to the result list. If it just Just b, then b is
+    -- included in the result list.
     script
         property g : mReturn(mf)
         on |λ|(a, x)

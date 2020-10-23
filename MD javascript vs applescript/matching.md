@@ -1,8 +1,8 @@
 ```applescript
--- Returns a sequence-matching function for findIndices etc
 -- matching :: [a] -> (a -> Int -> [a] -> Bool)
 -- matching :: String -> (Char -> Int -> String -> Bool)
 on matching(pat)
+    -- Returns a sequence-matching function for findIndices etc
     if class of pat is text then
         set xs to characters of pat
     else

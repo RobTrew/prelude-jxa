@@ -1,7 +1,7 @@
 ```applescript
--- needle -> haystack -> maybe (prefix before match, match + rest)
 -- breakOnMay :: String -> String -> Maybe (String, String)
 on breakOnMay(pat, src)
+    -- needle -> haystack -> maybe (prefix before match, match + rest)
     if pat ≠ "" then
         set {dlm, my text item delimiters} to {my text item delimiters, pat}
         

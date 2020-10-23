@@ -1,6 +1,4 @@
 ```applescript
--- use framework "Foundation"
--- use scripting additions
 -- lookup :: Eq a => a -> Container -> Maybe b
 on lookup(k, m)
     set c to class of m

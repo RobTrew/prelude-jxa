@@ -1,10 +1,10 @@
 ```applescript
--- Lift a binary function to actions.
--- e.g.
--- liftA2(mult, {1, 2, 3}, {4, 5, 6}) 
---> {4, 5, 6, 8, 10, 12, 12, 15, 18}
 -- liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 on liftA2(f, a, b)
+    -- Lift a binary function to actions.
+    -- e.g.
+    -- liftA2(mult, {1, 2, 3}, {4, 5, 6}) 
+    --> {4, 5, 6, 8, 10, 12, 12, 15, 18}
     set c to class of a
     if c is list or c is text then
         liftA2List(f, a, b)

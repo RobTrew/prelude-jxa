@@ -1,6 +1,4 @@
 ```applescript
--- use framework "Foundation"
--- use scripting additions
 -- newUUID :: () -> IO UUID String
 on newUUID()
     current application's NSUUID's UUID's UUIDString as string

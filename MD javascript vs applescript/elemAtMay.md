@@ -1,12 +1,12 @@
 ```applescript
--- If x is a Dictionary then reads the Int as an index
--- into the lexically sorted keys of the Dict, 
--- returning a Maybe (Key, Value) pair.
--- If x is a list, then return a Maybe a 
--- (In either case, returns Nothing for an Int out of range)
 -- elemAtMay :: Int -> Dict -> Maybe (String, a)
 -- elemAtMay :: Int -> [a] -> Maybe a
 on elemAtMay(i, x)
+    -- If x is a Dictionary then reads the Int as an index
+    -- into the lexically sorted keys of the Dict, 
+    -- returning a Maybe (Key, Value) pair.
+    -- If x is a list, then return a Maybe a 
+    -- (In either case, returns Nothing for an Int out of range)
     set bln to class of x is record
     if bln then
         set ks to keys(x)

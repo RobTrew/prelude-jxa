@@ -1,10 +1,10 @@
 ```applescript
--- Write a string to the end of a file. 
--- Returns a Just FilePath value if the 
--- path exists and the write succeeded. 
--- Otherwise returns Nothing.
 -- appendFileMay :: FilePath -> String -> Maybe IO FilePath
 on appendFileMay(strPath, txt)
+    -- Write a string to the end of a file. 
+    -- Returns a Just FilePath value if the 
+    -- path exists and the write succeeded. 
+    -- Otherwise returns Nothing.
     set ca to current application
     set oFullPath to (ca's NSString's stringWithString:strPath)'s ¬
         stringByStandardizingPath

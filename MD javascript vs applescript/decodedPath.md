@@ -1,7 +1,7 @@
 ```applescript
--- use framework "Foundation"
 -- decodedPath :: Percent Encoded String -> FilePath
 on decodedPath(fp)
+    -- use framework "Foundation"
     tell current application to ¬
         (stringByRemovingPercentEncoding ¬
             of stringWithString_(fp) ¬

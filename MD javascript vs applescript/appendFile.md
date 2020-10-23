@@ -1,10 +1,10 @@
 ```applescript
--- Write a string to the end of a file. 
--- Returns true if the path exists 
--- and the write succeeded. 
--- Otherwise returns false.
 -- appendFile :: FilePath -> String -> IO Bool
 on appendFile(strPath, txt)
+    -- Write a string to the end of a file. 
+    -- Returns true if the path exists 
+    -- and the write succeeded. 
+    -- Otherwise returns false.
     set ca to current application
     set oFullPath to (ca's NSString's stringWithString:strPath)'s ¬
         stringByStandardizingPath

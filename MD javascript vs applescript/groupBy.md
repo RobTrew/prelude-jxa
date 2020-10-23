@@ -1,7 +1,7 @@
 ```applescript
--- Typical usage: groupBy(on(eq, f), xs)
 -- groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 on groupBy(f, xs)
+    -- Typical usage: groupBy(on(eq, f), xs)
     set mf to mReturn(f)
     
     script enGroup
