@@ -1,22 +1,3 @@
-```javascript
-// takeCycle :: Int -> [a] -> [a]
-const takeCycle = n =>
-    // First n elements of a non-finite cycle of xs.
-    xs => {
-        const lng = xs.length;
-        return (
-            n <= xs ? (
-                xs
-            ) : concat(
-                replicate(Math.ceil(n / lng))(
-                    xs
-                )
-            )
-        ).slice(0, n);
-    };
-```
-
-
 ```applescript
 -- takeCycle :: Int -> [a] -> [a]
 on takeCycle(n, xs)
@@ -33,4 +14,23 @@ on takeCycle(n, xs)
         items 1 thru n of cycle
     end if
 end takeCycle
+```
+
+
+```javascript
+// takeCycle :: Int -> [a] -> [a]
+const takeCycle = n =>
+    // First n elements of a non-finite cycle of xs.
+    xs => {
+        const lng = xs.length;
+        return (
+            n <= xs ? (
+                xs
+            ) : concat(
+                replicate(Math.ceil(n / lng))(
+                    xs
+                )
+            )
+        ).slice(0, n);
+    };
 ```

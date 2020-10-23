@@ -1,17 +1,3 @@
-```javascript
-// mapMaybe :: (a -> Maybe b) -> [a] -> [b]
-const mapMaybe = mf =>
-    // A filtered map, retaining only the contents
-    // of Just values. (Nothing values discarded).
-    xs => list(xs).reduce(
-        (a, x) => maybe(a)(
-            j => a.concat(j)
-        )(mf(x)),
-        []
-    );
-```
-
-
 ```applescript
 -- The mapMaybe function is a version of map which can throw out
 -- elements. In particular, the functional argument returns
@@ -33,4 +19,18 @@ on mapMaybe(mf, xs)
     end script
     foldl(result, {}, xs)
 end mapMaybe
+```
+
+
+```javascript
+// mapMaybe :: (a -> Maybe b) -> [a] -> [b]
+const mapMaybe = mf =>
+    // A filtered map, retaining only the contents
+    // of Just values. (Nothing values discarded).
+    xs => list(xs).reduce(
+        (a, x) => maybe(a)(
+            j => a.concat(j)
+        )(mf(x)),
+        []
+    );
 ```

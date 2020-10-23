@@ -1,10 +1,3 @@
-```javascript
-// thenList (>>) :: [a] -> [b] -> [b]
-const thenList = xs => ys =>
-    list(xs).flatMap(_ => list(ys));
-```
-
-
 ```applescript
 -- thenList (>>) :: [a] -> [b] -> [b]
 on thenList(xs, ys)
@@ -15,4 +8,11 @@ on thenList(xs, ys)
     end script
     concatMap(result, xs)
 end thenList
+```
+
+
+```javascript
+// thenList (>>) :: [a] -> [b] -> [b]
+const thenList = xs => ys =>
+    list(xs).flatMap(_ => list(ys));
 ```

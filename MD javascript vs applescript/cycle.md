@@ -1,16 +1,3 @@
-```javascript
-// cycle :: [a] -> Generator [a]
-function* cycle(xs) {
-    const lng = xs.length;
-    let i = 0;
-    while (true) {
-        yield(xs[i]);
-        i = (1 + i) % lng;
-    }
-}
-```
-
-
 ```applescript
 -- cycle :: [a] -> Generator [a]
 on cycle(xs)
@@ -32,4 +19,17 @@ on cycle(xs)
         end |λ|
     end script
 end cycle
+```
+
+
+```javascript
+// cycle :: [a] -> Generator [a]
+function* cycle(xs) {
+    const lng = xs.length;
+    let i = 0;
+    while (true) {
+        yield(xs[i]);
+        i = (1 + i) % lng;
+    }
+}
 ```

@@ -1,15 +1,3 @@
-```javascript
-// evalJSLR :: String -> Either String a
-const evalJSLR = s => {
-    try {
-        return Right(eval('(' + s + ')'));
-    } catch (e) {
-        return Left(e.message);
-    }
-};
-```
-
-
 ```applescript
 -- gJSC can be declared in the global namespace,
 -- but unless the reference is released before the 
@@ -26,4 +14,16 @@ on evalJSLR(strJS)
         |Right|(v)
     end if
 end evalJSLR
+```
+
+
+```javascript
+// evalJSLR :: String -> Either String a
+const evalJSLR = s => {
+    try {
+        return Right(eval('(' + s + ')'));
+    } catch (e) {
+        return Left(e.message);
+    }
+};
 ```
