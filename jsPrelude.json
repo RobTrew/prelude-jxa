@@ -3154,7 +3154,7 @@
     ]
   },
   "zip": {
-    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs => ys =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => Tuple(xs[i])(ys[i]));",
+    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    ys => Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => Tuple(xs[i])(ys[i]));",
     "tags": [
       "JS Prelude"
     ]
