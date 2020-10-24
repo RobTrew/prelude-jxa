@@ -1,12 +1,3 @@
-```javascript
-// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
-const liftMmay = f =>
-    mb => mb.Nothing ? (
-        mb
-    ) : Just(f(mb.Just));
-```
-
-
 ```applescript
 -- liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 on liftMmay(f)
@@ -20,4 +11,13 @@ on liftMmay(f)
         end |λ|
     end script
 end liftMmay
+```
+
+
+```javascript
+// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
+const liftMmay = f =>
+    mb => mb.Nothing ? (
+        mb
+    ) : Just(f(mb.Just));
 ```

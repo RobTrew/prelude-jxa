@@ -2054,7 +2054,7 @@
     ]
   },
   "plural": {
-    "code": "// plural :: Int -> String -> String\nconst plural = n =>\n    k => 1 !== n ? (\n        `${k}s`\n    ) : k;",
+    "code": "// plural :: String -> Int -> String\nconst plural = k =>\n    // Singular or plural EN inflection\n    // of a given word.\n    n => 1 !== n ? (\n        `${k}s`\n    ) : k;",
     "tags": [
       "JS Prelude"
     ]

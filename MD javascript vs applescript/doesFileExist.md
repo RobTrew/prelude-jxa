@@ -1,16 +1,3 @@
-```javascript
-// doesFileExist :: FilePath -> IO Bool
-const doesFileExist = fp => {
-    const ref = Ref();
-    return $.NSFileManager.defaultManager
-        .fileExistsAtPathIsDirectory(
-            $(fp)
-            .stringByStandardizingPath, ref
-        ) && 1 !== ref[0];
-};
-```
-
-
 ```applescript
 -- doesFileExist :: FilePath -> IO Bool
 on doesFileExist(strPath)
@@ -21,4 +8,17 @@ on doesFileExist(strPath)
         fileExistsAtPath:oPath isDirectory:(reference))
     bln and (int ≠ 1)
 end doesFileExist
+```
+
+
+```javascript
+// doesFileExist :: FilePath -> IO Bool
+const doesFileExist = fp => {
+    const ref = Ref();
+    return $.NSFileManager.defaultManager
+        .fileExistsAtPathIsDirectory(
+            $(fp)
+            .stringByStandardizingPath, ref
+        ) && 1 !== ref[0];
+};
 ```

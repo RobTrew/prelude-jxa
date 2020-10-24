@@ -1,3 +1,11 @@
+```applescript
+-- jsonLog :: a -> IO ()
+on jsonLog(e)
+    log showJSON(e)
+end jsonLog
+```
+
+
 ```javascript
 // jsonLog :: a -> IO ()
 const jsonLog = (...args) =>
@@ -6,12 +14,4 @@ const jsonLog = (...args) =>
         .map(JSON.stringify)
         .join(' -> ')
     );
-```
-
-
-```applescript
--- jsonLog :: a -> IO ()
-on jsonLog(e)
-    log showJSON(e)
-end jsonLog
 ```

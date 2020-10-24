@@ -320,7 +320,7 @@ partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
 permutations :: [a] -> [[a]]
 pi :: Float
-plural :: Int -> String -> String
+plural :: String -> Int -> String
 plus :: Num -> Num -> Num
 postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
