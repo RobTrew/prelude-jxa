@@ -320,6 +320,7 @@ partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
 permutations :: [a] -> [[a]]
 pi :: Float
+plural :: Int -> String -> String
 plus :: Num -> Num -> Num
 postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
@@ -424,7 +425,6 @@ sqrt :: Num -> Num
 sqrtLR :: Num -> Either String Num
 sqrtMay :: Num -> Maybe Num
 str :: a -> String
-stringFromList :: [Char] -> String
 strip :: String -> String
 stripEnd :: String -> String
 stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]

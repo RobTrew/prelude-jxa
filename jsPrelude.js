@@ -1445,8 +1445,9 @@ const fmapMay = f => mb =>
 
 // fmapTree :: (a -> b) -> Tree a -> Tree b
 const fmapTree = f => {
-    // A new tree. The result of a structure-preserving
-    // application of f to each root in the existing tree.
+    // A new tree. The result of a 
+    // structure-preserving application of f 
+    // to each root in the existing tree.
     const go = tree => Node(f(tree.root))(
         tree.nest.map(go)
     );
@@ -1508,6 +1509,8 @@ const foldl1May = f =>
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
 const foldlTree = f =>
+    // A top-down left-right 
+    // accumulating traversal.
     acc => node => {
         const go = (a, x) =>
             x.nest.reduce(go, f(a)(x.root));
@@ -2891,6 +2894,12 @@ const permutations = xs => (
 // pi :: Float
 const pi = Math.PI;
 
+// plural :: Int -> String -> String
+const plural = n =>
+    k => 1 !== n ? (
+        `${k}s`
+    ) : k;
+
 // plus :: Num -> Num -> Num
 const plus = a => b => a + b;
 
@@ -3761,11 +3770,6 @@ const str = x =>
    ) ? (
        x.join('')
    ) : x.toString();
-
-// stringFromList :: [Char] -> String
-const stringFromList = cs =>
-    // A String derived from a list of characters.
-    cs.join('');
 
 // strip :: String -> String
 const strip = s =>

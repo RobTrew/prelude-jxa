@@ -1,3 +1,19 @@
+```javascript
+// break :: (a -> Bool) -> [a] -> ([a], [a])
+const break_ = p =>
+    xs => {
+        const 
+            iLast = xs.length - 1,
+            ys = [...xs];
+        return splitAt(
+            until(i => iLast < i || p(ys[i]))(
+                i => 1 + i
+            )(0)
+        )(ys);
+    };
+```
+
+
 ```applescript
 -- break :: (a -> Bool) -> [a] -> ([a], [a])
 on break(p, xs)
@@ -21,20 +37,4 @@ on break(p, xs)
         Tuple(xs, {})
     end if
 end break
-```
-
-
-```javascript
-// break :: (a -> Bool) -> [a] -> ([a], [a])
-const break_ = p =>
-    xs => {
-        const 
-            iLast = xs.length - 1,
-            ys = [...xs];
-        return splitAt(
-            until(i => iLast < i || p(ys[i]))(
-                i => 1 + i
-            )(0)
-        )(ys);
-    };
 ```

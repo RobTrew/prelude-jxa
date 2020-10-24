@@ -1,3 +1,15 @@
+```javascript
+// enumFromThenTo :: Int -> Int -> Int -> [Int]
+const enumFromThenTo = x1 =>
+    x2 => y => {
+        const d = x2 - x1;
+        return Array.from({
+            length: Math.floor(y - x2) / d + 2
+        }, (_, i) => x1 + (d * i));
+    };
+```
+
+
 ```applescript
 -- enumFromThenTo :: Int -> Int -> Int -> [Int]
 on enumFromThenTo(x1, x2, y)
@@ -9,16 +21,4 @@ on enumFromThenTo(x1, x2, y)
     end repeat
     return xs
 end enumFromThenTo
-```
-
-
-```javascript
-// enumFromThenTo :: Int -> Int -> Int -> [Int]
-const enumFromThenTo = x1 =>
-    x2 => y => {
-        const d = x2 - x1;
-        return Array.from({
-            length: Math.floor(y - x2) / d + 2
-        }, (_, i) => x1 + (d * i));
-    };
 ```
