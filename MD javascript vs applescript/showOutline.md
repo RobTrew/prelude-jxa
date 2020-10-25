@@ -1,17 +1,3 @@
-```javascript
-// showOutline :: Tree String -> String
-const showOutline = tree => {
-    const go = indent => x =>
-        unlines(
-            [indent + x.root].concat(
-                x.nest.flatMap(go('    ' + indent))
-            )
-        );
-    return go('')(tree);
-};
-```
-
-
 ```applescript
 -- showOutline :: Tree String -> String
 on showOutline(x)
@@ -28,4 +14,18 @@ on showOutline(x)
     end script
     unlines((go's |λ|(""))'s |λ|(x))
 end showOutline
+```
+
+
+```javascript
+// showOutline :: Tree String -> String
+const showOutline = tree => {
+    const go = indent => x =>
+        unlines(
+            [indent + x.root].concat(
+                x.nest.flatMap(go('    ' + indent))
+            )
+        );
+    return go('')(tree);
+};
 ```

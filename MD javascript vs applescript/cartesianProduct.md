@@ -1,16 +1,3 @@
-```javascript
-// cartesianProduct :: [a] -> [b] -> [[a, b]]
-const cartesianProduct = xs =>
-    ys => (
-        bs => [...xs].flatMap(
-            x => bs.flatMap(b => [
-                [x].concat(b)
-            ])
-        )
-    )([...ys]);
-```
-
-
 ```applescript
 -- cartesianProduct :: [a] -> [b] -> [[a, b]]
 on cartesianProduct(xs, ys)
@@ -26,4 +13,17 @@ on cartesianProduct(xs, ys)
     end script
     concatMap(result, xs)
 end cartesianProduct
+```
+
+
+```javascript
+// cartesianProduct :: [a] -> [b] -> [[a, b]]
+const cartesianProduct = xs =>
+    ys => (
+        bs => [...xs].flatMap(
+            x => bs.flatMap(b => [
+                [x].concat(b)
+            ])
+        )
+    )([...ys]);
 ```

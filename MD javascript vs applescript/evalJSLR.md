@@ -1,15 +1,3 @@
-```javascript
-// evalJSLR :: String -> Either String a
-const evalJSLR = s => {
-    try {
-        return Right(eval('(' + s + ')'));
-    } catch (e) {
-        return Left(e.message);
-    }
-};
-```
-
-
 ```applescript
 -- evalJSLR :: String -> Either String a
 on evalJSLR(strJS)
@@ -26,4 +14,16 @@ on evalJSLR(strJS)
         |Right|(v)
     end if
 end evalJSLR
+```
+
+
+```javascript
+// evalJSLR :: String -> Either String a
+const evalJSLR = s => {
+    try {
+        return Right(eval('(' + s + ')'));
+    } catch (e) {
+        return Left(e.message);
+    }
+};
 ```

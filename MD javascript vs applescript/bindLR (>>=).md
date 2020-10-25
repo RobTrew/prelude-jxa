@@ -1,13 +1,3 @@
-```javascript
-// bindLR (>>=) :: Either a -> 
-// (a -> Either b) -> Either b
-const bindLR = m =>
-    mf => undefined !== m.Left ? (
-        m
-    ) : mf(m.Right);
-```
-
-
 ```applescript
 -- bindLR (>>=) :: Either a -> (a -> Either b) -> Either b
 on bindLR(m, mf)
@@ -17,4 +7,14 @@ on bindLR(m, mf)
         mReturn(mf)'s |λ|(|Right| of m)
     end if
 end bindLR
+```
+
+
+```javascript
+// bindLR (>>=) :: Either a -> 
+// (a -> Either b) -> Either b
+const bindLR = m =>
+    mf => undefined !== m.Left ? (
+        m
+    ) : mf(m.Right);
 ```

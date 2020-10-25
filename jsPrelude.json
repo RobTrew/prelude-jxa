@@ -2304,7 +2304,7 @@
     ]
   },
   "renamedFile": {
-    "code": "// renamedFile :: FilePath -> FilePath -> \n// Either String IO String\nconst renamedFile = fp =>\n    // Either a message detailing a problem, or\n    // confirmation of a filename change in the OS.\n    fp1 => {\n        const error = $();\n        return $.NSFileManager.defaultManager\n            .moveItemAtPathToPathError(fp, fp1, error) ? (\n                Right('Moved to: ' + fp1)\n            ) : Left(ObjC.unwrap(\n                error.localizedDescription\n            ));\n    };",
+    "code": "// renamedFile :: FilePath -> FilePath -> \n// Either IO String IO String\nconst renamedFile = fp =>\n    // Either a message detailing a problem, or\n    // confirmation of a filename change in the OS.\n    fp1 => {\n        const error = $();\n        return $.NSFileManager.defaultManager\n            .moveItemAtPathToPathError(fp, fp1, error) ? (\n                Right(fp1)\n            ) : Left(ObjC.unwrap(\n                error.localizedDescription\n            ));\n    };",
     "tags": [
       "JS Prelude",
       "jxa"

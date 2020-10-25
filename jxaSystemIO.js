@@ -309,7 +309,7 @@ const removeFile = fp => {
 };
 
 // renamedFile :: FilePath -> FilePath -> 
-// Either String IO String
+// Either IO String IO String
 const renamedFile = fp =>
     // Either a message detailing a problem, or
     // confirmation of a filename change in the OS.
@@ -317,7 +317,7 @@ const renamedFile = fp =>
         const error = $();
         return $.NSFileManager.defaultManager
             .moveItemAtPathToPathError(fp, fp1, error) ? (
-                Right('Moved to: ' + fp1)
+                Right(fp1)
             ) : Left(ObjC.unwrap(
                 error.localizedDescription
             ));
