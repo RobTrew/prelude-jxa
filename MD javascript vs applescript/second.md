@@ -1,3 +1,15 @@
+```javascript
+// second :: (a -> b) -> ((c, a) -> (c, b))
+const second = f =>
+    // A function over a simple value lifted
+    // to a function over a tuple.
+    // f (a, b) -> (a, f(b))
+    xy => Tuple(xy[0])(
+        f(xy[1])
+    );
+```
+
+
 ```applescript
 -- second :: (a -> b) -> ((c, a) -> (c, b))
 on |second|(f)
@@ -9,16 +21,4 @@ on |second|(f)
         end |λ|
     end script
 end |second|
-```
-
-
-```javascript
-// second :: (a -> b) -> ((c, a) -> (c, b))
-const second = f =>
-    // A function over a simple value lifted
-    // to a function over a tuple.
-    // f (a, b) -> (a, f(b))
-    xy => Tuple(xy[0])(
-        f(xy[1])
-    );
 ```

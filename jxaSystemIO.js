@@ -118,8 +118,8 @@ const copyFileLR = fpFrom =>
         ) : Left('Source file not found: ' + fpFrom);
     };
 
-// createDirectoryIfMissingLR :: Bool -> FilePath -> 
-// Either String FilePath
+// createDirectoryIfMissingLR :: Bool -> FilePath 
+// -> Either String FilePath
 const createDirectoryIfMissingLR = blnParents =>
     dirPath => {
         const fp = filePath(dirPath);

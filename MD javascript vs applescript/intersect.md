@@ -1,3 +1,11 @@
+```javascript
+// intersect :: (Eq a) => [a] -> [a] -> [a]
+const intersect = xs =>
+    // The intersection of lists xs and ys.
+    ys => xs.filter(x => ys.includes(x));
+```
+
+
 ```applescript
 -- intersect :: (Eq a) => [a] -> [a] -> [a]
 on intersect(xs, ys)
@@ -16,12 +24,4 @@ on intersect(xs, ys)
         {}
     end if
 end intersect
-```
-
-
-```javascript
-// intersect :: (Eq a) => [a] -> [a] -> [a]
-const intersect = xs =>
-    // The intersection of lists xs and ys.
-    ys => xs.filter(x => ys.includes(x));
 ```

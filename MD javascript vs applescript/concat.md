@@ -1,3 +1,16 @@
+```javascript
+// concat :: [[a]] -> [a]
+// concat :: [String] -> String
+const concat = xs => (
+    ys => 0 < ys.length ? (
+        ys.every(Array.isArray) ? (
+            []
+        ) : ''
+    ).concat(...ys) : ys
+)(list(xs));
+```
+
+
 ```applescript
 -- concat :: [[a]] -> [a]
 -- concat :: [String] -> String
@@ -13,17 +26,4 @@ on concat(xs)
     end repeat
     acc
 end concat
-```
-
-
-```javascript
-// concat :: [[a]] -> [a]
-// concat :: [String] -> String
-const concat = xs => (
-    ys => 0 < ys.length ? (
-        ys.every(Array.isArray) ? (
-            []
-        ) : ''
-    ).concat(...ys) : ys
-)(list(xs));
 ```

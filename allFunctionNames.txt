@@ -68,7 +68,7 @@ concatMap :: (a -> [b]) -> [a] -> [b]
 cons :: a -> [a] -> [a]
 constant :: a -> b -> a
 copyFileLR :: FilePath -> FilePath -> Either String IO ()
-createDirectoryIfMissingLR :: Bool -> FilePath ->
+createDirectoryIfMissingLR :: Bool -> FilePath -> Either String FilePath
 curry :: ((a, b) -> c) -> a -> b -> c
 curryN :: Curry a b => a -> b
 cycle :: [a] -> Generator [a]

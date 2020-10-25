@@ -1,3 +1,12 @@
+```javascript
+// intercalateS :: String -> [String] -> String
+const intercalateS = s =>
+    // The concatenation of xs
+    // interspersed with copies of s.
+    xs => xs.join(s);
+```
+
+
 ```applescript
 -- intercalateS :: String -> [String] -> String
 on intercalateS(delim, xs)
@@ -7,13 +16,4 @@ on intercalateS(delim, xs)
     set my text item delimiters to dlm
     s
 end intercalateS
-```
-
-
-```javascript
-// intercalateS :: String -> [String] -> String
-const intercalateS = s =>
-    // The concatenation of xs
-    // interspersed with copies of s.
-    xs => xs.join(s);
 ```

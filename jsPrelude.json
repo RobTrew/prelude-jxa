@@ -450,7 +450,7 @@
     ]
   },
   "createDirectoryIfMissingLR": {
-    "code": "// createDirectoryIfMissingLR :: Bool -> FilePath -> \n// Either String FilePath\nconst createDirectoryIfMissingLR = blnParents =>\n    dirPath => {\n        const fp = filePath(dirPath);\n        return doesPathExist(fp) ? (\n            Right(fp)\n        ) : (() => {\n            const\n                e = $(),\n                blnOK = $.NSFileManager\n                .defaultManager[\n                    'createDirectoryAtPath' + (\n                        'WithIntermediateDirectories'\n                        ) + 'AttributesError'\n                ](fp, blnParents, undefined, e);\n            return blnOK ? (\n                Right(fp)\n            ) : Left(e.localizedDescription);\n        })();\n    };",
+    "code": "// createDirectoryIfMissingLR :: Bool -> FilePath \n// -> Either String FilePath\nconst createDirectoryIfMissingLR = blnParents =>\n    dirPath => {\n        const fp = filePath(dirPath);\n        return doesPathExist(fp) ? (\n            Right(fp)\n        ) : (() => {\n            const\n                e = $(),\n                blnOK = $.NSFileManager\n                .defaultManager[\n                    'createDirectoryAtPath' + (\n                        'WithIntermediateDirectories'\n                        ) + 'AttributesError'\n                ](fp, blnParents, undefined, e);\n            return blnOK ? (\n                Right(fp)\n            ) : Left(e.localizedDescription);\n        })();\n    };",
     "tags": [
       "JS Prelude",
       "jxa"

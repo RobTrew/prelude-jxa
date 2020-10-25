@@ -3,7 +3,7 @@ appendFileMay :: FilePath -> String -> Maybe IO FilePath
 base64decode :: String -> String
 base64encode :: String -> String
 copyFileLR :: FilePath -> FilePath -> Either String IO ()
-createDirectoryIfMissingLR :: Bool -> FilePath ->
+createDirectoryIfMissingLR :: Bool -> FilePath -> Either String FilePath
 doesDirectoryExist :: FilePath -> IO Bool
 doesFileExist :: FilePath -> IO Bool
 doesPathExist :: FilePath -> IO Bool
