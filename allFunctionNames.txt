@@ -357,7 +357,7 @@ readHex :: String -> Int
 readLR :: Read a => String -> Either String a
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
-regexMatches :: Regex -> String -> [[String]]
+regexMatches :: Regex String -> String -> [[String]]
 rem :: Int -> Int -> Int
 removeFile :: FilePath -> Either String String
 renamedFile :: FilePath -> FilePath ->
