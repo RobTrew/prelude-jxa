@@ -1,3 +1,19 @@
+```javascript
+// chop :: ([a] -> (b, [a])) -> [a] -> [b]
+const chop = f =>
+    // A segmentation of xs by tail recursion with a
+    // function which returns a (prefix, residue) tuple.
+    xs => {
+        const go = xs =>
+            0 < xs.length ? (() => {
+                const [b, bs] = Array.from(f(xs));
+                return cons(b)(go(bs));
+            })() : [];
+        return go([...xs]);
+    };
+```
+
+
 ```applescript
 -- chop :: ([a] -> (b, [a])) -> [a] -> [b]
 on chop(f, xs)
@@ -14,20 +30,4 @@ on chop(f, xs)
     end script
     go's |λ|(xs)
 end chop
-```
-
-
-```javascript
-// chop :: ([a] -> (b, [a])) -> [a] -> [b]
-const chop = f =>
-    // A segmentation of xs by tail recursion with a
-    // function which returns a (prefix, residue) tuple.
-    xs => {
-        const go = xs =>
-            0 < xs.length ? (() => {
-                const [b, bs] = Array.from(f(xs));
-                return cons(b)(go(bs));
-            })() : [];
-        return go([...xs]);
-    };
 ```

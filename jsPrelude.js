@@ -2903,7 +2903,9 @@ const plural = k =>
     ) : k;
 
 // plus :: Num -> Num -> Num
-const plus = a => b => a + b;
+const plus = a =>
+    // The sum of a and b.
+    b => a + b;
 
 // postorder :: Tree a -> [a]
 const postorder = t => {

@@ -1,3 +1,11 @@
+```javascript
+// toLower :: String -> String
+const toLower = s =>
+    // Lower-case version of string.
+    s.toLocaleLowerCase();
+```
+
+
 ```applescript
 -- toLower :: String -> String
 on toLower(str)
@@ -6,12 +14,4 @@ on toLower(str)
     ((ca's NSString's stringWithString:(str))'s ¬
         lowercaseStringWithLocale:(ca's NSLocale's currentLocale())) as text
 end toLower
-```
-
-
-```javascript
-// toLower :: String -> String
-const toLower = s =>
-    // Lower-case version of string.
-    s.toLocaleLowerCase();
 ```

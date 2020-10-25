@@ -1,3 +1,20 @@
+```javascript
+// mappend (<>) :: Monoid a => a -> a -> a
+const mappend = a =>
+    // Associative operation 
+    // defined for various monoid types.
+    b => (t => (Boolean(t) ? (
+        'Maybe' === t ? (
+            mappendMaybe
+        ) : mappendTuple
+    ) : Array.isArray(a) ? (
+        append
+    ) : 'function' === typeof a ? (
+        mappendFn
+    ) : mappendOrd)(a)(b))(a.type);
+```
+
+
 ```applescript
 -- mappend (<>) :: Monoid a => a -> a -> a
 on mappend(a, b)
@@ -21,21 +38,4 @@ on mappend(a, b)
         a & b
     end if
 end mappend
-```
-
-
-```javascript
-// mappend (<>) :: Monoid a => a -> a -> a
-const mappend = a =>
-    // Associative operation 
-    // defined for various monoid types.
-    b => (t => (Boolean(t) ? (
-        'Maybe' === t ? (
-            mappendMaybe
-        ) : mappendTuple
-    ) : Array.isArray(a) ? (
-        append
-    ) : 'function' === typeof a ? (
-        mappendFn
-    ) : mappendOrd)(a)(b))(a.type);
 ```

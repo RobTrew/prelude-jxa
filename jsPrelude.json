@@ -2060,7 +2060,7 @@
     ]
   },
   "plus": {
-    "code": "// plus :: Num -> Num -> Num\nconst plus = a => b => a + b;",
+    "code": "// plus :: Num -> Num -> Num\nconst plus = a =>\n    // The sum of a and b.\n    b => a + b;",
     "tags": [
       "JS Prelude"
     ]
