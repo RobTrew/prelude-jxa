@@ -1218,7 +1218,7 @@ const filter = p =>
     // the predicate p.
     xs => [...xs].filter(p);
 
-// filterGen :: (a -> Bool) -> Gen [a] -> [a]
+// filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]
 const filterGen = p => xs => {
     // Non-finite stream of values which are 
     // drawn from gen, and satisfy p

@@ -859,7 +859,7 @@
     ]
   },
   "filterGen": {
-    "code": "// filterGen :: (a -> Bool) -> Gen [a] -> [a]\nconst filterGen = p => xs => {\n    // Non-finite stream of values which are \n    // drawn from gen, and satisfy p\n    function* go() {\n        let x = xs.next();\n        while (!x.done) {\n            let v = x.value;\n            if (p(v)) {\n                yield v;\n            }\n            x = xs.next();\n        }\n    }\n    return go(xs);\n};",
+    "code": "// filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]\nconst filterGen = p => xs => {\n    // Non-finite stream of values which are \n    // drawn from gen, and satisfy p\n    function* go() {\n        let x = xs.next();\n        while (!x.done) {\n            let v = x.value;\n            if (p(v)) {\n                yield v;\n            }\n            x = xs.next();\n        }\n    }\n    return go(xs);\n};",
     "tags": [
       "JS Prelude"
     ]

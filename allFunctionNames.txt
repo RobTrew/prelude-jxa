@@ -132,7 +132,7 @@ fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
 filter :: (a -> Bool) -> [a] -> [a]
-filterGen :: (a -> Bool) -> Gen [a] -> [a]
+filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]
 filterTree (a -> Bool) -> Tree a -> [a]
 filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 filteredTree (a -> Bool) -> Tree a -> Tree a
