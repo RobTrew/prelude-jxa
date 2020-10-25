@@ -1,14 +1,14 @@
 ```applescript
--- foldTree :: (a -> [b] -> b) -> Tree a -> b
-on foldTree(f, tree)
+-- foldlTree :: (b -> a -> b) -> b -> Tree a -> b
+on foldlTree(f, acc, tree)
     script go
-        property g : mReturn(f)
-        on |λ|(oNode)
-            tell g to |λ|(root of oNode, map(go, nest of oNode))
+        property mf : mReturn(f)
+        on |λ|(a, x)
+            foldl(go, |λ|(a, root of x) of mf, nest of x)
         end |λ|
     end script
-    |λ|(tree) of go
-end foldTree
+    |λ|(acc, tree) of go
+end foldlTree
 ```
 
 
