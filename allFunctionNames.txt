@@ -191,6 +191,7 @@ index (!!) :: [a] -> Int -> Maybe a
 indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int -> Maybe Tree (a, { nodeSum :: Int })
 indexOf :: Eq a => [a] -> [a] -> Maybe Int
 indexTree :: Tree (a,  { nodeSum :: Int }) -> Int -> Maybe Tree (a,  { nodeSum :: Int })
+indexedTree :: Tree a -> Tree (a, Int)
 init :: [a] -> [a]
 initMay :: [a] -> Maybe [a]
 inits :: [a] -> [[a]]

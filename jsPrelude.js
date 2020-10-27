@@ -1758,6 +1758,25 @@ const indexTree = tree =>
         ) : indexForest(tree.nest)(i - 1)
     ) : Just(tree);
 
+// indexedTree :: Tree a -> Tree (a, Int)
+const indexedTree = tree => {
+    // A tree in which each root value 
+    // is paired with a top-down
+    // left-right zero-based index,
+    // where the root node has index 0;
+    const go = n => node =>
+        second(
+            Node(
+                Tuple(node.root)(n)
+            )
+        )(
+            mapAccumL(go)(
+                succ(n)
+            )(node.nest)
+        );
+    return snd(go(0)(tree));
+};
+
 // init :: [a] -> [a]
 const init = xs => (
     // All elements of a list except the last.
@@ -4149,9 +4168,10 @@ const toUpper = s =>
 
 // transpose :: [[a]] -> [[a]]
 const transpose = xss => {
-    // If some of the rows are shorter than the following rows, 
+    // If any rows are shorter than those that follow, 
     // their elements are skipped:
-    // > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]
+    // > transpose [[10,11],[20],[],[30,31,32]]
+    //             == [[10,20,30],[11,31],[32]]
     const go = xss =>
         0 < xss.length ? (() => {
             const

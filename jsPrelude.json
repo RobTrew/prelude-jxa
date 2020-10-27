@@ -1241,6 +1241,13 @@
       "tree"
     ]
   },
+  "indexedTree": {
+    "code": "// indexedTree :: Tree a -> Tree (a, Int)\nconst indexedTree = tree => {\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right zero-based index,\n    // where the root node has index 0;\n    const go = n => node =>\n        second(\n            Node(\n                Tuple(node.root)(n)\n            )\n        )(\n            mapAccumL(go)(\n                succ(n)\n            )(node.nest)\n        );\n    return snd(go(0)(tree));\n};",
+    "tags": [
+      "JS Prelude",
+      "tree"
+    ]
+  },
   "init": {
     "code": "// init :: [a] -> [a]\nconst init = xs => (\n    // All elements of a list except the last.\n    ys => 0 < ys.length ? (\n        ys.slice(0, -1)\n    ) : undefined\n)(list(xs));",
     "tags": [
@@ -2967,7 +2974,7 @@
     ]
   },
   "transpose": {
-    "code": "// transpose :: [[a]] -> [[a]]\nconst transpose = xss => {\n    // If some of the rows are shorter than the following rows, \n    // their elements are skipped:\n    // > transpose [[10,11],[20],[],[30,31,32]] == [[10,20,30],[11,31],[32]]\n    const go = xss =>\n        0 < xss.length ? (() => {\n            const\n                h = xss[0],\n                t = xss.slice(1);\n            return 0 < h.length ? [\n                [h[0]].concat(t.reduce(\n                    (a, xs) => a.concat(\n                        0 < xs.length ? (\n                            [xs[0]]\n                        ) : []\n                    ),\n                    []\n                ))\n            ].concat(go([h.slice(1)].concat(\n                t.map(xs => xs.slice(1))\n            ))) : go(t);\n        })() : [];\n    return go(xss);\n};",
+    "code": "// transpose :: [[a]] -> [[a]]\nconst transpose = xss => {\n    // If any rows are shorter than those that follow, \n    // their elements are skipped:\n    // > transpose [[10,11],[20],[],[30,31,32]]\n    //             == [[10,20,30],[11,31],[32]]\n    const go = xss =>\n        0 < xss.length ? (() => {\n            const\n                h = xss[0],\n                t = xss.slice(1);\n            return 0 < h.length ? [\n                [h[0]].concat(t.reduce(\n                    (a, xs) => a.concat(\n                        0 < xs.length ? (\n                            [xs[0]]\n                        ) : []\n                    ),\n                    []\n                ))\n            ].concat(go([h.slice(1)].concat(\n                t.map(xs => xs.slice(1))\n            ))) : go(t);\n        })() : [];\n    return go(xss);\n};",
     "tags": [
       "JS Prelude"
     ]
