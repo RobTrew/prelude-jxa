@@ -1,3 +1,15 @@
+```applescript
+-- predMay :: Enum a => a -> Maybe a
+on predMay(x)
+    if x is minBound(x) then
+        Nothing()
+    else
+        Just(toEnum(x)'s |λ|(fromEnum(x) - 1))
+    end if
+end predMay
+```
+
+
 ```javascript
 // predMay :: Enum a => a -> Maybe a
 const predMay = x => {
@@ -11,16 +23,4 @@ const predMay = x => {
         Just(x - 1)
     ) : Nothing();
 };
-```
-
-
-```applescript
--- predMay :: Enum a => a -> Maybe a
-on predMay(x)
-    if x is minBound(x) then
-        Nothing()
-    else
-        Just(toEnum(x)'s |λ|(fromEnum(x) - 1))
-    end if
-end predMay
 ```

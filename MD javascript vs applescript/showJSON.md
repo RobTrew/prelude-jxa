@@ -1,11 +1,3 @@
-```javascript
-// showJSON :: a -> String
-const showJSON = x =>
-    // Indented JSON representation of the value x.
-    JSON.stringify(x, null, 2);
-```
-
-
 ```applescript
 -- showJSON :: a -> String
 on showJSON(x)
@@ -34,4 +26,12 @@ on showJSON(x)
         end try
     end if
 end showJSON
+```
+
+
+```javascript
+// showJSON :: a -> String
+const showJSON = x =>
+    // Indented JSON representation of the value x.
+    JSON.stringify(x, null, 2);
 ```

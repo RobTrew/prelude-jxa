@@ -1,15 +1,3 @@
-```javascript
-// groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
-const groupSortOn = f =>
-    compose(
-        map(map(snd)),
-        groupBy(on(eq)(fst)),
-        sortBy(comparing(fst)),
-        map(fanArrow(f)(identity))
-    );
-```
-
-
 ```applescript
 -- groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 -- groupSortOn :: Ord b => [((a -> b), Bool)]  -> [a] -> [[a]]
@@ -79,4 +67,16 @@ on groupSortOn(f, xs)
         groupBy(aEq, ((ca's NSArray's arrayWithArray:map(dec, xs))'s ¬
             sortedArrayUsingDescriptors:map(descrip, bs)) as list))
 end groupSortOn
+```
+
+
+```javascript
+// groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
+const groupSortOn = f =>
+    compose(
+        map(map(snd)),
+        groupBy(on(eq)(fst)),
+        sortBy(comparing(fst)),
+        map(fanArrow(f)(identity))
+    );
 ```
