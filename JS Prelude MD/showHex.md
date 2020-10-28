@@ -1,7 +1,6 @@
 ```javascript
 // showHex :: Int -> String
 const showHex = n =>
-    showIntAtBase(16)(
-        intToDigit
-    )(n)('');
+    // Hexadecimal string for a given integer.
+    '0x' + n.toString(16);
 ```

@@ -799,7 +799,7 @@
     ]
   },
   "fTable": {
-    "code": "// fTable :: String -> (a -> String) -> \n// (b -> String) -> (a -> b) -> [a] -> String\nconst fTable = s =>\n    // Heading -> x display function ->\n    //           fx display function ->\n    //    f -> values -> tabular string\n    xShow => fxShow => f => xs => {\n        const\n            ys = xs.map(xShow),\n            w = Math.max(...ys.map(length));\n        return s + '\\n' + zipWith(\n            a => b => a.padStart(w, ' ') + ' -> ' + b\n        )(ys)(\n            xs.map(x => fxShow(f(x)))\n        ).join('\\n');\n    };",
+    "code": "// fTable :: String -> (a -> String) -> \n// (b -> String) -> (a -> b) -> [a] -> String\nconst fTable = s =>\n    // Heading -> x display function ->\n    //           fx display function ->\n    //    f -> values -> tabular string\n    xShow => fxShow => f => xs => {\n        const\n            ys = xs.map(xShow),\n            w = Math.max(...ys.map(y => [...y].length));\n        return s + '\\n' + zipWith(\n            a => b => a.padStart(w, ' ') + ' -> ' + b\n        )(ys)(\n            xs.map(x => fxShow(f(x)))\n        ).join('\\n');\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1242,7 +1242,7 @@
     ]
   },
   "indexedTree": {
-    "code": "// indexedTree :: Tree a -> Tree (a, Int)\nconst indexedTree = tree => {\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right zero-based index,\n    // where the root node has index 0;\n    const go = n => node =>\n        second(\n            Node(\n                Tuple(node.root)(n)\n            )\n        )(\n            mapAccumL(go)(\n                succ(n)\n            )(node.nest)\n        );\n    return snd(go(0)(tree));\n};",
+    "code": "// indexedTree :: Tree a -> Tree (a, Int)\nconst indexedTree = tree => {\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right zero-based index,\n    // where the root node has index 0;\n    const go = n => node =>\n        second(\n            Node(\n                Tuple(node.root)(n)\n            )\n        )(\n            mapAccumL(go)(succ(n))(\n                node.nest\n            )\n        );\n    return snd(go(0)(tree));\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1832,7 +1832,7 @@
     ]
   },
   "maybe": {
-    "code": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = v =>\n    // Default value (v) if m is Nothing, or f(m.Just)\n    f => m => m.Nothing ? v : f(m.Just);",
+    "code": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = v =>\n    // Default value (v) if m is Nothing, or f(m.Just)\n    f => m => m.Nothing ? (\n        v\n    ) : f(m.Just);",
     "tags": [
       "JS Prelude",
       "core"
@@ -2506,7 +2506,7 @@
     ]
   },
   "showHex": {
-    "code": "// showHex :: Int -> String\nconst showHex = n =>\n    showIntAtBase(16)(\n        intToDigit\n    )(n)('');",
+    "code": "// showHex :: Int -> String\nconst showHex = n =>\n    // Hexadecimal string for a given integer.\n    '0x' + n.toString(16);",
     "tags": [
       "JS Prelude"
     ]

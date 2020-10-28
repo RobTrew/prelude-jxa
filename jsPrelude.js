@@ -1171,7 +1171,7 @@ const fTable = s =>
     xShow => fxShow => f => xs => {
         const
             ys = xs.map(xShow),
-            w = Math.max(...ys.map(length));
+            w = Math.max(...ys.map(y => [...y].length));
         return s + '\n' + zipWith(
             a => b => a.padStart(w, ' ') + ' -> ' + b
         )(ys)(
@@ -1770,9 +1770,9 @@ const indexedTree = tree => {
                 Tuple(node.root)(n)
             )
         )(
-            mapAccumL(go)(
-                succ(n)
-            )(node.nest)
+            mapAccumL(go)(succ(n))(
+                node.nest
+            )
         );
     return snd(go(0)(tree));
 };
@@ -2586,7 +2586,9 @@ const maximumOn = f =>
 // maybe :: b -> (a -> b) -> Maybe a -> b
 const maybe = v =>
     // Default value (v) if m is Nothing, or f(m.Just)
-    f => m => m.Nothing ? v : f(m.Just);
+    f => m => m.Nothing ? (
+        v
+    ) : f(m.Just);
 
 // mconcatOrd :: [Ordering] -> Ordering
 const mconcatOrd = cmps =>
@@ -3474,9 +3476,8 @@ const showForest = xs =>
 
 // showHex :: Int -> String
 const showHex = n =>
-    showIntAtBase(16)(
-        intToDigit
-    )(n)('');
+    // Hexadecimal string for a given integer.
+    '0x' + n.toString(16);
 
 // showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
 const showIntAtBase = base => toChr => n => rs => {

@@ -8,7 +8,7 @@ const fTable = s =>
     xShow => fxShow => f => xs => {
         const
             ys = xs.map(xShow),
-            w = Math.max(...ys.map(length));
+            w = Math.max(...ys.map(y => [...y].length));
         return s + '\n' + zipWith(
             a => b => a.padStart(w, ' ') + ' -> ' + b
         )(ys)(

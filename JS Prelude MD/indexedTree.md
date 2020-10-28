@@ -11,9 +11,9 @@ const indexedTree = tree => {
                 Tuple(node.root)(n)
             )
         )(
-            mapAccumL(go)(
-                succ(n)
-            )(node.nest)
+            mapAccumL(go)(succ(n))(
+                node.nest
+            )
         );
     return snd(go(0)(tree));
 };
