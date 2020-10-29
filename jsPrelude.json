@@ -925,7 +925,7 @@
     ]
   },
   "first": {
-    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f => \n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    xy => Tuple(f(xy[0]))(\n       xy[1]\n    );",
+    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    xy => {\n        const tpl = Tuple(f(xy[0]))(xy[1]);\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2426,7 +2426,7 @@
     ]
   },
   "second": {
-    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => Tuple(xy[0])(\n        f(xy[1])\n    );",
+    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => {\n        const tpl = Tuple(xy[0])(f(xy[1]));\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
     "tags": [
       "JS Prelude"
     ]

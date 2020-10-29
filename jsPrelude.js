@@ -1364,12 +1364,15 @@ const findTree = p => {
 };
 
 // first :: (a -> b) -> ((a, c) -> (b, c))
-const first = f => 
+const first = f =>
     // A simple function lifted to one which applies
     // to a tuple, transforming only its first item.
-    xy => Tuple(f(xy[0]))(
-       xy[1]
-    );
+    xy => {
+        const tpl = Tuple(f(xy[0]))(xy[1]);
+        return Array.isArray(xy) ? (
+            Array.from(tpl)
+        ) : tpl;
+    };
 
 // flatten :: NestedList a -> [a]
 const flatten = nest => 
@@ -3375,9 +3378,12 @@ const second = f =>
     // A function over a simple value lifted
     // to a function over a tuple.
     // f (a, b) -> (a, f(b))
-    xy => Tuple(xy[0])(
-        f(xy[1])
-    );
+    xy => {
+        const tpl = Tuple(xy[0])(f(xy[1]));
+        return Array.isArray(xy) ? (
+            Array.from(tpl)
+        ) : tpl;
+    };
 
 // sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 const sequenceA = tfa =>
