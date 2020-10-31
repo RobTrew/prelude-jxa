@@ -280,7 +280,7 @@ const bimapN = f =>
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
 const bind = m =>
     mf => (Array.isArray(m) ? (
-        bindList
+        bindList(m)(mf)
     ) : (() => {
         const t = m.type;
         return 'Either' === t ? (
@@ -3533,10 +3533,16 @@ const showMaybe = mb =>
         'Nothing'
     ) : 'Just(' + unQuoted(show(mb.Just)) + ')';
 
-// showMenuLR :: Bool -> String -> [String] -> 
-// Either String [String]
+// showMenuLR :: Bool -> String -> String -> 
+// [String] -> String -> Either String [String]
 const showMenuLR = blnMult =>
-    title => xs => 0 < xs.length ? (() => {
+    // An optionally multi-choice menu, with 
+    // a given title and prompt string.
+    // Listing the strings in xs, with 
+    // the the string `selected` pre-selected
+    // if found in xs.
+    title => prompt => xs =>
+    selected => 0 < xs.length ? (() => {
         const sa = Object.assign(
             Application('System Events'), {
                 includeStandardAdditions: true
@@ -3544,13 +3550,10 @@ const showMenuLR = blnMult =>
         sa.activate();
         const v = sa.chooseFromList(xs, {
             withTitle: title,
-            withPrompt: 'Select' + (
-                blnMult ? (
-                    ' one or more of ' +
-                    xs.length.toString()
-                ) : ':'
-            ),
-            defaultItems: xs[0],
+            withPrompt: prompt,
+            defaultItems: xs.includes(selected) ? (
+                [selected]
+            ) : [xs[0]],
             okButtonName: 'OK',
             cancelButtonName: 'Cancel',
             multipleSelectionsAllowed: blnMult,

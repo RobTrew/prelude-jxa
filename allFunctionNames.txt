@@ -399,7 +399,7 @@ showLR :: Either a b -> String
 showList :: [a] -> String
 showLog :: a -> IO ()
 showMaybe :: Maybe a -> String
-showMenuLR :: Bool -> String -> [String] ->
+showMenuLR :: Bool -> String -> String -> [String] -> String -> Either String [String]
 showOrdering :: Ordering -> String
 showOutline :: Tree String -> String
 showPrecision :: Int -> Float -> String
