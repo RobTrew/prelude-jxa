@@ -686,7 +686,7 @@
     ]
   },
   "elemIndex": {
-    "code": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = x =>\n    xs => {\n        const i = xs.indexOf(x);\n        return -1 === i ? (\n            Nothing()\n        ) : Just(i);\n    };",
+    "code": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = x =>\n    // Just the index of x in xs, if it is found,\n    // or Nothing, if xs does not contain x.\n    xs => {\n        const i = xs.indexOf(x);\n        return -1 === i ? (\n            Nothing()\n        ) : Just(i);\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -2955,7 +2955,7 @@
     ]
   },
   "toSentence": {
-    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - initial string capitalized \n    // and rest lowercase.\n    (0 < s.length) ? (\n        s[0].toUpperCase() + s.slice(1)\n        .toLowerCase()\n    ) : s;",
+    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - initial char capitalized \n    // and rest lowercase.\n    (0 < s.length) ? (\n        s[0].toUpperCase() + s.slice(1)\n        .toLowerCase()\n    ) : s;",
     "tags": [
       "JS Prelude"
     ]

@@ -984,6 +984,8 @@ const elemAtMay = i =>
 
 // elemIndex :: Eq a => a -> [a] -> Maybe Int
 const elemIndex = x =>
+    // Just the index of x in xs, if it is found,
+    // or Nothing, if xs does not contain x.
     xs => {
         const i = xs.indexOf(x);
         return -1 === i ? (
@@ -4157,7 +4159,7 @@ const toRatio = n =>
 
 // toSentence :: String -> String
 const toSentence = s =>
-    // Sentence case - initial string capitalized 
+    // Sentence case - initial char capitalized 
     // and rest lowercase.
     (0 < s.length) ? (
         s[0].toUpperCase() + s.slice(1)
