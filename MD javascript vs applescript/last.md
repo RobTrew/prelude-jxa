@@ -1,3 +1,11 @@
+```applescript
+-- last :: [a] -> a
+on |last|(xs)
+        item -1 of xs
+end |last|
+```
+
+
 ```javascript
 // last :: [a] -> a
 const last = xs => (
@@ -6,12 +14,4 @@ const last = xs => (
         ys.slice(-1)[0]
     ) : undefined
 )(list(xs));
-```
-
-
-```applescript
--- last :: [a] -> a
-on |last|(xs)
-        item -1 of xs
-end |last|
 ```

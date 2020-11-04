@@ -1618,7 +1618,7 @@
     ]
   },
   "lines": {
-    "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single\n    // newline-delimited string.\n    0 < s.length ? (\n        s.split(/[\\r\\n]/)\n    ) : [];",
+    "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single\n    // string delimited by newline and or CR.\n    0 < s.length ? (\n        s.split(/[\\r\\n]+/)\n    ) : [];",
     "tags": [
       "JS Prelude",
       "core"

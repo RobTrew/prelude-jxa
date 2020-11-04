@@ -1,3 +1,21 @@
+```applescript
+-- writeFileLR :: FilePath -> Either String IO FilePath
+on writeFileLR(strPath, strText)
+    set ca to current application
+    set fp to stringByStandardizingPath of ¬
+        (ca's NSString's stringWithString:strPath)
+    set {bln, e} to (ca's NSString's stringWithString:strText)'s ¬
+        writeToFile:(fp) atomically:true ¬
+            encoding:(ca's NSUTF8StringEncoding) |error|:(reference)
+    if bln and (missing value is e) then
+        |Right|(fp as string)
+    else
+        |Left|(e's localizedDescription() as string)
+    end if
+end writeFileLR
+```
+
+
 ```javascript
 // writeFileLR :: FilePath -> Either String IO FilePath
 const writeFileLR = fp =>
@@ -14,22 +32,4 @@ const writeFileLR = fp =>
                 Right(ObjC.unwrap(efp))
             ) : Left(ObjC.unwrap(e.localizedDescription));
     };
-```
-
-
-```applescript
--- writeFileLR :: FilePath -> Either String IO FilePath
-on writeFileLR(strPath, strText)
-    set ca to current application
-    set fp to stringByStandardizingPath of ¬
-        (ca's NSString's stringWithString:strPath)
-    set {bln, e} to (ca's NSString's stringWithString:strText)'s ¬
-        writeToFile:(fp) atomically:true ¬
-            encoding:(ca's NSUTF8StringEncoding) |error|:(reference)
-    if bln and (missing value is e) then
-        |Right|(fp as string)
-    else
-        |Left|(e's localizedDescription() as string)
-    end if
-end writeFileLR
 ```

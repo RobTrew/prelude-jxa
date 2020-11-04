@@ -2,8 +2,8 @@
 // lines :: String -> [String]
 const lines = s =>
     // A list of strings derived from a single
-    // newline-delimited string.
+    // string delimited by newline and or CR.
     0 < s.length ? (
-        s.split(/[\r\n]/)
+        s.split(/[\r\n]+/)
     ) : [];
 ```
