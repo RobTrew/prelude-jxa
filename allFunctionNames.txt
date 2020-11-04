@@ -250,7 +250,6 @@ liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
-liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
 lines :: String -> [String]
 list :: StringOrArrayLike b => b -> [a]
 listDirectory :: FilePath -> [FilePath]

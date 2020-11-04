@@ -2269,12 +2269,6 @@ const liftA2Tuple = f =>
         f(a[1])(b[1])
     );
 
-// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)
-const liftMmay = f =>
-    mb => mb.Nothing ? (
-        mb
-    ) : Just(f(mb.Just));
-
 // lines :: String -> [String]
 const lines = s =>
     // A list of strings derived from a single

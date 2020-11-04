@@ -1611,12 +1611,6 @@
       "JS Prelude"
     ]
   },
-  "liftMmay": {
-    "code": "// liftMmay :: (a -> b) -> (Maybe a -> Maybe b)\nconst liftMmay = f =>\n    mb => mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
   "lines": {
     "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single\n    // string delimited by newline and or CR.\n    0 < s.length ? (\n        s.split(/[\\r\\n]+/)\n    ) : [];",
     "tags": [
