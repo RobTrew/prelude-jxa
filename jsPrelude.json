@@ -2980,7 +2980,7 @@
     ]
   },
   "traverse": {
-    "code": "// traverse :: (Applicative f, Traversable t) => \n// (a -> f b) -> t a -> f (t b)\nconst traverse = f => tx =>\n    ({\n        'Either': () => traverseLR,\n        'Maybe': () => traverseMay,\n        'Node': () => traverseTree,\n        'Tuple': () => traverseTuple,\n        'List': () => traverseList\n    })[tx.type || 'List']()(f)(tx);",
+    "code": "// traverse :: (Applicative f, Traversable t) => \n// (a -> f b) -> t a -> f (t b)\nconst traverse = f =>\n    // Each element of a structure mapped to an \n    // a functor-wrapped value, with evaluation from\n    // from left to right, and the results collected\n    // in a single instance of the target functor.\n    tx => ({\n        'Either': () => traverseLR,\n        'Maybe': () => traverseMay,\n        'Node': () => traverseTree,\n        'Tuple': () => traverseTuple,\n        'List': () => traverseList\n    })[tx.type || 'List']()(f)(tx);",
     "tags": [
       "JS Prelude"
     ]
