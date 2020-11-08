@@ -29,26 +29,17 @@ end liftA2
 
 
 ```javascript
-// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+// f a -> f b -> f c
 const liftA2 = f =>
     // Lift a binary function to actions.
     // liftA2 f a b = fmap f a <*> b
-    a => b => {
-        const t = typeName(a);
-        return (
-            'Bottom' !== t ? (
-                '(a -> b)' === t ? (
-                    liftA2Fn
-                ) : 'Either' === t ? (
-                    liftA2LR
-                ) : 'Maybe' === t ? (
-                    liftA2May
-                ) : 'Tuple' === t ? (
-                    liftA2Tuple
-                ) : 'Node' === t ? (
-                    liftA2Tree
-                ) : liftA2List
-            ) : liftA2List
-        )(f)(a)(b);
-    };
+    a => b => ({
+        '(a -> b)': () => liftA2Fn,
+        'Either': () => liftA2LR,
+        'Maybe': () => liftA2May,
+        'Tuple': () => liftA2Tuple,
+        'Node': () => liftA2Tree,
+        'List': () => liftA2List,
+        'Bottom': () => liftA2List
+    } [typeName(a) || 'List']())(f)(a)(b);
 ```

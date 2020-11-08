@@ -1569,7 +1569,7 @@
     ]
   },
   "liftA2": {
-    "code": "// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = f =>\n    // Lift a binary function to actions.\n    // liftA2 f a b = fmap f a <*> b\n    a => b => {\n        const t = typeName(a);\n        return (\n            'Bottom' !== t ? (\n                '(a -> b)' === t ? (\n                    liftA2Fn\n                ) : 'Either' === t ? (\n                    liftA2LR\n                ) : 'Maybe' === t ? (\n                    liftA2May\n                ) : 'Tuple' === t ? (\n                    liftA2Tuple\n                ) : 'Node' === t ? (\n                    liftA2Tree\n                ) : liftA2List\n            ) : liftA2List\n        )(f)(a)(b);\n    };",
+    "code": "// f a -> f b -> f c\nconst liftA2 = f =>\n    // Lift a binary function to actions.\n    // liftA2 f a b = fmap f a <*> b\n    a => b => ({\n        '(a -> b)': () => liftA2Fn,\n        'Either': () => liftA2LR,\n        'Maybe': () => liftA2May,\n        'Tuple': () => liftA2Tuple,\n        'Node': () => liftA2Tree,\n        'List': () => liftA2List,\n        'Bottom': () => liftA2List\n    } [typeName(a) || 'List']())(f)(a)(b);",
     "tags": [
       "JS Prelude"
     ]
@@ -1587,7 +1587,7 @@
     ]
   },
   "liftA2List": {
-    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator f lifted to a function over two\n    // lists. op applied to each pair of arguments in the\n    // cartesian product of xs and ys.\n    xs => ys => list(xs).flatMap(\n        x => list(ys).map(f(x))\n    );",
+    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator f lifted to a function over two\n    // lists. op applied to each pair of arguments in the\n    // cartesian product of xs and ys.\n    xs => ys => list(xs).flatMap(\n        x => list(ys).map(op(x))\n    );",
     "tags": [
       "JS Prelude"
     ]

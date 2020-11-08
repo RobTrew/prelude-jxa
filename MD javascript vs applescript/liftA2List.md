@@ -24,6 +24,6 @@ const liftA2List = op =>
     // lists. op applied to each pair of arguments in the
     // cartesian product of xs and ys.
     xs => ys => list(xs).flatMap(
-        x => list(ys).map(f(x))
+        x => list(ys).map(op(x))
     );
 ```
