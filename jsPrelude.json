@@ -786,7 +786,7 @@
     ]
   },
   "even": {
-    "code": "// even :: Int -> Bool\nconst even = n => 0 === n % 2;",
+    "code": "// even :: Int -> Bool\nconst even = n => \n    // True if 2 is a factor of n.\n    0 === n % 2;",
     "tags": [
       "JS Prelude",
       "core"
@@ -2111,7 +2111,7 @@
     ]
   },
   "pureLR": {
-    "code": "// pureLR :: a -> Either e a\nconst pureLR = x =>\n    Right(x);",
+    "code": "// pureLR :: a -> Either e a\nconst pureLR = x =>\n    // The value x lifted into the Either monad.\n    Right(x);",
     "tags": [
       "JS Prelude"
     ]
@@ -2129,7 +2129,7 @@
     ]
   },
   "pureT": {
-    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a \n    // specialised 'pure', where\n    // 'pure' lifts a value into a particular functor.\n    x => 'List' !== t ? (\n        'Either' === t ? (\n            pureLR(x)\n        ) : 'Maybe' === t ? (\n            pureMay(x)\n        ) : 'Node' === t ? (\n            pureTree(x)\n        ) : 'Tuple' === t ? (\n            pureTuple(x)\n        ) : pureList(x)\n    ) : pureList(x);",
+    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a \n    // specialised 'pure', where\n    // 'pure' lifts a value into a particular functor.\n    ({\n        'Either': () => pureLR,\n        'Maybe': () => pureMay,\n        'Node': () => pureTree,\n        'Tuple': () => pureTuple,\n        'List': () => pureList\n    })[t || 'List']();",
     "tags": [
       "JS Prelude"
     ]
@@ -2980,7 +2980,7 @@
     ]
   },
   "traverse": {
-    "code": "// traverse :: (Applicative f, Traversable t) => \n// (a -> f b) -> t a -> f (t b)\nconst traverse = f => tx => {\n    const t = tx.type;\n    return (\n        undefined !== t ? (\n            'Either' === t ? (\n                traverseLR\n            ) : 'Maybe' === t ? (\n                traverseMay\n            ) : 'Node' === t ? (\n                traverseTree\n            ) : 'Tuple' === t ? (\n                traverseTuple\n            ) : traverseList\n        ) : traverseList\n    )(f)(tx);\n};",
+    "code": "// traverse :: (Applicative f, Traversable t) => \n// (a -> f b) -> t a -> f (t b)\nconst traverse = f => tx =>\n    ({\n        'Either': () => traverseLR,\n        'Maybe': () => traverseMay,\n        'Node': () => traverseTree,\n        'Tuple': () => traverseTuple,\n        'List': () => traverseList\n    })[tx.type || 'List']()(f)(tx);",
     "tags": [
       "JS Prelude"
     ]

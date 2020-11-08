@@ -1153,7 +1153,9 @@ const evalJSMay = s => {
 };
 
 // even :: Int -> Bool
-const even = n => 0 === n % 2;
+const even = n => 
+    // True if 2 is a factor of n.
+    0 === n % 2;
 
 // exp :: Float -> Float
 const exp = Math.exp;
@@ -2982,6 +2984,7 @@ const properFraction = n => {
 
 // pureLR :: a -> Either e a
 const pureLR = x =>
+    // The value x lifted into the Either monad.
     Right(x);
 
 // pureList :: a -> [a]
@@ -2997,17 +3000,13 @@ const pureT = t =>
     // Given a type name string, returns a 
     // specialised 'pure', where
     // 'pure' lifts a value into a particular functor.
-    x => 'List' !== t ? (
-        'Either' === t ? (
-            pureLR(x)
-        ) : 'Maybe' === t ? (
-            pureMay(x)
-        ) : 'Node' === t ? (
-            pureTree(x)
-        ) : 'Tuple' === t ? (
-            pureTuple(x)
-        ) : pureList(x)
-    ) : pureList(x);
+    ({
+        'Either': () => pureLR,
+        'Maybe': () => pureMay,
+        'Node': () => pureTree,
+        'Tuple': () => pureTuple,
+        'List': () => pureList
+    })[t || 'List']();
 
 // pureTree :: a -> Tree a
 const pureTree = x =>
@@ -4198,22 +4197,14 @@ const transpose_ = rows =>
 
 // traverse :: (Applicative f, Traversable t) => 
 // (a -> f b) -> t a -> f (t b)
-const traverse = f => tx => {
-    const t = tx.type;
-    return (
-        undefined !== t ? (
-            'Either' === t ? (
-                traverseLR
-            ) : 'Maybe' === t ? (
-                traverseMay
-            ) : 'Node' === t ? (
-                traverseTree
-            ) : 'Tuple' === t ? (
-                traverseTuple
-            ) : traverseList
-        ) : traverseList
-    )(f)(tx);
-};
+const traverse = f => tx =>
+    ({
+        'Either': () => traverseLR,
+        'Maybe': () => traverseMay,
+        'Node': () => traverseTree,
+        'Tuple': () => traverseTuple,
+        'List': () => traverseList
+    })[tx.type || 'List']()(f)(tx);
 
 // traverseLR :: Applicative f => 
 // (t -> f b) -> Either a t -> f (Either a b)
