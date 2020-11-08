@@ -34,16 +34,10 @@ end bind
 const bind = m =>
     mf => (Array.isArray(m) ? (
         bindList(m)(mf)
-    ) : (() => {
-        const t = m.type;
-        return 'Either' === t ? (
-            bindLR
-        ) : 'Maybe' === t ? (
-            bindMay
-        ) : 'Tuple' === t ? (
-            bindTuple
-        ) : ('function' === typeof m) ? (
-            bindFn
-        ) : undefined;
-    })()(m)(mf));
+    ) : ({
+        'Either': () => bindLR,
+        'Maybe': () => bindMay,
+        'Tuple': () => bindTuple,
+        'function': () => bindFn
+    })[m.type || typeof m]())(m)(mf);
 ```
