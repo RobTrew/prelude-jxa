@@ -297,7 +297,7 @@ const bind = m =>
 // bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
 const bindFn = f =>
     // Binary operator applied over f x and x.
-    bop => x => bop(f(x))(x);
+    op => x => op(f(x))(x);
 
 // bindLR (>>=) :: Either a -> 
 // (a -> Either b) -> Either b
@@ -2231,11 +2231,11 @@ const liftA2LR = f =>
     );
 
 // liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
-const liftA2List = f => xs => ys =>
+const liftA2List = op =>
     // The binary operator f lifted to a function over two
-    // lists. f applied to each pair of arguments in the
+    // lists. op applied to each pair of arguments in the
     // cartesian product of xs and ys.
-    list(xs).flatMap(
+    xs => ys => list(xs).flatMap(
         x => list(ys).map(f(x))
     );
 
