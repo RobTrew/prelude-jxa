@@ -1,5 +1,5 @@
 ```javascript
 // drawTree :: Tree String -> String
 const drawTree = tree =>
-    unlines(draw(tree));
+    draw(tree).join('\n');
 ```

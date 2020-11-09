@@ -712,30 +712,31 @@ const dot = f =>
 // draw :: Tree String -> [String]
 const draw = node => {
     // shift :: String -> String -> [String] -> [String]
-    const shifted = (first, other, xs) =>
-        zipWithList(append)(
-            cons(first)(
-              replicate(xs.length - 1)(
-                other
-              )
-            )
-        )(xs);
+    const shifted = (first, other, xs) => (
+        [first].concat(
+            Array.from({
+                length: xs.length - 1
+            }, () => other)
+        ).map(
+            (y, i) => y.concat(xs[i])
+        )
+    );
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
         const lng = xs.length;
         return 0 < lng ? (
-            1 < lng ? append(
-                cons('│')(
+            1 < lng ? (
+                ['│'].concat(
                     shifted('├─ ', '│  ', draw(xs[0]))
                 )
-            )(
+            ).concat(
                 drawSubTrees(xs.slice(1))
-            ) : cons('│')(
-              shifted('└─ ', '   ', draw(xs[0]))
+            ) : ['│'].concat(
+                shifted('└─ ', '   ', draw(xs[0]))
             )
         ) : [];
     };
-    return append(lines(node.root))(
+    return node.root.split('\n').concat(
         drawSubTrees(node.nest)
     );
 };
@@ -746,7 +747,7 @@ const drawForest = trees =>
 
 // drawTree :: Tree String -> String
 const drawTree = tree =>
-    unlines(draw(tree));
+    draw(tree).join('\n');
 
 // drawTree2 :: Bool -> Bool -> Tree String -> String
 const drawTree2 = blnCompact => blnPruned => tree => {
@@ -3395,24 +3396,29 @@ const shift = n => xs => {
 
 // show :: a -> String
 // show :: a -> Int -> Indented String
-const show = x =>
-    JSON.stringify(
-        x,
-        (_, v) => ({
-            '(a -> b)': () => showFn,
-            'Bool': () => str,
-            'Bottom': () => showUndefined,
-            'Date': () => x => x,
-            'Either': () => showLR,
-            'List': () => showList,
-            'Maybe': () => showMaybe,
-            'Node': () => showTree,
-            'Num': () => str,
-            'Ratio': () => showRatio,
-            'String': () => str,
-            'Tuple': () => showTuple
-        })[typeName(x)]()(v)
-    );
+const show = x => {
+    const
+        str = x => x.toString(),
+        t = typeName(x);
+    return 'Node' !== t ? (
+        JSON.stringify(
+            x,
+            (_, v) => ({
+                '(a -> b)': () => showFn,
+                'Bool': () => str,
+                'Bottom': () => showUndefined,
+                'Date': () => x => x,
+                'Either': () => showLR,
+                'List': () => showList,
+                'Maybe': () => showMaybe,
+                'Num': () => str,
+                'Ratio': () => showRatio,
+                'String': () => str,
+                'Tuple': () => showTuple
+            })[t]()(v)
+        )
+    ) : showTree(x);
+};
 
 // showBinary :: Int -> String
 const showBinary = n => {

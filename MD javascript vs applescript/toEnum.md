@@ -1,17 +1,3 @@
-```javascript
-// toEnum :: a -> Int -> a
-const toEnum = e =>
-    // The first argument is a sample of the type
-    // allowing the function to make the right mapping
-    x => ({
-        'number': Number,
-        'string': String.fromCodePoint,
-        'boolean': Boolean,
-        'object': v => e.min + v
-    } [typeof e])(x);
-```
-
-
 ```applescript
 -- toEnum :: a -> Int -> a
 on toEnum(e)
@@ -32,4 +18,18 @@ on toEnum(e)
         end |λ|
     end script
 end toEnum
+```
+
+
+```javascript
+// toEnum :: a -> Int -> a
+const toEnum = e =>
+    // The first argument is a sample of the type
+    // allowing the function to make the right mapping
+    x => ({
+        'number': Number,
+        'string': String.fromCodePoint,
+        'boolean': Boolean,
+        'object': v => e.min + v
+    } [typeof e])(x);
 ```
