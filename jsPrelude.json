@@ -1750,8 +1750,8 @@
       "JS Prelude"
     ]
   },
-  "mappendFn": {
-    "code": "// mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)\nconst mappendFn = f =>\n    g => x => mappend(f(x))(\n        g(x)\n    );",
+  "mappendFn (<>)": {
+    "code": "// mappendFn (<>) :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)\nconst mappendFn = f =>\n    g => x => mappend(f(x))(\n        g(x)\n    );",
     "tags": [
       "JS Prelude"
     ]

@@ -272,7 +272,7 @@ mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 mappend (<>) :: Monoid a => a -> a -> a
 mappendComparing (<>) :: (a -> a -> Bool) (a -> a -> Bool) -> (a -> a -> Bool)
-mappendFn :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
+mappendFn (<>) :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 mappendOrd (<>) :: Ordering -> Ordering -> Ordering
 mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
