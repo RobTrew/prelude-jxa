@@ -2469,7 +2469,7 @@
     ]
   },
   "show": {
-    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        e = ('function' !== typeof x) ? (\n            x\n        ) : {\n            type: 'Function',\n            f: x\n        };\n    return JSON.stringify(e, (_, v) => {\n        const\n            f = ((null !== v) && (undefined !== v)) ? (() => {\n                const t = v.type;\n                return 'Either' === t ? (\n                    showLR\n                ) : 'Function' === t ? (\n                    dct => 'λ' + dct.f.toString()\n                ) : 'Maybe' === t ? (\n                    showMaybe\n                ) : 'Ordering' === t ? (\n                    showOrdering\n                ) : 'Ratio' === t ? (\n                    showRatio\n                ) : 'string' === typeof t && t.startsWith('Tuple') ? (\n                    showTuple\n                ) : Array.isArray(v) ? (\n                    showList\n                ) : undefined;\n            })() : showUndefined;\n        return Boolean(f) ? (\n            f(v)\n        ) : 'string' !== typeof v ? (\n            v\n        ) : v;\n    });\n};",
+    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x =>\n    JSON.stringify(\n        x,\n        (_, v) => ({\n            '(a -> b)': () => showFn,\n            'Bool': () => str,\n            'Bottom': () => showUndefined,\n            'Date': () => x => x,\n            'Either': () => showLR,\n            'List': () => showList,\n            'Maybe': () => showMaybe,\n            'Node': () => showTree,\n            'Num': () => str,\n            'Ratio': () => showRatio,\n            'String': () => str,\n            'Tuple': () => showTuple\n        })[typeName(x)]()(v)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -2481,7 +2481,7 @@
     ]
   },
   "showDate": {
-    "code": "// showDate :: Date -> String\nconst showDate = JSON.stringify;",
+    "code": "// showDate :: Date -> String\nconst showDate = dte =>\n    dte.toJSON;",
     "tags": [
       "JS Prelude"
     ]
@@ -2584,7 +2584,7 @@
     ]
   },
   "showTree": {
-    "code": "// showTree :: Tree a -> String\nconst showTree = x =>\n    drawTree2(false)(true)(\n        fmapTree(show)(x)\n    );",
+    "code": "// showTree :: Tree a -> String\nconst showTree = x =>\n    drawTree(\n        fmapTree(show)(x)\n    );",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3060,7 +3060,7 @@
     ]
   },
   "typeName": {
-    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n    return 'object' === t ? (\n        Array.isArray(v) ? (\n            'List'\n        ) : null !== v ? (\n            v.type || 'Dict'\n        ) : 'Bottom'\n    ) : {\n        'boolean': 'Bool',\n        'number': 'Num',\n        'string': 'String',\n        'function' : '(a -> b)'\n    } [t] || 'Bottom';\n};",
+    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n    return 'object' === t ? (\n        Array.isArray(v) ? (\n            'List'\n        ) : 'Date' === v.constructor.name ? (\n            'Date'\n        ) : null !== v ? (\n            v.type || 'Dict'\n        ) : 'Bottom'\n    ) : {\n        'boolean': 'Bool',\n        'date': 'Date',\n        'number': 'Num',\n        'string': 'String',\n        'function': '(a -> b)'\n    } [t] || 'Bottom';\n};",
     "tags": [
       "JS Prelude"
     ]

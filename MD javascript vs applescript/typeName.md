@@ -30,14 +30,17 @@ const typeName = v => {
     return 'object' === t ? (
         Array.isArray(v) ? (
             'List'
+        ) : 'Date' === v.constructor.name ? (
+            'Date'
         ) : null !== v ? (
             v.type || 'Dict'
         ) : 'Bottom'
     ) : {
         'boolean': 'Bool',
+        'date': 'Date',
         'number': 'Num',
         'string': 'String',
-        'function' : '(a -> b)'
+        'function': '(a -> b)'
     } [t] || 'Bottom';
 };
 ```

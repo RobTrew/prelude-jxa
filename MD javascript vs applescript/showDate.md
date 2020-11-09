@@ -9,5 +9,6 @@ end showDate
 
 ```javascript
 // showDate :: Date -> String
-const showDate = JSON.stringify;
+const showDate = dte =>
+    dte.toJSON;
 ```
