@@ -28,7 +28,7 @@ end mappend
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = a =>
     // Associative operation 
-    // defined for various monoid types.
+    // defined for various monoids.
     b => (t => (Boolean(t) ? (
         'Maybe' === t ? (
             mappendMaybe

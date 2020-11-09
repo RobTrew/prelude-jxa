@@ -438,10 +438,15 @@ const chr = x =>
 
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = n =>
+    // xs split into sublists of length n.
+    // The last sublist will be short if n 
+    // does not evenly divide the length of xs .
     xs => enumFromThenTo(0)(n)(
         xs.length - 1
     ).reduce(
-        (a, i) => a.concat([xs.slice(i, (n + i))]),
+        (a, i) => a.concat([
+            xs.slice(i, (n + i))
+        ]),
         []
     );
 
@@ -1049,12 +1054,14 @@ const enumFromThen = x =>
     };
 
 // enumFromThenTo :: Int -> Int -> Int -> [Int]
-const enumFromThenTo = x1 =>
-    x2 => y => {
-        const d = x2 - x1;
+const enumFromThenTo = m =>
+    // Integer values enumerated from m to n
+    // with a step defined by (nxt - m).
+    nxt => n => {
+        const d = nxt - m;
         return Array.from({
-            length: Math.floor(y - x2) / d + 2
-        }, (_, i) => x1 + (d * i));
+            length: Math.floor(n - nxt) / d + 2
+        }, (_, i) => m + (d * i));
     };
 
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
@@ -2174,7 +2181,7 @@ const levels = tree =>
         )
     );
 
-// f a -> f b -> f c
+// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
     // Lift a binary function to actions.
     // liftA2 f a b = fmap f a <*> b
@@ -2410,7 +2417,7 @@ const mapMaybeGen = mf =>
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = a =>
     // Associative operation 
-    // defined for various monoid types.
+    // defined for various monoids.
     b => (t => (Boolean(t) ? (
         'Maybe' === t ? (
             mappendMaybe
@@ -2632,7 +2639,9 @@ const measuredTree = tree => {
 };
 
 // member :: Key -> Dict -> Bool
-const member = k => dct => k in dct;
+const member = k =>
+    // True if dict contains the key k.
+    dict => k in dict;
 
 // merge :: Ord a => [a] -> [a] -> [a]
 const merge = xs =>
@@ -3209,7 +3218,8 @@ const regexMatches = rgx =>
     };
 
 // rem :: Int -> Int -> Int
-const rem = n => m => n % m;
+const rem = n => 
+    m => n % m;
 
 // repeat :: a -> Generator [a]
 function* repeat(x) {
@@ -3264,7 +3274,8 @@ const rights = xs =>
     );
 
 // root :: Tree a -> a
-const root = tree => tree.root;
+const root = tree => 
+    tree.root;
 
 // rotate :: Int -> [a] -> [a]
 const rotate = n => xs => {
@@ -4082,28 +4093,6 @@ const taskPaperDayString = dte =>
     take(10)(
         taskPaperDateString(dte)
     );
-
-// then (>>) :: Monad m => m a -> m b -> m b
-const then = ma => mb =>
-    (Array.isArray(ma) ? (
-        thenList
-    ) : isMaybe(ma) ? (
-        thenMay
-    ) : thenIO)(
-        ...[ma, mb]
-    );
-
-// thenIO (>>) :: IO a -> IO b -> IO b
-const thenIO = ma => 
-    mb => mb;
-
-// thenList (>>) :: [a] -> [b] -> [b]
-const thenList = xs => ys =>
-    list(xs).flatMap(_ => list(ys));
-
-// thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
-const thenMay = mbx => mby =>
-    mbx.Nothing ? mbx : mby;
 
 // toEnum :: a -> Int -> a
 const toEnum = e =>

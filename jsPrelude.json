@@ -364,7 +364,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    xs => enumFromThenTo(0)(n)(\n        xs.length - 1\n    ).reduce(\n        (a, i) => a.concat([xs.slice(i, (n + i))]),\n        []\n    );",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    // xs split into sublists of length n.\n    // The last sublist will be short if n \n    // does not evenly divide the length of xs .\n    xs => enumFromThenTo(0)(n)(\n        xs.length - 1\n    ).reduce(\n        (a, i) => a.concat([\n            xs.slice(i, (n + i))\n        ]),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -729,7 +729,7 @@
     ]
   },
   "enumFromThenTo": {
-    "code": "// enumFromThenTo :: Int -> Int -> Int -> [Int]\nconst enumFromThenTo = x1 =>\n    x2 => y => {\n        const d = x2 - x1;\n        return Array.from({\n            length: Math.floor(y - x2) / d + 2\n        }, (_, i) => x1 + (d * i));\n    };",
+    "code": "// enumFromThenTo :: Int -> Int -> Int -> [Int]\nconst enumFromThenTo = m =>\n    // Integer values enumerated from m to n\n    // with a step defined by (nxt - m).\n    nxt => n => {\n        const d = nxt - m;\n        return Array.from({\n            length: Math.floor(n - nxt) / d + 2\n        }, (_, i) => m + (d * i));\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -1569,7 +1569,7 @@
     ]
   },
   "liftA2": {
-    "code": "// f a -> f b -> f c\nconst liftA2 = f =>\n    // Lift a binary function to actions.\n    // liftA2 f a b = fmap f a <*> b\n    a => b => ({\n        '(a -> b)': () => liftA2Fn,\n        'Either': () => liftA2LR,\n        'Maybe': () => liftA2May,\n        'Tuple': () => liftA2Tuple,\n        'Node': () => liftA2Tree,\n        'List': () => liftA2List,\n        'Bottom': () => liftA2List\n    } [typeName(a) || 'List']())(f)(a)(b);",
+    "code": "// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = f =>\n    // Lift a binary function to actions.\n    // liftA2 f a b = fmap f a <*> b\n    a => b => ({\n        '(a -> b)': () => liftA2Fn,\n        'Either': () => liftA2LR,\n        'Maybe': () => liftA2May,\n        'Tuple': () => liftA2Tuple,\n        'Node': () => liftA2Tree,\n        'List': () => liftA2List,\n        'Bottom': () => liftA2List\n    } [typeName(a) || 'List']())(f)(a)(b);",
     "tags": [
       "JS Prelude"
     ]
@@ -1739,7 +1739,7 @@
     ]
   },
   "mappend (<>)": {
-    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation \n    // defined for various monoid types.\n    b => (t => (Boolean(t) ? (\n        'Maybe' === t ? (\n            mappendMaybe\n        ) : mappendTuple\n    ) : Array.isArray(a) ? (\n        append\n    ) : 'function' === typeof a ? (\n        mappendFn\n    ) : mappendOrd)(a)(b))(a.type);",
+    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation \n    // defined for various monoids.\n    b => (t => (Boolean(t) ? (\n        'Maybe' === t ? (\n            mappendMaybe\n        ) : mappendTuple\n    ) : Array.isArray(a) ? (\n        append\n    ) : 'function' === typeof a ? (\n        mappendFn\n    ) : mappendOrd)(a)(b))(a.type);",
     "tags": [
       "JS Prelude"
     ]
@@ -1852,7 +1852,7 @@
     ]
   },
   "member": {
-    "code": "// member :: Key -> Dict -> Bool\nconst member = k => dct => k in dct;",
+    "code": "// member :: Key -> Dict -> Bool\nconst member = k =>\n    // True if dict contains the key k.\n    dict => k in dict;",
     "tags": [
       "JS Prelude"
     ]
@@ -2291,7 +2291,7 @@
     ]
   },
   "rem": {
-    "code": "// rem :: Int -> Int -> Int\nconst rem = n => m => n % m;",
+    "code": "// rem :: Int -> Int -> Int\nconst rem = n => \n    m => n % m;",
     "tags": [
       "JS Prelude",
       "core"
@@ -2357,7 +2357,7 @@
     ]
   },
   "root": {
-    "code": "// root :: Tree a -> a\nconst root = tree => tree.root;",
+    "code": "// root :: Tree a -> a\nconst root = tree => \n    tree.root;",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2903,30 +2903,6 @@
     "tags": [
       "JS Prelude",
       "jxa"
-    ]
-  },
-  "then (>>)": {
-    "code": "// then (>>) :: Monad m => m a -> m b -> m b\nconst then = ma => mb =>\n    (Array.isArray(ma) ? (\n        thenList\n    ) : isMaybe(ma) ? (\n        thenMay\n    ) : thenIO)(\n        ...[ma, mb]\n    );",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
-  "thenIO (>>)": {
-    "code": "// thenIO (>>) :: IO a -> IO b -> IO b\nconst thenIO = ma => \n    mb => mb;",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
-  "thenList (>>)": {
-    "code": "// thenList (>>) :: [a] -> [b] -> [b]\nconst thenList = xs => ys =>\n    list(xs).flatMap(_ => list(ys));",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
-  "thenMay (>>)": {
-    "code": "// thenMay (>>) :: Maybe a -> Maybe b -> Maybe b\nconst thenMay = mbx => mby =>\n    mbx.Nothing ? mbx : mby;",
-    "tags": [
-      "JS Prelude"
     ]
   },
   "toEnum": {

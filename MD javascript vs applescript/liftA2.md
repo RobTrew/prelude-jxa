@@ -29,7 +29,7 @@ end liftA2
 
 
 ```javascript
-// f a -> f b -> f c
+// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
     // Lift a binary function to actions.
     // liftA2 f a b = fmap f a <*> b

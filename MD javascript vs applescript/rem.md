@@ -8,5 +8,6 @@ end rem
 
 ```javascript
 // rem :: Int -> Int -> Int
-const rem = n => m => n % m;
+const rem = n => 
+    m => n % m;
 ```

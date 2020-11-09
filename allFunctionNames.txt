@@ -243,7 +243,7 @@ lefts :: [Either a b] -> [a]
 length :: [a] -> Int
 levelNodes :: Tree a -> [[Tree a]]
 levels :: Tree a -> [[a]]
-f a -> f b -> f c
+liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c
 liftA2LR :: (a -> b -> c) -> Either d a -> Either d b -> Either d c
 liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
@@ -456,10 +456,6 @@ takeWhileR :: (a -> Bool) -> [a] -> [a]
 taskPaperDateString :: Date -> String
 taskPaperDayString :: Date -> String
 tempFilePath :: String -> IO FilePath
-then (>>) :: Monad m => m a -> m b -> m b
-thenIO (>>) :: IO a -> IO b -> IO b
-thenList (>>) :: [a] -> [b] -> [b]
-thenMay (>>) :: Maybe a -> Maybe b -> Maybe b
 toEnum :: a -> Int -> a
 toLower :: String -> String
 toRatio :: Real -> Ratio
