@@ -1739,7 +1739,7 @@
     ]
   },
   "mappend (<>)": {
-    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation \n    // defined for various monoids.\n    b => (t => (Boolean(t) ? (\n        'Maybe' === t ? (\n            mappendMaybe\n        ) : mappendTuple\n    ) : Array.isArray(a) ? (\n        append\n    ) : 'function' === typeof a ? (\n        mappendFn\n    ) : mappendOrd)(a)(b))(a.type);",
+    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation \n    // defined for various monoids.\n    ({\n        '(a -> b)': () => mappendFn,\n        'List': () => append,\n        'Maybe': () => mappendMaybe,\n        'Num': () => mappendOrd,\n        'String': () => append,\n        'Tuple': () => mappendTuple\n    })[typeName(a)]()(a);",
     "tags": [
       "JS Prelude"
     ]
