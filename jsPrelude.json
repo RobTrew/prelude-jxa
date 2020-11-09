@@ -364,7 +364,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    // xs split into sublists of length n.\n    // The last sublist will be short if n \n    // does not evenly divide the length of xs .\n    xs => enumFromThenTo(0)(n)(\n        xs.length - 1\n    ).reduce(\n        (a, i) => a.concat([\n            xs.slice(i, (n + i))\n        ]),\n        []\n    );",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    // xs split into sublists of length n.\n    // The last sublist will be short if n \n    // does not evenly divide the length of xs .\n    xs => enumFromThenTo(0)(n)(\n        xs.length - 1\n    ).reduce(\n        (a, i) => a.concat([\n            xs.slice(i, (i + n))\n        ]),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -647,7 +647,7 @@
     ]
   },
   "dropWhile": {
-    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = p =>\n    xs => {\n        const n = xs.length;\n        return xs.slice(\n            0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    };",
+    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = p =>\n    // The suffix remainining after takeWhile p xs.\n    xs => {\n        const n = xs.length;\n        return xs.slice(\n            0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -958,7 +958,7 @@
     ]
   },
   "fmap (<$>)": {
-    "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f => fa =>\n    Array.isArray(fa) ? (\n        fa.map(f)\n    ) : 'string' !== typeof fa ? (() => {\n        const t = fa.type;\n        return ('Either' === t ? (\n            fmapLR(f)(fa)\n        ) : 'Maybe' === t ? (\n            fmapMay(f)(fa)\n        ) : 'Node' === t ? (\n            fmapTree(f)(fa)\n        ) : 'Tuple' === t ? (\n            fmapTuple(f)(fa)\n        ) : undefined);\n    })() : fa.split('').map(f);",
+    "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f =>\n    // f mapped over the given functor.\n    x => ({\n        'Either': () => fmapLR,\n        'List': () => map,\n        'Maybe': () => fmapMay,\n        'Node': () => fmapTree,\n        'String': () => map,\n        'Tuple': () => fmapTuple\n    })[typeName(x)]()(f)(x);",
     "tags": [
       "JS Prelude"
     ]

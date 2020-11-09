@@ -445,7 +445,7 @@ const chunksOf = n =>
         xs.length - 1
     ).reduce(
         (a, i) => a.concat([
-            xs.slice(i, (n + i))
+            xs.slice(i, (i + n))
         ]),
         []
     );
@@ -900,6 +900,7 @@ const dropLengthMaybe = xs =>
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = p =>
+    // The suffix remainining after takeWhile p xs.
     xs => {
         const n = xs.length;
         return xs.slice(
@@ -1403,21 +1404,16 @@ const floor = x => {
 };
 
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
-const fmap = f => fa =>
-    Array.isArray(fa) ? (
-        fa.map(f)
-    ) : 'string' !== typeof fa ? (() => {
-        const t = fa.type;
-        return ('Either' === t ? (
-            fmapLR(f)(fa)
-        ) : 'Maybe' === t ? (
-            fmapMay(f)(fa)
-        ) : 'Node' === t ? (
-            fmapTree(f)(fa)
-        ) : 'Tuple' === t ? (
-            fmapTuple(f)(fa)
-        ) : undefined);
-    })() : fa.split('').map(f);
+const fmap = f =>
+    // f mapped over the given functor.
+    x => ({
+        'Either': () => fmapLR,
+        'List': () => map,
+        'Maybe': () => fmapMay,
+        'Node': () => fmapTree,
+        'String': () => map,
+        'Tuple': () => fmapTuple
+    })[typeName(x)]()(f)(x);
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>

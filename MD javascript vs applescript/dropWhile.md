@@ -18,6 +18,7 @@ end dropWhile
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = p =>
+    // The suffix remainining after takeWhile p xs.
     xs => {
         const n = xs.length;
         return xs.slice(

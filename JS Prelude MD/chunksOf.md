@@ -8,7 +8,7 @@ const chunksOf = n =>
         xs.length - 1
     ).reduce(
         (a, i) => a.concat([
-            xs.slice(i, (n + i))
+            xs.slice(i, (i + n))
         ]),
         []
     );
