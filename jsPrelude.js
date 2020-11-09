@@ -3448,6 +3448,10 @@ const showDate = JSON.stringify;
 // showDict :: Dict -> String
 const showDict = show;
 
+// showFn :: (a -> b) -> String
+const showFn = f =>
+    `λ${f}`;
+
 // showForest :: [Tree a] -> String
 const showForest = xs =>
     unlines(xs.map(x => drawTree2(false)(true)(
@@ -4465,9 +4469,14 @@ const unDigits = ds =>
 
 // unQuoted :: String -> String
 const unQuoted = s =>
-    dropAround(x => 34 === x.codePointAt(0))(
-        s
-    );
+    1 < s.length ? (
+        q => s.slice(
+            q !== s[0] ? 0 : 1,
+            q !== s.slice(-1) ? undefined : -1
+        )
+    )(
+        String.fromCodePoint(34)
+    ) : s;
 
 // uncons :: [a] -> Maybe (a, [a])
 const uncons = xs => {

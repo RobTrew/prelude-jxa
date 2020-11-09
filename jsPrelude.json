@@ -2492,6 +2492,12 @@
       "JS Prelude"
     ]
   },
+  "showFn": {
+    "code": "// showFn :: (a -> b) -> String\nconst showFn = f =>\n    `λ${f}`;",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "showForest": {
     "code": "// showForest :: [Tree a] -> String\nconst showForest = xs =>\n    unlines(xs.map(x => drawTree2(false)(true)(\n        fmapTree(show)(\n            x\n        )\n    )));",
     "tags": [
@@ -3066,7 +3072,7 @@
     ]
   },
   "unQuoted": {
-    "code": "// unQuoted :: String -> String\nconst unQuoted = s =>\n    dropAround(x => 34 === x.codePointAt(0))(\n        s\n    );",
+    "code": "// unQuoted :: String -> String\nconst unQuoted = s =>\n    1 < s.length ? (\n        q => s.slice(\n            q !== s[0] ? 0 : 1,\n            q !== s.slice(-1) ? undefined : -1\n        )\n    )(\n        String.fromCodePoint(34)\n    ) : s;",
     "tags": [
       "JS Prelude"
     ]
