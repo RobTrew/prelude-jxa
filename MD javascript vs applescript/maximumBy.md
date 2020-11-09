@@ -1,3 +1,20 @@
+```javascript
+// maximumBy :: (a -> a -> Ordering) -> [a] -> a
+const maximumBy = f =>
+    xs => {
+        const ys = list(xs);
+        return 0 < ys.length ? (
+            ys.slice(1).reduce(
+                (a, y) => 0 < f(y)(a) ? (
+                    y
+                ) : a,
+                ys[0]
+            )
+        ) : undefined;
+    };
+```
+
+
 ```applescript
 -- maximumBy :: (a -> a -> Ordering) -> [a] -> a
 on maximumBy(f, xs)
@@ -14,21 +31,4 @@ on maximumBy(f, xs)
     
     foldl(max, missing value, xs)
 end maximumBy
-```
-
-
-```javascript
-// maximumBy :: (a -> a -> Ordering) -> [a] -> a
-const maximumBy = f =>
-    xs => {
-        const ys = list(xs);
-        return 0 < ys.length ? (
-            ys.slice(1).reduce(
-                (a, y) => 0 < f(y)(a) ? (
-                    y
-                ) : a,
-                ys[0]
-            )
-        ) : undefined;
-    };
 ```
