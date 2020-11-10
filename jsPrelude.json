@@ -285,7 +285,7 @@
     ]
   },
   "break": {
-    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    xs => {\n        const \n            iLast = xs.length - 1,\n            ys = [...xs];\n        return splitAt(\n            until(i => iLast < i || p(ys[i]))(\n                i => 1 + i\n            )(0)\n        )(ys);\n    };",
+    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    xs => {\n        const i = xs.findIndex(p);\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -315,7 +315,7 @@
     ]
   },
   "cartesianProduct": {
-    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => (\n        bs => [...xs].flatMap(\n            x => bs.flatMap(b => [\n                [x].concat(b)\n            ])\n        )\n    )([...ys]);",
+    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(y => [\n            [x].concat(y)\n        ])\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -352,7 +352,7 @@
     ]
   },
   "chop": {
-    "code": "// chop :: ([a] -> (b, [a])) -> [a] -> [b]\nconst chop = f =>\n    // A segmentation of xs by tail recursion with a\n    // function which returns a (prefix, residue) tuple.\n    xs => {\n        const go = xs =>\n            0 < xs.length ? (() => {\n                const [b, bs] = Array.from(f(xs));\n                return cons(b)(go(bs));\n            })() : [];\n        return go([...xs]);\n    };",
+    "code": "// chop :: ([a] -> (b, [a])) -> [a] -> [b]\nconst chop = f =>\n    // A segmentation of xs by tail recursion with a\n    // function which returns a (prefix, residue) tuple.\n    xs => {\n        const go = xs =>\n            0 < xs.length ? (() => {\n                const [b, bs] = Array.from(f(xs));\n                return [b].concat(go(bs));\n            })() : [];\n        return go([...xs]);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1404,7 +1404,7 @@
     ]
   },
   "isSortedBy": {
-    "code": "// isSortedBy :: (a -> a -> Bool) -> [a] -> Bool\nconst isSortedBy = p =>\n    // True if all adjacent pairs of elements in\n    // the list return True under the predicate p.\n    xs => xs.length < 2 || all(x => x < 1)(\n        zipWith(p)(\n            xs\n        )(tail(xs))\n    );",
+    "code": "// isSortedBy :: (a -> a -> Bool) -> [a] -> Bool\nconst isSortedBy = p =>\n    // True if all adjacent pairs of elements in\n    // the list return True under the predicate p.\n    xs => xs.length < 2 || all(x => x < 1)(\n        zipWith_(p)(\n            xs\n        )(tail(xs))\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3324,7 +3324,7 @@
     ]
   },
   "zipWith_": {
-    "code": "// zipWith_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => xs.slice(\n        0, Math.min(xs.length, ys.length)\n    ).map((x, i) => f(x)(ys[i]));",
+    "code": "// zipWith_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith_ = f =>\n    // A list defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => xs.slice(\n        0, Math.min(xs.length, ys.length)\n    ).map((x, i) => f(x)(ys[i]));",
     "tags": [
       "JS Prelude"
     ]

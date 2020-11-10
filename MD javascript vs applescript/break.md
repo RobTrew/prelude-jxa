@@ -28,13 +28,11 @@ end break
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     xs => {
-        const 
-            iLast = xs.length - 1,
-            ys = [...xs];
-        return splitAt(
-            until(i => iLast < i || p(ys[i]))(
-                i => 1 + i
-            )(0)
-        )(ys);
+        const i = xs.findIndex(p);
+        return -1 !== i ? (
+            Tuple(xs.slice(0, i))(
+                xs.slice(i)
+            )
+        ) : Tuple(xs)([]);
     };
 ```

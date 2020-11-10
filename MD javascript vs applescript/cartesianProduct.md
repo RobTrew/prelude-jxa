@@ -19,11 +19,9 @@ end cartesianProduct
 ```javascript
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
-    ys => (
-        bs => [...xs].flatMap(
-            x => bs.flatMap(b => [
-                [x].concat(b)
-            ])
-        )
-    )([...ys]);
+    ys => [...xs].flatMap(
+        x => [...ys].flatMap(y => [
+            [x].concat(y)
+        ])
+    );
 ```

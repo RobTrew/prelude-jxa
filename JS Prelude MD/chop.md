@@ -7,7 +7,7 @@ const chop = f =>
         const go = xs =>
             0 < xs.length ? (() => {
                 const [b, bs] = Array.from(f(xs));
-                return cons(b)(go(bs));
+                return [b].concat(go(bs));
             })() : [];
         return go([...xs]);
     };

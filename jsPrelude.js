@@ -318,14 +318,12 @@ const bool = f =>
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     xs => {
-        const 
-            iLast = xs.length - 1,
-            ys = [...xs];
-        return splitAt(
-            until(i => iLast < i || p(ys[i]))(
-                i => 1 + i
-            )(0)
-        )(ys);
+        const i = xs.findIndex(p);
+        return -1 !== i ? (
+            Tuple(xs.slice(0, i))(
+                xs.slice(i)
+            )
+        ) : Tuple(xs)([]);
     };
 
 // breakOn :: String -> String -> (String, String)
@@ -370,13 +368,11 @@ const bulleted = strTab =>
 
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
-    ys => (
-        bs => [...xs].flatMap(
-            x => bs.flatMap(b => [
-                [x].concat(b)
-            ])
-        )
-    )([...ys]);
+    ys => [...xs].flatMap(
+        x => [...ys].flatMap(y => [
+            [x].concat(y)
+        ])
+    );
 
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
 const caseOf = pvs =>
@@ -426,7 +422,7 @@ const chop = f =>
         const go = xs =>
             0 < xs.length ? (() => {
                 const [b, bs] = Array.from(f(xs));
-                return cons(b)(go(bs));
+                return [b].concat(go(bs));
             })() : [];
         return go([...xs]);
     };
@@ -1968,7 +1964,7 @@ const isSortedBy = p =>
     // True if all adjacent pairs of elements in
     // the list return True under the predicate p.
     xs => xs.length < 2 || all(x => x < 1)(
-        zipWith(p)(
+        zipWith_(p)(
             xs
         )(tail(xs))
     );
@@ -4853,7 +4849,7 @@ function zipWithN() {
 
 // zipWith_ :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith_ = f =>
-    // A list constructed by zipping with a
+    // A list defined by zipping with a
     // custom function, rather than with the
     // default tuple constructor.
     xs => ys => xs.slice(
