@@ -1443,8 +1443,10 @@ const fmapTree = f => {
     // A new tree. The result of a 
     // structure-preserving application of f 
     // to each root in the existing tree.
-    const go = tree => Node(f(tree.root))(
-        tree.nest.map(go)
+    const go = t => Node(
+        f(t.root)
+    )(
+        t.nest.map(go)
     );
     return go;
 };
@@ -1572,7 +1574,9 @@ const fromMaybe = def =>
 // fromRight :: b -> Either a b -> b
 const fromRight = def =>
     // The contents of a 'Right' value or otherwise a default value.
-    lr => isRight(lr) ? lr.Right : def;
+    lr => isRight(lr) ? (
+        lr.Right
+    ) : def;
 
 // fst :: (a, b) -> a
 const fst = tpl =>
@@ -2314,11 +2318,12 @@ const lookupDict = k =>
 
 // lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
 const lookupTuples = k =>
-    kvs => bindMay(
-        find(x => k === fst(x))(
-            kvs
-        )
-    )(x => Just(snd(x)));
+    kvs => {
+        const i = kvs.findIndex(kv => k === kv[0]);
+        return -1 !== i ? (
+            Just(kvs[i][1])
+        ) : Nothing();
+    };
 
 // lt (<) :: Ord a => a -> a -> Bool
 const lt = a => 
@@ -2378,13 +2383,11 @@ const mapAccumR = f =>
 
 // mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 const mapKeys = f =>
-    // A function mapped over the keys of a record.
-    dct => mapFromList(
-        map(kv => [f(read(kv[0]))(kv[1])])(
-            zip(keys(dct))(
-                elems(dct)
-            )
-        )
+    // A function mapped over the keys of a record,
+    // defining a new record.
+    dct => Object.fromEntries(
+        Object.entries(dct)
+        .map(kv => [f(kv[0]), kv[1]])
     );
 
 // mapMaybe :: (a -> Maybe b) -> [a] -> [b]

@@ -982,7 +982,7 @@
     ]
   },
   "fmapTree (<$>)": {
-    "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a \n    // structure-preserving application of f \n    // to each root in the existing tree.\n    const go = tree => Node(f(tree.root))(\n        tree.nest.map(go)\n    );\n    return go;\n};",
+    "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a \n    // structure-preserving application of f \n    // to each root in the existing tree.\n    const go = t => Node(\n        f(t.root)\n    )(\n        t.nest.map(go)\n    );\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1079,7 +1079,7 @@
     ]
   },
   "fromRight": {
-    "code": "// fromRight :: b -> Either a b -> b\nconst fromRight = def =>\n    // The contents of a 'Right' value or otherwise a default value.\n    lr => isRight(lr) ? lr.Right : def;",
+    "code": "// fromRight :: b -> Either a b -> b\nconst fromRight = def =>\n    // The contents of a 'Right' value or otherwise a default value.\n    lr => isRight(lr) ? (\n        lr.Right\n    ) : def;",
     "tags": [
       "JS Prelude"
     ]
@@ -1675,7 +1675,7 @@
     ]
   },
   "lookupTuples": {
-    "code": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = k =>\n    kvs => bindMay(\n        find(x => k === fst(x))(\n            kvs\n        )\n    )(x => Just(snd(x)));",
+    "code": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = k =>\n    kvs => {\n        const i = kvs.findIndex(kv => k === kv[0]);\n        return -1 !== i ? (\n            Just(kvs[i][1])\n        ) : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1721,7 +1721,7 @@
     ]
   },
   "mapKeys": {
-    "code": "// mapKeys :: (Key -> Key) -> IntMap a -> IntMap a\nconst mapKeys = f =>\n    // A function mapped over the keys of a record.\n    dct => mapFromList(\n        map(kv => [f(read(kv[0]))(kv[1])])(\n            zip(keys(dct))(\n                elems(dct)\n            )\n        )\n    );",
+    "code": "// mapKeys :: (Key -> Key) -> IntMap a -> IntMap a\nconst mapKeys = f =>\n    // A function mapped over the keys of a record,\n    // defining a new record.\n    dct => Object.fromEntries(\n        Object.entries(dct)\n        .map(kv => [f(kv[0]), kv[1]])\n    );",
     "tags": [
       "JS Prelude"
     ]
