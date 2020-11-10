@@ -1720,6 +1720,12 @@
       "core"
     ]
   },
+  "mapFromList": {
+    "code": "// mapFromList :: [(String, a)] -> Dict\nconst mapFromList = kvs =>\n    Object.fromEntries(kvs);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "mapKeys": {
     "code": "// mapKeys :: (Key -> Key) -> IntMap a -> IntMap a\nconst mapKeys = f =>\n    // A function mapped over the keys of a record,\n    // defining a new record.\n    dct => Object.fromEntries(\n        Object.entries(dct)\n        .map(kv => [f(kv[0]), kv[1]])\n    );",
     "tags": [
@@ -2649,7 +2655,7 @@
     ]
   },
   "span": {
-    "code": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const\n            ys = 'string' !== typeof xs ? (\n                list(xs)\n            ) : xs,\n            iLast = ys.length - 1;\n        return splitAt(\n            until(\n                i => iLast < i || !p(ys[i])\n            )(i => 1 + i)(0)\n        )(ys);\n    };",
+    "code": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const i = xs.findIndex(x => !p(x));\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
     "tags": [
       "JS Prelude",
       "core"

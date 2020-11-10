@@ -27,15 +27,11 @@ const span = p =>
     // Longest prefix of xs consisting of elements which
     // all satisfy p, tupled with the remainder of xs.
     xs => {
-        const
-            ys = 'string' !== typeof xs ? (
-                list(xs)
-            ) : xs,
-            iLast = ys.length - 1;
-        return splitAt(
-            until(
-                i => iLast < i || !p(ys[i])
-            )(i => 1 + i)(0)
-        )(ys);
+        const i = xs.findIndex(x => !p(x));
+        return -1 !== i ? (
+            Tuple(xs.slice(0, i))(
+                xs.slice(i)
+            )
+        ) : Tuple(xs)([]);
     };
 ```

@@ -267,6 +267,7 @@ map :: (a -> b) -> [a] -> [b]
 mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
 mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+mapFromList :: [(String, a)] -> Dict
 mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
