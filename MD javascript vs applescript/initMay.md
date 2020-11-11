@@ -1,13 +1,3 @@
-```javascript
-// initMay :: [a] -> Maybe [a]
-const initMay = xs => (
-    0 < ys.length ? (
-        Just(ys.slice(0, -1))
-    ) : Nothing()
-)(list(xs));
-```
-
-
 ```applescript
 -- initMay :: [a] -> Maybe [a]
 -- initMay :: [String] -> Maybe [String]
@@ -30,4 +20,14 @@ on initMay(xs)
         Nothing()
     end if
 end initMay
+```
+
+
+```javascript
+// initMay :: [a] -> Maybe [a]
+const initMay = xs => (
+    0 < ys.length ? (
+        Just(ys.slice(0, -1))
+    ) : Nothing()
+)(list(xs));
 ```

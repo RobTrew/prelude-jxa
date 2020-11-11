@@ -1,15 +1,3 @@
-```javascript
-// writeFile :: FilePath -> String -> IO ()
-const writeFile = fp => s =>
-    $.NSString.alloc.initWithUTF8String(s)
-    .writeToFileAtomicallyEncodingError(
-        $(fp)
-        .stringByStandardizingPath, false,
-        $.NSUTF8StringEncoding, null
-    );
-```
-
-
 ```applescript
 -- use framework "Foundation"
 -- writeFile :: FilePath -> String -> IO ()
@@ -20,4 +8,16 @@ on writeFile(strPath, strText)
             (ca's NSString's stringWithString:strPath)) atomically:true ¬
             encoding:(ca's NSUTF8StringEncoding) |error|:(missing value)
 end writeFile
+```
+
+
+```javascript
+// writeFile :: FilePath -> String -> IO ()
+const writeFile = fp => s =>
+    $.NSString.alloc.initWithUTF8String(s)
+    .writeToFileAtomicallyEncodingError(
+        $(fp)
+        .stringByStandardizingPath, false,
+        $.NSUTF8StringEncoding, null
+    );
 ```

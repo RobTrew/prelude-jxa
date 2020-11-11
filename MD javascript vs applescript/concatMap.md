@@ -1,23 +1,3 @@
-```javascript
-// concatMap :: (a -> [b]) -> [a] -> [b]
-const concatMap = f =>
-    // Where (a -> [b]) returns an Array, this 
-    // is equivalent to .flatMap, which should be
-    // used by default.
-    // but if (a -> [b]) returns String rather than [Char], 
-    // the monoid unit is '' in place of [], and a 
-    // concatenated string is returned.
-    xs => {
-        const ys = [...xs].map(f);
-        return 0 < ys.length ? (
-            ys.some(y => 'string' !== typeof y) ? (
-                []
-            ) : ''
-        ).concat(...ys) : ys;
-    };
-```
-
-
 ```applescript
 -- concatMap :: (a -> [b]) -> [a] -> [b]
 on concatMap(f, xs)
@@ -34,4 +14,15 @@ on concatMap(f, xs)
         acc
     end if
 end concatMap
+```
+
+
+```javascript
+// concatMap :: (a -> [b]) -> [a] -> [b]
+const concatMap = f =>
+    // Concatenated results of a map of f over xs.
+    // f is any function which returns a list value.
+    // Any empty lists returned are filtered out by
+    // the concatenation.
+    xs => xs.flatMap(f);
 ```

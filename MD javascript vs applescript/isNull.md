@@ -1,11 +1,3 @@
-```javascript
-// isNull :: [a] -> Bool
-// isNull :: String -> Bool
-const isNull = xs =>
-    1 > xs.length;
-```
-
-
 ```applescript
 -- isNull :: [a] -> Bool
 -- isNull :: String -> Bool
@@ -16,4 +8,12 @@ on isNull(xs)
         {} = xs
     end if
 end isNull
+```
+
+
+```javascript
+// isNull :: [a] -> Bool
+// isNull :: String -> Bool
+const isNull = xs =>
+    1 > xs.length;
 ```

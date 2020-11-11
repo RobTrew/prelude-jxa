@@ -1,9 +1,3 @@
-```javascript
-// unwrap :: NSObject -> a
-const unwrap = ObjC.unwrap;
-```
-
-
 ```applescript
 -- unwrap :: NSObject -> a
 on unwrap(objCValue)
@@ -14,4 +8,10 @@ on unwrap(objCValue)
         item 1 of ((ca's NSArray's arrayWithObject:objCValue) as list)
     end if
 end unwrap
+```
+
+
+```javascript
+// unwrap :: NSObject -> a
+const unwrap = ObjC.unwrap;
 ```

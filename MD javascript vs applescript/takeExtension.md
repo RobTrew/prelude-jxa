@@ -1,16 +1,3 @@
-```javascript
-// takeExtension :: FilePath -> String
-const takeExtension = fp => (
-    fs => {
-        const fn = last(fs);
-        return fn.includes('.') ? (
-            '.' + last(fn.split('.'))
-        ) : '';
-    }
-)(fp.split('/'));
-```
-
-
 ```applescript
 -- takeExtension :: FilePath -> String
 on takeExtension(strPath)
@@ -21,4 +8,17 @@ on takeExtension(strPath)
         ""
     end if
 end takeExtension
+```
+
+
+```javascript
+// takeExtension :: FilePath -> String
+const takeExtension = fp => (
+    fs => {
+        const fn = last(fs);
+        return fn.includes('.') ? (
+            '.' + last(fn.split('.'))
+        ) : '';
+    }
+)(fp.split('/'));
 ```

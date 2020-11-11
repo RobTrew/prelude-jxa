@@ -1,10 +1,3 @@
-```javascript
-// strip :: String -> String
-const strip = s =>
-    s.trim();
-```
-
-
 ```applescript
 -- strip :: String -> String
 on strip(s)
@@ -16,4 +9,11 @@ on strip(s)
     end script
     dropWhile(isSpace, dropWhileEnd(isSpace, s))
 end strip
+```
+
+
+```javascript
+// strip :: String -> String
+const strip = s =>
+    s.trim();
 ```
