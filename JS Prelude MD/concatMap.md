@@ -8,7 +8,7 @@ const concatMap = f =>
     // the monoid unit is '' in place of [], and a 
     // concatenated string is returned.
     xs => {
-        const ys = list(xs).map(f);
+        const ys = [...xs].map(f);
         return 0 < ys.length ? (
             ys.some(y => 'string' !== typeof y) ? (
                 []

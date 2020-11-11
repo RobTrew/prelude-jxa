@@ -433,18 +433,20 @@ const chr = x =>
     String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
-const chunksOf = n =>
+const chunksOf = n => {
     // xs split into sublists of length n.
     // The last sublist will be short if n 
     // does not evenly divide the length of xs .
-    xs => enumFromThenTo(0)(n)(
-        xs.length - 1
-    ).reduce(
-        (a, i) => a.concat([
-            xs.slice(i, (i + n))
-        ]),
-        []
-    );
+    const go = xs => {
+        const 
+            chunk = xs.slice(0, n),
+            rest = xs.slice(n);
+        return 0 < chunk.length ? (
+            [chunk].concat(go(rest))
+        ) : [];
+    };
+    return go;
+};
 
 // combine (</>) :: FilePath -> FilePath -> FilePath
 const combine = fp =>
@@ -515,7 +517,7 @@ const concatMap = f =>
     // the monoid unit is '' in place of [], and a 
     // concatenated string is returned.
     xs => {
-        const ys = list(xs).map(f);
+        const ys = [...xs].map(f);
         return 0 < ys.length ? (
             ys.some(y => 'string' !== typeof y) ? (
                 []

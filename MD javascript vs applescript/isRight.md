@@ -1,3 +1,11 @@
+```javascript
+// isRight :: Either a b -> Bool
+const isRight = lr =>
+  ('undefined' !== typeof lr) && 
+  ('Either' === lr.type) && (undefined !== lr.Right);
+```
+
+
 ```applescript
 -- isRight :: Either a b -> Bool
 on isRight(x)
@@ -6,12 +14,4 @@ on isRight(x)
     (dct's objectForKey:"type") as text = "Either" and ¬
         (dct's objectForKey:"Left") as list = {missing value}
 end isRight
-```
-
-
-```javascript
-// isRight :: Either a b -> Bool
-const isRight = lr =>
-  ('undefined' !== typeof lr) && 
-  ('Either' === lr.type) && (undefined !== lr.Right);
 ```

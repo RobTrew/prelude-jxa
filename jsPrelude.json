@@ -364,7 +364,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    // xs split into sublists of length n.\n    // The last sublist will be short if n \n    // does not evenly divide the length of xs .\n    xs => enumFromThenTo(0)(n)(\n        xs.length - 1\n    ).reduce(\n        (a, i) => a.concat([\n            xs.slice(i, (i + n))\n        ]),\n        []\n    );",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n \n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const \n            chunk = xs.slice(0, n),\n            rest = xs.slice(n);\n        return 0 < chunk.length ? (\n            [chunk].concat(go(rest))\n        ) : [];\n    };\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -423,7 +423,7 @@
     ]
   },
   "concatMap": {
-    "code": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = f =>\n    // Where (a -> [b]) returns an Array, this \n    // is equivalent to .flatMap, which should be\n    // used by default.\n    // but if (a -> [b]) returns String rather than [Char], \n    // the monoid unit is '' in place of [], and a \n    // concatenated string is returned.\n    xs => {\n        const ys = list(xs).map(f);\n        return 0 < ys.length ? (\n            ys.some(y => 'string' !== typeof y) ? (\n                []\n            ) : ''\n        ).concat(...ys) : ys;\n    };",
+    "code": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = f =>\n    // Where (a -> [b]) returns an Array, this \n    // is equivalent to .flatMap, which should be\n    // used by default.\n    // but if (a -> [b]) returns String rather than [Char], \n    // the monoid unit is '' in place of [], and a \n    // concatenated string is returned.\n    xs => {\n        const ys = [...xs].map(f);\n        return 0 < ys.length ? (\n            ys.some(y => 'string' !== typeof y) ? (\n                []\n            ) : ''\n        ).concat(...ys) : ys;\n    };",
     "tags": [
       "JS Prelude",
       "core"
