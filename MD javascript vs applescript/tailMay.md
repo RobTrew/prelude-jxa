@@ -1,3 +1,13 @@
+```javascript
+// tailMay :: [a] -> Maybe [a]
+const tailMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys.slice(1))
+    ) : Nothing()
+)(list(xs));
+```
+
+
 ```applescript
 -- tailMay :: [a] -> Maybe [a]
 on tailMay(xs)
@@ -7,14 +17,4 @@ on tailMay(xs)
         Just(rest of xs)
     end if
 end tailMay
-```
-
-
-```javascript
-// tailMay :: [a] -> Maybe [a]
-const tailMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(1))
-    ) : Nothing()
-)(list(xs));
 ```

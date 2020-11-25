@@ -1,11 +1,3 @@
-```applescript
--- str :: a -> String
-on str(x)
-    x as string
-end str
-```
-
-
 ```javascript
 // str :: a -> String
 const str = x =>
@@ -14,4 +6,12 @@ const str = x =>
    ) ? (
        x.join('')
    ) : x.toString();
+```
+
+
+```applescript
+-- str :: a -> String
+on str(x)
+    x as string
+end str
 ```

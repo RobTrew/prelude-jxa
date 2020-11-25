@@ -1,3 +1,11 @@
+```javascript
+// mean :: [Num] -> Num
+const mean = xs => (
+    ys => ys.reduce((a, y) => a + y, 0) / ys.length
+)(list(xs));
+```
+
+
 ```applescript
 -- mean :: [Num] -> Num
 on mean(xs)
@@ -8,12 +16,4 @@ on mean(xs)
     end script
     foldl(result, 0, xs) / (length of xs)
 end mean
-```
-
-
-```javascript
-// mean :: [Num] -> Num
-const mean = xs => (
-    ys => ys.reduce((a, y) => a + y, 0) / ys.length
-)(list(xs));
 ```

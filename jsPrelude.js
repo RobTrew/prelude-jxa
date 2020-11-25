@@ -170,8 +170,7 @@ const apTuple = tpl =>
 
 // append (<>) :: [a] -> [a] -> [a]
 const append = xs =>
-    // A list defined by the
-    // concatenation of two others.
+    // Two lists joined into one.
     ys => xs.concat(ys);
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
@@ -2165,9 +2164,9 @@ const levelNodes = tree =>
 const levels = tree =>
     map(map(root))(
         takeWhile(xs => 0 < xs.length)(
-            iterate(concatMap(nest))([
-                tree
-            ])
+            iterate(
+                concatMap(nest)
+            )([tree])
         )
     );
 
@@ -3198,16 +3197,7 @@ const recipMay = n =>
 const regexMatches = rgx =>
     // All matches for the given regular expression
     // in the supplied string s.
-    s => {
-        // Recompiled to ensure that any supplied 
-        // regex is interpreted as global.
-        const r = new RegExp(rgx, 'g');
-        return unfoldr(
-            m => !!m ? (
-                Just(Tuple(m)(r.exec(s)))
-            ) : Nothing()
-        )(r.exec(s));
-    };
+    s => [...s.matchAll(new RegExp(rgx, 'g'))];
 
 // rem :: Int -> Int -> Int
 const rem = n => 

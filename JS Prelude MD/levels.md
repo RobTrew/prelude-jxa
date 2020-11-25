@@ -3,9 +3,9 @@
 const levels = tree =>
     map(map(root))(
         takeWhile(xs => 0 < xs.length)(
-            iterate(concatMap(nest))([
-                tree
-            ])
+            iterate(
+                concatMap(nest)
+            )([tree])
         )
     );
 ```

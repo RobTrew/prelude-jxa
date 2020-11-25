@@ -152,7 +152,7 @@
     ]
   },
   "append (<>)": {
-    "code": "// append (<>) :: [a] -> [a] -> [a]\nconst append = xs =>\n    // A list defined by the\n    // concatenation of two others.\n    ys => xs.concat(ys);",
+    "code": "// append (<>) :: [a] -> [a] -> [a]\nconst append = xs =>\n    // Two lists joined into one.\n    ys => xs.concat(ys);",
     "tags": [
       "JS Prelude",
       "core"
@@ -838,7 +838,7 @@
     ]
   },
   "fileStatus": {
-    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(fp, e);\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};",
+    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(\n            ObjC.wrap(fp).stringByStandardizingPath,\n            e\n        );\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -1562,7 +1562,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    map(map(root))(\n        takeWhile(xs => 0 < xs.length)(\n            iterate(concatMap(nest))([\n                tree\n            ])\n        )\n    );",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    map(map(root))(\n        takeWhile(xs => 0 < xs.length)(\n            iterate(\n                concatMap(nest)\n            )([tree])\n        )\n    );",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2291,7 +2291,7 @@
     ]
   },
   "regexMatches": {
-    "code": "// regexMatches :: Regex String -> String -> [[String]]\nconst regexMatches = rgx =>\n    // All matches for the given regular expression\n    // in the supplied string s.\n    s => {\n        // Recompiled to ensure that any supplied \n        // regex is interpreted as global.\n        const r = new RegExp(rgx, 'g');\n        return unfoldr(\n            m => !!m ? (\n                Just(Tuple(m)(r.exec(s)))\n            ) : Nothing()\n        )(r.exec(s));\n    };",
+    "code": "// regexMatches :: Regex String -> String -> [[String]]\nconst regexMatches = rgx =>\n    // All matches for the given regular expression\n    // in the supplied string s.\n    s => [...s.matchAll(new RegExp(rgx, 'g'))];",
     "tags": [
       "JS Prelude"
     ]
