@@ -1,15 +1,3 @@
-```javascript
-// base64encode :: String -> String
-const base64encode = s =>
-    ObjC.unwrap(
-        $.NSString.stringWithString(s)
-        .dataUsingEncoding(
-            $.NSUTF8StringEncoding
-        ).base64EncodedStringWithOptions(0)
-    );
-```
-
-
 ```applescript
 -- base64encode :: String -> String
 on base64encode(s)
@@ -20,4 +8,16 @@ on base64encode(s)
             (stringWithString_(s) of its NSString) as string
     end tell
 end base64encode
+```
+
+
+```javascript
+// base64encode :: String -> String
+const base64encode = s =>
+    ObjC.unwrap(
+        $.NSString.stringWithString(s)
+        .dataUsingEncoding(
+            $.NSUTF8StringEncoding
+        ).base64EncodedStringWithOptions(0)
+    );
 ```

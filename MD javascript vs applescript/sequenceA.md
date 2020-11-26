@@ -1,12 +1,3 @@
-```javascript
-// sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
-const sequenceA = tfa =>
-    traverse(x => x)(
-        tfa
-    );
-```
-
-
 ```applescript
 -- sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 on sequenceA(tfa)
@@ -17,4 +8,13 @@ on sequenceA(tfa)
     end script
     traverse(identity, tfa)
 end sequenceA
+```
+
+
+```javascript
+// sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
+const sequenceA = tfa =>
+    traverse(x => x)(
+        tfa
+    );
 ```

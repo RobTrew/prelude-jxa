@@ -1,12 +1,3 @@
-```javascript
-// showSet :: Set a -> String
-const showSet = oSet =>
-    '{' + Array.from(oSet)
-    .map(x => x.toString())
-    .join(',') + '}';
-```
-
-
 ```applescript
 -- showSet :: Set a -> String
 on showSet(s)
@@ -17,4 +8,13 @@ on showSet(s)
     end script
     "{" & intercalate(", ", map(str, sort(elems(s)))) & "}"
 end showSet
+```
+
+
+```javascript
+// showSet :: Set a -> String
+const showSet = oSet =>
+    '{' + Array.from(oSet)
+    .map(x => x.toString())
+    .join(',') + '}';
 ```

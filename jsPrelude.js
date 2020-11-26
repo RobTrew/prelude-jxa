@@ -2162,11 +2162,14 @@ const levelNodes = tree =>
 
 // levels :: Tree a -> [[a]]
 const levels = tree =>
-    map(map(root))(
-        takeWhile(xs => 0 < xs.length)(
-            iterate(
-                concatMap(nest)
-            )([tree])
+    // A list of lists - the gathered root
+    // values of each level of the tree.
+    cons([tree.root])(
+        tree.nest
+        .map(levels)
+        .reduce(
+            uncurry(longZipWith(append)), 
+            []
         )
     );
 
@@ -4743,9 +4746,10 @@ function zipN() {
 
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith = f =>
-    // Use of `take` and `length` here allows 
-    // zipping with non-finite lists
-    // i.e. generators like cycle, repeat, iterate.
+    // A list with the length of the shorter of 
+    // xs and ys, defined by zipping with a
+    // custom function, rather than with the
+    // default tuple constructor.
     xs => ys => {
         const n = Math.min(length(xs), length(ys));
         return Infinity > n ? (
@@ -4805,6 +4809,24 @@ const zipWithList = f =>
             (x, i) => f(x)(ys_[i])
         );
     })([...xs], [...ys]);
+
+// zipWithLong :: (a -> a -> a) -> [a] -> [a]
+const zipWithLong = f => {
+    // A list with the length of the *longer* of 
+    // xs and ys, defined by zipping with a
+    // custom function, rather than with the
+    // default tuple constructor, and simply
+    // appending any unpaired values.
+    const go = xs =>
+        ys => 0 < xs.length ? (
+            0 < ys.length ? (
+                [f(xs[0])(ys[0])].concat(
+                    go(xs.slice(1))(ys.slice(1))
+                )
+            ) : xs
+        ) : ys
+    return go;
+};
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
 const zipWithM = f => 
