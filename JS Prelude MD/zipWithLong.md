@@ -1,5 +1,5 @@
 ```javascript
-// zipWithLong :: (a -> a -> a) -> [a] -> [a]
+// zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]
 const zipWithLong = f => {
     // A list with the length of the *longer* of 
     // xs and ys, defined by zipping with a
