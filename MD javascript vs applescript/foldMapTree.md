@@ -24,7 +24,9 @@ const foldMapTree = f => {
     // a monoid, and combining with mappend.
     const go = tree =>
         0 < tree.nest.length ? (
-            mappend(f(tree.root)(
+            mappend(
+                f(tree.root)
+            )(
                 foldl1(mappend)(
                     tree.nest.map(go)
                 )

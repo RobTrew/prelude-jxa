@@ -995,7 +995,7 @@
     ]
   },
   "foldMapTree": {
-    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree =>\n        0 < tree.nest.length ? (\n            mappend(f(tree.root)(\n                foldl1(mappend)(\n                    tree.nest.map(go)\n                )\n            )\n        ) : f(tree.root);\n    return go;\n};",
+    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree =>\n        0 < tree.nest.length ? (\n            mappend(\n                f(tree.root)\n            )(\n                foldl1(mappend)(\n                    tree.nest.map(go)\n                )\n            )\n        ) : f(tree.root);\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
