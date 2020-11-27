@@ -1450,8 +1450,12 @@ const foldMapTree = f => {
     // Result of mapping each element of the tree to
     // a monoid, and combining with mappend.
     const go = tree =>
-        0 < tree.nest.length ? mappend(f(tree.root))(
-            foldl1(mappend)(tree.nest.map(go))
+        0 < tree.nest.length ? (
+            mappend(f(tree.root)(
+                foldl1(mappend)(
+                    tree.nest.map(go)
+                )
+            )
         ) : f(tree.root);
     return go;
 };
@@ -4816,8 +4820,9 @@ const zipWithLong = f => {
     // A list with the length of the *longer* of 
     // xs and ys, defined by zipping with a
     // custom function, rather than with the
-    // default tuple constructor, and simply
-    // appending any unpaired values.
+    // default tuple constructor.
+    // Any unpaired values, where list lengths differ,
+    // are simply appended.
     const go = xs =>
         ys => 0 < xs.length ? (
             0 < ys.length ? (
@@ -4854,7 +4859,7 @@ function zipWithN() {
 }
 
 // zipWith :: (a -> a -> a) -> [a] -> [a]
-const zipWith = f => {
+const zipWith_ = f => {
     // A list with the length of the shorter of 
     // xs and ys, defined by zipping with a
     // custom function, rather than with the
