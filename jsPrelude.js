@@ -4860,7 +4860,7 @@ function zipWithN() {
     ) : [];
 }
 
-// zipWith :: (a -> a -> a) -> [a] -> [a]
+// zipWith_ :: (a -> a -> b) -> [a] -> [b]
 const zipWith_ = f => {
     // A list with the length of the shorter of 
     // xs and ys, defined by zipping with a
