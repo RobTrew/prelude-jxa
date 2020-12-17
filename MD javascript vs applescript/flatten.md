@@ -1,3 +1,10 @@
+```javascript
+// flatten :: NestedList a -> [a]
+const flatten = nest => 
+    nest.flat(Infinity);
+```
+
+
 ```applescript
 -- flatten :: NestedList a -> [a]
 on flatten(t)
@@ -8,11 +15,4 @@ on flatten(t)
         t
     end if
 end flatten
-```
-
-
-```javascript
-// flatten :: NestedList a -> [a]
-const flatten = nest => 
-    nest.flat(Infinity);
 ```

@@ -2114,12 +2114,11 @@ const kleisliCompose = f =>
     g => x => bind(f(x))(g);
 
 // last :: [a] -> a
-const last = xs => (
+const last = xs => 
     // The last item of a list.
-    ys => 0 < ys.length ? (
-        ys.slice(-1)[0]
-    ) : undefined
-)(list(xs));
+    0 < xs.length ? (
+        xs.slice(-1)[0]
+    ) : undefined;
 
 // lastMay :: [a] -> Maybe a
 const lastMay = xs => (

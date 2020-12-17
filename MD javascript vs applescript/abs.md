@@ -1,3 +1,11 @@
+```javascript
+// abs :: Num -> Num
+const abs = 
+// Absolute value of a given number - without the sign.
+  Math.abs;
+```
+
+
 ```applescript
 -- abs :: Num -> Num
 on abs(x)
@@ -8,12 +16,4 @@ on abs(x)
         x
     end if
 end abs
-```
-
-
-```javascript
-// abs :: Num -> Num
-const abs = 
-// Absolute value of a given number - without the sign.
-  Math.abs;
 ```

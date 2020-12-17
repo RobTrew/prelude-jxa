@@ -1518,7 +1518,7 @@
     ]
   },
   "last": {
-    "code": "// last :: [a] -> a\nconst last = xs => (\n    // The last item of a list.\n    ys => 0 < ys.length ? (\n        ys.slice(-1)[0]\n    ) : undefined\n)(list(xs));",
+    "code": "// last :: [a] -> a\nconst last = xs => \n    // The last item of a list.\n    0 < xs.length ? (\n        xs.slice(-1)[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude"
     ]

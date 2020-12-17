@@ -1,3 +1,10 @@
+```javascript
+// composeListR :: [(a -> a)] -> (a -> a)
+const composeListR = fs =>
+    x => fs.reduce((a, f) => f(a), x);
+```
+
+
 ```applescript
 -- composeListR :: [(a -> a)] -> (a -> a)
 on composeListR(fs)
@@ -13,11 +20,4 @@ on composeListR(fs)
         end |λ|
     end script
 end composeListLR
-```
-
-
-```javascript
-// composeListR :: [(a -> a)] -> (a -> a)
-const composeListR = fs =>
-    x => fs.reduce((a, f) => f(a), x);
 ```

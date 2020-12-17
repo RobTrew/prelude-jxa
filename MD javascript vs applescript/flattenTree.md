@@ -1,3 +1,15 @@
+```javascript
+// flattenTree :: Tree a -> [a]
+const flattenTree = tree => {
+    const
+        go = (xs, node) => [node.root].concat(
+            node.nest.reduceRight(go, xs)
+        );
+    return go([], tree);
+};
+```
+
+
 ```applescript
 -- flattenTree :: Tree a -> [a]
 on flattenTree(node)
@@ -9,16 +21,4 @@ on flattenTree(node)
     end script
     go's |λ|(node, {})
 end flattenTree
-```
-
-
-```javascript
-// flattenTree :: Tree a -> [a]
-const flattenTree = tree => {
-    const
-        go = (xs, node) => [node.root].concat(
-            node.nest.reduceRight(go, xs)
-        );
-    return go([], tree);
-};
 ```
