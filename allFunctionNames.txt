@@ -356,6 +356,7 @@ readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String IO String
 readHex :: String -> Int
 readLR :: Read a => String -> Either String a
+readPlistFileLR :: FilePath -> Either String Object
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
 regexMatches :: Regex String -> String -> [[String]]
@@ -490,7 +491,7 @@ uncurryN :: Curry a b => b -> a
 unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 unfoldl :: (b -> Maybe (b, a)) -> b -> [a]
-unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
+unfoldr :: (b -> Maybe (a, b)) -> b -> Gen [a]
 union :: [a] -> [a] -> [a]
 unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 unionSet :: Ord a => Set a -> Set a -> Set a

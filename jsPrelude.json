@@ -2278,6 +2278,13 @@
       "JS Prelude"
     ]
   },
+  "readPlistFileLR": {
+    "code": "// readPlistFileLR :: FilePath -> Either String Object\nconst readPlistFileLR = fp =>\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(fpFull => {\n        const\n            e = $(),\n            maybeDict = (\n                $.NSDictionary\n                .dictionaryWithContentsOfURLError(\n                    $.NSURL.fileURLWithPath(fpFull),\n                    e\n                )\n            );\n        return maybeDict.isNil() ? (\n            Left('readPlistFileLR:\\n\\t' + ObjC.unwrap(\n                e.localizedDescription\n            ))\n        ) : Right(ObjC.deepUnwrap(maybeDict));\n    });",
+    "tags": [
+      "JS Prelude",
+      "jxa"
+    ]
+  },
   "recip": {
     "code": "// recip :: Num -> Num\nconst recip = n =>\n    0 !== n ? (1 / n) : undefined;",
     "tags": [
@@ -3122,7 +3129,7 @@
     ]
   },
   "unfoldr": {
-    "code": "// unfoldr :: (b -> Maybe (a, b)) -> b -> [a]\nconst unfoldr = f =>\n    // The 'unfoldr' function is a *dual* to 'foldr': while 'foldr'\n    // reduces a list to a summary value, 'unfoldr' builds a list from\n    // a seed value.  The function takes the element and returns 'Nothing'\n    // if it is done producing the list or returns 'Just' @(a,b)@, in which\n    // case, @a@ is a prepended to the list and @b@ is used as the next\n    // element in a recursive call.\n    //\n    // unfoldr(x => 0 !== x ? Just([x, x - 1]) : Nothing(), 10);\n    // --> [10,9,8,7,6,5,4,3,2,1]\n    // (x => Maybe [value, remainder] -> initial value -> values\n    v => {\n        const xs = [];\n        let xr = [v, v];\n        while (true) {\n            const mb = f(xr[1]);\n            if (mb.Nothing) {\n                return xs;\n            } else {\n                xr = mb.Just;\n                xs.push(xr[0]);\n            }\n        }\n    };",
+    "code": "// unfoldr :: (b -> Maybe (a, b)) -> b -> Gen [a]\nconst unfoldr = f =>\n    // A lazy (generator) list unfolded from a seed value\n    // by repeated application of f to a value until no\n    // residue remains. Dual to fold/reduce.\n    // f returns either Nothing or Just (value, residue).\n    // For a strict output list, \n    // wrap with `list` or Array.from\n    x => function* () {\n        let maybePair = f(x);\n        while (!maybePair.Nothing) {\n            const pair = maybePair.Just;\n            yield pair[0];\n            maybePair = f(pair[1]);\n        }\n    }();",
     "tags": [
       "JS Prelude"
     ]
