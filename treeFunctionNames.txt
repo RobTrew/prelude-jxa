@@ -19,7 +19,7 @@ foldlTree :: (b -> a -> b) -> b -> Tree a -> b
 foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int -> Maybe Tree (a, { nodeSum :: Int })
 indexTree :: Tree (a,  { nodeSum :: Int }) -> Int -> Maybe Tree (a,  { nodeSum :: Int })
-indexedTree :: Tree a -> Tree (a, Int)
+indexedTree :: Int -> Tree a -> Tree (a, Int)
 jsonFromTree :: Tree a -> String
 levelNodes :: Tree a -> [[Tree a]]
 levels :: Tree a -> [[a]]

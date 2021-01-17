@@ -10,9 +10,9 @@ const unfoldr = f =>
     x => function* () {
         let maybePair = f(x);
         while (!maybePair.Nothing) {
-            const pair = maybePair.Just;
-            yield pair[0];
-            maybePair = f(pair[1]);
+            const valueResidue = maybePair.Just;
+            yield valueResidue[0];
+            maybePair = f(valueResidue[1]);
         }
     }();
 ```

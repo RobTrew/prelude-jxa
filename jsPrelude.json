@@ -108,7 +108,7 @@
     ]
   },
   "ap (<*>)": {
-    "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list of values\n    // or applying Just(f) to Just(x), Right(f) to Right(x), \n    // f(x) to g(x) etc.\n    mx => ({\n        'Either': () => apLR,\n        'Maybe': () => apMay,\n        'Node': () => apTree,\n        'Tuple': () => apTuple,\n        'List': () => apList,\n        '(a -> b)': () => apFn\n    })[typeName(mx) || 'List'](mf)(mx);",
+    "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list of values\n    // or applying Just(f) to Just(x), Right(f) to Right(x), \n    // f(x) to g(x) etc.\n    mx => ({\n        'Either': () => apLR,\n        'Maybe': () => apMay,\n        'Node': () => apTree,\n        'Tuple': () => apTuple,\n        'List': () => apList,\n        '(a -> b)': () => apFn\n    })[typeName(mx) || 'List']()(mf)(mx);",
     "tags": [
       "JS Prelude"
     ]
@@ -1242,7 +1242,7 @@
     ]
   },
   "indexedTree": {
-    "code": "// indexedTree :: Tree a -> Tree (a, Int)\nconst indexedTree = tree => {\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right zero-based index,\n    // where the root node has index 0;\n    const go = n => node =>\n        second(\n            Node(\n                Tuple(node.root)(n)\n            )\n        )(\n            mapAccumL(go)(succ(n))(\n                node.nest\n            )\n        );\n    return snd(go(0)(tree));\n};",
+    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right index, where the root node \n    // starts at the supplied rootIndex;\n    tree => {\n        const go = n => node =>\n            second(\n                Node(\n                    Tuple(node.root)(n)\n                )\n            )(\n                mapAccumL(go)(1 + n)(\n                    node.nest\n                )\n            );\n        return snd(go(rootIndex)(tree));\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2918,7 +2918,7 @@
     ]
   },
   "tempFilePath": {
-    "code": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n  // File name template to temporary path\n  // Random digit sequence inserted between template base and extension\n  ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);",
+    "code": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n    // File name template to temporary path\n    // Random digit sequence inserted between \n    // template base and extension\n    ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -3129,7 +3129,7 @@
     ]
   },
   "unfoldr": {
-    "code": "// unfoldr :: (b -> Maybe (a, b)) -> b -> Gen [a]\nconst unfoldr = f =>\n    // A lazy (generator) list unfolded from a seed value\n    // by repeated application of f to a value until no\n    // residue remains. Dual to fold/reduce.\n    // f returns either Nothing or Just (value, residue).\n    // For a strict output list, \n    // wrap with `list` or Array.from\n    x => function* () {\n        let maybePair = f(x);\n        while (!maybePair.Nothing) {\n            const pair = maybePair.Just;\n            yield pair[0];\n            maybePair = f(pair[1]);\n        }\n    }();",
+    "code": "// unfoldr :: (b -> Maybe (a, b)) -> b -> Gen [a]\nconst unfoldr = f =>\n    // A lazy (generator) list unfolded from a seed value\n    // by repeated application of f to a value until no\n    // residue remains. Dual to fold/reduce.\n    // f returns either Nothing or Just (value, residue).\n    // For a strict output list, \n    // wrap with `list` or Array.from\n    x => function* () {\n        let maybePair = f(x);\n        while (!maybePair.Nothing) {\n            const valueResidue = maybePair.Just;\n            yield valueResidue[0];\n            maybePair = f(valueResidue[1]);\n        }\n    }();",
     "tags": [
       "JS Prelude"
     ]

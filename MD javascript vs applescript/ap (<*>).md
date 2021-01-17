@@ -12,7 +12,7 @@ const ap = mf =>
         'Tuple': () => apTuple,
         'List': () => apList,
         '(a -> b)': () => apFn
-    })[typeName(mx) || 'List'](mf)(mx);
+    })[typeName(mx) || 'List']()(mf)(mx);
 ```
 
 

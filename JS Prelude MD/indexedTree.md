@@ -1,20 +1,21 @@
 ```javascript
-// indexedTree :: Tree a -> Tree (a, Int)
-const indexedTree = tree => {
+// indexedTree :: Int -> Tree a -> Tree (a, Int)
+const indexedTree = rootIndex =>
     // A tree in which each root value 
     // is paired with a top-down
-    // left-right zero-based index,
-    // where the root node has index 0;
-    const go = n => node =>
-        second(
-            Node(
-                Tuple(node.root)(n)
-            )
-        )(
-            mapAccumL(go)(succ(n))(
-                node.nest
-            )
-        );
-    return snd(go(0)(tree));
-};
+    // left-right index, where the root node 
+    // starts at the supplied rootIndex;
+    tree => {
+        const go = n => node =>
+            second(
+                Node(
+                    Tuple(node.root)(n)
+                )
+            )(
+                mapAccumL(go)(1 + n)(
+                    node.nest
+                )
+            );
+        return snd(go(rootIndex)(tree));
+    };
 ```

@@ -126,7 +126,7 @@ const ap = mf =>
         'Tuple': () => apTuple,
         'List': () => apList,
         '(a -> b)': () => apFn
-    })[typeName(mx) || 'List'](mf)(mx);
+    })[typeName(mx) || 'List']()(mf)(mx);
 
 // apFn :: (a -> b -> c) -> (a -> b) -> (a -> c)
 const apFn = f =>
@@ -1751,24 +1751,25 @@ const indexTree = tree =>
         ) : indexForest(tree.nest)(i - 1)
     ) : Just(tree);
 
-// indexedTree :: Tree a -> Tree (a, Int)
-const indexedTree = tree => {
+// indexedTree :: Int -> Tree a -> Tree (a, Int)
+const indexedTree = rootIndex =>
     // A tree in which each root value 
     // is paired with a top-down
-    // left-right zero-based index,
-    // where the root node has index 0;
-    const go = n => node =>
-        second(
-            Node(
-                Tuple(node.root)(n)
-            )
-        )(
-            mapAccumL(go)(succ(n))(
-                node.nest
-            )
-        );
-    return snd(go(0)(tree));
-};
+    // left-right index, where the root node 
+    // starts at the supplied rootIndex;
+    tree => {
+        const go = n => node =>
+            second(
+                Node(
+                    Tuple(node.root)(n)
+                )
+            )(
+                mapAccumL(go)(1 + n)(
+                    node.nest
+                )
+            );
+        return snd(go(rootIndex)(tree));
+    };
 
 // init :: [a] -> [a]
 const init = xs => (
@@ -4561,9 +4562,9 @@ const unfoldr = f =>
     x => function* () {
         let maybePair = f(x);
         while (!maybePair.Nothing) {
-            const pair = maybePair.Just;
-            yield pair[0];
-            maybePair = f(pair[1]);
+            const valueResidue = maybePair.Just;
+            yield valueResidue[0];
+            maybePair = f(valueResidue[1]);
         }
     }();
 
