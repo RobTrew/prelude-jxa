@@ -5,11 +5,11 @@ const chunksOf = n => {
     // The last sublist will be short if n 
     // does not evenly divide the length of xs .
     const go = xs => {
-        const 
-            chunk = xs.slice(0, n),
-            rest = xs.slice(n);
+        const chunk = xs.slice(0, n);
         return 0 < chunk.length ? (
-            [chunk].concat(go(rest))
+            [chunk].concat(
+                go(xs.slice(n))
+            )
         ) : [];
     };
     return go;
