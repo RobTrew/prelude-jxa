@@ -1,11 +1,3 @@
-```javascript
-// fst :: (a, b) -> a
-const fst = tpl =>
-    // First member of a pair.
-    tpl[0];
-```
-
-
 ```applescript
 -- fst :: (a, b) -> a
 on fst(tpl)
@@ -15,4 +7,12 @@ on fst(tpl)
         item 1 of tpl
     end if
 end fst
+```
+
+
+```javascript
+// fst :: (a, b) -> a
+const fst = tpl =>
+    // First member of a pair.
+    tpl[0];
 ```

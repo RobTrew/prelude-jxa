@@ -1,15 +1,3 @@
-```javascript
-// comparing :: (a -> b) -> (a -> a -> Ordering)
-const comparing = f =>
-    x => y => {
-        const
-            a = f(x),
-            b = f(y);
-        return a < b ? -1 : (a > b ? 1 : 0);
-    };
-```
-
-
 ```applescript
 -- comparing :: (a -> b) -> (a -> a -> Ordering)
 on comparing(f)
@@ -29,4 +17,16 @@ on comparing(f)
         end |λ|
     end script
 end comparing
+```
+
+
+```javascript
+// comparing :: (a -> b) -> (a -> a -> Ordering)
+const comparing = f =>
+    x => y => {
+        const
+            a = f(x),
+            b = f(y);
+        return a < b ? -1 : (a > b ? 1 : 0);
+    };
 ```

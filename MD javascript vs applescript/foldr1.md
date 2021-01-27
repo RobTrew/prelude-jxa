@@ -1,15 +1,3 @@
-```javascript
-// foldr1 :: (a -> a -> a) -> [a] -> a
-const foldr1 = f =>
-    xs => (ys => 0 < ys.length ? (
-        init(ys).reduceRight(
-            uncurry(f),
-            last(ys)
-        )
-    ) : [])(list(xs));
-```
-
-
 ```applescript
 -- foldr1 :: (a -> a -> a) -> [a] -> a
 on foldr1(f, xs)
@@ -26,4 +14,16 @@ on foldr1(f, xs)
         xs
     end if
 end foldr1
+```
+
+
+```javascript
+// foldr1 :: (a -> a -> a) -> [a] -> a
+const foldr1 = f =>
+    xs => (ys => 0 < ys.length ? (
+        init(ys).reduceRight(
+            uncurry(f),
+            last(ys)
+        )
+    ) : [])(list(xs));
 ```

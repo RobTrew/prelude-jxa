@@ -1,10 +1,3 @@
-```javascript
-// toUpper :: String -> String
-const toUpper = s =>
-    s.toLocaleUpperCase();
-```
-
-
 ```applescript
 -- toUpper :: String -> String
 on toUpper(str)
@@ -13,4 +6,11 @@ on toUpper(str)
             uppercaseStringWithLocale:(its NSLocale's currentLocale())) as text
     end tell
 end toUpper
+```
+
+
+```javascript
+// toUpper :: String -> String
+const toUpper = s =>
+    s.toLocaleUpperCase();
 ```

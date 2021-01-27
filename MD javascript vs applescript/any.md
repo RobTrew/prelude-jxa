@@ -1,12 +1,3 @@
-```javascript
-// any :: (a -> Bool) -> [a] -> Bool
-const any = p =>
-    // True if p(x) holds for at least
-    // one item in xs.
-    xs => [...xs].some(p);
-```
-
-
 ```applescript
 -- any :: (a -> Bool) -> [a] -> Bool
 on any(p, xs)
@@ -21,4 +12,13 @@ on any(p, xs)
         false
     end tell
 end any
+```
+
+
+```javascript
+// any :: (a -> Bool) -> [a] -> Bool
+const any = p =>
+    // True if p(x) holds for at least
+    // one item in xs.
+    xs => [...xs].some(p);
 ```

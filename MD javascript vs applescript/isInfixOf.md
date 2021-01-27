@@ -1,3 +1,12 @@
+```applescript
+-- isInfixOf :: (Eq a) => [a] -> [a] -> Bool
+-- isInfixOf :: String -> String -> Bool
+on isInfixOf(needle, haystack)
+    haystack contains needle
+end isInfixOf
+```
+
+
 ```javascript
 // isInfixOf :: (Eq a) => [a] -> [a] -> Bool
 // isInfixOf :: String -> String -> Bool
@@ -10,13 +19,4 @@ const isInfixOf = needle => haystack =>
             ) : false;
         return go(haystack);
     })() : haystack.includes(needle);
-```
-
-
-```applescript
--- isInfixOf :: (Eq a) => [a] -> [a] -> Bool
--- isInfixOf :: String -> String -> Bool
-on isInfixOf(needle, haystack)
-    haystack contains needle
-end isInfixOf
 ```
