@@ -13,12 +13,12 @@ on break(p, xs)
     end tell
     if bln then
         if 1 < i then
-            Tuple(items 1 thru (i - 1) of xs, items i thru -1 of xs)
+            {items 1 thru (i - 1) of xs, items i thru -1 of xs}
         else
-            Tuple({}, xs)
+            {{}, xs}
         end if
     else
-        Tuple(xs, {})
+        {xs, {}}
     end if
 end break
 ```

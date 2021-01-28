@@ -3,16 +3,16 @@
 on splitAt(n, xs)
     if n > 0 and n < length of xs then
         if class of xs is text then
-            Tuple(items 1 thru n of xs as text, ¬
-                items (n + 1) thru -1 of xs as text)
+            {items 1 thru n of xs as text, ¬
+                items (n + 1) thru -1 of xs as text}
         else
-            Tuple(items 1 thru n of xs, items (n + 1) thru -1 of xs)
+            {items 1 thru n of xs, items (n + 1) thru -1 of xs}
         end if
     else
         if n < 1 then
-            Tuple({}, xs)
+            {{}, xs}
         else
-            Tuple(xs, {})
+            {xs, {}}
         end if
     end if
 end splitAt

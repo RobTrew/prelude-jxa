@@ -6,8 +6,8 @@ on bimap(f, g)
     -- first and second values of tpl respectively.
     script
         on |λ|(x)
-            Tuple(|λ|(fst(x)) of mReturn(f), ¬
-                |λ|(snd(x)) of mReturn(g))
+            {|λ|(fst(x)) of mReturn(f), ¬
+                |λ|(snd(x)) of mReturn(g)}
         end |λ|
     end script
 end bimap

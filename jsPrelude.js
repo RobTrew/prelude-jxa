@@ -4823,7 +4823,7 @@ const zipWithLong = f => {
                     go(xs.slice(1))(ys.slice(1))
                 )
             ) : xs
-        ) : ys
+        ) : ys;
     return go;
 };
 
