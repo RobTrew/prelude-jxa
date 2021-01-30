@@ -1,3 +1,10 @@
+```javascript
+// argvLength :: Function -> Int
+const argvLength = f =>
+    f.length;
+```
+
+
 ```applescript
 -- argvLength :: Function -> Int
 on argvLength(h)
@@ -11,11 +18,4 @@ on argvLength(h)
         length of xs
     end try
 end argvLength
-```
-
-
-```javascript
-// argvLength :: Function -> Int
-const argvLength = f =>
-    f.length;
 ```

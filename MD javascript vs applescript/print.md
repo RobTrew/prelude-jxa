@@ -1,12 +1,3 @@
-```applescript
--- print :: a -> IO ()
-on print (x)
-    log x
-    return x
-end print
-```
-
-
 ```javascript
 // print :: a -> IO ()
 const print = x => {
@@ -24,4 +15,13 @@ const print = x => {
         )
     );
 };
+```
+
+
+```applescript
+-- print :: a -> IO ()
+on print (x)
+    log x
+    return x
+end print
 ```

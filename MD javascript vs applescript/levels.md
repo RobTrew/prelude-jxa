@@ -1,3 +1,20 @@
+```javascript
+// levels :: Tree a -> [[a]]
+const levels = tree =>
+    // A list of lists, grouping the 
+    // root values of each level 
+    // of the tree.
+    cons([tree.root])(
+        tree.nest
+        .map(levels)
+        .reduce(
+            uncurry(zipWithLong(append)),
+            []
+        )
+    );
+```
+
+
 ```applescript
 -- levels :: Tree a -> [[a]]
 on levels(tree)
@@ -25,21 +42,4 @@ on levels(tree)
     
     map(roots, iterateUntil(my isNull, nextLayer, {tree}))
 end levels
-```
-
-
-```javascript
-// levels :: Tree a -> [[a]]
-const levels = tree =>
-    // A list of lists, grouping the 
-    // root values of each level 
-    // of the tree.
-    cons([tree.root])(
-        tree.nest
-        .map(levels)
-        .reduce(
-            uncurry(zipWithLong(append)),
-            []
-        )
-    );
 ```
