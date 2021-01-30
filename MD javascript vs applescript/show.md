@@ -63,6 +63,7 @@ const show = x => {
                 'Bool': () => str,
                 'Bottom': () => showUndefined,
                 'Date': () => x => x,
+                'Dict': () => x => x,
                 'Either': () => showLR,
                 'List': () => showList,
                 'Maybe': () => showMaybe,

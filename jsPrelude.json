@@ -2482,7 +2482,7 @@
     ]
   },
   "show": {
-    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        str = x => x.toString(),\n        t = typeName(x);\n    return 'Node' !== t ? (\n        JSON.stringify(\n            x,\n            (_, v) => ({\n                '(a -> b)': () => showFn,\n                'Bool': () => str,\n                'Bottom': () => showUndefined,\n                'Date': () => x => x,\n                'Either': () => showLR,\n                'List': () => showList,\n                'Maybe': () => showMaybe,\n                'Num': () => str,\n                'Ratio': () => showRatio,\n                'String': () => str,\n                'Tuple': () => showTuple\n            })[t]()(v)\n        )\n    ) : showTree(x);\n};",
+    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        str = x => x.toString(),\n        t = typeName(x);\n    return 'Node' !== t ? (\n        JSON.stringify(\n            x,\n            (_, v) => ({\n                '(a -> b)': () => showFn,\n                'Bool': () => str,\n                'Bottom': () => showUndefined,\n                'Date': () => x => x,\n                'Dict': () => x => x,\n                'Either': () => showLR,\n                'List': () => showList,\n                'Maybe': () => showMaybe,\n                'Num': () => str,\n                'Ratio': () => showRatio,\n                'String': () => str,\n                'Tuple': () => showTuple\n            })[t]()(v)\n        )\n    ) : showTree(x);\n};",
     "tags": [
       "JS Prelude"
     ]
