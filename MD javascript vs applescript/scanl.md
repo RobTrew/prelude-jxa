@@ -1,13 +1,3 @@
-```javascript
-// scanl :: (b -> a -> b) -> b -> [a] -> [b]
-const scanl = f => startValue => xs =>
-    list(xs).reduce((a, x) => {
-        const v = f(a[0])(x);
-        return Tuple(v)(a[1].concat(v));
-    }, Tuple(startValue)([startValue]))[1];
-```
-
-
 ```applescript
 -- scanl :: (b -> a -> b) -> b -> [a] -> [b]
 on scanl(f, startValue, xs)
@@ -22,4 +12,14 @@ on scanl(f, startValue, xs)
         return lst
     end tell
 end scanl
+```
+
+
+```javascript
+// scanl :: (b -> a -> b) -> b -> [a] -> [b]
+const scanl = f => startValue => xs =>
+    list(xs).reduce((a, x) => {
+        const v = f(a[0])(x);
+        return Tuple(v)(a[1].concat(v));
+    }, Tuple(startValue)([startValue]))[1];
 ```

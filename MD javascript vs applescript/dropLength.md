@@ -1,18 +1,3 @@
-```javascript
-// dropLength :: [a] -> [b] -> [b]
-const dropLength = xs =>
-    ys => {
-        const go = (x, y) =>
-            0 < x.length ? (
-                0 < y.length ? (
-                    go(x.slice(1), y.slice(1))
-                ) : []
-            ) : y;
-        return go(xs, ys);
-    };
-```
-
-
 ```applescript
 -- dropLength :: [a] -> [b] -> [b]
 on dropLength(xs, ys)
@@ -31,4 +16,19 @@ on dropLength(xs, ys)
     end script
     go's |λ|(xs, ys)
 end dropLength
+```
+
+
+```javascript
+// dropLength :: [a] -> [b] -> [b]
+const dropLength = xs =>
+    ys => {
+        const go = (x, y) =>
+            0 < x.length ? (
+                0 < y.length ? (
+                    go(x.slice(1), y.slice(1))
+                ) : []
+            ) : y;
+        return go(xs, ys);
+    };
 ```

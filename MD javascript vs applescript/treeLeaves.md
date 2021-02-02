@@ -1,14 +1,3 @@
-```javascript
-// treeLeaves :: Tree -> [Tree]
-const treeLeaves = tree => {
-  const nest = tree.nest;
-  return (0 < nest.length) ? (
-    nest.flatMap(treeLeaves)
-  ) : [tree];
-};
-```
-
-
 ```applescript
 -- treeLeaves :: Tree -> [Tree]
 on treeLeaves(oNode)
@@ -24,4 +13,15 @@ on treeLeaves(oNode)
     end script
     |λ|(oNode) of go
 end treeLeaves
+```
+
+
+```javascript
+// treeLeaves :: Tree -> [Tree]
+const treeLeaves = tree => {
+  const nest = tree.nest;
+  return (0 < nest.length) ? (
+    nest.flatMap(treeLeaves)
+  ) : [tree];
+};
 ```

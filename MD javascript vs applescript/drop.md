@@ -1,14 +1,3 @@
-```javascript
-// drop :: Int -> [a] -> [a]
-// drop :: Int -> Generator [a] -> Generator [a]
-// drop :: Int -> String -> String
-const drop = n =>
-    xs => Infinity > length(xs) ? (
-        xs.slice(n)
-    ) : (take(n)(xs), xs);
-```
-
-
 ```applescript
 -- drop :: Int -> [a] -> [a]
 -- drop :: Int -> String -> String
@@ -33,4 +22,15 @@ on drop(n, xs)
         return xs
     end if
 end drop
+```
+
+
+```javascript
+// drop :: Int -> [a] -> [a]
+// drop :: Int -> Generator [a] -> Generator [a]
+// drop :: Int -> String -> String
+const drop = n =>
+    xs => Infinity > length(xs) ? (
+        xs.slice(n)
+    ) : (take(n)(xs), xs);
 ```

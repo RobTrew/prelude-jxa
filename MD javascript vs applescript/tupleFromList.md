@@ -1,10 +1,3 @@
-```javascript
-// tupleFromList :: [a] -> (a, a ...)
-const tupleFromList = xs =>
-    TupleN(...xs);
-```
-
-
 ```applescript
 -- tupleFromList :: [a] -> (a, a ...)
 on tupleFromList(xs)
@@ -25,4 +18,11 @@ on tupleFromList(xs)
         missing value
     end if
 end tupleFromList
+```
+
+
+```javascript
+// tupleFromList :: [a] -> (a, a ...)
+const tupleFromList = xs =>
+    TupleN(...xs);
 ```
