@@ -1,3 +1,10 @@
+```javascript
+// intersection :: Ord a => Set a -> Set a -> Set a
+const intersection = s => s1 =>
+    new Set([...s].filter(x => s1.has(x)));
+```
+
+
 ```applescript
 -- intersection :: Ord a => Set a -> Set a -> Set a
 on intersection(a, b)
@@ -6,11 +13,4 @@ on intersection(a, b)
     s's intersectSet:(b)
     return s
 end intersection
-```
-
-
-```javascript
-// intersection :: Ord a => Set a -> Set a -> Set a
-const intersection = s => s1 =>
-    new Set([...s].filter(x => s1.has(x)));
 ```

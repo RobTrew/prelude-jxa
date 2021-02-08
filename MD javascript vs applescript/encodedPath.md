@@ -1,3 +1,9 @@
+```javascript
+// encodedPath :: FilePath -> Percent Encoded String
+const encodedPath = encodeURI;
+```
+
+
 ```applescript
 -- encodedPath :: FilePath -> Percent Encoded String
 on encodedPath(fp)
@@ -7,10 +13,4 @@ on encodedPath(fp)
             stringWithString_(fp) of its NSString) as string
     end tell
 end encodedPath
-```
-
-
-```javascript
-// encodedPath :: FilePath -> Percent Encoded String
-const encodedPath = encodeURI;
 ```

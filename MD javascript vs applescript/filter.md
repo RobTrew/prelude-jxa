@@ -1,3 +1,12 @@
+```javascript
+// filter :: (a -> Bool) -> [a] -> [a]
+const filter = p =>
+    // The elements of xs which match
+    // the predicate p.
+    xs => [...xs].filter(p);
+```
+
+
 ```applescript
 -- filter :: (a -> Bool) -> [a] -> [a]
 on filter(p, xs)
@@ -15,13 +24,4 @@ on filter(p, xs)
         end if
     end tell
 end filter
-```
-
-
-```javascript
-// filter :: (a -> Bool) -> [a] -> [a]
-const filter = p =>
-    // The elements of xs which match
-    // the predicate p.
-    xs => [...xs].filter(p);
 ```

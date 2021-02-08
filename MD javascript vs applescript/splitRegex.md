@@ -1,3 +1,10 @@
+```javascript
+// splitRegex :: Regex -> String -> [String]
+const splitRegex = needle =>
+    haystack => haystack.split(needle);
+```
+
+
 ```applescript
 -- splitRegex :: Regex -> String -> [String]
 on splitRegex(strRegex, str)
@@ -29,11 +36,4 @@ on splitRegex(strRegex, str)
         {str}
     end if
 end splitRegex
-```
-
-
-```javascript
-// splitRegex :: Regex -> String -> [String]
-const splitRegex = needle =>
-    haystack => haystack.split(needle);
 ```
