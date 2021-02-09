@@ -912,7 +912,7 @@
     ]
   },
   "findIndices": {
-    "code": "// findIndices :: (a -> Bool) -> [a] -> [Int]\n// findIndices :: (String -> Bool) -> String -> [Int]\nconst findIndices = p =>\n    xs => (\n        ys => ys.flatMap((y, i) => p(y, i, ys) ? (\n            [i]\n        ) : [])\n    )([...xs]);",
+    "code": "// findIndices :: (a -> Bool) -> [a] -> [Int]\n// findIndices :: (String -> Bool) -> String -> [Int]\nconst findIndices = p =>\n    xs => {\n        const ys = [...xs];\n        return ys.flatMap(\n            (y, i) => p(y, i, ys) ? (\n                [i]\n            ) : []\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
