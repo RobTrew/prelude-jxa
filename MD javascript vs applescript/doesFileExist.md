@@ -19,6 +19,6 @@ on doesFileExist(strPath)
         stringByStandardizingPath
     set {bln, int} to (ca's NSFileManager's defaultManager's ¬
         fileExistsAtPath:oPath isDirectory:(reference))
-    bln and (int ≠ 1)
+    bln and (1 ≠ int)
 end doesFileExist
 ```

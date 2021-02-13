@@ -22,18 +22,18 @@ on span(p, xs)
     -- tupled with the remainder of xs.
     -- span(p, xs) eq (takeWhile(p, xs), dropWhile(p, xs)) 
     script go
-        property f : mReturn(p)
-        on |λ|(cs)
-            if {} ≠ cs then
-                set c to item 1 of cs
-                if |λ|(c) of p then
-                    set {ys, zs} to go's |λ|(rest of cs)
-                    {{c} & ys, zs}
+        property mp : mReturn(p)
+        on |λ|(vs)
+            if {} ≠ vs then
+                set x to item 1 of vs
+                if |λ|(x) of mp then
+                    set {ys, zs} to |λ|(rest of vs)
+                    {{x} & ys, zs}
                 else
-                    {{}, cs}
+                    {{}, vs}
                 end if
             else
-                {}
+                {{}, {}}
             end if
         end |λ|
     end script
