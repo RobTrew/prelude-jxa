@@ -1,3 +1,11 @@
+```applescript
+-- lines :: String -> [String]
+on |lines|(xs)
+    paragraphs of xs
+end |lines|
+```
+
+
 ```javascript
 // lines :: String -> [String]
 const lines = s =>
@@ -6,12 +14,4 @@ const lines = s =>
     0 < s.length ? (
         s.split(/[\r\n]+/u)
     ) : [];
-```
-
-
-```applescript
--- lines :: String -> [String]
-on |lines|(xs)
-    paragraphs of xs
-end |lines|
 ```

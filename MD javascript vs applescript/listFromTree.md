@@ -1,15 +1,3 @@
-```javascript
-// listFromTree :: Tree a -> [a]
-const listFromTree = tree => {
-    const go = x => [
-      x.root,
-      ...[].concat.apply([], x.nest.map(go))
-    ];
-    return go(tree);
-};
-```
-
-
 ```applescript
 -- listFromTree :: Tree a -> [a]
 on listFromTree(tree)
@@ -20,4 +8,16 @@ on listFromTree(tree)
     end script
     |λ|(tree) of go
 end listFromTree
+```
+
+
+```javascript
+// listFromTree :: Tree a -> [a]
+const listFromTree = tree => {
+    const go = x => [
+      x.root,
+      ...[].concat.apply([], x.nest.map(go))
+    ];
+    return go(tree);
+};
 ```

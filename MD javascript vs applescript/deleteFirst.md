@@ -1,16 +1,3 @@
-```javascript
-// deleteFirst :: a -> [a] -> [a]
-const deleteFirst = x => {
-    const go = xs => 0 < xs.length ? (
-        x === xs[0] ? (
-            xs.slice(1)
-        ) : [xs[0]].concat(go(xs.slice(1)))
-    ) : [];
-    return go;
-};
-```
-
-
 ```applescript
 -- deleteFirst :: a -> [a] -> [a]
 on deleteFirst(x, xs)
@@ -30,4 +17,17 @@ on deleteFirst(x, xs)
     end script
     go's |λ|(xs)
 end deleteFirst
+```
+
+
+```javascript
+// deleteFirst :: a -> [a] -> [a]
+const deleteFirst = x => {
+    const go = xs => 0 < xs.length ? (
+        x === xs[0] ? (
+            xs.slice(1)
+        ) : [xs[0]].concat(go(xs.slice(1)))
+    ) : [];
+    return go;
+};
 ```

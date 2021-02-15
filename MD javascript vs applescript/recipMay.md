@@ -1,12 +1,3 @@
-```javascript
-// recipMay :: Num -> Maybe Num
-const recipMay = n =>
-    0 === n ? (
-        Nothing()
-    ) : Just(1 / n);
-```
-
-
 ```applescript
 -- recipMay :: Num -> Maybe Num
 on recipMay(n)
@@ -16,4 +7,13 @@ on recipMay(n)
         Nothing()
     end if
 end recipMay
+```
+
+
+```javascript
+// recipMay :: Num -> Maybe Num
+const recipMay = n =>
+    0 === n ? (
+        Nothing()
+    ) : Just(1 / n);
 ```

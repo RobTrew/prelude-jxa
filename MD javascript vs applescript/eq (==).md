@@ -1,3 +1,11 @@
+```applescript
+-- eq (==) :: Eq a => a -> a -> Bool
+on eq(a, b)
+    a = b
+end eq
+```
+
+
 ```javascript
 // eq (==) :: Eq a => a -> a -> Bool
 const eq = a =>
@@ -18,12 +26,4 @@ const eq = a =>
             ) : kvs.every(([k, v]) => eq(v)(b[k]));
         })();
     };
-```
-
-
-```applescript
--- eq (==) :: Eq a => a -> a -> Bool
-on eq(a, b)
-    a = b
-end eq
 ```

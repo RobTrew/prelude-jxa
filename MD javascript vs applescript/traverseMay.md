@@ -1,14 +1,3 @@
-```javascript
-// traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
-const traverseMay = f => mb =>
-    mb.Nothing ? (
-        [mb]
-    ) : fmap(Just)(
-        f(mb.Just)
-    );
-```
-
-
 ```applescript
 -- traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 on traverseMay(f, mb)
@@ -18,4 +7,15 @@ on traverseMay(f, mb)
         fmap(my Just, mReturn(f)'s |λ|(Just of mb))
     end if
 end traverseMay
+```
+
+
+```javascript
+// traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
+const traverseMay = f => mb =>
+    mb.Nothing ? (
+        [mb]
+    ) : fmap(Just)(
+        f(mb.Just)
+    );
 ```
