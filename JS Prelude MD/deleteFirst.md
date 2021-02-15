@@ -6,6 +6,7 @@ const deleteFirst = x => {
             xs.slice(1)
         ) : [xs[0]].concat(go(xs.slice(1)))
     ) : [];
+
     return go;
 };
 ```

@@ -36,11 +36,19 @@ const approxRatio = epsilon =>
     n => {
         const
             gcde = (e, x, y) => {
-                const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
-                return _gcd(abs(x), abs(y));
+                const gcd1 = (a, b) => b < e ? (
+                    a
+                ) : gcd1(b, a % b);
+
+                return gcd1(abs(x), abs(y));
             },
-            c = gcde(Boolean(epsilon) ? epsilon : (1 / 10000), 1, abs(n)),
+            c = gcde(
+                Boolean(epsilon) ? (
+                    epsilon
+                ) : (1 / 10000), 1, abs(n)
+            ),
             r = ratio(quot(abs(n))(c))(quot(1, c));
+
         return {
             type: 'Ratio',
             n: r.n * signum(n),

@@ -8,6 +8,7 @@ const curryN = f =>
             go = xs => f.length <= xs.length ? (
                 f(...xs)
             ) : (...ys) => go(xs.concat(ys));
+
         return go(args);
     };
 ```

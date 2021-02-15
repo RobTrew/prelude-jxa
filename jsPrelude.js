@@ -198,9 +198,9 @@ const applyN = n =>
     // The value of n applications of f to x.
     // (Church numeral n)
     f => x => Array.from({
-            length: n
-        }, () => f)
-        .reduce((a, g) => g(a), x);
+        length: n
+    }, () => f)
+    .reduce((a, g) => g(a), x);
 
 // approxRatio :: Float -> Float -> Ratio
 const approxRatio = epsilon =>
@@ -209,11 +209,19 @@ const approxRatio = epsilon =>
     n => {
         const
             gcde = (e, x, y) => {
-                const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
-                return _gcd(abs(x), abs(y));
+                const gcd1 = (a, b) => b < e ? (
+                    a
+                ) : gcd1(b, a % b);
+
+                return gcd1(abs(x), abs(y));
             },
-            c = gcde(Boolean(epsilon) ? epsilon : (1 / 10000), 1, abs(n)),
+            c = gcde(
+                Boolean(epsilon) ? (
+                    epsilon
+                ) : (1 / 10000), 1, abs(n)
+            ),
             r = ratio(quot(abs(n))(c))(quot(1, c));
+
         return {
             type: 'Ratio',
             n: r.n * signum(n),
@@ -247,7 +255,7 @@ const bimapLR = f =>
     // Instance of bimap for Either values.
     // Either the application of f to a Left value,
     // or the application of g to a Right value.
-    g => lr => undefined !== lr.Left ? (
+    g => lr => lr.Left ? (
         Left(f(lr.Left))
     ) : Right(g(lr.Right));
 
@@ -259,18 +267,19 @@ const bimapN = f =>
     // and the penultimate value is an application of f.
     g => tpln => {
         const n = tpln.length;
-        return undefined !== n ? (
+
+        return 1 < n ? (
             TupleN(
                 ...Array.from(tpln).slice(0, n - 2),
                 f(tpln[n - 2]), g(tpln[n - 1])
             )
-        ) : undefined;
+        ) : null;
     };
 
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
 const bind = m =>
-    // Two computations sequentially composed, 
-    // with any value produced by the first 
+    // Two computations sequentially composed,
+    // with any value produced by the first
     // passed as an argument to the second.
     mf => Array.isArray(m) ? (
         bindList(m)(mf)
@@ -311,7 +320,10 @@ const bindMay = mb =>
 const bindTuple = tpl =>
     f => {
         const t2 = f(tpl[1]);
-        return Tuple(mappend(tpl[0])(t2[0]))(
+
+        return Tuple(
+            mappend(tpl[0])(t2[0])
+        )(
             t2[1]
         );
     };
@@ -324,6 +336,7 @@ const bool = f =>
 const break_ = p =>
     xs => {
         const i = xs.findIndex(p);
+
         return -1 !== i ? (
             Tuple(xs.slice(0, i))(
                 xs.slice(i)
@@ -336,16 +349,17 @@ const breakOn = pat =>
     // Needle -> Haystack -> (prefix before match, match + rest)
     src => 0 < pat.length ? (() => {
         const xs = src.split(pat);
+
         return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
         ) : Tuple(src)('');
-    })() : undefined;
+    })() : null;
 
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = pat =>
     src => '' !== pat ? (
         src.split(pat)
-        .reduce((a, x, i, xs) =>
+        .reduce((a, _, i, xs) =>
             0 < i ? (
                 a.concat([
                     Tuple(xs.slice(0, i).join(pat))(
@@ -353,13 +367,15 @@ const breakOnAll = pat =>
                     )
                 ])
             ) : a, [])
-    ) : undefined;
+    ) : null;
 
 // breakOnMay :: String -> String -> Maybe (String, String)
 const breakOnMay = pat =>
-    // Needle -> Haystack -> maybe (prefix before match, match + rest)
+    // Needle -> Haystack ->
+    // maybe (prefix before match, match + rest)
     src => Boolean(pat) ? (() => {
         const xs = src.split(pat);
+
         return Just(0 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
         ) : Tuple(src)(''));
@@ -367,16 +383,22 @@ const breakOnMay = pat =>
 
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
-    s => s.split(/[\r\n]/).map(
-        x => '' !== x ? strTab + '- ' + x : x
-    ).join('\n');
+    s => s.split(/[\n\r]+/u)
+    .map(
+        x => '' !== x ? (
+            `${strTab}- ${x}`
+        ) : x
+    )
+    .join('\n');
 
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
     ys => [...xs].flatMap(
-        x => [...ys].flatMap(y => [
-            [x].concat(y)
-        ])
+        x => [...ys].flatMap(
+            y => [
+                [x].concat(y)
+            ]
+        )
     );
 
 // caseOf :: [(a -> Bool, b)] -> b -> a ->  b
@@ -388,6 +410,7 @@ const caseOf = pvs =>
             a.Nothing ? (
                 pv[0](x) ? Just(pv[1]) : a
             ) : a, Nothing());
+
         return mb.Nothing ? otherwise : mb.Just;
     };
 
@@ -401,16 +424,20 @@ const ceiling = x => {
     const
         nr = properFraction(x),
         n = nr[0];
+
     return 0 < nr[1] ? 1 + n : n;
 };
 
 // center :: Int -> Char -> String -> String
 const center = n =>
-    // Size of space -> filler Char -> String -> Centered String
+    // Size of space -> filler Char ->
+    // String -> Centered String
     c => s => {
         const gap = n - s.length;
+
         return 0 < gap ? (() => {
             const pre = c.repeat(Math.floor(gap / 2));
+
             return pre + s + pre + c.repeat(gap % 2);
         })() : s;
     };
@@ -424,11 +451,13 @@ const chop = f =>
     // A segmentation of xs by tail recursion with a
     // function which returns a (prefix, residue) tuple.
     xs => {
-        const go = xs =>
-            0 < xs.length ? (() => {
-                const [b, bs] = Array.from(f(xs));
+        const go = ys =>
+            0 < ys.length ? (() => {
+                const [b, bs] = Array.from(f(ys));
+
                 return [b].concat(go(bs));
             })() : [];
+
         return go([...xs]);
     };
 
@@ -440,30 +469,32 @@ const chr = x =>
 // chunksOf :: Int -> [a] -> [[a]]
 const chunksOf = n => {
     // xs split into sublists of length n.
-    // The last sublist will be short if n 
+    // The last sublist will be short if n
     // does not evenly divide the length of xs .
     const go = xs => {
         const chunk = xs.slice(0, n);
+
         return 0 < chunk.length ? (
             [chunk].concat(
                 go(xs.slice(n))
             )
         ) : [];
     };
+
     return go;
 };
 
 // combine (</>) :: FilePath -> FilePath -> FilePath
 const combine = fp =>
-    // Two paths combined with a path separator. 
-    // Just the second path if that starts 
-    // with a path separator.
+    // Two paths combined with a path separator.
+    // Just the second path if that starts with
+    // a path separator.
     fp1 => Boolean(fp) && Boolean(fp1) ? (
         '/' === fp1.slice(0, 1) ? (
             fp1
         ) : '/' === fp.slice(-1) ? (
             fp + fp1
-        ) : fp + '/' + fp1
+        ) : `${fp}/${fp1}`
     ) : fp + fp1;
 
 // compare :: a -> a -> Ordering
@@ -476,6 +507,7 @@ const comparing = f =>
         const
             a = f(x),
             b = f(y);
+
         return a < b ? -1 : (a > b ? 1 : 0);
     };
 
@@ -523,23 +555,22 @@ const concatMap = f =>
 
 // cons :: a -> [a] -> [a]
 const cons = x =>
-    // A list constructed from the item x,
-    // followed by the existing list xs.
+// A list constructed from the item x,
+// followed by the existing list xs.
     xs => Array.isArray(xs) ? (
         [x].concat(xs)
-    ) : 'GeneratorFunction' !== xs
-    .constructor.constructor.name ? (
+    ) : "GeneratorFunction" !== xs.constructor.constructor.name ? (
         x + xs
-    ) : ( // cons(x)(Generator)
-        function* () {
+    ) : (
+        function *() {
             yield x;
             let nxt = xs.next();
+
             while (!nxt.done) {
                 yield nxt.value;
                 nxt = xs.next();
             }
-        }
-    )();
+        }());
 
 // constant :: a -> b -> a
 const constant = k =>
@@ -558,6 +589,7 @@ const curryN = f =>
             go = xs => f.length <= xs.length ? (
                 f(...xs)
             ) : (...ys) => go(xs.concat(ys));
+
         return go(args);
     };
 
@@ -570,7 +602,7 @@ const cycle = function *(xs) {
     let i = 0;
 
     while (true) {
-        yield (xs[i]);
+        yield xs[i];
         i = (1 + i) % lng;
     }
 };
@@ -591,6 +623,7 @@ const delete_ = x => {
                 xs.slice(1)
             ) : [xs[0]].concat(go(xs.slice(1)))
         ) : [];
+
     return go;
 };
 
@@ -598,6 +631,7 @@ const delete_ = x => {
 const deleteAt = i =>
     xs => i <= xs.length ? (() => {
         const lr = splitAt(i)(xs);
+
         return lr[0].concat(lr[1].slice(1));
     })() : xs;
 
@@ -609,6 +643,7 @@ const deleteBy = fEq =>
                 xs.slice(1)
             ) : [xs[0]].concat(go(xs.slice(1)))
         ) : [];
+
         return go;
     };
 
@@ -619,6 +654,7 @@ const deleteFirst = x => {
             xs.slice(1)
         ) : [xs[0]].concat(go(xs.slice(1)))
     ) : [];
+
     return go;
 };
 
@@ -633,6 +669,7 @@ const deleteKey = k =>
     // A new dictionary, without the key k.
     dct => {
         const dct2 = Object.assign({}, dct);
+
         return (delete dct2[k], dct2);
     };
 
@@ -644,46 +681,53 @@ const dictFromList = kvs =>
 const difference = xs =>
     ys => {
         const s = new Set(ys);
+
         return xs.filter(x => !s.has(x));
     };
 
 // differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
-const differenceGen = ga => {
-    return function*(gb) {
+const differenceGen = ga =>
+    function *(gb) {
         // All values of generator stream ga except any
         // already seen in generator stream gb.
         const
             stream = zipGen(ga)(gb),
             sb = new Set([]);
+
         let xy = take(1)(stream);
+
         while (0 < xy.length) {
             const [x, y] = Array.from(xy[0]);
+
             sb.add(y);
-            if (!sb.has(x)) yield x;
+            if (!sb.has(x)) {
+                yield x;
+            }
             xy = take(1)(stream);
         }
     };
-};
 
 // digitToInt :: Char -> Int
 const digitToInt = c => {
     const
         ord = x => x.codePointAt(0),
         oc = ord(c);
+
     return 48 > oc || 102 < oc ? (
-        undefined
+        null
     ) : (() => {
         const
             dec = oc - ord('0'),
             hexu = oc - ord('A'),
             hexl = oc - ord('a');
+
         return 9 >= dec ? (
             dec
-        ) : 0 <= hexu && 5 >= hexu  ? (
+        ) : 0 <= hexu && 5 >= hexu ? (
             10 + hexu
         ) : 0 <= hexl && 5 >= hexl ? (
             10 + hexl
-        ) : undefined;
+        ) : null;
     })();
 };
 
@@ -697,6 +741,7 @@ const divMod = n => d => {
     // and integer modulus such that:
     // (x `div` y)*y + (x `mod` y) == x
     const [q, r] = [Math.trunc(n / d), n % d];
+
     return signum(n) === signum(-d) ? (
         Tuple(q - 1)(r + d)
     ) : Tuple(q)(r);
@@ -722,6 +767,7 @@ const draw = node => {
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
         const lng = xs.length;
+
         return 0 < lng ? (
             1 < lng ? (
                 ['│'].concat(
@@ -734,6 +780,7 @@ const draw = node => {
             )
         ) : [];
     };
+
     return node.root.split('\n').concat(
         drawSubTrees(node.nest)
     );
@@ -865,10 +912,11 @@ const dropAround = p =>
 const dropFileName = fp =>
     '' !== fp ? (() => {
         const
-          xs = (fp.split('/'))
-          .slice(0, -1);
-        return xs.length > 0 ? (
-            xs.join('/') + '/'
+            xs = (fp.split('/'))
+            .slice(0, -1);
+
+        return 0 < xs.length ? (
+            `${xs.join('/')}/`
         ) : './';
     })() : './';
 

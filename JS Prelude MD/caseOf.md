@@ -8,6 +8,7 @@ const caseOf = pvs =>
             a.Nothing ? (
                 pv[0](x) ? Just(pv[1]) : a
             ) : a, Nothing());
+
         return mb.Nothing ? otherwise : mb.Just;
     };
 ```

@@ -29,6 +29,7 @@ end break
 const break_ = p =>
     xs => {
         const i = xs.findIndex(p);
+
         return -1 !== i ? (
             Tuple(xs.slice(0, i))(
                 xs.slice(i)

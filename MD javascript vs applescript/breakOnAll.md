@@ -27,7 +27,7 @@ end breakOnAll
 const breakOnAll = pat =>
     src => '' !== pat ? (
         src.split(pat)
-        .reduce((a, x, i, xs) =>
+        .reduce((a, _, i, xs) =>
             0 < i ? (
                 a.concat([
                     Tuple(xs.slice(0, i).join(pat))(
@@ -35,5 +35,5 @@ const breakOnAll = pat =>
                     )
                 ])
             ) : a, [])
-    ) : undefined;
+    ) : null;
 ```

@@ -18,7 +18,11 @@ end bulleted
 ```javascript
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
-    s => s.split(/[\r\n]/).map(
-        x => '' !== x ? strTab + '- ' + x : x
-    ).join('\n');
+    s => s.split(/[\n\r]+/u)
+    .map(
+        x => '' !== x ? (
+            `${strTab}- ${x}`
+        ) : x
+    )
+    .join('\n');
 ```

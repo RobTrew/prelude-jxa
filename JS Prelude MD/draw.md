@@ -14,6 +14,7 @@ const draw = node => {
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
         const lng = xs.length;
+
         return 0 < lng ? (
             1 < lng ? (
                 ['│'].concat(
@@ -26,6 +27,7 @@ const draw = node => {
             )
         ) : [];
     };
+
     return node.root.split('\n').concat(
         drawSubTrees(node.nest)
     );

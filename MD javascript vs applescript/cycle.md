@@ -32,7 +32,7 @@ const cycle = function *(xs) {
     let i = 0;
 
     while (true) {
-        yield (xs[i]);
+        yield xs[i];
         i = (1 + i) % lng;
     }
 };

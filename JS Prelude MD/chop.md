@@ -4,11 +4,13 @@ const chop = f =>
     // A segmentation of xs by tail recursion with a
     // function which returns a (prefix, residue) tuple.
     xs => {
-        const go = xs =>
-            0 < xs.length ? (() => {
-                const [b, bs] = Array.from(f(xs));
+        const go = ys =>
+            0 < ys.length ? (() => {
+                const [b, bs] = Array.from(f(ys));
+
                 return [b].concat(go(bs));
             })() : [];
+
         return go([...xs]);
     };
 ```

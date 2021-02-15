@@ -20,11 +20,12 @@ const bimapN = f =>
     // and the penultimate value is an application of f.
     g => tpln => {
         const n = tpln.length;
-        return undefined !== n ? (
+
+        return 1 < n ? (
             TupleN(
                 ...Array.from(tpln).slice(0, n - 2),
                 f(tpln[n - 2]), g(tpln[n - 1])
             )
-        ) : undefined;
+        ) : null;
     };
 ```
