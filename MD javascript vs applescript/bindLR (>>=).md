@@ -1,8 +1,8 @@
 ```javascript
-// bindLR (>>=) :: Either a -> 
+// bindLR (>>=) :: Either a ->
 // (a -> Either b) -> Either b
 const bindLR = m =>
-    mf => undefined !== m.Left ? (
+    mf => m.Left ? (
         m
     ) : mf(m.Right);
 ```

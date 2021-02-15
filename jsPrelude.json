@@ -1,6 +1,6 @@
 {
   "Just": {
-    "code": "// Just :: a -> Maybe a\nconst Just = x => ({\n    type: 'Maybe',\n    Nothing: false,\n    Just: x\n});",
+    "code": "// Just :: a -> Maybe a\nconst Just = x => ({\n    type: \"Maybe\",\n    Nothing: false,\n    Just: x\n});",
     "tags": [
       "JS Prelude",
       "core"
@@ -21,7 +21,7 @@
     ]
   },
   "Nothing": {
-    "code": "// Nothing :: Maybe a\nconst Nothing = () => ({\n    type: 'Maybe',\n    Nothing: true,\n});",
+    "code": "// Nothing :: Maybe a\nconst Nothing = () => ({\n    type: 'Maybe',\n    Nothing: true\n});",
     "tags": [
       "JS Prelude",
       "core"
@@ -41,21 +41,21 @@
     ]
   },
   "Tuple3": {
-    "code": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n  type: 'Tuple3',\n  '0': a,\n  '1': b,\n  '2': c,\n  length: 3\n});",
+    "code": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n    type: 'Tuple3',\n    '0': a,\n    '1': b,\n    '2': c,\n    length: 3\n});",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "TupleN": {
-    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nfunction TupleN() {\n    const\n        args = Array.from(arguments),\n        n = args.length;\n    return 2 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 'Tuple' + n.toString(),\n            length: n\n        })\n    ) : args.reduce((f, x) => f(x), Tuple);\n}",
+    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nconst TupleN = (...args) => {\n    // A Tuple of an arbitrary number of items.\n    const n = args.length;\n\n    return 2 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: `Tuple${n}`,\n            length: n\n        })\n    ) : args.reduce((f, x) => f(x), Tuple);\n};",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "abs": {
-    "code": "// abs :: Num -> Num\nconst abs = \n// Absolute value of a given number - without the sign.\n  Math.abs;",
+    "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number - without the sign.\n    x => Math.abs(x);",
     "tags": [
       "JS Prelude"
     ]
@@ -120,7 +120,7 @@
     ]
   },
   "apLR (<*>)": {
-    "code": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = flr =>\n  // Either a Left value, or the application of a\n  // function in Either to a value in Either.\n  liftA2LR(x => x)(flr);",
+    "code": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = flr =>\n    // Either a Left value, or the application of a\n    // function in Either to a value in Either.\n    liftA2LR(x => x)(flr);",
     "tags": [
       "JS Prelude"
     ]
@@ -146,7 +146,7 @@
     ]
   },
   "apTuple (<*>)": {
-    "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = tpl => \n  liftA2Tuple(x => x)(tpl);",
+    "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = tpl =>\n    liftA2Tuple(x => x)(tpl);",
     "tags": [
       "JS Prelude"
     ]
@@ -173,7 +173,7 @@
     ]
   },
   "appendGen": {
-    "code": "// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]\nconst appendGen = xs =>\n    // A new generator composed from the \n    // concatenation of two existing generators.\n    function* (ys) {\n        for (let vs of [xs, ys]) {\n            let nxt = vs.next();\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = vs.next();\n            }\n        }\n    };",
+    "code": "// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]\nconst appendGen = xs =>\n// A new generator composed from the\n// concatenation of two existing generators.\n    function *(ys) {\n        for (const vs of [xs, ys]) {\n            let nxt = vs.next();\n\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = vs.next();\n            }\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -253,7 +253,7 @@
     ]
   },
   "bindLR (>>=)": {
-    "code": "// bindLR (>>=) :: Either a -> \n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    mf => undefined !== m.Left ? (\n        m\n    ) : mf(m.Right);",
+    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    mf => m.Left ? (\n        m\n    ) : mf(m.Right);",
     "tags": [
       "JS Prelude",
       "core"
@@ -469,7 +469,7 @@
     ]
   },
   "cycle": {
-    "code": "// cycle :: [a] -> Generator [a]\nfunction* cycle(xs) {\n    const lng = xs.length;\n    let i = 0;\n    while (true) {\n        yield(xs[i]);\n        i = (1 + i) % lng;\n    }\n}",
+    "code": "// cycle :: [a] -> Generator [a]\nconst cycle = function *(xs) {\n    // An infinite repetition of xs,\n    // from which an arbitrary prefix\n    // may be taken.\n    const lng = xs.length;\n    let i = 0;\n\n    while (true) {\n        yield (xs[i]);\n        i = (1 + i) % lng;\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -666,7 +666,7 @@
     ]
   },
   "either": {
-    "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => 'Either' === e.type ? (\n        undefined !== e.Left ? (\n            fl(e.Left)\n        ) : fr(e.Right)\n    ) : undefined;",
+    "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => e.Left ? (\n        fl(e.Left)\n    ) : fr(e.Right);",
     "tags": [
       "JS Prelude",
       "core"
@@ -1249,7 +1249,7 @@
     ]
   },
   "init": {
-    "code": "// init :: [a] -> [a]\nconst init = xs => (\n    // All elements of a list except the last.\n    ys => 0 < ys.length ? (\n        ys.slice(0, -1)\n    ) : undefined\n)(list(xs));",
+    "code": "// init :: [a] -> [a]\nconst init = xs => (\n// All elements of a list except the last.\n    ys => 0 < ys.length ? (\n        ys.slice(0, -1)\n    ) : null\n)(list(xs));",
     "tags": [
       "JS Prelude",
       "core"
@@ -1518,7 +1518,7 @@
     ]
   },
   "last": {
-    "code": "// last :: [a] -> a\nconst last = xs => \n    // The last item of a list.\n    0 < xs.length ? (\n        xs.slice(-1)[0]\n    ) : undefined;",
+    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    0 < xs.length ? (\n        xs.slice(-1)[0]\n    ) : null;",
     "tags": [
       "JS Prelude"
     ]
@@ -1612,7 +1612,7 @@
     ]
   },
   "lines": {
-    "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single\n    // string delimited by newline and or CR.\n    0 < s.length ? (\n        s.split(/[\\r\\n]+/)\n    ) : [];",
+    "code": "// lines :: String -> [String]\nconst lines = s =>\n// A list of strings derived from a single\n// string delimited by newline and or CR.\n    0 < s.length ? (\n        s.split(/[\\r\\n]+/u)\n    ) : [];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2260,7 +2260,7 @@
     ]
   },
   "readFileLR": {
-    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    // Either a message or the contents of any\n    // text file at the given filepath.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n    return ns.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(ns));\n};",
+    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    // Either a message or the contents of any\n    // text file at the given filepath.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ns.isNil()\n        ? Left(ObjC.unwrap(e.localizedDescription))\n        : Right(ObjC.unwrap(ns));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2357,7 +2357,7 @@
     ]
   },
   "reverse": {
-    "code": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    'string' !== typeof xs ? (\n        xs.slice(0).reverse()\n    ) : xs.split('').reverse().join('');",
+    "code": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    \"string\" === typeof xs ? (\n        xs.split(\"\").reverse()\n        .join(\"\")\n    ) : xs.slice(0).reverse();",
     "tags": [
       "JS Prelude",
       "core"
@@ -2825,7 +2825,7 @@
     ]
   },
   "take": {
-    "code": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = n =>\n    // The first n elements of a list,\n    // string of characters, or stream.\n    xs => 'GeneratorFunction' !== xs\n    .constructor.constructor.name ? (\n        xs.slice(0, n)\n    ) : [].concat.apply([], Array.from({\n        length: n\n    }, () => {\n        const x = xs.next();\n        return x.done ? [] : [x.value];\n    }));",
+    "code": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = n =>\n// The first n elements of a list,\n// string of characters, or stream.\n    xs => \"GeneratorFunction\" !== xs\n    .constructor.constructor.name ? (\n            xs.slice(0, n)\n        ) : Array.from({\n            length: n\n        }, () => {\n            const x = xs.next();\n\n            return x.done ? [] : [x.value];\n        });",
     "tags": [
       "JS Prelude",
       "core"

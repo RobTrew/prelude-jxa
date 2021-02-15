@@ -1,10 +1,10 @@
 ```javascript
 // lines :: String -> [String]
 const lines = s =>
-    // A list of strings derived from a single
-    // string delimited by newline and or CR.
+// A list of strings derived from a single
+// string delimited by newline and or CR.
     0 < s.length ? (
-        s.split(/[\r\n]+/)
+        s.split(/[\r\n]+/u)
     ) : [];
 ```
 

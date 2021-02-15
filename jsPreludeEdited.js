@@ -1,3 +1,7 @@
+/* eslint-disable strict */
+
+"use strict";
+
 // Just :: a -> Maybe a
 const Just = x => ({
     type: "Maybe",
@@ -175,12 +179,12 @@ const append = xs =>
 
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
-// A new generator composed from the
-// concatenation of two existing generators.
+    // A new generator composed from the
+    // concatenation of two existing generators.
     function *(ys) {
-        for (const vs of [xs, ys]) {
+        for (let vs of [xs, ys]) {
             let nxt = vs.next();
-
+            
             while (!nxt.done) {
                 yield nxt.value;
                 nxt = vs.next();
@@ -198,9 +202,9 @@ const applyN = n =>
     // The value of n applications of f to x.
     // (Church numeral n)
     f => x => Array.from({
-            length: n
-        }, () => f)
-        .reduce((a, g) => g(a), x);
+        length: n
+    }, () => f)
+    .reduce((a, g) => g(a), x);
 
 // approxRatio :: Float -> Float -> Ratio
 const approxRatio = epsilon =>
@@ -288,10 +292,10 @@ const bindFn = f =>
     // Binary operator applied over f x and x.
     op => x => op(f(x))(x);
 
-// bindLR (>>=) :: Either a ->
+// bindLR (>>=) :: Either a -> 
 // (a -> Either b) -> Either b
 const bindLR = m =>
-    mf => m.Left ? (
+    mf => undefined !== m.Left ? (
         m
     ) : mf(m.Right);
 
@@ -468,7 +472,7 @@ const combine = fp =>
 
 // compare :: a -> a -> Ordering
 const compare = a =>
-  b => a < b ? -1 : (a > b ? 1 : 0);
+    b => a < b ? -1 : (a > b ? 1 : 0);
 
 // comparing :: (a -> b) -> (a -> a -> Ordering)
 const comparing = f =>
@@ -562,18 +566,14 @@ const curryN = f =>
     };
 
 // cycle :: [a] -> Generator [a]
-const cycle = function *(xs) {
-    // An infinite repetition of xs,
-    // from which an arbitrary prefix
-    // may be taken.
+function* cycle(xs) {
     const lng = xs.length;
     let i = 0;
-
     while (true) {
-        yield (xs[i]);
+        yield(xs[i]);
         i = (1 + i) % lng;
     }
-};
+}
 
 // decodedPath :: Percent Encoded String -> FilePath
 const decodedPath = decodeURI;
@@ -649,7 +649,7 @@ const difference = xs =>
 
 // differenceGen :: Gen [a] -> Gen [a] -> Gen [a]
 const differenceGen = ga => {
-    return function*(gb) {
+    return function* (gb) {
         // All values of generator stream ga except any
         // already seen in generator stream gb.
         const
@@ -679,7 +679,7 @@ const digitToInt = c => {
             hexl = oc - ord('a');
         return 9 >= dec ? (
             dec
-        ) : 0 <= hexu && 5 >= hexu  ? (
+        ) : 0 <= hexu && 5 >= hexu ? (
             10 + hexu
         ) : 0 <= hexl && 5 >= hexl ? (
             10 + hexl
@@ -865,8 +865,8 @@ const dropAround = p =>
 const dropFileName = fp =>
     '' !== fp ? (() => {
         const
-          xs = (fp.split('/'))
-          .slice(0, -1);
+            xs = (fp.split('/'))
+            .slice(0, -1);
         return xs.length > 0 ? (
             xs.join('/') + '/'
         ) : './';
@@ -938,9 +938,11 @@ const either = fl =>
     // Application of the function fl to the
     // contents of any Left value in e, or
     // the application of fr to its Right value.
-    fr => e => e.Left ? (
-        fl(e.Left)
-    ) : fr(e.Right);
+    fr => e => 'Either' === e.type ? (
+        undefined !== e.Left ? (
+            fl(e.Left)
+        ) : fr(e.Right)
+    ) : undefined;
 
 // elem :: Eq a => a -> [a] -> Bool
 const elem = x =>
@@ -1091,8 +1093,7 @@ const enumFromToChar = m => n => {
 
 // enumFromTo_ :: Enum a => a -> a -> [a]
 const enumFromTo_ = m => n => {
-    const
-        [x, y] = [m, n].map(fromEnum),
+    const [x, y] = [m, n].map(fromEnum),
         b = x + (isNaN(m) ? 0 : m - x);
     return Array.from({
         length: 1 + (y - x)
@@ -1148,7 +1149,7 @@ const evalJSMay = s => {
 };
 
 // even :: Int -> Bool
-const even = n => 
+const even = n =>
     // True if 2 is a factor of n.
     0 === n % 2;
 
@@ -1201,7 +1202,7 @@ const filePathTree = fpAnchor => trees => {
         );
     };
     return Node(fpAnchor)(
-      trees.map(go(fpAnchor))
+        trees.map(go(fpAnchor))
     );
 };
 
@@ -1371,7 +1372,7 @@ const first = f =>
     };
 
 // flatten :: NestedList a -> [a]
-const flatten = nest => 
+const flatten = nest =>
     nest.flat(Infinity);
 
 // flattenTree :: Tree a -> [a]
@@ -1417,7 +1418,7 @@ const fmap = f =>
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
-    function*(gen) {
+    function* (gen) {
         let v = take(1)(gen);
         while (0 < v.length) {
             yield(f(v[0]));
@@ -1484,7 +1485,7 @@ const foldTree = f => {
 };
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
-const foldl = f => 
+const foldl = f =>
     a => xs => [...xs].reduce(
         (x, y) => f(x)(y),
         a
@@ -1498,7 +1499,7 @@ const foldl1 = f =>
     xs => (
         ys => 1 < ys.length ? ys.slice(1)
         .reduce(uncurry(f), ys[0]) : ys[0]
-    )(list(xs));    
+    )(list(xs));
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
@@ -1701,7 +1702,7 @@ const identity = x =>
     x;
 
 // if_ :: Bool -> a -> a -> a
-const if_ = bln => 
+const if_ = bln =>
     x => y => bln ? (
         x
     ) : y;
@@ -1784,10 +1785,10 @@ const indexedTree = rootIndex =>
 
 // init :: [a] -> [a]
 const init = xs => (
-// All elements of a list except the last.
+    // All elements of a list except the last.
     ys => 0 < ys.length ? (
         ys.slice(0, -1)
-    ) : null
+    ) : undefined
 )(list(xs));
 
 // initMay :: [a] -> Maybe [a]
@@ -1799,13 +1800,13 @@ const initMay = xs => (
 
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
-const inits = xs => 
+const inits = xs =>
     // All prefixes of the argument, 
     // shortest first.
     [
         []
     ].concat((list(xs))
-    .map((_, i, ys) => ys.slice(0, 1 + i)));
+        .map((_, i, ys) => ys.slice(0, 1 + i)));
 
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
@@ -1966,8 +1967,8 @@ const isPrefixOf = xs =>
 
 // isRight :: Either a b -> Bool
 const isRight = lr =>
-  ('undefined' !== typeof lr) && 
-  ('Either' === lr.type) && (undefined !== lr.Right);
+    ('undefined' !== typeof lr) &&
+    ('Either' === lr.type) && (undefined !== lr.Right);
 
 // isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
 const isSortedBy = p =>
@@ -2044,7 +2045,7 @@ const iterate = f =>
 
 // iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
 const iterateUntil = p =>
-    f => function*(x) {
+    f => function* (x) {
         let v = x;
         while (!p(v)) {
             yield(v);
@@ -2130,7 +2131,7 @@ const last = xs =>
     // The last item of a list.
     0 < xs.length ? (
         xs.slice(-1)[0]
-    ) : null;
+    ) : undefined;
 
 // lastMay :: [a] -> Maybe a
 const lastMay = xs => (
@@ -2173,9 +2174,9 @@ const length = xs =>
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
-  iterateUntil(xs => 1 > xs.length)(
-    xs => xs.flatMap(x => x.nest)
-  )([tree]);
+    iterateUntil(xs => 1 > xs.length)(
+        xs => xs.flatMap(x => x.nest)
+    )([tree]);
 
 // levels :: Tree a -> [[a]]
 const levels = tree =>
@@ -2265,10 +2266,10 @@ const liftA2Tuple = f =>
 
 // lines :: String -> [String]
 const lines = s =>
-// A list of strings derived from a single
-// string delimited by newline and or CR.
+    // A list of strings derived from a single
+    // string delimited by newline and or CR.
     0 < s.length ? (
-        s.split(/[\r\n]+/u)
+        s.split(/[\r\n]+/)
     ) : [];
 
 // list :: StringOrArrayLike b => b -> [a]
@@ -2288,8 +2289,8 @@ const listFromMaybe = mb =>
 // listFromTree :: Tree a -> [a]
 const listFromTree = tree => {
     const go = x => [
-      x.root,
-      ...[].concat.apply([], x.nest.map(go))
+        x.root,
+        ...[].concat.apply([], x.nest.map(go))
     ];
     return go(tree);
 };
@@ -2335,7 +2336,7 @@ const lookupTuples = k =>
     };
 
 // lt (<) :: Ord a => a -> a -> Bool
-const lt = a => 
+const lt = a =>
     b => a < b;
 
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
@@ -2418,7 +2419,7 @@ const mapMaybe = mf =>
 const mapMaybeGen = mf =>
     // A filtered map over a generator, returning only the
     // contents of Just values. (Nothing values discarded).
-    function*(gen) {
+    function* (gen) {
         let v = take(1, gen);
         while (0 < v.length) {
             let mb = mf(v[0]);
@@ -2458,7 +2459,7 @@ const mappendFn = f =>
 
 // mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 const mappendMaybe = a =>
-     b => a.Nothing ? (
+    b => a.Nothing ? (
         b
     ) : b.Nothing ? (
         a
@@ -2514,7 +2515,7 @@ const maxBound = x => {
         'number': Number.MAX_SAFE_INTEGER,
         'string': String.fromCodePoint(0x10FFFF),
         'boolean': true
-    }[typeof x];
+    } [typeof x];
 };
 
 // maximum :: Ord a => [a] -> a
@@ -2683,7 +2684,7 @@ const mergeBy = f =>
     };
 
 // min :: Ord a => a -> a -> a
-const min = a => 
+const min = a =>
     b => b < a ? b : a;
 
 // minBound :: a -> a
@@ -2695,7 +2696,7 @@ const minBound = x => {
         'number': Number.MIN_SAFE_INTEGER,
         'string': String.fromCodePoint(0),
         'boolean': false
-    }[typeof x];
+    } [typeof x];
 };
 
 // minimum :: Ord a => [a] -> a
@@ -2792,12 +2793,12 @@ const not = b =>
     !b;
 
 // notElem :: Eq a => a -> [a] -> Bool
-const notElem = x => 
+const notElem = x =>
     xs => !xs.includes(x);
 
 // nub :: [a] -> [a]
-const nub = xs => 
-  nubBy(eq)(xs);
+const nub = xs =>
+    nubBy(eq)(xs);
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
 const nubBy = fEq => {
@@ -2833,8 +2834,12 @@ const ord = c =>
 // ordering :: () -> Ordering
 const
     ordering = enumFromPairs(
-        'Ordering', 
-        [['LT', -1], ['EQ', 0], ['GT', 1]]
+        'Ordering',
+        [
+            ['LT', -1],
+            ['EQ', 0],
+            ['GT', 1]
+        ]
     ),
     LT = ordering.LT,
     EQ = ordering.EQ,
@@ -2905,7 +2910,9 @@ const permutations = xs => (
                 .concat(y)
                 .concat(ys.slice(n))
             )
-        ),[[]]
+        ), [
+            []
+        ]
     )
 )(list(xs));
 
@@ -2999,8 +3006,7 @@ const pureLR = x =>
     Right(x);
 
 // pureList :: a -> [a]
-const pureList = x => 
-    [x];
+const pureList = x => [x];
 
 // pureMay :: a -> Maybe a
 const pureMay = x =>
@@ -3130,16 +3136,16 @@ function range() {
 
 // ratio :: Int -> Int -> Ratio Int
 const ratio = x => y => {
-  const go = (x, y) =>
-    0 !== y ? (() => {
-      const d = gcd(x)(y);
-      return {
-        type: 'Ratio',
-        'n': quot(x)(d), // numerator
-        'd': quot(y)(d) // denominator
-      };
-    })() : undefined;
-  return go(x * signum(y), abs(y));
+    const go = (x, y) =>
+        0 !== y ? (() => {
+            const d = gcd(x)(y);
+            return {
+                type: 'Ratio',
+                'n': quot(x)(d), // numerator
+                'd': quot(y)(d) // denominator
+            };
+        })() : undefined;
+    return go(x * signum(y), abs(y));
 };
 
 // ratioDiv :: Rational -> Rational -> Rational
@@ -3221,22 +3227,22 @@ const regexMatches = rgx =>
     s => [...s.matchAll(new RegExp(rgx, 'g'))];
 
 // rem :: Int -> Int -> Int
-const rem = n => 
+const rem = n =>
     m => n % m;
 
 // repeat :: a -> Generator [a]
 function* repeat(x) {
-    while(true) yield x;
+    while (true) yield x;
 }
 
 // replace :: String -> String -> String -> String
 // replace :: Regex -> String -> String -> String
 const replace = needle => strNew => strHaystack =>
     strHaystack.replace(
-      'string' !== typeof needle ? (
-        needle
-      ) : new RegExp(needle, 'g'),
-      strNew
+        'string' !== typeof needle ? (
+            needle
+        ) : new RegExp(needle, 'g'),
+        strNew
     );
 
 // replicate :: Int -> a -> [a]
@@ -3259,15 +3265,14 @@ const replicateM = n =>
     };
 
 // replicateString :: Int -> String -> String
-const replicateString = n => 
+const replicateString = n =>
     s => s.repeat(n);
 
 // reverse :: [a] -> [a]
 const reverse = xs =>
-    "string" === typeof xs ? (
-        xs.split("").reverse()
-        .join("")
-    ) : xs.slice(0).reverse();
+    'string' !== typeof xs ? (
+        xs.slice(0).reverse()
+    ) : xs.split('').reverse().join('');
 
 // rights :: [Either a b] -> [b]
 const rights = xs =>
@@ -3278,7 +3283,7 @@ const rights = xs =>
     );
 
 // root :: Tree a -> a
-const root = tree => 
+const root = tree =>
     tree.root;
 
 // rotate :: Int -> [a] -> [a]
@@ -3397,7 +3402,7 @@ const shift = n => xs => {
     const lng = length(xs);
     return Infinity > lng ? (
         take(lng)(
-          drop(n)(cycle(xs))
+            drop(n)(cycle(xs))
         )
     ) : (drop(n)(xs), xs);
 };
@@ -3724,7 +3729,7 @@ const splitFileName = strPath =>
     // Tuple of directory and file name, derived from file path.
     // Inverse of combine.
     ('' !== strPath) ? (
-         ('/' !== strPath[strPath.length - 1]) ? (() => {
+        ('/' !== strPath[strPath.length - 1]) ? (() => {
             const
                 xs = strPath.split('/'),
                 stem = xs.slice(0, -1);
@@ -3775,11 +3780,11 @@ const sqrtMay = n =>
 
 // str :: a -> String
 const str = x =>
-   Array.isArray(x) && x.every(
-       v => ('string' === typeof v) && (1 === v.length)
-   ) ? (
-       x.join('')
-   ) : x.toString();
+    Array.isArray(x) && x.every(
+        v => ('string' === typeof v) && (1 === v.length)
+    ) ? (
+        x.join('')
+    ) : x.toString();
 
 // strip :: String -> String
 const strip = s =>
@@ -3931,18 +3936,17 @@ const tails = xs => (
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
 const take = n =>
-// The first n elements of a list,
-// string of characters, or stream.
-    xs => "GeneratorFunction" !== xs
+    // The first n elements of a list,
+    // string of characters, or stream.
+    xs => 'GeneratorFunction' !== xs
     .constructor.constructor.name ? (
-            xs.slice(0, n)
-        ) : Array.from({
-            length: n
-        }, () => {
-            const x = xs.next();
-
-            return x.done ? [] : [x.value];
-        });
+        xs.slice(0, n)
+    ) : [].concat.apply([], Array.from({
+        length: n
+    }, () => {
+        const x = xs.next();
+        return x.done ? [] : [x.value];
+    }));
 
 // takeAround :: (a -> Bool) -> [a] -> [a]
 const takeAround = p => xs => {
@@ -3954,14 +3958,14 @@ const takeAround = p => xs => {
 
 // takeBaseName :: FilePath -> String
 const takeBaseName = strPath =>
-  ('' !== strPath) ? (
-    ('/' !== strPath[strPath.length - 1]) ? (() => {
-      const fn = strPath.split('/').slice(-1)[0];
-      return fn.includes('.') ? (
-        fn.split('.').slice(0, -1).join('.')
-      ) : fn;
-    })() : ''
-  ) : '';
+    ('' !== strPath) ? (
+        ('/' !== strPath[strPath.length - 1]) ? (() => {
+            const fn = strPath.split('/').slice(-1)[0];
+            return fn.includes('.') ? (
+                fn.split('.').slice(0, -1).join('.')
+            ) : fn;
+        })() : ''
+    ) : '';
 
 // takeCycle :: Int -> [a] -> [a]
 const takeCycle = n =>
@@ -4016,17 +4020,17 @@ const takeFileName = fp =>
 const takeFromThenTo = a => b => z => xs => {
     const ixs = enumFromThenTo(a)(b)(z);
     return 'GeneratorFunction' !== xs.constructor
-    .constructor.name ? (
-        ixs.map(i => xs[i])
-    ) : (() => {
-        const g = zipGen(enumFrom(0))(
-            take(z)(xs)
-        );
-        return ixs.flatMap(i => {
-            const mb = index(g)(i);
-            return mb.Nothing ? [] : [mb.Just];
-        });
-    })();
+        .constructor.name ? (
+            ixs.map(i => xs[i])
+        ) : (() => {
+            const g = zipGen(enumFrom(0))(
+                take(z)(xs)
+            );
+            return ixs.flatMap(i => {
+                const mb = index(g)(i);
+                return mb.Nothing ? [] : [mb.Just];
+            });
+        })();
 };
 
 // takeIterate n f x == [x, f x, f (f x), ...]
@@ -4319,10 +4323,10 @@ const treeFromNestedDict = dict => {
 
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = tree => {
-  const nest = tree.nest;
-  return (0 < nest.length) ? (
-    nest.flatMap(treeLeaves)
-  ) : [tree];
+    const nest = tree.nest;
+    return (0 < nest.length) ? (
+        nest.flatMap(treeLeaves)
+    ) : [tree];
 };
 
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
@@ -4500,7 +4504,7 @@ const uncons = xs => {
 const uncurry = f =>
     // A function over a pair, derived
     // from a curried function.
-    function() {
+    function () {
         const
             args = arguments,
             xy = Boolean(args.length % 2) ? (
@@ -4515,7 +4519,7 @@ const uncurryN = f =>
     // a curried function of any number of arguments.
     (...args) => (
         xs => xs.slice(1).reduce(
-            (a, x) => a(x), 
+            (a, x) => a(x),
             f(xs[0])
         )
     )(Array.from(
@@ -4586,9 +4590,9 @@ const unfoldr = f =>
 
 // union :: [a] -> [a] -> [a]
 const union = xs => ys =>
-  unionBy(a => b => a === b)(
-      list(xs)
-  )(list(ys));
+    unionBy(a => b => a === b)(
+        list(xs)
+    )(list(ys));
 
 // unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const unionBy = fnEq => xs => ys => {
@@ -4626,7 +4630,7 @@ const unsnoc = xs =>
     ) : Nothing();
 
 // until :: (a -> Bool) -> (a -> a) -> a -> a
-const until = p => 
+const until = p =>
     f => x => {
         let v = x;
         while (!p(v)) v = f(v);
@@ -4721,7 +4725,7 @@ const zipGen = ga => gb => {
         let
             a = ma,
             b = mb;
-        while(!a.Nothing && !b.Nothing) {
+        while (!a.Nothing && !b.Nothing) {
             let
                 ta = a.Just,
                 tb = b.Just;
@@ -4844,13 +4848,13 @@ const zipWithLong = f => {
 };
 
 // zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
-const zipWithM = f => 
+const zipWithM = f =>
     xs => ys =>
-        sequenceA(
-            zipWith(f)(
-                [...xs]
-            )([...ys])
-        );
+    sequenceA(
+        zipWith(f)(
+            [...xs]
+        )([...ys])
+    );
 
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 function zipWithN() {
