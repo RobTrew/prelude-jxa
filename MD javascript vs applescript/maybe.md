@@ -1,13 +1,3 @@
-```javascript
-// maybe :: b -> (a -> b) -> Maybe a -> b
-const maybe = v =>
-    // Default value (v) if m is Nothing, or f(m.Just)
-    f => m => m.Nothing ? (
-        v
-    ) : f(m.Just);
-```
-
-
 ```applescript
 -- maybe :: b -> (a -> b) -> Maybe a -> b
 on maybe(v, f, mb)
@@ -20,4 +10,14 @@ on maybe(v, f, mb)
         tell mReturn(f) to |λ|(Just of mb)
     end if
 end maybe
+```
+
+
+```javascript
+// maybe :: b -> (a -> b) -> Maybe a -> b
+const maybe = v =>
+    // Default value (v) if m is Nothing, or f(m.Just)
+    f => m => m.Nothing ? (
+        v
+    ) : f(m.Just);
 ```

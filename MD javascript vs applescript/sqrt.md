@@ -1,10 +1,3 @@
-```javascript
-// sqrt :: Num -> Num
-const sqrt = n =>
-    (0 <= n) ? Math.sqrt(n) : undefined;
-```
-
-
 ```applescript
 -- sqrt :: Num -> Num
 on sqrt(n)
@@ -14,4 +7,11 @@ on sqrt(n)
         missing value
     end if
 end sqrt
+```
+
+
+```javascript
+// sqrt :: Num -> Num
+const sqrt = n =>
+    (0 <= n) ? Math.sqrt(n) : undefined;
 ```

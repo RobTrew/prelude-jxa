@@ -1,12 +1,3 @@
-```javascript
-// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
-const fmapLR = f => lr =>
-    undefined === lr.Left ? (
-        Right(f(lr.Right))
-    ) : lr;
-```
-
-
 ```applescript
 -- fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 on fmapLR(f, lr)
@@ -16,4 +7,13 @@ on fmapLR(f, lr)
         lr
     end if
 end fmapLR
+```
+
+
+```javascript
+// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
+const fmapLR = f => lr =>
+    undefined === lr.Left ? (
+        Right(f(lr.Right))
+    ) : lr;
 ```

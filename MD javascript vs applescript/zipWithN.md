@@ -1,21 +1,3 @@
-```javascript
-// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
-function zipWithN() {
-    const
-        args = Array.from(arguments),
-        rows = args.slice(1).map(list),
-        f = compose(uncurryN(args[0]), TupleN),
-        n = Math.min(...rows.map(x => x.length));
-    return 0 < n ? (
-        take(n))(rows[0]).map(
-        (x, i) => f(rows.flatMap(
-            x => x[i]
-        ))
-    ) : [];
-}
-```
-
-
 ```applescript
 -- zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 on zipWithN(f, rows)
@@ -34,4 +16,22 @@ on zipWithN(f, rows)
     end script
     map(go, enumFromTo(1, minimum(map(my |length|, rows))))
 end zipWithN
+```
+
+
+```javascript
+// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
+function zipWithN() {
+    const
+        args = Array.from(arguments),
+        rows = args.slice(1).map(list),
+        f = compose(uncurryN(args[0]), TupleN),
+        n = Math.min(...rows.map(x => x.length));
+    return 0 < n ? (
+        take(n))(rows[0]).map(
+        (x, i) => f(rows.flatMap(
+            x => x[i]
+        ))
+    ) : [];
+}
 ```
