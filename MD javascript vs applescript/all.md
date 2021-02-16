@@ -1,3 +1,11 @@
+```javascript
+// all :: (a -> Bool) -> [a] -> Bool
+const all = p =>
+    // True if p(x) holds for every x in xs.
+    xs => [...xs].every(p);
+```
+
+
 ```applescript
 -- all :: (a -> Bool) -> [a] -> Bool
 on all(p, xs)
@@ -10,12 +18,4 @@ on all(p, xs)
         true
     end tell
 end all
-```
-
-
-```javascript
-// all :: (a -> Bool) -> [a] -> Bool
-const all = p =>
-    // True if p(x) holds for every x in xs.
-    xs => [...xs].every(p);
 ```

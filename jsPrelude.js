@@ -24,7 +24,7 @@ const Node = v =>
 
 // Nothing :: Maybe a
 const Nothing = () => ({
-    type: 'Maybe',
+    type: "Maybe",
     Nothing: true
 });
 
@@ -37,9 +37,9 @@ const Right = x => ({
 // Tuple (,) :: a -> b -> (a, b)
 const Tuple = a =>
     b => ({
-        type: 'Tuple',
-        '0': a,
-        '1': b,
+        type: "Tuple",
+        "0": a,
+        "1": b,
         length: 2
     });
 
@@ -1353,6 +1353,7 @@ const findIndex = p =>
     //  Nothing if there is no such element.
     xs => {
         const i = [...xs].findIndex(p);
+
         return -1 !== i ? (
             Just(i)
         ) : Nothing();
@@ -2925,7 +2926,7 @@ const parentIndexedTree = tree => {
 
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
 const partition = p =>
-    // A tuple of two lists - those elements in 
+    // A tuple of two lists - those elements in
     // xs which match p, and those which don't.
     xs => list(xs).reduce(
         (a, x) => p(x) ? (
@@ -3555,7 +3556,7 @@ const showLog = (...args) =>
     console.log(
         args
         .map(JSON.stringify)
-        .join(' -> ')
+        .join(" -> ")
     );
 
 // showMaybe :: Maybe a -> String
@@ -4741,7 +4742,7 @@ const variance = xs => {
 // words :: String -> [String]
 const words = s =>
     // List of space-delimited sub-strings.
-    s.split(/\s+/);
+    s.split(/\s+/u);
 
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs =>

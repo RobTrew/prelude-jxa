@@ -1,7 +1,7 @@
 ```javascript
 // Nothing :: Maybe a
 const Nothing = () => ({
-    type: 'Maybe',
+    type: "Maybe",
     Nothing: true
 });
 ```

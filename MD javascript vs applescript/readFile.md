@@ -1,3 +1,26 @@
+```javascript
+// readFile :: FilePath -> IO String
+const readFile = fp => {
+    // The contents of a text file at the
+    // filepath fp.
+    const
+        e = $(),
+        ns = $.NSString
+        .stringWithContentsOfFileEncodingError(
+            $(fp).stringByStandardizingPath,
+            $.NSUTF8StringEncoding,
+            e
+        );
+
+    return ObjC.unwrap(
+        ns.isNil() ? (
+            e.localizedDescription
+        ) : ns
+    );
+};
+```
+
+
 ```applescript
 -- readFile :: FilePath -> IO String
 on readFile(strPath)
@@ -14,26 +37,4 @@ on readFile(strPath)
         (localizedDescription of e) as string
     end if
 end readFile
-```
-
-
-```javascript
-// readFile :: FilePath -> IO String
-const readFile = fp => {
-    // The contents of a text file at the
-    // filepath fp.
-    const
-        e = $(),
-        ns = $.NSString
-        .stringWithContentsOfFileEncodingError(
-            $(fp).stringByStandardizingPath,
-            $.NSUTF8StringEncoding,
-            e
-        );
-    return ObjC.unwrap(
-        ns.isNil() ? (
-            e.localizedDescription
-        ) : ns
-    );
-};
 ```

@@ -5,6 +5,7 @@ const base64encode = s =>
         $.NSString.stringWithString(s)
         .dataUsingEncoding(
             $.NSUTF8StringEncoding
-        ).base64EncodedStringWithOptions(0)
+        )
+        .base64EncodedStringWithOptions(0)
     );
 ```

@@ -8,28 +8,30 @@ const appendFile = fp =>
             oFullPath = ObjC.wrap(fp)
             .stringByStandardizingPath,
             ref = Ref();
+
         return $.NSFileManager.defaultManager
-            .fileExistsAtPathIsDirectory(
-                oFullPath
-                .stringByStandardizingPath, ref
-            ) ? (
+        .fileExistsAtPathIsDirectory(
+            oFullPath
+            .stringByStandardizingPath, ref
+        ) ? (
                 0 === ref[0] ? (() => {
-                    const // Not a directory
+                    const
                         oData = ObjC.wrap(txt)
                         .dataUsingEncoding($.NSUTF8StringEncoding),
                         h = $.NSFileHandle.fileHandleForWritingAtPath(
                             oFullPath
                         );
+
                     return (
-                        h.seekToEndOfFile, // Effect, and
+                        h.seekToEndOfFile,
                         h.writeData(oData),
                         h.closeFile,
-                        true // value.
+                        true
                     );
-                })() : false // Text appending to directory is undefined
+                })() : false 
             ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (
-                writeFile(oFullPath)(txt), // Effect, and
-                true // value.
+                writeFile(oFullPath)(txt),
+                true
             ) : false;
     };
 ```

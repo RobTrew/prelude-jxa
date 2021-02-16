@@ -6,6 +6,7 @@ const findIndex = p =>
     //  Nothing if there is no such element.
     xs => {
         const i = [...xs].findIndex(p);
+
         return -1 !== i ? (
             Just(i)
         ) : Nothing();

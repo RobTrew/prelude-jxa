@@ -1,12 +1,3 @@
-```applescript
--- showPrecision :: Int -> Float -> String
-on showPrecision(n, x)
-    set d to 10 ^ n
-    ((round (x * d)) / d) as string
-end showPrecision
-```
-
-
 ```javascript
 // showPrecision :: Int -> Float -> String
 const showPrecision = n => x => {
@@ -15,4 +6,13 @@ const showPrecision = n => x => {
     const d = Math.pow(10, n);
     return str(Math.round(d * x) / d);
 };
+```
+
+
+```applescript
+-- showPrecision :: Int -> Float -> String
+on showPrecision(n, x)
+    set d to 10 ^ n
+    ((round (x * d)) / d) as string
+end showPrecision
 ```

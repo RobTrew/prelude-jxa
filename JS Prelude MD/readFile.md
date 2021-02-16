@@ -11,6 +11,7 @@ const readFile = fp => {
             $.NSUTF8StringEncoding,
             e
         );
+
     return ObjC.unwrap(
         ns.isNil() ? (
             e.localizedDescription
