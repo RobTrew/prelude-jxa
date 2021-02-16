@@ -538,7 +538,7 @@ const composeR = f =>
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
 const concat = xs =>
-    Array.isArray(xs) ? (
+    0 < xs.length || Array.isArray(xs) ? (
         (
             xs.every(x => "string" === typeof x) ? (
                 ""

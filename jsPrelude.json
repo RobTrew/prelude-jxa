@@ -416,7 +416,7 @@
     ]
   },
   "concat": {
-    "code": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    Array.isArray(xs) ? (\n        (\n            xs.every(x => \"string\" === typeof x) ? (\n                \"\"\n            ) : []\n        ).concat(...xs)\n    ) : xs;",
+    "code": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    0 < xs.length || Array.isArray(xs) ? (\n        (\n            xs.every(x => \"string\" === typeof x) ? (\n                \"\"\n            ) : []\n        ).concat(...xs)\n    ) : xs;",
     "tags": [
       "JS Prelude",
       "core"
