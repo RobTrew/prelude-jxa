@@ -108,7 +108,7 @@
     ]
   },
   "ap (<*>)": {
-    "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list of values\n    // or applying Just(f) to Just(x), Right(f) to Right(x), \n    // f(x) to g(x) etc.\n    mx => ({\n        'Either': () => apLR,\n        'Maybe': () => apMay,\n        'Node': () => apTree,\n        'Tuple': () => apTuple,\n        'List': () => apList,\n        '(a -> b)': () => apFn\n    })[typeName(mx) || 'List']()(mf)(mx);",
+    "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list\n    // of values or applying:\n    // Just(f) to Just(x),  Right(f) to Right(x),\n    // f(x) to g(x) etc.\n    mx => ({\n        'Either': () => apLR,\n        'Maybe': () => apMay,\n        'Node': () => apTree,\n        'Tuple': () => apTuple,\n        'List': () => apList,\n        '(a -> b)': () => apFn\n    })[typeName(mx) || 'List']()(mf)(mx);",
     "tags": [
       "JS Prelude"
     ]
@@ -191,7 +191,7 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = epsilon =>\n    // An ratio derived by approximation\n    // (at granularity epsilon) to the float n.\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const gcd1 = (a, b) => b < e ? (\n                    a\n                ) : gcd1(b, a % b);\n\n                return gcd1(abs(x), abs(y));\n            },\n            c = gcde(\n                Boolean(epsilon) ? (\n                    epsilon\n                ) : (1 / 10000), 1, abs(n)\n            ),\n            r = ratio(quot(abs(n))(c))(quot(1, c));\n\n        return {\n            type: 'Ratio',\n            n: r.n * signum(n),\n            d: r.d\n        };\n    };",
+    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = epsilon =>\n    // A ratio derived by approximation\n    // (at granularity epsilon) to the float n.\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const gcd1 = (a, b) => b < e ? (\n                    a\n                ) : gcd1(b, a % b);\n\n                return gcd1(abs(x), abs(y));\n            },\n            c = gcde(\n                Boolean(epsilon) ? (\n                    epsilon\n                ) : (1 / 10000), 1, abs(n)\n            ),\n            r = ratio(quot(abs(n))(c))(quot(1, c));\n\n        return {\n            type: 'Ratio',\n            n: r.n * signum(n),\n            d: r.d\n        };\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -309,7 +309,7 @@
     ]
   },
   "bulleted": {
-    "code": "// bulleted :: String -> String -> String\nconst bulleted = strTab =>\n    s => s.split(/[\\n\\r]+/u)\n    .map(\n        x => '' !== x ? (\n            `${strTab}- ${x}`\n        ) : x\n    )\n    .join('\\n');",
+    "code": "// bulleted :: String -> String -> String\nconst bulleted = strTab =>\n    s => s.split(/[\\n\\r]+/u).map(\n        x => '' !== x ? (\n            `${strTab}- ${x}`\n        ) : x\n    )\n    .join('\\n');",
     "tags": [
       "JS Prelude"
     ]
@@ -416,7 +416,7 @@
     ]
   },
   "concat": {
-    "code": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs => (\n    ys => 0 < ys.length ? (\n        ys.every(Array.isArray) ? (\n            []\n        ) : ''\n    ).concat(...ys) : ys\n)(list(xs));",
+    "code": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    Array.isArray(xs) ? (\n        (\n            xs.every(x => \"string\" === typeof x) ? (\n                \"\"\n            ) : []\n        ).concat(...xs)\n    ) : xs;",
     "tags": [
       "JS Prelude",
       "core"
@@ -1889,7 +1889,7 @@
     ]
   },
   "minimum": {
-    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs => (\n    // The least value of xs.\n    ys => 0 < ys.length ? (\n        ys.slice(1)\n        .reduce((a, y) => y < a ? y : a, ys[0])\n    ) : undefined\n)(list(xs));",
+    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs => (\n    // The least value of xs.\n    ys => 0 < ys.length ? (\n        ys.slice(1)\n        .reduce((a, y) => y < a ? y : a, ys[0])\n    ) : null\n)(list(xs));",
     "tags": [
       "JS Prelude",
       "core"
@@ -2433,7 +2433,7 @@
     ]
   },
   "second": {
-    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => {\n        const tpl = Tuple(xy[0])(f(xy[1]));\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
+    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => {\n        const tpl = Tuple(xy[0])(f(xy[1]));\n\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2622,7 +2622,7 @@
     ]
   },
   "sj": {
-    "code": "// sj :: a -> String\nfunction sj() {\n    // Abbreviation of showJSON for quick testing.\n    // Default indent size is two, which can be\n    // overriden by any integer supplied as the\n    // first argument of more than one.\n    const args = Array.from(arguments);\n    return JSON.stringify.apply(\n        null,\n        1 < args.length && !isNaN(args[0]) ? [\n            args[1], null, args[0]\n        ] : [args[0], null, 2]\n    );\n}",
+    "code": "// sj :: a -> String\nconst sj = (...args) =>\n    // Abbreviation of showJSON for quick testing.\n    // Default indent size is two, which can be\n    // overriden by any integer supplied as the\n    // first argument of more than one.\n    JSON.stringify.apply(\n        null,\n        1 < args.length && !isNaN(args[0]) ? [\n            args[1], null, args[0]\n        ] : [args[0], null, 2]\n    );",
     "tags": [
       "JS Prelude"
     ]

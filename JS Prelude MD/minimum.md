@@ -5,6 +5,6 @@ const minimum = xs => (
     ys => 0 < ys.length ? (
         ys.slice(1)
         .reduce((a, y) => y < a ? y : a, ys[0])
-    ) : undefined
+    ) : null
 )(list(xs));
 ```

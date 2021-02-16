@@ -1,7 +1,7 @@
 ```javascript
 // approxRatio :: Float -> Float -> Ratio
 const approxRatio = epsilon =>
-    // An ratio derived by approximation
+    // A ratio derived by approximation
     // (at granularity epsilon) to the float n.
     n => {
         const

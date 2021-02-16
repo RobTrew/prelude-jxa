@@ -1,3 +1,14 @@
+```javascript
+// unsnoc :: [a] -> Maybe ([a], a)
+const unsnoc = xs =>
+    // Nothing if the list is empty, otherwise
+    // Just the init and the last.
+    (0 < xs.length) ? (
+        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))
+    ) : Nothing();
+```
+
+
 ```applescript
 -- If the list is empty returns Nothing, otherwise returns 
 -- Just the init and the last.
@@ -24,15 +35,4 @@ on unsnoc(xs)
         end if
     end if
 end unsnoc
-```
-
-
-```javascript
-// unsnoc :: [a] -> Maybe ([a], a)
-const unsnoc = xs =>
-    // Nothing if the list is empty, otherwise
-    // Just the init and the last.
-    (0 < xs.length) ? (
-        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))
-    ) : Nothing();
 ```

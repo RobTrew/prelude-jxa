@@ -116,8 +116,9 @@ const anyTree = p =>
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = mf =>
     // Applies wrapped functions to wrapped values,
-    // for example applying a list of functions to a list of values
-    // or applying Just(f) to Just(x), Right(f) to Right(x), 
+    // for example applying a list of functions to a list
+    // of values or applying:
+    // Just(f) to Just(x),  Right(f) to Right(x),
     // f(x) to g(x) etc.
     mx => ({
         'Either': () => apLR,
@@ -204,7 +205,7 @@ const applyN = n =>
 
 // approxRatio :: Float -> Float -> Ratio
 const approxRatio = epsilon =>
-    // An ratio derived by approximation
+    // A ratio derived by approximation
     // (at granularity epsilon) to the float n.
     n => {
         const
@@ -383,8 +384,7 @@ const breakOnMay = pat =>
 
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
-    s => s.split(/[\n\r]+/u)
-    .map(
+    s => s.split(/[\n\r]+/u).map(
         x => '' !== x ? (
             `${strTab}- ${x}`
         ) : x
@@ -537,13 +537,14 @@ const composeR = f =>
 
 // concat :: [[a]] -> [a]
 // concat :: [String] -> String
-const concat = xs => (
-    ys => 0 < ys.length ? (
-        ys.every(Array.isArray) ? (
-            []
-        ) : ''
-    ).concat(...ys) : ys
-)(list(xs));
+const concat = xs =>
+    Array.isArray(xs) ? (
+        (
+            xs.every(x => "string" === typeof x) ? (
+                ""
+            ) : []
+        ).concat(...xs)
+    ) : xs;
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = f =>
@@ -2752,7 +2753,7 @@ const minimum = xs => (
     ys => 0 < ys.length ? (
         ys.slice(1)
         .reduce((a, y) => y < a ? y : a, ys[0])
-    ) : undefined
+    ) : null
 )(list(xs));
 
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
@@ -3413,6 +3414,7 @@ const second = f =>
     // f (a, b) -> (a, f(b))
     xy => {
         const tpl = Tuple(xy[0])(f(xy[1]));
+
         return Array.isArray(xy) ? (
             Array.from(tpl)
         ) : tpl;
@@ -3667,19 +3669,17 @@ const signum = n =>
     );
 
 // sj :: a -> String
-function sj() {
+const sj = (...args) =>
     // Abbreviation of showJSON for quick testing.
     // Default indent size is two, which can be
     // overriden by any integer supplied as the
     // first argument of more than one.
-    const args = Array.from(arguments);
-    return JSON.stringify.apply(
+    JSON.stringify.apply(
         null,
         1 < args.length && !isNaN(args[0]) ? [
             args[1], null, args[0]
         ] : [args[0], null, 2]
     );
-}
 
 // snd :: (a, b) -> b
 const snd = tpl =>

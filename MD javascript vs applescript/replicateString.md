@@ -1,3 +1,10 @@
+```javascript
+// replicateString :: Int -> String -> String
+const replicateString = n => 
+    s => s.repeat(n);
+```
+
+
 ```applescript
 -- replicateString :: Int -> String -> String
 on replicateString(n, s)
@@ -12,11 +19,4 @@ on replicateString(n, s)
     end repeat
     return out & dbl
 end replicateS
-```
-
-
-```javascript
-// replicateString :: Int -> String -> String
-const replicateString = n => 
-    s => s.repeat(n);
 ```

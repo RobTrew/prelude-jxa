@@ -1,3 +1,17 @@
+```javascript
+// concat :: [[a]] -> [a]
+// concat :: [String] -> String
+const concat = xs =>
+    Array.isArray(xs) ? (
+        (
+            xs.every(x => "string" === typeof x) ? (
+                ""
+            ) : []
+        ).concat(...xs)
+    ) : xs;
+```
+
+
 ```applescript
 -- concat :: [[a]] -> [a]
 -- concat :: [String] -> String
@@ -13,17 +27,4 @@ on concat(xs)
     end repeat
     acc
 end concat
-```
-
-
-```javascript
-// concat :: [[a]] -> [a]
-// concat :: [String] -> String
-const concat = xs => (
-    ys => 0 < ys.length ? (
-        ys.every(Array.isArray) ? (
-            []
-        ) : ''
-    ).concat(...ys) : ys
-)(list(xs));
 ```
