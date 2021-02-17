@@ -7,13 +7,13 @@ const ap = mf =>
     // Just(f) to Just(x),  Right(f) to Right(x),
     // f(x) to g(x) etc.
     mx => ({
-        'Either': () => apLR,
-        'Maybe': () => apMay,
-        'Node': () => apTree,
-        'Tuple': () => apTuple,
-        'List': () => apList,
-        '(a -> b)': () => apFn
-    })[typeName(mx) || 'List']()(mf)(mx);
+        "Either": () => apLR,
+        "Maybe": () => apMay,
+        "Node": () => apTree,
+        "Tuple": () => apTuple,
+        "List": () => apList,
+        "(a -> b)": () => apFn
+    })[typeName(mx) || "List"]()(mf)(mx);
 ```
 
 

@@ -8,10 +8,10 @@ const bind = m =>
         bindList(m)(mf)
     ) : (
         ({
-            'Either': () => bindLR,
-            'Maybe': () => bindMay,
-            'Tuple': () => bindTuple,
-            'function': () => bindFn
+            "Either": () => bindLR,
+            "Maybe": () => bindMay,
+            "Tuple": () => bindTuple,
+            "function": () => bindFn
         })[m.type || typeof m]()(m)(mf)
     );
 ```

@@ -1,7 +1,7 @@
 ```javascript
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = pat =>
-    src => '' !== pat ? (
+    src => "" !== pat ? (
         src.split(pat)
         .reduce((a, _, i, xs) =>
             0 < i ? (

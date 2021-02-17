@@ -14,7 +14,7 @@
     ]
   },
   "Node": {
-    "code": "// Node :: a -> [Tree a] -> Tree a\nconst Node = v =>\n    // Constructor for a Tree node which connects a\n    // value of some kind to a list of zero or\n    // more child trees.\n    xs => ({\n        type: 'Node',\n        root: v,\n        nest: xs || []\n    });",
+    "code": "// Node :: a -> [Tree a] -> Tree a\nconst Node = v =>\n    // Constructor for a Tree node which connects a\n    // value of some kind to a list of zero or\n    // more child trees.\n    xs => ({\n        type: \"Node\",\n        root: v,\n        nest: xs || []\n    });",
     "tags": [
       "JS Prelude",
       "tree"
@@ -28,7 +28,7 @@
     ]
   },
   "Right": {
-    "code": "// Right :: b -> Either a b\nconst Right = x => ({\n    type: 'Either',\n    Right: x\n});",
+    "code": "// Right :: b -> Either a b\nconst Right = x => ({\n    type: \"Either\",\n    Right: x\n});",
     "tags": [
       "JS Prelude"
     ]
@@ -41,7 +41,7 @@
     ]
   },
   "Tuple3": {
-    "code": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n    type: 'Tuple3',\n    '0': a,\n    '1': b,\n    '2': c,\n    length: 3\n});",
+    "code": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n    type: \"Tuple3\",\n    \"0\": a,\n    \"1\": b,\n    \"2\": c,\n    length: 3\n});",
     "tags": [
       "JS Prelude",
       "core"
@@ -108,7 +108,7 @@
     ]
   },
   "ap (<*>)": {
-    "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list\n    // of values or applying:\n    // Just(f) to Just(x),  Right(f) to Right(x),\n    // f(x) to g(x) etc.\n    mx => ({\n        'Either': () => apLR,\n        'Maybe': () => apMay,\n        'Node': () => apTree,\n        'Tuple': () => apTuple,\n        'List': () => apList,\n        '(a -> b)': () => apFn\n    })[typeName(mx) || 'List']()(mf)(mx);",
+    "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list\n    // of values or applying:\n    // Just(f) to Just(x),  Right(f) to Right(x),\n    // f(x) to g(x) etc.\n    mx => ({\n        \"Either\": () => apLR,\n        \"Maybe\": () => apMay,\n        \"Node\": () => apTree,\n        \"Tuple\": () => apTuple,\n        \"List\": () => apList,\n        \"(a -> b)\": () => apFn\n    })[typeName(mx) || \"List\"]()(mf)(mx);",
     "tags": [
       "JS Prelude"
     ]
@@ -191,7 +191,7 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = epsilon =>\n    // A ratio derived by approximation\n    // (at granularity epsilon) to the float n.\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const gcd1 = (a, b) => b < e ? (\n                    a\n                ) : gcd1(b, a % b);\n\n                return gcd1(abs(x), abs(y));\n            },\n            c = gcde(\n                Boolean(epsilon) ? (\n                    epsilon\n                ) : (1 / 10000), 1, abs(n)\n            ),\n            r = ratio(quot(abs(n))(c))(quot(1, c));\n\n        return {\n            type: 'Ratio',\n            n: r.n * signum(n),\n            d: r.d\n        };\n    };",
+    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = epsilon =>\n    // A ratio derived by approximation\n    // (at granularity epsilon) to the float n.\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const gcd1 = (a, b) => b < e ? (\n                    a\n                ) : gcd1(b, a % b);\n\n                return gcd1(abs(x), abs(y));\n            },\n            c = gcde(\n                Boolean(epsilon) ? (\n                    epsilon\n                ) : (1 / 10000), 1, abs(n)\n            ),\n            r = ratio(quot(abs(n))(c))(quot(1, c));\n\n        return {\n            type: \"Ratio\",\n            n: r.n * signum(n),\n            d: r.d\n        };\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -241,7 +241,7 @@
     ]
   },
   "bind (>>=)": {
-    "code": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = m =>\n    // Two computations sequentially composed,\n    // with any value produced by the first\n    // passed as an argument to the second.\n    mf => Array.isArray(m) ? (\n        bindList(m)(mf)\n    ) : (\n        ({\n            'Either': () => bindLR,\n            'Maybe': () => bindMay,\n            'Tuple': () => bindTuple,\n            'function': () => bindFn\n        })[m.type || typeof m]()(m)(mf)\n    );",
+    "code": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = m =>\n    // Two computations sequentially composed,\n    // with any value produced by the first\n    // passed as an argument to the second.\n    mf => Array.isArray(m) ? (\n        bindList(m)(mf)\n    ) : (\n        ({\n            \"Either\": () => bindLR,\n            \"Maybe\": () => bindMay,\n            \"Tuple\": () => bindTuple,\n            \"function\": () => bindFn\n        })[m.type || typeof m]()(m)(mf)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -291,25 +291,25 @@
     ]
   },
   "breakOn": {
-    "code": "// breakOn :: String -> String -> (String, String)\nconst breakOn = pat =>\n    // Needle -> Haystack -> (prefix before match, match + rest)\n    src => 0 < pat.length ? (() => {\n        const xs = src.split(pat);\n\n        return 1 < xs.length ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)('');\n    })() : null;",
+    "code": "// breakOn :: String -> String -> (String, String)\nconst breakOn = pat =>\n    // Needle -> Haystack -> (prefix before match, match + rest)\n    src => 0 < pat.length ? (() => {\n        const xs = src.split(pat);\n\n        return 1 < xs.length ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)(\"\");\n    })() : null;",
     "tags": [
       "JS Prelude"
     ]
   },
   "breakOnAll": {
-    "code": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = pat =>\n    src => '' !== pat ? (\n        src.split(pat)\n        .reduce((a, _, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(xs.slice(0, i).join(pat))(\n                        pat + xs.slice(i).join(pat)\n                    )\n                ])\n            ) : a, [])\n    ) : null;",
+    "code": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = pat =>\n    src => \"\" !== pat ? (\n        src.split(pat)\n        .reduce((a, _, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(xs.slice(0, i).join(pat))(\n                        pat + xs.slice(i).join(pat)\n                    )\n                ])\n            ) : a, [])\n    ) : null;",
     "tags": [
       "JS Prelude"
     ]
   },
   "breakOnMay": {
-    "code": "// breakOnMay :: String -> String -> Maybe (String, String)\nconst breakOnMay = pat =>\n    // Needle -> Haystack ->\n    // maybe (prefix before match, match + rest)\n    src => Boolean(pat) ? (() => {\n        const xs = src.split(pat);\n\n        return Just(0 < xs.length ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)(''));\n    })() : Nothing();",
+    "code": "// breakOnMay :: String -> String -> Maybe (String, String)\nconst breakOnMay = pat =>\n    // Needle -> Haystack ->\n    // maybe (prefix before match, match + rest)\n    src => Boolean(pat) ? (() => {\n        const xs = src.split(pat);\n\n        return Just(0 < xs.length ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)(\"\"));\n    })() : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "bulleted": {
-    "code": "// bulleted :: String -> String -> String\nconst bulleted = strTab =>\n    s => s.split(/[\\n\\r]+/u).map(\n        x => '' !== x ? (\n            `${strTab}- ${x}`\n        ) : x\n    )\n    .join('\\n');",
+    "code": "// bulleted :: String -> String -> String\nconst bulleted = strTab =>\n    s => s.split(/[\\n\\r]+/u).map(\n        x => \"\" !== x ? (\n            `${strTab}- ${x}`\n        ) : x\n    )\n    .join(\"\\n\");",
     "tags": [
       "JS Prelude"
     ]
@@ -371,7 +371,7 @@
     ]
   },
   "combine": {
-    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // Two paths combined with a path separator.\n    // Just the second path if that starts with\n    // a path separator.\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        '/' === fp1.slice(0, 1) ? (\n            fp1\n        ) : '/' === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
+    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // Two paths combined with a path separator.\n    // Just the second path if that starts with\n    // a path separator.\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        \"/\" === fp1.slice(0, 1) ? (\n            fp1\n        ) : \"/\" === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
     "tags": [
       "JS Prelude"
     ]
@@ -686,7 +686,7 @@
     ]
   },
   "elemIndex": {
-    "code": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = x =>\n    // Just the index of x in xs, if it is found,\n    // or Nothing, if xs does not contain x.\n    xs => {\n        const i = xs.indexOf(x);\n        return -1 === i ? (\n            Nothing()\n        ) : Just(i);\n    };",
+    "code": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = x =>\n    // Just the index of x in xs, if it is found,\n    // or Nothing, if xs does not contain x.\n    xs => {\n        const i = xs.indexOf(x);\n\n        return -1 === i ? (\n            Nothing()\n        ) : Just(i);\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -699,7 +699,7 @@
     ]
   },
   "elems": {
-    "code": "// elems :: Map k a -> [a]\n// elems :: Set a -> [a]\nconst elems = x =>\n    'Set' !== x.constructor.name ? (\n        Object.values(x)\n    ) : Array.from(x.values());",
+    "code": "// elems :: Map k a -> [a]\n// elems :: Set a -> [a]\nconst elems = x =>\n    \"Set\" !== x.constructor.name ? (\n        Object.values(x)\n    ) : Array.from(x.values());",
     "tags": [
       "JS Prelude"
     ]
@@ -711,13 +711,13 @@
     ]
   },
   "enumFrom": {
-    "code": "// enumFrom :: Enum a => a -> [a]\nfunction* enumFrom(x) {\n    // A non-finite succession of enumerable\n    // values, starting with the value x.\n    let v = x;\n    while (true) {\n        yield v;\n        v = succ(v);\n    }\n}",
+    "code": "// enumFrom :: Enum a => a -> [a]\nconst enumFrom = function* (x) {\n    // A non-finite succession of enumerable\n    // values, starting with the value x.\n    let v = x;\n\n    while (true) {\n        yield v;\n        v = succ(v);\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "enumFromPairs": {
-    "code": "// enumFromPairs :: String -> [(String, Int)] -> Dict\nconst enumFromPairs = name =>\n    kvs => {\n        const\n            iMax = kvs[kvs.length - 1][1],\n            iMin = kvs[0][1];\n        return kvs.reduce(\n            (a, kv) => {\n                return Object.assign(\n                    a, {\n                        [kv[0]]: {\n                            'type': 'enum',\n                            'name': name,\n                            'key': kv[0],\n                            'max': iMax,\n                            'min': iMin,\n                            'value': kv[1]\n                        },\n                        [kv[1]]: kv[0]\n                    }\n                );\n            }, {}\n        );\n    };",
+    "code": "// enumFromPairs :: String -> [(String, Int)] -> Dict\nconst enumFromPairs = enumName =>\n    kvs => {\n        const\n            iMax = kvs[kvs.length - 1][1],\n            iMin = kvs[0][1];\n\n        return kvs.reduce(\n            (a, kv) => Object.assign(\n                a, {\n                    [kv[0]]: {\n                        \"type\": \"enum\",\n                        \"name\": enumName,\n                        \"key\": kv[0],\n                        \"max\": iMax,\n                        \"min\": iMin,\n                        \"value\": kv[1]\n                    },\n                    [kv[1]]: kv[0]\n                }\n            ), {}\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -736,7 +736,7 @@
     ]
   },
   "enumFromThenToChar": {
-    "code": "// enumFromThenToChar :: Char -> Char -> Char -> [Char]\nconst enumFromThenToChar = x1 =>\n    x2 => y => {\n        const [i1, i2, iY] = Array.from([x1, x2, y])\n            .map(x => x.codePointAt(0)),\n            d = i2 - i1;\n        return Array.from({\n            length: (Math.floor(iY - i2) / d) + 2\n        }, (_, i) => String.fromCodePoint(i1 + (d * i)));\n    };",
+    "code": "// enumFromThenToChar :: Char -> Char -> Char -> [Char]\nconst enumFromThenToChar = x1 =>\n    x2 => y => {\n        const [i1, i2, iY] = Array.from([x1, x2, y])\n            .map(x => x.codePointAt(0)),\n            d = i2 - i1;\n\n        return Array.from({\n            length: (Math.floor(iY - i2) / d) + 2\n        }, (_, i) => String.fromCodePoint(i1 + (d * i)));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -749,19 +749,19 @@
     ]
   },
   "enumFromToChar": {
-    "code": "// enumFromToChar :: Char -> Char -> [Char]\nconst enumFromToChar = m => n => {\n    const [intM, intN] = [m, n].map(x => x.codePointAt(0));\n    return Array.from({\n        length: Math.floor(intN - intM) + 1\n    }, (_, i) => String.fromCodePoint(intM + i));\n};",
+    "code": "// enumFromToChar :: Char -> Char -> [Char]\nconst enumFromToChar = m => n => {\n    const [intM, intN] = [m, n].map(\n        x => x.codePointAt(0)\n    );\n\n    return Array.from({\n        length: Math.floor(intN - intM) + 1\n    }, (_, i) => String.fromCodePoint(intM + i));\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "enumFromTo_": {
-    "code": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = m => n => {\n    const\n        [x, y] = [m, n].map(fromEnum),\n        b = x + (isNaN(m) ? 0 : m - x);\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};",
+    "code": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = m => n => {\n    const [x, y] = [m, n].map(fromEnum),\n        b = x + (isNaN(m) ? 0 : m - x);\n\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "eq (==)": {
-    "code": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = a =>\n    // True when a and b are equivalent in the terms\n    // defined below for their shared data type.\n    b => {\n        const t = typeof a;\n        return t !== typeof b ? (\n            false\n        ) : 'object' !== t ? (\n            'function' !== t ? (\n                a === b\n            ) : a.toString() === b.toString()\n        ) : (() => {\n            const kvs = Object.entries(a);\n            return kvs.length !== Object.keys(b).length ? (\n                false\n            ) : kvs.every(([k, v]) => eq(v)(b[k]));\n        })();\n    };",
+    "code": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = a =>\n    // True when a and b are equivalent in the terms\n    // defined below for their shared data type.\n    b => {\n        const t = typeof a;\n\n        return t !== typeof b ? (\n            false\n        ) : \"object\" !== t ? (\n            \"function\" !== t ? (\n                a === b\n            ) : a.toString() === b.toString()\n        ) : (() => {\n            const kvs = Object.entries(a);\n\n            return kvs.length !== Object.keys(b).length ? (\n                false\n            ) : kvs.every(([k, v]) => eq(v)(b[k]));\n        })();\n    };",
     "tags": [
       "JS Prelude"
     ]

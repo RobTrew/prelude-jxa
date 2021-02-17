@@ -5,6 +5,7 @@ const elemIndex = x =>
     // or Nothing, if xs does not contain x.
     xs => {
         const i = xs.indexOf(x);
+
         return -1 === i ? (
             Nothing()
         ) : Just(i);

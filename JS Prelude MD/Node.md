@@ -5,7 +5,7 @@ const Node = v =>
     // value of some kind to a list of zero or
     // more child trees.
     xs => ({
-        type: 'Node',
+        type: "Node",
         root: v,
         nest: xs || []
     });

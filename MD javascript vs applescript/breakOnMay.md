@@ -8,7 +8,7 @@ const breakOnMay = pat =>
 
         return Just(0 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)(''));
+        ) : Tuple(src)(""));
     })() : Nothing();
 ```
 

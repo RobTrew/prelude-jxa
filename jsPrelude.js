@@ -21,7 +21,7 @@ const Node = v =>
     // value of some kind to a list of zero or
     // more child trees.
     xs => ({
-        type: 'Node',
+        type: "Node",
         root: v,
         nest: xs || []
     });
@@ -34,7 +34,7 @@ const Nothing = () => ({
 
 // Right :: b -> Either a b
 const Right = x => ({
-    type: 'Either',
+    type: "Either",
     Right: x
 });
 
@@ -49,10 +49,10 @@ const Tuple = a =>
 
 // Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 const Tuple3 = a => b => c => ({
-    type: 'Tuple3',
-    '0': a,
-    '1': b,
-    '2': c,
+    type: "Tuple3",
+    "0": a,
+    "1": b,
+    "2": c,
     length: 3
 });
 
@@ -125,13 +125,13 @@ const ap = mf =>
     // Just(f) to Just(x),  Right(f) to Right(x),
     // f(x) to g(x) etc.
     mx => ({
-        'Either': () => apLR,
-        'Maybe': () => apMay,
-        'Node': () => apTree,
-        'Tuple': () => apTuple,
-        'List': () => apList,
-        '(a -> b)': () => apFn
-    })[typeName(mx) || 'List']()(mf)(mx);
+        "Either": () => apLR,
+        "Maybe": () => apMay,
+        "Node": () => apTree,
+        "Tuple": () => apTuple,
+        "List": () => apList,
+        "(a -> b)": () => apFn
+    })[typeName(mx) || "List"]()(mf)(mx);
 
 // apFn :: (a -> b -> c) -> (a -> b) -> (a -> c)
 const apFn = f =>
@@ -228,7 +228,7 @@ const approxRatio = epsilon =>
             r = ratio(quot(abs(n))(c))(quot(1, c));
 
         return {
-            type: 'Ratio',
+            type: "Ratio",
             n: r.n * signum(n),
             d: r.d
         };
@@ -290,10 +290,10 @@ const bind = m =>
         bindList(m)(mf)
     ) : (
         ({
-            'Either': () => bindLR,
-            'Maybe': () => bindMay,
-            'Tuple': () => bindTuple,
-            'function': () => bindFn
+            "Either": () => bindLR,
+            "Maybe": () => bindMay,
+            "Tuple": () => bindTuple,
+            "function": () => bindFn
         })[m.type || typeof m]()(m)(mf)
     );
 
@@ -357,12 +357,12 @@ const breakOn = pat =>
 
         return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)('');
+        ) : Tuple(src)("");
     })() : null;
 
 // breakOnAll :: String -> String -> [(String, String)]
 const breakOnAll = pat =>
-    src => '' !== pat ? (
+    src => "" !== pat ? (
         src.split(pat)
         .reduce((a, _, i, xs) =>
             0 < i ? (
@@ -383,17 +383,17 @@ const breakOnMay = pat =>
 
         return Just(0 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)(''));
+        ) : Tuple(src)(""));
     })() : Nothing();
 
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
     s => s.split(/[\n\r]+/u).map(
-        x => '' !== x ? (
+        x => "" !== x ? (
             `${strTab}- ${x}`
         ) : x
     )
-    .join('\n');
+    .join("\n");
 
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
@@ -494,9 +494,9 @@ const combine = fp =>
     // Just the second path if that starts with
     // a path separator.
     fp1 => Boolean(fp) && Boolean(fp1) ? (
-        '/' === fp1.slice(0, 1) ? (
+        "/" === fp1.slice(0, 1) ? (
             fp1
-        ) : '/' === fp.slice(-1) ? (
+        ) : "/" === fp.slice(-1) ? (
             fp + fp1
         ) : `${fp}/${fp1}`
     ) : fp + fp1;
@@ -1045,6 +1045,7 @@ const elemIndex = x =>
     // or Nothing, if xs does not contain x.
     xs => {
         const i = xs.indexOf(x);
+
         return -1 === i ? (
             Nothing()
         ) : Just(i);
@@ -1062,7 +1063,7 @@ const elemIndices = x =>
 // elems :: Map k a -> [a]
 // elems :: Set a -> [a]
 const elems = x =>
-    'Set' !== x.constructor.name ? (
+    "Set" !== x.constructor.name ? (
         Object.values(x)
     ) : Array.from(x.values());
 
@@ -1070,38 +1071,38 @@ const elems = x =>
 const encodedPath = encodeURI;
 
 // enumFrom :: Enum a => a -> [a]
-function* enumFrom(x) {
+const enumFrom = function* (x) {
     // A non-finite succession of enumerable
     // values, starting with the value x.
     let v = x;
+
     while (true) {
         yield v;
         v = succ(v);
     }
-}
+};
 
 // enumFromPairs :: String -> [(String, Int)] -> Dict
-const enumFromPairs = name =>
+const enumFromPairs = enumName =>
     kvs => {
         const
             iMax = kvs[kvs.length - 1][1],
             iMin = kvs[0][1];
+
         return kvs.reduce(
-            (a, kv) => {
-                return Object.assign(
-                    a, {
-                        [kv[0]]: {
-                            'type': 'enum',
-                            'name': name,
-                            'key': kv[0],
-                            'max': iMax,
-                            'min': iMin,
-                            'value': kv[1]
-                        },
-                        [kv[1]]: kv[0]
-                    }
-                );
-            }, {}
+            (a, kv) => Object.assign(
+                a, {
+                    [kv[0]]: {
+                        "type": "enum",
+                        "name": enumName,
+                        "key": kv[0],
+                        "max": iMax,
+                        "min": iMin,
+                        "value": kv[1]
+                    },
+                    [kv[1]]: kv[0]
+                }
+            ), {}
         );
     };
 
@@ -1138,6 +1139,7 @@ const enumFromThenToChar = x1 =>
         const [i1, i2, iY] = Array.from([x1, x2, y])
             .map(x => x.codePointAt(0)),
             d = i2 - i1;
+
         return Array.from({
             length: (Math.floor(iY - i2) / d) + 2
         }, (_, i) => String.fromCodePoint(i1 + (d * i)));
@@ -1153,7 +1155,10 @@ const enumFromTo = m =>
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = m => n => {
-    const [intM, intN] = [m, n].map(x => x.codePointAt(0));
+    const [intM, intN] = [m, n].map(
+        x => x.codePointAt(0)
+    );
+
     return Array.from({
         length: Math.floor(intN - intM) + 1
     }, (_, i) => String.fromCodePoint(intM + i));
@@ -1161,9 +1166,9 @@ const enumFromToChar = m => n => {
 
 // enumFromTo_ :: Enum a => a -> a -> [a]
 const enumFromTo_ = m => n => {
-    const
-        [x, y] = [m, n].map(fromEnum),
+    const [x, y] = [m, n].map(fromEnum),
         b = x + (isNaN(m) ? 0 : m - x);
+
     return Array.from({
         length: 1 + (y - x)
     }, (_, i) => toEnum(m)(b + i));
@@ -1175,14 +1180,16 @@ const eq = a =>
     // defined below for their shared data type.
     b => {
         const t = typeof a;
+
         return t !== typeof b ? (
             false
-        ) : 'object' !== t ? (
-            'function' !== t ? (
+        ) : "object" !== t ? (
+            "function" !== t ? (
                 a === b
             ) : a.toString() === b.toString()
         ) : (() => {
             const kvs = Object.entries(a);
+
             return kvs.length !== Object.keys(b).length ? (
                 false
             ) : kvs.every(([k, v]) => eq(v)(b[k]));

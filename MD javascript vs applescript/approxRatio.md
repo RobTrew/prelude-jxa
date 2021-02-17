@@ -20,7 +20,7 @@ const approxRatio = epsilon =>
             r = ratio(quot(abs(n))(c))(quot(1, c));
 
         return {
-            type: 'Ratio',
+            type: "Ratio",
             n: r.n * signum(n),
             d: r.d
         };

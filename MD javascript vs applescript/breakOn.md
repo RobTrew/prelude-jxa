@@ -7,7 +7,7 @@ const breakOn = pat =>
 
         return 1 < xs.length ? Tuple(
             xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)('');
+        ) : Tuple(src)("");
     })() : null;
 ```
 
