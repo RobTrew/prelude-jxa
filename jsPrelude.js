@@ -986,7 +986,6 @@ const dropWhileEnd = p =>
     );
 
 // dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-const dro// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 const dropWhileGen = p =>
     xs => {
         let
@@ -998,16 +997,6 @@ const dropWhileGen = p =>
             v = nxt.value;
         }
 
-        return cons(v)(xs);
-    };pWhileGen = p =>
-    xs => {
-        let
-            nxt = xs.next(),
-            v = nxt.value;
-        while (!nxt.done && p(v)) {
-            nxt = xs.next();
-            v = nxt.value;
-        }
         return cons(v)(xs);
     };
 
@@ -1037,15 +1026,16 @@ const elemAtMay = i =>
     // Just the item at the indexed position in an array,
     // or in the lexically sorted key-values of a dict,
     // or Nothing, if the index is out of range.
-    x => {
+    obj => {
         const
-            bln = Array.isArray(x),
-            k = bln ? i : Object.keys(x)
-            .sort()[i],
-            v = x[k];
+            vs = Array.isArray(obj) ? (
+                obj
+            ) : Object.entries(obj).sort(
+                (a, b) => b[0].localeCompare(a[0])
+            );
 
-        return undefined !== v ? (
-            Just(bln ? v : Tuple(k, v))
+        return (0 <= i) && (i < vs.length) ? (
+            Just(vs[i])
         ) : Nothing();
     };
 

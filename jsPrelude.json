@@ -660,7 +660,7 @@
     ]
   },
   "dropWhileGen": {
-    "code": "// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dro// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dropWhileGen = p =>\n    xs => {\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n\n        while (!nxt.done && p(v)) {\n            nxt = xs.next();\n            v = nxt.value;\n        }\n\n        return cons(v)(xs);\n    };pWhileGen = p =>\n    xs => {\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n        while (!nxt.done && p(v)) {\n            nxt = xs.next();\n            v = nxt.value;\n        }\n        return cons(v)(xs);\n    };",
+    "code": "// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dropWhileGen = p =>\n    xs => {\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n\n        while (!nxt.done && p(v)) {\n            nxt = xs.next();\n            v = nxt.value;\n        }\n\n        return cons(v)(xs);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -680,7 +680,7 @@
     ]
   },
   "elemAtMay": {
-    "code": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = i =>\n    // Just the item at the indexed position in an array,\n    // or in the lexically sorted key-values of a dict,\n    // or Nothing, if the index is out of range.\n    x => {\n        const\n            bln = Array.isArray(x),\n            k = bln ? i : Object.keys(x)\n            .sort()[i],\n            v = x[k];\n\n        return undefined !== v ? (\n            Just(bln ? v : Tuple(k, v))\n        ) : Nothing();\n    };",
+    "code": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = i =>\n    // Just the item at the indexed position in an array,\n    // or in the lexically sorted key-values of a dict,\n    // or Nothing, if the index is out of range.\n    obj => {\n        const\n            vs = Array.isArray(obj) ? (\n                obj\n            ) : Object.entries(obj).sort(\n                (a, b) => b[0].localeCompare(a[0])\n            );\n\n        return (0 <= i) && (i < vs.length) ? (\n            Just(vs[i])\n        ) : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
