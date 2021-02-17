@@ -17,18 +17,18 @@ const draw = node => {
 
         return 0 < lng ? (
             1 < lng ? (
-                ['│'].concat(
-                    shifted('├─ ', '│  ', draw(xs[0]))
+                ["│"].concat(
+                    shifted("├─ ", "│  ", draw(xs[0]))
                 )
             ).concat(
                 drawSubTrees(xs.slice(1))
-            ) : ['│'].concat(
-                shifted('└─ ', '   ', draw(xs[0]))
+            ) : ["│"].concat(
+                shifted("└─ ", "   ", draw(xs[0]))
             )
         ) : [];
     };
 
-    return node.root.split('\n').concat(
+    return node.root.split("\n").concat(
         drawSubTrees(node.nest)
     );
 };

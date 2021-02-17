@@ -8,6 +8,7 @@ const dropLength = xs =>
                     go(x.slice(1), y.slice(1))
                 ) : []
             ) : y;
+
         return go(xs, ys);
     };
 ```

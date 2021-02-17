@@ -8,6 +8,7 @@ const fileStatus = fp => {
             ObjC.wrap(fp).stringByStandardizingPath,
             e
         );
+
     return dct.isNil() ? (
         Left(ObjC.unwrap(e.localizedDescription))
     ) : Right(ObjC.deepUnwrap(dct));

@@ -6,6 +6,7 @@ const writeFileLR = fp =>
             e = $(),
             efp = $(fp)
             .stringByStandardizingPath;
+
         return $.NSString.alloc.initWithUTF8String(s)
             .writeToFileAtomicallyEncodingError(
                 efp, false,

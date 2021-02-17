@@ -8,6 +8,7 @@ const dropLengthMaybe = xs =>
                     go(x.slice(1), y.slice(1))
                 ) : Nothing()
             ) : Just(y);
+
         return go(xs, ys);
     };
 ```

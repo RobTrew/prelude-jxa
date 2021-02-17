@@ -7,7 +7,7 @@
     ]
   },
   "Left": {
-    "code": "// Left :: a -> Either a b\nconst Left = x => ({\n    type: 'Either',\n    Left: x\n});",
+    "code": "// Left :: a -> Either a b\nconst Left = x => ({\n    type: \"Either\",\n    Left: x\n});",
     "tags": [
       "JS Prelude",
       "core"
@@ -159,7 +159,7 @@
     ]
   },
   "appendFile": {
-    "code": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = fp =>\n    // The file at fp updated with a new string\n    // appended to its existing contents.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(fp)\n            .stringByStandardizingPath,\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle.fileHandleForWritingAtPath(\n                            oFullPath\n                        );\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile,\n                        true\n                    );\n                })() : false \n            ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (\n                writeFile(oFullPath)(txt),\n                true\n            ) : false;\n    };",
+    "code": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = fp =>\n    // The file at fp updated with a new string\n    // appended to its existing contents.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(fp)\n            .stringByStandardizingPath,\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle.fileHandleForWritingAtPath(\n                            oFullPath\n                        );\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile,\n                        true\n                    );\n                })() : false\n            ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (\n                writeFile(oFullPath)(txt),\n                true\n            ) : false;\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -322,7 +322,7 @@
     ]
   },
   "caseOf": {
-    "code": "// caseOf :: [(a -> Bool, b)] -> b -> a ->  b\nconst caseOf = pvs =>\n    // List of (Predicate, value) tuples -> Default value \n    //         -> Value to test -> Output value\n    otherwise => x => {\n        const mb = pvs.reduce((a, pv) =>\n            a.Nothing ? (\n                pv[0](x) ? Just(pv[1]) : a\n            ) : a, Nothing());\n\n        return mb.Nothing ? otherwise : mb.Just;\n    };",
+    "code": "// caseOf :: [(a -> Bool, b)] -> b -> a ->  b\nconst caseOf = pvs =>\n    // List of (Predicate, value) tuples ->\n    // Default value -> Value to test -> Output value\n    otherwise => x => {\n        const mb = pvs.reduce((a, pv) =>\n            a.Nothing ? (\n                pv[0](x) ? Just(pv[1]) : a\n            ) : a, Nothing());\n\n        return mb.Nothing ? otherwise : mb.Just;\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -346,7 +346,7 @@
     ]
   },
   "chars": {
-    "code": "// chars :: String -> [Char]\nconst chars = s =>\n    s.split('');",
+    "code": "// chars :: String -> [Char]\nconst chars = s =>\n    s.split(\"\");",
     "tags": [
       "JS Prelude"
     ]
@@ -443,14 +443,14 @@
     ]
   },
   "copyFileLR": {
-    "code": "// copyFileLR :: FilePath -> FilePath -> Either String IO ()\nconst copyFileLR = fpFrom =>\n    fpTo => {\n        const fpTargetFolder = takeDirectory(fpTo);\n        return doesFileExist(fpFrom) ? (\n            doesDirectoryExist(fpTargetFolder) ? (() => {\n                const\n                    e = $(),\n                    blnCopied = ObjC.unwrap(\n                        $.NSFileManager.defaultManager\n                        .copyItemAtPathToPathError(\n                            $(fpFrom).stringByStandardizingPath,\n                            $(fpTo).stringByStandardizingPath,\n                            e\n                        )\n                    );\n                return blnCopied ? (\n                    Right(fpTo)\n                ) : Left(ObjC.unwrap(e.localizedDescription));\n\n            })() : Left(\n                'Target folder not found: ' + fpTargetFolder\n            )\n        ) : Left('Source file not found: ' + fpFrom);\n    };",
+    "code": "// copyFileLR :: FilePath -> FilePath -> Either String IO ()\nconst copyFileLR = fpFrom =>\n    fpTo => {\n        const fpTargetFolder = takeDirectory(fpTo);\n\n        return doesFileExist(fpFrom) ? (\n            doesDirectoryExist(fpTargetFolder) ? (() => {\n                const\n                    e = $(),\n                    blnCopied = ObjC.unwrap(\n                        $.NSFileManager.defaultManager\n                        .copyItemAtPathToPathError(\n                            $(fpFrom).stringByStandardizingPath,\n                            $(fpTo).stringByStandardizingPath,\n                            e\n                        )\n                    );\n\n                return blnCopied ? (\n                    Right(fpTo)\n                ) : Left(ObjC.unwrap(e.localizedDescription));\n\n            })() : Left(\n                `Target folder not found: ${fpTargetFolder}`\n            )\n        ) : Left(`Source file not found: ${fpFrom}`);\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "createDirectoryIfMissingLR": {
-    "code": "// createDirectoryIfMissingLR :: Bool -> FilePath \n// -> Either String FilePath\nconst createDirectoryIfMissingLR = blnParents =>\n    dirPath => {\n        const fp = filePath(dirPath);\n        return doesPathExist(fp) ? (\n            Right(fp)\n        ) : (() => {\n            const\n                e = $(),\n                blnOK = $.NSFileManager\n                .defaultManager[\n                    'createDirectoryAtPath' + (\n                        'WithIntermediateDirectories'\n                        ) + 'AttributesError'\n                ](fp, blnParents, undefined, e);\n            return blnOK ? (\n                Right(fp)\n            ) : Left(e.localizedDescription);\n        })();\n    };",
+    "code": "// createDirectoryIfMissingLR :: Bool -> FilePath\n// -> Either String FilePath\nconst createDirectoryIfMissingLR = blnParents =>\n    dirPath => {\n        const fp = filePath(dirPath);\n\n        return doesPathExist(fp) ? (\n            Right(fp)\n        ) : (() => {\n            const\n                e = $(),\n                blnOK = $.NSFileManager\n                .defaultManager[\n                    \"createDirectoryAtPath\" + (\n                        \"WithIntermediateDirectories\"\n                    ) + \"AttributesError\"\n                ](fp, blnParents, void 0, e);\n\n            return blnOK ? (\n                Right(fp)\n            ) : Left(e.localizedDescription);\n        })();\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -542,7 +542,7 @@
     ]
   },
   "digitToInt": {
-    "code": "// digitToInt :: Char -> Int\nconst digitToInt = c => {\n    const\n        ord = x => x.codePointAt(0),\n        oc = ord(c);\n\n    return 48 > oc || 102 < oc ? (\n        null\n    ) : (() => {\n        const\n            dec = oc - ord('0'),\n            hexu = oc - ord('A'),\n            hexl = oc - ord('a');\n\n        return 9 >= dec ? (\n            dec\n        ) : 0 <= hexu && 5 >= hexu ? (\n            10 + hexu\n        ) : 0 <= hexl && 5 >= hexl ? (\n            10 + hexl\n        ) : null;\n    })();\n};",
+    "code": "// digitToInt :: Char -> Int\nconst digitToInt = c => {\n    const\n        ord = x => x.codePointAt(0),\n        oc = ord(c);\n\n    return 48 > oc || 102 < oc ? (\n        null\n    ) : (() => {\n        const\n            dec = oc - ord(\"0\"),\n            hexu = oc - ord(\"A\"),\n            hexl = oc - ord(\"a\");\n\n        return 9 >= dec ? (\n            dec\n        ) : 0 <= hexu && 5 >= hexu ? (\n            10 + hexu\n        ) : 0 <= hexl && 5 >= hexl ? (\n            10 + hexl\n        ) : null;\n    })();\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -561,7 +561,7 @@
     ]
   },
   "doesDirectoryExist": {
-    "code": "// doesDirectoryExist :: FilePath -> IO Bool\nconst doesDirectoryExist = fp => {\n    const ref = Ref();\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(fp)\n            .stringByStandardizingPath, ref\n        ) && ref[0];\n};",
+    "code": "// doesDirectoryExist :: FilePath -> IO Bool\nconst doesDirectoryExist = fp => {\n    const ref = Ref();\n\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(fp)\n            .stringByStandardizingPath, ref\n        ) && ref[0];\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -575,7 +575,7 @@
     ]
   },
   "doesPathExist": {
-    "code": "// doesPathExist :: FilePath -> IO Bool\nconst doesPathExist = fp =>\n\t$.NSFileManager.defaultManager\n\t.fileExistsAtPath(\n\t\t$(fp).stringByStandardizingPath\n\t);",
+    "code": "// doesPathExist :: FilePath -> IO Bool\nconst doesPathExist = fp =>\n    $.NSFileManager.defaultManager\n    .fileExistsAtPath(\n        $(fp).stringByStandardizingPath\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -588,28 +588,28 @@
     ]
   },
   "draw": {
-    "code": "// draw :: Tree String -> [String]\nconst draw = node => {\n    // shift :: String -> String -> [String] -> [String]\n    const shifted = (first, other, xs) => (\n        [first].concat(\n            Array.from({\n                length: xs.length - 1\n            }, () => other)\n        ).map(\n            (y, i) => y.concat(xs[i])\n        )\n    );\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const lng = xs.length;\n\n        return 0 < lng ? (\n            1 < lng ? (\n                ['│'].concat(\n                    shifted('├─ ', '│  ', draw(xs[0]))\n                )\n            ).concat(\n                drawSubTrees(xs.slice(1))\n            ) : ['│'].concat(\n                shifted('└─ ', '   ', draw(xs[0]))\n            )\n        ) : [];\n    };\n\n    return node.root.split('\\n').concat(\n        drawSubTrees(node.nest)\n    );\n};",
+    "code": "// draw :: Tree String -> [String]\nconst draw = node => {\n    // shift :: String -> String -> [String] -> [String]\n    const shifted = (first, other, xs) => (\n        [first].concat(\n            Array.from({\n                length: xs.length - 1\n            }, () => other)\n        ).map(\n            (y, i) => y.concat(xs[i])\n        )\n    );\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const lng = xs.length;\n\n        return 0 < lng ? (\n            1 < lng ? (\n                [\"│\"].concat(\n                    shifted(\"├─ \", \"│  \", draw(xs[0]))\n                )\n            ).concat(\n                drawSubTrees(xs.slice(1))\n            ) : [\"│\"].concat(\n                shifted(\"└─ \", \"   \", draw(xs[0]))\n            )\n        ) : [];\n    };\n\n    return node.root.split(\"\\n\").concat(\n        drawSubTrees(node.nest)\n    );\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "drawForest": {
-    "code": "// drawForest :: [Tree String] -> String\nconst drawForest = trees =>\n    trees.map(drawTree).join('\\n');",
+    "code": "// drawForest :: [Tree String] -> String\nconst drawForest = trees =>\n    trees.map(drawTree).join(\"\\n\");",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "drawTree": {
-    "code": "// drawTree :: Tree String -> String\nconst drawTree = tree =>\n    draw(tree).join('\\n');",
+    "code": "// drawTree :: Tree String -> String\nconst drawTree = tree =>\n    draw(tree).join(\"\\n\");",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "drawTree2": {
-    "code": "// drawTree2 :: Bool -> Bool -> Tree String -> String\nconst drawTree2 = blnCompact => blnPruned => tree => {\n    // Tree design and algorithm inspired by the Haskell snippet at:\n    // https://doisinkidney.com/snippets/drawing-trees.html\n    const\n        // Lefts, Middle, Rights\n        lmrFromStrings = xs => {\n            const [ls, rs] = Array.from(splitAt(\n                Math.floor(xs.length / 2)\n            )(xs));\n            return TupleN(ls, rs[0], rs.slice(1));\n        },\n        stringsFromLMR = lmr =>\n        Array.from(lmr).reduce((a, x) => a.concat(x), []),\n        fghOverLMR = (f, g, h) => lmr => {\n            const [ls, m, rs] = Array.from(lmr);\n            return TupleN(ls.map(f), g(m), rs.map(h));\n        };\n    const lmrBuild = (f, w) => wsTree => {\n        const\n            leftPad = n => s => ' '.repeat(n) + s,\n            xs = wsTree.nest,\n            lng = xs.length,\n            [nChars, x] = Array.from(wsTree.root);\n\n        // LEAF NODE --------------------------------------\n        return 0 === lng ? (\n            TupleN([], '─'.repeat(w - nChars) + x, [])\n\n            // NODE WITH SINGLE CHILD -------------------------\n        ) : 1 === lng ? (() => {\n            const indented = leftPad(1 + w);\n            return fghOverLMR(\n                indented,\n                z => '─'.repeat(w - nChars) + x + '─' + z,\n                indented\n            )(f(xs[0]));\n\n            // NODE WITH CHILDREN -----------------------------\n        })() : (() => {\n            const\n                cFix = x => xs => x + xs,\n                treeFix = (l, m, r) => compose(\n                    stringsFromLMR,\n                    fghOverLMR(cFix(l), cFix(m), cFix(r))\n                ),\n                _x = '─'.repeat(w - nChars) + x,\n                indented = leftPad(w),\n                lmrs = xs.map(f);\n            return fghOverLMR(\n                indented,\n                s => _x + ({\n                    '┌': '┬',\n                    '├': '┼',\n                    '│': '┤',\n                    '└': '┴'\n                })[s[0]] + s.slice(1),\n                indented\n            )(lmrFromStrings(\n                intercalate(\n                    blnCompact ? [] : ['│']\n                )(\n                    [treeFix(' ', '┌', '│')(lmrs[0])]\n                    .concat(init(lmrs.slice(1)).map(\n                        treeFix('│', '├', '│')\n                    ))\n                    .concat([treeFix('│', '└', ' ')(\n                        lmrs[lmrs.length - 1]\n                    )])\n                )\n            ));\n        })();\n    };\n    const\n        measuredTree = fmapTree(\n            v => {\n                const s = ' ' + v + ' ';\n                return Tuple(s.length)(s);\n            })(tree),\n        levelWidths = levels(measuredTree)\n        .reduce(\n            (a, level) => a.concat(maximum(level.map(fst))),\n            []\n        ),\n        treeLines = stringsFromLMR(\n            levelWidths.reduceRight(\n                lmrBuild, x => x\n            )(measuredTree)\n        );\n    return unlines(\n        blnPruned ? (\n            treeLines.filter(\n                s => s.split('')\n                .some(c => !' │'.includes(c))\n            )\n        ) : treeLines\n    );\n};",
+    "code": "// drawTree2 :: Bool -> Bool -> Tree String -> String\nconst drawTree2 = blnCompact => blnPruned => tree => {\n    // Tree design and algorithm inspired by the Haskell snippet at:\n    // https://doisinkidney.com/snippets/drawing-trees.html\n    const\n        // Lefts, Middle, Rights\n        lmrFromStrings = xs => {\n            const [ls, rs] = Array.from(splitAt(\n                Math.floor(xs.length / 2)\n            )(xs));\n\n            return TupleN(ls, rs[0], rs.slice(1));\n        },\n        stringsFromLMR = lmr =>\n        Array.from(lmr).reduce((a, x) => a.concat(x), []),\n        fghOverLMR = (f, g, h) => lmr => {\n            const [ls, m, rs] = Array.from(lmr);\n\n            return TupleN(ls.map(f), g(m), rs.map(h));\n        };\n    const lmrBuild = (f, w) => wsTree => {\n        const\n            leftPad = n => s => \" \".repeat(n) + s,\n            xs = wsTree.nest,\n            lng = xs.length,\n            [nChars, x] = Array.from(wsTree.root);\n\n        // ------------------ LEAF NODE ------------------\n        return 0 === lng ? (\n            TupleN([], \"─\".repeat(w - nChars) + x, [])\n\n            // --------- NODE WITH SINGLE CHILD ----------\n        ) : 1 === lng ? (() => {\n            const indented = leftPad(1 + w);\n\n            return fghOverLMR(\n                indented,\n                z => `${\"─\".repeat(w - nChars)}${x}-${z}`,\n                indented\n            )(f(xs[0]));\n\n            // NODE WITH CHILDREN -----------------------------\n        })() : (() => {\n            const\n                cFix = y => ys => y + ys,\n                treeFix = (l, m, r) => compose(\n                    stringsFromLMR,\n                    fghOverLMR(cFix(l), cFix(m), cFix(r))\n                ),\n                _x = \"─\".repeat(w - nChars) + x,\n                indented = leftPad(w),\n                lmrs = xs.map(f);\n\n            return fghOverLMR(\n                indented,\n                s => _x + ({\n                    \"┌\": \"┬\",\n                    \"├\": \"┼\",\n                    \"│\": \"┤\",\n                    \"└\": \"┴\"\n                })[s[0]] + s.slice(1),\n                indented\n            )(lmrFromStrings(\n                intercalate(\n                    blnCompact ? [] : [\"│\"]\n                )(\n                    [treeFix(\" \", \"┌\", \"│\")(lmrs[0])]\n                    .concat(init(lmrs.slice(1)).map(\n                        treeFix(\"│\", \"├\", \"│\")\n                    ))\n                    .concat([treeFix(\"│\", \"└\", \" \")(\n                        lmrs[lmrs.length - 1]\n                    )])\n                )\n            ));\n        })();\n    };\n    const\n        measuredTree = fmapTree(\n            v => {\n                const s = ` ${v} `;\n\n                return Tuple(s.length)(s);\n            })(tree),\n        levelWidths = levels(measuredTree)\n        .reduce(\n            (a, level) => a.concat(maximum(level.map(fst))),\n            []\n        ),\n        treeLines = stringsFromLMR(\n            levelWidths.reduceRight(\n                lmrBuild, x => x\n            )(measuredTree)\n        );\n\n    return unlines(\n        blnPruned ? (\n            treeLines.filter(\n                s => s.split(\"\")\n                .some(c => !\" │\".includes(c))\n            )\n        ) : treeLines\n    );\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -629,38 +629,38 @@
     ]
   },
   "dropFileName": {
-    "code": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = fp =>\n    '' !== fp ? (() => {\n        const\n            xs = (fp.split('/'))\n            .slice(0, -1);\n\n        return 0 < xs.length ? (\n            `${xs.join('/')}/`\n        ) : './';\n    })() : './';",
+    "code": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = fp =>\n    \"\" !== fp ? (() => {\n        const\n            xs = (fp.split(\"/\"))\n            .slice(0, -1);\n\n        return 0 < xs.length ? (\n            `${xs.join(\"/\")}/`\n        ) : \"./\";\n    })() : \"./\";",
     "tags": [
       "JS Prelude"
     ]
   },
   "dropLength": {
-    "code": "// dropLength :: [a] -> [b] -> [b]\nconst dropLength = xs =>\n    ys => {\n        const go = (x, y) =>\n            0 < x.length ? (\n                0 < y.length ? (\n                    go(x.slice(1), y.slice(1))\n                ) : []\n            ) : y;\n        return go(xs, ys);\n    };",
+    "code": "// dropLength :: [a] -> [b] -> [b]\nconst dropLength = xs =>\n    ys => {\n        const go = (x, y) =>\n            0 < x.length ? (\n                0 < y.length ? (\n                    go(x.slice(1), y.slice(1))\n                ) : []\n            ) : y;\n\n        return go(xs, ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "dropLengthMaybe": {
-    "code": "// dropLengthMaybe :: [a] -> [b] -> Maybe [b]\nconst dropLengthMaybe = xs =>\n    ys => {\n        const go = (x, y) =>\n            0 < x.length ? (\n                0 < y.length ? (\n                    go(x.slice(1), y.slice(1))\n                ) : Nothing()\n            ) : Just(y);\n        return go(xs, ys);\n    };",
+    "code": "// dropLengthMaybe :: [a] -> [b] -> Maybe [b]\nconst dropLengthMaybe = xs =>\n    ys => {\n        const go = (x, y) =>\n            0 < x.length ? (\n                0 < y.length ? (\n                    go(x.slice(1), y.slice(1))\n                ) : Nothing()\n            ) : Just(y);\n\n        return go(xs, ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "dropWhile": {
-    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = p =>\n    // The suffix remainining after takeWhile p xs.\n    xs => {\n        const n = xs.length;\n        return xs.slice(\n            0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    };",
+    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = p =>\n    // The suffix remainining after takeWhile p xs.\n    xs => {\n        const n = xs.length;\n\n        return xs.slice(\n            0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "dropWhileEnd": {
-    "code": "// dropWhileEnd :: (a -> Bool) -> [a] -> [a]\n// dropWhileEnd :: (Char -> Bool) -> String -> [Char]\nconst dropWhileEnd = p =>\n    // xs without the longest suffix for which\n    // p returns true for all elements.\n    xs => {\n        let i = xs.length;\n        while (i-- && p(xs[i])) {}\n        return xs.slice(0, i + 1);\n    };",
+    "code": "// dropWhileEnd :: (a -> Bool) -> [a] -> [a]\n// dropWhileEnd :: (Char -> Bool) -> String -> [Char]\nconst dropWhileEnd = p =>\n    // xs without the longest suffix for which\n    // p returns true for all elements.\n    xs => xs.slice(\n        0,\n        1 + until(\n            i => (0 >= i) || !p(xs[i])\n        )(\n            x => x - 1\n        )(xs.length - 1)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "dropWhileGen": {
-    "code": "// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dropWhileGen = p =>\n    xs => {\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n        while (!nxt.done && p(v)) {\n            nxt = xs.next();\n            v = nxt.value;\n        }\n        return cons(v)(xs);\n    };",
+    "code": "// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dro// dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst dropWhileGen = p =>\n    xs => {\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n\n        while (!nxt.done && p(v)) {\n            nxt = xs.next();\n            v = nxt.value;\n        }\n\n        return cons(v)(xs);\n    };pWhileGen = p =>\n    xs => {\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n        while (!nxt.done && p(v)) {\n            nxt = xs.next();\n            v = nxt.value;\n        }\n        return cons(v)(xs);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -673,14 +673,14 @@
     ]
   },
   "elem": {
-    "code": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = x =>\n    // True if xs contains an instance of x.\n    xs => {\n        const t = xs.constructor.name;\n        return 'Array' !== t ? (\n            xs['Set' !== t ? 'includes' : 'has'](x)\n        ) : xs.some(eq(x));\n    };",
+    "code": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = x =>\n    // True if xs contains an instance of x.\n    xs => {\n        const t = xs.constructor.name;\n\n        return \"Array\" !== t ? (\n            xs[\"Set\" !== t ? \"includes\" : \"has\"](x)\n        ) : xs.some(eq(x));\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "elemAtMay": {
-    "code": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = i =>\n    // Just the item at the indexed position in an array,\n    // or in the lexically sorted key-values of a dict,\n    // or Nothing, if the index is out of range.\n    x => {\n        const\n            bln = Array.isArray(x),\n            k = bln ? i : Object.keys(x)\n            .sort()[i],\n            v = x[k];\n        return undefined !== v ? (\n            Just(bln ? v : Tuple(k, v))\n        ) : Nothing();\n    };",
+    "code": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = i =>\n    // Just the item at the indexed position in an array,\n    // or in the lexically sorted key-values of a dict,\n    // or Nothing, if the index is out of range.\n    x => {\n        const\n            bln = Array.isArray(x),\n            k = bln ? i : Object.keys(x)\n            .sort()[i],\n            v = x[k];\n\n        return undefined !== v ? (\n            Just(bln ? v : Tuple(k, v))\n        ) : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -838,14 +838,14 @@
     ]
   },
   "fileStatus": {
-    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(\n            ObjC.wrap(fp).stringByStandardizingPath,\n            e\n        );\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};",
+    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(\n            ObjC.wrap(fp).stringByStandardizingPath,\n            e\n        );\n\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "fileUTI": {
-    "code": "// fileUTI :: FilePath -> Either String String\nconst fileUTI = fp => {\n    // ObjC.import('AppKit')\n    const\n        e = $(),\n        uti = $.NSWorkspace.sharedWorkspace\n        .typeOfFileError(fp, e);\n    return uti.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(uti));\n};",
+    "code": "// fileUTI :: FilePath -> Either String String\nconst fileUTI = fp => {\n    // ObjC.import('AppKit')\n    const\n        e = $(),\n        uti = $.NSWorkspace.sharedWorkspace\n        .typeOfFileError(fp, e);\n\n    return uti.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(uti));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -906,13 +906,13 @@
     ]
   },
   "findIndexR": {
-    "code": "// findIndexR :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndexR = p =>\n    //  Just the index of the last element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = reverse([...xs]).findIndex(p);\n        return -1 !== i ? (\n            Just(xs.length - (1 + i))\n        ) : Nothing();\n    };",
+    "code": "// findIndexR :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndexR = p =>\n    //  Just the index of the last element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = reverse([...xs]).findIndex(p);\n\n        return -1 !== i ? (\n            Just(xs.length - (1 + i))\n        ) : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "findIndices": {
-    "code": "// findIndices :: (a -> Bool) -> [a] -> [Int]\n// findIndices :: (String -> Bool) -> String -> [Int]\nconst findIndices = p =>\n    xs => {\n        const ys = [...xs];\n        return ys.flatMap(\n            (y, i) => p(y, i, ys) ? (\n                [i]\n            ) : []\n        );\n    };",
+    "code": "// findIndices :: (a -> Bool) -> [a] -> [Int]\n// findIndices :: (String -> Bool) -> String -> [Int]\nconst findIndices = p =>\n    xs => {\n        const ys = [...xs];\n\n        return ys.flatMap(\n            (y, i) => p(y, i, ys) ? (\n                [i]\n            ) : []\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1124,7 +1124,7 @@
     ]
   },
   "getDirectoryContentsLR": {
-    "code": "// getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]\nconst getDirectoryContentsLR = fp => {\n    const\n        error = $(),\n        xs = $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp).stringByStandardizingPath,\n            error\n        );\n    return xs.isNil() ? (\n        Left(ObjC.unwrap(error.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(xs));\n};",
+    "code": "// getDirectoryContentsLR :: FilePath ->\n// Either String IO [FilePath]\nconst getDirectoryContentsLR = fp => {\n    const\n        error = $(),\n        xs = $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp).stringByStandardizingPath,\n            error\n        );\n\n    return xs.isNil() ? (\n        Left(ObjC.unwrap(error.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(xs));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -1625,7 +1625,7 @@
     ]
   },
   "listDirectory": {
-    "code": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = fp =>\n\tObjC.unwrap(\n\t\t$.NSFileManager.defaultManager\n\t\t.contentsOfDirectoryAtPathError(\n\t\t\tObjC.wrap(fp)\n\t\t\t.stringByStandardizingPath,\n\t\t\tnull\n\t\t))\n\t.map(ObjC.unwrap);",
+    "code": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = fp =>\n    ObjC.unwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            ObjC.wrap(fp)\n            .stringByStandardizingPath,\n            null\n        ))\n    .map(ObjC.unwrap);",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2260,7 +2260,7 @@
     ]
   },
   "readFileLR": {
-    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    // Either a message or the contents of any\n    // text file at the given filepath.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ns.isNil()\n        ? Left(ObjC.unwrap(e.localizedDescription))\n        : Right(ObjC.unwrap(ns));\n};",
+    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    // Either a message or the contents of any\n    // text file at the given filepath.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ns.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(ns));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2279,7 +2279,7 @@
     ]
   },
   "readPlistFileLR": {
-    "code": "// readPlistFileLR :: FilePath -> Either String Object\nconst readPlistFileLR = fp =>\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(fpFull => {\n        const\n            e = $(),\n            maybeDict = (\n                $.NSDictionary\n                .dictionaryWithContentsOfURLError(\n                    $.NSURL.fileURLWithPath(fpFull),\n                    e\n                )\n            );\n        return maybeDict.isNil() ? (\n            Left('readPlistFileLR:\\n\\t' + ObjC.unwrap(\n                e.localizedDescription\n            ))\n        ) : Right(ObjC.deepUnwrap(maybeDict));\n    });",
+    "code": "// readPlistFileLR :: FilePath -> Either String Object\nconst readPlistFileLR = fp =>\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(fpFull => {\n        const\n            e = $(),\n            maybeDict = (\n                $.NSDictionary\n                .dictionaryWithContentsOfURLError(\n                    $.NSURL.fileURLWithPath(fpFull),\n                    e\n                )\n            );\n\n        return maybeDict.isNil() ? (() => {\n            const msg = ObjC.unwrap(e.localizedDescription);\n\n            return Left(`readPlistFileLR:\\n\\t${msg}`);\n        })() : Right(ObjC.deepUnwrap(maybeDict));\n    });",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2311,14 +2311,14 @@
     ]
   },
   "removeFile": {
-    "code": "// removeFile :: FilePath -> Either String String\nconst removeFile = fp => {\n  const error = $();\n  return $.NSFileManager.defaultManager\n    .removeItemAtPathError(fp, error) ? (\n      Right('Removed: ' + fp)\n    ) : Left(ObjC.unwrap(error.localizedDescription));\n};",
+    "code": "// removeFile :: FilePath -> Either String String\nconst removeFile = fp => {\n    const error = $();\n\n    return $.NSFileManager.defaultManager\n        .removeItemAtPathError(fp, error) ? (\n            Right(`Removed: ${fp}`)\n        ) : Left(ObjC.unwrap(error.localizedDescription));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "renamedFile": {
-    "code": "// renamedFile :: FilePath -> FilePath -> \n// Either IO String IO String\nconst renamedFile = fp =>\n    // Either a message detailing a problem, or\n    // confirmation of a filename change in the OS.\n    fp1 => {\n        const error = $();\n        return $.NSFileManager.defaultManager\n            .moveItemAtPathToPathError(fp, fp1, error) ? (\n                Right(fp1)\n            ) : Left(ObjC.unwrap(\n                error.localizedDescription\n            ));\n    };",
+    "code": "// renamedFile :: FilePath -> FilePath ->\n// Either IO String IO String\nconst renamedFile = fp =>\n    // Either a message detailing a problem, or\n    // confirmation of a filename change in the OS.\n    fp1 => {\n        const error = $();\n\n        return $.NSFileManager.defaultManager\n            .moveItemAtPathToPathError(fp, fp1, error) ? (\n                Right(fp1)\n            ) : Left(ObjC.unwrap(\n                error.localizedDescription\n            ));\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2918,7 +2918,7 @@
     ]
   },
   "tempFilePath": {
-    "code": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n    // File name template to temporary path\n    // Random digit sequence inserted between \n    // template base and extension\n    ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);",
+    "code": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n    // File name template to temporary path\n    // Random digit sequence inserted between\n    // template base and extension\n    ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -3168,7 +3168,7 @@
     ]
   },
   "until": {
-    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p => \n    f => x => {\n        let v = x;\n        while (!p(v)) v = f(v);\n        return v;\n    };",
+    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    f => x => {\n        let v = x;\n\n        while (!p(v)) {\n            v = f(v);\n        }\n\n        return v;\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -3242,14 +3242,14 @@
     ]
   },
   "writeFileLR": {
-    "code": "// writeFileLR :: FilePath -> Either String IO FilePath\nconst writeFileLR = fp =>\n    s => {\n        const\n            e = $(),\n            efp = $(fp)\n            .stringByStandardizingPath;\n        return $.NSString.alloc.initWithUTF8String(s)\n            .writeToFileAtomicallyEncodingError(\n                efp, false,\n                $.NSUTF8StringEncoding, e\n            ) ? (\n                Right(ObjC.unwrap(efp))\n            ) : Left(ObjC.unwrap(e.localizedDescription));\n    };",
+    "code": "// writeFileLR :: FilePath -> Either String IO FilePath\nconst writeFileLR = fp =>\n    s => {\n        const\n            e = $(),\n            efp = $(fp)\n            .stringByStandardizingPath;\n\n        return $.NSString.alloc.initWithUTF8String(s)\n            .writeToFileAtomicallyEncodingError(\n                efp, false,\n                $.NSUTF8StringEncoding, e\n            ) ? (\n                Right(ObjC.unwrap(efp))\n            ) : Left(ObjC.unwrap(e.localizedDescription));\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "writeTempFile": {
-    "code": "// writeTempFile :: String -> String -> IO FilePath\nconst writeTempFile = template =>\n    // File name template -> string data -> IO temporary path\n    txt => {\n        const\n            strPath = ObjC.unwrap($.NSTemporaryDirectory()) +\n            takeBaseName(template) + Math.random()\n            .toString()\n            .substring(3) + takeExtension(template);\n        return (writeFile(strPath)(txt), strPath);\n    };",
+    "code": "// writeTempFile :: String -> String -> IO FilePath\nconst writeTempFile = template =>\n    // File name template -> string data -> IO temporary path\n    txt => {\n        const\n            strPath = ObjC.unwrap($.NSTemporaryDirectory()) +\n            takeBaseName(template) + Math.random()\n            .toString()\n            .substring(3) + takeExtension(template);\n\n        return (writeFile(strPath)(txt), strPath);\n    };",
     "tags": [
       "JS Prelude",
       "jxa"

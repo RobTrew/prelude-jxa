@@ -173,7 +173,7 @@ gcd :: Int -> Int -> Int
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
 getDirectoryContents :: FilePath -> IO [FilePath]
-getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
+getDirectoryContentsLR :: FilePath ->
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath
 group :: Eq a => [a] -> [[a]]

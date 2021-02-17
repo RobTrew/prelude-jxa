@@ -1,7 +1,7 @@
 ```javascript
 // Left :: a -> Either a b
 const Left = x => ({
-    type: 'Either',
+    type: "Either",
     Left: x
 });
 ```

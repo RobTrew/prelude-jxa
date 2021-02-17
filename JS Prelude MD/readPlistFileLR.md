@@ -15,10 +15,11 @@ const readPlistFileLR = fp =>
                     e
                 )
             );
-        return maybeDict.isNil() ? (
-            Left('readPlistFileLR:\n\t' + ObjC.unwrap(
-                e.localizedDescription
-            ))
-        ) : Right(ObjC.deepUnwrap(maybeDict));
+
+        return maybeDict.isNil() ? (() => {
+            const msg = ObjC.unwrap(e.localizedDescription);
+
+            return Left(`readPlistFileLR:\n\t${msg}`);
+        })() : Right(ObjC.deepUnwrap(maybeDict));
     });
 ```

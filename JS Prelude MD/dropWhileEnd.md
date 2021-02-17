@@ -4,9 +4,12 @@
 const dropWhileEnd = p =>
     // xs without the longest suffix for which
     // p returns true for all elements.
-    xs => {
-        let i = xs.length;
-        while (i-- && p(xs[i])) {}
-        return xs.slice(0, i + 1);
-    };
+    xs => xs.slice(
+        0,
+        1 + until(
+            i => (0 >= i) || !p(xs[i])
+        )(
+            x => x - 1
+        )(xs.length - 1)
+    );
 ```

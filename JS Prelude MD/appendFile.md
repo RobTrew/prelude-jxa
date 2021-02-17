@@ -28,7 +28,7 @@ const appendFile = fp =>
                         h.closeFile,
                         true
                     );
-                })() : false 
+                })() : false
             ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (
                 writeFile(oFullPath)(txt),
                 true

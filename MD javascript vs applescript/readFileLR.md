@@ -12,9 +12,9 @@ const readFileLR = fp => {
             e
         );
 
-    return ns.isNil()
-        ? Left(ObjC.unwrap(e.localizedDescription))
-        : Right(ObjC.unwrap(ns));
+    return ns.isNil() ? (
+        Left(ObjC.unwrap(e.localizedDescription))
+    ) : Right(ObjC.unwrap(ns));
 };
 ```
 

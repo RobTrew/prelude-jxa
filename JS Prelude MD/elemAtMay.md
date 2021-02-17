@@ -11,6 +11,7 @@ const elemAtMay = i =>
             k = bln ? i : Object.keys(x)
             .sort()[i],
             v = x[k];
+
         return undefined !== v ? (
             Just(bln ? v : Tuple(k, v))
         ) : Nothing();

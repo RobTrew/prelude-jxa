@@ -1,3 +1,7 @@
+/* eslint-disable no-undef */
+/* eslint-disable strict */
+/* eslint-disable no-unused-vars */
+
 // appendFile :: FilePath -> String -> IO Bool
 const appendFile = fp =>
     // The file at fp updated with a new string
@@ -27,7 +31,7 @@ const appendFile = fp =>
                         h.closeFile,
                         true
                     );
-                })() : false 
+                })() : false
             ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (
                 writeFile(oFullPath)(txt),
                 true
@@ -101,6 +105,7 @@ const base64encode = s =>
 const copyFileLR = fpFrom =>
     fpTo => {
         const fpTargetFolder = takeDirectory(fpTo);
+
         return doesFileExist(fpFrom) ? (
             doesDirectoryExist(fpTargetFolder) ? (() => {
                 const
@@ -113,21 +118,23 @@ const copyFileLR = fpFrom =>
                             e
                         )
                     );
+
                 return blnCopied ? (
                     Right(fpTo)
                 ) : Left(ObjC.unwrap(e.localizedDescription));
 
             })() : Left(
-                'Target folder not found: ' + fpTargetFolder
+                `Target folder not found: ${fpTargetFolder}`
             )
-        ) : Left('Source file not found: ' + fpFrom);
+        ) : Left(`Source file not found: ${fpFrom}`);
     };
 
-// createDirectoryIfMissingLR :: Bool -> FilePath 
+// createDirectoryIfMissingLR :: Bool -> FilePath
 // -> Either String FilePath
 const createDirectoryIfMissingLR = blnParents =>
     dirPath => {
         const fp = filePath(dirPath);
+
         return doesPathExist(fp) ? (
             Right(fp)
         ) : (() => {
@@ -135,10 +142,11 @@ const createDirectoryIfMissingLR = blnParents =>
                 e = $(),
                 blnOK = $.NSFileManager
                 .defaultManager[
-                    'createDirectoryAtPath' + (
-                        'WithIntermediateDirectories'
-                        ) + 'AttributesError'
-                ](fp, blnParents, undefined, e);
+                    "createDirectoryAtPath" + (
+                        "WithIntermediateDirectories"
+                    ) + "AttributesError"
+                ](fp, blnParents, void 0, e);
+
             return blnOK ? (
                 Right(fp)
             ) : Left(e.localizedDescription);
@@ -148,6 +156,7 @@ const createDirectoryIfMissingLR = blnParents =>
 // doesDirectoryExist :: FilePath -> IO Bool
 const doesDirectoryExist = fp => {
     const ref = Ref();
+
     return $.NSFileManager.defaultManager
         .fileExistsAtPathIsDirectory(
             $(fp)
@@ -168,10 +177,10 @@ const doesFileExist = fp => {
 
 // doesPathExist :: FilePath -> IO Bool
 const doesPathExist = fp =>
-	$.NSFileManager.defaultManager
-	.fileExistsAtPath(
-		$(fp).stringByStandardizingPath
-	);
+    $.NSFileManager.defaultManager
+    .fileExistsAtPath(
+        $(fp).stringByStandardizingPath
+    );
 
 // filePath :: String -> FilePath
 const filePath = s =>
@@ -195,6 +204,7 @@ const fileStatus = fp => {
             ObjC.wrap(fp).stringByStandardizingPath,
             e
         );
+
     return dct.isNil() ? (
         Left(ObjC.unwrap(e.localizedDescription))
     ) : Right(ObjC.deepUnwrap(dct));
@@ -207,6 +217,7 @@ const fileUTI = fp => {
         e = $(),
         uti = $.NSWorkspace.sharedWorkspace
         .typeOfFileError(fp, e);
+
     return uti.isNil() ? (
         Left(ObjC.unwrap(e.localizedDescription))
     ) : Right(ObjC.unwrap(uti));
@@ -229,7 +240,8 @@ const getDirectoryContents = fp =>
         )
     );
 
-// getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
+// getDirectoryContentsLR :: FilePath ->
+// Either String IO [FilePath]
 const getDirectoryContentsLR = fp => {
     const
         error = $(),
@@ -238,6 +250,7 @@ const getDirectoryContentsLR = fp => {
             $(fp).stringByStandardizingPath,
             error
         );
+
     return xs.isNil() ? (
         Left(ObjC.unwrap(error.localizedDescription))
     ) : Right(ObjC.deepUnwrap(xs));
@@ -253,14 +266,14 @@ const getTemporaryDirectory = () =>
 
 // listDirectory :: FilePath -> [FilePath]
 const listDirectory = fp =>
-	ObjC.unwrap(
-		$.NSFileManager.defaultManager
-		.contentsOfDirectoryAtPathError(
-			ObjC.wrap(fp)
-			.stringByStandardizingPath,
-			null
-		))
-	.map(ObjC.unwrap);
+    ObjC.unwrap(
+        $.NSFileManager.defaultManager
+        .contentsOfDirectoryAtPathError(
+            ObjC.wrap(fp)
+            .stringByStandardizingPath,
+            null
+        ))
+    .map(ObjC.unwrap);
 
 // modificationTime :: FilePath -> Either String Date
 const modificationTime = fp =>
@@ -305,9 +318,9 @@ const readFileLR = fp => {
             e
         );
 
-    return ns.isNil()
-        ? Left(ObjC.unwrap(e.localizedDescription))
-        : Right(ObjC.unwrap(ns));
+    return ns.isNil() ? (
+        Left(ObjC.unwrap(e.localizedDescription))
+    ) : Right(ObjC.unwrap(ns));
 };
 
 // readPlistFileLR :: FilePath -> Either String Object
@@ -326,29 +339,32 @@ const readPlistFileLR = fp =>
                     e
                 )
             );
-        return maybeDict.isNil() ? (
-            Left('readPlistFileLR:\n\t' + ObjC.unwrap(
-                e.localizedDescription
-            ))
-        ) : Right(ObjC.deepUnwrap(maybeDict));
+
+        return maybeDict.isNil() ? (() => {
+            const msg = ObjC.unwrap(e.localizedDescription);
+
+            return Left(`readPlistFileLR:\n\t${msg}`);
+        })() : Right(ObjC.deepUnwrap(maybeDict));
     });
 
 // removeFile :: FilePath -> Either String String
 const removeFile = fp => {
-  const error = $();
-  return $.NSFileManager.defaultManager
-    .removeItemAtPathError(fp, error) ? (
-      Right('Removed: ' + fp)
-    ) : Left(ObjC.unwrap(error.localizedDescription));
+    const error = $();
+
+    return $.NSFileManager.defaultManager
+        .removeItemAtPathError(fp, error) ? (
+            Right(`Removed: ${fp}`)
+        ) : Left(ObjC.unwrap(error.localizedDescription));
 };
 
-// renamedFile :: FilePath -> FilePath -> 
+// renamedFile :: FilePath -> FilePath ->
 // Either IO String IO String
 const renamedFile = fp =>
     // Either a message detailing a problem, or
     // confirmation of a filename change in the OS.
     fp1 => {
         const error = $();
+
         return $.NSFileManager.defaultManager
             .moveItemAtPathToPathError(fp, fp1, error) ? (
                 Right(fp1)
@@ -368,7 +384,7 @@ const setCurrentDirectory = strPath =>
 // tempFilePath :: String -> IO FilePath
 const tempFilePath = template =>
     // File name template to temporary path
-    // Random digit sequence inserted between 
+    // Random digit sequence inserted between
     // template base and extension
     ObjC.unwrap($.NSTemporaryDirectory()) +
     takeBaseName(template) + Math.random()
@@ -397,6 +413,7 @@ const writeFileLR = fp =>
             e = $(),
             efp = $(fp)
             .stringByStandardizingPath;
+
         return $.NSString.alloc.initWithUTF8String(s)
             .writeToFileAtomicallyEncodingError(
                 efp, false,
@@ -415,5 +432,6 @@ const writeTempFile = template =>
             takeBaseName(template) + Math.random()
             .toString()
             .substring(3) + takeExtension(template);
+
         return (writeFile(strPath)(txt), strPath);
     };

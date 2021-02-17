@@ -8,6 +8,7 @@ const writeTempFile = template =>
             takeBaseName(template) + Math.random()
             .toString()
             .substring(3) + takeExtension(template);
+
         return (writeFile(strPath)(txt), strPath);
     };
 ```

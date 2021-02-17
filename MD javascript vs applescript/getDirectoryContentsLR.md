@@ -1,5 +1,6 @@
 ```javascript
-// getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
+// getDirectoryContentsLR :: FilePath ->
+// Either String IO [FilePath]
 const getDirectoryContentsLR = fp => {
     const
         error = $(),
@@ -8,6 +9,7 @@ const getDirectoryContentsLR = fp => {
             $(fp).stringByStandardizingPath,
             error
         );
+
     return xs.isNil() ? (
         Left(ObjC.unwrap(error.localizedDescription))
     ) : Right(ObjC.deepUnwrap(xs));

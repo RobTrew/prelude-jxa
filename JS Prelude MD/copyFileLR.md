@@ -3,6 +3,7 @@
 const copyFileLR = fpFrom =>
     fpTo => {
         const fpTargetFolder = takeDirectory(fpTo);
+
         return doesFileExist(fpFrom) ? (
             doesDirectoryExist(fpTargetFolder) ? (() => {
                 const
@@ -15,13 +16,14 @@ const copyFileLR = fpFrom =>
                             e
                         )
                     );
+
                 return blnCopied ? (
                     Right(fpTo)
                 ) : Left(ObjC.unwrap(e.localizedDescription));
 
             })() : Left(
-                'Target folder not found: ' + fpTargetFolder
+                `Target folder not found: ${fpTargetFolder}`
             )
-        ) : Left('Source file not found: ' + fpFrom);
+        ) : Left(`Source file not found: ${fpFrom}`);
     };
 ```

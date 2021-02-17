@@ -9,9 +9,9 @@ const digitToInt = c => {
         null
     ) : (() => {
         const
-            dec = oc - ord('0'),
-            hexu = oc - ord('A'),
-            hexl = oc - ord('a');
+            dec = oc - ord("0"),
+            hexu = oc - ord("A"),
+            hexl = oc - ord("a");
 
         return 9 >= dec ? (
             dec

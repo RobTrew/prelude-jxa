@@ -1,13 +1,13 @@
 ```javascript
 // dropFileName :: FilePath -> FilePath
 const dropFileName = fp =>
-    '' !== fp ? (() => {
+    "" !== fp ? (() => {
         const
-            xs = (fp.split('/'))
+            xs = (fp.split("/"))
             .slice(0, -1);
 
         return 0 < xs.length ? (
-            `${xs.join('/')}/`
-        ) : './';
-    })() : './';
+            `${xs.join("/")}/`
+        ) : "./";
+    })() : "./";
 ```

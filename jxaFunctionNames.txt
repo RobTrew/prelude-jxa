@@ -13,7 +13,7 @@ fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
 getCurrentDirectory :: IO FilePath
 getDirectoryContents :: FilePath -> IO [FilePath]
-getDirectoryContentsLR :: FilePath -> Either String IO [FilePath]
+getDirectoryContentsLR :: FilePath ->
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath
 listDirectory :: FilePath -> [FilePath]
