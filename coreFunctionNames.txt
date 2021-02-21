@@ -78,7 +78,7 @@ replicate :: Int -> a -> [a]
 replicateString :: Int -> String -> String
 reverse :: [a] -> [a]
 scanl :: (b -> a -> b) -> b -> [a] -> [b]
-scanr :: (b -> a -> b) -> b -> [a] -> [b]
+scanr :: (a -> b -> b) -> b -> [a] -> [b]
 snd :: (a, b) -> b
 sort :: Ord a => [a] -> [a]
 sortBy :: (a -> a -> Ordering) -> [a] -> [a]

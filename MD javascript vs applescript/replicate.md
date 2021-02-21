@@ -1,13 +1,3 @@
-```javascript
-// replicate :: Int -> a -> [a]
-const replicate = n =>
-    // A list of n copies of x.
-    x => Array.from({
-        length: n
-    }, () => x);
-```
-
-
 ```applescript
 -- Egyptian multiplication - progressively doubling a list, appending
 -- stages of doubling to an accumulator where needed for binary 
@@ -37,4 +27,14 @@ on replicate(n, s)
     set xs to |until|(p, f, {n, s, ""})
     item 2 of xs & item 3 of xs
 end replicate
+```
+
+
+```javascript
+// replicate :: Int -> a -> [a]
+const replicate = n =>
+    // A list of n copies of x.
+    x => Array.from({
+        length: n
+    }, () => x);
 ```

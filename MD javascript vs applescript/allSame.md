@@ -1,12 +1,3 @@
-```javascript
-// allSame :: [a] -> Bool
-const allSame = xs =>
-    2 > xs.length || (
-        h => xs.slice(1).every(x => h === x)
-    )(xs[0]);
-```
-
-
 ```applescript
 -- allSame :: [a] -> Bool
 on allSame(xs)
@@ -22,4 +13,13 @@ on allSame(xs)
         all(p, rest of xs)
     end if
 end allSame
+```
+
+
+```javascript
+// allSame :: [a] -> Bool
+const allSame = xs =>
+    2 > xs.length || (
+        h => xs.slice(1).every(x => h === x)
+    )(xs[0]);
 ```

@@ -1,14 +1,3 @@
-```javascript
-// zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
-const zipWith3 = f =>
-    xs => ys => zs => Array.from({
-        length: Math.min(
-            ...[xs, ys, zs].map(x => x.length)
-        )
-    }, (_, i) => f(xs[i])(ys[i])(zs[i]));
-```
-
-
 ```applescript
 -- zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 on zipWith3(f, xs, ys, zs)
@@ -22,4 +11,15 @@ on zipWith3(f, xs, ys, zs)
         return lst
     end tell
 end zipWith3
+```
+
+
+```javascript
+// zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+const zipWith3 = f =>
+    xs => ys => zs => Array.from({
+        length: Math.min(
+            ...[xs, ys, zs].map(x => x.length)
+        )
+    }, (_, i) => f(xs[i])(ys[i])(zs[i]));
 ```

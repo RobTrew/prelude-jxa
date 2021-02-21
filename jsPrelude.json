@@ -2407,7 +2407,7 @@
     ]
   },
   "scanl": {
-    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    list(xs).reduce((a, x) => {\n        const v = f(a[0])(x);\n        return Tuple(v)(a[1].concat(v));\n    }, Tuple(startValue)([startValue]))[1];",
+    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    list(xs).reduce((a, x) => {\n        const v = f(a[0])(x);\n\n        return Tuple(v)(a[1].concat(v));\n    }, Tuple(startValue)([startValue]))[1];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2420,7 +2420,7 @@
     ]
   },
   "scanr": {
-    "code": "// scanr :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => list(xs).reduceRight((a, x) => {\n        const v = f(x)(a[0]);\n        return Tuple(v)([v].concat(a[1]));\n    }, Tuple(startValue)([startValue]))[1];",
+    "code": "// scanr :: (a -> b -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => list(xs).reduceRight((a, x) => {\n        const v = f(x)(a[0]);\n\n        return Tuple(v)([v].concat(a[1]));\n    }, Tuple(startValue)([startValue]))[1];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2724,7 +2724,7 @@
     ]
   },
   "str": {
-    "code": "// str :: a -> String\nconst str = x =>\n   Array.isArray(x) && x.every(\n       v => ('string' === typeof v) && (1 === v.length)\n   ) ? (\n       x.join('')\n   ) : x.toString();",
+    "code": "// str :: a -> String\nconst str = x =>\n    Array.isArray(x) && x.every(\n        v => (\"string\" === typeof v) && (1 === v.length)\n    ) ? (\n        // [Char] -> String\n        x.join(\"\")\n    ) : null === x ? (\n        \"null\"\n    ) : x.toString();",
     "tags": [
       "JS Prelude"
     ]
@@ -3168,7 +3168,7 @@
     ]
   },
   "until": {
-    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    f => x => {\n        let v = x;\n\n        while (!p(v)) {\n            v = f(v);\n        }\n\n        return v;\n    };",
+    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    // The value resulting from repeated applications\n    // of f to the seed value x, terminating when\n    // that result returns true for the predicate p.\n    f => x => {\n        let v = x;\n\n        while (!p(v)) {\n            v = f(v);\n        }\n\n        return v;\n    };",
     "tags": [
       "JS Prelude",
       "core"

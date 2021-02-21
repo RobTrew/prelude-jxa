@@ -1,10 +1,3 @@
-```javascript
-// bool :: a -> a -> Bool -> a
-const bool = f =>
-    t => p => p ? t : f;
-```
-
-
 ```applescript
 -- bool :: a -> a -> Bool -> a
 on bool(ff, tf)
@@ -26,4 +19,11 @@ on bool(ff, tf)
         end |λ|
     end script
 end bool
+```
+
+
+```javascript
+// bool :: a -> a -> Bool -> a
+const bool = f =>
+    t => p => p ? t : f;
 ```

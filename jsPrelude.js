@@ -3407,6 +3407,7 @@ const safeMay = p => f => x =>
 const scanl = f => startValue => xs =>
     list(xs).reduce((a, x) => {
         const v = f(a[0])(x);
+
         return Tuple(v)(a[1].concat(v));
     }, Tuple(startValue)([startValue]))[1];
 
@@ -3420,10 +3421,11 @@ const scanl1 = f =>
         )(xs.slice(1))
     ) : [];
 
-// scanr :: (b -> a -> b) -> b -> [a] -> [b]
+// scanr :: (a -> b -> b) -> b -> [a] -> [b]
 const scanr = f =>
     startValue => xs => list(xs).reduceRight((a, x) => {
         const v = f(x)(a[0]);
+
         return Tuple(v)([v].concat(a[1]));
     }, Tuple(startValue)([startValue]))[1];
 
@@ -3854,11 +3856,14 @@ const sqrtMay = n =>
 
 // str :: a -> String
 const str = x =>
-   Array.isArray(x) && x.every(
-       v => ('string' === typeof v) && (1 === v.length)
-   ) ? (
-       x.join('')
-   ) : x.toString();
+    Array.isArray(x) && x.every(
+        v => ("string" === typeof v) && (1 === v.length)
+    ) ? (
+        // [Char] -> String
+        x.join("")
+    ) : null === x ? (
+        "null"
+    ) : x.toString();
 
 // strip :: String -> String
 const strip = s =>
@@ -4706,6 +4711,9 @@ const unsnoc = xs =>
 
 // until :: (a -> Bool) -> (a -> a) -> a -> a
 const until = p =>
+    // The value resulting from repeated applications
+    // of f to the seed value x, terminating when
+    // that result returns true for the predicate p.
     f => x => {
         let v = x;
 

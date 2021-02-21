@@ -378,7 +378,7 @@ runAction :: Action a -> a
 safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 scanl :: (b -> a -> b) -> b -> [a] -> [b]
 scanl1 :: (a -> a -> a) -> [a] -> [a]
-scanr :: (b -> a -> b) -> b -> [a] -> [b]
+scanr :: (a -> b -> b) -> b -> [a] -> [b]
 scanr1 :: (a -> a -> a) -> [a] -> [a]
 second :: (a -> b) -> ((c, a) -> (c, b))
 sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
