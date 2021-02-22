@@ -1002,7 +1002,7 @@
     ]
   },
   "foldTree": {
-    "code": "// foldTree :: (a -> [b] -> b) -> Tree a -> b\nconst foldTree = f => {\n    // The catamorphism on trees. A summary\n    // value obtained by a depth-first fold.\n    const go = tree => f(tree.root)(\n        tree.nest.map(go)\n    );\n    return go;\n};",
+    "code": "// foldTree :: (a -> [b] -> b) -> Tree a -> b\nconst foldTree = f => {\n    // The catamorphism on trees. A summary\n    // value obtained by a depth-first fold.\n    const go = tree => f(\n        root(tree)\n    )(\n        nest(tree).map(go)\n    );\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1953,7 +1953,7 @@
     ]
   },
   "nest": {
-    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n    return 'function' !== typeof xs ? (\n        xs\n    ) : xs(root(x));\n};",
+    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs ? (\n        xs\n    ) : xs(root(x));\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2370,7 +2370,7 @@
     ]
   },
   "root": {
-    "code": "// root :: Tree a -> a\nconst root = tree => \n    tree.root;",
+    "code": "// root :: Tree a -> a\nconst root = tree =>\n    // The value attached to a tree node.\n    tree.root;",
     "tags": [
       "JS Prelude",
       "tree"

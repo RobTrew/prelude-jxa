@@ -14,7 +14,8 @@ const nest = tree => {
     // rather than a list – that function is applied
     // here to the root, and returns a list.
     const xs = tree.nest;
-    return 'function' !== typeof xs ? (
+
+    return "function" !== typeof xs ? (
         xs
     ) : xs(root(x));
 };

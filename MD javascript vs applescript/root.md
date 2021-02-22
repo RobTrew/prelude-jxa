@@ -8,6 +8,7 @@ end root
 
 ```javascript
 // root :: Tree a -> a
-const root = tree => 
+const root = tree =>
+    // The value attached to a tree node.
     tree.root;
 ```
