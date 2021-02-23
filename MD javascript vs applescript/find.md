@@ -19,11 +19,12 @@ const find = p =>
     // matches the predicate p, or
     // Nothing if no match is found.
     xs => xs.constructor.constructor.name !== (
-        'GeneratorFunction'
+        "GeneratorFunction"
     ) ? (() => {
         const
             ys = list(xs),
             i = ys.findIndex(p);
+
         return -1 !== i ? (
             Just(ys[i])
         ) : Nothing();

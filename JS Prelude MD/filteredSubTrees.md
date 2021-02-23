@@ -6,6 +6,7 @@ const filteredSubTrees = p => {
             [tree]
         ) : []
     ).concat(tree.nest.flatMap(go));
+
     return go;
 };
 ```

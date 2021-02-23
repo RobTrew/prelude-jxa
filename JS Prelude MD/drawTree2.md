@@ -40,7 +40,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
                 indented
             )(f(xs[0]));
 
-            // NODE WITH CHILDREN -----------------------------
+            // ----------- NODE WITH CHILDREN ------------
         })() : (() => {
             const
                 cFix = y => ys => y + ys,

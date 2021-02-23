@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable no-undef */
 /* eslint-disable strict */
 /* eslint-disable no-unused-vars */

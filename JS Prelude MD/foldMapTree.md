@@ -13,6 +13,7 @@ const foldMapTree = f => {
                 )
             )
         ) : f(tree.root);
+
     return go;
 };
 ```

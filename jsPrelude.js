@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable no-undef */
 /* eslint-disable strict */
 /* eslint-disable no-unused-vars */
@@ -840,7 +841,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
                 indented
             )(f(xs[0]));
 
-            // NODE WITH CHILDREN -----------------------------
+            // ----------- NODE WITH CHILDREN ------------
         })() : (() => {
             const
                 cFix = y => ys => y + ys,
@@ -1114,6 +1115,7 @@ const enumFromThen = x =>
     function* (y) {
         const d = y - x;
         let v = y + d;
+
         yield x;
         yield y;
         while (true) {
@@ -1128,8 +1130,9 @@ const enumFromThenTo = m =>
     // with a step defined by (nxt - m).
     nxt => n => {
         const d = nxt - m;
+
         return Array.from({
-            length: Math.floor(n - nxt) / d + 2
+            length: (Math.floor(n - nxt) / d) + 2
         }, (_, i) => m + (d * i));
     };
 
@@ -1203,13 +1206,15 @@ const eqDate = dte =>
     dte1 => {
         const dayOnly = dateTime =>
             new Date(dateTime).setUTCHours(0, 0, 0, 0);
+
         return dayOnly(dte) === dayOnly(dte1);
     };
 
 // evalJSLR :: String -> Either String a
 const evalJSLR = s => {
     try {
-        return Right(eval('(' + s + ')'));
+        // eslint-disable-next-line no-eval
+        return Right(eval(`(${s})`));
     } catch (e) {
         return Left(e.message);
     }
@@ -1218,21 +1223,22 @@ const evalJSLR = s => {
 // evalJSMay :: String -> Maybe a
 const evalJSMay = s => {
     try {
-        return Just(eval('(' + s + ')'));
+        // eslint-disable-next-line no-eval
+        return Just(eval(`(${s})`));
     } catch (e) {
         return Nothing();
     }
 };
 
 // even :: Int -> Bool
-const even = n => 
+const even = n =>
     // True if 2 is a factor of n.
     0 === n % 2;
 
 // exp :: Float -> Float
 const exp = Math.exp;
 
-// fTable :: String -> (a -> String) -> 
+// fTable :: String -> (a -> String) ->
 // (b -> String) -> (a -> b) -> [a] -> String
 const fTable = s =>
     // Heading -> x display function ->
@@ -1241,22 +1247,25 @@ const fTable = s =>
     xShow => fxShow => f => xs => {
         const
             ys = xs.map(xShow),
-            w = Math.max(...ys.map(y => [...y].length));
-        return s + '\n' + zipWith(
-            a => b => a.padStart(w, ' ') + ' -> ' + b
-        )(ys)(
-            xs.map(x => fxShow(f(x)))
-        ).join('\n');
+            w = Math.max(...ys.map(y => [...y].length)),
+            table = zipWith(
+                a => b => `${a.padStart(w, " ")} -> ${b}`
+            )(ys)(
+                xs.map(x => fxShow(f(x)))
+            ).join("\n");
+
+        return `${s}\n${table}`;
     };
 
 // fType :: (a -> f b) -> f
 const fType = g => {
     const s = g.toString();
-    return s.includes('Left') ? (
+
+    return s.includes("Left") ? (
         Right
-    ) : s.includes('Nothing') ? (
+    ) : s.includes("Nothing") ? (
         Just
-    ) : s.includes('Node') ? (
+    ) : s.includes("Node") ? (
         flip(Node)([])
     ) : x => [x];
 };
@@ -1273,10 +1282,12 @@ const fanArrow = f =>
 const filePathTree = fpAnchor => trees => {
     const go = fp => tree => {
         const path = `${fp}/${tree.root}`;
+
         return Node(path)(
             tree.nest.map(go(path))
         );
     };
+
     return Node(fpAnchor)(
       trees.map(go(fpAnchor))
     );
@@ -1322,6 +1333,7 @@ const filteredSubTrees = p => {
             [tree]
         ) : []
     ).concat(tree.nest.flatMap(go));
+
     return go;
 };
 
@@ -1344,11 +1356,12 @@ const find = p =>
     // matches the predicate p, or
     // Nothing if no match is found.
     xs => xs.constructor.constructor.name !== (
-        'GeneratorFunction'
+        "GeneratorFunction"
     ) ? (() => {
         const
             ys = list(xs),
             i = ys.findIndex(p);
+
         return -1 !== i ? (
             Just(ys[i])
         ) : Nothing();
@@ -1363,12 +1376,14 @@ const findGen = p =>
         const
             mb = until(tpl => {
                 const nxt = tpl[0];
+
                 return nxt.done || p(nxt.value);
             })(
                 tpl => Tuple(tpl[1].next())(
                     tpl[1]
                 )
             )(Tuple(xs.next())(xs))[0];
+
         return mb.done ? (
             Nothing()
         ) : Just(mb.value);
@@ -1424,6 +1439,7 @@ const findTree = p => {
             const
                 xs = tree.nest,
                 lng = xs.length;
+
             return 0 < lng ? until(
                 tpl => lng <= tpl[0] || !tpl[1].Nothing
             )(
@@ -1436,6 +1452,7 @@ const findTree = p => {
                 )
             )[1] : Nothing();
         })();
+
     return go;
 };
 
@@ -1445,6 +1462,7 @@ const first = f =>
     // to a tuple, transforming only its first item.
     xy => {
         const tpl = Tuple(f(xy[0]))(xy[1]);
+
         return Array.isArray(xy) ? (
             Array.from(tpl)
         ) : tpl;
@@ -1460,6 +1478,7 @@ const flattenTree = tree => {
         go = (xs, node) => [node.root].concat(
             node.nest.reduceRight(go, xs)
         );
+
     return go([], tree);
 };
 
@@ -1480,6 +1499,7 @@ const floor = x => {
             ) : properFracRatio
         )(x),
         n = nr[0];
+
     return 0 > nr[1] ? n - 1 : n;
 };
 
@@ -1487,20 +1507,21 @@ const floor = x => {
 const fmap = f =>
     // f mapped over the given functor.
     x => ({
-        'Either': () => fmapLR,
-        'List': () => map,
-        'Maybe': () => fmapMay,
-        'Node': () => fmapTree,
-        'String': () => map,
-        'Tuple': () => fmapTuple
+        "Either": () => fmapLR,
+        "List": () => map,
+        "Maybe": () => fmapMay,
+        "Node": () => fmapTree,
+        "String": () => map,
+        "Tuple": () => fmapTuple
     })[typeName(x)]()(f)(x);
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
-    function*(gen) {
+    function* (gen) {
         let v = take(1)(gen);
+
         while (0 < v.length) {
-            yield(f(v[0]));
+            yield f(v[0]);
             v = take(1)(gen);
         }
     };
@@ -1519,14 +1540,15 @@ const fmapMay = f => mb =>
 
 // fmapTree :: (a -> b) -> Tree a -> Tree b
 const fmapTree = f => {
-    // A new tree. The result of a 
-    // structure-preserving application of f 
+    // A new tree. The result of a
+    // structure-preserving application of f
     // to each root in the existing tree.
     const go = t => Node(
         f(t.root)
     )(
         t.nest.map(go)
     );
+
     return go;
 };
 
@@ -1550,6 +1572,7 @@ const foldMapTree = f => {
                 )
             )
         ) : f(tree.root);
+
     return go;
 };
 
@@ -1594,11 +1617,12 @@ const foldl1May = f =>
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
 const foldlTree = f =>
-    // A top-down left-right 
+    // A top-down left-right
     // accumulating traversal.
     acc => node => {
         const go = (a, x) =>
             x.nest.reduce(go, f(a)(x.root));
+
         return go(acc, node);
     };
 
@@ -1606,9 +1630,9 @@ const foldlTree = f =>
 const foldr = f =>
     // Note that that the Haskell signature of foldr differs from that of
     // foldl - the positions of accumulator and current value are reversed
-    a => xs => [...xs].reduceRight(
+    acc => xs => [...xs].reduceRight(
         (a, x) => f(x)(a),
-        a
+        acc
     );
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
@@ -1639,15 +1663,16 @@ const foldrTree = f =>
             f(x.root)(
                 x.nest.reduceRight(go, a)
             );
+
         return go(acc, node);
     };
 
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
-    typeof x !== 'string' ? (
+    typeof x !== "string" ? (
         x.constructor === Object ? (
             x.value
-        ) : parseInt(Number(x))
+        ) : parseInt(Number(x), 10)
     ) : x.codePointAt(0);
 
 // fromLeft :: a -> Either a b -> a
@@ -1682,8 +1707,9 @@ const gcd = x =>
     y => {
         const
             _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
-            abs = Math.abs;
-        return _gcd(abs(x), abs(y));
+            absolute = Math.abs;
+
+        return _gcd(absolute(x), absolute(y));
     };
 
 // genericIndexMay :: [a] -> Int -> Maybe a
@@ -1696,18 +1722,20 @@ const genericIndexMay = xs =>
 const group = xs => {
     // A list of lists, each containing only equal elements,
     // such that the concatenation of these lists is xs.
-    const go = xs =>
-        0 < xs.length ? (() => {
+    const go = ys =>
+        0 < ys.length ? (() => {
             const
-                h = xs[0],
-                i = xs.findIndex(x => h !== x);
+                h = ys[0],
+                i = ys.findIndex(y => h !== y);
+
             return i !== -1 ? (
-                [xs.slice(0, i)].concat(go(xs.slice(i)))
-            ) : [xs];
+                [ys.slice(0, i)].concat(go(ys.slice(i)))
+            ) : [ys];
         })() : [];
     const v = go(list(xs));
-    return 'string' === typeof xs ? (
-        v.map(x => x.join(''))
+
+    return "string" === typeof xs ? (
+        v.map(x => x.join(""))
     ) : v;
 };
 
@@ -1721,6 +1749,7 @@ const groupBy = fEq =>
                     const
                         gps = gw[0],
                         wkg = gw[1];
+
                     return fEq(wkg[0])(x) ? (
                         Tuple(gps)(wkg.concat([x]))
                     ) : Tuple(gps.concat([wkg]))([x]);
@@ -1728,15 +1757,16 @@ const groupBy = fEq =>
                 Tuple([])([ys[0]])
             ),
             v = tpl[0].concat([tpl[1]]);
-        return 'string' !== typeof xs ? (
+
+        return "string" !== typeof xs ? (
             v
-        ) : v.map(x => x.join(''));
+        ) : v.map(x => x.join(""));
     })() : [])(list(xs));
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
     xs => compose(
-        groupBy(a => b => 0 == f(a)(b)),
+        groupBy(a => b => 0 === f(a)(b)),
         sortBy(f)
     )(list(xs));
 
@@ -1751,7 +1781,7 @@ const groupSortOn = f =>
 
 // gt :: Ord a => a -> a -> Bool
 const gt = x => y =>
-    'Tuple' === x.type ? (
+    "Tuple" === x.type ? (
         x[0] > y[0]
     ) : (x > y);
 

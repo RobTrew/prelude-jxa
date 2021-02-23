@@ -609,7 +609,7 @@
     ]
   },
   "drawTree2": {
-    "code": "// drawTree2 :: Bool -> Bool -> Tree String -> String\nconst drawTree2 = blnCompact => blnPruned => tree => {\n    // Tree design and algorithm inspired by the Haskell snippet at:\n    // https://doisinkidney.com/snippets/drawing-trees.html\n    const\n        // Lefts, Middle, Rights\n        lmrFromStrings = xs => {\n            const [ls, rs] = Array.from(splitAt(\n                Math.floor(xs.length / 2)\n            )(xs));\n\n            return TupleN(ls, rs[0], rs.slice(1));\n        },\n        stringsFromLMR = lmr =>\n        Array.from(lmr).reduce((a, x) => a.concat(x), []),\n        fghOverLMR = (f, g, h) => lmr => {\n            const [ls, m, rs] = Array.from(lmr);\n\n            return TupleN(ls.map(f), g(m), rs.map(h));\n        };\n    const lmrBuild = (f, w) => wsTree => {\n        const\n            leftPad = n => s => \" \".repeat(n) + s,\n            xs = wsTree.nest,\n            lng = xs.length,\n            [nChars, x] = Array.from(wsTree.root);\n\n        // ------------------ LEAF NODE ------------------\n        return 0 === lng ? (\n            TupleN([], \"─\".repeat(w - nChars) + x, [])\n\n            // --------- NODE WITH SINGLE CHILD ----------\n        ) : 1 === lng ? (() => {\n            const indented = leftPad(1 + w);\n\n            return fghOverLMR(\n                indented,\n                z => `${\"─\".repeat(w - nChars)}${x}-${z}`,\n                indented\n            )(f(xs[0]));\n\n            // NODE WITH CHILDREN -----------------------------\n        })() : (() => {\n            const\n                cFix = y => ys => y + ys,\n                treeFix = (l, m, r) => compose(\n                    stringsFromLMR,\n                    fghOverLMR(cFix(l), cFix(m), cFix(r))\n                ),\n                _x = \"─\".repeat(w - nChars) + x,\n                indented = leftPad(w),\n                lmrs = xs.map(f);\n\n            return fghOverLMR(\n                indented,\n                s => _x + ({\n                    \"┌\": \"┬\",\n                    \"├\": \"┼\",\n                    \"│\": \"┤\",\n                    \"└\": \"┴\"\n                })[s[0]] + s.slice(1),\n                indented\n            )(lmrFromStrings(\n                intercalate(\n                    blnCompact ? [] : [\"│\"]\n                )(\n                    [treeFix(\" \", \"┌\", \"│\")(lmrs[0])]\n                    .concat(init(lmrs.slice(1)).map(\n                        treeFix(\"│\", \"├\", \"│\")\n                    ))\n                    .concat([treeFix(\"│\", \"└\", \" \")(\n                        lmrs[lmrs.length - 1]\n                    )])\n                )\n            ));\n        })();\n    };\n    const\n        measuredTree = fmapTree(\n            v => {\n                const s = ` ${v} `;\n\n                return Tuple(s.length)(s);\n            })(tree),\n        levelWidths = levels(measuredTree)\n        .reduce(\n            (a, level) => a.concat(maximum(level.map(fst))),\n            []\n        ),\n        treeLines = stringsFromLMR(\n            levelWidths.reduceRight(\n                lmrBuild, x => x\n            )(measuredTree)\n        );\n\n    return unlines(\n        blnPruned ? (\n            treeLines.filter(\n                s => s.split(\"\")\n                .some(c => !\" │\".includes(c))\n            )\n        ) : treeLines\n    );\n};",
+    "code": "// drawTree2 :: Bool -> Bool -> Tree String -> String\nconst drawTree2 = blnCompact => blnPruned => tree => {\n    // Tree design and algorithm inspired by the Haskell snippet at:\n    // https://doisinkidney.com/snippets/drawing-trees.html\n    const\n        // Lefts, Middle, Rights\n        lmrFromStrings = xs => {\n            const [ls, rs] = Array.from(splitAt(\n                Math.floor(xs.length / 2)\n            )(xs));\n\n            return TupleN(ls, rs[0], rs.slice(1));\n        },\n        stringsFromLMR = lmr =>\n        Array.from(lmr).reduce((a, x) => a.concat(x), []),\n        fghOverLMR = (f, g, h) => lmr => {\n            const [ls, m, rs] = Array.from(lmr);\n\n            return TupleN(ls.map(f), g(m), rs.map(h));\n        };\n    const lmrBuild = (f, w) => wsTree => {\n        const\n            leftPad = n => s => \" \".repeat(n) + s,\n            xs = wsTree.nest,\n            lng = xs.length,\n            [nChars, x] = Array.from(wsTree.root);\n\n        // ------------------ LEAF NODE ------------------\n        return 0 === lng ? (\n            TupleN([], \"─\".repeat(w - nChars) + x, [])\n\n            // --------- NODE WITH SINGLE CHILD ----------\n        ) : 1 === lng ? (() => {\n            const indented = leftPad(1 + w);\n\n            return fghOverLMR(\n                indented,\n                z => `${\"─\".repeat(w - nChars)}${x}-${z}`,\n                indented\n            )(f(xs[0]));\n\n            // ----------- NODE WITH CHILDREN ------------\n        })() : (() => {\n            const\n                cFix = y => ys => y + ys,\n                treeFix = (l, m, r) => compose(\n                    stringsFromLMR,\n                    fghOverLMR(cFix(l), cFix(m), cFix(r))\n                ),\n                _x = \"─\".repeat(w - nChars) + x,\n                indented = leftPad(w),\n                lmrs = xs.map(f);\n\n            return fghOverLMR(\n                indented,\n                s => _x + ({\n                    \"┌\": \"┬\",\n                    \"├\": \"┼\",\n                    \"│\": \"┤\",\n                    \"└\": \"┴\"\n                })[s[0]] + s.slice(1),\n                indented\n            )(lmrFromStrings(\n                intercalate(\n                    blnCompact ? [] : [\"│\"]\n                )(\n                    [treeFix(\" \", \"┌\", \"│\")(lmrs[0])]\n                    .concat(init(lmrs.slice(1)).map(\n                        treeFix(\"│\", \"├\", \"│\")\n                    ))\n                    .concat([treeFix(\"│\", \"└\", \" \")(\n                        lmrs[lmrs.length - 1]\n                    )])\n                )\n            ));\n        })();\n    };\n    const\n        measuredTree = fmapTree(\n            v => {\n                const s = ` ${v} `;\n\n                return Tuple(s.length)(s);\n            })(tree),\n        levelWidths = levels(measuredTree)\n        .reduce(\n            (a, level) => a.concat(maximum(level.map(fst))),\n            []\n        ),\n        treeLines = stringsFromLMR(\n            levelWidths.reduceRight(\n                lmrBuild, x => x\n            )(measuredTree)\n        );\n\n    return unlines(\n        blnPruned ? (\n            treeLines.filter(\n                s => s.split(\"\")\n                .some(c => !\" │\".includes(c))\n            )\n        ) : treeLines\n    );\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -723,13 +723,13 @@
     ]
   },
   "enumFromThen": {
-    "code": "// enumFromThen :: Int -> Int -> Gen [Int]\nconst enumFromThen = x =>\n    // A non-finite stream of integers,\n    // starting with x and y, and continuing\n    // with the same interval.\n    function* (y) {\n        const d = y - x;\n        let v = y + d;\n        yield x;\n        yield y;\n        while (true) {\n            yield v;\n            v = d + v;\n        }\n    };",
+    "code": "// enumFromThen :: Int -> Int -> Gen [Int]\nconst enumFromThen = x =>\n    // A non-finite stream of integers,\n    // starting with x and y, and continuing\n    // with the same interval.\n    function* (y) {\n        const d = y - x;\n        let v = y + d;\n\n        yield x;\n        yield y;\n        while (true) {\n            yield v;\n            v = d + v;\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "enumFromThenTo": {
-    "code": "// enumFromThenTo :: Int -> Int -> Int -> [Int]\nconst enumFromThenTo = m =>\n    // Integer values enumerated from m to n\n    // with a step defined by (nxt - m).\n    nxt => n => {\n        const d = nxt - m;\n        return Array.from({\n            length: Math.floor(n - nxt) / d + 2\n        }, (_, i) => m + (d * i));\n    };",
+    "code": "// enumFromThenTo :: Int -> Int -> Int -> [Int]\nconst enumFromThenTo = m =>\n    // Integer values enumerated from m to n\n    // with a step defined by (nxt - m).\n    nxt => n => {\n        const d = nxt - m;\n\n        return Array.from({\n            length: (Math.floor(n - nxt) / d) + 2\n        }, (_, i) => m + (d * i));\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -767,26 +767,26 @@
     ]
   },
   "eqDate": {
-    "code": "// eqDate :: Date -> Date -> Bool\nconst eqDate = dte =>\n    // True if the date parts of two date-time objects\n    // (ignoring the time parts) are the same.\n    dte1 => {\n        const dayOnly = dateTime =>\n            new Date(dateTime).setUTCHours(0, 0, 0, 0);\n        return dayOnly(dte) === dayOnly(dte1);\n    };",
+    "code": "// eqDate :: Date -> Date -> Bool\nconst eqDate = dte =>\n    // True if the date parts of two date-time objects\n    // (ignoring the time parts) are the same.\n    dte1 => {\n        const dayOnly = dateTime =>\n            new Date(dateTime).setUTCHours(0, 0, 0, 0);\n\n        return dayOnly(dte) === dayOnly(dte1);\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "evalJSLR": {
-    "code": "// evalJSLR :: String -> Either String a\nconst evalJSLR = s => {\n    try {\n        return Right(eval('(' + s + ')'));\n    } catch (e) {\n        return Left(e.message);\n    }\n};",
+    "code": "// evalJSLR :: String -> Either String a\nconst evalJSLR = s => {\n    try {\n        // eslint-disable-next-line no-eval\n        return Right(eval(`(${s})`));\n    } catch (e) {\n        return Left(e.message);\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "evalJSMay": {
-    "code": "// evalJSMay :: String -> Maybe a\nconst evalJSMay = s => {\n    try {\n        return Just(eval('(' + s + ')'));\n    } catch (e) {\n        return Nothing();\n    }\n};",
+    "code": "// evalJSMay :: String -> Maybe a\nconst evalJSMay = s => {\n    try {\n        // eslint-disable-next-line no-eval\n        return Just(eval(`(${s})`));\n    } catch (e) {\n        return Nothing();\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "even": {
-    "code": "// even :: Int -> Bool\nconst even = n => \n    // True if 2 is a factor of n.\n    0 === n % 2;",
+    "code": "// even :: Int -> Bool\nconst even = n =>\n    // True if 2 is a factor of n.\n    0 === n % 2;",
     "tags": [
       "JS Prelude",
       "core"
@@ -799,13 +799,13 @@
     ]
   },
   "fTable": {
-    "code": "// fTable :: String -> (a -> String) -> \n// (b -> String) -> (a -> b) -> [a] -> String\nconst fTable = s =>\n    // Heading -> x display function ->\n    //           fx display function ->\n    //    f -> values -> tabular string\n    xShow => fxShow => f => xs => {\n        const\n            ys = xs.map(xShow),\n            w = Math.max(...ys.map(y => [...y].length));\n        return s + '\\n' + zipWith(\n            a => b => a.padStart(w, ' ') + ' -> ' + b\n        )(ys)(\n            xs.map(x => fxShow(f(x)))\n        ).join('\\n');\n    };",
+    "code": "// fTable :: String -> (a -> String) ->\n// (b -> String) -> (a -> b) -> [a] -> String\nconst fTable = s =>\n    // Heading -> x display function ->\n    //           fx display function ->\n    //    f -> values -> tabular string\n    xShow => fxShow => f => xs => {\n        const\n            ys = xs.map(xShow),\n            w = Math.max(...ys.map(y => [...y].length)),\n            table = zipWith(\n                a => b => `${a.padStart(w, \" \")} -> ${b}`\n            )(ys)(\n                xs.map(x => fxShow(f(x)))\n            ).join(\"\\n\");\n\n        return `${s}\\n${table}`;\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "fType": {
-    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    const s = g.toString();\n    return s.includes('Left') ? (\n        Right\n    ) : s.includes('Nothing') ? (\n        Just\n    ) : s.includes('Node') ? (\n        flip(Node)([])\n    ) : x => [x];\n};",
+    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    const s = g.toString();\n\n    return s.includes(\"Left\") ? (\n        Right\n    ) : s.includes(\"Nothing\") ? (\n        Just\n    ) : s.includes(\"Node\") ? (\n        flip(Node)([])\n    ) : x => [x];\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -824,7 +824,7 @@
     ]
   },
   "filePathTree": {
-    "code": "// filePathTree :: filePath -> [Tree String] -> Tree FilePath\nconst filePathTree = fpAnchor => trees => {\n    const go = fp => tree => {\n        const path = `${fp}/${tree.root}`;\n        return Node(path)(\n            tree.nest.map(go(path))\n        );\n    };\n    return Node(fpAnchor)(\n      trees.map(go(fpAnchor))\n    );\n};",
+    "code": "// filePathTree :: filePath -> [Tree String] -> Tree FilePath\nconst filePathTree = fpAnchor => trees => {\n    const go = fp => tree => {\n        const path = `${fp}/${tree.root}`;\n\n        return Node(path)(\n            tree.nest.map(go(path))\n        );\n    };\n\n    return Node(fpAnchor)(\n      trees.map(go(fpAnchor))\n    );\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -872,7 +872,7 @@
     ]
   },
   "filteredSubTrees": {
-    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    const go = tree => (\n        p(tree.root) ? (\n            [tree]\n        ) : []\n    ).concat(tree.nest.flatMap(go));\n    return go;\n};",
+    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    const go = tree => (\n        p(tree.root) ? (\n            [tree]\n        ) : []\n    ).concat(tree.nest.flatMap(go));\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -886,14 +886,14 @@
     ]
   },
   "find": {
-    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which \n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        'GeneratorFunction'\n    ) ? (() => {\n        const\n            ys = list(xs),\n            i = ys.findIndex(p);\n        return -1 !== i ? (\n            Just(ys[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
+    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which \n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (() => {\n        const\n            ys = list(xs),\n            i = ys.findIndex(p);\n\n        return -1 !== i ? (\n            Just(ys[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "findGen": {
-    "code": "// findGen :: (a -> Bool) -> Gen [a] -> Maybe a\nconst findGen = p =>\n    // Just the first match for the predicate p\n    // in the generator stream xs, or Nothing\n    // if no match is found.\n    xs => {\n        const\n            mb = until(tpl => {\n                const nxt = tpl[0];\n                return nxt.done || p(nxt.value);\n            })(\n                tpl => Tuple(tpl[1].next())(\n                    tpl[1]\n                )\n            )(Tuple(xs.next())(xs))[0];\n        return mb.done ? (\n            Nothing()\n        ) : Just(mb.value);\n    };",
+    "code": "// findGen :: (a -> Bool) -> Gen [a] -> Maybe a\nconst findGen = p =>\n    // Just the first match for the predicate p\n    // in the generator stream xs, or Nothing\n    // if no match is found.\n    xs => {\n        const\n            mb = until(tpl => {\n                const nxt = tpl[0];\n\n                return nxt.done || p(nxt.value);\n            })(\n                tpl => Tuple(tpl[1].next())(\n                    tpl[1]\n                )\n            )(Tuple(xs.next())(xs))[0];\n\n        return mb.done ? (\n            Nothing()\n        ) : Just(mb.value);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -918,14 +918,14 @@
     ]
   },
   "findTree": {
-    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match the predicate p\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                lng = xs.length;\n            return 0 < lng ? until(\n                tpl => lng <= tpl[0] || !tpl[1].Nothing\n            )(\n                tpl => Tuple(1 + tpl[0])(\n                    go(xs[tpl[0]])\n                )\n            )(\n                Tuple(0)(\n                    Nothing()\n                )\n            )[1] : Nothing();\n        })();\n    return go;\n};",
+    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match the predicate p\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                lng = xs.length;\n\n            return 0 < lng ? until(\n                tpl => lng <= tpl[0] || !tpl[1].Nothing\n            )(\n                tpl => Tuple(1 + tpl[0])(\n                    go(xs[tpl[0]])\n                )\n            )(\n                Tuple(0)(\n                    Nothing()\n                )\n            )[1] : Nothing();\n        })();\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "first": {
-    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    xy => {\n        const tpl = Tuple(f(xy[0]))(xy[1]);\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
+    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    xy => {\n        const tpl = Tuple(f(xy[0]))(xy[1]);\n\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -938,7 +938,7 @@
     ]
   },
   "flattenTree": {
-    "code": "// flattenTree :: Tree a -> [a]\nconst flattenTree = tree => {\n    const\n        go = (xs, node) => [node.root].concat(\n            node.nest.reduceRight(go, xs)\n        );\n    return go([], tree);\n};",
+    "code": "// flattenTree :: Tree a -> [a]\nconst flattenTree = tree => {\n    const\n        go = (xs, node) => [node.root].concat(\n            node.nest.reduceRight(go, xs)\n        );\n\n    return go([], tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -952,19 +952,19 @@
     ]
   },
   "floor": {
-    "code": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            'Ratio' !== x.type ? (\n                properFraction\n            ) : properFracRatio\n        )(x),\n        n = nr[0];\n    return 0 > nr[1] ? n - 1 : n;\n};",
+    "code": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            'Ratio' !== x.type ? (\n                properFraction\n            ) : properFracRatio\n        )(x),\n        n = nr[0];\n\n    return 0 > nr[1] ? n - 1 : n;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "fmap (<$>)": {
-    "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f =>\n    // f mapped over the given functor.\n    x => ({\n        'Either': () => fmapLR,\n        'List': () => map,\n        'Maybe': () => fmapMay,\n        'Node': () => fmapTree,\n        'String': () => map,\n        'Tuple': () => fmapTuple\n    })[typeName(x)]()(f)(x);",
+    "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f =>\n    // f mapped over the given functor.\n    x => ({\n        \"Either\": () => fmapLR,\n        \"List\": () => map,\n        \"Maybe\": () => fmapMay,\n        \"Node\": () => fmapTree,\n        \"String\": () => map,\n        \"Tuple\": () => fmapTuple\n    })[typeName(x)]()(f)(x);",
     "tags": [
       "JS Prelude"
     ]
   },
   "fmapGen <$>": {
-    "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    function*(gen) {\n        let v = take(1)(gen);\n        while (0 < v.length) {\n            yield(f(v[0]));\n            v = take(1)(gen);\n        }\n    };",
+    "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    function* (gen) {\n        let v = take(1)(gen);\n\n        while (0 < v.length) {\n            yield f(v[0]);\n            v = take(1)(gen);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -982,7 +982,7 @@
     ]
   },
   "fmapTree (<$>)": {
-    "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a \n    // structure-preserving application of f \n    // to each root in the existing tree.\n    const go = t => Node(\n        f(t.root)\n    )(\n        t.nest.map(go)\n    );\n    return go;\n};",
+    "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a\n    // structure-preserving application of f\n    // to each root in the existing tree.\n    const go = t => Node(\n        f(t.root)\n    )(\n        t.nest.map(go)\n    );\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -995,7 +995,7 @@
     ]
   },
   "foldMapTree": {
-    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree =>\n        0 < tree.nest.length ? (\n            mappend(\n                f(tree.root)\n            )(\n                foldl1(mappend)(\n                    tree.nest.map(go)\n                )\n            )\n        ) : f(tree.root);\n    return go;\n};",
+    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree =>\n        0 < tree.nest.length ? (\n            mappend(\n                f(tree.root)\n            )(\n                foldl1(mappend)(\n                    tree.nest.map(go)\n                )\n            )\n        ) : f(tree.root);\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1028,14 +1028,14 @@
     ]
   },
   "foldlTree": {
-    "code": "// foldlTree :: (b -> a -> b) -> b -> Tree a -> b\nconst foldlTree = f =>\n    // A top-down left-right \n    // accumulating traversal.\n    acc => node => {\n        const go = (a, x) =>\n            x.nest.reduce(go, f(a)(x.root));\n        return go(acc, node);\n    };",
+    "code": "// foldlTree :: (b -> a -> b) -> b -> Tree a -> b\nconst foldlTree = f =>\n    // A top-down left-right\n    // accumulating traversal.\n    acc => node => {\n        const go = (a, x) =>\n            x.nest.reduce(go, f(a)(x.root));\n\n        return go(acc, node);\n    };",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "foldr": {
-    "code": "// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f =>\n    // Note that that the Haskell signature of foldr differs from that of\n    // foldl - the positions of accumulator and current value are reversed\n    a => xs => [...xs].reduceRight(\n        (a, x) => f(x)(a),\n        a\n    );",
+    "code": "// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f =>\n    // Note that that the Haskell signature of foldr differs from that of\n    // foldl - the positions of accumulator and current value are reversed\n    acc => xs => [...xs].reduceRight(\n        (a, x) => f(x)(a),\n        acc\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -1054,14 +1054,14 @@
     ]
   },
   "foldrTree": {
-    "code": "// foldrTree :: (a -> b -> b) -> b -> Tree a -> b\nconst foldrTree = f =>\n    acc => node => {\n        const go = (a, x) =>\n            f(x.root)(\n                x.nest.reduceRight(go, a)\n            );\n        return go(acc, node);\n    };",
+    "code": "// foldrTree :: (a -> b -> b) -> b -> Tree a -> b\nconst foldrTree = f =>\n    acc => node => {\n        const go = (a, x) =>\n            f(x.root)(\n                x.nest.reduceRight(go, a)\n            );\n\n        return go(acc, node);\n    };",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "fromEnum": {
-    "code": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x =>\n    typeof x !== 'string' ? (\n        x.constructor === Object ? (\n            x.value\n        ) : parseInt(Number(x))\n    ) : x.codePointAt(0);",
+    "code": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x =>\n    typeof x !== \"string\" ? (\n        x.constructor === Object ? (\n            x.value\n        ) : parseInt(Number(x), 10)\n    ) : x.codePointAt(0);",
     "tags": [
       "JS Prelude"
     ]
@@ -1098,7 +1098,7 @@
     ]
   },
   "gcd": {
-    "code": "// gcd :: Int -> Int -> Int\nconst gcd = x =>\n    y => {\n        const\n            _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),\n            abs = Math.abs;\n        return _gcd(abs(x), abs(y));\n    };",
+    "code": "// gcd :: Int -> Int -> Int\nconst gcd = x =>\n    y => {\n        const\n            _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),\n            absolute = Math.abs;\n\n        return _gcd(absolute(x), absolute(y));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1145,20 +1145,20 @@
     ]
   },
   "group": {
-    "code": "// group :: Eq a => [a] -> [[a]]\nconst group = xs => {\n    // A list of lists, each containing only equal elements,\n    // such that the concatenation of these lists is xs.\n    const go = xs =>\n        0 < xs.length ? (() => {\n            const\n                h = xs[0],\n                i = xs.findIndex(x => h !== x);\n            return i !== -1 ? (\n                [xs.slice(0, i)].concat(go(xs.slice(i)))\n            ) : [xs];\n        })() : [];\n    const v = go(list(xs));\n    return 'string' === typeof xs ? (\n        v.map(x => x.join(''))\n    ) : v;\n};",
+    "code": "// group :: Eq a => [a] -> [[a]]\nconst group = xs => {\n    // A list of lists, each containing only equal elements,\n    // such that the concatenation of these lists is xs.\n    const go = ys =>\n        0 < ys.length ? (() => {\n            const\n                h = ys[0],\n                i = ys.findIndex(y => h !== y);\n\n            return i !== -1 ? (\n                [ys.slice(0, i)].concat(go(ys.slice(i)))\n            ) : [ys];\n        })() : [];\n    const v = go(list(xs));\n\n    return \"string\" === typeof xs ? (\n        v.map(x => x.join(\"\"))\n    ) : v;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "groupBy": {
-    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = fEq =>\n    // Typical usage: groupBy(on(eq)(f), xs)\n    xs => (ys => 0 < ys.length ? (() => {\n        const\n            tpl = ys.slice(1).reduce(\n                (gw, x) => {\n                    const\n                        gps = gw[0],\n                        wkg = gw[1];\n                    return fEq(wkg[0])(x) ? (\n                        Tuple(gps)(wkg.concat([x]))\n                    ) : Tuple(gps.concat([wkg]))([x]);\n                },\n                Tuple([])([ys[0]])\n            ),\n            v = tpl[0].concat([tpl[1]]);\n        return 'string' !== typeof xs ? (\n            v\n        ) : v.map(x => x.join(''));\n    })() : [])(list(xs));",
+    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = fEq =>\n    // Typical usage: groupBy(on(eq)(f), xs)\n    xs => (ys => 0 < ys.length ? (() => {\n        const\n            tpl = ys.slice(1).reduce(\n                (gw, x) => {\n                    const\n                        gps = gw[0],\n                        wkg = gw[1];\n\n                    return fEq(wkg[0])(x) ? (\n                        Tuple(gps)(wkg.concat([x]))\n                    ) : Tuple(gps.concat([wkg]))([x]);\n                },\n                Tuple([])([ys[0]])\n            ),\n            v = tpl[0].concat([tpl[1]]);\n\n        return \"string\" !== typeof xs ? (\n            v\n        ) : v.map(x => x.join(\"\"));\n    })() : [])(list(xs));",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "groupSortBy": {
-    "code": "// groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]\nconst groupSortBy = f =>\n    xs => compose(\n        groupBy(a => b => 0 == f(a)(b)),\n        sortBy(f)\n    )(list(xs));",
+    "code": "// groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]\nconst groupSortBy = f =>\n    xs => compose(\n        groupBy(a => b => 0 === f(a)(b)),\n        sortBy(f)\n    )(list(xs));",
     "tags": [
       "JS Prelude"
     ]
@@ -1170,7 +1170,7 @@
     ]
   },
   "gt": {
-    "code": "// gt :: Ord a => a -> a -> Bool\nconst gt = x => y =>\n    'Tuple' === x.type ? (\n        x[0] > y[0]\n    ) : (x > y);",
+    "code": "// gt :: Ord a => a -> a -> Bool\nconst gt = x => y =>\n    \"Tuple\" === x.type ? (\n        x[0] > y[0]\n    ) : (x > y);",
     "tags": [
       "JS Prelude"
     ]

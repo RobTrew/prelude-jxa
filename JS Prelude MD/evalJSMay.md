@@ -2,7 +2,8 @@
 // evalJSMay :: String -> Maybe a
 const evalJSMay = s => {
     try {
-        return Just(eval('(' + s + ')'));
+        // eslint-disable-next-line no-eval
+        return Just(eval(`(${s})`));
     } catch (e) {
         return Nothing();
     }

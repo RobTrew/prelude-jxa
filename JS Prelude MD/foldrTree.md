@@ -6,6 +6,7 @@ const foldrTree = f =>
             f(x.root)(
                 x.nest.reduceRight(go, a)
             );
+
         return go(acc, node);
     };
 ```

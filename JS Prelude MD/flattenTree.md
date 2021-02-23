@@ -5,6 +5,7 @@ const flattenTree = tree => {
         go = (xs, node) => [node.root].concat(
             node.nest.reduceRight(go, xs)
         );
+
     return go([], tree);
 };
 ```

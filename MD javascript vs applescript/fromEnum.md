@@ -24,9 +24,9 @@ end fromEnum
 ```javascript
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
-    typeof x !== 'string' ? (
+    typeof x !== "string" ? (
         x.constructor === Object ? (
             x.value
-        ) : parseInt(Number(x))
+        ) : parseInt(Number(x), 10)
     ) : x.codePointAt(0);
 ```

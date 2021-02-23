@@ -2,11 +2,12 @@
 // fType :: (a -> f b) -> f
 const fType = g => {
     const s = g.toString();
-    return s.includes('Left') ? (
+
+    return s.includes("Left") ? (
         Right
-    ) : s.includes('Nothing') ? (
+    ) : s.includes("Nothing") ? (
         Just
-    ) : s.includes('Node') ? (
+    ) : s.includes("Node") ? (
         flip(Node)([])
     ) : x => [x];
 };

@@ -10,6 +10,7 @@ const findTree = p => {
             const
                 xs = tree.nest,
                 lng = xs.length;
+
             return 0 < lng ? until(
                 tpl => lng <= tpl[0] || !tpl[1].Nothing
             )(
@@ -22,6 +23,7 @@ const findTree = p => {
                 )
             )[1] : Nothing();
         })();
+
     return go;
 };
 ```

@@ -17,18 +17,20 @@ end group
 const group = xs => {
     // A list of lists, each containing only equal elements,
     // such that the concatenation of these lists is xs.
-    const go = xs =>
-        0 < xs.length ? (() => {
+    const go = ys =>
+        0 < ys.length ? (() => {
             const
-                h = xs[0],
-                i = xs.findIndex(x => h !== x);
+                h = ys[0],
+                i = ys.findIndex(y => h !== y);
+
             return i !== -1 ? (
-                [xs.slice(0, i)].concat(go(xs.slice(i)))
-            ) : [xs];
+                [ys.slice(0, i)].concat(go(ys.slice(i)))
+            ) : [ys];
         })() : [];
     const v = go(list(xs));
-    return 'string' === typeof xs ? (
-        v.map(x => x.join(''))
+
+    return "string" === typeof xs ? (
+        v.map(x => x.join(""))
     ) : v;
 };
 ```

@@ -28,12 +28,14 @@ const findGen = p =>
         const
             mb = until(tpl => {
                 const nxt = tpl[0];
+
                 return nxt.done || p(nxt.value);
             })(
                 tpl => Tuple(tpl[1].next())(
                     tpl[1]
                 )
             )(Tuple(xs.next())(xs))[0];
+
         return mb.done ? (
             Nothing()
         ) : Just(mb.value);

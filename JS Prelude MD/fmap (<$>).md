@@ -3,11 +3,11 @@
 const fmap = f =>
     // f mapped over the given functor.
     x => ({
-        'Either': () => fmapLR,
-        'List': () => map,
-        'Maybe': () => fmapMay,
-        'Node': () => fmapTree,
-        'String': () => map,
-        'Tuple': () => fmapTuple
+        "Either": () => fmapLR,
+        "List": () => map,
+        "Maybe": () => fmapMay,
+        "Node": () => fmapTree,
+        "String": () => map,
+        "Tuple": () => fmapTuple
     })[typeName(x)]()(f)(x);
 ```

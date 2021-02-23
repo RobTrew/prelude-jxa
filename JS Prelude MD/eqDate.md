@@ -6,6 +6,7 @@ const eqDate = dte =>
     dte1 => {
         const dayOnly = dateTime =>
             new Date(dateTime).setUTCHours(0, 0, 0, 0);
+
         return dayOnly(dte) === dayOnly(dte1);
     };
 ```

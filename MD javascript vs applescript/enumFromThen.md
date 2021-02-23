@@ -26,6 +26,7 @@ const enumFromThen = x =>
     function* (y) {
         const d = y - x;
         let v = y + d;
+
         yield x;
         yield y;
         while (true) {

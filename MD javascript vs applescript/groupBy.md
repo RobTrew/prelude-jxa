@@ -45,6 +45,7 @@ const groupBy = fEq =>
                     const
                         gps = gw[0],
                         wkg = gw[1];
+
                     return fEq(wkg[0])(x) ? (
                         Tuple(gps)(wkg.concat([x]))
                     ) : Tuple(gps.concat([wkg]))([x]);
@@ -52,8 +53,9 @@ const groupBy = fEq =>
                 Tuple([])([ys[0]])
             ),
             v = tpl[0].concat([tpl[1]]);
-        return 'string' !== typeof xs ? (
+
+        return "string" !== typeof xs ? (
             v
-        ) : v.map(x => x.join(''));
+        ) : v.map(x => x.join(""));
     })() : [])(list(xs));
 ```
