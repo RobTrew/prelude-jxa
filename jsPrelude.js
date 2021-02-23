@@ -1301,18 +1301,21 @@ const filter = p =>
 
 // filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]
 const filterGen = p => xs => {
-    // Non-finite stream of values which are 
+    // Non-finite stream of values which are
     // drawn from gen, and satisfy p
-    function* go() {
+    const go = function* () {
         let x = xs.next();
+
         while (!x.done) {
-            let v = x.value;
+            const v = x.value;
+
             if (p(v)) {
                 yield v;
             }
             x = xs.next();
         }
-    }
+    };
+
     return go(xs);
 };
 
@@ -1352,7 +1355,7 @@ const filteredTree = p =>
 
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = p =>
-    // Just the first element in xs which 
+    // Just the first element in xs which
     // matches the predicate p, or
     // Nothing if no match is found.
     xs => xs.constructor.constructor.name !== (
@@ -1469,7 +1472,7 @@ const first = f =>
     };
 
 // flatten :: NestedList a -> [a]
-const flatten = nest => 
+const flatten = nest =>
     nest.flat(Infinity);
 
 // flattenTree :: Tree a -> [a]
@@ -1484,7 +1487,7 @@ const flattenTree = tree => {
 
 // flip :: (a -> b -> c) -> b -> a -> c
 const flip = op =>
-    // The binary function op with 
+    // The binary function op with
     // its arguments reversed.
     1 < op.length ? (
         (a, b) => op(b, a)
@@ -1494,7 +1497,7 @@ const flip = op =>
 const floor = x => {
     const
         nr = (
-            'Ratio' !== x.type ? (
+            "Ratio" !== x.type ? (
                 properFraction
             ) : properFracRatio
         )(x),
@@ -1590,7 +1593,7 @@ const foldTree = f => {
 };
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
-const foldl = f => 
+const foldl = f =>
     a => xs => [...xs].reduce(
         (x, y) => f(x)(y),
         a
@@ -1604,7 +1607,7 @@ const foldl1 = f =>
     xs => (
         ys => 1 < ys.length ? ys.slice(1)
         .reduce(uncurry(f), ys[0]) : ys[0]
-    )(list(xs));    
+    )(list(xs));
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
@@ -1821,9 +1824,11 @@ const if_ = bln =>
 
 // indented :: String -> String -> String
 const indented = strIndent =>
-    s => s.split(/[\r\n]/).map(
-        x => '' !== x ? strIndent + x : x
-    ).join('\n');
+    s => s.split(/[\r\n]/u)
+    .map(
+        x => "" !== x ? strIndent + x : x
+    )
+    .join("\n");
 
 // index (!!) :: [a] -> Int -> Maybe a
 // index (!!) :: Generator (Int, a) -> Int -> Maybe a
@@ -1831,8 +1836,10 @@ const indented = strIndent =>
 const index = xs =>
     i => {
         const s = xs.constructor.constructor.name;
-        return 'GeneratorFunction' !== s ? (() => {
+
+        return "GeneratorFunction" !== s ? (() => {
             const v = xs[i];
+
             return undefined !== v ? Just(v) : Nothing();
         })() : (take(i)(xs), xs.next().value);
     };
@@ -1846,6 +1853,7 @@ const indexForest = trees =>
         const
             headNode = trees[0],
             headSize = headNode.root[1].nodeSum;
+
         return i > (headSize - 1) ? (
             indexForest(trees.slice(1))(i - headSize)
         ) : indexTree(headNode)(i);
@@ -1854,12 +1862,13 @@ const indexForest = trees =>
 // indexOf :: Eq a => [a] -> [a] -> Maybe Int
 // indexOf :: String -> String -> Maybe Int
 const indexOf = needle =>
-    haystack => 'string' !== typeof haystack ? (
+    haystack => "string" !== typeof haystack ? (
         findIndex(xs => isPrefixOf(needle)(xs))(
             tails(haystack)
         )
     ) : (() => {
         const i = haystack.indexOf(needle);
+
         return -1 !== i ? (
             Just(i)
         ) : Nothing();
@@ -1892,6 +1901,7 @@ const indexedTree = rootIndex =>
                     node.nest
                 )
             );
+
         return snd(go(rootIndex)(tree));
     };
 
@@ -1912,18 +1922,21 @@ const initMay = xs => (
 
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
-const inits = xs => 
-    // All prefixes of the argument, 
+const inits = xs =>
+    // All prefixes of the argument,
     // shortest first.
     [
         []
     ].concat((list(xs))
-    .map((_, i, ys) => ys.slice(0, 1 + i)));
+        .map((_, i, ys) => ys.slice(0, 1 + i)));
 
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
     ys => {
-        const [pre, post] = Array.from(break_(y => y >= x)(ys));
+        const [pre, post] = Array.from(
+            break_(y => y >= x)(ys)
+        );
+
         return [...pre, x, ...post];
     };
 
@@ -1938,6 +1951,7 @@ const insertBy = cmp =>
                     )
                 ) : cons(y)(ys)
             ) : [y];
+
         return go(x)(list(xs));
     };
 
@@ -1950,14 +1964,14 @@ const insertDict = k => v => dct =>
 // intToDigit :: Int -> Char
 const intToDigit = n =>
     n >= 0 && n < 16 ? (
-        '0123456789ABCDEF'.charAt(n)
-    ) : '?';
+        "0123456789ABCDEF".charAt(n)
+    ) : "?";
 
 // intercalate :: [a] -> [[a]] -> [a]
 // intercalate :: String -> [String] -> String
 const intercalate = sep => xs =>
-    0 < xs.length && 'string' === typeof sep &&
-    'string' === typeof xs[0] ? (
+    0 < xs.length && "string" === typeof sep &&
+    "string" === typeof xs[0] ? (
         xs.join(sep)
     ) : concat(intersperse(sep)(xs));
 
@@ -1973,21 +1987,22 @@ const intersect = xs =>
     ys => xs.filter(x => ys.includes(x));
 
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const intersectBy = eq =>
+const intersectBy = eqFn =>
     // The intersection of the lists xs and ys
     // in terms of the equality defined by eq.
     xs => ys => {
         const zs = list(ys);
+
         return list(xs).filter(
-            x => zs.some(eq(x))
+            x => zs.some(eqFn(x))
         );
     };
 
 // intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
-const intersectListsBy = eq => xs =>
-    foldr1((a => x => intersectBy(eq)(a)(x)))(
-        list(xs)
-    );
+const intersectListsBy = eqFn => xs =>
+    foldr1(
+        (a => x => intersectBy(eqFn)(a)(x))
+    )(list(xs));
 
 // intersection :: Ord a => Set a -> Set a -> Set a
 const intersection = s => s1 =>
@@ -1997,11 +2012,12 @@ const intersection = s => s1 =>
 // intersperse :: Char -> String -> String
 const intersperse = sep => xs => {
     // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
-    const bln = 'string' === typeof xs;
+    const bln = "string" === typeof xs;
+
     return xs.length > 1 ? (
         (bln ? concat : x => x)(
             (bln ? (
-                xs.split('')
+                xs.split("")
             ) : xs)
             .slice(1)
             .reduce((a, x) => a.concat([sep, x]), [xs[0]])
@@ -2010,35 +2026,38 @@ const intersperse = sep => xs => {
 
 // isAlpha :: Char -> Bool
 const isAlpha = c =>
-    /[A-Za-z\u00C0-\u00FF]/.test(c);
+    (/[A-Za-z\u00C0-\u00FF]/u).test(c);
 
 // isAlphaNum :: Char -> Bool
 const isAlphaNum = c => {
     const n = c.codePointAt(0);
+
     return (48 <= n && 57 >= n) || (
-        /[A-Za-z\u00C0-\u00FF]/.test(c)
+        (/[A-Za-z\u00C0-\u00FF]/u).test(c)
     );
 };
 
 // isChar :: a -> Bool
 const isChar = x =>
-    ('string' === typeof x) && (1 === x.length);
+    ("string" === typeof x) && (1 === x.length);
 
 // isDigit :: Char -> Bool
 const isDigit = c => {
     const n = c.codePointAt(0);
+
     return 48 <= n && 57 >= n;
 };
 
 // isInfixOf :: (Eq a) => [a] -> [a] -> Bool
 // isInfixOf :: String -> String -> Bool
 const isInfixOf = needle => haystack =>
-    'string' !== typeof haystack ? (() => {
+    "string" !== typeof haystack ? (() => {
         const
             lng = needle.length,
             go = xs => lng <= xs.length ? (
                 isPrefixOf(needle)(xs) || go(xs.slice(1))
             ) : false;
+
         return go(haystack);
     })() : haystack.includes(needle);
 

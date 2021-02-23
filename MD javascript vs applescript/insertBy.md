@@ -40,6 +40,7 @@ const insertBy = cmp =>
                     )
                 ) : cons(y)(ys)
             ) : [y];
+
         return go(x)(list(xs));
     };
 ```

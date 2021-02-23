@@ -16,6 +16,7 @@ const indexedTree = rootIndex =>
                     node.nest
                 )
             );
+
         return snd(go(rootIndex)(tree));
     };
 ```

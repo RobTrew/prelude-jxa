@@ -8,6 +8,7 @@ const indexForest = trees =>
         const
             headNode = trees[0],
             headSize = headNode.root[1].nodeSum;
+
         return i > (headSize - 1) ? (
             indexForest(trees.slice(1))(i - headSize)
         ) : indexTree(headNode)(i);

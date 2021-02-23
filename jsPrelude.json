@@ -859,7 +859,7 @@
     ]
   },
   "filterGen": {
-    "code": "// filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]\nconst filterGen = p => xs => {\n    // Non-finite stream of values which are \n    // drawn from gen, and satisfy p\n    function* go() {\n        let x = xs.next();\n        while (!x.done) {\n            let v = x.value;\n            if (p(v)) {\n                yield v;\n            }\n            x = xs.next();\n        }\n    }\n    return go(xs);\n};",
+    "code": "// filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]\nconst filterGen = p => xs => {\n    // Non-finite stream of values which are\n    // drawn from gen, and satisfy p\n    const go = function* () {\n        let x = xs.next();\n\n        while (!x.done) {\n            const v = x.value;\n\n            if (p(v)) {\n                yield v;\n            }\n            x = xs.next();\n        }\n    };\n\n    return go(xs);\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -886,7 +886,7 @@
     ]
   },
   "find": {
-    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which \n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (() => {\n        const\n            ys = list(xs),\n            i = ys.findIndex(p);\n\n        return -1 !== i ? (\n            Just(ys[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
+    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which\n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (() => {\n        const\n            ys = list(xs),\n            i = ys.findIndex(p);\n\n        return -1 !== i ? (\n            Just(ys[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
     "tags": [
       "JS Prelude",
       "core"
@@ -931,7 +931,7 @@
     ]
   },
   "flatten": {
-    "code": "// flatten :: NestedList a -> [a]\nconst flatten = nest => \n    nest.flat(Infinity);",
+    "code": "// flatten :: NestedList a -> [a]\nconst flatten = nest =>\n    nest.flat(Infinity);",
     "tags": [
       "JS Prelude",
       "core"
@@ -945,14 +945,14 @@
     ]
   },
   "flip": {
-    "code": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with \n    // its arguments reversed.\n    1 < op.length ? (\n        (a, b) => op(b, a)\n    ) : (x => y => op(y)(x));",
+    "code": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with\n    // its arguments reversed.\n    1 < op.length ? (\n        (a, b) => op(b, a)\n    ) : (x => y => op(y)(x));",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "floor": {
-    "code": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            'Ratio' !== x.type ? (\n                properFraction\n            ) : properFracRatio\n        )(x),\n        n = nr[0];\n\n    return 0 > nr[1] ? n - 1 : n;\n};",
+    "code": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            \"Ratio\" !== x.type ? (\n                properFraction\n            ) : properFracRatio\n        )(x),\n        n = nr[0];\n\n    return 0 > nr[1] ? n - 1 : n;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1009,14 +1009,14 @@
     ]
   },
   "foldl": {
-    "code": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = f => \n    a => xs => [...xs].reduce(\n        (x, y) => f(x)(y),\n        a\n    );",
+    "code": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = f =>\n    a => xs => [...xs].reduce(\n        (x, y) => f(x)(y),\n        a\n    );",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "foldl1": {
-    "code": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f =>\n    // Left to right reduction of the non-empty list xs,\n    // using the binary operator f, with the head of xs\n    // as the initial acccumulator value.\n    xs => (\n        ys => 1 < ys.length ? ys.slice(1)\n        .reduce(uncurry(f), ys[0]) : ys[0]\n    )(list(xs));    ",
+    "code": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f =>\n    // Left to right reduction of the non-empty list xs,\n    // using the binary operator f, with the head of xs\n    // as the initial acccumulator value.\n    xs => (\n        ys => 1 < ys.length ? ys.slice(1)\n        .reduce(uncurry(f), ys[0]) : ys[0]\n    )(list(xs));",
     "tags": [
       "JS Prelude"
     ]
@@ -1210,26 +1210,26 @@
     ]
   },
   "indented": {
-    "code": "// indented :: String -> String -> String\nconst indented = strIndent =>\n    s => s.split(/[\\r\\n]/).map(\n        x => '' !== x ? strIndent + x : x\n    ).join('\\n');",
+    "code": "// indented :: String -> String -> String\nconst indented = strIndent =>\n    s => s.split(/[\\r\\n]/u)\n    .map(\n        x => \"\" !== x ? strIndent + x : x\n    )\n    .join(\"\\n\");",
     "tags": [
       "JS Prelude"
     ]
   },
   "index": {
-    "code": "// index (!!) :: [a] -> Int -> Maybe a\n// index (!!) :: Generator (Int, a) -> Int -> Maybe a\n// index (!!) :: String -> Int -> Maybe Char\nconst index = xs =>\n    i => {\n        const s = xs.constructor.constructor.name;\n        return 'GeneratorFunction' !== s ? (() => {\n            const v = xs[i];\n            return undefined !== v ? Just(v) : Nothing();\n        })() : (take(i)(xs), xs.next().value);\n    };",
+    "code": "// index (!!) :: [a] -> Int -> Maybe a\n// index (!!) :: Generator (Int, a) -> Int -> Maybe a\n// index (!!) :: String -> Int -> Maybe Char\nconst index = xs =>\n    i => {\n        const s = xs.constructor.constructor.name;\n\n        return \"GeneratorFunction\" !== s ? (() => {\n            const v = xs[i];\n\n            return undefined !== v ? Just(v) : Nothing();\n        })() : (take(i)(xs), xs.next().value);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "indexForest": {
-    "code": "// indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->\n// Maybe Tree (a, { nodeSum :: Int })\nconst indexForest = trees =>\n    // Index into a forest of measured trees.\n    // (see measuredTree)\n    i => 0 < trees.length ? (() => {\n        const\n            headNode = trees[0],\n            headSize = headNode.root[1].nodeSum;\n        return i > (headSize - 1) ? (\n            indexForest(trees.slice(1))(i - headSize)\n        ) : indexTree(headNode)(i);\n    })() : Nothing();",
+    "code": "// indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->\n// Maybe Tree (a, { nodeSum :: Int })\nconst indexForest = trees =>\n    // Index into a forest of measured trees.\n    // (see measuredTree)\n    i => 0 < trees.length ? (() => {\n        const\n            headNode = trees[0],\n            headSize = headNode.root[1].nodeSum;\n\n        return i > (headSize - 1) ? (\n            indexForest(trees.slice(1))(i - headSize)\n        ) : indexTree(headNode)(i);\n    })() : Nothing();",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "indexOf": {
-    "code": "// indexOf :: Eq a => [a] -> [a] -> Maybe Int\n// indexOf :: String -> String -> Maybe Int\nconst indexOf = needle =>\n    haystack => 'string' !== typeof haystack ? (\n        findIndex(xs => isPrefixOf(needle)(xs))(\n            tails(haystack)\n        )\n    ) : (() => {\n        const i = haystack.indexOf(needle);\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    })();",
+    "code": "// indexOf :: Eq a => [a] -> [a] -> Maybe Int\n// indexOf :: String -> String -> Maybe Int\nconst indexOf = needle =>\n    haystack => \"string\" !== typeof haystack ? (\n        findIndex(xs => isPrefixOf(needle)(xs))(\n            tails(haystack)\n        )\n    ) : (() => {\n        const i = haystack.indexOf(needle);\n\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    })();",
     "tags": [
       "JS Prelude"
     ]
@@ -1242,7 +1242,7 @@
     ]
   },
   "indexedTree": {
-    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right index, where the root node \n    // starts at the supplied rootIndex;\n    tree => {\n        const go = n => node =>\n            second(\n                Node(\n                    Tuple(node.root)(n)\n                )\n            )(\n                mapAccumL(go)(1 + n)(\n                    node.nest\n                )\n            );\n        return snd(go(rootIndex)(tree));\n    };",
+    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right index, where the root node \n    // starts at the supplied rootIndex;\n    tree => {\n        const go = n => node =>\n            second(\n                Node(\n                    Tuple(node.root)(n)\n                )\n            )(\n                mapAccumL(go)(1 + n)(\n                    node.nest\n                )\n            );\n\n        return snd(go(rootIndex)(tree));\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1262,19 +1262,19 @@
     ]
   },
   "inits": {
-    "code": "// inits :: [a] -> [[a]]\n// inits :: String -> [String]\nconst inits = xs => \n    // All prefixes of the argument, \n    // shortest first.\n    [\n        []\n    ].concat((list(xs))\n    .map((_, i, ys) => ys.slice(0, 1 + i)));",
+    "code": "// inits :: [a] -> [[a]]\n// inits :: String -> [String]\nconst inits = xs =>\n    // All prefixes of the argument,\n    // shortest first.\n    [\n        []\n    ].concat((list(xs))\n        .map((_, i, ys) => ys.slice(0, 1 + i)));",
     "tags": [
       "JS Prelude"
     ]
   },
   "insert": {
-    "code": "// insert :: Ord a => a -> [a] -> [a]\nconst insert = x =>\n    ys => {\n        const [pre, post] = Array.from(break_(y => y >= x)(ys));\n        return [...pre, x, ...post];\n    };",
+    "code": "// insert :: Ord a => a -> [a] -> [a]\nconst insert = x =>\n    ys => {\n        const [pre, post] = Array.from(\n            break_(y => y >= x)(ys)\n        );\n\n        return [...pre, x, ...post];\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "insertBy": {
-    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            0 < ys.length ? (\n                0 < cmp(y)(ys[0]) ? (\n                    cons(ys[0])(\n                        go(y)(ys.slice(1))\n                    )\n                ) : cons(y)(ys)\n            ) : [y];\n        return go(x)(list(xs));\n    };",
+    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            0 < ys.length ? (\n                0 < cmp(y)(ys[0]) ? (\n                    cons(ys[0])(\n                        go(y)(ys.slice(1))\n                    )\n                ) : cons(y)(ys)\n            ) : [y];\n\n        return go(x)(list(xs));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1286,13 +1286,13 @@
     ]
   },
   "intToDigit": {
-    "code": "// intToDigit :: Int -> Char\nconst intToDigit = n =>\n    n >= 0 && n < 16 ? (\n        '0123456789ABCDEF'.charAt(n)\n    ) : '?';",
+    "code": "// intToDigit :: Int -> Char\nconst intToDigit = n =>\n    n >= 0 && n < 16 ? (\n        \"0123456789ABCDEF\".charAt(n)\n    ) : \"?\";",
     "tags": [
       "JS Prelude"
     ]
   },
   "intercalate": {
-    "code": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = sep => xs =>\n    0 < xs.length && 'string' === typeof sep &&\n    'string' === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep)(xs));",
+    "code": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = sep => xs =>\n    0 < xs.length && \"string\" === typeof sep &&\n    \"string\" === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep)(xs));",
     "tags": [
       "JS Prelude",
       "core"
@@ -1313,13 +1313,13 @@
     ]
   },
   "intersectBy": {
-    "code": "// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst intersectBy = eq =>\n    // The intersection of the lists xs and ys\n    // in terms of the equality defined by eq.\n    xs => ys => {\n        const zs = list(ys);\n        return list(xs).filter(\n            x => zs.some(eq(x))\n        );\n    };",
+    "code": "// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst intersectBy = eqFn =>\n    // The intersection of the lists xs and ys\n    // in terms of the equality defined by eq.\n    xs => ys => {\n        const zs = list(ys);\n\n        return list(xs).filter(\n            x => zs.some(eqFn(x))\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "intersectListsBy": {
-    "code": "// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectListsBy = eq => xs =>\n    foldr1((a => x => intersectBy(eq)(a)(x)))(\n        list(xs)\n    );",
+    "code": "// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectListsBy = eqFn => xs =>\n    foldr1(\n        (a => x => intersectBy(eqFn)(a)(x))\n    )(list(xs));",
     "tags": [
       "JS Prelude"
     ]
@@ -1331,37 +1331,37 @@
     ]
   },
   "intersperse": {
-    "code": "// intersperse :: a -> [a] -> [a]\n// intersperse :: Char -> String -> String\nconst intersperse = sep => xs => {\n    // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]\n    const bln = 'string' === typeof xs;\n    return xs.length > 1 ? (\n        (bln ? concat : x => x)(\n            (bln ? (\n                xs.split('')\n            ) : xs)\n            .slice(1)\n            .reduce((a, x) => a.concat([sep, x]), [xs[0]])\n        )) : xs;\n};",
+    "code": "// intersperse :: a -> [a] -> [a]\n// intersperse :: Char -> String -> String\nconst intersperse = sep => xs => {\n    // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]\n    const bln = \"string\" === typeof xs;\n\n    return xs.length > 1 ? (\n        (bln ? concat : x => x)(\n            (bln ? (\n                xs.split(\"\")\n            ) : xs)\n            .slice(1)\n            .reduce((a, x) => a.concat([sep, x]), [xs[0]])\n        )) : xs;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "isAlpha": {
-    "code": "// isAlpha :: Char -> Bool\nconst isAlpha = c =>\n    /[A-Za-z\\u00C0-\\u00FF]/.test(c);",
+    "code": "// isAlpha :: Char -> Bool\nconst isAlpha = c =>\n    (/[A-Za-z\\u00C0-\\u00FF]/u).test(c);",
     "tags": [
       "JS Prelude"
     ]
   },
   "isAlphaNum": {
-    "code": "// isAlphaNum :: Char -> Bool\nconst isAlphaNum = c => {\n    const n = c.codePointAt(0);\n    return (48 <= n && 57 >= n) || (\n        /[A-Za-z\\u00C0-\\u00FF]/.test(c)\n    );\n};",
+    "code": "// isAlphaNum :: Char -> Bool\nconst isAlphaNum = c => {\n    const n = c.codePointAt(0);\n\n    return (48 <= n && 57 >= n) || (\n        (/[A-Za-z\\u00C0-\\u00FF]/u).test(c)\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "isChar": {
-    "code": "// isChar :: a -> Bool\nconst isChar = x =>\n    ('string' === typeof x) && (1 === x.length);",
+    "code": "// isChar :: a -> Bool\nconst isChar = x =>\n    (\"string\" === typeof x) && (1 === x.length);",
     "tags": [
       "JS Prelude"
     ]
   },
   "isDigit": {
-    "code": "// isDigit :: Char -> Bool\nconst isDigit = c => {\n    const n = c.codePointAt(0);\n    return 48 <= n && 57 >= n;\n};",
+    "code": "// isDigit :: Char -> Bool\nconst isDigit = c => {\n    const n = c.codePointAt(0);\n\n    return 48 <= n && 57 >= n;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "isInfixOf": {
-    "code": "// isInfixOf :: (Eq a) => [a] -> [a] -> Bool\n// isInfixOf :: String -> String -> Bool\nconst isInfixOf = needle => haystack =>\n    'string' !== typeof haystack ? (() => {\n        const\n            lng = needle.length,\n            go = xs => lng <= xs.length ? (\n                isPrefixOf(needle)(xs) || go(xs.slice(1))\n            ) : false;\n        return go(haystack);\n    })() : haystack.includes(needle);",
+    "code": "// isInfixOf :: (Eq a) => [a] -> [a] -> Bool\n// isInfixOf :: String -> String -> Bool\nconst isInfixOf = needle => haystack =>\n    \"string\" !== typeof haystack ? (() => {\n        const\n            lng = needle.length,\n            go = xs => lng <= xs.length ? (\n                isPrefixOf(needle)(xs) || go(xs.slice(1))\n            ) : false;\n\n        return go(haystack);\n    })() : haystack.includes(needle);",
     "tags": [
       "JS Prelude"
     ]

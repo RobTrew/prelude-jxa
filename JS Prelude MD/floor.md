@@ -3,7 +3,7 @@
 const floor = x => {
     const
         nr = (
-            'Ratio' !== x.type ? (
+            "Ratio" !== x.type ? (
                 properFraction
             ) : properFracRatio
         )(x),

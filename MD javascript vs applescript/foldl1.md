@@ -26,5 +26,5 @@ const foldl1 = f =>
     xs => (
         ys => 1 < ys.length ? ys.slice(1)
         .reduce(uncurry(f), ys[0]) : ys[0]
-    )(list(xs));    
+    )(list(xs));
 ```

@@ -20,18 +20,21 @@ end filterGen
 ```javascript
 // filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]
 const filterGen = p => xs => {
-    // Non-finite stream of values which are 
+    // Non-finite stream of values which are
     // drawn from gen, and satisfy p
-    function* go() {
+    const go = function* () {
         let x = xs.next();
+
         while (!x.done) {
-            let v = x.value;
+            const v = x.value;
+
             if (p(v)) {
                 yield v;
             }
             x = xs.next();
         }
-    }
+    };
+
     return go(xs);
 };
 ```
