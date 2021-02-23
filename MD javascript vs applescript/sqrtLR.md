@@ -1,3 +1,12 @@
+```javascript
+// sqrtLR :: Num -> Either String Num
+const sqrtLR = n =>
+    0 > n ? (
+        Left(`Square root of negative number: ${n}`)
+    ) : Right(Math.sqrt(n));
+```
+
+
 ```applescript
 -- sqrtLR :: Num -> Either String Num
 on sqrtLR(n)
@@ -7,13 +16,4 @@ on sqrtLR(n)
         |Left|("Square root of negative number: " & n)
     end if
 end sqrtLR
-```
-
-
-```javascript
-// sqrtLR :: Num -> Either String Num
-const sqrtLR = n =>
-    0 > n ? (
-        Left('Square root of negative number: ' + n)
-    ) : Right(Math.sqrt(n));
 ```

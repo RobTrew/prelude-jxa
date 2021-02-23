@@ -1,3 +1,19 @@
+```javascript
+// ratioPlus :: Rational -> Rational -> Rational
+const ratioPlus = n1 =>
+    n2 => {
+        const [r1, r2] = [n1, n2].map(rational);
+        const d = lcm(r1.d)(r2.d);
+
+        return ratio(
+            (r1.n * (d / r1.d)) + (
+                r2.n * (d / r2.d)
+            )
+        )(d);
+    };
+```
+
+
 ```applescript
 -- ratioPlus :: Rational -> Rational -> Rational
 on ratioPlus(n1, n2)
@@ -7,17 +23,4 @@ on ratioPlus(n1, n2)
     ratio((n of r1) * (d / (d of r1) + ¬
         ((n of r2) * (d / (d of r2)))), d)
 end ratioPlus
-```
-
-
-```javascript
-// ratioPlus :: Rational -> Rational -> Rational
-const ratioPlus = n1 =>
-    n2 => {
-        const [r1, r2] = [n1, n2].map(rational);
-        const d = lcm(r1.d)(r2.d);
-        return ratio((r1.n * (d / r1.d)) + (r2.n * (d / r2.d)))(
-            d
-        );
-    };
 ```

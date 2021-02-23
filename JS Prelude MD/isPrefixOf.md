@@ -4,15 +4,17 @@
 const isPrefixOf = xs =>
     // True if and only if xs is a prefix of ys.
     ys => {
-        const go = (xs, ys) => {
-            const intX = xs.length;
+        const go = (vs, ws) => {
+            const intX = vs.length;
+
             return 0 < intX ? (
-                ys.length >= intX ? xs[0] === ys[0] && go(
-                    xs.slice(1), ys.slice(1)
+                ws.length >= intX ? vs[0] === ws[0] && go(
+                    vs.slice(1), ws.slice(1)
                 ) : false
             ) : true;
         };
-        return 'string' !== typeof xs ? (
+
+        return "string" !== typeof xs ? (
             go(xs, ys)
         ) : ys.startsWith(xs);
     };

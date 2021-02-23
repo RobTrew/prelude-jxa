@@ -1,5 +1,5 @@
 ```javascript
-// kCompose (>=>) :: Monad m => 
+// kCompose (>=>) :: Monad m =>
 // [(a -> m a)] -> (a -> m a)
 const kCompose = (...fs) =>
     // Left Right composition of a sequence

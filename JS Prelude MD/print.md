@@ -2,14 +2,16 @@
 // print :: a -> IO ()
 const print = x => {
     const s = show(x);
+
     return (
-        typeof document !== 'undefined' ? (
+        typeof document !== "undefined" ? (
             document.writeln(s)
-        ) : typeof draft !== 'undefined' ? (
+        ) : typeof draft !== "undefined" ? (
             editor.setText(
-                editor.getText() + '\n' + s
+                `${editor.getText()}\n${s}`
             )
         ) : (
+            // eslint-disable-next-line no-console
             console.log(s),
             s
         )

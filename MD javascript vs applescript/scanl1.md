@@ -1,3 +1,16 @@
+```javascript
+// scanl1 :: (a -> a -> a) -> [a] -> [a]
+const scanl1 = f =>
+    // scanl1 is a variant of scanl that has no
+    // starting value argument.
+    xs => xs.length > 0 ? (
+        scanl(f)(
+            xs[0]
+        )(xs.slice(1))
+    ) : [];
+```
+
+
 ```applescript
 -- scanl1 :: (a -> a -> a) -> [a] -> [a]
 on scanl1(f, xs)
@@ -7,17 +20,4 @@ on scanl1(f, xs)
         {}
     end if
 end scanl
-```
-
-
-```javascript
-// scanl1 :: (a -> a -> a) -> [a] -> [a]
-const scanl1 = f =>
-    // scanl1 is a variant of scanl that has no 
-    // starting value argument.
-    xs => xs.length > 0 ? (
-        scanl(f)(
-            xs[0]
-        )(xs.slice(1))
-    ) : [];
 ```

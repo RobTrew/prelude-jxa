@@ -3,8 +3,9 @@
 const iterateUntil = p =>
     f => function*(x) {
         let v = x;
+
         while (!p(v)) {
-            yield(v);
+            yield v;
             v = f(v);
         }
     };

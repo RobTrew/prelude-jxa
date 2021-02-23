@@ -11,6 +11,7 @@ const liftA2Tree = f =>
                     .concat(t.nest.map(go))
                 ) : []
             );
+
         return go(tx);
     };
 ```

@@ -1817,7 +1817,7 @@ const identity = x =>
     x;
 
 // if_ :: Bool -> a -> a -> a
-const if_ = bln => 
+const if_ = bln =>
     x => y => bln ? (
         x
     ) : y;
@@ -1886,16 +1886,14 @@ const indexTree = tree =>
 
 // indexedTree :: Int -> Tree a -> Tree (a, Int)
 const indexedTree = rootIndex =>
-    // A tree in which each root value 
+    // A tree in which each root value
     // is paired with a top-down
-    // left-right index, where the root node 
+    // left-right index, where the root node
     // starts at the supplied rootIndex;
     tree => {
         const go = n => node =>
             second(
-                Node(
-                    Tuple(node.root)(n)
-                )
+                Node(Tuple(node.root)(n))
             )(
                 mapAccumL(go)(1 + n)(
                     node.nest
@@ -2063,15 +2061,15 @@ const isInfixOf = needle => haystack =>
 
 // isLeft :: Either a b -> Bool
 const isLeft = lr =>
-    ('Either' === lr.type) && (undefined !== lr.Left);
+    ("Either" === lr.type) && (undefined !== lr.Left);
 
 // isLower :: Char -> Bool
 const isLower = c =>
-    /[a-z]/.test(c);
+    (/[a-z]/u).test(c);
 
 // isMaybe :: a -> Bool
 const isMaybe = x =>
-    'Maybe' === x.type;
+    "Maybe" === x.type;
 
 // isNull :: [a] -> Bool
 // isNull :: String -> Bool
@@ -2083,23 +2081,25 @@ const isNull = xs =>
 const isPrefixOf = xs =>
     // True if and only if xs is a prefix of ys.
     ys => {
-        const go = (xs, ys) => {
-            const intX = xs.length;
+        const go = (vs, ws) => {
+            const intX = vs.length;
+
             return 0 < intX ? (
-                ys.length >= intX ? xs[0] === ys[0] && go(
-                    xs.slice(1), ys.slice(1)
+                ws.length >= intX ? vs[0] === ws[0] && go(
+                    vs.slice(1), ws.slice(1)
                 ) : false
             ) : true;
         };
-        return 'string' !== typeof xs ? (
+
+        return "string" !== typeof xs ? (
             go(xs, ys)
         ) : ys.startsWith(xs);
     };
 
 // isRight :: Either a b -> Bool
 const isRight = lr =>
-  ('undefined' !== typeof lr) && 
-  ('Either' === lr.type) && (undefined !== lr.Right);
+  ("undefined" !== typeof lr) &&
+  ("Either" === lr.type) && (undefined !== lr.Right);
 
 // isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
 const isSortedBy = p =>
@@ -2114,7 +2114,7 @@ const isSortedBy = p =>
 // isSpace :: Char -> Bool
 const isSpace = c =>
     // True if c is a white space character.
-    /\s/.test(c);
+    (/\s/u).test(c);
 
 // isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
 // isSubsequenceOf :: String -> String -> Bool
@@ -2131,6 +2131,7 @@ const isSubsequenceOf = xs =>
                     )(b.slice(1))
                 ) : false
             ) : true;
+
         return go(list(xs))(
             list(ys)
         );
@@ -2138,16 +2139,19 @@ const isSubsequenceOf = xs =>
 
 // isSubsetOf :: Ord a => Set a -> Set a -> Bool
 const isSubsetOf = a => b => {
-    for (let x of a) {
-        if (!b.has(x)) return false;
+    for (const x of a) {
+        if (!b.has(x)) {
+            return false;
+        }
     }
+
     return true;
 };
 
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
 const isSuffixOf = ns => hs =>
-    'string' !== typeof hs ? (
+    "string" !== typeof hs ? (
         (xs, ys) => bindMay(
             dropLengthMaybe(xs)(ys)
         )(d => eq(xs)(dropLength(d)(ys)))
@@ -2156,7 +2160,7 @@ const isSuffixOf = ns => hs =>
 // isUpper :: Char -> Bool
 const isUpper = c =>
     // True if c is an upper case character.
-    /[A-Z]/.test(c);
+    (/[A-Z]/u).test(c);
 
 // iso8601Local :: Date -> String
 const iso8601Local = dte =>
@@ -2168,8 +2172,9 @@ const iterate = f =>
     // An infinite list of repeated applications of f to x.
     function* (x) {
         let v = x;
+
         while (true) {
-            yield(v);
+            yield v;
             v = f(v);
         }
     };
@@ -2178,8 +2183,9 @@ const iterate = f =>
 const iterateUntil = p =>
     f => function*(x) {
         let v = x;
+
         while (!p(v)) {
-            yield(v);
+            yield v;
             v = f(v);
         }
     };
@@ -2194,15 +2200,17 @@ const jsonFromTree = tree => {
     // in which `root` is a value string, and `nest`
     // is a possibly empty list of [`root`, `nest`] pairs.
     const go = node => [node.root, node.nest.map(go)];
+
     return JSON.stringify(go(tree));
 };
 
 // jsonLog :: a -> IO ()
 const jsonLog = (...args) =>
+    // eslint-disable-next-line no-console
     console.log(
         args
         .map(JSON.stringify)
-        .join(' -> ')
+        .join(" -> ")
     );
 
 // jsonParseLR :: String -> Either String a
@@ -2234,7 +2242,7 @@ const justifyRight = n =>
         s.padStart(n, c)
     ) : s;
 
-// kCompose (>=>) :: Monad m => 
+// kCompose (>=>) :: Monad m =>
 // [(a -> m a)] -> (a -> m a)
 const kCompose = (...fs) =>
     // Left Right composition of a sequence
@@ -2287,7 +2295,7 @@ const le = x =>
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
     xs.flatMap(
-        x => ('Either' === x.type) && (
+        x => ("Either" === x.type) && (
             undefined !== x.Left
         ) ? [x.Left] : []
     );
@@ -2298,7 +2306,7 @@ const length = xs =>
     // length. This enables zip and zipWith to choose
     // the shorter argument when one is non-finite,
     // like cycle, repeat etc
-    'GeneratorFunction' !== xs.constructor
+    "GeneratorFunction" !== xs.constructor
     .constructor.name ? (
         xs.length
     ) : Infinity;
@@ -2311,8 +2319,8 @@ const levelNodes = tree =>
 
 // levels :: Tree a -> [[a]]
 const levels = tree =>
-    // A list of lists, grouping the 
-    // root values of each level 
+    // A list of lists, grouping the
+    // root values of each level
     // of the tree.
     cons([tree.root])(
         tree.nest
@@ -2328,14 +2336,14 @@ const liftA2 = f =>
     // Lift a binary function to actions.
     // liftA2 f a b = fmap f a <*> b
     a => b => ({
-        '(a -> b)': () => liftA2Fn,
-        'Either': () => liftA2LR,
-        'Maybe': () => liftA2May,
-        'Tuple': () => liftA2Tuple,
-        'Node': () => liftA2Tree,
-        'List': () => liftA2List,
-        'Bottom': () => liftA2List
-    } [typeName(a) || 'List']())(f)(a)(b);
+        "(a -> b)": () => liftA2Fn,
+        "Either": () => liftA2LR,
+        "Maybe": () => liftA2May,
+        "Tuple": () => liftA2Tuple,
+        "Node": () => liftA2Tree,
+        "List": () => liftA2List,
+        "Bottom": () => liftA2List
+    }[typeName(a) || "List"]())(f)(a)(b);
 
 // liftA2Fn :: (a0 -> b -> c) -> (a -> a0) -> (a -> b) -> a -> c
 const liftA2Fn = op =>
@@ -2385,6 +2393,7 @@ const liftA2Tree = f =>
                     .concat(t.nest.map(go))
                 ) : []
             );
+
         return go(tx);
     };
 
@@ -2413,16 +2422,17 @@ const list = xs =>
 
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
-    // A singleton list derived from a Just value, 
+    // A singleton list derived from a Just value,
     // or an empty list derived from Nothing.
     mb.Nothing ? [] : [mb.Just];
 
 // listFromTree :: Tree a -> [a]
 const listFromTree = tree => {
     const go = x => [
-      x.root,
-      ...[].concat.apply([], x.nest.map(go))
+        x.root,
+        ...[].concat(...x.nest.map(go))
     ];
+
     return go(tree);
 };
 
@@ -2452,6 +2462,7 @@ const lookup = k =>
 const lookupDict = k =>
     dct => {
         const v = dct[k];
+
         return undefined !== v ? (
             Just(v)
         ) : Nothing();
@@ -2461,13 +2472,14 @@ const lookupDict = k =>
 const lookupTuples = k =>
     kvs => {
         const i = kvs.findIndex(kv => k === kv[0]);
+
         return -1 !== i ? (
             Just(kvs[i][1])
         ) : Nothing();
     };
 
 // lt (<) :: Ord a => a -> a -> Bool
-const lt = a => 
+const lt = a =>
     b => a < b;
 
 // mReturn :: First-class m => (a -> b) -> m (a -> b)
@@ -2488,35 +2500,39 @@ const map = f =>
 
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumL = f =>
-    // A tuple of an accumulation and a list 
+    // A tuple of an accumulation and a list
     // obtained by a combined map and fold,
     // with accumulation from left to right.
     acc => xs => [...xs].reduce((a, x) => {
         const pair = f(a[0])(x);
+
         return Tuple(pair[0])(a[1].concat(pair[1]));
     }, Tuple(acc)([]));
 
-// mapAccumL_Tree :: (acc -> x -> (acc, y)) ->
+// mapAccumLTree :: (acc -> x -> (acc, y)) ->
 // acc -> Tree -> (acc, Tree)
-const mapAccumL_Tree = f => {
+const mapAccumLTree = f => {
     const go = a => x => {
         const
             pair = f(a)(root(x)),
             tpl = mapAccumL(go)(pair[0])(nest(x));
+
         return Tuple(tpl[0])(
             Node(pair[1])(tpl[1])
         );
     };
+
     return go;
 };
 
 // mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 const mapAccumR = f =>
-    // A tuple of an accumulation and a list 
+    // A tuple of an accumulation and a list
     // obtained by a combined map and fold,
     // with accumulation from right to left.
     acc => xs => [...xs].reduceRight((a, x) => {
         const pair = f(a[0])(x);
+
         return Tuple(pair[0])(
             [pair[1]].concat(a[1])
         );
@@ -2552,24 +2568,28 @@ const mapMaybeGen = mf =>
     // contents of Just values. (Nothing values discarded).
     function*(gen) {
         let v = take(1, gen);
+
         while (0 < v.length) {
-            let mb = mf(v[0]);
-            if (!mb.Nothing) yield mb.Just;
+            const mb = mf(v[0]);
+
+            if (!mb.Nothing) {
+                yield mb.Just;
+            }
             v = take(1, gen);
         }
     };
 
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = a =>
-    // Associative operation 
+    // Associative operation
     // defined for various monoids.
     ({
-        '(a -> b)': () => mappendFn,
-        'List': () => append,
-        'Maybe': () => mappendMaybe,
-        'Num': () => mappendOrd,
-        'String': () => append,
-        'Tuple': () => mappendTuple
+        "(a -> b)": () => mappendFn,
+        "List": () => append,
+        "Maybe": () => mappendMaybe,
+        "Num": () => mappendOrd,
+        "String": () => append,
+        "Tuple": () => mappendTuple
     })[typeName(a)]()(a);
 
 // mappendComparing (<>) :: (a -> a -> Bool)
@@ -2577,6 +2597,7 @@ const mappend = a =>
 const mappendComparing = cmp =>
     cmp1 => a => b => {
         const x = cmp(a)(b);
+
         return 0 !== x ? (
             x
         ) : cmp1(a)(b);
@@ -2623,8 +2644,9 @@ const matching = pat => {
         lng = pat.length,
         bln = 0 < lng,
         h = bln ? pat[0] : undefined;
+
     return x => i => src =>
-        bln && h == x && eq(pat)(
+        bln && h === x && eq(pat)(
             src.slice(i, lng + i)
         );
 };
@@ -2640,12 +2662,13 @@ const max = a =>
 // maxBound :: a -> a
 const maxBound = x => {
     const e = x.enum;
+
     return Boolean(e) ? (
         e[e[x.max]]
     ) : {
-        'number': Number.MAX_SAFE_INTEGER,
-        'string': String.fromCodePoint(0x10FFFF),
-        'boolean': true
+        "number": Number.MAX_SAFE_INTEGER,
+        "string": String.fromCodePoint(0x10FFFF),
+        "boolean": true
     }[typeof x];
 };
 
@@ -2665,6 +2688,7 @@ const maximum = xs => (
 const maximumBy = f =>
     xs => {
         const ys = list(xs);
+
         return 0 < ys.length ? (
             ys.slice(1).reduce(
                 (a, y) => 0 < f(y)(a) ? (
@@ -2696,12 +2720,13 @@ const maximumMay = xs => (
 
 // maximumOn :: (Ord b) => (a -> b) -> [a] -> a
 const maximumOn = f =>
-    // The item in xs for which f 
+    // The item in xs for which f
     // returns the highest value.
     xs => 0 < xs.length ? (
         xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
+
                 return v > tpl[1] ? [
                     x, v
                 ] : tpl;
@@ -2741,7 +2766,7 @@ const measuredTree = tree => {
     // and layerSum is the number of descendant levels,
     // and nodeSum counts all nodes, including the root.
     // Index is a position in a zero-based top-down
-    // left to right series. 
+    // left to right series.
     // For additional parent indices, see parentIndexedTree.
     const whni = (w, h, n, i) => ({
         leafSum: w,
@@ -2750,15 +2775,19 @@ const measuredTree = tree => {
         index: i
     });
     let i = 0;
+
     return foldTree(
         x => {
-            let topDown = i++;
+            // eslint-disable-next-line no-plusplus
+            const topDown = i++;
+
             return xs => Node(
                 Tuple(x)(
                     0 < xs.length ? (() => {
                         const dct = xs.reduce(
                             (a, node) => {
                                 const dimns = node.root[1];
+
                                 return whni(
                                     a.leafSum + dimns.leafSum,
                                     max(a.layerSum)(
@@ -2769,6 +2798,7 @@ const measuredTree = tree => {
                                 );
                             }, whni(0, 0, 0, topDown)
                         );
+
                         return whni(
                             dct.leafSum,
                             1 + dct.layerSum,
@@ -2795,8 +2825,8 @@ const merge = xs =>
 
 // mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 const mergeBy = f =>
-    // A single list defined by the ordered 
-    // merging of xs and ys in terms of the 
+    // A single list defined by the ordered
+    // merging of xs and ys in terms of the
     // given comparator function.
     xs => ys => {
         const go = (as, bs) =>
@@ -2811,22 +2841,24 @@ const mergeBy = f =>
                     )
                 ) : bs
             ) : as;
+
         return [].concat(...go(xs, ys));
     };
 
 // min :: Ord a => a -> a -> a
-const min = a => 
+const min = a =>
     b => b < a ? b : a;
 
 // minBound :: a -> a
 const minBound = x => {
     const e = x.enum;
+
     return Boolean(e) ? (
         e[e[0]]
     ) : {
-        'number': Number.MIN_SAFE_INTEGER,
-        'string': String.fromCodePoint(0),
-        'boolean': false
+        "number": Number.MIN_SAFE_INTEGER,
+        "string": String.fromCodePoint(0),
+        "boolean": false
     }[typeof x];
 };
 
@@ -2843,6 +2875,7 @@ const minimum = xs => (
 const minimumBy = f =>
     xs => {
         const ys = list(xs);
+
         return 0 < ys.length ? (
             ys.slice(1).reduce(
                 (a, y) => 0 > f(y)(a) ? (
@@ -2873,12 +2906,13 @@ const minimumMay = xs => (
 
 // minimumOn :: (Ord b) => (a -> b) -> [a] -> a
 const minimumOn = f =>
-    // The item in xs for which f 
+    // The item in xs for which f
     // returns the highest value.
     xs => 0 < xs.length ? (
         xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
+
                 return v < tpl[1] ? [
                     x, v
                 ] : tpl;
@@ -2925,23 +2959,25 @@ const not = b =>
     !b;
 
 // notElem :: Eq a => a -> [a] -> Bool
-const notElem = x => 
+const notElem = x =>
     xs => !xs.includes(x);
 
 // nub :: [a] -> [a]
-const nub = xs => 
+const nub = xs =>
   nubBy(eq)(xs);
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
 const nubBy = fEq => {
     const go = xs => 0 < xs.length ? (() => {
         const x = xs[0];
+
         return [x].concat(
             go(xs.slice(1)
                 .filter(y => !fEq(x)(y))
             )
         );
     })() : [];
+
     return compose(go, list);
 };
 
@@ -2966,8 +3002,8 @@ const ord = c =>
 // ordering :: () -> Ordering
 const
     ordering = enumFromPairs(
-        'Ordering', 
-        [['LT', -1], ['EQ', 0], ['GT', 1]]
+        "Ordering",
+        [["LT", -1], ["EQ", 0], ["GT", 1]]
     ),
     LT = ordering.LT,
     EQ = ordering.EQ,
@@ -2976,15 +3012,17 @@ const
 // outdented :: String -> String
 const outdented = s => {
     // All lines in the string outdented by the same amount
-    // (just enough to ensure that the least indented lines 
+    // (just enough to ensure that the least indented lines
     //  have no remaining indent)
     // All relative indents are left unchanged
     const
-        rgx = /^ */, // Leading space characters.
+        // Leading space characters.
+        rgx = /^ */u,
         xs = lines(s),
         n = length(minimumBy(comparing(length))(
             xs.map(txt => rgx.exec(txt)[0])
         ));
+
     return unlines(map(drop(n))(xs));
 };
 
@@ -2998,19 +3036,23 @@ const parentIndexedTree = tree => {
         const
             x = node.root,
             measures = x[1];
+
         return Node(Tuple(x[0])(
             Object.assign(measures, {
+
                 parent: mb
+
             })
         ))(node.nest.map(go(Just(measures.index))));
     };
+
     return go(Nothing())(tree);
 };
 
 // partition :: (a -> Bool) -> [a] -> ([a], [a])
 const partition = p =>
     // A tuple of two lists - those elements in
-    // xs which match p, and those which don't.
+    // xs which match p, and those which do not.
     xs => list(xs).reduce(
         (a, x) => p(x) ? (
             Tuple(a[0].concat(x))(a[1])
@@ -3031,14 +3073,14 @@ const partitionEithers = xs =>
 const permutations = xs => (
     ys => ys.reduceRight(
         (a, y) => a.flatMap(
-            ys => Array.from({
-                length: 1 + ys.length
+            zs => Array.from({
+                length: 1 + zs.length
             }, (_, i) => i)
-            .map(n => ys.slice(0, n)
+            .map(n => zs.slice(0, n)
                 .concat(y)
-                .concat(ys.slice(n))
+                .concat(zs.slice(n))
             )
-        ),[[]]
+        ), [[]]
     )
 )(list(xs));
 
@@ -3063,28 +3105,34 @@ const postorder = t => {
     // List of root elements of tree flattened
     // bottom-up into a postorder list.
     const go = (xs, x) =>
-        nest(x).reduce(go, xs).concat(root(x));
+        nest(x).reduce(go, xs)
+        .concat(root(x));
+
     return go([], t);
 };
 
 // pred :: Enum a => a -> a
 const pred = x => {
     const t = typeof x;
-    return 'number' !== t ? (() => {
+
+    return "number" !== t ? (() => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
+
         return i > mn ? (
             toEnum(x)(i - 1)
-        ) : Error('succ :: enum out of range.');
+        ) : Error("succ :: enum out of range.");
     })() : x > Number.MIN_SAFE_INTEGER ? (
         x - 1
-    ) : Error('succ :: Num out of range.');
+    ) : Error("succ :: Num out of range.");
 };
 
 // predMay :: Enum a => a -> Maybe a
 const predMay = x => {
     const t = typeof x;
-    return 'number' !== t ? (() => {
+
+    return "number" !== t ? (() => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
+
         return i > mn ? (
             Just(toEnum(x)(i - 1))
         ) : Nothing();
@@ -3096,14 +3144,16 @@ const predMay = x => {
 // print :: a -> IO ()
 const print = x => {
     const s = show(x);
+
     return (
-        typeof document !== 'undefined' ? (
+        typeof document !== "undefined" ? (
             document.writeln(s)
-        ) : typeof draft !== 'undefined' ? (
+        ) : typeof draft !== "undefined" ? (
             editor.setText(
-                editor.getText() + '\n' + s
+                `${editor.getText()}\n${s}`
             )
         ) : (
+            // eslint-disable-next-line no-console
             console.log(s),
             s
         )
@@ -3117,12 +3167,14 @@ const product = xs =>
 // properFracRatio :: Ratio -> (Int, Ratio)
 const properFracRatio = nd => {
     const [q, r] = Array.from(quotRem(nd.n, nd.d));
+
     return Tuple(q, ratio(r, nd.d));
 };
 
 // properFraction :: Real -> (Int, Real)
 const properFraction = n => {
     const i = Math.floor(n) + (n < 0 ? 1 : 0);
+
     return Tuple(i)(n - i);
 };
 
@@ -3132,7 +3184,7 @@ const pureLR = x =>
     Right(x);
 
 // pureList :: a -> [a]
-const pureList = x => 
+const pureList = x =>
     [x];
 
 // pureMay :: a -> Maybe a
@@ -3141,16 +3193,16 @@ const pureMay = x =>
 
 // pureT :: String -> f a -> (a -> f a)
 const pureT = t =>
-    // Given a type name string, returns a 
-    // specialised 'pure', where
-    // 'pure' lifts a value into a particular functor.
+    // Given a type name string, returns a
+    // specialised "pure", where
+    // "pure" lifts a value into a particular functor.
     ({
-        'Either': () => pureLR,
-        'Maybe': () => pureMay,
-        'Node': () => pureTree,
-        'Tuple': () => pureTuple,
-        'List': () => pureList
-    })[t || 'List']();
+        "Either": () => pureLR,
+        "Maybe": () => pureMay,
+        "Node": () => pureTree,
+        "Tuple": () => pureTuple,
+        "List": () => pureList
+    })[t || "List"]();
 
 // pureTree :: a -> Tree a
 const pureTree = x =>
@@ -3158,7 +3210,7 @@ const pureTree = x =>
 
 // pureTuple :: a -> (a, a)
 const pureTuple = x =>
-    Tuple('')(x);
+    Tuple("")(x);
 
 // quickSort :: (Ord a) => [a] -> [a]
 const quickSort = xs =>
@@ -3170,9 +3222,12 @@ const quickSort = xs =>
             lessMore = partition(x => x <= h)(
                 xs.slice(1)
             );
-        return [].concat.apply(
-            [], [quickSort(lessMore[0]), h, quickSort(lessMore[1])]
-        );
+
+        return [].concat(...[
+            quickSort(lessMore[0]),
+            h,
+            quickSort(lessMore[1])
+        ]);
     })() : xs;
 
 // quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
@@ -3185,12 +3240,14 @@ const quickSortBy = cmp => {
             lessMore = partition(
                 x => 1 !== cmp(x)(h)
             )(xs.slice(1));
-        return [].concat.apply([], [
+
+        return [].concat(...[
             go(lessMore[0]),
             h,
             go(lessMore[1])
         ]);
     })() : xs;
+
     return go;
 };
 
@@ -3218,7 +3275,7 @@ const radians = x =>
 // raise :: Num -> Int -> Num
 const raise = x =>
     // X to the power of n.
-    n => Math.pow(x, n);
+    n => x ** n;
 
 // randomRInt :: Int -> Int -> IO () -> Int
 const randomRInt = low =>
@@ -3231,15 +3288,14 @@ const randomRInt = low =>
     );
 
 // range :: Ix a => (a, a) -> [a]
-function range() {
+const range = (...args) => {
     // The list of values in the subrange defined by a bounding pair.
     // range([0, 2]) -> [0,1,2]
-    // range([[0,0], [2,2]]) 
+    // range([[0,0], [2,2]])
     //  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
     // range([[0,0,0],[1,1,1]])
     //  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]
     const
-        args = Array.from(arguments),
         ab = 1 !== args.length ? (
             args
         ) : args[0],
@@ -3247,11 +3303,12 @@ function range() {
             x => Array.isArray(x) ? (
                 x
             ) : (undefined !== x.type) &&
-            (x.type.startsWith('Tuple')) ? (
+            (x.type.startsWith("Tuple")) ? (
                 listFromTuple(x)
             ) : [x]
         ),
         an = as.length;
+
     return (an === bs.length) ? (
         1 < an ? (
             traverseList(x => x)(
@@ -3259,20 +3316,24 @@ function range() {
             )
         ) : enumFromTo(as[0])(bs[0])
     ) : [];
-}
+};
 
 // ratio :: Int -> Int -> Ratio Int
-const ratio = x => y => {
-  const go = (x, y) =>
-    0 !== y ? (() => {
-      const d = gcd(x)(y);
-      return {
-        type: 'Ratio',
-        'n': quot(x)(d), // numerator
-        'd': quot(y)(d) // denominator
-      };
-    })() : undefined;
-  return go(x * signum(y), abs(y));
+const ratio = a => b => {
+    const go = (x, y) =>
+        0 !== y ? (() => {
+            const d = gcd(x)(y);
+
+            return {
+                type: "Ratio",
+                // numerator
+                "n": quot(x)(d),
+                // denominator
+                "d": quot(y)(d)
+            };
+        })() : undefined;
+
+    return go(a * signum(b), abs(b));
 };
 
 // ratioDiv :: Rational -> Rational -> Rational
@@ -3280,6 +3341,7 @@ const ratioDiv = n1 => n2 => {
     const [r1, r2] = map(rational)(
         [n1, n2]
     );
+
     return ratio(r1.n * r2.d)(
         r1.d * r2.n
     );
@@ -3289,6 +3351,7 @@ const ratioDiv = n1 => n2 => {
 const ratioMinus = n1 => n2 => {
     const [r1, r2] = [n1, n2].map(rational);
     const d = lcm(r1.d)(r2.d);
+
     return ratio((r1.n * (d / r1.d)) - (r2.n * (d / r2.d)))(
         d
     );
@@ -3299,6 +3362,7 @@ const ratioMult = n1 => n2 => {
     const [r1, r2] = map(rational)(
         [n1, n2]
     );
+
     return ratio(r1.n * r2.n)(
         r1.d * r2.d
     );
@@ -3309,9 +3373,12 @@ const ratioPlus = n1 =>
     n2 => {
         const [r1, r2] = [n1, n2].map(rational);
         const d = lcm(r1.d)(r2.d);
-        return ratio((r1.n * (d / r1.d)) + (r2.n * (d / r2.d)))(
-            d
-        );
+
+        return ratio(
+            (r1.n * (d / r1.d)) + (
+                r2.n * (d / r2.d)
+            )
+        )(d);
     };
 
 // rational :: Num a => a -> Rational
@@ -3351,25 +3418,27 @@ const recipMay = n =>
 const regexMatches = rgx =>
     // All matches for the given regular expression
     // in the supplied string s.
-    s => [...s.matchAll(new RegExp(rgx, 'g'))];
+    s => [...s.matchAll(new RegExp(rgx, "gu"))];
 
 // rem :: Int -> Int -> Int
-const rem = n => 
+const rem = n =>
     m => n % m;
 
 // repeat :: a -> Generator [a]
-function* repeat(x) {
-    while(true) yield x;
-}
+const repeat = function* (x) {
+    while (true) {
+        yield x;
+    }
+};
 
 // replace :: String -> String -> String -> String
 // replace :: Regex -> String -> String -> String
-const replace = needle => strNew => strHaystack =>
-    strHaystack.replace(
-      'string' !== typeof needle ? (
-        needle
-      ) : new RegExp(needle, 'g'),
-      strNew
+const replace = needle =>
+    strNew => strHaystack => strHaystack.replace(
+        "string" !== typeof needle ? (
+            needle
+        ) : new RegExp(needle, "gu"),
+        strNew
     );
 
 // replicate :: Int -> a -> [a]
@@ -3388,11 +3457,12 @@ const replicateM = n =>
         ] : liftA2List(cons)(
             list(xs)
         )(go(x - 1));
+
         return go(n);
     };
 
 // replicateString :: Int -> String -> String
-const replicateString = n => 
+const replicateString = n =>
     s => s.repeat(n);
 
 // reverse :: [a] -> [a]
@@ -3405,7 +3475,7 @@ const reverse = xs =>
 // rights :: [Either a b] -> [b]
 const rights = xs =>
     xs.flatMap(
-        x => ('Either' === x.type) && (
+        x => ("Either" === x.type) && (
             undefined !== x.Right
         ) ? [x.Right] : []
     );
@@ -3419,6 +3489,7 @@ const root = tree =>
 const rotate = n => xs => {
     // Rightward rotation of xs by n positions.
     const lng = xs.length;
+
     return Infinity > lng ? (
         take(lng)(
             drop(lng - n)(
@@ -3435,6 +3506,7 @@ const round = x => {
         [n, r] = [nr[0], nr[1]],
         m = n + (r < 0 ? -1 : 1),
         sign = signum(abs(r) - 0.5);
+
     return (-1 === sign) ? n : (
         0 === sign ? (even(n) ? n : m) : (
             1 === sign ? m : undefined
@@ -3444,7 +3516,8 @@ const round = x => {
 
 // roundTo :: Int -> Float -> Float
 const roundTo = n => x => {
-    const d = Math.pow(10, n);
+    const d = 10 ** n;
+
     return Math.round(x * d) / d;
 };
 
@@ -3467,7 +3540,7 @@ const scanl = f => startValue => xs =>
 
 // scanl1 :: (a -> a -> a) -> [a] -> [a]
 const scanl1 = f =>
-    // scanl1 is a variant of scanl that has no 
+    // scanl1 is a variant of scanl that has no
     // starting value argument.
     xs => xs.length > 0 ? (
         scanl(f)(
@@ -3477,15 +3550,17 @@ const scanl1 = f =>
 
 // scanr :: (a -> b -> b) -> b -> [a] -> [b]
 const scanr = f =>
-    startValue => xs => list(xs).reduceRight((a, x) => {
-        const v = f(x)(a[0]);
+    startValue => xs => list(xs).reduceRight(
+        (a, x) => {
+            const v = f(x)(a[0]);
 
-        return Tuple(v)([v].concat(a[1]));
-    }, Tuple(startValue)([startValue]))[1];
+            return Tuple(v)([v].concat(a[1]));
+        }, Tuple(startValue)([startValue])
+    )[1];
 
 // scanr1 :: (a -> a -> a) -> [a] -> [a]
 const scanr1 = f =>
-    // scanr1 is a variant of scanr that has no 
+    // scanr1 is a variant of scanr that has no
     // seed-value argument, and assumes that
     // xs is not empty.
     xs => xs.length > 0 ? (
@@ -3532,9 +3607,10 @@ const setSize = oSet =>
 // shift :: Int -> [a] -> [a]
 const shift = n => xs => {
     const lng = length(xs);
+
     return Infinity > lng ? (
         take(lng)(
-          drop(n)(cycle(xs))
+            drop(n)(cycle(xs))
         )
     ) : (drop(n)(xs), xs);
 };
@@ -3543,25 +3619,26 @@ const shift = n => xs => {
 // show :: a -> Int -> Indented String
 const show = x => {
     const
-        str = x => x.toString(),
+        str = y => y.toString(),
         t = typeName(x);
+
     return Boolean(t) ? (
-        'Node' !== t ? (
+        "Node" !== t ? (
             JSON.stringify(
                 x,
                 (_, v) => ({
-                    '(a -> b)': () => showFn,
-                    'Bool': () => str,
-                    'Bottom': () => showUndefined,
-                    'Date': () => x => x,
-                    'Dict': () => x => x,
-                    'Either': () => showLR,
-                    'List': () => showList,
-                    'Maybe': () => showMaybe,
-                    'Num': () => str,
-                    'Ratio': () => showRatio,
-                    'String': () => str,
-                    'Tuple': () => showTuple
+                    "(a -> b)": () => showFn,
+                    "Bool": () => str,
+                    "Bottom": () => showUndefined,
+                    "Date": () => a => a,
+                    "Dict": () => a => a,
+                    "Either": () => showLR,
+                    "List": () => showList,
+                    "Maybe": () => showMaybe,
+                    "Num": () => str,
+                    "Ratio": () => showRatio,
+                    "String": () => str,
+                    "Tuple": () => showTuple
                 })[t]()(v)
             )
         ) : showTree(x)
@@ -3571,12 +3648,13 @@ const show = x => {
 // showBinary :: Int -> String
 const showBinary = n => {
     const
-        binaryChar = n => 0 !== n ? (
-            '1'
-        ) : '0';
+        binaryChar = m => 0 !== m ? (
+            "1"
+        ) : "0";
+
     return showIntAtBase(2)(
         binaryChar
-    )(n)('');
+    )(n)("");
 };
 
 // showDate :: Date -> String
@@ -3601,22 +3679,25 @@ const showForest = xs =>
 // showHex :: Int -> String
 const showHex = n =>
     // Hexadecimal string for a given integer.
-    '0x' + n.toString(16);
+    `0x${n.toString(16)}`;
 
 // showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
-const showIntAtBase = base => toChr => n => rs => {
-    const go = ([n, d], r) => {
-        const r_ = toChr(d) + r;
-        return 0 !== n ? (
-            go(Array.from(quotRem(n)(base)), r_)
-        ) : r_;
+const showIntAtBase = base =>
+    toChr => n => rs => {
+        const go = ([x, d], r) => {
+            const r_ = toChr(d) + r;
+
+            return 0 !== x ? (
+                go(Array.from(quotRem(n)(base)), r_)
+            ) : r_;
+        };
+
+        return 1 >= base ? (
+            "error: showIntAtBase applied to unsupported base"
+        ) : 0 > n ? (
+            "error: showIntAtBase applied to negative number"
+        ) : go(Array.from(quotRem(n)(base)), rs);
     };
-    return 1 >= base ? (
-        'error: showIntAtBase applied to unsupported base'
-    ) : 0 > n ? (
-        'error: showIntAtBase applied to negative number'
-    ) : go(Array.from(quotRem(n)(base)), rs);
-};
 
 // showJSON :: a -> String
 const showJSON = x =>
@@ -3626,19 +3707,25 @@ const showJSON = x =>
 // showLR :: Either a b -> String
 const showLR = lr => {
     const k = undefined !== lr.Left ? (
-        'Left'
-    ) : 'Right';
-    return k + '(' + unQuoted(show(lr[k])) + ')';
+        "Left"
+    ) : "Right";
+
+    return `${k}(${unQuoted(show(lr[k]))})`;
 };
 
 // showList :: [a] -> String
-const showList = xs =>
-    '[' + xs.map(show)
-    .join(', ')
-    .replace(/[\"]/g, '') + ']';
+const showList = xs => {
+    const
+        s = xs.map(show)
+        .join(", ")
+        .replace(/[\\"]/gu, "");
+
+    return `[${s}]`;
+};
 
 // showLog :: a -> IO ()
 const showLog = (...args) =>
+    // eslint-disable-next-line no-console
     console.log(
         args
         .map(JSON.stringify)
@@ -3648,82 +3735,91 @@ const showLog = (...args) =>
 // showMaybe :: Maybe a -> String
 const showMaybe = mb =>
     mb.Nothing ? (
-        'Nothing'
-    ) : 'Just(' + unQuoted(show(mb.Just)) + ')';
+        "Nothing"
+    ) : `Just(${unQuoted(show(mb.Just))})`;
 
-// showMenuLR :: Bool -> String -> String -> 
+// showMenuLR :: Bool -> String -> String ->
 // [String] -> String -> Either String [String]
 const showMenuLR = blnMult =>
-    // An optionally multi-choice menu, with 
+    // An optionally multi-choice menu, with
     // a given title and prompt string.
-    // Listing the strings in xs, with 
+    // Listing the strings in xs, with
     // the the string `selected` pre-selected
     // if found in xs.
     title => prompt => xs =>
     selected => 0 < xs.length ? (() => {
         const sa = Object.assign(
-            Application('System Events'), {
+            Application("System Events"), {
                 includeStandardAdditions: true
             });
+
         sa.activate();
+
         const v = sa.chooseFromList(xs, {
             withTitle: title,
             withPrompt: prompt,
             defaultItems: xs.includes(selected) ? (
                 [selected]
             ) : [xs[0]],
-            okButtonName: 'OK',
-            cancelButtonName: 'Cancel',
+            okButtonName: "OK",
+            cancelButtonName: "Cancel",
             multipleSelectionsAllowed: blnMult,
             emptySelectionAllowed: false
         });
+
         return Array.isArray(v) ? (
             Right(v)
-        ) : Left('User cancelled ' + title + ' menu.');
-    })() : Left(title + ': No items to choose from.');
+        ) : Left(`User cancelled ${title} menu.`);
+    })() : Left(`${title}: No items to choose from.`);
 
 // showOrdering :: Ordering -> String
 const showOrdering = e =>
     0 < e.value ? (
-        'GT'
+        "GT"
     ) : 0 > e.value ? (
-        'LT'
-    ) : 'EQ';
+        "LT"
+    ) : "EQ";
 
 // showOutline :: Tree String -> String
 const showOutline = tree => {
     const go = indent => x =>
         unlines(
             [indent + x.root].concat(
-                x.nest.flatMap(go('    ' + indent))
+                x.nest.flatMap(go(`    ${indent}`))
             )
         );
-    return go('')(tree);
+
+    return go("")(tree);
 };
 
 // showPrecision :: Int -> Float -> String
 const showPrecision = n => x => {
     // A string showing a floating point number
     // at a given degree of precision.
-    const d = Math.pow(10, n);
+    const d = 10 ** n;
+
     return str(Math.round(d * x) / d);
 };
 
 // showRatio :: Ratio -> String
 const showRatio = r =>
-    'Ratio' !== r.type ? (
+    "Ratio" !== r.type ? (
         r.toString()
     ) : r.n.toString() + (
         1 !== r.d ? (
-            '/' + r.d.toString()
-        ) : ''
+            `/${r.d}`
+        ) : ""
     );
 
 // showSet :: Set a -> String
-const showSet = oSet =>
-    '{' + Array.from(oSet)
-    .map(x => x.toString())
-    .join(',') + '}';
+const showSet = oSet => {
+    const
+        s = Array.from(oSet)
+        .map(x => x.toString())
+        .join(",");
+
+    return `{${s}}`;
+};
 
 // showTree :: Tree a -> String
 const showTree = x =>
@@ -3732,13 +3828,18 @@ const showTree = x =>
     );
 
 // showTuple :: Tuple -> String
-const showTuple = tpl =>
-    '(' + enumFromTo(0)(tpl.length - 1)
-    .map(x => unQuoted(show(tpl[x])))
-    .join(',') + ')';
+const showTuple = tpl => {
+    const
+        s = enumFromTo(0)(tpl.length - 1)
+        .map(x => unQuoted(show(tpl[x])))
+        .join(",");
+
+    return `(${s})`;
+};
 
 // showUndefined :: () -> String
-const showUndefined = () => '(⊥)';
+const showUndefined = () =>
+    "(⊥)";
 
 // signum :: Num -> Num
 const signum = n =>
@@ -3776,7 +3877,7 @@ const snd = tpl =>
 // snoc :: [a] -> a -> [a]
 const snoc = xs =>
     // The mirror image of cons
-    // A new copy of the given list, 
+    // A new copy of the given list,
     // with an atom appended at the end.
     x => list(xs).concat(x);
 
@@ -3808,6 +3909,7 @@ const span = p =>
     // all satisfy p, tupled with the remainder of xs.
     xs => {
         const i = xs.findIndex(x => !p(x));
+
         return -1 !== i ? (
             Tuple(xs.slice(0, i))(
                 xs.slice(i)
@@ -3837,8 +3939,8 @@ const splitBy = p =>
     // between consecutive terms matches a binary predicate.
     xs => (xs.length < 2) ? [xs] : (() => {
         const
-            bln = 'string' === typeof xs,
-            ys = bln ? xs.split('') : xs,
+            bln = "string" === typeof xs,
+            ys = bln ? xs.split("") : xs,
             h = ys[0],
             parts = ys.slice(1)
             .reduce(([acc, active, prev], x) =>
@@ -3849,8 +3951,9 @@ const splitBy = p =>
                     [h],
                     h
                 ]);
+
         return (bln ? (
-            ps => ps.map(cs => ''.concat.apply('', cs))
+            ps => ps.map(cs => "".concat(...cs))
         ) : x => x)(parts[0].concat([parts[1]]));
     })();
 
@@ -3858,23 +3961,26 @@ const splitBy = p =>
 const splitFileName = strPath =>
     // Tuple of directory and file name, derived from file path.
     // Inverse of combine.
-    ('' !== strPath) ? (
-         ('/' !== strPath[strPath.length - 1]) ? (() => {
+    ("" !== strPath) ? (
+        ("/" !== strPath[strPath.length - 1]) ? (() => {
             const
-                xs = strPath.split('/'),
+                xs = strPath.split("/"),
                 stem = xs.slice(0, -1);
+
             return stem.length > 0 ? (
-                Tuple(stem.join('/') + '/')(xs.slice(-1)[0])
-            ) : Tuple('./')(xs.slice(-1)[0]);
-        })() : Tuple(strPath)('')
-    ) : Tuple('./')('');
+                Tuple(
+                    `${stem.join("/")}/`
+                )(xs.slice(-1)[0])
+            ) : Tuple("./")(xs.slice(-1)[0]);
+        })() : Tuple(strPath)("")
+    ) : Tuple("./")("");
 
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
 const splitOn = pat => src =>
-    /* A list of the strings delimited by
-       instances of a given pattern in s. */
-    ('string' === typeof src) ? (
+    // A list of the strings delimited by
+    // instances of a given pattern in s.
+    ("string" === typeof src) ? (
         src.split(pat)
     ) : (() => {
         const
@@ -3885,6 +3991,7 @@ const splitOn = pat => src =>
                 )(lng + i),
                 Tuple([])(0)
             );
+
         return fst(tpl).concat([src.slice(snd(tpl))]);
     })();
 
@@ -3899,7 +4006,7 @@ const sqrt = n =>
 // sqrtLR :: Num -> Either String Num
 const sqrtLR = n =>
     0 > n ? (
-        Left('Square root of negative number: ' + n)
+        Left(`Square root of negative number: ${n}`)
     ) : Right(Math.sqrt(n));
 
 // sqrtMay :: Num -> Maybe Num
@@ -3931,17 +4038,19 @@ const stripEnd = s =>
 const stripPrefix = pfx =>
     s => {
         const
-            blnString = 'string' === typeof pfx,
-            [xs, ys] = blnString ? (
-                [pfx.split(''), s.split('')]
+            blnString = "string" === typeof pfx,
+            [vs, ws] = blnString ? (
+                [pfx.split(""), s.split("")]
             ) : [pfx, s];
+
         const
             sp_ = (xs, ys) => 0 === xs.length ? (
-                Just(blnString ? ys.join('') : ys)
+                Just(blnString ? ys.join("") : ys)
             ) : (0 === ys.length || xs[0] !== ys[0]) ? (
                 Nothing()
             ) : sp_(xs.slice(1), ys.slice(1));
-        return sp_(xs, ys);
+
+        return sp_(vs, ws);
     };
 
 // stripStart :: String -> String
@@ -3950,36 +4059,42 @@ const stripStart = s =>
 
 // subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
 const subTreeAtPath = tree => path => {
-    const go = (nest, xs) =>
+    const go = (subNest, xs) =>
         0 < nest.length && 0 < xs.length ? (() => {
             const h = xs[0];
-            return bindMay(find(t => h === t.root, nest))(
+
+            return bindMay(find(t => h === t.root, subNest))(
                 t => 1 < xs.length ? (
                     go(t.nest, xs.slice(1))
                 ) : Just(t)
             );
         })() : Nothing();
+
     return go([tree], path);
 };
 
 // subsequences :: [a] -> [[a]]
 // subsequences :: String -> [String]
-const subsequences = xs => {
+const subsequences = qs => {
     // subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
     // subsequences('abc') -> ["","a","b","ab","c","ac","bc","abc"]
     const
         // nonEmptySubsequences :: [a] -> [[a]]
         nonEmptySubsequences = xxs => {
-            if (xxs.length < 1) return [];
+            if (xxs.length < 1) {
+                return [];
+            }
             const [x, xs] = [xxs[0], xxs.slice(1)];
             const f = (r, ys) => cons(ys)(cons(cons(x)(ys))(r));
+
             return cons([x])(nonEmptySubsequences(xs)
                 .reduceRight(f, []));
         };
-    return ('string' === typeof xs) ? (
-        cons('')(nonEmptySubsequences(xs.split(''))
-            .map(x => ''.concat.apply('', x))) // map(concat)
-    ) : cons([])(nonEmptySubsequences(xs));
+
+    return ("string" === typeof qs) ? (
+        cons("")(nonEmptySubsequences(qs.split(""))
+            .map(q => "".concat(...q)))
+    ) : cons([])(nonEmptySubsequences(qs));
 };
 
 // subsets :: [a] -> [[a]]

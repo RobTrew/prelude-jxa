@@ -9,8 +9,11 @@ const quickSort = xs =>
             lessMore = partition(x => x <= h)(
                 xs.slice(1)
             );
-        return [].concat.apply(
-            [], [quickSort(lessMore[0]), h, quickSort(lessMore[1])]
-        );
+
+        return [].concat(...[
+            quickSort(lessMore[0]),
+            h,
+            quickSort(lessMore[1])
+        ]);
     })() : xs;
 ```

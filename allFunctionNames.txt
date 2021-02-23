@@ -265,7 +265,7 @@ lt (<) :: Ord a => a -> a -> Bool
 mReturn :: First-class m => (a -> b) -> m (a -> b)
 map :: (a -> b) -> [a] -> [b]
 mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
+mapAccumLTree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
 mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 mapFromList :: [(String, a)] -> Dict
 mapKeys :: (Key -> Key) -> IntMap a -> IntMap a

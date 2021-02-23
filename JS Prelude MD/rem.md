@@ -1,5 +1,5 @@
 ```javascript
 // rem :: Int -> Int -> Int
-const rem = n => 
+const rem = n =>
     m => n % m;
 ```

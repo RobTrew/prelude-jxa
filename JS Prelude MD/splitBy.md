@@ -6,8 +6,8 @@ const splitBy = p =>
     // between consecutive terms matches a binary predicate.
     xs => (xs.length < 2) ? [xs] : (() => {
         const
-            bln = 'string' === typeof xs,
-            ys = bln ? xs.split('') : xs,
+            bln = "string" === typeof xs,
+            ys = bln ? xs.split("") : xs,
             h = ys[0],
             parts = ys.slice(1)
             .reduce(([acc, active, prev], x) =>
@@ -18,8 +18,9 @@ const splitBy = p =>
                     [h],
                     h
                 ]);
+
         return (bln ? (
-            ps => ps.map(cs => ''.concat.apply('', cs))
+            ps => ps.map(cs => "".concat(...cs))
         ) : x => x)(parts[0].concat([parts[1]]));
     })();
 ```

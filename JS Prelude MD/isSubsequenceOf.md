@@ -14,6 +14,7 @@ const isSubsequenceOf = xs =>
                     )(b.slice(1))
                 ) : false
             ) : true;
+
         return go(list(xs))(
             list(ys)
         );

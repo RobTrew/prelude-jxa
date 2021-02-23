@@ -1,4 +1,5 @@
 ```javascript
 // showUndefined :: () -> String
-const showUndefined = () => '(⊥)';
+const showUndefined = () =>
+    "(⊥)";
 ```

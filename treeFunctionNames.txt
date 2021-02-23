@@ -25,7 +25,7 @@ levelNodes :: Tree a -> [[Tree a]]
 levels :: Tree a -> [[a]]
 liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 listFromTree :: Tree a -> [a]
-mapAccumL_Tree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
+mapAccumLTree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
 measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
 nest :: Tree a -> [a]
 parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})

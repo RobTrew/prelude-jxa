@@ -1,3 +1,14 @@
+```javascript
+// takeAround :: (a -> Bool) -> [a] -> [a]
+const takeAround = p => xs => {
+    const ys = takeWhile(p)(xs);
+    return ys.length < xs.length ? (
+        ys.concat(takeWhileR(p)(xs))
+    ) : ys;
+};
+```
+
+
 ```applescript
 -- takeAround :: (a -> Bool) -> [a] -> [a]
 on takeAround(p, xs)
@@ -8,15 +19,4 @@ on takeAround(p, xs)
         ys
     end if
 end takeAround
-```
-
-
-```javascript
-// takeAround :: (a -> Bool) -> [a] -> [a]
-const takeAround = p => xs => {
-    const ys = takeWhile(p)(xs);
-    return ys.length < xs.length ? (
-        ys.concat(takeWhileR(p)(xs))
-    ) : ys;
-};
 ```

@@ -5,6 +5,7 @@ const span = p =>
     // all satisfy p, tupled with the remainder of xs.
     xs => {
         const i = xs.findIndex(x => !p(x));
+
         return -1 !== i ? (
             Tuple(xs.slice(0, i))(
                 xs.slice(i)

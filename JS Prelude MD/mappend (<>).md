@@ -1,14 +1,14 @@
 ```javascript
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = a =>
-    // Associative operation 
+    // Associative operation
     // defined for various monoids.
     ({
-        '(a -> b)': () => mappendFn,
-        'List': () => append,
-        'Maybe': () => mappendMaybe,
-        'Num': () => mappendOrd,
-        'String': () => append,
-        'Tuple': () => mappendTuple
+        "(a -> b)": () => mappendFn,
+        "List": () => append,
+        "Maybe": () => mappendMaybe,
+        "Num": () => mappendOrd,
+        "String": () => append,
+        "Tuple": () => mappendTuple
     })[typeName(a)]()(a);
 ```

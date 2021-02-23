@@ -8,8 +8,9 @@ const matching = pat => {
         lng = pat.length,
         bln = 0 < lng,
         h = bln ? pat[0] : undefined;
+
     return x => i => src =>
-        bln && h == x && eq(pat)(
+        bln && h === x && eq(pat)(
             src.slice(i, lng + i)
         );
 };

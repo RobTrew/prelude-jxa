@@ -4,9 +4,10 @@ const showOutline = tree => {
     const go = indent => x =>
         unlines(
             [indent + x.root].concat(
-                x.nest.flatMap(go('    ' + indent))
+                x.nest.flatMap(go(`    ${indent}`))
             )
         );
-    return go('')(tree);
+
+    return go("")(tree);
 };
 ```

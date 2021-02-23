@@ -8,6 +8,7 @@ const replicateM = n =>
         ] : liftA2List(cons)(
             list(xs)
         )(go(x - 1));
+
         return go(n);
     };
 ```

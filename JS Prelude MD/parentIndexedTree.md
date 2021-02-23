@@ -9,12 +9,16 @@ const parentIndexedTree = tree => {
         const
             x = node.root,
             measures = x[1];
+
         return Node(Tuple(x[0])(
             Object.assign(measures, {
+
                 parent: mb
+
             })
         ))(node.nest.map(go(Just(measures.index))));
     };
+
     return go(Nothing())(tree);
 };
 ```

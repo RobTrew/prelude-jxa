@@ -3,16 +3,18 @@
 const stripPrefix = pfx =>
     s => {
         const
-            blnString = 'string' === typeof pfx,
-            [xs, ys] = blnString ? (
-                [pfx.split(''), s.split('')]
+            blnString = "string" === typeof pfx,
+            [vs, ws] = blnString ? (
+                [pfx.split(""), s.split("")]
             ) : [pfx, s];
+
         const
             sp_ = (xs, ys) => 0 === xs.length ? (
-                Just(blnString ? ys.join('') : ys)
+                Just(blnString ? ys.join("") : ys)
             ) : (0 === ys.length || xs[0] !== ys[0]) ? (
                 Nothing()
             ) : sp_(xs.slice(1), ys.slice(1));
-        return sp_(xs, ys);
+
+        return sp_(vs, ws);
     };
 ```

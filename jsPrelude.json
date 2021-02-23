@@ -1204,7 +1204,7 @@
     ]
   },
   "if_": {
-    "code": "// if_ :: Bool -> a -> a -> a\nconst if_ = bln => \n    x => y => bln ? (\n        x\n    ) : y;",
+    "code": "// if_ :: Bool -> a -> a -> a\nconst if_ = bln =>\n    x => y => bln ? (\n        x\n    ) : y;",
     "tags": [
       "JS Prelude"
     ]
@@ -1242,7 +1242,7 @@
     ]
   },
   "indexedTree": {
-    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value \n    // is paired with a top-down\n    // left-right index, where the root node \n    // starts at the supplied rootIndex;\n    tree => {\n        const go = n => node =>\n            second(\n                Node(\n                    Tuple(node.root)(n)\n                )\n            )(\n                mapAccumL(go)(1 + n)(\n                    node.nest\n                )\n            );\n\n        return snd(go(rootIndex)(tree));\n    };",
+    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value\n    // is paired with a top-down\n    // left-right index, where the root node\n    // starts at the supplied rootIndex;\n    tree => {\n        const go = n => node =>\n            second(\n                Node(Tuple(node.root)(n))\n            )(\n                mapAccumL(go)(1 + n)(\n                    node.nest\n                )\n            );\n\n        return snd(go(rootIndex)(tree));\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1367,19 +1367,19 @@
     ]
   },
   "isLeft": {
-    "code": "// isLeft :: Either a b -> Bool\nconst isLeft = lr =>\n    ('Either' === lr.type) && (undefined !== lr.Left);",
+    "code": "// isLeft :: Either a b -> Bool\nconst isLeft = lr =>\n    (\"Either\" === lr.type) && (undefined !== lr.Left);",
     "tags": [
       "JS Prelude"
     ]
   },
   "isLower": {
-    "code": "// isLower :: Char -> Bool\nconst isLower = c =>\n    /[a-z]/.test(c);",
+    "code": "// isLower :: Char -> Bool\nconst isLower = c =>\n    (/[a-z]/u).test(c);",
     "tags": [
       "JS Prelude"
     ]
   },
   "isMaybe": {
-    "code": "// isMaybe :: a -> Bool\nconst isMaybe = x =>\n    'Maybe' === x.type;",
+    "code": "// isMaybe :: a -> Bool\nconst isMaybe = x =>\n    \"Maybe\" === x.type;",
     "tags": [
       "JS Prelude"
     ]
@@ -1391,14 +1391,14 @@
     ]
   },
   "isPrefixOf": {
-    "code": "// isPrefixOf :: [a] -> [a] -> Bool\n// isPrefixOf :: String -> String -> Bool\nconst isPrefixOf = xs =>\n    // True if and only if xs is a prefix of ys.\n    ys => {\n        const go = (xs, ys) => {\n            const intX = xs.length;\n            return 0 < intX ? (\n                ys.length >= intX ? xs[0] === ys[0] && go(\n                    xs.slice(1), ys.slice(1)\n                ) : false\n            ) : true;\n        };\n        return 'string' !== typeof xs ? (\n            go(xs, ys)\n        ) : ys.startsWith(xs);\n    };",
+    "code": "// isPrefixOf :: [a] -> [a] -> Bool\n// isPrefixOf :: String -> String -> Bool\nconst isPrefixOf = xs =>\n    // True if and only if xs is a prefix of ys.\n    ys => {\n        const go = (vs, ws) => {\n            const intX = vs.length;\n\n            return 0 < intX ? (\n                ws.length >= intX ? vs[0] === ws[0] && go(\n                    vs.slice(1), ws.slice(1)\n                ) : false\n            ) : true;\n        };\n\n        return \"string\" !== typeof xs ? (\n            go(xs, ys)\n        ) : ys.startsWith(xs);\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "isRight": {
-    "code": "// isRight :: Either a b -> Bool\nconst isRight = lr =>\n  ('undefined' !== typeof lr) && \n  ('Either' === lr.type) && (undefined !== lr.Right);",
+    "code": "// isRight :: Either a b -> Bool\nconst isRight = lr =>\n  (\"undefined\" !== typeof lr) &&\n  (\"Either\" === lr.type) && (undefined !== lr.Right);",
     "tags": [
       "JS Prelude"
     ]
@@ -1410,31 +1410,31 @@
     ]
   },
   "isSpace": {
-    "code": "// isSpace :: Char -> Bool\nconst isSpace = c =>\n    // True if c is a white space character.\n    /\\s/.test(c);",
+    "code": "// isSpace :: Char -> Bool\nconst isSpace = c =>\n    // True if c is a white space character.\n    (/\\s/u).test(c);",
     "tags": [
       "JS Prelude"
     ]
   },
   "isSubsequenceOf": {
-    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = a => b =>\n            0 < a.length ? (\n                0 < b.length ? (\n                    go(\n                        a[0] === b[0] ? (\n                            a.slice(1)\n                        ) : a\n                    )(b.slice(1))\n                ) : false\n            ) : true;\n        return go(list(xs))(\n            list(ys)\n        );\n    };",
+    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = a => b =>\n            0 < a.length ? (\n                0 < b.length ? (\n                    go(\n                        a[0] === b[0] ? (\n                            a.slice(1)\n                        ) : a\n                    )(b.slice(1))\n                ) : false\n            ) : true;\n\n        return go(list(xs))(\n            list(ys)\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "isSubsetOf": {
-    "code": "// isSubsetOf :: Ord a => Set a -> Set a -> Bool\nconst isSubsetOf = a => b => {\n    for (let x of a) {\n        if (!b.has(x)) return false;\n    }\n    return true;\n};",
+    "code": "// isSubsetOf :: Ord a => Set a -> Set a -> Bool\nconst isSubsetOf = a => b => {\n    for (const x of a) {\n        if (!b.has(x)) {\n            return false;\n        }\n    }\n\n    return true;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "isSuffixOf": {
-    "code": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = ns => hs =>\n    'string' !== typeof hs ? (\n        (xs, ys) => bindMay(\n            dropLengthMaybe(xs)(ys)\n        )(d => eq(xs)(dropLength(d)(ys)))\n    )(list(ns), list(hs)) : hs.endsWith(ns);",
+    "code": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = ns => hs =>\n    \"string\" !== typeof hs ? (\n        (xs, ys) => bindMay(\n            dropLengthMaybe(xs)(ys)\n        )(d => eq(xs)(dropLength(d)(ys)))\n    )(list(ns), list(hs)) : hs.endsWith(ns);",
     "tags": [
       "JS Prelude"
     ]
   },
   "isUpper": {
-    "code": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    // True if c is an upper case character.\n    /[A-Z]/.test(c);",
+    "code": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    // True if c is an upper case character.\n    (/[A-Z]/u).test(c);",
     "tags": [
       "JS Prelude"
     ]
@@ -1447,14 +1447,14 @@
     ]
   },
   "iterate": {
-    "code": "// iterate :: (a -> a) -> a -> Gen [a]\nconst iterate = f =>\n    // An infinite list of repeated applications of f to x.\n    function* (x) {\n        let v = x;\n        while (true) {\n            yield(v);\n            v = f(v);\n        }\n    };",
+    "code": "// iterate :: (a -> a) -> a -> Gen [a]\nconst iterate = f =>\n    // An infinite list of repeated applications of f to x.\n    function* (x) {\n        let v = x;\n\n        while (true) {\n            yield v;\n            v = f(v);\n        }\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "iterateUntil": {
-    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p =>\n    f => function*(x) {\n        let v = x;\n        while (!p(v)) {\n            yield(v);\n            v = f(v);\n        }\n    };",
+    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p =>\n    f => function*(x) {\n        let v = x;\n\n        while (!p(v)) {\n            yield v;\n            v = f(v);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1466,14 +1466,14 @@
     ]
   },
   "jsonFromTree": {
-    "code": "// jsonFromTree :: Tree a -> String\nconst jsonFromTree = tree => {\n    // A recursive [root, nest] JSON format,\n    // in which `root` is a value string, and `nest`\n    // is a possibly empty list of [`root`, `nest`] pairs.\n    const go = node => [node.root, node.nest.map(go)];\n    return JSON.stringify(go(tree));\n};",
+    "code": "// jsonFromTree :: Tree a -> String\nconst jsonFromTree = tree => {\n    // A recursive [root, nest] JSON format,\n    // in which `root` is a value string, and `nest`\n    // is a possibly empty list of [`root`, `nest`] pairs.\n    const go = node => [node.root, node.nest.map(go)];\n\n    return JSON.stringify(go(tree));\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "jsonLog": {
-    "code": "// jsonLog :: a -> IO ()\nconst jsonLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(' -> ')\n    );",
+    "code": "// jsonLog :: a -> IO ()\nconst jsonLog = (...args) =>\n    // eslint-disable-next-line no-console\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(\" -> \")\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1499,7 +1499,7 @@
     ]
   },
   "kCompose": {
-    "code": "// kCompose (>=>) :: Monad m => \n// [(a -> m a)] -> (a -> m a)\nconst kCompose = (...fs) =>\n    // Left Right composition of a sequence\n    // of functions which lift a raw value\n    // of the same type into the same monad.\n    x => 0 < fs.length ? (\n        fs.slice(1).reduce(\n            (m, f) => bind(m)(f),\n            fs[0](x)\n        )\n    ) : x;",
+    "code": "// kCompose (>=>) :: Monad m =>\n// [(a -> m a)] -> (a -> m a)\nconst kCompose = (...fs) =>\n    // Left Right composition of a sequence\n    // of functions which lift a raw value\n    // of the same type into the same monad.\n    x => 0 < fs.length ? (\n        fs.slice(1).reduce(\n            (m, f) => bind(m)(f),\n            fs[0](x)\n        )\n    ) : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -1542,13 +1542,13 @@
     ]
   },
   "lefts": {
-    "code": "// lefts :: [Either a b] -> [a]\nconst lefts = xs =>\n    xs.flatMap(\n        x => ('Either' === x.type) && (\n            undefined !== x.Left\n        ) ? [x.Left] : []\n    );",
+    "code": "// lefts :: [Either a b] -> [a]\nconst lefts = xs =>\n    xs.flatMap(\n        x => (\"Either\" === x.type) && (\n            undefined !== x.Left\n        ) ? [x.Left] : []\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "length": {
-    "code": "// length :: [a] -> Int\nconst length = xs =>\n    // Returns Infinity over objects without finite\n    // length. This enables zip and zipWith to choose\n    // the shorter argument when one is non-finite,\n    // like cycle, repeat etc\n    'GeneratorFunction' !== xs.constructor\n    .constructor.name ? (\n        xs.length\n    ) : Infinity;",
+    "code": "// length :: [a] -> Int\nconst length = xs =>\n    // Returns Infinity over objects without finite\n    // length. This enables zip and zipWith to choose\n    // the shorter argument when one is non-finite,\n    // like cycle, repeat etc\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name ? (\n        xs.length\n    ) : Infinity;",
     "tags": [
       "JS Prelude",
       "core"
@@ -1562,14 +1562,14 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    // A list of lists, grouping the \n    // root values of each level \n    // of the tree.\n    cons([tree.root])(\n        tree.nest\n        .map(levels)\n        .reduce(\n            uncurry(zipWithLong(append)),\n            []\n        )\n    );",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    // A list of lists, grouping the\n    // root values of each level\n    // of the tree.\n    cons([tree.root])(\n        tree.nest\n        .map(levels)\n        .reduce(\n            uncurry(zipWithLong(append)),\n            []\n        )\n    );",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "liftA2": {
-    "code": "// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = f =>\n    // Lift a binary function to actions.\n    // liftA2 f a b = fmap f a <*> b\n    a => b => ({\n        '(a -> b)': () => liftA2Fn,\n        'Either': () => liftA2LR,\n        'Maybe': () => liftA2May,\n        'Tuple': () => liftA2Tuple,\n        'Node': () => liftA2Tree,\n        'List': () => liftA2List,\n        'Bottom': () => liftA2List\n    } [typeName(a) || 'List']())(f)(a)(b);",
+    "code": "// liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c\nconst liftA2 = f =>\n    // Lift a binary function to actions.\n    // liftA2 f a b = fmap f a <*> b\n    a => b => ({\n        \"(a -> b)\": () => liftA2Fn,\n        \"Either\": () => liftA2LR,\n        \"Maybe\": () => liftA2May,\n        \"Tuple\": () => liftA2Tuple,\n        \"Node\": () => liftA2Tree,\n        \"List\": () => liftA2List,\n        \"Bottom\": () => liftA2List\n    }[typeName(a) || \"List\"]())(f)(a)(b);",
     "tags": [
       "JS Prelude"
     ]
@@ -1599,7 +1599,7 @@
     ]
   },
   "liftA2Tree": {
-    "code": "// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c\nconst liftA2Tree = f =>\n    tx => ty => {\n        const go = t =>\n            Node(f(t.root)(ty.root))(\n                Boolean(ty.nest) ? (\n                    ty.nest.map(\n                        fmapTree(f(t.root))\n                    )\n                    .concat(t.nest.map(go))\n                ) : []\n            );\n        return go(tx);\n    };",
+    "code": "// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c\nconst liftA2Tree = f =>\n    tx => ty => {\n        const go = t =>\n            Node(f(t.root)(ty.root))(\n                Boolean(ty.nest) ? (\n                    ty.nest.map(\n                        fmapTree(f(t.root))\n                    )\n                    .concat(t.nest.map(go))\n                ) : []\n            );\n\n        return go(tx);\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1632,13 +1632,13 @@
     ]
   },
   "listFromMaybe": {
-    "code": "// listFromMaybe :: Maybe a -> [a]\nconst listFromMaybe = mb =>\n    // A singleton list derived from a Just value, \n    // or an empty list derived from Nothing.\n    mb.Nothing ? [] : [mb.Just];",
+    "code": "// listFromMaybe :: Maybe a -> [a]\nconst listFromMaybe = mb =>\n    // A singleton list derived from a Just value,\n    // or an empty list derived from Nothing.\n    mb.Nothing ? [] : [mb.Just];",
     "tags": [
       "JS Prelude"
     ]
   },
   "listFromTree": {
-    "code": "// listFromTree :: Tree a -> [a]\nconst listFromTree = tree => {\n    const go = x => [\n      x.root,\n      ...[].concat.apply([], x.nest.map(go))\n    ];\n    return go(tree);\n};",
+    "code": "// listFromTree :: Tree a -> [a]\nconst listFromTree = tree => {\n    const go = x => [\n        x.root,\n        ...[].concat(...x.nest.map(go))\n    ];\n\n    return go(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1669,19 +1669,19 @@
     ]
   },
   "lookupDict": {
-    "code": "// lookupDict :: a -> Dict -> Maybe b\nconst lookupDict = k =>\n    dct => {\n        const v = dct[k];\n        return undefined !== v ? (\n            Just(v)\n        ) : Nothing();\n    };",
+    "code": "// lookupDict :: a -> Dict -> Maybe b\nconst lookupDict = k =>\n    dct => {\n        const v = dct[k];\n\n        return undefined !== v ? (\n            Just(v)\n        ) : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "lookupTuples": {
-    "code": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = k =>\n    kvs => {\n        const i = kvs.findIndex(kv => k === kv[0]);\n        return -1 !== i ? (\n            Just(kvs[i][1])\n        ) : Nothing();\n    };",
+    "code": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = k =>\n    kvs => {\n        const i = kvs.findIndex(kv => k === kv[0]);\n\n        return -1 !== i ? (\n            Just(kvs[i][1])\n        ) : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "lt": {
-    "code": "// lt (<) :: Ord a => a -> a -> Bool\nconst lt = a => \n    b => a < b;",
+    "code": "// lt (<) :: Ord a => a -> a -> Bool\nconst lt = a =>\n    b => a < b;",
     "tags": [
       "JS Prelude"
     ]
@@ -1700,21 +1700,21 @@
     ]
   },
   "mapAccumL": {
-    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list \n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce((a, x) => {\n        const pair = f(a[0])(x);\n        return Tuple(pair[0])(a[1].concat(pair[1]));\n    }, Tuple(acc)([]));",
+    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce((a, x) => {\n        const pair = f(a[0])(x);\n\n        return Tuple(pair[0])(a[1].concat(pair[1]));\n    }, Tuple(acc)([]));",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
-  "mapAccumL_Tree": {
-    "code": "// mapAccumL_Tree :: (acc -> x -> (acc, y)) ->\n// acc -> Tree -> (acc, Tree)\nconst mapAccumL_Tree = f => {\n    const go = a => x => {\n        const\n            pair = f(a)(root(x)),\n            tpl = mapAccumL(go)(pair[0])(nest(x));\n        return Tuple(tpl[0])(\n            Node(pair[1])(tpl[1])\n        );\n    };\n    return go;\n};",
+  "mapAccumLTree": {
+    "code": "// mapAccumLTree :: (acc -> x -> (acc, y)) ->\n// acc -> Tree -> (acc, Tree)\nconst mapAccumLTree = f => {\n    const go = a => x => {\n        const\n            pair = f(a)(root(x)),\n            tpl = mapAccumL(go)(pair[0])(nest(x));\n\n        return Tuple(tpl[0])(\n            Node(pair[1])(tpl[1])\n        );\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "mapAccumR": {
-    "code": "// mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumR = f =>\n    // A tuple of an accumulation and a list \n    // obtained by a combined map and fold,\n    // with accumulation from right to left.\n    acc => xs => [...xs].reduceRight((a, x) => {\n        const pair = f(a[0])(x);\n        return Tuple(pair[0])(\n            [pair[1]].concat(a[1])\n        );\n    }, Tuple(acc)([]));",
+    "code": "// mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumR = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from right to left.\n    acc => xs => [...xs].reduceRight((a, x) => {\n        const pair = f(a[0])(x);\n\n        return Tuple(pair[0])(\n            [pair[1]].concat(a[1])\n        );\n    }, Tuple(acc)([]));",
     "tags": [
       "JS Prelude",
       "core"
@@ -1739,19 +1739,19 @@
     ]
   },
   "mapMaybeGen": {
-    "code": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nconst mapMaybeGen = mf =>\n    // A filtered map over a generator, returning only the\n    // contents of Just values. (Nothing values discarded).\n    function*(gen) {\n        let v = take(1, gen);\n        while (0 < v.length) {\n            let mb = mf(v[0]);\n            if (!mb.Nothing) yield mb.Just;\n            v = take(1, gen);\n        }\n    };",
+    "code": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nconst mapMaybeGen = mf =>\n    // A filtered map over a generator, returning only the\n    // contents of Just values. (Nothing values discarded).\n    function*(gen) {\n        let v = take(1, gen);\n\n        while (0 < v.length) {\n            const mb = mf(v[0]);\n\n            if (!mb.Nothing) {\n                yield mb.Just;\n            }\n            v = take(1, gen);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "mappend (<>)": {
-    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation \n    // defined for various monoids.\n    ({\n        '(a -> b)': () => mappendFn,\n        'List': () => append,\n        'Maybe': () => mappendMaybe,\n        'Num': () => mappendOrd,\n        'String': () => append,\n        'Tuple': () => mappendTuple\n    })[typeName(a)]()(a);",
+    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation\n    // defined for various monoids.\n    ({\n        \"(a -> b)\": () => mappendFn,\n        \"List\": () => append,\n        \"Maybe\": () => mappendMaybe,\n        \"Num\": () => mappendOrd,\n        \"String\": () => append,\n        \"Tuple\": () => mappendTuple\n    })[typeName(a)]()(a);",
     "tags": [
       "JS Prelude"
     ]
   },
   "mappendComparing (<>)": {
-    "code": "// mappendComparing (<>) :: (a -> a -> Bool)\n// (a -> a -> Bool) -> (a -> a -> Bool)\nconst mappendComparing = cmp =>\n    cmp1 => a => b => {\n        const x = cmp(a)(b);\n        return 0 !== x ? (\n            x\n        ) : cmp1(a)(b);\n    };",
+    "code": "// mappendComparing (<>) :: (a -> a -> Bool)\n// (a -> a -> Bool) -> (a -> a -> Bool)\nconst mappendComparing = cmp =>\n    cmp1 => a => b => {\n        const x = cmp(a)(b);\n\n        return 0 !== x ? (\n            x\n        ) : cmp1(a)(b);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1781,7 +1781,7 @@
     ]
   },
   "matching": {
-    "code": "// matching :: [a] -> (a -> Int -> [a] -> Bool)\nconst matching = pat => {\n    // A sequence-matching function for findIndices etc\n    // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])\n    // -> [1, 4]\n    const\n        lng = pat.length,\n        bln = 0 < lng,\n        h = bln ? pat[0] : undefined;\n    return x => i => src =>\n        bln && h == x && eq(pat)(\n            src.slice(i, lng + i)\n        );\n};",
+    "code": "// matching :: [a] -> (a -> Int -> [a] -> Bool)\nconst matching = pat => {\n    // A sequence-matching function for findIndices etc\n    // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])\n    // -> [1, 4]\n    const\n        lng = pat.length,\n        bln = 0 < lng,\n        h = bln ? pat[0] : undefined;\n\n    return x => i => src =>\n        bln && h === x && eq(pat)(\n            src.slice(i, lng + i)\n        );\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1794,7 +1794,7 @@
     ]
   },
   "maxBound": {
-    "code": "// maxBound :: a -> a\nconst maxBound = x => {\n    const e = x.enum;\n    return Boolean(e) ? (\n        e[e[x.max]]\n    ) : {\n        'number': Number.MAX_SAFE_INTEGER,\n        'string': String.fromCodePoint(0x10FFFF),\n        'boolean': true\n    }[typeof x];\n};",
+    "code": "// maxBound :: a -> a\nconst maxBound = x => {\n    const e = x.enum;\n\n    return Boolean(e) ? (\n        e[e[x.max]]\n    ) : {\n        \"number\": Number.MAX_SAFE_INTEGER,\n        \"string\": String.fromCodePoint(0x10FFFF),\n        \"boolean\": true\n    }[typeof x];\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1807,7 +1807,7 @@
     ]
   },
   "maximumBy": {
-    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => {\n        const ys = list(xs);\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 < f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
+    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => {\n        const ys = list(xs);\n\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 < f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -1826,7 +1826,7 @@
     ]
   },
   "maximumOn": {
-    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f \n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n                return v > tpl[1] ? [\n                    x, v\n                ] : tpl;\n            },\n            (h => [h, f(h)])(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v > tpl[1] ? [\n                    x, v\n                ] : tpl;\n            },\n            (h => [h, f(h)])(xs[0])\n        )[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude"
     ]
@@ -1851,7 +1851,7 @@
     ]
   },
   "measuredTree": {
-    "code": "// measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series. \n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n    return foldTree(\n        x => {\n            let topDown = i++;\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
+    "code": "// measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1870,20 +1870,20 @@
     ]
   },
   "mergeBy": {
-    "code": "// mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]\nconst mergeBy = f =>\n    // A single list defined by the ordered \n    // merging of xs and ys in terms of the \n    // given comparator function.\n    xs => ys => {\n        const go = (as, bs) =>\n            0 < bs.length ? (\n                0 < as.length ? (\n                    1 !== f(as[0])(bs[0]) ? (\n                        [as[0]].concat(\n                            go(as.slice(1), bs)\n                        )\n                    ) : [bs[0]].concat(\n                        go(as, bs.slice(1))\n                    )\n                ) : bs\n            ) : as;\n        return [].concat(...go(xs, ys));\n    };",
+    "code": "// mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]\nconst mergeBy = f =>\n    // A single list defined by the ordered\n    // merging of xs and ys in terms of the\n    // given comparator function.\n    xs => ys => {\n        const go = (as, bs) =>\n            0 < bs.length ? (\n                0 < as.length ? (\n                    1 !== f(as[0])(bs[0]) ? (\n                        [as[0]].concat(\n                            go(as.slice(1), bs)\n                        )\n                    ) : [bs[0]].concat(\n                        go(as, bs.slice(1))\n                    )\n                ) : bs\n            ) : as;\n\n        return [].concat(...go(xs, ys));\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "min": {
-    "code": "// min :: Ord a => a -> a -> a\nconst min = a => \n    b => b < a ? b : a;",
+    "code": "// min :: Ord a => a -> a -> a\nconst min = a =>\n    b => b < a ? b : a;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "minBound": {
-    "code": "// minBound :: a -> a\nconst minBound = x => {\n    const e = x.enum;\n    return Boolean(e) ? (\n        e[e[0]]\n    ) : {\n        'number': Number.MIN_SAFE_INTEGER,\n        'string': String.fromCodePoint(0),\n        'boolean': false\n    }[typeof x];\n};",
+    "code": "// minBound :: a -> a\nconst minBound = x => {\n    const e = x.enum;\n\n    return Boolean(e) ? (\n        e[e[0]]\n    ) : {\n        \"number\": Number.MIN_SAFE_INTEGER,\n        \"string\": String.fromCodePoint(0),\n        \"boolean\": false\n    }[typeof x];\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1896,7 +1896,7 @@
     ]
   },
   "minimumBy": {
-    "code": "// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = f =>\n    xs => {\n        const ys = list(xs);\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 > f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
+    "code": "// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = f =>\n    xs => {\n        const ys = list(xs);\n\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 > f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -1915,7 +1915,7 @@
     ]
   },
   "minimumOn": {
-    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f \n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n                return v < tpl[1] ? [\n                    x, v\n                ] : tpl;\n            },\n            (h => [h, f(h)])(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v < tpl[1] ? [\n                    x, v\n                ] : tpl;\n            },\n            (h => [h, f(h)])(xs[0])\n        )[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude"
     ]
@@ -1973,20 +1973,20 @@
     ]
   },
   "notElem": {
-    "code": "// notElem :: Eq a => a -> [a] -> Bool\nconst notElem = x => \n    xs => !xs.includes(x);",
+    "code": "// notElem :: Eq a => a -> [a] -> Bool\nconst notElem = x =>\n    xs => !xs.includes(x);",
     "tags": [
       "JS Prelude"
     ]
   },
   "nub": {
-    "code": "// nub :: [a] -> [a]\nconst nub = xs => \n  nubBy(eq)(xs);",
+    "code": "// nub :: [a] -> [a]\nconst nub = xs =>\n  nubBy(eq)(xs);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "nubBy": {
-    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = fEq => {\n    const go = xs => 0 < xs.length ? (() => {\n        const x = xs[0];\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !fEq(x)(y))\n            )\n        );\n    })() : [];\n    return compose(go, list);\n};",
+    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = fEq => {\n    const go = xs => 0 < xs.length ? (() => {\n        const x = xs[0];\n\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !fEq(x)(y))\n            )\n        );\n    })() : [];\n\n    return compose(go, list);\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -2017,26 +2017,26 @@
     ]
   },
   "ordering": {
-    "code": "// ordering :: () -> Ordering\nconst\n    ordering = enumFromPairs(\n        'Ordering', \n        [['LT', -1], ['EQ', 0], ['GT', 1]]\n    ),\n    LT = ordering.LT,\n    EQ = ordering.EQ,\n    GT = ordering.GT;",
+    "code": "// ordering :: () -> Ordering\nconst\n    ordering = enumFromPairs(\n        \"Ordering\",\n        [[\"LT\", -1], [\"EQ\", 0], [\"GT\", 1]]\n    ),\n    LT = ordering.LT,\n    EQ = ordering.EQ,\n    GT = ordering.GT;",
     "tags": [
       "JS Prelude"
     ]
   },
   "outdented": {
-    "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines \n    //  have no remaining indent)\n    // All relative indents are left unchanged\n    const\n        rgx = /^ */, // Leading space characters.\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n    return unlines(map(drop(n))(xs));\n};",
+    "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines\n    //  have no remaining indent)\n    // All relative indents are left unchanged\n    const\n        // Leading space characters.\n        rgx = /^ */u,\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n\n    return unlines(map(drop(n))(xs));\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "parentIndexedTree": {
-    "code": "// parentIndexedTree :: Tree (a, {...index :: Int}) ->\n// Tree (a, {...index :: Int, parent :: Maybe Int})\nconst parentIndexedTree = tree => {\n    // A tree additionally decorated with parent indices,\n    // derived from a measured tree already decorated with\n    // node indices. (See measuredTree).\n    const go = mb => node => {\n        const\n            x = node.root,\n            measures = x[1];\n        return Node(Tuple(x[0])(\n            Object.assign(measures, {\n                parent: mb\n            })\n        ))(node.nest.map(go(Just(measures.index))));\n    };\n    return go(Nothing())(tree);\n};",
+    "code": "// parentIndexedTree :: Tree (a, {...index :: Int}) ->\n// Tree (a, {...index :: Int, parent :: Maybe Int})\nconst parentIndexedTree = tree => {\n    // A tree additionally decorated with parent indices,\n    // derived from a measured tree already decorated with\n    // node indices. (See measuredTree).\n    const go = mb => node => {\n        const\n            x = node.root,\n            measures = x[1];\n\n        return Node(Tuple(x[0])(\n            Object.assign(measures, {\n\n                parent: mb\n\n            })\n        ))(node.nest.map(go(Just(measures.index))));\n    };\n\n    return go(Nothing())(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "partition": {
-    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which don't.\n    xs => list(xs).reduce(\n        (a, x) => p(x) ? (\n            Tuple(a[0].concat(x))(a[1])\n        ) : Tuple(a[0])(a[1].concat(x)),\n        Tuple([])([])\n    );",
+    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => list(xs).reduce(\n        (a, x) => p(x) ? (\n            Tuple(a[0].concat(x))(a[1])\n        ) : Tuple(a[0])(a[1].concat(x)),\n        Tuple([])([])\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2049,7 +2049,7 @@
     ]
   },
   "permutations": {
-    "code": "// permutations :: [a] -> [[a]]\nconst permutations = xs => (\n    ys => ys.reduceRight(\n        (a, y) => a.flatMap(\n            ys => Array.from({\n                length: 1 + ys.length\n            }, (_, i) => i)\n            .map(n => ys.slice(0, n)\n                .concat(y)\n                .concat(ys.slice(n))\n            )\n        ),[[]]\n    )\n)(list(xs));",
+    "code": "// permutations :: [a] -> [[a]]\nconst permutations = xs => (\n    ys => ys.reduceRight(\n        (a, y) => a.flatMap(\n            zs => Array.from({\n                length: 1 + zs.length\n            }, (_, i) => i)\n            .map(n => zs.slice(0, n)\n                .concat(y)\n                .concat(zs.slice(n))\n            )\n        ), [[]]\n    )\n)(list(xs));",
     "tags": [
       "JS Prelude"
     ]
@@ -2073,27 +2073,27 @@
     ]
   },
   "postorder": {
-    "code": "// postorder :: Tree a -> [a]\nconst postorder = t => {\n    // List of root elements of tree flattened\n    // bottom-up into a postorder list.\n    const go = (xs, x) =>\n        nest(x).reduce(go, xs).concat(root(x));\n    return go([], t);\n};",
+    "code": "// postorder :: Tree a -> [a]\nconst postorder = t => {\n    // List of root elements of tree flattened\n    // bottom-up into a postorder list.\n    const go = (xs, x) =>\n        nest(x).reduce(go, xs)\n        .concat(root(x));\n\n    return go([], t);\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "pred": {
-    "code": "// pred :: Enum a => a -> a\nconst pred = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mn] = [x, minBound(x)].map(fromEnum);\n        return i > mn ? (\n            toEnum(x)(i - 1)\n        ) : Error('succ :: enum out of range.');\n    })() : x > Number.MIN_SAFE_INTEGER ? (\n        x - 1\n    ) : Error('succ :: Num out of range.');\n};",
+    "code": "// pred :: Enum a => a -> a\nconst pred = x => {\n    const t = typeof x;\n\n    return \"number\" !== t ? (() => {\n        const [i, mn] = [x, minBound(x)].map(fromEnum);\n\n        return i > mn ? (\n            toEnum(x)(i - 1)\n        ) : Error(\"succ :: enum out of range.\");\n    })() : x > Number.MIN_SAFE_INTEGER ? (\n        x - 1\n    ) : Error(\"succ :: Num out of range.\");\n};",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "predMay": {
-    "code": "// predMay :: Enum a => a -> Maybe a\nconst predMay = x => {\n    const t = typeof x;\n    return 'number' !== t ? (() => {\n        const [i, mn] = [x, minBound(x)].map(fromEnum);\n        return i > mn ? (\n            Just(toEnum(x)(i - 1))\n        ) : Nothing();\n    })() : x > Number.MIN_SAFE_INTEGER ? (\n        Just(x - 1)\n    ) : Nothing();\n};",
+    "code": "// predMay :: Enum a => a -> Maybe a\nconst predMay = x => {\n    const t = typeof x;\n\n    return \"number\" !== t ? (() => {\n        const [i, mn] = [x, minBound(x)].map(fromEnum);\n\n        return i > mn ? (\n            Just(toEnum(x)(i - 1))\n        ) : Nothing();\n    })() : x > Number.MIN_SAFE_INTEGER ? (\n        Just(x - 1)\n    ) : Nothing();\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "print": {
-    "code": "// print :: a -> IO ()\nconst print = x => {\n    const s = show(x);\n    return (\n        typeof document !== 'undefined' ? (\n            document.writeln(s)\n        ) : typeof draft !== 'undefined' ? (\n            editor.setText(\n                editor.getText() + '\\n' + s\n            )\n        ) : (\n            console.log(s),\n            s\n        )\n    );\n};",
+    "code": "// print :: a -> IO ()\nconst print = x => {\n    const s = show(x);\n\n    return (\n        typeof document !== \"undefined\" ? (\n            document.writeln(s)\n        ) : typeof draft !== \"undefined\" ? (\n            editor.setText(\n                `${editor.getText()}\\n${s}`\n            )\n        ) : (\n            // eslint-disable-next-line no-console\n            console.log(s),\n            s\n        )\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2105,13 +2105,13 @@
     ]
   },
   "properFracRatio": {
-    "code": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = Array.from(quotRem(nd.n, nd.d));\n    return Tuple(q, ratio(r, nd.d));\n};",
+    "code": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = Array.from(quotRem(nd.n, nd.d));\n\n    return Tuple(q, ratio(r, nd.d));\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "properFraction": {
-    "code": "// properFraction :: Real -> (Int, Real)\nconst properFraction = n => {\n    const i = Math.floor(n) + (n < 0 ? 1 : 0);\n    return Tuple(i)(n - i);\n};",
+    "code": "// properFraction :: Real -> (Int, Real)\nconst properFraction = n => {\n    const i = Math.floor(n) + (n < 0 ? 1 : 0);\n\n    return Tuple(i)(n - i);\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2123,7 +2123,7 @@
     ]
   },
   "pureList": {
-    "code": "// pureList :: a -> [a]\nconst pureList = x => \n    [x];",
+    "code": "// pureList :: a -> [a]\nconst pureList = x =>\n    [x];",
     "tags": [
       "JS Prelude"
     ]
@@ -2135,7 +2135,7 @@
     ]
   },
   "pureT": {
-    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a \n    // specialised 'pure', where\n    // 'pure' lifts a value into a particular functor.\n    ({\n        'Either': () => pureLR,\n        'Maybe': () => pureMay,\n        'Node': () => pureTree,\n        'Tuple': () => pureTuple,\n        'List': () => pureList\n    })[t || 'List']();",
+    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a\n    // specialised \"pure\", where\n    // \"pure\" lifts a value into a particular functor.\n    ({\n        \"Either\": () => pureLR,\n        \"Maybe\": () => pureMay,\n        \"Node\": () => pureTree,\n        \"Tuple\": () => pureTuple,\n        \"List\": () => pureList\n    })[t || \"List\"]();",
     "tags": [
       "JS Prelude"
     ]
@@ -2148,19 +2148,19 @@
     ]
   },
   "pureTuple": {
-    "code": "// pureTuple :: a -> (a, a)\nconst pureTuple = x =>\n    Tuple('')(x);",
+    "code": "// pureTuple :: a -> (a, a)\nconst pureTuple = x =>\n    Tuple(\"\")(x);",
     "tags": [
       "JS Prelude"
     ]
   },
   "quickSort": {
-    "code": "// quickSort :: (Ord a) => [a] -> [a]\nconst quickSort = xs =>\n    // Included only for comparison with AppleScript\n    // sort and sortBy are faster and more flexible\n    xs.length > 1 ? (() => {\n        const\n            h = xs[0],\n            lessMore = partition(x => x <= h)(\n                xs.slice(1)\n            );\n        return [].concat.apply(\n            [], [quickSort(lessMore[0]), h, quickSort(lessMore[1])]\n        );\n    })() : xs;",
+    "code": "// quickSort :: (Ord a) => [a] -> [a]\nconst quickSort = xs =>\n    // Included only for comparison with AppleScript\n    // sort and sortBy are faster and more flexible\n    xs.length > 1 ? (() => {\n        const\n            h = xs[0],\n            lessMore = partition(x => x <= h)(\n                xs.slice(1)\n            );\n\n        return [].concat(...[\n            quickSort(lessMore[0]),\n            h,\n            quickSort(lessMore[1])\n        ]);\n    })() : xs;",
     "tags": [
       "JS Prelude"
     ]
   },
   "quickSortBy": {
-    "code": "// quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst quickSortBy = cmp => {\n    // Included only for comparison with AppleScript.\n    // sort and sortBy are faster and more flexible.\n    const go = xs => xs.length > 1 ? (() => {\n        const\n            h = xs[0],\n            lessMore = partition(\n                x => 1 !== cmp(x)(h)\n            )(xs.slice(1));\n        return [].concat.apply([], [\n            go(lessMore[0]),\n            h,\n            go(lessMore[1])\n        ]);\n    })() : xs;\n    return go;\n};",
+    "code": "// quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst quickSortBy = cmp => {\n    // Included only for comparison with AppleScript.\n    // sort and sortBy are faster and more flexible.\n    const go = xs => xs.length > 1 ? (() => {\n        const\n            h = xs[0],\n            lessMore = partition(\n                x => 1 !== cmp(x)(h)\n            )(xs.slice(1));\n\n        return [].concat(...[\n            go(lessMore[0]),\n            h,\n            go(lessMore[1])\n        ]);\n    })() : xs;\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2192,7 +2192,7 @@
     ]
   },
   "raise": {
-    "code": "// raise :: Num -> Int -> Num\nconst raise = x =>\n    // X to the power of n.\n    n => Math.pow(x, n);",
+    "code": "// raise :: Num -> Int -> Num\nconst raise = x =>\n    // X to the power of n.\n    n => x ** n;",
     "tags": [
       "JS Prelude"
     ]
@@ -2204,37 +2204,37 @@
     ]
   },
   "range": {
-    "code": "// range :: Ix a => (a, a) -> [a]\nfunction range() {\n    // The list of values in the subrange defined by a bounding pair.\n    // range([0, 2]) -> [0,1,2]\n    // range([[0,0], [2,2]]) \n    //  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]\n    // range([[0,0,0],[1,1,1]])\n    //  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]\n    const\n        args = Array.from(arguments),\n        ab = 1 !== args.length ? (\n            args\n        ) : args[0],\n        [as, bs] = [ab[0], ab[1]].map(\n            x => Array.isArray(x) ? (\n                x\n            ) : (undefined !== x.type) &&\n            (x.type.startsWith('Tuple')) ? (\n                listFromTuple(x)\n            ) : [x]\n        ),\n        an = as.length;\n    return (an === bs.length) ? (\n        1 < an ? (\n            traverseList(x => x)(\n                as.map((_, i) => enumFromTo(as[i])(bs[i]))\n            )\n        ) : enumFromTo(as[0])(bs[0])\n    ) : [];\n}",
+    "code": "// range :: Ix a => (a, a) -> [a]\nconst range = (...args) => {\n    // The list of values in the subrange defined by a bounding pair.\n    // range([0, 2]) -> [0,1,2]\n    // range([[0,0], [2,2]])\n    //  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]\n    // range([[0,0,0],[1,1,1]])\n    //  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]\n    const\n        ab = 1 !== args.length ? (\n            args\n        ) : args[0],\n        [as, bs] = [ab[0], ab[1]].map(\n            x => Array.isArray(x) ? (\n                x\n            ) : (undefined !== x.type) &&\n            (x.type.startsWith(\"Tuple\")) ? (\n                listFromTuple(x)\n            ) : [x]\n        ),\n        an = as.length;\n\n    return (an === bs.length) ? (\n        1 < an ? (\n            traverseList(x => x)(\n                as.map((_, i) => enumFromTo(as[i])(bs[i]))\n            )\n        ) : enumFromTo(as[0])(bs[0])\n    ) : [];\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "ratio": {
-    "code": "// ratio :: Int -> Int -> Ratio Int\nconst ratio = x => y => {\n  const go = (x, y) =>\n    0 !== y ? (() => {\n      const d = gcd(x)(y);\n      return {\n        type: 'Ratio',\n        'n': quot(x)(d), // numerator\n        'd': quot(y)(d) // denominator\n      };\n    })() : undefined;\n  return go(x * signum(y), abs(y));\n};",
+    "code": "// ratio :: Int -> Int -> Ratio Int\nconst ratio = a => b => {\n    const go = (x, y) =>\n        0 !== y ? (() => {\n            const d = gcd(x)(y);\n\n            return {\n                type: \"Ratio\",\n                // numerator\n                \"n\": quot(x)(d),\n                // denominator\n                \"d\": quot(y)(d)\n            };\n        })() : undefined;\n\n    return go(a * signum(b), abs(b));\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "ratioDiv": {
-    "code": "// ratioDiv :: Rational -> Rational -> Rational\nconst ratioDiv = n1 => n2 => {\n    const [r1, r2] = map(rational)(\n        [n1, n2]\n    );\n    return ratio(r1.n * r2.d)(\n        r1.d * r2.n\n    );\n};",
+    "code": "// ratioDiv :: Rational -> Rational -> Rational\nconst ratioDiv = n1 => n2 => {\n    const [r1, r2] = map(rational)(\n        [n1, n2]\n    );\n\n    return ratio(r1.n * r2.d)(\n        r1.d * r2.n\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "ratioMinus": {
-    "code": "// ratioMinus :: Rational -> Rational -> Rational\nconst ratioMinus = n1 => n2 => {\n    const [r1, r2] = [n1, n2].map(rational);\n    const d = lcm(r1.d)(r2.d);\n    return ratio((r1.n * (d / r1.d)) - (r2.n * (d / r2.d)))(\n        d\n    );\n};",
+    "code": "// ratioMinus :: Rational -> Rational -> Rational\nconst ratioMinus = n1 => n2 => {\n    const [r1, r2] = [n1, n2].map(rational);\n    const d = lcm(r1.d)(r2.d);\n\n    return ratio((r1.n * (d / r1.d)) - (r2.n * (d / r2.d)))(\n        d\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "ratioMult": {
-    "code": "// ratioMult :: Rational -> Rational -> Rational\nconst ratioMult = n1 => n2 => {\n    const [r1, r2] = map(rational)(\n        [n1, n2]\n    );\n    return ratio(r1.n * r2.n)(\n        r1.d * r2.d\n    );\n};",
+    "code": "// ratioMult :: Rational -> Rational -> Rational\nconst ratioMult = n1 => n2 => {\n    const [r1, r2] = map(rational)(\n        [n1, n2]\n    );\n\n    return ratio(r1.n * r2.n)(\n        r1.d * r2.d\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "ratioPlus": {
-    "code": "// ratioPlus :: Rational -> Rational -> Rational\nconst ratioPlus = n1 =>\n    n2 => {\n        const [r1, r2] = [n1, n2].map(rational);\n        const d = lcm(r1.d)(r2.d);\n        return ratio((r1.n * (d / r1.d)) + (r2.n * (d / r2.d)))(\n            d\n        );\n    };",
+    "code": "// ratioPlus :: Rational -> Rational -> Rational\nconst ratioPlus = n1 =>\n    n2 => {\n        const [r1, r2] = [n1, n2].map(rational);\n        const d = lcm(r1.d)(r2.d);\n\n        return ratio(\n            (r1.n * (d / r1.d)) + (\n                r2.n * (d / r2.d)\n            )\n        )(d);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2298,13 +2298,13 @@
     ]
   },
   "regexMatches": {
-    "code": "// regexMatches :: Regex String -> String -> [[String]]\nconst regexMatches = rgx =>\n    // All matches for the given regular expression\n    // in the supplied string s.\n    s => [...s.matchAll(new RegExp(rgx, 'g'))];",
+    "code": "// regexMatches :: Regex String -> String -> [[String]]\nconst regexMatches = rgx =>\n    // All matches for the given regular expression\n    // in the supplied string s.\n    s => [...s.matchAll(new RegExp(rgx, \"gu\"))];",
     "tags": [
       "JS Prelude"
     ]
   },
   "rem": {
-    "code": "// rem :: Int -> Int -> Int\nconst rem = n => \n    m => n % m;",
+    "code": "// rem :: Int -> Int -> Int\nconst rem = n =>\n    m => n % m;",
     "tags": [
       "JS Prelude",
       "core"
@@ -2325,13 +2325,13 @@
     ]
   },
   "repeat": {
-    "code": "// repeat :: a -> Generator [a]\nfunction* repeat(x) {\n    while(true) yield x;\n}",
+    "code": "// repeat :: a -> Generator [a]\nconst repeat = function* (x) {\n    while (true) {\n        yield x;\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "replace": {
-    "code": "// replace :: String -> String -> String -> String\n// replace :: Regex -> String -> String -> String\nconst replace = needle => strNew => strHaystack =>\n    strHaystack.replace(\n      'string' !== typeof needle ? (\n        needle\n      ) : new RegExp(needle, 'g'),\n      strNew\n    );",
+    "code": "// replace :: String -> String -> String -> String\n// replace :: Regex -> String -> String -> String\nconst replace = needle =>\n    strNew => strHaystack => strHaystack.replace(\n        \"string\" !== typeof needle ? (\n            needle\n        ) : new RegExp(needle, \"gu\"),\n        strNew\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -2344,13 +2344,13 @@
     ]
   },
   "replicateM": {
-    "code": "// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = n =>\n    // Instance for lists (arrays) only here.\n    xs => {\n        const go = x => 0 >= x ? [\n            []\n        ] : liftA2List(cons)(\n            list(xs)\n        )(go(x - 1));\n        return go(n);\n    };",
+    "code": "// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = n =>\n    // Instance for lists (arrays) only here.\n    xs => {\n        const go = x => 0 >= x ? [\n            []\n        ] : liftA2List(cons)(\n            list(xs)\n        )(go(x - 1));\n\n        return go(n);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "replicateString": {
-    "code": "// replicateString :: Int -> String -> String\nconst replicateString = n => \n    s => s.repeat(n);",
+    "code": "// replicateString :: Int -> String -> String\nconst replicateString = n =>\n    s => s.repeat(n);",
     "tags": [
       "JS Prelude",
       "core"
@@ -2364,7 +2364,7 @@
     ]
   },
   "rights": {
-    "code": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    xs.flatMap(\n        x => ('Either' === x.type) && (\n            undefined !== x.Right\n        ) ? [x.Right] : []\n    );",
+    "code": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    xs.flatMap(\n        x => (\"Either\" === x.type) && (\n            undefined !== x.Right\n        ) ? [x.Right] : []\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -2377,19 +2377,19 @@
     ]
   },
   "rotate": {
-    "code": "// rotate :: Int -> [a] -> [a]\nconst rotate = n => xs => {\n    // Rightward rotation of xs by n positions.\n    const lng = xs.length;\n    return Infinity > lng ? (\n        take(lng)(\n            drop(lng - n)(\n                cycle(xs)\n            )\n        )\n    ) : undefined;\n};",
+    "code": "// rotate :: Int -> [a] -> [a]\nconst rotate = n => xs => {\n    // Rightward rotation of xs by n positions.\n    const lng = xs.length;\n\n    return Infinity > lng ? (\n        take(lng)(\n            drop(lng - n)(\n                cycle(xs)\n            )\n        )\n    ) : undefined;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "round": {
-    "code": "// round :: a -> Int\nconst round = x => {\n    const\n        nr = properFraction(x),\n        [n, r] = [nr[0], nr[1]],\n        m = n + (r < 0 ? -1 : 1),\n        sign = signum(abs(r) - 0.5);\n    return (-1 === sign) ? n : (\n        0 === sign ? (even(n) ? n : m) : (\n            1 === sign ? m : undefined\n        )\n    );\n};",
+    "code": "// round :: a -> Int\nconst round = x => {\n    const\n        nr = properFraction(x),\n        [n, r] = [nr[0], nr[1]],\n        m = n + (r < 0 ? -1 : 1),\n        sign = signum(abs(r) - 0.5);\n\n    return (-1 === sign) ? n : (\n        0 === sign ? (even(n) ? n : m) : (\n            1 === sign ? m : undefined\n        )\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "roundTo": {
-    "code": "// roundTo :: Int -> Float -> Float\nconst roundTo = n => x => {\n    const d = Math.pow(10, n);\n    return Math.round(x * d) / d;\n};",
+    "code": "// roundTo :: Int -> Float -> Float\nconst roundTo = n => x => {\n    const d = 10 ** n;\n\n    return Math.round(x * d) / d;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2414,20 +2414,20 @@
     ]
   },
   "scanl1": {
-    "code": "// scanl1 :: (a -> a -> a) -> [a] -> [a]\nconst scanl1 = f =>\n    // scanl1 is a variant of scanl that has no \n    // starting value argument.\n    xs => xs.length > 0 ? (\n        scanl(f)(\n            xs[0]\n        )(xs.slice(1))\n    ) : [];",
+    "code": "// scanl1 :: (a -> a -> a) -> [a] -> [a]\nconst scanl1 = f =>\n    // scanl1 is a variant of scanl that has no\n    // starting value argument.\n    xs => xs.length > 0 ? (\n        scanl(f)(\n            xs[0]\n        )(xs.slice(1))\n    ) : [];",
     "tags": [
       "JS Prelude"
     ]
   },
   "scanr": {
-    "code": "// scanr :: (a -> b -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => list(xs).reduceRight((a, x) => {\n        const v = f(x)(a[0]);\n\n        return Tuple(v)([v].concat(a[1]));\n    }, Tuple(startValue)([startValue]))[1];",
+    "code": "// scanr :: (a -> b -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => list(xs).reduceRight(\n        (a, x) => {\n            const v = f(x)(a[0]);\n\n            return Tuple(v)([v].concat(a[1]));\n        }, Tuple(startValue)([startValue])\n    )[1];",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "scanr1": {
-    "code": "// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = f =>\n    // scanr1 is a variant of scanr that has no \n    // seed-value argument, and assumes that\n    // xs is not empty.\n    xs => xs.length > 0 ? (\n        scanr(f)(\n            xs.slice(-1)[0]\n        )(xs.slice(0, -1))\n    ) : [];",
+    "code": "// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = f =>\n    // scanr1 is a variant of scanr that has no\n    // seed-value argument, and assumes that\n    // xs is not empty.\n    xs => xs.length > 0 ? (\n        scanr(f)(\n            xs.slice(-1)[0]\n        )(xs.slice(0, -1))\n    ) : [];",
     "tags": [
       "JS Prelude"
     ]
@@ -2476,19 +2476,19 @@
     ]
   },
   "shift": {
-    "code": "// shift :: Int -> [a] -> [a]\nconst shift = n => xs => {\n    const lng = length(xs);\n    return Infinity > lng ? (\n        take(lng)(\n          drop(n)(cycle(xs))\n        )\n    ) : (drop(n)(xs), xs);\n};",
+    "code": "// shift :: Int -> [a] -> [a]\nconst shift = n => xs => {\n    const lng = length(xs);\n\n    return Infinity > lng ? (\n        take(lng)(\n            drop(n)(cycle(xs))\n        )\n    ) : (drop(n)(xs), xs);\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "show": {
-    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        str = x => x.toString(),\n        t = typeName(x);\n    return Boolean(t) ? (\n        'Node' !== t ? (\n            JSON.stringify(\n                x,\n                (_, v) => ({\n                    '(a -> b)': () => showFn,\n                    'Bool': () => str,\n                    'Bottom': () => showUndefined,\n                    'Date': () => x => x,\n                    'Dict': () => x => x,\n                    'Either': () => showLR,\n                    'List': () => showList,\n                    'Maybe': () => showMaybe,\n                    'Num': () => str,\n                    'Ratio': () => showRatio,\n                    'String': () => str,\n                    'Tuple': () => showTuple\n                })[t]()(v)\n            )\n        ) : showTree(x)\n    ) : `No Show instance has been defined for ${t}.`;\n};",
+    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        str = y => y.toString(),\n        t = typeName(x);\n\n    return Boolean(t) ? (\n        \"Node\" !== t ? (\n            JSON.stringify(\n                x,\n                (_, v) => ({\n                    \"(a -> b)\": () => showFn,\n                    \"Bool\": () => str,\n                    \"Bottom\": () => showUndefined,\n                    \"Date\": () => a => a,\n                    \"Dict\": () => a => a,\n                    \"Either\": () => showLR,\n                    \"List\": () => showList,\n                    \"Maybe\": () => showMaybe,\n                    \"Num\": () => str,\n                    \"Ratio\": () => showRatio,\n                    \"String\": () => str,\n                    \"Tuple\": () => showTuple\n                })[t]()(v)\n            )\n        ) : showTree(x)\n    ) : `No Show instance has been defined for ${t}.`;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "showBinary": {
-    "code": "// showBinary :: Int -> String\nconst showBinary = n => {\n    const\n        binaryChar = n => 0 !== n ? (\n            '1'\n        ) : '0';\n    return showIntAtBase(2)(\n        binaryChar\n    )(n)('');\n};",
+    "code": "// showBinary :: Int -> String\nconst showBinary = n => {\n    const\n        binaryChar = m => 0 !== m ? (\n            \"1\"\n        ) : \"0\";\n\n    return showIntAtBase(2)(\n        binaryChar\n    )(n)(\"\");\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2519,13 +2519,13 @@
     ]
   },
   "showHex": {
-    "code": "// showHex :: Int -> String\nconst showHex = n =>\n    // Hexadecimal string for a given integer.\n    '0x' + n.toString(16);",
+    "code": "// showHex :: Int -> String\nconst showHex = n =>\n    // Hexadecimal string for a given integer.\n    `0x${n.toString(16)}`;",
     "tags": [
       "JS Prelude"
     ]
   },
   "showIntAtBase": {
-    "code": "// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String\nconst showIntAtBase = base => toChr => n => rs => {\n    const go = ([n, d], r) => {\n        const r_ = toChr(d) + r;\n        return 0 !== n ? (\n            go(Array.from(quotRem(n)(base)), r_)\n        ) : r_;\n    };\n    return 1 >= base ? (\n        'error: showIntAtBase applied to unsupported base'\n    ) : 0 > n ? (\n        'error: showIntAtBase applied to negative number'\n    ) : go(Array.from(quotRem(n)(base)), rs);\n};",
+    "code": "// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String\nconst showIntAtBase = base =>\n    toChr => n => rs => {\n        const go = ([x, d], r) => {\n            const r_ = toChr(d) + r;\n\n            return 0 !== x ? (\n                go(Array.from(quotRem(n)(base)), r_)\n            ) : r_;\n        };\n\n        return 1 >= base ? (\n            \"error: showIntAtBase applied to unsupported base\"\n        ) : 0 > n ? (\n            \"error: showIntAtBase applied to negative number\"\n        ) : go(Array.from(quotRem(n)(base)), rs);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2537,61 +2537,61 @@
     ]
   },
   "showLR": {
-    "code": "// showLR :: Either a b -> String\nconst showLR = lr => {\n    const k = undefined !== lr.Left ? (\n        'Left'\n    ) : 'Right';\n    return k + '(' + unQuoted(show(lr[k])) + ')';\n};",
+    "code": "// showLR :: Either a b -> String\nconst showLR = lr => {\n    const k = undefined !== lr.Left ? (\n        \"Left\"\n    ) : \"Right\";\n\n    return `${k}(${unQuoted(show(lr[k]))})`;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "showList": {
-    "code": "// showList :: [a] -> String\nconst showList = xs =>\n    '[' + xs.map(show)\n    .join(', ')\n    .replace(/[\\\"]/g, '') + ']';",
+    "code": "// showList :: [a] -> String\nconst showList = xs => {\n    const\n        s = xs.map(show)\n        .join(\", \")\n        .replace(/[\\\\\"]/gu, \"\");\n\n    return `[${s}]`;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "showLog": {
-    "code": "// showLog :: a -> IO ()\nconst showLog = (...args) =>\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(\" -> \")\n    );",
+    "code": "// showLog :: a -> IO ()\nconst showLog = (...args) =>\n    // eslint-disable-next-line no-console\n    console.log(\n        args\n        .map(JSON.stringify)\n        .join(\" -> \")\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "showMaybe": {
-    "code": "// showMaybe :: Maybe a -> String\nconst showMaybe = mb =>\n    mb.Nothing ? (\n        'Nothing'\n    ) : 'Just(' + unQuoted(show(mb.Just)) + ')';",
+    "code": "// showMaybe :: Maybe a -> String\nconst showMaybe = mb =>\n    mb.Nothing ? (\n        \"Nothing\"\n    ) : `Just(${unQuoted(show(mb.Just))})`;",
     "tags": [
       "JS Prelude"
     ]
   },
   "showMenuLR": {
-    "code": "// showMenuLR :: Bool -> String -> String -> \n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with \n    // a given title and prompt string.\n    // Listing the strings in xs, with \n    // the the string `selected` pre-selected\n    // if found in xs.\n    title => prompt => xs =>\n    selected => 0 < xs.length ? (() => {\n        const sa = Object.assign(\n            Application('System Events'), {\n                includeStandardAdditions: true\n            });\n        sa.activate();\n        const v = sa.chooseFromList(xs, {\n            withTitle: title,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: 'OK',\n            cancelButtonName: 'Cancel',\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left('User cancelled ' + title + ' menu.');\n    })() : Left(title + ': No items to choose from.');",
+    "code": "// showMenuLR :: Bool -> String -> String ->\n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with\n    // a given title and prompt string.\n    // Listing the strings in xs, with\n    // the the string `selected` pre-selected\n    // if found in xs.\n    title => prompt => xs =>\n    selected => 0 < xs.length ? (() => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        sa.activate();\n\n        const v = sa.chooseFromList(xs, {\n            withTitle: title,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: \"OK\",\n            cancelButtonName: \"Cancel\",\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left(`User cancelled ${title} menu.`);\n    })() : Left(`${title}: No items to choose from.`);",
     "tags": [
       "JS Prelude"
     ]
   },
   "showOrdering": {
-    "code": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    0 < e.value ? (\n        'GT'\n    ) : 0 > e.value ? (\n        'LT'\n    ) : 'EQ';",
+    "code": "// showOrdering :: Ordering -> String\nconst showOrdering = e =>\n    0 < e.value ? (\n        \"GT\"\n    ) : 0 > e.value ? (\n        \"LT\"\n    ) : \"EQ\";",
     "tags": [
       "JS Prelude"
     ]
   },
   "showOutline": {
-    "code": "// showOutline :: Tree String -> String\nconst showOutline = tree => {\n    const go = indent => x =>\n        unlines(\n            [indent + x.root].concat(\n                x.nest.flatMap(go('    ' + indent))\n            )\n        );\n    return go('')(tree);\n};",
+    "code": "// showOutline :: Tree String -> String\nconst showOutline = tree => {\n    const go = indent => x =>\n        unlines(\n            [indent + x.root].concat(\n                x.nest.flatMap(go(`    ${indent}`))\n            )\n        );\n\n    return go(\"\")(tree);\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "showPrecision": {
-    "code": "// showPrecision :: Int -> Float -> String\nconst showPrecision = n => x => {\n    // A string showing a floating point number\n    // at a given degree of precision.\n    const d = Math.pow(10, n);\n    return str(Math.round(d * x) / d);\n};",
+    "code": "// showPrecision :: Int -> Float -> String\nconst showPrecision = n => x => {\n    // A string showing a floating point number\n    // at a given degree of precision.\n    const d = 10 ** n;\n\n    return str(Math.round(d * x) / d);\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "showRatio": {
-    "code": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    'Ratio' !== r.type ? (\n        r.toString()\n    ) : r.n.toString() + (\n        1 !== r.d ? (\n            '/' + r.d.toString()\n        ) : ''\n    );",
+    "code": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    \"Ratio\" !== r.type ? (\n        r.toString()\n    ) : r.n.toString() + (\n        1 !== r.d ? (\n            `/${r.d}`\n        ) : \"\"\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "showSet": {
-    "code": "// showSet :: Set a -> String\nconst showSet = oSet =>\n    '{' + Array.from(oSet)\n    .map(x => x.toString())\n    .join(',') + '}';",
+    "code": "// showSet :: Set a -> String\nconst showSet = oSet => {\n    const\n        s = Array.from(oSet)\n        .map(x => x.toString())\n        .join(\",\");\n\n    return `{${s}}`;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2604,13 +2604,13 @@
     ]
   },
   "showTuple": {
-    "code": "// showTuple :: Tuple -> String\nconst showTuple = tpl =>\n    '(' + enumFromTo(0)(tpl.length - 1)\n    .map(x => unQuoted(show(tpl[x])))\n    .join(',') + ')';",
+    "code": "// showTuple :: Tuple -> String\nconst showTuple = tpl => {\n    const\n        s = enumFromTo(0)(tpl.length - 1)\n        .map(x => unQuoted(show(tpl[x])))\n        .join(\",\");\n\n    return `(${s})`;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "showUndefined": {
-    "code": "// showUndefined :: () -> String\nconst showUndefined = () => '(⊥)';",
+    "code": "// showUndefined :: () -> String\nconst showUndefined = () =>\n    \"(⊥)\";",
     "tags": [
       "JS Prelude"
     ]
@@ -2635,7 +2635,7 @@
     ]
   },
   "snoc": {
-    "code": "// snoc :: [a] -> a -> [a]\nconst snoc = xs =>\n    // The mirror image of cons\n    // A new copy of the given list, \n    // with an atom appended at the end.\n    x => list(xs).concat(x);",
+    "code": "// snoc :: [a] -> a -> [a]\nconst snoc = xs =>\n    // The mirror image of cons\n    // A new copy of the given list,\n    // with an atom appended at the end.\n    x => list(xs).concat(x);",
     "tags": [
       "JS Prelude"
     ]
@@ -2662,7 +2662,7 @@
     ]
   },
   "span": {
-    "code": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const i = xs.findIndex(x => !p(x));\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
+    "code": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const i = xs.findIndex(x => !p(x));\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -2681,19 +2681,19 @@
     ]
   },
   "splitBy": {
-    "code": "// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) -> String -> [String]\nconst splitBy = p =>\n    // Splitting not on a delimiter, but wherever the relationship\n    // between consecutive terms matches a binary predicate.\n    xs => (xs.length < 2) ? [xs] : (() => {\n        const\n            bln = 'string' === typeof xs,\n            ys = bln ? xs.split('') : xs,\n            h = ys[0],\n            parts = ys.slice(1)\n            .reduce(([acc, active, prev], x) =>\n                p(prev)(x) ? (\n                    [acc.concat([active]), [x], x]\n                ) : [acc, active.concat(x), x], [\n                    [],\n                    [h],\n                    h\n                ]);\n        return (bln ? (\n            ps => ps.map(cs => ''.concat.apply('', cs))\n        ) : x => x)(parts[0].concat([parts[1]]));\n    })();",
+    "code": "// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) -> String -> [String]\nconst splitBy = p =>\n    // Splitting not on a delimiter, but wherever the relationship\n    // between consecutive terms matches a binary predicate.\n    xs => (xs.length < 2) ? [xs] : (() => {\n        const\n            bln = \"string\" === typeof xs,\n            ys = bln ? xs.split(\"\") : xs,\n            h = ys[0],\n            parts = ys.slice(1)\n            .reduce(([acc, active, prev], x) =>\n                p(prev)(x) ? (\n                    [acc.concat([active]), [x], x]\n                ) : [acc, active.concat(x), x], [\n                    [],\n                    [h],\n                    h\n                ]);\n\n        return (bln ? (\n            ps => ps.map(cs => \"\".concat(...cs))\n        ) : x => x)(parts[0].concat([parts[1]]));\n    })();",
     "tags": [
       "JS Prelude"
     ]
   },
   "splitFileName": {
-    "code": "// splitFileName :: FilePath -> (String, String)\nconst splitFileName = strPath =>\n    // Tuple of directory and file name, derived from file path.\n    // Inverse of combine.\n    ('' !== strPath) ? (\n         ('/' !== strPath[strPath.length - 1]) ? (() => {\n            const\n                xs = strPath.split('/'),\n                stem = xs.slice(0, -1);\n            return stem.length > 0 ? (\n                Tuple(stem.join('/') + '/')(xs.slice(-1)[0])\n            ) : Tuple('./')(xs.slice(-1)[0]);\n        })() : Tuple(strPath)('')\n    ) : Tuple('./')('');",
+    "code": "// splitFileName :: FilePath -> (String, String)\nconst splitFileName = strPath =>\n    // Tuple of directory and file name, derived from file path.\n    // Inverse of combine.\n    (\"\" !== strPath) ? (\n        (\"/\" !== strPath[strPath.length - 1]) ? (() => {\n            const\n                xs = strPath.split(\"/\"),\n                stem = xs.slice(0, -1);\n\n            return stem.length > 0 ? (\n                Tuple(\n                    `${stem.join(\"/\")}/`\n                )(xs.slice(-1)[0])\n            ) : Tuple(\"./\")(xs.slice(-1)[0]);\n        })() : Tuple(strPath)(\"\")\n    ) : Tuple(\"./\")(\"\");",
     "tags": [
       "JS Prelude"
     ]
   },
   "splitOn": {
-    "code": "// splitOn :: [a] -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = pat => src =>\n    /* A list of the strings delimited by\n       instances of a given pattern in s. */\n    ('string' === typeof src) ? (\n        src.split(pat)\n    ) : (() => {\n        const\n            lng = pat.length,\n            tpl = findIndices(matching(pat))(src).reduce(\n                (a, i) => Tuple(\n                    fst(a).concat([src.slice(snd(a), i)])\n                )(lng + i),\n                Tuple([])(0)\n            );\n        return fst(tpl).concat([src.slice(snd(tpl))]);\n    })();",
+    "code": "// splitOn :: [a] -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = pat => src =>\n    // A list of the strings delimited by\n    // instances of a given pattern in s.\n    (\"string\" === typeof src) ? (\n        src.split(pat)\n    ) : (() => {\n        const\n            lng = pat.length,\n            tpl = findIndices(matching(pat))(src).reduce(\n                (a, i) => Tuple(\n                    fst(a).concat([src.slice(snd(a), i)])\n                )(lng + i),\n                Tuple([])(0)\n            );\n\n        return fst(tpl).concat([src.slice(snd(tpl))]);\n    })();",
     "tags": [
       "JS Prelude"
     ]
@@ -2712,7 +2712,7 @@
     ]
   },
   "sqrtLR": {
-    "code": "// sqrtLR :: Num -> Either String Num\nconst sqrtLR = n =>\n    0 > n ? (\n        Left('Square root of negative number: ' + n)\n    ) : Right(Math.sqrt(n));",
+    "code": "// sqrtLR :: Num -> Either String Num\nconst sqrtLR = n =>\n    0 > n ? (\n        Left(`Square root of negative number: ${n}`)\n    ) : Right(Math.sqrt(n));",
     "tags": [
       "JS Prelude"
     ]
@@ -2743,7 +2743,7 @@
     ]
   },
   "stripPrefix": {
-    "code": "// stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]\nconst stripPrefix = pfx =>\n    s => {\n        const\n            blnString = 'string' === typeof pfx,\n            [xs, ys] = blnString ? (\n                [pfx.split(''), s.split('')]\n            ) : [pfx, s];\n        const\n            sp_ = (xs, ys) => 0 === xs.length ? (\n                Just(blnString ? ys.join('') : ys)\n            ) : (0 === ys.length || xs[0] !== ys[0]) ? (\n                Nothing()\n            ) : sp_(xs.slice(1), ys.slice(1));\n        return sp_(xs, ys);\n    };",
+    "code": "// stripPrefix :: Eq a => [a] -> [a] -> Maybe [a]\nconst stripPrefix = pfx =>\n    s => {\n        const\n            blnString = \"string\" === typeof pfx,\n            [vs, ws] = blnString ? (\n                [pfx.split(\"\"), s.split(\"\")]\n            ) : [pfx, s];\n\n        const\n            sp_ = (xs, ys) => 0 === xs.length ? (\n                Just(blnString ? ys.join(\"\") : ys)\n            ) : (0 === ys.length || xs[0] !== ys[0]) ? (\n                Nothing()\n            ) : sp_(xs.slice(1), ys.slice(1));\n\n        return sp_(vs, ws);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2755,14 +2755,14 @@
     ]
   },
   "subTreeAtPath": {
-    "code": "// subTreeAtPath :: Tree String -> [String] -> Maybe Tree String\nconst subTreeAtPath = tree => path => {\n    const go = (nest, xs) =>\n        0 < nest.length && 0 < xs.length ? (() => {\n            const h = xs[0];\n            return bindMay(find(t => h === t.root, nest))(\n                t => 1 < xs.length ? (\n                    go(t.nest, xs.slice(1))\n                ) : Just(t)\n            );\n        })() : Nothing();\n    return go([tree], path);\n};",
+    "code": "// subTreeAtPath :: Tree String -> [String] -> Maybe Tree String\nconst subTreeAtPath = tree => path => {\n    const go = (subNest, xs) =>\n        0 < nest.length && 0 < xs.length ? (() => {\n            const h = xs[0];\n\n            return bindMay(find(t => h === t.root, subNest))(\n                t => 1 < xs.length ? (\n                    go(t.nest, xs.slice(1))\n                ) : Just(t)\n            );\n        })() : Nothing();\n\n    return go([tree], path);\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "subsequences": {
-    "code": "// subsequences :: [a] -> [[a]]\n// subsequences :: String -> [String]\nconst subsequences = xs => {\n    // subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n    // subsequences('abc') -> [\"\",\"a\",\"b\",\"ab\",\"c\",\"ac\",\"bc\",\"abc\"]\n    const\n        // nonEmptySubsequences :: [a] -> [[a]]\n        nonEmptySubsequences = xxs => {\n            if (xxs.length < 1) return [];\n            const [x, xs] = [xxs[0], xxs.slice(1)];\n            const f = (r, ys) => cons(ys)(cons(cons(x)(ys))(r));\n            return cons([x])(nonEmptySubsequences(xs)\n                .reduceRight(f, []));\n        };\n    return ('string' === typeof xs) ? (\n        cons('')(nonEmptySubsequences(xs.split(''))\n            .map(x => ''.concat.apply('', x))) // map(concat)\n    ) : cons([])(nonEmptySubsequences(xs));\n};",
+    "code": "// subsequences :: [a] -> [[a]]\n// subsequences :: String -> [String]\nconst subsequences = qs => {\n    // subsequences([1,2,3]) -> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n    // subsequences('abc') -> [\"\",\"a\",\"b\",\"ab\",\"c\",\"ac\",\"bc\",\"abc\"]\n    const\n        // nonEmptySubsequences :: [a] -> [[a]]\n        nonEmptySubsequences = xxs => {\n            if (xxs.length < 1) {\n                return [];\n            }\n            const [x, xs] = [xxs[0], xxs.slice(1)];\n            const f = (r, ys) => cons(ys)(cons(cons(x)(ys))(r));\n\n            return cons([x])(nonEmptySubsequences(xs)\n                .reduceRight(f, []));\n        };\n\n    return (\"string\" === typeof qs) ? (\n        cons(\"\")(nonEmptySubsequences(qs.split(\"\"))\n            .map(q => \"\".concat(...q)))\n    ) : cons([])(nonEmptySubsequences(qs));\n};",
     "tags": [
       "JS Prelude"
     ]

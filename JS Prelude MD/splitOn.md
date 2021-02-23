@@ -2,9 +2,9 @@
 // splitOn :: [a] -> [a] -> [[a]]
 // splitOn :: String -> String -> [String]
 const splitOn = pat => src =>
-    /* A list of the strings delimited by
-       instances of a given pattern in s. */
-    ('string' === typeof src) ? (
+    // A list of the strings delimited by
+    // instances of a given pattern in s.
+    ("string" === typeof src) ? (
         src.split(pat)
     ) : (() => {
         const
@@ -15,6 +15,7 @@ const splitOn = pat => src =>
                 )(lng + i),
                 Tuple([])(0)
             );
+
         return fst(tpl).concat([src.slice(snd(tpl))]);
     })();
 ```

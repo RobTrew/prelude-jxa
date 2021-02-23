@@ -1,5 +1,5 @@
 ```javascript
 // pureList :: a -> [a]
-const pureList = x => 
+const pureList = x =>
     [x];
 ```

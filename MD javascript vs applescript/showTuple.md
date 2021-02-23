@@ -1,3 +1,16 @@
+```javascript
+// showTuple :: Tuple -> String
+const showTuple = tpl => {
+    const
+        s = enumFromTo(0)(tpl.length - 1)
+        .map(x => unQuoted(show(tpl[x])))
+        .join(",");
+
+    return `(${s})`;
+};
+```
+
+
 ```applescript
 -- showTuple :: Tuple -> String
 on showTuple(tpl)
@@ -14,13 +27,4 @@ on showTuple(tpl)
     end script
     "(" & intercalateS(", ", map(result, enumFromTo(1, length of tpl))) & ")"
 end showTuple
-```
-
-
-```javascript
-// showTuple :: Tuple -> String
-const showTuple = tpl =>
-    '(' + enumFromTo(0)(tpl.length - 1)
-    .map(x => unQuoted(show(tpl[x])))
-    .join(',') + ')';
 ```

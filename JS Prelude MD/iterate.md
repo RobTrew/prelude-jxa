@@ -4,8 +4,9 @@ const iterate = f =>
     // An infinite list of repeated applications of f to x.
     function* (x) {
         let v = x;
+
         while (true) {
-            yield(v);
+            yield v;
             v = f(v);
         }
     };

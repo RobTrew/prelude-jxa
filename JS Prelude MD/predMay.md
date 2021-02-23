@@ -2,8 +2,10 @@
 // predMay :: Enum a => a -> Maybe a
 const predMay = x => {
     const t = typeof x;
-    return 'number' !== t ? (() => {
+
+    return "number" !== t ? (() => {
         const [i, mn] = [x, minBound(x)].map(fromEnum);
+
         return i > mn ? (
             Just(toEnum(x)(i - 1))
         ) : Nothing();

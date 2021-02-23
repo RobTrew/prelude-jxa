@@ -3,25 +3,26 @@
 // show :: a -> Int -> Indented String
 const show = x => {
     const
-        str = x => x.toString(),
+        str = y => y.toString(),
         t = typeName(x);
+
     return Boolean(t) ? (
-        'Node' !== t ? (
+        "Node" !== t ? (
             JSON.stringify(
                 x,
                 (_, v) => ({
-                    '(a -> b)': () => showFn,
-                    'Bool': () => str,
-                    'Bottom': () => showUndefined,
-                    'Date': () => x => x,
-                    'Dict': () => x => x,
-                    'Either': () => showLR,
-                    'List': () => showList,
-                    'Maybe': () => showMaybe,
-                    'Num': () => str,
-                    'Ratio': () => showRatio,
-                    'String': () => str,
-                    'Tuple': () => showTuple
+                    "(a -> b)": () => showFn,
+                    "Bool": () => str,
+                    "Bottom": () => showUndefined,
+                    "Date": () => a => a,
+                    "Dict": () => a => a,
+                    "Either": () => showLR,
+                    "List": () => showList,
+                    "Maybe": () => showMaybe,
+                    "Num": () => str,
+                    "Ratio": () => showRatio,
+                    "String": () => str,
+                    "Tuple": () => showTuple
                 })[t]()(v)
             )
         ) : showTree(x)

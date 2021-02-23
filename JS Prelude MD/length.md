@@ -5,7 +5,7 @@ const length = xs =>
     // length. This enables zip and zipWith to choose
     // the shorter argument when one is non-finite,
     // like cycle, repeat etc
-    'GeneratorFunction' !== xs.constructor
+    "GeneratorFunction" !== xs.constructor
     .constructor.name ? (
         xs.length
     ) : Infinity;

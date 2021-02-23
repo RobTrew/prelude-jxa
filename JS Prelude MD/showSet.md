@@ -1,7 +1,11 @@
 ```javascript
 // showSet :: Set a -> String
-const showSet = oSet =>
-    '{' + Array.from(oSet)
-    .map(x => x.toString())
-    .join(',') + '}';
+const showSet = oSet => {
+    const
+        s = Array.from(oSet)
+        .map(x => x.toString())
+        .join(",");
+
+    return `{${s}}`;
+};
 ```

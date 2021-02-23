@@ -9,12 +9,14 @@ const quickSortBy = cmp => {
             lessMore = partition(
                 x => 1 !== cmp(x)(h)
             )(xs.slice(1));
-        return [].concat.apply([], [
+
+        return [].concat(...[
             go(lessMore[0]),
             h,
             go(lessMore[1])
         ]);
     })() : xs;
+
     return go;
 };
 ```
