@@ -1,10 +1,3 @@
-```javascript
-// bindList (>>=) :: [a] -> (a -> [b]) -> [b]
-const bindList = xs =>
-    mf => [...xs].flatMap(mf);
-```
-
-
 ```applescript
 -- bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 on bindList(xs, f)
@@ -16,4 +9,11 @@ on bindList(xs, f)
     end tell
     return acc
 end bindList
+```
+
+
+```javascript
+// bindList (>>=) :: [a] -> (a -> [b]) -> [b]
+const bindList = xs =>
+    mf => [...xs].flatMap(mf);
 ```
