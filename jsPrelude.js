@@ -2065,7 +2065,7 @@ const isLeft = lr =>
 
 // isLower :: Char -> Bool
 const isLower = c =>
-// True if c is a lower case character. 
+    // True if c is a lower case character.
     (/[a-z]/u).test(c);
 
 // isMaybe :: a -> Bool
@@ -3935,7 +3935,7 @@ const splitAt = n =>
     );
 
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
-// splitBy :: (String -> String -> Bool) -> 
+// splitBy :: (String -> String -> Bool) ->
 // String -> [String]
 const splitBy = p =>
     // Splitting not on a delimiter, but wherever the

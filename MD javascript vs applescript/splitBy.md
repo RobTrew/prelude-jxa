@@ -1,6 +1,6 @@
 ```javascript
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
-// splitBy :: (String -> String -> Bool) -> 
+// splitBy :: (String -> String -> Bool) ->
 // String -> [String]
 const splitBy = p =>
     // Splitting not on a delimiter, but wherever the
