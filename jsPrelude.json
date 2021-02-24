@@ -1256,7 +1256,7 @@
     ]
   },
   "initMay": {
-    "code": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs => (\n    0 < ys.length ? (\n        Just(ys.slice(0, -1))\n    ) : Nothing()\n)(list(xs));",
+    "code": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(0, -1))\n    ) : Nothing()\n)(list(xs));",
     "tags": [
       "JS Prelude"
     ]
@@ -1953,7 +1953,7 @@
     ]
   },
   "nest": {
-    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs ? (\n        xs\n    ) : xs(root(x));\n};",
+    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs ? (\n        xs\n    ) : xs(root(tree));\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3301,7 +3301,7 @@
     ]
   },
   "zipWith3": {
-    "code": "// zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]\nconst zipWith3 = f =>\n    xs => ys => zs => Array.from({\n        length: Math.min(\n            ...[xs, ys, zs].map(x => x.length)\n        )\n    }, (_, i) => f(xs[i])(ys[i])(zs[i]));",
+    "code": "// zipWith3 :: (a -> b -> c -> d) ->\n// [a] -> [b] -> [c] -> [d]\nconst zipWith3 = f =>\n    xs => ys => zs => Array.from({\n        length: Math.min(\n            ...[xs, ys, zs].map(x => x.length)\n        )\n    }, (_, i) => f(xs[i])(ys[i])(zs[i]));",
     "tags": [
       "JS Prelude"
     ]
@@ -3331,7 +3331,7 @@
     ]
   },
   "zipWithM": {
-    "code": "// zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]\nconst zipWithM = f =>\n    xs => ys =>\n        sequenceA(\n            zipWith(f)(\n                [...xs]\n            )([...ys])\n        );",
+    "code": "// zipWithM :: Applicative m => (a -> b -> m c) ->\n// [a] -> [b] -> m [c]\nconst zipWithM = f =>\n    xs => ys =>\n        sequenceA(\n            zipWith(f)(\n                [...xs]\n            )([...ys])\n        );",
     "tags": [
       "JS Prelude"
     ]

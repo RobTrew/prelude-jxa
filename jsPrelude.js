@@ -1913,7 +1913,7 @@ const init = xs => (
 
 // initMay :: [a] -> Maybe [a]
 const initMay = xs => (
-    0 < ys.length ? (
+    ys => 0 < ys.length ? (
         Just(ys.slice(0, -1))
     ) : Nothing()
 )(list(xs));
@@ -2951,7 +2951,7 @@ const nest = tree => {
 
     return "function" !== typeof xs ? (
         xs
-    ) : xs(root(x));
+    ) : xs(root(tree));
 };
 
 // not :: Bool -> Bool
@@ -5101,7 +5101,8 @@ const zipWith = f =>
         ) : zipWithGen(f)(xs)(ys);
     };
 
-// zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+// zipWith3 :: (a -> b -> c -> d) ->
+// [a] -> [b] -> [c] -> [d]
 const zipWith3 = f =>
     xs => ys => zs => Array.from({
         length: Math.min(
@@ -5173,7 +5174,8 @@ const zipWithLong = f => {
     return go;
 };
 
-// zipWithM :: Applicative m => (a -> b -> m c) -> [a] -> [b] -> m [c]
+// zipWithM :: Applicative m => (a -> b -> m c) ->
+// [a] -> [b] -> m [c]
 const zipWithM = f =>
     xs => ys =>
         sequenceA(

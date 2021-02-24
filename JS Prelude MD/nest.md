@@ -9,6 +9,6 @@ const nest = tree => {
 
     return "function" !== typeof xs ? (
         xs
-    ) : xs(root(x));
+    ) : xs(root(tree));
 };
 ```
