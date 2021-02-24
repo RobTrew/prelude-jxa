@@ -1,9 +1,11 @@
 ```javascript
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
-// splitBy :: (String -> String -> Bool) -> String -> [String]
+// splitBy :: (String -> String -> Bool) -> 
+// String -> [String]
 const splitBy = p =>
-    // Splitting not on a delimiter, but wherever the relationship
-    // between consecutive terms matches a binary predicate.
+    // Splitting not on a delimiter, but wherever the
+    // relationship between consecutive terms matches
+    // a binary predicate.
     xs => (xs.length < 2) ? [xs] : (() => {
         const
             bln = "string" === typeof xs,

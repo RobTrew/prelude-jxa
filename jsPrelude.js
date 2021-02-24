@@ -2065,6 +2065,7 @@ const isLeft = lr =>
 
 // isLower :: Char -> Bool
 const isLower = c =>
+// True if c is a lower case character. 
     (/[a-z]/u).test(c);
 
 // isMaybe :: a -> Bool
@@ -2074,6 +2075,7 @@ const isMaybe = x =>
 // isNull :: [a] -> Bool
 // isNull :: String -> Bool
 const isNull = xs =>
+// True if xs is empty.
     1 > xs.length;
 
 // isPrefixOf :: [a] -> [a] -> Bool
@@ -3933,10 +3935,12 @@ const splitAt = n =>
     );
 
 // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
-// splitBy :: (String -> String -> Bool) -> String -> [String]
+// splitBy :: (String -> String -> Bool) -> 
+// String -> [String]
 const splitBy = p =>
-    // Splitting not on a delimiter, but wherever the relationship
-    // between consecutive terms matches a binary predicate.
+    // Splitting not on a delimiter, but wherever the
+    // relationship between consecutive terms matches
+    // a binary predicate.
     xs => (xs.length < 2) ? [xs] : (() => {
         const
             bln = "string" === typeof xs,

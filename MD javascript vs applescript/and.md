@@ -1,3 +1,11 @@
+```javascript
+// and :: [Bool] -> Bool
+const and = xs =>
+    // True unless any value in xs is false.
+    [...xs].every(Boolean);
+```
+
+
 ```applescript
 -- and :: [Bool] -> Bool
 on |and|(xs)
@@ -7,12 +15,4 @@ on |and|(xs)
     end repeat
     return true
 end |and|
-```
-
-
-```javascript
-// and :: [Bool] -> Bool
-const and = xs =>
-    // True unless any value in xs is false.
-    [...xs].every(Boolean);
 ```

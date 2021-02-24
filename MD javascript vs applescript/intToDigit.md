@@ -1,3 +1,12 @@
+```javascript
+// intToDigit :: Int -> Char
+const intToDigit = n =>
+    n >= 0 && n < 16 ? (
+        "0123456789ABCDEF".charAt(n)
+    ) : "?";
+```
+
+
 ```applescript
 -- intToDigit :: Int -> Char
 on intToDigit(n)
@@ -7,13 +16,4 @@ on intToDigit(n)
         "?"
     end if
 end intToDigit
-```
-
-
-```javascript
-// intToDigit :: Int -> Char
-const intToDigit = n =>
-    n >= 0 && n < 16 ? (
-        "0123456789ABCDEF".charAt(n)
-    ) : "?";
 ```

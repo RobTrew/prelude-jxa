@@ -1373,7 +1373,7 @@
     ]
   },
   "isLower": {
-    "code": "// isLower :: Char -> Bool\nconst isLower = c =>\n    (/[a-z]/u).test(c);",
+    "code": "// isLower :: Char -> Bool\nconst isLower = c =>\n// True if c is a lower case character. \n    (/[a-z]/u).test(c);",
     "tags": [
       "JS Prelude"
     ]
@@ -1385,7 +1385,7 @@
     ]
   },
   "isNull": {
-    "code": "// isNull :: [a] -> Bool\n// isNull :: String -> Bool\nconst isNull = xs =>\n    1 > xs.length;",
+    "code": "// isNull :: [a] -> Bool\n// isNull :: String -> Bool\nconst isNull = xs =>\n// True if xs is empty.\n    1 > xs.length;",
     "tags": [
       "JS Prelude"
     ]
@@ -2681,7 +2681,7 @@
     ]
   },
   "splitBy": {
-    "code": "// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) -> String -> [String]\nconst splitBy = p =>\n    // Splitting not on a delimiter, but wherever the relationship\n    // between consecutive terms matches a binary predicate.\n    xs => (xs.length < 2) ? [xs] : (() => {\n        const\n            bln = \"string\" === typeof xs,\n            ys = bln ? xs.split(\"\") : xs,\n            h = ys[0],\n            parts = ys.slice(1)\n            .reduce(([acc, active, prev], x) =>\n                p(prev)(x) ? (\n                    [acc.concat([active]), [x], x]\n                ) : [acc, active.concat(x), x], [\n                    [],\n                    [h],\n                    h\n                ]);\n\n        return (bln ? (\n            ps => ps.map(cs => \"\".concat(...cs))\n        ) : x => x)(parts[0].concat([parts[1]]));\n    })();",
+    "code": "// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) -> \n// String -> [String]\nconst splitBy = p =>\n    // Splitting not on a delimiter, but wherever the\n    // relationship between consecutive terms matches\n    // a binary predicate.\n    xs => (xs.length < 2) ? [xs] : (() => {\n        const\n            bln = \"string\" === typeof xs,\n            ys = bln ? xs.split(\"\") : xs,\n            h = ys[0],\n            parts = ys.slice(1)\n            .reduce(([acc, active, prev], x) =>\n                p(prev)(x) ? (\n                    [acc.concat([active]), [x], x]\n                ) : [acc, active.concat(x), x], [\n                    [],\n                    [h],\n                    h\n                ]);\n\n        return (bln ? (\n            ps => ps.map(cs => \"\".concat(...cs))\n        ) : x => x)(parts[0].concat([parts[1]]));\n    })();",
     "tags": [
       "JS Prelude"
     ]
