@@ -13,37 +13,38 @@ const treeFromNestedDict = dict => {
                 ([_, v]) => Array.isArray(v)
             ),
             lng = lists.length;
+
         return 0 < lng ? (
-            1 < lng ? (
-                Left(
-                    'Ambiguous structure :: ' +
-                    lng.toString() + (
-                        ' multiple sublists in:\n  "' +
-                        dct.name + (
-                            '":\n' + bulleted('    ')(
-                                unlines(lists.map(fst))
-                            )
-                        )
-                    )
-                )
-            ) : (() => {
+            1 < lng ? (() => {
+                const
+                    listing = bulleted("    ")(
+                        unlines(lists.map(fst))
+                    ),
+                    msg = `Ambiguous structure :: ${lng}` + (
+                        ` multiple sublists in:\n${dct.name}`
+                    );
+
+                return Left(`${msg}:\n${listing}`);
+            })() : (() => {
                 const [nestName, xs] = lists[0];
+
                 return bindLR(traverseList(go)(xs))(
-                    xs => Right(
+                    vs => Right(
                         Node(
                             Object.assign(
                                 deleteKey(nestName)(
                                     dct
                                 ), {
-                                    'List title': nestName
+                                    "List title": nestName
                                 }
                             )
-                        )(xs)
+                        )(vs)
                     )
                 );
             })()
         ) : Right(Node(dct)([]));
     };
+
     return go(dict);
 };
 ```

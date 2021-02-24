@@ -5,7 +5,7 @@ const uncurryN = f =>
     // a curried function of any number of arguments.
     (...args) => (
         xs => xs.slice(1).reduce(
-            (a, x) => a(x), 
+            (a, x) => a(x),
             f(xs[0])
         )
     )(Array.from(

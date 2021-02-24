@@ -3,7 +3,7 @@
 const treeFromDict = rootLabel =>
     dict => {
         const go = x =>
-            'object' !== typeof x ? [] : (
+            "object" !== typeof x ? [] : (
                 Array.isArray(x) ? (
                     x.flatMap(go)
                 ) : keys(x).map(
@@ -12,6 +12,7 @@ const treeFromDict = rootLabel =>
                     )
                 )
             );
+
         return Node(rootLabel)(
             go(dict)
         );

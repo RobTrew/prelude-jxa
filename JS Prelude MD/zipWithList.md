@@ -6,6 +6,7 @@ const zipWithList = f =>
     // default tuple constructor.
     xs => ys => ((xs_, ys_) => {
         const lng = Math.min(length(xs_), length(ys_));
+
         return take(lng)(xs_).map(
             (x, i) => f(x)(ys_[i])
         );

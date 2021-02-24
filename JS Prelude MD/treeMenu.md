@@ -7,33 +7,40 @@ const treeMenu = tree => {
             subs = t.nest,
             menu = subs.map(root),
             blnMore = 0 < subs.flatMap(nest).length;
+
         return until(tpl => !fst(tpl) || !isNull(snd(tpl)))(
             tpl => either(
                 x => Tuple(false)([])
             )(
                 Tuple(true)
             )(
-                bindLR(showMenuLR(!blnMore)(strTitle)(menu))(
-                    ks => {
-                        const k = ks[0];
-                        return maybe(
-                            Left(k + ': not found in ' +
-                                JSON.stringify(ks)
+                bindLR(
+                    showMenuLR(!blnMore)(strTitle)(menu)
+                )(ks => {
+                    const
+                        k = ks[0],
+                        msg = `${k}: not found in ${ks}`;
+
+                    return maybe(
+                        Left(msg)
+                    )(Right)(
+                        bindMay(
+                            find(x => k === x.root)(
+                                subs
                             )
-                        )(Right)(
-                            bindMay(find(x => k === x.root)(subs))(
-                                chosen => Just(
-                                    isNull(chosen.nest) ? (
-                                        ks // Choice made in leaf menu.
-                                    ) : go(chosen)
-                                )
+                        )(
+                            chosen => Just(
+                                isNull(chosen.nest) ? (
+                                    ks
+                                ) : go(chosen)
                             )
-                        );
-                    }
-                )
+                        )
+                    );
+                })
             )
         )(Tuple(true)([]))[1];
     };
+
     return go(tree);
 };
 ```

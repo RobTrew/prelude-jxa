@@ -13,10 +13,14 @@ const unfoldl = f => v => {
     let
         xr = [v, v],
         xs = [];
+
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         const mb = f(xr[0]);
+
         if (mb.Nothing) {
             return xs;
+        // eslint-disable-next-line no-else-return
         } else {
             xr = mb.Just;
             xs = [xr[1]].concat(xs);

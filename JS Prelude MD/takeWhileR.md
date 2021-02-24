@@ -5,8 +5,13 @@ const takeWhileR = p =>
     // all elements satisfy p.
     xs => {
         const ys = list(xs);
-        let i = ys.length;
-        while (i-- && p(ys[i])) {}
-        return ys.slice(i + 1);
+
+        return ys.slice(
+            1 + until(
+                i => !p(ys[i])
+            )(
+                i => 1 + i
+            )(ys.length)
+        );
     };
 ```

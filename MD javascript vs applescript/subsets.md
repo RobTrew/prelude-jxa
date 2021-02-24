@@ -6,12 +6,14 @@ const subsets = xs => {
             const
                 h = ys[0],
                 zs = go(ys.slice(1));
+
             return zs.concat(
                 zs.map(z => [h].concat(z))
             );
         })() : [
             []
         ];
+
     return go(xs);
 };
 ```

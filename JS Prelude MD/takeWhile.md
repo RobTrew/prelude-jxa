@@ -5,8 +5,9 @@ const takeWhile = p =>
     // The longest prefix of xs in which
     // every element satisfies p.
     xs => xs.constructor.constructor.name !==
-    'GeneratorFunction' ? (() => {
+    "GeneratorFunction" ? (() => {
         const n = xs.length;
+
         return xs.slice(
             0, 0 < n ? until(
                 i => n === i || !p(xs[i])

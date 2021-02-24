@@ -5,11 +5,13 @@ const takeWhileGen = p => xs => {
     let
         nxt = xs.next(),
         v = nxt.value;
+
     while (!nxt.done && p(v)) {
         ys.push(v);
         nxt = xs.next();
         v = nxt.value;
     }
+
     return ys;
 };
 ```

@@ -8,6 +8,7 @@ const treeMenuBy = fNodeKey => {
             menu = subTrees.map(
                 compose(fNodeKey, root)
             ).sort();
+
         return until(
             tpl => !fst(tpl) || !isNull(snd(tpl))
         )(
@@ -20,12 +21,12 @@ const treeMenuBy = fNodeKey => {
                     showMenuLR(true)(strTitle)(menu)
                 )(
                     ks => {
-                        const k0 = ks[0];
+                        const
+                            k0 = ks[0],
+                            msg = `${k0}: not found in ${ks}`;
+
                         return maybe(
-                            Left(
-                                k0 + ': not found in ' +
-                                JSON.stringify(ks)
-                            )
+                            Left(msg)
                         )(Right)(
                             bindMay(
                                 find(
@@ -54,6 +55,7 @@ const treeMenuBy = fNodeKey => {
             )
         )(Tuple(true)([]))[1];
     };
+
     return go;
 };
 ```

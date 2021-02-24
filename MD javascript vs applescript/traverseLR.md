@@ -1,5 +1,5 @@
 ```javascript
-// traverseLR :: Applicative f => 
+// traverseLR :: Applicative f =>
 // (t -> f b) -> Either a t -> f (Either a b)
 const traverseLR = f =>
     // instance of Traversable (Either a) where

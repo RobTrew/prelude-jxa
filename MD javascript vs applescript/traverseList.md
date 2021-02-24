@@ -8,7 +8,8 @@ const traverseList = f =>
         zs => 0 < zs.length ? (() => {
             const
                 vLast = f(zs.slice(-1)[0]),
-                t = vLast.type || 'List';
+                t = vLast.type || "List";
+
             return zs.slice(0, -1).reduceRight(
                 (ys, z) => liftA2(cons)(f(z))(ys),
                 liftA2(cons)(vLast)(pureT(t)([]))

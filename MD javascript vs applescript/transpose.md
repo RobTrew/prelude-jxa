@@ -1,7 +1,7 @@
 ```javascript
 // transpose :: [[a]] -> [[a]]
-const transpose = xss => {
-    // If any rows are shorter than those that follow, 
+const transpose = rows => {
+    // If any rows are shorter than those that follow,
     // their elements are skipped:
     // > transpose [[10,11],[20],[],[30,31,32]]
     //             == [[10,20,30],[11,31],[32]]
@@ -10,6 +10,7 @@ const transpose = xss => {
             const
                 h = xss[0],
                 t = xss.slice(1);
+
             return 0 < h.length ? [
                 [h[0]].concat(t.reduce(
                     (a, xs) => a.concat(
@@ -23,7 +24,8 @@ const transpose = xss => {
                 t.map(xs => xs.slice(1))
             ))) : go(t);
         })() : [];
-    return go(xss);
+
+    return go(rows);
 };
 ```
 
