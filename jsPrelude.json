@@ -2825,7 +2825,7 @@
     ]
   },
   "take": {
-    "code": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = n =>\n// The first n elements of a list,\n// string of characters, or stream.\n    xs => \"GeneratorFunction\" !== xs\n    .constructor.constructor.name ? (\n            xs.slice(0, n)\n        ) : Array.from({\n            length: n\n        }, () => {\n            const x = xs.next();\n\n            return x.done ? [] : [x.value];\n        });",
+    "code": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = n =>\n    // The first n elements of a list,\n    // string of characters, or stream.\n    xs => \"GeneratorFunction\" !== xs\n    .constructor.constructor.name ? (\n        xs.slice(0, n)\n    ) : [].concat(...Array.from({\n        length: n\n    }, () => {\n        const x = xs.next();\n\n        return x.done ? [] : [x.value];\n    }));",
     "tags": [
       "JS Prelude",
       "core"

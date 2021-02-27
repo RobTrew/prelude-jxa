@@ -1,3 +1,13 @@
+```javascript
+// foldl :: (a -> b -> a) -> a -> [b] -> a
+const foldl = f =>
+    a => xs => [...xs].reduce(
+        (x, y) => f(x)(y),
+        a
+    );
+```
+
+
 ```applescript
 -- foldl :: (a -> b -> a) -> a -> [b] -> a
 on foldl(f, startValue, xs)
@@ -10,14 +20,4 @@ on foldl(f, startValue, xs)
       return v
       end tell
 end foldl
-```
-
-
-```javascript
-// foldl :: (a -> b -> a) -> a -> [b] -> a
-const foldl = f =>
-    a => xs => [...xs].reduce(
-        (x, y) => f(x)(y),
-        a
-    );
 ```

@@ -1,3 +1,14 @@
+```javascript
+// indented :: String -> String -> String
+const indented = strIndent =>
+    s => s.split(/[\r\n]/u)
+    .map(
+        x => "" !== x ? strIndent + x : x
+    )
+    .join("\n");
+```
+
+
 ```applescript
 -- indented :: String -> String -> String
 on indented(strIndent, s)
@@ -12,15 +23,4 @@ on indented(strIndent, s)
     end script
     unlines(map(result, |lines|(s)))
 end indented
-```
-
-
-```javascript
-// indented :: String -> String -> String
-const indented = strIndent =>
-    s => s.split(/[\r\n]/u)
-    .map(
-        x => "" !== x ? strIndent + x : x
-    )
-    .join("\n");
 ```

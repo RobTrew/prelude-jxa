@@ -1,3 +1,21 @@
+```javascript
+// nubBy :: (a -> a -> Bool) -> [a] -> [a]
+const nubBy = fEq => {
+    const go = xs => 0 < xs.length ? (() => {
+        const x = xs[0];
+
+        return [x].concat(
+            go(xs.slice(1)
+                .filter(y => !fEq(x)(y))
+            )
+        );
+    })() : [];
+
+    return compose(go, list);
+};
+```
+
+
 ```applescript
 -- nubBy :: (a -> a -> Bool) -> [a] -> [a]
 on nubBy(f, xs)
@@ -27,22 +45,4 @@ on nubBy(f, xs)
     
     go's |λ|(xs)
 end nubBy
-```
-
-
-```javascript
-// nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = fEq => {
-    const go = xs => 0 < xs.length ? (() => {
-        const x = xs[0];
-
-        return [x].concat(
-            go(xs.slice(1)
-                .filter(y => !fEq(x)(y))
-            )
-        );
-    })() : [];
-
-    return compose(go, list);
-};
 ```
