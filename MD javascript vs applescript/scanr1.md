@@ -1,3 +1,15 @@
+```applescript
+-- scanr1 :: (a -> a -> a) -> [a] -> [a]
+on scanr1(f, xs)
+    if length of xs > 0 then
+        scanr(f, item -1 of xs, init(xs))
+    else
+        {}
+    end if
+end scanr1
+```
+
+
 ```javascript
 // scanr1 :: (a -> a -> a) -> [a] -> [a]
 const scanr1 = f =>
@@ -9,16 +21,4 @@ const scanr1 = f =>
             xs.slice(-1)[0]
         )(xs.slice(0, -1))
     ) : [];
-```
-
-
-```applescript
--- scanr1 :: (a -> a -> a) -> [a] -> [a]
-on scanr1(f, xs)
-    if length of xs > 0 then
-        scanr(f, item -1 of xs, init(xs))
-    else
-        {}
-    end if
-end scanr1
 ```

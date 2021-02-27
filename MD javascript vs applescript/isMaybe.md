@@ -1,10 +1,3 @@
-```javascript
-// isMaybe :: a -> Bool
-const isMaybe = x =>
-    "Maybe" === x.type;
-```
-
-
 ```applescript
 -- isMaybe :: a -> Bool
 on isMaybe(x)
@@ -22,4 +15,11 @@ on isMaybe(x)
       false
     end if
 end isMaybe
+```
+
+
+```javascript
+// isMaybe :: a -> Bool
+const isMaybe = x =>
+    "Maybe" === x.type;
 ```
