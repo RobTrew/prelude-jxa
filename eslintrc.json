@@ -47,7 +47,7 @@
         "id-denylist": 2,
         "id-match": 2,
         "indent": 0,
-        "indent-legacy": 2,
+        "indent-legacy": 0,
         "init-declarations": 2,
         "jsx-quotes": 2,
         "key-spacing": 2,

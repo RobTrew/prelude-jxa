@@ -1,3 +1,13 @@
+```javascript
+// map :: (a -> b) -> [a] -> [b]
+const map = f =>
+    // The list obtained by applying f
+    // to each element of xs.
+    // (The image of xs under f).
+    xs => [...xs].map(f);
+```
+
+
 ```applescript
 -- map :: (a -> b) -> [a] -> [b]
 on map(f, xs)
@@ -12,14 +22,4 @@ on map(f, xs)
         return lst
     end tell
 end map
-```
-
-
-```javascript
-// map :: (a -> b) -> [a] -> [b]
-const map = f =>
-    // The list obtained by applying f
-    // to each element of xs.
-    // (The image of xs under f).
-    xs => [...xs].map(f);
 ```

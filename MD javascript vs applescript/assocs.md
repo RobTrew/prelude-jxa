@@ -1,3 +1,12 @@
+```javascript
+// assocs :: Map k a -> [(k, a)]
+const assocs = m =>
+    Object.entries(m).map(
+        kv => Tuple(...kv)
+    );
+```
+
+
 ```applescript
 -- assocs :: Map k a -> [(k, a)]
 on assocs(m)
@@ -13,13 +22,4 @@ on assocs(m)
     end script
     concatMap(go, keys(m))
 end assocs
-```
-
-
-```javascript
-// assocs :: Map k a -> [(k, a)]
-const assocs = m =>
-    Object.entries(m).map(
-        kv => Tuple(...kv)
-    );
 ```

@@ -1,3 +1,24 @@
+```javascript
+// ratio :: Int -> Int -> Ratio Int
+const ratio = a => b => {
+    const go = (x, y) =>
+        0 !== y ? (() => {
+            const d = gcd(x)(y);
+
+            return {
+                type: "Ratio",
+                // numerator
+                "n": quot(x)(d),
+                // denominator
+                "d": quot(y)(d)
+            };
+        })() : undefined;
+
+    return go(a * signum(b), abs(b));
+};
+```
+
+
 ```applescript
 -- ratio :: Int -> Int -> Ratio Int
 on ratio(x, y)
@@ -17,25 +38,4 @@ on ratio(x, y)
     end script
     go's |λ|(x * (signum(y)), abs(y))
 end ratio
-```
-
-
-```javascript
-// ratio :: Int -> Int -> Ratio Int
-const ratio = a => b => {
-    const go = (x, y) =>
-        0 !== y ? (() => {
-            const d = gcd(x)(y);
-
-            return {
-                type: "Ratio",
-                // numerator
-                "n": quot(x)(d),
-                // denominator
-                "d": quot(y)(d)
-            };
-        })() : undefined;
-
-    return go(a * signum(b), abs(b));
-};
 ```
