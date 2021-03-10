@@ -1,12 +1,3 @@
-```javascript
-// anyTree :: (a -> Bool) -> Tree a -> Bool
-const anyTree = p =>
-    // True if p holds for any node of the
-    // tree to which anyTree(p) is applied.
-    foldTree(x => xs => p(x) || xs.some(Boolean));
-```
-
-
 ```applescript
 -- anyTree :: (a -> Bool) -> Tree a -> Bool
 on anyTree(p, tree)
@@ -26,4 +17,13 @@ on anyTree(p, tree)
     end script
     |λ|(tree) of go
 end anyTree
+```
+
+
+```javascript
+// anyTree :: (a -> Bool) -> Tree a -> Bool
+const anyTree = p =>
+    // True if p holds for any node of the
+    // tree to which anyTree(p) is applied.
+    foldTree(x => xs => p(x) || xs.some(Boolean));
 ```

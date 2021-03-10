@@ -2838,7 +2838,7 @@
     ]
   },
   "takeBaseName": {
-    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = strPath =>\n    (\"\" !== strPath) ? (\n        (\"/\" !== strPath[strPath.length - 1]) ? (() => {\n            const fn = strPath.split(\"/\").slice(-1)[0];\n\n            return fn.includes(\".\") ? (\n                fn.split(\".\").slice(0, -1)\n                .join(\".\")\n            ) : fn;\n        })() : \"\"\n    ) : \"\";",
+    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = fp =>\n    (\"\" !== fp) ? (\n        (\"/\" !== fp[fp.length - 1]) ? (() => {\n            const fn = fp.split(\"/\").slice(-1)[0];\n\n            return fn.includes(\".\") ? (\n                fn.split(\".\").slice(0, -1)\n                .join(\".\")\n            ) : fn;\n        })() : \"\"\n    ) : \"\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3249,7 +3249,7 @@
     ]
   },
   "writeTempFile": {
-    "code": "// writeTempFile :: String -> String -> IO FilePath\nconst writeTempFile = template =>\n    // File name template -> string data -> IO temporary path\n    txt => {\n        const\n            strPath = ObjC.unwrap($.NSTemporaryDirectory()) +\n            takeBaseName(template) + Math.random()\n            .toString()\n            .substring(3) + takeExtension(template);\n\n        return (writeFile(strPath)(txt), strPath);\n    };",
+    "code": "// writeTempFile :: String -> String -> IO FilePath\nconst writeTempFile = template =>\n    // File name template -> string data -> IO temporary path\n    txt => {\n        const\n            fp = ObjC.unwrap($.NSTemporaryDirectory()) +\n            takeBaseName(template) + Math.random()\n            .toString()\n            .substring(3) + takeExtension(template);\n\n        return (writeFile(fp)(txt), fp);\n    };",
     "tags": [
       "JS Prelude",
       "jxa"

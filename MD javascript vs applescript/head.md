@@ -1,13 +1,3 @@
-```javascript
-// head :: [a] -> a
-const head = xs => (
-    ys => ys.length ? (
-        ys[0]
-    ) : undefined
-)(list(xs));
-```
-
-
 ```applescript
 -- head :: [a] -> a
 on head(xs)
@@ -17,4 +7,14 @@ on head(xs)
         item 1 of xs
     end if
 end head
+```
+
+
+```javascript
+// head :: [a] -> a
+const head = xs => (
+    ys => ys.length ? (
+        ys[0]
+    ) : undefined
+)(list(xs));
 ```

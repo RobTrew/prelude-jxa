@@ -1,3 +1,12 @@
+```applescript
+-- properFraction :: Real -> (Int, Real)
+on properFraction(n)
+    set i to (n div 1)
+    Tuple(i, n - i)
+end properFraction
+```
+
+
 ```javascript
 // properFraction :: Real -> (Int, Real)
 const properFraction = n => {
@@ -5,13 +14,4 @@ const properFraction = n => {
 
     return Tuple(i)(n - i);
 };
-```
-
-
-```applescript
--- properFraction :: Real -> (Int, Real)
-on properFraction(n)
-    set i to (n div 1)
-    Tuple(i, n - i)
-end properFraction
 ```

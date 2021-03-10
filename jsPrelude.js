@@ -4219,10 +4219,10 @@ const takeAround = p => xs => {
 };
 
 // takeBaseName :: FilePath -> String
-const takeBaseName = strPath =>
-    ("" !== strPath) ? (
-        ("/" !== strPath[strPath.length - 1]) ? (() => {
-            const fn = strPath.split("/").slice(-1)[0];
+const takeBaseName = fp =>
+    ("" !== fp) ? (
+        ("/" !== fp[fp.length - 1]) ? (() => {
+            const fn = fp.split("/").slice(-1)[0];
 
             return fn.includes(".") ? (
                 fn.split(".").slice(0, -1)
