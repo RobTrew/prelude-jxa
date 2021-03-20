@@ -4,8 +4,9 @@
 on take(n, xs)
     set c to class of xs
     if list is c then
-        if 0 < n then
-            items 1 thru min(n, length of xs) of xs
+        set lng to length of xs
+        if 0 < n and 0 < lng then
+            items 1 thru min(n, lng) of xs
         else
             {}
         end if

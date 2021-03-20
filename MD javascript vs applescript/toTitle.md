@@ -13,9 +13,7 @@ end toTitle
 ```javascript
 // toTitle :: String -> String
 const toTitle = s =>
-    // NB this does not model any regional or cultural conventions.
-    // It simply simply capitalizes the first character of each word.
-    regexMatches(/(\w)(\w*)(\b[\W]*|$)/gu)(s)
-    .map(ms => ms[1].toUpperCase() + ms[2].toLowerCase() + ms[3])
-    .join("");
+    0 < s.length ? (
+        `${toUpper(s[0])}${toLower(s.slice(1))}`
+    ) : "";
 ```

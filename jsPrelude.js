@@ -2925,6 +2925,9 @@ const minimumOn = f =>
 
 // mod :: Int -> Int -> Int
 const mod = n =>
+    // Inherits the sign of the *divisor* for non zero
+    // results. Compare with `rem`, which inherits
+    // the sign of the *dividend*.
     d => (n % d) + (
         signum(n) === signum(-d) ? (
             d
@@ -3424,6 +3427,9 @@ const regexMatches = rgx =>
 
 // rem :: Int -> Int -> Int
 const rem = n =>
+    // Inherits the sign of the *dividend* for non-zero
+    // results. Compare with `mod`, which inherits
+    // the sign of the *divisor*.
     m => n % m;
 
 // repeat :: a -> Generator [a]
@@ -3748,10 +3754,10 @@ const showMenuLR = blnMult =>
     // An optionally multi-choice menu, with
     // a given title and prompt string.
     // Listing the strings in xs, with
-    // the the string `selected` pre-selected
+    // the string `selected` pre-selected
     // if found in xs.
-    title => prompt => xs =>
-    selected => 0 < xs.length ? (() => {
+    menuTitle => prompt => selected => xs =>
+    0 < xs.length ? (() => {
         const sa = Object.assign(
             Application("System Events"), {
                 includeStandardAdditions: true
@@ -3760,7 +3766,7 @@ const showMenuLR = blnMult =>
         sa.activate();
 
         const v = sa.chooseFromList(xs, {
-            withTitle: title,
+            withTitle: menuTitle,
             withPrompt: prompt,
             defaultItems: xs.includes(selected) ? (
                 [selected]
@@ -4405,11 +4411,9 @@ const toSentence = s =>
 
 // toTitle :: String -> String
 const toTitle = s =>
-    // NB this does not model any regional or cultural conventions.
-    // It simply simply capitalizes the first character of each word.
-    regexMatches(/(\w)(\w*)(\b[\W]*|$)/gu)(s)
-    .map(ms => ms[1].toUpperCase() + ms[2].toLowerCase() + ms[3])
-    .join("");
+    0 < s.length ? (
+        `${toUpper(s[0])}${toLower(s.slice(1))}`
+    ) : "";
 
 // toUpper :: String -> String
 const toUpper = s =>
@@ -5159,6 +5163,17 @@ const zipWithList = f =>
             (x, i) => f(x)(ys_[i])
         );
     })([...xs], [...ys]);
+
+// zipWithList_ :: (a -> b -> c) -> [a] -> [b] -> [c]
+const zipWithList_ = f =>
+    // A list constructed by zipping with a
+    // custom function, rather than with the
+    // default tuple constructor.
+    xs => ys => take(
+        Math.min(xs.length, ys.length)
+    )(
+        xs.map((x, i) => f(x)(ys[i]))
+    );
 
 // zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]
 const zipWithLong = f => {

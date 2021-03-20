@@ -213,7 +213,7 @@ const fileStatus = fp => {
 
 // fileUTI :: FilePath -> Either String String
 const fileUTI = fp => {
-    // ObjC.import('AppKit')
+    // ObjC.import("AppKit")
     const
         e = $(),
         uti = $.NSWorkspace.sharedWorkspace

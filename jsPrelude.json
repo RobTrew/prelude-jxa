@@ -845,7 +845,7 @@
     ]
   },
   "fileUTI": {
-    "code": "// fileUTI :: FilePath -> Either String String\nconst fileUTI = fp => {\n    // ObjC.import('AppKit')\n    const\n        e = $(),\n        uti = $.NSWorkspace.sharedWorkspace\n        .typeOfFileError(fp, e);\n\n    return uti.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(uti));\n};",
+    "code": "// fileUTI :: FilePath -> Either String String\nconst fileUTI = fp => {\n    // ObjC.import(\"AppKit\")\n    const\n        e = $(),\n        uti = $.NSWorkspace.sharedWorkspace\n        .typeOfFileError(fp, e);\n\n    return uti.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(uti));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -1921,7 +1921,7 @@
     ]
   },
   "mod": {
-    "code": "// mod :: Int -> Int -> Int\nconst mod = n =>\n    d => (n % d) + (\n        signum(n) === signum(-d) ? (\n            d\n        ) : 0\n    );",
+    "code": "// mod :: Int -> Int -> Int\nconst mod = n =>\n    // Inherits the sign of the *divisor* for non zero\n    // results. Compare with `rem`, which inherits\n    // the sign of the *dividend*.\n    d => (n % d) + (\n        signum(n) === signum(-d) ? (\n            d\n        ) : 0\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2304,7 +2304,7 @@
     ]
   },
   "rem": {
-    "code": "// rem :: Int -> Int -> Int\nconst rem = n =>\n    m => n % m;",
+    "code": "// rem :: Int -> Int -> Int\nconst rem = n =>\n    // Inherits the sign of the *dividend* for non-zero\n    // results. Compare with `mod`, which inherits\n    // the sign of the *divisor*.\n    m => n % m;",
     "tags": [
       "JS Prelude",
       "core"
@@ -2561,7 +2561,7 @@
     ]
   },
   "showMenuLR": {
-    "code": "// showMenuLR :: Bool -> String -> String ->\n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with\n    // a given title and prompt string.\n    // Listing the strings in xs, with\n    // the the string `selected` pre-selected\n    // if found in xs.\n    title => prompt => xs =>\n    selected => 0 < xs.length ? (() => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        sa.activate();\n\n        const v = sa.chooseFromList(xs, {\n            withTitle: title,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: \"OK\",\n            cancelButtonName: \"Cancel\",\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left(`User cancelled ${title} menu.`);\n    })() : Left(`${title}: No items to choose from.`);",
+    "code": "// showMenuLR :: Bool -> String -> String ->\n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with\n    // a given title and prompt string.\n    // Listing the strings in xs, with\n    // the string `selected` pre-selected\n    // if found in xs.\n    menuTitle => prompt => selected => xs =>\n    0 < xs.length ? (() => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        sa.activate();\n\n        const v = sa.chooseFromList(xs, {\n            withTitle: menuTitle,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: \"OK\",\n            cancelButtonName: \"Cancel\",\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left(`User cancelled ${title} menu.`);\n    })() : Left(`${title}: No items to choose from.`);",
     "tags": [
       "JS Prelude"
     ]
@@ -2950,7 +2950,7 @@
     ]
   },
   "toTitle": {
-    "code": "// toTitle :: String -> String\nconst toTitle = s =>\n    // NB this does not model any regional or cultural conventions.\n    // It simply simply capitalizes the first character of each word.\n    regexMatches(/(\\w)(\\w*)(\\b[\\W]*|$)/gu)(s)\n    .map(ms => ms[1].toUpperCase() + ms[2].toLowerCase() + ms[3])\n    .join(\"\");",
+    "code": "// toTitle :: String -> String\nconst toTitle = s =>\n    0 < s.length ? (\n        `${toUpper(s[0])}${toLower(s.slice(1))}`\n    ) : \"\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3320,6 +3320,12 @@
   },
   "zipWithList": {
     "code": "// zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWithList = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => ((xs_, ys_) => {\n        const lng = Math.min(length(xs_), length(ys_));\n\n        return take(lng)(xs_).map(\n            (x, i) => f(x)(ys_[i])\n        );\n    })([...xs], [...ys]);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "zipWithList_": {
+    "code": "// zipWithList_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWithList_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => take(\n        Math.min(xs.length, ys.length)\n    )(\n        xs.map((x, i) => f(x)(ys[i]))\n    );",
     "tags": [
       "JS Prelude"
     ]
