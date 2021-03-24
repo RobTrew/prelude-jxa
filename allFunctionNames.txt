@@ -153,6 +153,8 @@ fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 fmapTree :: (a -> b) -> Tree a -> Tree b
 fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
+foldList :: Monoid m => [m] -> m
+foldMapList :: Monoid m => (a -> m) -> t a -> m
 foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 foldTree :: (a -> [b] -> b) -> Tree a -> b
 foldl :: (a -> b -> a) -> a -> [b] -> a
@@ -290,6 +292,7 @@ mconcatOrd :: [Ordering] -> Ordering
 mean :: [Num] -> Num
 measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
 member :: Key -> Dict -> Bool
+mempty :: a -> a
 merge :: Ord a => [a] -> [a] -> [a]
 mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 min :: Ord a => a -> a -> a
@@ -421,6 +424,7 @@ span :: (a -> Bool) -> [a] -> ([a], [a])
 splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 splitAt :: Int -> [a] -> ([a], [a])
 splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
+splitExtension :: FilePath -> (String, String)
 splitFileName :: FilePath -> (String, String)
 splitOn :: [a] -> [a] -> [[a]]
 splitRegex :: Regex -> String -> [String]

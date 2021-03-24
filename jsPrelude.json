@@ -994,8 +994,20 @@
       "JS Prelude"
     ]
   },
+  "foldList": {
+    "code": "// foldList :: Monoid m => [m] -> m\nconst foldList = xs =>\n    // The elements of xs combined.\n    foldMapList(x => x)(xs);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "foldMapList": {
+    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over a the combined values of a structure.\n    xs => 0 < xs.length ? (\n        foldl1(\n            compose(mappend, f)\n        )(xs)\n    ) : [];",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "foldMapTree": {
-    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree =>\n        0 < tree.nest.length ? (\n            mappend(\n                f(tree.root)\n            )(\n                foldl1(mappend)(\n                    tree.nest.map(go)\n                )\n            )\n        ) : f(tree.root);\n\n    return go;\n};",
+    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree => {\n        const\n            x = root(tree),\n            xs = nest(tree);\n        return 0 < xs.length ? mappend(\n            f(x)\n        )(\n            foldl1(mappend)(\n                xs.map(go)\n            )\n        ) : f(x);\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1009,7 +1021,7 @@
     ]
   },
   "foldl": {
-    "code": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = f =>\n    a => xs => [...xs].reduce(\n        (x, y) => f(x)(y),\n        a\n    );",
+    "code": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = f =>\n    // Note that that the signature of foldl differs\n    // from that of foldr - the positions of \n    // accumulator and current value in f are reversed.\n    a => xs => [...xs].reduce(\n        (x, y) => f(x)(y),\n        a\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -1035,7 +1047,7 @@
     ]
   },
   "foldr": {
-    "code": "// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f =>\n    // Note that that the Haskell signature of foldr differs from that of\n    // foldl - the positions of accumulator and current value are reversed\n    acc => xs => [...xs].reduceRight(\n        (a, x) => f(x)(a),\n        acc\n    );",
+    "code": "// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f =>\n    // Note that that the signature of foldr differs\n    // from that of foldl - the positions of \n    // current value and accumulator in f are reversed\n    acc => xs => [...xs].reduceRight(\n        (a, x) => f(x)(a),\n        acc\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -1863,6 +1875,12 @@
       "JS Prelude"
     ]
   },
+  "mempty": {
+    "code": "// mempty :: a -> a\nconst mempty = v => {\n    const t = typeName(v);\n\n    return ({\n        \"List\": () => [],\n        \"Maybe\": () => Nothing(),\n        \"Num\": () => 0,\n        \"String\": () => \"\",\n        \"Tuple\": () => Tuple(mempty(v[0]))(mempty(v[1])),\n        \"Node\": () => Node(\"\")([])\n    })[t]();\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "merge": {
     "code": "// merge :: Ord a => [a] -> [a] -> [a]\nconst merge = xs =>\n    // An ordered list derived by merging\n    // two other ordered lists.\n    mergeBy(compare)(xs);",
     "tags": [
@@ -2682,6 +2700,12 @@
   },
   "splitBy": {
     "code": "// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) ->\n// String -> [String]\nconst splitBy = p =>\n    // Splitting not on a delimiter, but wherever the\n    // relationship between consecutive terms matches\n    // a binary predicate.\n    xs => (xs.length < 2) ? [xs] : (() => {\n        const\n            bln = \"string\" === typeof xs,\n            ys = bln ? xs.split(\"\") : xs,\n            h = ys[0],\n            parts = ys.slice(1)\n            .reduce(([acc, active, prev], x) =>\n                p(prev)(x) ? (\n                    [acc.concat([active]), [x], x]\n                ) : [acc, active.concat(x), x], [\n                    [],\n                    [h],\n                    h\n                ]);\n\n        return (bln ? (\n            ps => ps.map(cs => \"\".concat(...cs))\n        ) : x => x)(parts[0].concat([parts[1]]));\n    })();",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "splitExtension": {
+    "code": "// splitExtension :: FilePath -> (String, String)\nconst splitExtension = fp => {\n    // A tuple of the basename and the extension,\n    // in which the latter includes the \".\"\n    const\n        xs = fp.split(\".\"),\n        lng = xs.length;\n\n    return 1 < lng ? (\n        Tuple(\n            xs.slice(0, -1).join(\".\")\n        )(\n            `.${xs[lng - 1]}`\n        )\n    ) : Tuple(fp)(\"\");\n};",
     "tags": [
       "JS Prelude"
     ]

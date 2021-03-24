@@ -1561,23 +1561,36 @@ const fmapTuple = f => tpl =>
         f(tpl[1])
     );
 
+// foldList :: Monoid m => [m] -> m
+const foldList = xs =>
+    // The elements of xs combined.
+    foldMapList(x => x)(xs);
+
+// foldMapList :: Monoid m => (a -> m) -> t a -> m
+const foldMapList = f =>
+    // f mapped over a the combined values of a structure.
+    xs => 0 < xs.length ? (
+        foldl1(
+            compose(mappend, f)
+        )(xs)
+    ) : [];
+
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 const foldMapTree = f => {
     // Result of mapping each element of the tree to
     // a monoid, and combining with mappend.
-    const go = tree =>
-        0 < tree.nest.length ? (
-            mappend(
-                f(tree.root)
-            )(
-                foldl1(mappend)(
-                    tree.nest.map(go)
-                )
+    const go = tree => {
+        const
+            x = root(tree),
+            xs = nest(tree);
+        return 0 < xs.length ? mappend(
+            f(x)
+        )(
+            foldl1(mappend)(
+                xs.map(go)
             )
-        ) : f(tree.root);
-
-    return go;
-};
+        ) : f(x);
+    };
 
 // foldTree :: (a -> [b] -> b) -> Tree a -> b
 const foldTree = f => {
@@ -1594,6 +1607,9 @@ const foldTree = f => {
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = f =>
+    // Note that that the signature of foldl differs
+    // from that of foldr - the positions of 
+    // accumulator and current value in f are reversed.
     a => xs => [...xs].reduce(
         (x, y) => f(x)(y),
         a
@@ -1631,8 +1647,9 @@ const foldlTree = f =>
 
 // foldr :: (a -> b -> b) -> b -> [a] -> b
 const foldr = f =>
-    // Note that that the Haskell signature of foldr differs from that of
-    // foldl - the positions of accumulator and current value are reversed
+    // Note that that the signature of foldr differs
+    // from that of foldl - the positions of 
+    // current value and accumulator in f are reversed
     acc => xs => [...xs].reduceRight(
         (a, x) => f(x)(a),
         acc
@@ -2819,6 +2836,20 @@ const member = k =>
     // True if dict contains the key k.
     dict => k in dict;
 
+// mempty :: a -> a
+const mempty = v => {
+    const t = typeName(v);
+
+    return ({
+        "List": () => [],
+        "Maybe": () => Nothing(),
+        "Num": () => 0,
+        "String": () => "",
+        "Tuple": () => Tuple(mempty(v[0]))(mempty(v[1])),
+        "Node": () => Node("")([])
+    })[t]();
+};
+
 // merge :: Ord a => [a] -> [a] -> [a]
 const merge = xs =>
     // An ordered list derived by merging
@@ -3968,6 +3999,23 @@ const splitBy = p =>
             ps => ps.map(cs => "".concat(...cs))
         ) : x => x)(parts[0].concat([parts[1]]));
     })();
+
+// splitExtension :: FilePath -> (String, String)
+const splitExtension = fp => {
+    // A tuple of the basename and the extension,
+    // in which the latter includes the "."
+    const
+        xs = fp.split("."),
+        lng = xs.length;
+
+    return 1 < lng ? (
+        Tuple(
+            xs.slice(0, -1).join(".")
+        )(
+            `.${xs[lng - 1]}`
+        )
+    ) : Tuple(fp)("");
+};
 
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
