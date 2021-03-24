@@ -2608,7 +2608,8 @@ const mappend = a =>
         "Maybe": () => mappendMaybe,
         "Num": () => mappendOrd,
         "String": () => append,
-        "Tuple": () => mappendTuple
+        "Tuple": () => mappendTupleN,
+        "TupleN": () => mappendTupleN
     })[typeName(a)]()(a);
 
 // mappendComparing (<>) :: (a -> a -> Bool)
@@ -2653,6 +2654,19 @@ const mappendTuple = t => t1 =>
     )(
         mappend(t[1])(t1[1])
     );
+
+// mappendTupleN (<>) ::
+// (a, b, ...) -> (a, b, ...) -> (a, b, ...)
+const mappendTupleN = t => t1 => {
+    const lng = t.length;
+
+    return lng === t1.length ? (
+        TupleN(
+            ...Array.from(t)
+            .map((x, i) => mappend(x)(t1[i]))
+        )
+    ) : undefined;
+};
 
 // matching :: [a] -> (a -> Int -> [a] -> Bool)
 const matching = pat => {
@@ -2845,8 +2859,12 @@ const mempty = v => {
         "Maybe": () => Nothing(),
         "Num": () => 0,
         "String": () => "",
-        "Tuple": () => Tuple(mempty(v[0]))(mempty(v[1])),
-        "Node": () => Node("")([])
+        "Tuple": () => Tuple(
+            mempty(v[0])
+        )(
+            mempty(v[1])
+        ),
+        "Node": () => Node(mempty(root(v)))([])
     })[t]();
 };
 
@@ -3673,8 +3691,13 @@ const show = x => {
             "Tuple": () => showTuple
         },
         str = y => y.toString(),
-        t = typeName(x),
-        instance = instances[t];
+        t = typeName(x);
+
+    const instance = instances[
+        (/^Tuple/u).test(t) ? (
+            "Tuple"
+        ) : t
+    ];
 
     return Boolean(instance) ? (
         "Node" !== t ? (
@@ -4807,9 +4830,15 @@ const typeName = v => {
             "List"
         ) : "Date" === v.constructor.name ? (
             "Date"
-        ) : null !== v ? (
-            v.type || "Dict"
-        ) : "Bottom"
+        ) : null !== v ? (() => {
+            const ct = v.type;
+
+            return Boolean(ct) ? (
+                (/Tuple\d/u).test(ct) ? (
+                    "TupleN"
+                ) : ct
+            ) : "Dict";
+        })() : "Bottom"
     ) : {
         "boolean": "Bool",
         "date": "Date",

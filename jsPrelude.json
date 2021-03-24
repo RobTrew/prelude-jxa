@@ -1757,7 +1757,7 @@
     ]
   },
   "mappend (<>)": {
-    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation\n    // defined for various monoids.\n    ({\n        \"(a -> b)\": () => mappendFn,\n        \"List\": () => append,\n        \"Maybe\": () => mappendMaybe,\n        \"Num\": () => mappendOrd,\n        \"String\": () => append,\n        \"Tuple\": () => mappendTuple\n    })[typeName(a)]()(a);",
+    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation\n    // defined for various monoids.\n    ({\n        \"(a -> b)\": () => mappendFn,\n        \"List\": () => append,\n        \"Maybe\": () => mappendMaybe,\n        \"Num\": () => mappendOrd,\n        \"String\": () => append,\n        \"Tuple\": () => mappendTupleN,\n        \"TupleN\": () => mappendTupleN\n    })[typeName(a)]()(a);",
     "tags": [
       "JS Prelude"
     ]
@@ -1788,6 +1788,12 @@
   },
   "mappendTuple (<>)": {
     "code": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = t => t1 =>\n    Tuple(\n        mappend(t[0])(t1[0])\n    )(\n        mappend(t[1])(t1[1])\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "mappendTupleN (<>)": {
+    "code": "// mappendTupleN (<>) ::\n// (a, b, ...) -> (a, b, ...) -> (a, b, ...)\nconst mappendTupleN = t => t1 => {\n    const lng = t.length;\n\n    return lng === t1.length ? (\n        TupleN(\n            ...Array.from(t)\n            .map((x, i) => mappend(x)(t1[i]))\n        )\n    ) : undefined;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1876,7 +1882,7 @@
     ]
   },
   "mempty": {
-    "code": "// mempty :: a -> a\nconst mempty = v => {\n    const t = typeName(v);\n\n    return ({\n        \"List\": () => [],\n        \"Maybe\": () => Nothing(),\n        \"Num\": () => 0,\n        \"String\": () => \"\",\n        \"Tuple\": () => Tuple(mempty(v[0]))(mempty(v[1])),\n        \"Node\": () => Node(\"\")([])\n    })[t]();\n};",
+    "code": "// mempty :: a -> a\nconst mempty = v => {\n    const t = typeName(v);\n\n    return ({\n        \"List\": () => [],\n        \"Maybe\": () => Nothing(),\n        \"Num\": () => 0,\n        \"String\": () => \"\",\n        \"Tuple\": () => Tuple(\n            mempty(v[0])\n        )(\n            mempty(v[1])\n        ),\n        \"Node\": () => Node(mempty(root(v)))([])\n    })[t]();\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2500,7 +2506,7 @@
     ]
   },
   "show": {
-    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        instances = {\n            \"(a -> b)\": () => showFn,\n            \"Bool\": () => str,\n            \"Bottom\": () => showUndefined,\n            \"Date\": () => a => a,\n            \"Dict\": () => a => a,\n            \"Either\": () => showLR,\n            \"List\": () => showList,\n            \"Maybe\": () => showMaybe,\n            \"Num\": () => str,\n            \"Ratio\": () => showRatio,\n            \"String\": () => str,\n            \"Tuple\": () => showTuple\n        },\n        str = y => y.toString(),\n        t = typeName(x),\n        instance = instances[t];\n\n    return Boolean(instance) ? (\n        \"Node\" !== t ? (\n            JSON.stringify(\n                x,\n                (_, v) => instance()(v)\n            )\n        ) : showTree(x)\n    ) : `No Show instance has been defined for ${t}.`;\n};",
+    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        instances = {\n            \"(a -> b)\": () => showFn,\n            \"Bool\": () => str,\n            \"Bottom\": () => showUndefined,\n            \"Date\": () => a => a,\n            \"Dict\": () => a => a,\n            \"Either\": () => showLR,\n            \"List\": () => showList,\n            \"Maybe\": () => showMaybe,\n            \"Num\": () => str,\n            \"Ratio\": () => showRatio,\n            \"String\": () => str,\n            \"Tuple\": () => showTuple\n        },\n        str = y => y.toString(),\n        t = typeName(x);\n\n    const instance = instances[\n        (/^Tuple/u).test(t) ? (\n            \"Tuple\"\n        ) : t\n    ];\n\n    return Boolean(instance) ? (\n        \"Node\" !== t ? (\n            JSON.stringify(\n                x,\n                (_, v) => instance()(v)\n            )\n        ) : showTree(x)\n    ) : `No Show instance has been defined for ${t}.`;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3097,7 +3103,7 @@
     ]
   },
   "typeName": {
-    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t ? (\n        Array.isArray(v) ? (\n            \"List\"\n        ) : \"Date\" === v.constructor.name ? (\n            \"Date\"\n        ) : null !== v ? (\n            v.type || \"Dict\"\n        ) : \"Bottom\"\n    ) : {\n        \"boolean\": \"Bool\",\n        \"date\": \"Date\",\n        \"number\": \"Num\",\n        \"string\": \"String\",\n        \"function\": \"(a -> b)\"\n    } [t] || \"Bottom\";\n};",
+    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t ? (\n        Array.isArray(v) ? (\n            \"List\"\n        ) : \"Date\" === v.constructor.name ? (\n            \"Date\"\n        ) : null !== v ? (() => {\n            const ct = v.type;\n\n            return Boolean(ct) ? (\n                (/Tuple\\d/u).test(ct) ? (\n                    \"TupleN\"\n                ) : ct\n            ) : \"Dict\";\n        })() : \"Bottom\"\n    ) : {\n        \"boolean\": \"Bool\",\n        \"date\": \"Date\",\n        \"number\": \"Num\",\n        \"string\": \"String\",\n        \"function\": \"(a -> b)\"\n    } [t] || \"Bottom\";\n};",
     "tags": [
       "JS Prelude"
     ]

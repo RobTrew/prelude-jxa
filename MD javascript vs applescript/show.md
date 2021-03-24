@@ -68,8 +68,13 @@ const show = x => {
             "Tuple": () => showTuple
         },
         str = y => y.toString(),
-        t = typeName(x),
-        instance = instances[t];
+        t = typeName(x);
+
+    const instance = instances[
+        (/^Tuple/u).test(t) ? (
+            "Tuple"
+        ) : t
+    ];
 
     return Boolean(instance) ? (
         "Node" !== t ? (

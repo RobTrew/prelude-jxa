@@ -279,6 +279,7 @@ mappendFn (<>) :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
 mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 mappendOrd (<>) :: Ordering -> Ordering -> Ordering
 mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
+mappendTupleN (<>) :: (a, b, ...) -> (a, b, ...) -> (a, b, ...)
 matching :: [a] -> (a -> Int -> [a] -> Bool)
 max :: Ord a => a -> a -> a
 maxBound :: a -> a

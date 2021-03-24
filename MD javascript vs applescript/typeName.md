@@ -33,9 +33,15 @@ const typeName = v => {
             "List"
         ) : "Date" === v.constructor.name ? (
             "Date"
-        ) : null !== v ? (
-            v.type || "Dict"
-        ) : "Bottom"
+        ) : null !== v ? (() => {
+            const ct = v.type;
+
+            return Boolean(ct) ? (
+                (/Tuple\d/u).test(ct) ? (
+                    "TupleN"
+                ) : ct
+            ) : "Dict";
+        })() : "Bottom"
     ) : {
         "boolean": "Bool",
         "date": "Date",

@@ -35,6 +35,7 @@ const mappend = a =>
         "Maybe": () => mappendMaybe,
         "Num": () => mappendOrd,
         "String": () => append,
-        "Tuple": () => mappendTuple
+        "Tuple": () => mappendTupleN,
+        "TupleN": () => mappendTupleN
     })[typeName(a)]()(a);
 ```

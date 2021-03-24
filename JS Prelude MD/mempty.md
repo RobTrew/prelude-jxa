@@ -8,8 +8,12 @@ const mempty = v => {
         "Maybe": () => Nothing(),
         "Num": () => 0,
         "String": () => "",
-        "Tuple": () => Tuple(mempty(v[0]))(mempty(v[1])),
-        "Node": () => Node("")([])
+        "Tuple": () => Tuple(
+            mempty(v[0])
+        )(
+            mempty(v[1])
+        ),
+        "Node": () => Node(mempty(root(v)))([])
     })[t]();
 };
 ```
