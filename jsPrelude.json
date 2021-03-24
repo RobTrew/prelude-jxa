@@ -1001,7 +1001,7 @@
     ]
   },
   "foldMapList": {
-    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over a the combined values of a structure.\n    xs => 0 < xs.length ? (\n        foldl1(\n            compose(mappend, f)\n        )(xs)\n    ) : [];",
+    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over the combined values of a structure.\n    xs => 0 < xs.length ? (\n        foldl1(\n            compose(mappend, f)\n        )(xs)\n    ) : [];\n",
     "tags": [
       "JS Prelude"
     ]
