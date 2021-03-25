@@ -26,6 +26,7 @@ const foldMapTree = f => {
         const
             x = root(tree),
             xs = nest(tree);
+
         return 0 < xs.length ? mappend(
             f(x)
         )(
@@ -34,4 +35,7 @@ const foldMapTree = f => {
             )
         ) : f(x);
     };
+
+    return go;
+};
 ```

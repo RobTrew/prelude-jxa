@@ -12,7 +12,7 @@ const typeName = v => {
             const ct = v.type;
 
             return Boolean(ct) ? (
-                (/Tuple\d/u).test(ct) ? (
+                (/Tuple\d+/u).test(ct) ? (
                     "TupleN"
                 ) : ct
             ) : "Dict";

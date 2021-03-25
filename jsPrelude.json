@@ -1007,7 +1007,7 @@
     ]
   },
   "foldMapTree": {
-    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree => {\n        const\n            x = root(tree),\n            xs = nest(tree);\n        return 0 < xs.length ? mappend(\n            f(x)\n        )(\n            foldl1(mappend)(\n                xs.map(go)\n            )\n        ) : f(x);\n    };",
+    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree => {\n        const\n            x = root(tree),\n            xs = nest(tree);\n\n        return 0 < xs.length ? mappend(\n            f(x)\n        )(\n            foldl1(mappend)(\n                xs.map(go)\n            )\n        ) : f(x);\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1021,7 +1021,7 @@
     ]
   },
   "foldl": {
-    "code": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = f =>\n    // Note that that the signature of foldl differs\n    // from that of foldr - the positions of \n    // accumulator and current value in f are reversed.\n    a => xs => [...xs].reduce(\n        (x, y) => f(x)(y),\n        a\n    );",
+    "code": "// foldl :: (a -> b -> a) -> a -> [b] -> a\nconst foldl = f =>\n    // Note that that the signature of foldl differs\n    // from that of foldr - the positions of\n    // accumulator and current value in f are reversed.\n    a => xs => [...xs].reduce(\n        (x, y) => f(x)(y),\n        a\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -1047,7 +1047,7 @@
     ]
   },
   "foldr": {
-    "code": "// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f =>\n    // Note that that the signature of foldr differs\n    // from that of foldl - the positions of \n    // current value and accumulator in f are reversed\n    acc => xs => [...xs].reduceRight(\n        (a, x) => f(x)(a),\n        acc\n    );",
+    "code": "// foldr :: (a -> b -> b) -> b -> [a] -> b\nconst foldr = f =>\n    // Note that that the signature of foldr differs\n    // from that of foldl - the positions of\n    // current value and accumulator in f are reversed\n    acc => xs => [...xs].reduceRight(\n        (a, x) => f(x)(a),\n        acc\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -3103,7 +3103,7 @@
     ]
   },
   "typeName": {
-    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t ? (\n        Array.isArray(v) ? (\n            \"List\"\n        ) : \"Date\" === v.constructor.name ? (\n            \"Date\"\n        ) : null !== v ? (() => {\n            const ct = v.type;\n\n            return Boolean(ct) ? (\n                (/Tuple\\d/u).test(ct) ? (\n                    \"TupleN\"\n                ) : ct\n            ) : \"Dict\";\n        })() : \"Bottom\"\n    ) : {\n        \"boolean\": \"Bool\",\n        \"date\": \"Date\",\n        \"number\": \"Num\",\n        \"string\": \"String\",\n        \"function\": \"(a -> b)\"\n    } [t] || \"Bottom\";\n};",
+    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t ? (\n        Array.isArray(v) ? (\n            \"List\"\n        ) : \"Date\" === v.constructor.name ? (\n            \"Date\"\n        ) : null !== v ? (() => {\n            const ct = v.type;\n\n            return Boolean(ct) ? (\n                (/Tuple\\d+/u).test(ct) ? (\n                    \"TupleN\"\n                ) : ct\n            ) : \"Dict\";\n        })() : \"Bottom\"\n    ) : {\n        \"boolean\": \"Bool\",\n        \"date\": \"Date\",\n        \"number\": \"Num\",\n        \"string\": \"String\",\n        \"function\": \"(a -> b)\"\n    } [t] || \"Bottom\";\n};",
     "tags": [
       "JS Prelude"
     ]

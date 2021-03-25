@@ -1584,6 +1584,7 @@ const foldMapTree = f => {
         const
             x = root(tree),
             xs = nest(tree);
+
         return 0 < xs.length ? mappend(
             f(x)
         )(
@@ -1592,6 +1593,9 @@ const foldMapTree = f => {
             )
         ) : f(x);
     };
+
+    return go;
+};
 
 // foldTree :: (a -> [b] -> b) -> Tree a -> b
 const foldTree = f => {
@@ -1609,7 +1613,7 @@ const foldTree = f => {
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = f =>
     // Note that that the signature of foldl differs
-    // from that of foldr - the positions of 
+    // from that of foldr - the positions of
     // accumulator and current value in f are reversed.
     a => xs => [...xs].reduce(
         (x, y) => f(x)(y),
@@ -1649,7 +1653,7 @@ const foldlTree = f =>
 // foldr :: (a -> b -> b) -> b -> [a] -> b
 const foldr = f =>
     // Note that that the signature of foldr differs
-    // from that of foldl - the positions of 
+    // from that of foldl - the positions of
     // current value and accumulator in f are reversed
     acc => xs => [...xs].reduceRight(
         (a, x) => f(x)(a),
@@ -4835,7 +4839,7 @@ const typeName = v => {
             const ct = v.type;
 
             return Boolean(ct) ? (
-                (/Tuple\d/u).test(ct) ? (
+                (/Tuple\d+/u).test(ct) ? (
                     "TupleN"
                 ) : ct
             ) : "Dict";
