@@ -859,7 +859,7 @@
     ]
   },
   "filterGen": {
-    "code": "// filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]\nconst filterGen = p => xs => {\n    // Non-finite stream of values which are\n    // drawn from gen, and satisfy p\n    const go = function* () {\n        let x = xs.next();\n\n        while (!x.done) {\n            const v = x.value;\n\n            if (p(v)) {\n                yield v;\n            }\n            x = xs.next();\n        }\n    };\n\n    return go(xs);\n};",
+    "code": "// filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]\nconst filterGen = p =>\n    // A stream of values which are drawn\n    // from a generator, and satisfy p.\n    xs => {\n        const go = function* () {\n            let x = xs.next();\n\n            while (!x.done) {\n                const v = x.value;\n\n                if (p(v)) {\n                    yield v;\n                }\n                x = xs.next();\n            }\n        };\n\n        return go(xs);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1001,7 +1001,7 @@
     ]
   },
   "foldMapList": {
-    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over the combined values of a structure.\n    xs => 0 < xs.length ? (\n        foldl1(\n            compose(mappend, f)\n        )(xs)\n    ) : [];\n",
+    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over the combined values of a structure.\n    xs => 1 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => mappend(a)(f(x)),\n            xs[0]\n        )\n    ) : xs.map(f);",
     "tags": [
       "JS Prelude"
     ]
@@ -2003,14 +2003,14 @@
     ]
   },
   "nub": {
-    "code": "// nub :: [a] -> [a]\nconst nub = xs =>\n  nubBy(eq)(xs);",
+    "code": "// nub :: [a] -> [a]\nconst nub = xs =>\n    [...new Set(xs)]",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "nubBy": {
-    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = fEq => {\n    const go = xs => 0 < xs.length ? (() => {\n        const x = xs[0];\n\n        return [x].concat(\n            go(xs.slice(1)\n                .filter(y => !fEq(x)(y))\n            )\n        );\n    })() : [];\n\n    return compose(go, list);\n};",
+    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    //  (as defined by the equality predicate p)\n    //   are excluded.\n    xs => xs.reduce(\n        (acc, x) => acc.some(p(x)) ? (\n            acc\n        ) : [x].concat(acc),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"

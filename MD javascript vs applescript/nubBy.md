@@ -32,17 +32,14 @@ end nubBy
 
 ```javascript
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = fEq => {
-    const go = xs => 0 < xs.length ? (() => {
-        const x = xs[0];
-
-        return [x].concat(
-            go(xs.slice(1)
-                .filter(y => !fEq(x)(y))
-            )
-        );
-    })() : [];
-
-    return compose(go, list);
-};
+const nubBy = p =>
+    // A sublist of xs from which all duplicates,
+    //  (as defined by the equality predicate p)
+    //   are excluded.
+    xs => xs.reduce(
+        (acc, x) => acc.some(p(x)) ? (
+            acc
+        ) : [x].concat(acc),
+        []
+    );
 ```

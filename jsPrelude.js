@@ -1300,24 +1300,25 @@ const filter = p =>
     xs => [...xs].filter(p);
 
 // filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]
-const filterGen = p => xs => {
-    // Non-finite stream of values which are
-    // drawn from gen, and satisfy p
-    const go = function* () {
-        let x = xs.next();
+const filterGen = p =>
+    // A stream of values which are drawn
+    // from a generator, and satisfy p.
+    xs => {
+        const go = function* () {
+            let x = xs.next();
 
-        while (!x.done) {
-            const v = x.value;
+            while (!x.done) {
+                const v = x.value;
 
-            if (p(v)) {
-                yield v;
+                if (p(v)) {
+                    yield v;
+                }
+                x = xs.next();
             }
-            x = xs.next();
-        }
-    };
+        };
 
-    return go(xs);
-};
+        return go(xs);
+    };
 
 // filterTree (a -> Bool) -> Tree a -> [a]
 const filterTree = p =>
@@ -1569,12 +1570,12 @@ const foldList = xs =>
 // foldMapList :: Monoid m => (a -> m) -> t a -> m
 const foldMapList = f =>
     // f mapped over the combined values of a structure.
-    xs => 0 < xs.length ? (
-        foldl1(
-            compose(mappend, f)
-        )(xs)
-    ) : [];
-
+    xs => 1 < xs.length ? (
+        xs.slice(1).reduce(
+            (a, x) => mappend(a)(f(x)),
+            xs[0]
+        )
+    ) : xs.map(f);
 
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 const foldMapTree = f => {
@@ -3023,22 +3024,19 @@ const notElem = x =>
 
 // nub :: [a] -> [a]
 const nub = xs =>
-  nubBy(eq)(xs);
+    [...new Set(xs)]
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = fEq => {
-    const go = xs => 0 < xs.length ? (() => {
-        const x = xs[0];
-
-        return [x].concat(
-            go(xs.slice(1)
-                .filter(y => !fEq(x)(y))
-            )
-        );
-    })() : [];
-
-    return compose(go, list);
-};
+const nubBy = p =>
+    // A sublist of xs from which all duplicates,
+    //  (as defined by the equality predicate p)
+    //   are excluded.
+    xs => xs.reduce(
+        (acc, x) => acc.some(p(x)) ? (
+            acc
+        ) : [x].concat(acc),
+        []
+    );
 
 // odd :: Int -> Bool
 const odd = n =>

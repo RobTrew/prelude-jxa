@@ -1,17 +1,8 @@
 ```applescript
 -- concat :: [[a]] -> [a]
--- concat :: [String] -> String
 on concat(xs)
-    set lng to length of xs
-    if 0 < lng and string is class of (item 1 of xs) then
-        set acc to ""
-    else
-        set acc to {}
-    end if
-    repeat with i from 1 to lng
-        set acc to acc & item i of xs
-    end repeat
-    acc
+    ((current application's NSArray's arrayWithArray:xs)'s ¬
+        valueForKeyPath:"@unionOfArrays.self") as list
 end concat
 ```
 
