@@ -1,5 +1,7 @@
 ```javascript
-// measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
+// measuredTree :: Tree a -> 
+// Tree (a, {leafSum::Int, layerSum::Int,
+//           nodeSum::Int, index::Int})
 const measuredTree = tree => {
     // A tree in which each node is tupled with
     // a (leafSum, layerSum, nodeSum) measure of its sub-tree,

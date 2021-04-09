@@ -1,10 +1,10 @@
 ```applescript
 -- showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
 on showIntAtBase(base, toDigit, n, rs)
-    script showIt
+    script go
         property f : mReturn(toDigit)
         on |λ|(nd_, r)
-            set {n, d} to ({|1|, |2|} of nd_)
+            set {n, d} to nd_
             set r_ to f's |λ|(d) & r
             if n > 0 then
                 |λ|(quotRem(n, base), r_)
@@ -13,7 +13,7 @@ on showIntAtBase(base, toDigit, n, rs)
             end if
         end |λ|
     end script
-    showIt's |λ|(quotRem(n, base), rs)
+    |λ|(quotRem(n, base), rs) of go
 end showIntAtBase
 ```
 

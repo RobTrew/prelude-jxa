@@ -1007,7 +1007,7 @@
     ]
   },
   "foldMapTree": {
-    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree => {\n        const\n            x = root(tree),\n            xs = nest(tree);\n\n        return 0 < xs.length ? mappend(\n            f(x)\n        )(\n            foldl1(mappend)(\n                xs.map(go)\n            )\n        ) : f(x);\n    };\n\n    return go;\n};",
+    "code": "// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m\nconst foldMapTree = f => {\n    // Result of mapping each element of the tree to\n    // a monoid, and combining with mappend.\n    const go = tree => {\n        const\n            x = root(tree),\n            xs = nest(tree);\n\n        return 0 < xs.length ? (\n            mappend(\n                f(x)\n            )(\n                foldl1(mappend)(xs.map(go))\n            )\n        ) : f(x);\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1254,7 +1254,7 @@
     ]
   },
   "indexedTree": {
-    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value\n    // is paired with a top-down\n    // left-right index, where the root node\n    // starts at the supplied rootIndex;\n    tree => {\n        const go = n => node =>\n            second(\n                Node(Tuple(node.root)(n))\n            )(\n                mapAccumL(go)(1 + n)(\n                    node.nest\n                )\n            );\n\n        return snd(go(rootIndex)(tree));\n    };",
+    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value\n    // is paired with a top-down\n    // left-right index, where the root node\n    // starts at the supplied rootIndex;\n    tree => {\n        const go = n => node =>\n            second(\n                Node(Tuple(root(node))({\n                    index: n\n                }))\n            )(\n                mapAccumL(go)(1 + n)(\n                    nest(node)\n                )\n            );\n\n        return snd(go(rootIndex)(tree));\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1599,7 +1599,7 @@
     ]
   },
   "liftA2List": {
-    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator f lifted to a function over two\n    // lists. op applied to each pair of arguments in the\n    // cartesian product of xs and ys.\n    xs => ys => list(xs).flatMap(\n        x => list(ys).map(op(x))\n    );",
+    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator op applied to each pair of arguments \n    // in the cartesian product of xs and ys.\n    // A binary operator lifed to a function over two lists. \n    xs => ys => list(xs).flatMap(\n        x => list(ys).map(op(x))\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1869,7 +1869,7 @@
     ]
   },
   "measuredTree": {
-    "code": "// measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
+    "code": "// measuredTree :: Tree a -> \n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2053,7 +2053,7 @@
     ]
   },
   "parentIndexedTree": {
-    "code": "// parentIndexedTree :: Tree (a, {...index :: Int}) ->\n// Tree (a, {...index :: Int, parent :: Maybe Int})\nconst parentIndexedTree = tree => {\n    // A tree additionally decorated with parent indices,\n    // derived from a measured tree already decorated with\n    // node indices. (See measuredTree).\n    const go = mb => node => {\n        const\n            x = node.root,\n            measures = x[1];\n\n        return Node(Tuple(x[0])(\n            Object.assign(measures, {\n\n                parent: mb\n\n            })\n        ))(node.nest.map(go(Just(measures.index))));\n    };\n\n    return go(Nothing())(tree);\n};",
+    "code": "// parentIndexedTree :: Tree (a, {...index :: Int}) ->\n// Tree (a, {...index :: Int, parent :: Maybe Int})\nconst parentIndexedTree = tree => {\n    // A tree additionally decorated with parent indices,\n    // derived from a measured tree already decorated with\n    // node indices. (See measuredTree).\n    const go = mb => node => {\n        const\n            x = root(node),\n            measures = x[1];\n\n        return Node(\n            Tuple(x[0])(\n                Object.assign(measures, {\n                    parent: mb\n                })\n            )\n        )(nest(node).map(go(Just(measures.index))));\n    };\n\n    return go(Nothing())(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2506,7 +2506,7 @@
     ]
   },
   "show": {
-    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        instances = {\n            \"(a -> b)\": () => showFn,\n            \"Bool\": () => str,\n            \"Bottom\": () => showUndefined,\n            \"Date\": () => a => a,\n            \"Dict\": () => a => a,\n            \"Either\": () => showLR,\n            \"List\": () => showList,\n            \"Maybe\": () => showMaybe,\n            \"Num\": () => str,\n            \"Ratio\": () => showRatio,\n            \"String\": () => str,\n            \"Tuple\": () => showTuple\n        },\n        str = y => y.toString(),\n        t = typeName(x);\n\n    const instance = instances[\n        (/^Tuple/u).test(t) ? (\n            \"Tuple\"\n        ) : t\n    ];\n\n    return Boolean(instance) ? (\n        \"Node\" !== t ? (\n            JSON.stringify(\n                x,\n                (_, v) => instance()(v)\n            )\n        ) : showTree(x)\n    ) : `No Show instance has been defined for ${t}.`;\n};",
+    "code": "// show :: a -> String\n// show :: a -> Int -> Indented String\nconst show = x => {\n    const\n        instances = {\n            \"(a -> b)\": () => showFn,\n            \"Bool\": () => str,\n            \"Bottom\": () => showUndefined,\n            \"Date\": () => a => a,\n            \"Dict\": () => a => a,\n            \"Either\": () => showLR,\n            \"List\": () => showList,\n            \"Maybe\": () => showMaybe,\n            \"Node\": () => a => a,\n            \"Num\": () => str,\n            \"Ratio\": () => showRatio,\n            \"String\": () => str,\n            \"Tuple\": () => showTuple\n        },\n        str = y => y.toString(),\n        t = typeName(x);\n\n    const instance = instances[\n        (/^Tuple/u).test(t) ? (\n            \"Tuple\"\n        ) : t\n    ];\n\n    return Boolean(instance) ? (\n        JSON.stringify(\n            x,\n            (_, v) => instance()(v)\n        )\n    ) : `No Show instance has been defined for ${t}.`;\n};",
     "tags": [
       "JS Prelude"
     ]

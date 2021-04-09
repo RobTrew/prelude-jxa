@@ -8,10 +8,12 @@ const indexedTree = rootIndex =>
     tree => {
         const go = n => node =>
             second(
-                Node(Tuple(node.root)(n))
+                Node(Tuple(root(node))({
+                    index: n
+                }))
             )(
                 mapAccumL(go)(1 + n)(
-                    node.nest
+                    nest(node)
                 )
             );
 

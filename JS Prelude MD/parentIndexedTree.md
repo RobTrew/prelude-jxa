@@ -7,16 +7,16 @@ const parentIndexedTree = tree => {
     // node indices. (See measuredTree).
     const go = mb => node => {
         const
-            x = node.root,
+            x = root(node),
             measures = x[1];
 
-        return Node(Tuple(x[0])(
-            Object.assign(measures, {
-
-                parent: mb
-
-            })
-        ))(node.nest.map(go(Just(measures.index))));
+        return Node(
+            Tuple(x[0])(
+                Object.assign(measures, {
+                    parent: mb
+                })
+            )
+        )(nest(node).map(go(Just(measures.index))));
     };
 
     return go(Nothing())(tree);

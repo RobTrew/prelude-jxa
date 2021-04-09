@@ -1586,11 +1586,11 @@ const foldMapTree = f => {
             x = root(tree),
             xs = nest(tree);
 
-        return 0 < xs.length ? mappend(
-            f(x)
-        )(
-            foldl1(mappend)(
-                xs.map(go)
+        return 0 < xs.length ? (
+            mappend(
+                f(x)
+            )(
+                foldl1(mappend)(xs.map(go))
             )
         ) : f(x);
     };
@@ -1916,10 +1916,12 @@ const indexedTree = rootIndex =>
     tree => {
         const go = n => node =>
             second(
-                Node(Tuple(node.root)(n))
+                Node(Tuple(root(node))({
+                    index: n
+                }))
             )(
                 mapAccumL(go)(1 + n)(
-                    node.nest
+                    nest(node)
                 )
             );
 
@@ -2391,9 +2393,9 @@ const liftA2LR = f =>
 
 // liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 const liftA2List = op =>
-    // The binary operator f lifted to a function over two
-    // lists. op applied to each pair of arguments in the
-    // cartesian product of xs and ys.
+    // The binary operator op applied to each pair of arguments 
+    // in the cartesian product of xs and ys.
+    // A binary operator lifed to a function over two lists. 
     xs => ys => list(xs).flatMap(
         x => list(ys).map(op(x))
     );
@@ -2797,7 +2799,9 @@ const mean = xs => (
     ys => ys.reduce((a, y) => a + y, 0) / ys.length
 )(list(xs));
 
-// measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
+// measuredTree :: Tree a -> 
+// Tree (a, {leafSum::Int, layerSum::Int,
+//           nodeSum::Int, index::Int})
 const measuredTree = tree => {
     // A tree in which each node is tupled with
     // a (leafSum, layerSum, nodeSum) measure of its sub-tree,
@@ -3091,16 +3095,16 @@ const parentIndexedTree = tree => {
     // node indices. (See measuredTree).
     const go = mb => node => {
         const
-            x = node.root,
+            x = root(node),
             measures = x[1];
 
-        return Node(Tuple(x[0])(
-            Object.assign(measures, {
-
-                parent: mb
-
-            })
-        ))(node.nest.map(go(Just(measures.index))));
+        return Node(
+            Tuple(x[0])(
+                Object.assign(measures, {
+                    parent: mb
+                })
+            )
+        )(nest(node).map(go(Just(measures.index))));
     };
 
     return go(Nothing())(tree);
@@ -3688,6 +3692,7 @@ const show = x => {
             "Either": () => showLR,
             "List": () => showList,
             "Maybe": () => showMaybe,
+            "Node": () => a => a,
             "Num": () => str,
             "Ratio": () => showRatio,
             "String": () => str,
@@ -3703,12 +3708,10 @@ const show = x => {
     ];
 
     return Boolean(instance) ? (
-        "Node" !== t ? (
-            JSON.stringify(
-                x,
-                (_, v) => instance()(v)
-            )
-        ) : showTree(x)
+        JSON.stringify(
+            x,
+            (_, v) => instance()(v)
+        )
     ) : `No Show instance has been defined for ${t}.`;
 };
 

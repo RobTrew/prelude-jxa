@@ -12,6 +12,7 @@ const show = x => {
             "Either": () => showLR,
             "List": () => showList,
             "Maybe": () => showMaybe,
+            "Node": () => a => a,
             "Num": () => str,
             "Ratio": () => showRatio,
             "String": () => str,
@@ -27,12 +28,10 @@ const show = x => {
     ];
 
     return Boolean(instance) ? (
-        "Node" !== t ? (
-            JSON.stringify(
-                x,
-                (_, v) => instance()(v)
-            )
-        ) : showTree(x)
+        JSON.stringify(
+            x,
+            (_, v) => instance()(v)
+        )
     ) : `No Show instance has been defined for ${t}.`;
 };
 ```

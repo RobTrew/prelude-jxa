@@ -291,7 +291,7 @@ maximumOn :: (Ord b) => (a -> b) -> [a] -> a
 maybe :: b -> (a -> b) -> Maybe a -> b
 mconcatOrd :: [Ordering] -> Ordering
 mean :: [Num] -> Num
-measuredTree :: Tree a -> Tree (a, (Int, Int, Int, Int))
+measuredTree :: Tree a -> Tree (a, {leafSum::Int, layerSum::Int, nodeSum::Int, index::Int})
 member :: Key -> Dict -> Bool
 mempty :: a -> a
 merge :: Ord a => [a] -> [a] -> [a]
