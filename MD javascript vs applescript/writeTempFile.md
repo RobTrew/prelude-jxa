@@ -1,3 +1,19 @@
+```javascript
+// writeTempFile :: String -> String -> IO FilePath
+const writeTempFile = template =>
+    // File name template -> string data -> IO temporary path
+    txt => {
+        const
+            fp = ObjC.unwrap($.NSTemporaryDirectory()) +
+            takeBaseName(template) + Math.random()
+            .toString()
+            .substring(3) + takeExtension(template);
+
+        return (writeFile(fp)(txt), fp);
+    };
+```
+
+
 ```applescript
 use framework "Foundation"
 -- File name template -> string data -> temporary path
@@ -14,20 +30,4 @@ on writeTempFile(template, txt)
     -- Value
     strPath
 end writeTempFile
-```
-
-
-```javascript
-// writeTempFile :: String -> String -> IO FilePath
-const writeTempFile = template =>
-    // File name template -> string data -> IO temporary path
-    txt => {
-        const
-            fp = ObjC.unwrap($.NSTemporaryDirectory()) +
-            takeBaseName(template) + Math.random()
-            .toString()
-            .substring(3) + takeExtension(template);
-
-        return (writeFile(fp)(txt), fp);
-    };
 ```

@@ -1,11 +1,3 @@
-```applescript
--- rem :: Int -> Int -> Int
-on rem(m, n)
-    m mod n
-end rem
-```
-
-
 ```javascript
 // rem :: Int -> Int -> Int
 const rem = n =>
@@ -13,4 +5,12 @@ const rem = n =>
     // results. Compare with `mod`, which inherits
     // the sign of the *divisor*.
     m => n % m;
+```
+
+
+```applescript
+-- rem :: Int -> Int -> Int
+on rem(m, n)
+    m mod n
+end rem
 ```
