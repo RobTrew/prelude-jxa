@@ -33,6 +33,24 @@ const Nothing = () => ({
     Nothing: true
 });
 
+// Ratio :: Integral a => a -> a -> Ratio a
+const Ratio = a => b => {
+    const go = (x, y) =>
+        0 !== y ? (() => {
+            const d = gcd(x)(y);
+
+            return {
+                type: "Ratio",
+                // numerator
+                "n": quot(x)(d),
+                // denominator
+                "d": quot(y)(d)
+            };
+        })() : undefined;
+
+    return go(a * signum(b), abs(b));
+};
+
 // Right :: b -> Either a b
 const Right = x => ({
     type: "Either",
@@ -75,7 +93,9 @@ const TupleN = (...args) => {
 // abs :: Num -> Num
 const abs =
     // Absolute value of a given number - without the sign.
-    x => Math.abs(x);
+    x => 0 > x ? (
+        -x
+    ) : x;
 
 // add (+) :: Num a => a -> a -> a
 const add = a =>
@@ -1150,11 +1170,9 @@ const enumFromThenToChar = x1 =>
 
 // enumFromTo :: Int -> Int -> [Int]
 const enumFromTo = m =>
-    n => !isNaN(m) ? (
-        Array.from({
-            length: 1 + n - m
-        }, (_, i) => m + i)
-    ) : enumFromTo_(m)(n);
+    n => Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i);
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = m => n => {
@@ -1521,12 +1539,13 @@ const fmap = f =>
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
+    // The map of f over a stream of generator values.
     function* (gen) {
-        let v = take(1)(gen);
+        let v = gen.next();
 
-        while (0 < v.length) {
-            yield f(v[0]);
-            v = take(1)(gen);
+        while (!v.done) {
+            yield f(v.value);
+            v = gen.next();
         }
     };
 
@@ -1728,14 +1747,16 @@ const ft = m =>
         length: 1 + n - m
     }, (_, i) => m + i);
 
-// gcd :: Int -> Int -> Int
+// gcd :: Integral a => a -> a -> a
 const gcd = x =>
     y => {
-        const
-            _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
-            absolute = Math.abs;
+        const zero = x.constructor(0);
+        const _gcd = (a, b) =>
+            zero === b ? (
+                a
+            ) : _gcd(b, rem(a)(b));
 
-        return _gcd(absolute(x), absolute(y));
+        return _gcd(abs(x), abs(y));
     };
 
 // genericIndexMay :: [a] -> Int -> Maybe a
@@ -2059,6 +2080,12 @@ const isAlphaNum = c => {
         (/[A-Za-z\u00C0-\u00FF]/u).test(c)
     );
 };
+
+// isBigInt :: Num -> Bool
+const isBigInt = n =>
+    ("undefined" !== typeof BigInt) && (
+        "bigint" === typeof n
+    );
 
 // isChar :: a -> Bool
 const isChar = x =>
@@ -3312,16 +3339,18 @@ const quickSortBy = cmp => {
     return go;
 };
 
-// quot :: Int -> Int -> Int
+// quot :: Integral a => a -> a -> a
 const quot = n =>
-    m => Math.trunc(n / m);
+    m => [n, m].some(isBigInt) ? (
+        BigInt(n) / BigInt(m)
+    ) : Math.trunc(n / m);
 
-// quotRem :: Int -> Int -> (Int, Int)
+// quotRem :: Integral a => a -> a -> (a, a)
 const quotRem = m =>
     // The quotient, tupled with the remainder.
     n => Tuple(
-        Math.trunc(m / n)
-    )(m % n);
+        quot(m)(n)
+    )(rem(m)(n));
 
 // quoted :: Char -> String -> String
 const quoted = c =>
@@ -3379,31 +3408,11 @@ const range = (...args) => {
     ) : [];
 };
 
-// ratio :: Int -> Int -> Ratio Int
-const ratio = a => b => {
-    const go = (x, y) =>
-        0 !== y ? (() => {
-            const d = gcd(x)(y);
-
-            return {
-                type: "Ratio",
-                // numerator
-                "n": quot(x)(d),
-                // denominator
-                "d": quot(y)(d)
-            };
-        })() : undefined;
-
-    return go(a * signum(b), abs(b));
-};
-
 // ratioDiv :: Rational -> Rational -> Rational
 const ratioDiv = n1 => n2 => {
-    const [r1, r2] = map(rational)(
-        [n1, n2]
-    );
+    const [r1, r2] = [n1, n2].map(rational);
 
-    return ratio(r1.n * r2.d)(
+    return Ratio(r1.n * r2.d)(
         r1.d * r2.n
     );
 };
@@ -3481,12 +3490,14 @@ const regexMatches = rgx =>
     // in the supplied string s.
     s => [...s.matchAll(new RegExp(rgx, "gu"))];
 
-// rem :: Int -> Int -> Int
+// rem :: Integral a => a -> a -> a
 const rem = n =>
     // Inherits the sign of the *dividend* for non-zero
     // results. Compare with `mod`, which inherits
     // the sign of the *divisor*.
-    m => n % m;
+    m => [n, m].some(isBigInt) ? (
+        BigInt(n) % BigInt(m)
+    ) : n % m;
 
 // repeat :: a -> Generator [a]
 const repeat = function* (x) {
@@ -3596,11 +3607,17 @@ const safeMay = p => f => x =>
 
 // scanl :: (b -> a -> b) -> b -> [a] -> [b]
 const scanl = f => startValue => xs =>
-    list(xs).reduce((a, x) => {
-        const v = f(a[0])(x);
+    // The series of interim values arising
+    // from a catamorphism. Parallel to foldl.
+    xs.constructor.name || (
+        xs.constructor.constructor.name
+    ) !== "GeneratorFunction" ? (
+        xs.reduce((a, x) => {
+            const v = f(a[0])(x);
 
-        return Tuple(v)(a[1].concat(v));
-    }, Tuple(startValue)([startValue]))[1];
+            return [v, a[1].concat(v)];
+        }, [startValue, [startValue]])[1]
+    ) : scanlGen(f)(startValue)(xs);
 
 // scanl1 :: (a -> a -> a) -> [a] -> [a]
 const scanl1 = f =>
@@ -3611,6 +3628,23 @@ const scanl1 = f =>
             xs[0]
         )(xs.slice(1))
     ) : [];
+
+// scanlGen :: (b -> a -> b) -> b -> Gen [a] -> [b]
+const scanlGen = f =>
+    // The series of interim values arising
+    // from a catamorphism over an infinite list.
+    startValue => function* (gen) {
+        let
+            a = startValue,
+            x = gen.next();
+
+        yield a;
+        while (!x.done) {
+            a = f(a)(x.value);
+            yield a;
+            x = gen.next();
+        }
+    };
 
 // scanr :: (a -> b -> b) -> b -> [a] -> [b]
 const scanr = f =>
@@ -3914,16 +3948,12 @@ const showUndefined = () =>
 // signum :: Num -> Num
 const signum = n =>
     // | Sign of a number.
-    // The functions 'abs' and 'signum' should satisfy the law:
-    //
-    // > abs x * signum x == x
-    //
-    // For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)
-    // or @1@ (positive).
-    0 > n ? (
-        -1
-    ) : (
-        0 < n ? 1 : 0
+    n.constructor(
+        0 > n ? (
+            -1
+        ) : (
+            0 < n ? 1 : 0
+        )
     );
 
 // sj :: a -> String

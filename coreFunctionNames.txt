@@ -70,10 +70,10 @@ nub :: [a] -> [a]
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 pred :: Enum a => a -> a
-quot :: Int -> Int -> Int
-quotRem :: Int -> Int -> (Int, Int)
+quot :: Integral a => a -> a -> a
+quotRem :: Integral a => a -> a -> (a, a)
 read :: Read a => String -> a
-rem :: Int -> Int -> Int
+rem :: Integral a => a -> a -> a
 replicate :: Int -> a -> [a]
 replicateString :: Int -> String -> String
 reverse :: [a] -> [a]

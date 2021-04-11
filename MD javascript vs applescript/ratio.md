@@ -1,6 +1,7 @@
 ```javascript
-// ratio :: Int -> Int -> Ratio Int
-const ratio = a => b => {
+// Ratio :: Int -> Int -> Ratio Int
+const Ratio = a => b => {
+    // Constructor for a Ratio value
     const go = (x, y) =>
         0 !== y ? (() => {
             const d = gcd(x)(y);

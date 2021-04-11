@@ -27,6 +27,12 @@
       "core"
     ]
   },
+  "Ratio": {
+    "code": "// Ratio :: Integral a => a -> a -> Ratio a\nconst Ratio = a => b => {\n    const go = (x, y) =>\n        0 !== y ? (() => {\n            const d = gcd(x)(y);\n\n            return {\n                type: \"Ratio\",\n                // numerator\n                \"n\": quot(x)(d),\n                // denominator\n                \"d\": quot(y)(d)\n            };\n        })() : undefined;\n\n    return go(a * signum(b), abs(b));\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "Right": {
     "code": "// Right :: b -> Either a b\nconst Right = x => ({\n    type: \"Either\",\n    Right: x\n});",
     "tags": [
@@ -55,7 +61,7 @@
     ]
   },
   "abs": {
-    "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number - without the sign.\n    x => Math.abs(x);",
+    "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number - without the sign.\n    x => 0 > x ? (\n        -x\n    ) : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -742,7 +748,7 @@
     ]
   },
   "enumFromTo": {
-    "code": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = m =>\n    n => !isNaN(m) ? (\n        Array.from({\n            length: 1 + n - m\n        }, (_, i) => m + i)\n    ) : enumFromTo_(m)(n);",
+    "code": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = m =>\n    n => Array.from({\n        length: 1 + n - m\n    }, (_, i) => m + i);",
     "tags": [
       "JS Prelude",
       "core"
@@ -964,7 +970,7 @@
     ]
   },
   "fmapGen <$>": {
-    "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    function* (gen) {\n        let v = take(1)(gen);\n\n        while (0 < v.length) {\n            yield f(v[0]);\n            v = take(1)(gen);\n        }\n    };",
+    "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    // The map of f over a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n\n        while (!v.done) {\n            yield f(v.value);\n            v = gen.next();\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1110,7 +1116,7 @@
     ]
   },
   "gcd": {
-    "code": "// gcd :: Int -> Int -> Int\nconst gcd = x =>\n    y => {\n        const\n            _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),\n            absolute = Math.abs;\n\n        return _gcd(absolute(x), absolute(y));\n    };",
+    "code": "// gcd :: Integral a => a -> a -> a\nconst gcd = x =>\n    y => {\n        const zero = x.constructor(0);\n        const _gcd = (a, b) =>\n            zero === b ? (\n                a\n            ) : _gcd(b, rem(a)(b));\n\n        return _gcd(abs(x), abs(y));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1356,6 +1362,12 @@
   },
   "isAlphaNum": {
     "code": "// isAlphaNum :: Char -> Bool\nconst isAlphaNum = c => {\n    const n = c.codePointAt(0);\n\n    return (48 <= n && 57 >= n) || (\n        (/[A-Za-z\\u00C0-\\u00FF]/u).test(c)\n    );\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "isBigInt": {
+    "code": "// isBigInt :: Num -> Bool\nconst isBigInt = n =>\n    (\"undefined\" !== typeof BigInt) && (\n        \"bigint\" === typeof n\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -2190,14 +2202,14 @@
     ]
   },
   "quot": {
-    "code": "// quot :: Int -> Int -> Int\nconst quot = n =>\n    m => Math.trunc(n / m);",
+    "code": "// quot :: Integral a => a -> a -> a\nconst quot = n =>\n    m => [n, m].some(isBigInt) ? (\n        BigInt(n) / BigInt(m)\n    ) : Math.trunc(n / m);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "quotRem": {
-    "code": "// quotRem :: Int -> Int -> (Int, Int)\nconst quotRem = m =>\n    // The quotient, tupled with the remainder.\n    n => Tuple(\n        Math.trunc(m / n)\n    )(m % n);",
+    "code": "// quotRem :: Integral a => a -> a -> (a, a)\nconst quotRem = m =>\n    // The quotient, tupled with the remainder.\n    n => Tuple(\n        quot(m)(n)\n    )(rem(m)(n));",
     "tags": [
       "JS Prelude",
       "core"
@@ -2233,14 +2245,8 @@
       "JS Prelude"
     ]
   },
-  "ratio": {
-    "code": "// ratio :: Int -> Int -> Ratio Int\nconst ratio = a => b => {\n    const go = (x, y) =>\n        0 !== y ? (() => {\n            const d = gcd(x)(y);\n\n            return {\n                type: \"Ratio\",\n                // numerator\n                \"n\": quot(x)(d),\n                // denominator\n                \"d\": quot(y)(d)\n            };\n        })() : undefined;\n\n    return go(a * signum(b), abs(b));\n};",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
   "ratioDiv": {
-    "code": "// ratioDiv :: Rational -> Rational -> Rational\nconst ratioDiv = n1 => n2 => {\n    const [r1, r2] = map(rational)(\n        [n1, n2]\n    );\n\n    return ratio(r1.n * r2.d)(\n        r1.d * r2.n\n    );\n};",
+    "code": "// ratioDiv :: Rational -> Rational -> Rational\nconst ratioDiv = n1 => n2 => {\n    const [r1, r2] = [n1, n2].map(rational);\n\n    return Ratio(r1.n * r2.d)(\n        r1.d * r2.n\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2328,7 +2334,7 @@
     ]
   },
   "rem": {
-    "code": "// rem :: Int -> Int -> Int\nconst rem = n =>\n    // Inherits the sign of the *dividend* for non-zero\n    // results. Compare with `mod`, which inherits\n    // the sign of the *divisor*.\n    m => n % m;",
+    "code": "// rem :: Integral a => a -> a -> a\nconst rem = n =>\n    // Inherits the sign of the *dividend* for non-zero\n    // results. Compare with `mod`, which inherits\n    // the sign of the *divisor*.\n    m => [n, m].some(isBigInt) ? (\n        BigInt(n) % BigInt(m)\n    ) : n % m;",
     "tags": [
       "JS Prelude",
       "core"
@@ -2431,7 +2437,7 @@
     ]
   },
   "scanl": {
-    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    list(xs).reduce((a, x) => {\n        const v = f(a[0])(x);\n\n        return Tuple(v)(a[1].concat(v));\n    }, Tuple(startValue)([startValue]))[1];",
+    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    // The series of interim values arising\n    // from a catamorphism. Parallel to foldl.\n    xs.constructor.name || (\n        xs.constructor.constructor.name\n    ) !== \"GeneratorFunction\" ? (\n        xs.reduce((a, x) => {\n            const v = f(a[0])(x);\n\n            return [v, a[1].concat(v)];\n        }, [startValue, [startValue]])[1]\n    ) : scanlGen(f)(startValue)(xs);",
     "tags": [
       "JS Prelude",
       "core"
@@ -2439,6 +2445,12 @@
   },
   "scanl1": {
     "code": "// scanl1 :: (a -> a -> a) -> [a] -> [a]\nconst scanl1 = f =>\n    // scanl1 is a variant of scanl that has no\n    // starting value argument.\n    xs => xs.length > 0 ? (\n        scanl(f)(\n            xs[0]\n        )(xs.slice(1))\n    ) : [];",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "scanlGen": {
+    "code": "// scanlGen :: (b -> a -> b) -> b -> Gen [a] -> [b]\nconst scanlGen = f =>\n    // The series of interim values arising\n    // from a catamorphism over an infinite list.\n    startValue => function* (gen) {\n        let\n            a = startValue,\n            x = gen.next();\n\n        yield a;\n        while (!x.done) {\n            a = f(a)(x.value);\n            yield a;\n            x = gen.next();\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2640,7 +2652,7 @@
     ]
   },
   "signum": {
-    "code": "// signum :: Num -> Num\nconst signum = n =>\n    // | Sign of a number.\n    // The functions 'abs' and 'signum' should satisfy the law:\n    //\n    // > abs x * signum x == x\n    //\n    // For real numbers, the 'signum' is either @-1@ (negative), @0@ (zero)\n    // or @1@ (positive).\n    0 > n ? (\n        -1\n    ) : (\n        0 < n ? 1 : 0\n    );",
+    "code": "// signum :: Num -> Num\nconst signum = n =>\n    // | Sign of a number.\n    n.constructor(\n        0 > n ? (\n            -1\n        ) : (\n            0 < n ? 1 : 0\n        )\n    );",
     "tags": [
       "JS Prelude"
     ]

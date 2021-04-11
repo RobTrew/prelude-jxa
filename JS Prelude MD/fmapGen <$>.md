@@ -1,12 +1,13 @@
 ```javascript
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
+    // The map of f over a stream of generator values.
     function* (gen) {
-        let v = take(1)(gen);
+        let v = gen.next();
 
-        while (0 < v.length) {
-            yield f(v[0]);
-            v = take(1)(gen);
+        while (!v.done) {
+            yield f(v.value);
+            v = gen.next();
         }
     };
 ```

@@ -1,6 +1,6 @@
 ```javascript
-// ratio :: Int -> Int -> Ratio Int
-const ratio = a => b => {
+// Ratio :: Integral a => a -> a -> Ratio a
+const Ratio = a => b => {
     const go = (x, y) =>
         0 !== y ? (() => {
             const d = gcd(x)(y);

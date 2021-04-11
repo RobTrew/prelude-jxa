@@ -1,16 +1,3 @@
-```javascript
-// gcd :: Int -> Int -> Int
-const gcd = x =>
-    y => {
-        const
-            _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
-            absolute = Math.abs;
-
-        return _gcd(absolute(x), absolute(y));
-    };
-```
-
-
 ```applescript
 -- gcd :: Int -> Int -> Int
 on gcd(a, b)
@@ -25,4 +12,19 @@ on gcd(a, b)
     end repeat
     return x
 end gcd
+```
+
+
+```javascript
+// gcd :: Integral a => a -> a -> a
+const gcd = x =>
+    y => {
+        const zero = x.constructor(0);
+        const _gcd = (a, b) =>
+            zero === b ? (
+                a
+            ) : _gcd(b, rem(a)(b));
+
+        return _gcd(abs(x), abs(y));
+    };
 ```

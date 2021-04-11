@@ -2,6 +2,7 @@ Just :: a -> Maybe a
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
 Nothing :: Maybe a
+Ratio :: Integral a => a -> a -> Ratio a
 Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
@@ -171,7 +172,7 @@ fromMaybe :: a -> Maybe a -> a
 fromRight :: b -> Either a b -> b
 fst :: (a, b) -> a
 ft :: (Int, Int) -> [Int]
-gcd :: Int -> Int -> Int
+gcd :: Integral a => a -> a -> a
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
 getDirectoryContents :: FilePath -> IO [FilePath]
@@ -210,6 +211,7 @@ intersection :: Ord a => Set a -> Set a -> Set a
 intersperse :: a -> [a] -> [a]
 isAlpha :: Char -> Bool
 isAlphaNum :: Char -> Bool
+isBigInt :: Num -> Bool
 isChar :: a -> Bool
 isDigit :: Char -> Bool
 isInfixOf :: (Eq a) => [a] -> [a] -> Bool
@@ -342,14 +344,13 @@ pureTree :: a -> Tree a
 pureTuple :: a -> (a, a)
 quickSort :: (Ord a) => [a] -> [a]
 quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
-quot :: Int -> Int -> Int
-quotRem :: Int -> Int -> (Int, Int)
+quot :: Integral a => a -> a -> a
+quotRem :: Integral a => a -> a -> (a, a)
 quoted :: Char -> String -> String
 radians :: Float x => Degrees x -> Radians x
 raise :: Num -> Int -> Num
 randomRInt :: Int -> Int -> IO () -> Int
 range :: Ix a => (a, a) -> [a]
-ratio :: Int -> Int -> Ratio Int
 ratioDiv :: Rational -> Rational -> Rational
 ratioMinus :: Rational -> Rational -> Rational
 ratioMult :: Rational -> Rational -> Rational
@@ -364,7 +365,7 @@ readPlistFileLR :: FilePath -> Either String Object
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
 regexMatches :: Regex String -> String -> [[String]]
-rem :: Int -> Int -> Int
+rem :: Integral a => a -> a -> a
 removeFile :: FilePath -> Either String String
 renamedFile :: FilePath -> FilePath ->
 repeat :: a -> Generator [a]
@@ -382,6 +383,7 @@ runAction :: Action a -> a
 safeMay :: (a -> Bool) -> (a -> b) -> Maybe b
 scanl :: (b -> a -> b) -> b -> [a] -> [b]
 scanl1 :: (a -> a -> a) -> [a] -> [a]
+scanlGen :: (b -> a -> b) -> b -> Gen [a] -> [b]
 scanr :: (a -> b -> b) -> b -> [a] -> [b]
 scanr1 :: (a -> a -> a) -> [a] -> [a]
 second :: (a -> b) -> ((c, a) -> (c, b))

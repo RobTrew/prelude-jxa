@@ -1,5 +1,7 @@
 ```javascript
-// quot :: Int -> Int -> Int
+// quot :: Integral a => a -> a -> a
 const quot = n =>
-    m => Math.trunc(n / m);
+    m => [n, m].some(isBigInt) ? (
+        BigInt(n) / BigInt(m)
+    ) : Math.trunc(n / m);
 ```

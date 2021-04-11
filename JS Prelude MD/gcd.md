@@ -1,11 +1,13 @@
 ```javascript
-// gcd :: Int -> Int -> Int
+// gcd :: Integral a => a -> a -> a
 const gcd = x =>
     y => {
-        const
-            _gcd = (a, b) => (0 === b ? a : _gcd(b, a % b)),
-            absolute = Math.abs;
+        const zero = x.constructor(0);
+        const _gcd = (a, b) =>
+            zero === b ? (
+                a
+            ) : _gcd(b, rem(a)(b));
 
-        return _gcd(absolute(x), absolute(y));
+        return _gcd(abs(x), abs(y));
     };
 ```
