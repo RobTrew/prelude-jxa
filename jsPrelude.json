@@ -443,7 +443,7 @@
     ]
   },
   "constant": {
-    "code": "// constant :: a -> b -> a\nconst constant = k =>\n    _ => k;",
+    "code": "// constant :: a -> b -> a\nconst constant = k =>\n    () => k;",
     "tags": [
       "JS Prelude"
     ]
@@ -672,7 +672,7 @@
     ]
   },
   "either": {
-    "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => e.Left ? (\n        fl(e.Left)\n    ) : fr(e.Right);",
+    "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => \"Left\" in e ? (\n        fl(e.Left)\n    ) : fr(e.Right);",
     "tags": [
       "JS Prelude",
       "core"
@@ -2171,7 +2171,7 @@
     ]
   },
   "pureT": {
-    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a\n    // specialised \"pure\", where\n    // \"pure\" lifts a value into a particular functor.\n    ({\n        \"Either\": () => pureLR,\n        \"Maybe\": () => pureMay,\n        \"Node\": () => pureTree,\n        \"Tuple\": () => pureTuple,\n        \"List\": () => pureList\n    })[t || \"List\"]();",
+    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a\n    // specialised \"pure\", where\n    // \"pure\" lifts a value into a particular functor.\n    ({\n        \"Either\": () => pureLR,\n        \"(a -> b)\": () => constant,\n        \"Maybe\": () => pureMay,\n        \"Node\": () => pureTree,\n        \"Tuple\": () => pureTuple,\n        \"List\": () => pureList\n    })[t || \"List\"]();",
     "tags": [
       "JS Prelude"
     ]
@@ -2437,7 +2437,7 @@
     ]
   },
   "scanl": {
-    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    // The series of interim values arising\n    // from a catamorphism. Parallel to foldl.\n    xs.constructor.name || (\n        xs.constructor.constructor.name\n    ) !== \"GeneratorFunction\" ? (\n        xs.reduce((a, x) => {\n            const v = f(a[0])(x);\n\n            return [v, a[1].concat(v)];\n        }, [startValue, [startValue]])[1]\n    ) : scanlGen(f)(startValue)(xs);",
+    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    // The series of interim values arising\n    // from a catamorphism. Parallel to foldl.\n    xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (\n        xs.reduce((a, x) => {\n            const v = f(a[0])(x);\n\n            return [v, a[1].concat(v)];\n        }, [startValue, [startValue]])[1]\n    ) : scanlGen(f)(startValue)(xs);",
     "tags": [
       "JS Prelude",
       "core"
@@ -2822,7 +2822,7 @@
     ]
   },
   "succ": {
-    "code": "// succ :: Enum a => a -> a\nconst succ = x => {\n    const t = typeof x;\n\n    return \"number\" !== t ? (() => {\n        const [i, mx] = [x, maxBound(x)].map(fromEnum);\n\n        return i < mx ? (\n            toEnum(x)(1 + i)\n        ) : Error(\"succ :: enum out of range.\");\n    })() : x < Number.MAX_SAFE_INTEGER ? (\n        1 + x\n    ) : Error(\"succ :: Num out of range.\");\n};",
+    "code": "// succ :: Enum a => a -> a\nconst succ = x => {\n    const t = typeof x;\n\n    return \"number\" !== t ? (\n        \"bigint\" !== t ? (\n            (() => {\n                const [i, mx] = [x, maxBound(x)].map(fromEnum);\n\n                return i < mx ? (\n                    toEnum(x)(1 + i)\n                ) : Error(\"succ :: enum out of range.\");\n            })()\n        ) : BigInt(1) + x\n    ) : x < Number.MAX_SAFE_INTEGER ? (\n        1 + x\n    ) : Error(\"succ :: Num out of range.\");\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -3023,13 +3023,13 @@
     ]
   },
   "traverseLR": {
-    "code": "// traverseLR :: Applicative f =>\n// (t -> f b) -> Either a t -> f (Either a b)\nconst traverseLR = f =>\n    // instance of Traversable (Either a) where\n    //    traverse _ (Left x) = pure (Left x)\n    //    traverse f (Right y) = Right <$> f y\n    lr => undefined !== lr.Left ? (\n        [lr]\n    ) : fmap(Right)(\n        f(lr.Right)\n    );",
+    "code": "// traverseLR :: Applicative f =>\n// (t -> f b) -> Either a t -> f (Either a b)\nconst traverseLR = f =>\n    // instance of Traversable (Either a) where\n    //    traverse _ (Left x) = pure (Left x)\n    //    traverse f (Right y) = Right <$> f y\n    lr => \"Left\" in lr ? (\n        [lr]\n    ) : fmap(Right)(\n        f(lr.Right)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "traverseList": {
-    "code": "// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => (\n        zs => 0 < zs.length ? (() => {\n            const\n                vLast = f(zs.slice(-1)[0]),\n                t = vLast.type || \"List\";\n\n            return zs.slice(0, -1).reduceRight(\n                (ys, z) => liftA2(cons)(f(z))(ys),\n                liftA2(cons)(vLast)(pureT(t)([]))\n            );\n        })() : fType(f)([])\n    )(list(xs));",
+    "code": "// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => (\n        zs => 0 < zs.length ? (() => {\n            const\n                vLast = f(zs.slice(-1)[0]),\n                t = typeName(vLast);\n\n            return zs.slice(0, -1).reduceRight(\n                (ys, z) => liftA2(cons)(f(z))(ys),\n                liftA2(cons)(vLast)(pureT(t)([]))\n            );\n        })() : fType(f)([])\n    )(list(xs));",
     "tags": [
       "JS Prelude"
     ]
@@ -3336,7 +3336,7 @@
     ]
   },
   "zipWith": {
-    "code": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = f =>\n    // A list with the length of the shorter of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => {\n        const n = Math.min(length(xs), length(ys));\n\n        return Infinity > n ? (\n            (([as, bs]) => Array.from({\n                length: n\n            }, (_, i) => f(as[i])(\n                bs[i]\n            )))([xs, ys].map(\n                compose(take(n), list)\n            ))\n        ) : zipWithGen(f)(xs)(ys);\n    };",
+    "code": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = f =>\n    // A list with the length of the shorter of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => {\n        const n = Math.min(length(xs), length(ys));\n\n        return Infinity > n ? (\n            (([as, bs]) => Array.from({\n                length: n\n            }, (_, i) => f(as[i])(\n                bs[i]\n            )))([xs, ys].map(\n                take(n)\n            ))\n        ) : zipWithGen(f)(xs)(ys);\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -3367,7 +3367,7 @@
     ]
   },
   "zipWithList_": {
-    "code": "// zipWithList_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWithList_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => take(\n        Math.min(xs.length, ys.length)\n    )(\n        xs.map((x, i) => f(x)(ys[i]))\n    );",
+    "code": "// zipWithList_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWithList_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => xs.map(\n        (x, i) => f(x)(ys[i])\n    ).slice(\n        0, Math.min(xs.length, ys.length)\n    );",
     "tags": [
       "JS Prelude"
     ]

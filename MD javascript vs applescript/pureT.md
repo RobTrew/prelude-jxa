@@ -29,6 +29,7 @@ const pureT = t =>
     // "pure" lifts a value into a particular functor.
     ({
         "Either": () => pureLR,
+        "(a -> b)": () => constant,
         "Maybe": () => pureMay,
         "Node": () => pureTree,
         "Tuple": () => pureTuple,

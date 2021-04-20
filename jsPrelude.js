@@ -600,7 +600,7 @@ const cons = x =>
 
 // constant :: a -> b -> a
 const constant = k =>
-    _ => k;
+    () => k;
 
 // curry :: ((a, b) -> c) -> a -> b -> c
 const curry = f =>
@@ -1026,7 +1026,7 @@ const either = fl =>
     // Application of the function fl to the
     // contents of any Left value in e, or
     // the application of fr to its Right value.
-    fr => e => e.Left ? (
+    fr => e => "Left" in e ? (
         fl(e.Left)
     ) : fr(e.Right);
 
@@ -3286,6 +3286,7 @@ const pureT = t =>
     // "pure" lifts a value into a particular functor.
     ({
         "Either": () => pureLR,
+        "(a -> b)": () => constant,
         "Maybe": () => pureMay,
         "Node": () => pureTree,
         "Tuple": () => pureTuple,
@@ -3609,9 +3610,9 @@ const safeMay = p => f => x =>
 const scanl = f => startValue => xs =>
     // The series of interim values arising
     // from a catamorphism. Parallel to foldl.
-    xs.constructor.name || (
-        xs.constructor.constructor.name
-    ) !== "GeneratorFunction" ? (
+    xs.constructor.constructor.name !== (
+        "GeneratorFunction"
+    ) ? (
         xs.reduce((a, x) => {
             const v = f(a[0])(x);
 
@@ -4242,13 +4243,17 @@ const subtract = x =>
 const succ = x => {
     const t = typeof x;
 
-    return "number" !== t ? (() => {
-        const [i, mx] = [x, maxBound(x)].map(fromEnum);
+    return "number" !== t ? (
+        "bigint" !== t ? (
+            (() => {
+                const [i, mx] = [x, maxBound(x)].map(fromEnum);
 
-        return i < mx ? (
-            toEnum(x)(1 + i)
-        ) : Error("succ :: enum out of range.");
-    })() : x < Number.MAX_SAFE_INTEGER ? (
+                return i < mx ? (
+                    toEnum(x)(1 + i)
+                ) : Error("succ :: enum out of range.");
+            })()
+        ) : BigInt(1) + x
+    ) : x < Number.MAX_SAFE_INTEGER ? (
         1 + x
     ) : Error("succ :: Num out of range.");
 };
@@ -4588,7 +4593,7 @@ const traverseLR = f =>
     // instance of Traversable (Either a) where
     //    traverse _ (Left x) = pure (Left x)
     //    traverse f (Right y) = Right <$> f y
-    lr => undefined !== lr.Left ? (
+    lr => "Left" in lr ? (
         [lr]
     ) : fmap(Right)(
         f(lr.Right)
@@ -4603,7 +4608,7 @@ const traverseList = f =>
         zs => 0 < zs.length ? (() => {
             const
                 vLast = f(zs.slice(-1)[0]),
-                t = vLast.type || "List";
+                t = typeName(vLast);
 
             return zs.slice(0, -1).reduceRight(
                 (ys, z) => liftA2(cons)(f(z))(ys),
@@ -5219,7 +5224,7 @@ const zipWith = f =>
             }, (_, i) => f(as[i])(
                 bs[i]
             )))([xs, ys].map(
-                compose(take(n), list)
+                take(n)
             ))
         ) : zipWithGen(f)(xs)(ys);
     };
@@ -5282,10 +5287,10 @@ const zipWithList_ = f =>
     // A list constructed by zipping with a
     // custom function, rather than with the
     // default tuple constructor.
-    xs => ys => take(
-        Math.min(xs.length, ys.length)
-    )(
-        xs.map((x, i) => f(x)(ys[i]))
+    xs => ys => xs.map(
+        (x, i) => f(x)(ys[i])
+    ).slice(
+        0, Math.min(xs.length, ys.length)
     );
 
 // zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]

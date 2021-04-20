@@ -32,7 +32,7 @@ const zipWith = f =>
             }, (_, i) => f(as[i])(
                 bs[i]
             )))([xs, ys].map(
-                compose(take(n), list)
+                take(n)
             ))
         ) : zipWithGen(f)(xs)(ys);
     };
