@@ -5,8 +5,25 @@
     // main :: IO ()
     const main = () => {
 
+        // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
+        const fmap = f =>
+            // f mapped over the given functor.
+            x => {
+                showLog("typeName(x)", typeName(x));
+
+                return ({
+                    "Either": () => fmapLR,
+                    "(a -> b)": () => compose,
+                    "List": () => map,
+                    "Maybe": () => fmapMay,
+                    "Node": () => fmapTree,
+                    "String": () => map,
+                    "Tuple": () => fmapTuple
+                })[typeName(x)]()(f)(x);
+            }
+
         const inner = () =>
-            traverse(mul)([4, 5, 6])(7);
+            traverse(mul)(Right(8))(7);
 
         return JSON.stringify(inner());
     };
@@ -37,10 +54,10 @@
         const ref = Ref();
 
         return $.NSFileManager.defaultManager
-        .fileExistsAtPathIsDirectory(
-            $(strPath)
-            .stringByStandardizingPath, ref
-        ) && 1 !== ref[0];
+            .fileExistsAtPathIsDirectory(
+                $(strPath)
+                .stringByStandardizingPath, ref
+            ) && 1 !== ref[0];
     };
 
     // readFile :: FilePath -> IO String
@@ -67,4 +84,4 @@
         "~/prelude-jxa/jxaSystemIO.js",
         "~/jsParserCombinators/parserCombinators.js"
     ])(main);
-})(); 
+})();

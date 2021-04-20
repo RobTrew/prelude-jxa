@@ -33,6 +33,7 @@ const fmap = f =>
     // f mapped over the given functor.
     x => ({
         "Either": () => fmapLR,
+        "(a -> b)": () => dot,
         "List": () => map,
         "Maybe": () => fmapMay,
         "Node": () => fmapTree,

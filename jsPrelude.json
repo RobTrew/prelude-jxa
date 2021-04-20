@@ -964,7 +964,7 @@
     ]
   },
   "fmap (<$>)": {
-    "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f =>\n    // f mapped over the given functor.\n    x => ({\n        \"Either\": () => fmapLR,\n        \"List\": () => map,\n        \"Maybe\": () => fmapMay,\n        \"Node\": () => fmapTree,\n        \"String\": () => map,\n        \"Tuple\": () => fmapTuple\n    })[typeName(x)]()(f)(x);",
+    "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f =>\n    // f mapped over the given functor.\n    x => ({\n        \"Either\": () => fmapLR,\n        \"(a -> b)\": () => dot,\n        \"List\": () => map,\n        \"Maybe\": () => fmapMay,\n        \"Node\": () => fmapTree,\n        \"String\": () => map,\n        \"Tuple\": () => fmapTuple\n    })[typeName(x)]()(f)(x);",
     "tags": [
       "JS Prelude"
     ]
