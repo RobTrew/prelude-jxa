@@ -1935,20 +1935,11 @@ const indexedTree = rootIndex =>
     // is paired with a top-down
     // left-right index, where the root node
     // starts at the supplied rootIndex;
-    tree => {
-        const go = n => node =>
-            second(
-                Node(Tuple(root(node))({
-                    index: n
-                }))
-            )(
-                mapAccumL(go)(1 + n)(
-                    nest(node)
-                )
-            );
-
-        return snd(go(rootIndex)(tree));
-    };
+    mapAccumLTree(
+        i => x => [1 + i, [x, {
+            index: i
+        }]]
+    )(rootIndex);
 
 // init :: [a] -> [a]
 const init = xs => (
