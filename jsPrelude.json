@@ -1116,7 +1116,7 @@
     ]
   },
   "gcd": {
-    "code": "// gcd :: Integral a => a -> a -> a\nconst gcd = x =>\n    y => {\n        const zero = x.constructor(0);\n        const _gcd = (a, b) =>\n            zero === b ? (\n                a\n            ) : _gcd(b, rem(a)(b));\n\n        return _gcd(abs(x), abs(y));\n    };",
+    "code": "// gcd :: Integral a => a -> a -> a\nconst gcd = x =>\n    y => {\n        const zero = x.constructor(0);\n        const go = (a, b) =>\n            zero === b ? (\n                a\n            ) : go(b, rem(a)(b));\n\n        return go(abs(x), abs(y));\n    };",
     "tags": [
       "JS Prelude"
     ]

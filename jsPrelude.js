@@ -1754,12 +1754,12 @@ const ft = m =>
 const gcd = x =>
     y => {
         const zero = x.constructor(0);
-        const _gcd = (a, b) =>
+        const go = (a, b) =>
             zero === b ? (
                 a
-            ) : _gcd(b, rem(a)(b));
+            ) : go(b, rem(a)(b));
 
-        return _gcd(abs(x), abs(y));
+        return go(abs(x), abs(y));
     };
 
 // genericIndexMay :: [a] -> Int -> Maybe a

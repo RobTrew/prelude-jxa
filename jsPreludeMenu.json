@@ -173,7 +173,7 @@
   "fromRight": "// fromRight :: b -> Either a b -> b\nconst fromRight = def =>\n    // The contents of a 'Right' value or otherwise a default value.\n    lr => isRight(lr) ? (\n        lr.Right\n    ) : def;",
   "fst": "// fst :: (a, b) -> a\nconst fst = tpl =>\n    // First member of a pair.\n    tpl[0];",
   "ft": "// ft :: (Int, Int) -> [Int]\nconst ft = m =>\n    n => Array.from({\n        length: 1 + n - m\n    }, (_, i) => m + i);",
-  "gcd": "// gcd :: Integral a => a -> a -> a\nconst gcd = x =>\n    y => {\n        const zero = x.constructor(0);\n        const _gcd = (a, b) =>\n            zero === b ? (\n                a\n            ) : _gcd(b, rem(a)(b));\n\n        return _gcd(abs(x), abs(y));\n    };",
+  "gcd": "// gcd :: Integral a => a -> a -> a\nconst gcd = x =>\n    y => {\n        const zero = x.constructor(0);\n        const go = (a, b) =>\n            zero === b ? (\n                a\n            ) : go(b, rem(a)(b));\n\n        return go(abs(x), abs(y));\n    };",
   "genericIndexMay": "// genericIndexMay :: [a] -> Int -> Maybe a\nconst genericIndexMay = xs =>\n    i => (i < xs.length && 0 <= i) ? (\n        Just(xs[i])\n    ) : Nothing();",
   "getCurrentDirectory": "// getCurrentDirectory :: IO FilePath\nconst getCurrentDirectory = () =>\n    ObjC.unwrap(\n        $.NSFileManager.defaultManager\n        .currentDirectoryPath\n    );",
   "getDirectoryContents": "// getDirectoryContents :: FilePath -> IO [FilePath]\nconst getDirectoryContents = fp =>\n    ObjC.deepUnwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp)\n            .stringByStandardizingPath, null\n        )\n    );",
