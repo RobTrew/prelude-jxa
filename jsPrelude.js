@@ -1277,18 +1277,34 @@ const fTable = s =>
 
 // fType :: (a -> f b) -> f
 const fType = g => {
+    // fType :: (a -> f b) -> f
     const s = g.toString();
 
     return s.includes("Left") ? (
         Right
     ) : s.includes("Nothing") ? (
         Just
+    ) : true ? (
+        constant
     ) : s.includes("Node") ? (
         flip(Node)([])
-    ) : 1 < (s.match(/ =>/gu) || []).length ? (
-        constant
     ) : x => [x];
 };
+
+// // fType :: (a -> f b) -> f
+// const fType = g => {
+//     const s = g.toString();
+
+//     return s.includes("Left") ? (
+//         Right
+//     ) : s.includes("Nothing") ? (
+//         Just
+//     ) : s.includes("Node") ? (
+//         flip(Node)([])
+//     ) : 1 < (s.match(/ =>/gu) || []).length ? (
+//         constant
+//     ) : x => [x];
+// };
 
 // fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = f =>
@@ -4595,7 +4611,8 @@ const traverseLR = f =>
         f(lr.Right)
     );
 
-// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
+// traverseList :: (Applicative f) => (a -> f b) ->
+// [a] -> f [b]
 const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating

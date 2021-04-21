@@ -811,7 +811,7 @@
     ]
   },
   "fType": {
-    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    const s = g.toString();\n\n    return s.includes(\"Left\") ? (\n        Right\n    ) : s.includes(\"Nothing\") ? (\n        Just\n    ) : s.includes(\"Node\") ? (\n        flip(Node)([])\n    ) : 1 < (s.match(/ =>/gu) || []).length ? (\n        constant\n    ) : x => [x];\n};",
+    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    // fType :: (a -> f b) -> f\n    const s = g.toString();\n\n    return s.includes(\"Left\") ? (\n        Right\n    ) : s.includes(\"Nothing\") ? (\n        Just\n    ) : true ? (\n        constant\n    ) : s.includes(\"Node\") ? (\n        flip(Node)([])\n    ) : x => [x];\n};\n\n// // fType :: (a -> f b) -> f\n// const fType = g => {\n//     const s = g.toString();\n\n//     return s.includes(\"Left\") ? (\n//         Right\n//     ) : s.includes(\"Nothing\") ? (\n//         Just\n//     ) : s.includes(\"Node\") ? (\n//         flip(Node)([])\n//     ) : 1 < (s.match(/ =>/gu) || []).length ? (\n//         constant\n//     ) : x => [x];\n// };",
     "tags": [
       "JS Prelude"
     ]
@@ -3029,7 +3029,7 @@
     ]
   },
   "traverseList": {
-    "code": "// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => (\n        zs => 0 < zs.length ? (() => {\n            const\n                vLast = f(zs.slice(-1)[0]),\n                t = typeName(vLast);\n\n            return zs.slice(0, -1).reduceRight(\n                (ys, z) => liftA2(cons)(f(z))(ys),\n                liftA2(cons)(vLast)(pureT(t)([]))\n            );\n        })() : fType(f)([])\n    )(list(xs));",
+    "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => (\n        zs => 0 < zs.length ? (() => {\n            const\n                vLast = f(zs.slice(-1)[0]),\n                t = typeName(vLast);\n\n            return zs.slice(0, -1).reduceRight(\n                (ys, z) => liftA2(cons)(f(z))(ys),\n                liftA2(cons)(vLast)(pureT(t)([]))\n            );\n        })() : fType(f)([])\n    )(list(xs));",
     "tags": [
       "JS Prelude"
     ]

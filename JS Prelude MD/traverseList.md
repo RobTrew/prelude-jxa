@@ -1,5 +1,6 @@
 ```javascript
-// traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
+// traverseList :: (Applicative f) => (a -> f b) ->
+// [a] -> f [b]
 const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating
