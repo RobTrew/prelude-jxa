@@ -9,6 +9,8 @@ const fType = g => {
         Just
     ) : s.includes("Node") ? (
         flip(Node)([])
+    ) : 1 < (s.match(/ =>/gu) || []).length ? (
+        constant
     ) : x => [x];
 };
 ```
