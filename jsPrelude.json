@@ -811,7 +811,7 @@
     ]
   },
   "fType": {
-    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    // fType :: (a -> f b) -> f\n    const s = g.toString();\n\n    return s.includes(\"Left\") ? (\n        Right\n    ) : s.includes(\"Nothing\") ? (\n        Just\n    ) : true ? (\n        constant\n    ) : s.includes(\"Node\") ? (\n        flip(Node)([])\n    ) : x => [x];\n};\n\n// // fType :: (a -> f b) -> f\n// const fType = g => {\n//     const s = g.toString();\n\n//     return s.includes(\"Left\") ? (\n//         Right\n//     ) : s.includes(\"Nothing\") ? (\n//         Just\n//     ) : s.includes(\"Node\") ? (\n//         flip(Node)([])\n//     ) : 1 < (s.match(/ =>/gu) || []).length ? (\n//         constant\n//     ) : x => [x];\n// };",
+    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    const s = g.toString();\n\n    return s.includes(\"Right\") ? (\n        Right\n    ) : s.includes(\"Left\") ? (\n        Left\n    ) : s.includes(\"Nothing\") ? (\n        Just\n    ) : true ? (\n        constant\n    ) : s.includes(\"Node\") ? (\n        flip(Node)([])\n    ) : x => [x];\n};\n\n// // fType :: (a -> f b) -> f\n// const fType = g => {\n//     const s = g.toString();\n\n//     return s.includes(\"Left\") ? (\n//         Right\n//     ) : s.includes(\"Nothing\") ? (\n//         Just\n//     ) : s.includes(\"Node\") ? (\n//         flip(Node)([])\n//     ) : 1 < (s.match(/ =>/gu) || []).length ? (\n//         constant\n//     ) : x => [x];\n// };",
     "tags": [
       "JS Prelude"
     ]

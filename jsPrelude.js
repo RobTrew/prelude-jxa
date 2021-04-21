@@ -1277,11 +1277,12 @@ const fTable = s =>
 
 // fType :: (a -> f b) -> f
 const fType = g => {
-    // fType :: (a -> f b) -> f
     const s = g.toString();
 
-    return s.includes("Left") ? (
+    return s.includes("Right") ? (
         Right
+    ) : s.includes("Left") ? (
+        Left
     ) : s.includes("Nothing") ? (
         Just
     ) : true ? (
