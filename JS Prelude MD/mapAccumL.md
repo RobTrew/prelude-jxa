@@ -9,6 +9,6 @@ const mapAccumL = f =>
             append(snd(a))
         )(
             f(fst(a))(x)
-        ), [acc, []]
+        ), Tuple(acc)([])
     );
 ```
