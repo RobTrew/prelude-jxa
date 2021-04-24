@@ -5,9 +5,9 @@ const indexedTree = rootIndex =>
     // is paired with a top-down
     // left-right index, where the root node
     // starts at the supplied rootIndex;
-    mapAccumLTree(
+    tree => mapAccumLTree(
         i => x => [1 + i, [x, {
             index: i
         }]]
-    )(rootIndex)[1];
+    )(rootIndex)(tree)[1];
 ```
