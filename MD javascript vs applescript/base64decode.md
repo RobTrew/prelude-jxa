@@ -1,17 +1,3 @@
-```javascript
-// base64decode :: String -> String
-const base64decode = s =>
-    ObjC.unwrap(
-        $.NSString.alloc.initWithDataEncoding(
-            $.NSData.alloc.initWithBase64EncodedStringOptions(
-                s, 0
-            ),
-            $.NSUTF8StringEncoding
-        )
-    );
-```
-
-
 ```applescript
 -- base64decode :: String -> String
 on base64decode(s)
@@ -24,4 +10,18 @@ on base64decode(s)
                 options:(ignore)))) encoding:ignore)) as text
     end tell
 end base64decode
+```
+
+
+```javascript
+// base64decode :: String -> String
+const base64decode = s =>
+    ObjC.unwrap(
+        $.NSString.alloc.initWithDataEncoding(
+            $.NSData.alloc.initWithBase64EncodedStringOptions(
+                s, 0
+            ),
+            $.NSUTF8StringEncoding
+        )
+    );
 ```

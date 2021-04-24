@@ -1,12 +1,3 @@
-```javascript
-// Nothing :: Maybe a
-const Nothing = () => ({
-    type: "Maybe",
-    Nothing: true
-});
-```
-
-
 ```applescript
 -- Nothing :: Maybe a
 on Nothing()
@@ -14,4 +5,13 @@ on Nothing()
     -- Empty wrapper returned where a computation is not possible.
     {type: "Maybe", Nothing: true}
 end Nothing
+```
+
+
+```javascript
+// Nothing :: Maybe a
+const Nothing = () => ({
+    type: "Maybe",
+    Nothing: true
+});
 ```

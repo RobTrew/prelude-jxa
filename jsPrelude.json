@@ -1260,7 +1260,7 @@
     ]
   },
   "indexedTree": {
-    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value\n    // is paired with a top-down\n    // left-right index, where the root node\n    // starts at the supplied rootIndex;\n    mapAccumLTree(\n        i => x => [1 + i, [x, {\n            index: i\n        }]]\n    )(rootIndex);",
+    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value\n    // is paired with a top-down\n    // left-right index, where the root node\n    // starts at the supplied rootIndex;\n    mapAccumLTree(\n        i => x => [1 + i, [x, {\n            index: i\n        }]]\n    )(rootIndex)[1];",
     "tags": [
       "JS Prelude",
       "tree"

@@ -1,10 +1,3 @@
-```javascript
-// curry :: ((a, b) -> c) -> a -> b -> c
-const curry = f =>
-    a => b => f(a, b);
-```
-
-
 ```applescript
 -- curry :: ((a, b) -> c) -> a -> b -> c
 on curry(f)
@@ -18,4 +11,11 @@ on curry(f)
         end |λ|
     end script
 end curry
+```
+
+
+```javascript
+// curry :: ((a, b) -> c) -> a -> b -> c
+const curry = f =>
+    a => b => f(a, b);
 ```

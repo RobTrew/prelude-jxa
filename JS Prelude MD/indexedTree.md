@@ -9,5 +9,5 @@ const indexedTree = rootIndex =>
         i => x => [1 + i, [x, {
             index: i
         }]]
-    )(rootIndex);
+    )(rootIndex)[1];
 ```
