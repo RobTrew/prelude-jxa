@@ -1,3 +1,13 @@
+```javascript
+// doesPathExist :: FilePath -> IO Bool
+const doesPathExist = fp =>
+    $.NSFileManager.defaultManager
+    .fileExistsAtPath(
+        $(fp).stringByStandardizingPath
+    );
+```
+
+
 ```applescript
 -- doesPathExist :: FilePath -> IO Bool
 on doesPathExist(strPath)
@@ -7,14 +17,4 @@ on doesPathExist(strPath)
             stringWithString:strPath)'s ¬
             stringByStandardizingPath)
 end doesPathExist
-```
-
-
-```javascript
-// doesPathExist :: FilePath -> IO Bool
-const doesPathExist = fp =>
-    $.NSFileManager.defaultManager
-    .fileExistsAtPath(
-        $(fp).stringByStandardizingPath
-    );
 ```

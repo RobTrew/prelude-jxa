@@ -1,3 +1,14 @@
+```javascript
+// lookup :: Eq a => a -> Container -> Maybe b
+const lookup = k =>
+    // Just of value of the key k in m,
+    // or Nothing if m does not contain k.
+    m => (Array.isArray(m) ? (
+        lookupTuples
+    ) : lookupDict)(k)(m);
+```
+
+
 ```applescript
 -- lookup :: Eq a => a -> Container -> Maybe b
 on lookup(k, m)
@@ -10,15 +21,4 @@ on lookup(k, m)
         Nothing()
     end if
 end lookup
-```
-
-
-```javascript
-// lookup :: Eq a => a -> Container -> Maybe b
-const lookup = k =>
-    // Just of value of the key k in m,
-    // or Nothing if m does not contain k.
-    m => (Array.isArray(m) ? (
-        lookupTuples
-    ) : lookupDict)(k)(m);
 ```
