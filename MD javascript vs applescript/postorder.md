@@ -1,17 +1,3 @@
-```javascript
-// postorder :: Tree a -> [a]
-const postorder = t => {
-    // List of root elements of tree flattened
-    // bottom-up into a postorder list.
-    const go = (xs, x) =>
-        nest(x).reduce(go, xs)
-        .concat(root(x));
-
-    return go([], t);
-};
-```
-
-
 ```applescript
 -- Root elements of tree flattened bottom-up
 -- into a postorder list.
@@ -24,4 +10,18 @@ on postorder(node)
     end script
     go's |λ|({}, node)
 end postorder
+```
+
+
+```javascript
+// postorder :: Tree a -> [a]
+const postorder = t => {
+    // List of root elements of tree flattened
+    // bottom-up into a postorder list.
+    const go = (xs, x) =>
+        nest(x).reduce(go, xs)
+        .concat(root(x));
+
+    return go([], t);
+};
 ```
