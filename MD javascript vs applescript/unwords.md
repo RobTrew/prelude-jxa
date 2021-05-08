@@ -1,12 +1,3 @@
-```javascript
-// unwords :: [String] -> String
-const unwords = xs =>
-    // A space-separated string derived
-    // from a list of words.
-    xs.join(" ");
-```
-
-
 ```applescript
 -- unwords :: [String] -> String
 on unwords(xs)
@@ -16,4 +7,13 @@ on unwords(xs)
     set my text item delimiters to dlm
     return s
 end unwords
+```
+
+
+```javascript
+// unwords :: [String] -> String
+const unwords = xs =>
+    // A space-separated string derived
+    // from a list of words.
+    xs.join(" ");
 ```

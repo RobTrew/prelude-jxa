@@ -1,10 +1,3 @@
-```javascript
-// setFromList :: Ord a => [a] -> Set a
-const setFromList = xs =>
-    new Set(xs);
-```
-
-
 ```applescript
 -- setFromList :: Ord a => [a] -> Set a
 on setFromList(xs)
@@ -15,4 +8,11 @@ on setFromList(xs)
     ca's NSMutableSet's ¬
         setWithArray:(ca's NSArray's arrayWithArray:(xs))
 end setFromList
+```
+
+
+```javascript
+// setFromList :: Ord a => [a] -> Set a
+const setFromList = xs =>
+    new Set(xs);
 ```
