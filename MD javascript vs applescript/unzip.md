@@ -1,3 +1,15 @@
+```javascript
+// unzip :: [(a,b)] -> ([a],[b])
+const unzip = xys =>
+    xys.reduce(
+        (ab, xy) => Tuple(ab[0].concat(xy[0]))(
+            ab[1].concat(xy[1])
+        ),
+        Tuple([])([])
+    );
+```
+
+
 ```applescript
 -- unzip :: [(a,b)] -> ([a],[b])
 on unzip(xys)
@@ -9,16 +21,4 @@ on unzip(xys)
     end repeat
     return Tuple(xs, ys)
 end unzip
-```
-
-
-```javascript
-// unzip :: [(a,b)] -> ([a],[b])
-const unzip = xys =>
-    xys.reduce(
-        (ab, xy) => Tuple(ab[0].concat(xy[0]))(
-            ab[1].concat(xy[1])
-        ),
-        Tuple([])([])
-    );
 ```

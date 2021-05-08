@@ -1,3 +1,14 @@
+```javascript
+// apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
+const apTree = tf =>
+    // A new tree derived by applying each of a tree
+    // of functions to each node value in another tree.
+    liftA2Tree(
+        x => x
+    )(tf);
+```
+
+
 ```applescript
 -- apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 on apTree(tf, tx)
@@ -13,15 +24,4 @@ on apTree(tf, tx)
     
     return go's |λ|(tf)
 end apTree
-```
-
-
-```javascript
-// apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
-const apTree = tf =>
-    // A new tree derived by applying each of a tree
-    // of functions to each node value in another tree.
-    liftA2Tree(
-        x => x
-    )(tf);
 ```

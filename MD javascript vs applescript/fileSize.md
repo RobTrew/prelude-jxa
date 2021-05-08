@@ -1,3 +1,12 @@
+```javascript
+// fileSize :: FilePath -> Either String Int
+const fileSize = fp =>
+    bindLR(fileStatus(fp))(
+        dct => Right(ObjC.unwrap(dct.NSFileSize))
+    );
+```
+
+
 ```applescript
 -- fileSize :: FilePath -> Either String Int
 on fileSize(fp)
@@ -8,13 +17,4 @@ on fileSize(fp)
     end script
     bindLR(my fileStatus(fp), fs)
 end fileSize
-```
-
-
-```javascript
-// fileSize :: FilePath -> Either String Int
-const fileSize = fp =>
-    bindLR(fileStatus(fp))(
-        dct => Right(ObjC.unwrap(dct.NSFileSize))
-    );
 ```
