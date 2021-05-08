@@ -3,6 +3,8 @@
 const quotRem = m =>
     // The quotient, tupled with the remainder.
     n => Tuple(
-        quot(m)(n)
-    )(rem(m)(n));
+        Math.trunc(m / n)
+    )(
+        m % n
+    );
 ```

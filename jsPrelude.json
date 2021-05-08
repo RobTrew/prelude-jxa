@@ -352,7 +352,7 @@
     ]
   },
   "chars": {
-    "code": "// chars :: String -> [Char]\nconst chars = s =>\n    s.split(\"\");",
+    "code": "// chars :: String -> [Char]\nconst chars = s =>\n    [...s];",
     "tags": [
       "JS Prelude"
     ]
@@ -1503,7 +1503,7 @@
     ]
   },
   "jsonParseLR": {
-    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    // Either a message, or a JS value obtained\n    // from a successful parse of s.\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            `${e.message} (line:${e.line} col:${e.column})`\n        );\n    }\n};",
+    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            [\n                e.message,\n                `(line:${e.line} col:${e.column})`\n            ].join(\"\\n\")\n        );\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1586,7 +1586,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    // A list of lists, grouping the\n    // root values of each level\n    // of the tree.\n    cons([tree.root])(\n        tree.nest\n        .map(levels)\n        .reduce(\n            uncurry(zipWithLong(append)),\n            []\n        )\n    );",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, node) => {\n        const [h, ...t] = 0 < a.length ? (\n            a\n        ) : [[], []];\n\n        return [\n            [node.root, ...h],\n            ...node.nest.slice(0)\n            .reverse().reduce(go, t)\n        ];\n    };\n\n    return go([], tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2209,7 +2209,7 @@
     ]
   },
   "quotRem": {
-    "code": "// quotRem :: Integral a => a -> a -> (a, a)\nconst quotRem = m =>\n    // The quotient, tupled with the remainder.\n    n => Tuple(\n        quot(m)(n)\n    )(rem(m)(n));",
+    "code": "// quotRem :: Integral a => a -> a -> (a, a)\nconst quotRem = m =>\n    // The quotient, tupled with the remainder.\n    n => Tuple(\n        Math.trunc(m / n)\n    )(\n        m % n\n    );",
     "tags": [
       "JS Prelude",
       "core"

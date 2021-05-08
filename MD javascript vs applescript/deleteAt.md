@@ -1,3 +1,14 @@
+```javascript
+// deleteAt :: Int -> [a] -> [a]
+const deleteAt = i =>
+    xs => i <= xs.length ? (() => {
+        const lr = splitAt(i)(xs);
+
+        return lr[0].concat(lr[1].slice(1));
+    })() : xs;
+```
+
+
 ```applescript
 -- deleteAt :: Int -> [a] -> [a]
 on deleteAt(i, xs)
@@ -9,15 +20,4 @@ on deleteAt(i, xs)
         l
     end if
 end deleteAt
-```
-
-
-```javascript
-// deleteAt :: Int -> [a] -> [a]
-const deleteAt = i =>
-    xs => i <= xs.length ? (() => {
-        const lr = splitAt(i)(xs);
-
-        return lr[0].concat(lr[1].slice(1));
-    })() : xs;
 ```

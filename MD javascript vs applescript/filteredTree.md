@@ -1,3 +1,19 @@
+```javascript
+// filteredTree (a -> Bool) -> Tree a -> Tree a
+const filteredTree = p =>
+    // A tree including only those children
+    // which either match the predicate p, or have
+    // descendants which match the predicate p.
+    foldTree(x => xs =>
+        Node(x)(xs.filter(
+            tree => (0 < tree.nest.length) || (
+                p(tree.root)
+            )
+        ))
+    );
+```
+
+
 ```applescript
 -- filteredTree (a -> Bool) -> Tree a -> Tree a
 on filteredTree(p, tree)
@@ -19,20 +35,4 @@ on filteredTree(p, tree)
     
     foldTree(go, tree)
 end filteredTree
-```
-
-
-```javascript
-// filteredTree (a -> Bool) -> Tree a -> Tree a
-const filteredTree = p =>
-    // A tree including only those children
-    // which either match the predicate p, or have
-    // descendants which match the predicate p.
-    foldTree(x => xs =>
-        Node(x)(xs.filter(
-            tree => (0 < tree.nest.length) || (
-                p(tree.root)
-            )
-        ))
-    );
 ```

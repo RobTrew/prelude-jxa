@@ -469,7 +469,7 @@ const center = n =>
 
 // chars :: String -> [Char]
 const chars = s =>
-    s.split("");
+    [...s];
 
 // chop :: ([a] -> (b, [a])) -> [a] -> [b]
 const chop = f =>
@@ -2280,13 +2280,14 @@ const jsonLog = (...args) =>
 
 // jsonParseLR :: String -> Either String a
 const jsonParseLR = s => {
-    // Either a message, or a JS value obtained
-    // from a successful parse of s.
     try {
         return Right(JSON.parse(s));
     } catch (e) {
         return Left(
-            `${e.message} (line:${e.line} col:${e.column})`
+            [
+                e.message,
+                `(line:${e.line} col:${e.column})`
+            ].join("\n")
         );
     }
 };
@@ -2383,18 +2384,23 @@ const levelNodes = tree =>
   )([tree]);
 
 // levels :: Tree a -> [[a]]
-const levels = tree =>
-    // A list of lists, grouping the
-    // root values of each level
-    // of the tree.
-    cons([tree.root])(
-        tree.nest
-        .map(levels)
-        .reduce(
-            uncurry(zipWithLong(append)),
-            []
-        )
-    );
+const levels = tree => {
+    // A list of lists, grouping the root
+    // values of each level of the tree.
+    const go = (a, node) => {
+        const [h, ...t] = 0 < a.length ? (
+            a
+        ) : [[], []];
+
+        return [
+            [node.root, ...h],
+            ...node.nest.slice(0)
+            .reverse().reduce(go, t)
+        ];
+    };
+
+    return go([], tree);
+};
 
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
@@ -3363,8 +3369,10 @@ const quot = n =>
 const quotRem = m =>
     // The quotient, tupled with the remainder.
     n => Tuple(
-        quot(m)(n)
-    )(rem(m)(n));
+        Math.trunc(m / n)
+    )(
+        m % n
+    );
 
 // quoted :: Char -> String -> String
 const quoted = c =>
