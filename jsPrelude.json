@@ -2886,7 +2886,7 @@
     ]
   },
   "takeCycle": {
-    "code": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = n =>\n    // First n elements of a non-finite cycle of xs.\n    xs => {\n        const lng = xs.length;\n\n        return (\n            n <= xs ? (\n                xs\n            ) : concat(\n                replicate(Math.ceil(n / lng))(\n                    xs\n                )\n            )\n        ).slice(0, n);\n    };",
+    "code": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = n =>\n    // First n elements of a non-finite cycle of xs.\n    xs => {\n        const lng = xs.length;\n\n        return (\n            n <= lng ? (\n                xs\n            ) : concat(\n                replicate(Math.ceil(n / lng))(\n                    xs\n                )\n            )\n        ).slice(0, n);\n    };",
     "tags": [
       "JS Prelude"
     ]
