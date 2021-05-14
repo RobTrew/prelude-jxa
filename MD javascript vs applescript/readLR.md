@@ -1,15 +1,3 @@
-```javascript
-// readLR :: Read a => String -> Either String a
-const readLR = s => {
-    try {
-        return Right(JSON.parse(s));
-    } catch (e) {
-        return Left(e.message);
-    }
-};
-```
-
-
 ```applescript
 -- readLR :: Read a => String -> Either String a
 on readLR(s)
@@ -19,4 +7,16 @@ on readLR(s)
         |Left|(e)
     end try
 end readLR
+```
+
+
+```javascript
+// readLR :: Read a => String -> Either String a
+const readLR = s => {
+    try {
+        return Right(JSON.parse(s));
+    } catch (e) {
+        return Left(e.message);
+    }
+};
 ```

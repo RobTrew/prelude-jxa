@@ -1,20 +1,3 @@
-```javascript
-// fmapTree :: (a -> b) -> Tree a -> Tree b
-const fmapTree = f => {
-    // A new tree. The result of a
-    // structure-preserving application of f
-    // to each root in the existing tree.
-    const go = t => Node(
-        f(t.root)
-    )(
-        t.nest.map(go)
-    );
-
-    return go;
-};
-```
-
-
 ```applescript
 -- fmapTree :: (a -> b) -> Tree a -> Tree b
 on fmapTree(f, tree)
@@ -32,4 +15,21 @@ on fmapTree(f, tree)
     end script
   |λ|(tree) of go
 end fmapTree
+```
+
+
+```javascript
+// fmapTree :: (a -> b) -> Tree a -> Tree b
+const fmapTree = f => {
+    // A new tree. The result of a
+    // structure-preserving application of f
+    // to each root in the existing tree.
+    const go = t => Node(
+        f(t.root)
+    )(
+        t.nest.map(go)
+    );
+
+    return go;
+};
 ```

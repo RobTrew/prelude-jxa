@@ -1,10 +1,3 @@
-```javascript
-// ne :: a -> a -> Bool
-const ne = a =>
-    b => a !== b;
-```
-
-
 ```applescript
 -- ne :: a -> a -> Bool
 on ne(a)
@@ -14,4 +7,11 @@ on ne(a)
         end |λ|
     end script
 end ne
+```
+
+
+```javascript
+// ne :: a -> a -> Bool
+const ne = a =>
+    b => a !== b;
 ```

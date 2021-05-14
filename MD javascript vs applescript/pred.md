@@ -1,3 +1,15 @@
+```applescript
+-- pred :: Enum a => a -> a
+on pred(x)
+    if isChar(x) then
+        chr(ord(x) - 1)
+    else
+        (-1) + x
+    end if
+end pred
+```
+
+
 ```javascript
 // pred :: Enum a => a -> a
 const pred = x => {
@@ -13,16 +25,4 @@ const pred = x => {
         x - 1
     ) : Error("succ :: Num out of range.");
 };
-```
-
-
-```applescript
--- pred :: Enum a => a -> a
-on pred(x)
-    if isChar(x) then
-        chr(ord(x) - 1)
-    else
-        (-1) + x
-    end if
-end pred
 ```
