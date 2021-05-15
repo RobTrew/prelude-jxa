@@ -28,7 +28,7 @@
     ]
   },
   "Ratio": {
-    "code": "// Ratio :: Integral a => a -> a -> Ratio a\nconst Ratio = a => b => {\n    const go = (x, y) =>\n        0 !== y ? (() => {\n            const d = gcd(x)(y);\n\n            return {\n                type: \"Ratio\",\n                // numerator\n                \"n\": quot(x)(d),\n                // denominator\n                \"d\": quot(y)(d)\n            };\n        })() : undefined;\n\n    return go(a * signum(b), abs(b));\n};",
+    "code": "// Ratio :: Integral a => a -> a -> Ratio a\nconst Ratio = a => b => {\n    const go = (x, y) =>\n        0 !== y ? (() => {\n            const d = gcd(x)(y);\n\n            return {\n                type: \"Ratio\",\n                // numerator\n                \"n\": Math.trunc(x / d),\n                // denominator\n                \"d\": Math.trunc(y / d)\n            };\n        })() : undefined;\n\n    return go(a * signum(b), abs(b));\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -197,7 +197,7 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = epsilon =>\n    // A ratio derived by approximation\n    // (at granularity epsilon) to the float n.\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const gcd1 = (a, b) => b < e ? (\n                    a\n                ) : gcd1(b, a % b);\n\n                return gcd1(abs(x), abs(y));\n            },\n            c = gcde(\n                Boolean(epsilon) ? (\n                    epsilon\n                ) : (1 / 10000), 1, abs(n)\n            ),\n            r = ratio(quot(abs(n))(c))(quot(1, c));\n\n        return {\n            type: \"Ratio\",\n            n: r.n * signum(n),\n            d: r.d\n        };\n    };",
+    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = eps => n => {\n    const\n        gcde = (e, x, y) => {\n            const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));\n\n            return _gcd(Math.abs(x), Math.abs(y));\n        },\n        c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);\n\n    return Ratio(\n        Math.floor(n / c),\n    )(\n        Math.floor(1 / c)\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1116,7 +1116,7 @@
     ]
   },
   "gcd": {
-    "code": "// gcd :: Integral a => a -> a -> a\nconst gcd = x =>\n    y => {\n        const zero = x.constructor(0);\n        const go = (a, b) =>\n            zero === b ? (\n                a\n            ) : go(b, rem(a)(b));\n\n        return go(abs(x), abs(y));\n    };",
+    "code": "// gcd :: Integral a => a -> a -> a\nconst gcd = x =>\n    y => {\n        const zero = x.constructor(0);\n        const go = (a, b) =>\n            zero === b ? (\n                a\n            ) : go(b, a % b);\n\n        return go(abs(x), abs(y));\n    };",
     "tags": [
       "JS Prelude"
     ]

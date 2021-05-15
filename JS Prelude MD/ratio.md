@@ -8,9 +8,9 @@ const Ratio = a => b => {
             return {
                 type: "Ratio",
                 // numerator
-                "n": quot(x)(d),
+                "n": Math.trunc(x / d),
                 // denominator
-                "d": quot(y)(d)
+                "d": Math.trunc(y / d)
             };
         })() : undefined;
 

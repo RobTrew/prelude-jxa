@@ -1,3 +1,12 @@
+```javascript
+// levelNodes :: Tree a -> [[Tree a]]
+const levelNodes = tree =>
+  iterateUntil(xs => 1 > xs.length)(
+    xs => xs.flatMap(x => x.nest)
+  )([tree]);
+```
+
+
 ```applescript
 -- levelNodes :: Tree a -> [[Tree a]]
 on levelNodes(tree)
@@ -20,13 +29,4 @@ on levelNodes(tree)
     
     iterateUntil(p, f, {tree})
 end levelNodes
-```
-
-
-```javascript
-// levelNodes :: Tree a -> [[Tree a]]
-const levelNodes = tree =>
-  iterateUntil(xs => 1 > xs.length)(
-    xs => xs.flatMap(x => x.nest)
-  )([tree]);
 ```

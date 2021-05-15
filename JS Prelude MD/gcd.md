@@ -6,7 +6,7 @@ const gcd = x =>
         const go = (a, b) =>
             zero === b ? (
                 a
-            ) : go(b, rem(a)(b));
+            ) : go(b, a % b);
 
         return go(abs(x), abs(y));
     };

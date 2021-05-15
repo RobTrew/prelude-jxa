@@ -1,3 +1,10 @@
+```javascript
+// min :: Ord a => a -> a -> a
+const min = a =>
+    b => b < a ? b : a;
+```
+
+
 ```applescript
 -- min :: Ord a => a -> a -> a
 on min(x, y)
@@ -7,11 +14,4 @@ on min(x, y)
         x
     end if
 end min
-```
-
-
-```javascript
-// min :: Ord a => a -> a -> a
-const min = a =>
-    b => b < a ? b : a;
 ```
