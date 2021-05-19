@@ -1,16 +1,3 @@
-```javascript
-// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
-const lookupTuples = k =>
-    kvs => {
-        const i = kvs.findIndex(kv => k === kv[0]);
-
-        return -1 !== i ? (
-            Just(kvs[i][1])
-        ) : Nothing();
-    };
-```
-
-
 ```applescript
 -- lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
 on lookupTuples(k, xs)
@@ -28,4 +15,17 @@ on lookupTuples(k, xs)
     
     bindMay(find(keyMatch, xs), harvestMay)
 end lookupTuples
+```
+
+
+```javascript
+// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
+const lookupTuples = k =>
+    kvs => {
+        const i = kvs.findIndex(kv => k === kv[0]);
+
+        return -1 !== i ? (
+            Just(kvs[i][1])
+        ) : Nothing();
+    };
 ```
