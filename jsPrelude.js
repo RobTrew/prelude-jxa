@@ -229,21 +229,27 @@ const applyN = n =>
     .reduce((a, g) => g(a), x);
 
 // approxRatio :: Float -> Float -> Ratio
-const approxRatio = eps => n => {
-    const
-        gcde = (e, x, y) => {
-            const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));
+const approxRatio = eps =>
+    n => {
+        const
+            gcde = (e, x, y) => {
+                const _gcd = (a, b) =>
+                    b < e ? (
+                        a
+                    ) : _gcd(b, a % b);
 
-            return _gcd(Math.abs(x), Math.abs(y));
-        },
-        c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);
+                return _gcd(Math.abs(x), Math.abs(y));
+            },
+            c = gcde(Boolean(eps) ? (
+                eps
+            ) : (1 / 10000), 1, n);
 
-    return Ratio(
-        Math.floor(n / c),
-    )(
-        Math.floor(1 / c)
-    );
-};
+        return Ratio(
+            Math.floor(n / c)
+        )(
+            Math.floor(1 / c)
+        );
+    };
 
 // argvLength :: Function -> Int
 const argvLength = f =>
@@ -4879,19 +4885,21 @@ const typeName = v => {
     const t = typeof v;
 
     return "object" === t ? (
-        Array.isArray(v) ? (
-            "List"
-        ) : "Date" === v.constructor.name ? (
-            "Date"
-        ) : null !== v ? (() => {
-            const ct = v.type;
+        null !== v ? (
+            Array.isArray(v) ? (
+                "List"
+            ) : "Date" === v.constructor.name ? (
+                "Date"
+            ) : null !== v ? (() => {
+                const ct = v.type;
 
-            return Boolean(ct) ? (
-                (/Tuple\d+/u).test(ct) ? (
-                    "TupleN"
-                ) : ct
-            ) : "Dict";
-        })() : "Bottom"
+                return Boolean(ct) ? (
+                    (/Tuple\d+/u).test(ct) ? (
+                        "TupleN"
+                    ) : ct
+                ) : "Dict";
+            })() : "Bottom"
+        ) : "Bottom"
     ) : {
         "boolean": "Bool",
         "date": "Date",

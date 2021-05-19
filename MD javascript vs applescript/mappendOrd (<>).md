@@ -1,3 +1,12 @@
+```javascript
+// mappendOrd (<>) :: Ordering -> Ordering -> Ordering
+const mappendOrd = x =>
+    y => 0 !== x ? (
+        x
+    ) : y;
+```
+
+
 ```applescript
 -- mappendOrd (<>) :: Ordering -> Ordering -> Ordering
 on mappendOrd(a, b)
@@ -7,13 +16,4 @@ on mappendOrd(a, b)
         b
     end if
 end mappendOrd
-```
-
-
-```javascript
-// mappendOrd (<>) :: Ordering -> Ordering -> Ordering
-const mappendOrd = x =>
-    y => 0 !== x ? (
-        x
-    ) : y;
 ```

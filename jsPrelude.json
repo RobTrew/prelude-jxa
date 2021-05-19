@@ -197,7 +197,7 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = eps => n => {\n    const\n        gcde = (e, x, y) => {\n            const _gcd = (a, b) => (b < e ? a : _gcd(b, a % b));\n\n            return _gcd(Math.abs(x), Math.abs(y));\n        },\n        c = gcde(Boolean(eps) ? eps : (1 / 10000), 1, n);\n\n    return Ratio(\n        Math.floor(n / c),\n    )(\n        Math.floor(1 / c)\n    );\n};",
+    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = eps =>\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const _gcd = (a, b) =>\n                    b < e ? (\n                        a\n                    ) : _gcd(b, a % b);\n\n                return _gcd(Math.abs(x), Math.abs(y));\n            },\n            c = gcde(Boolean(eps) ? (\n                eps\n            ) : (1 / 10000), 1, n);\n\n        return Ratio(\n            Math.floor(n / c)\n        )(\n            Math.floor(1 / c)\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -3115,7 +3115,7 @@
     ]
   },
   "typeName": {
-    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t ? (\n        Array.isArray(v) ? (\n            \"List\"\n        ) : \"Date\" === v.constructor.name ? (\n            \"Date\"\n        ) : null !== v ? (() => {\n            const ct = v.type;\n\n            return Boolean(ct) ? (\n                (/Tuple\\d+/u).test(ct) ? (\n                    \"TupleN\"\n                ) : ct\n            ) : \"Dict\";\n        })() : \"Bottom\"\n    ) : {\n        \"boolean\": \"Bool\",\n        \"date\": \"Date\",\n        \"number\": \"Num\",\n        \"string\": \"String\",\n        \"function\": \"(a -> b)\"\n    } [t] || \"Bottom\";\n};",
+    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t ? (\n        null !== v ? (\n            Array.isArray(v) ? (\n                \"List\"\n            ) : \"Date\" === v.constructor.name ? (\n                \"Date\"\n            ) : null !== v ? (() => {\n                const ct = v.type;\n\n                return Boolean(ct) ? (\n                    (/Tuple\\d+/u).test(ct) ? (\n                        \"TupleN\"\n                    ) : ct\n                ) : \"Dict\";\n            })() : \"Bottom\"\n        ) : \"Bottom\"\n    ) : {\n        \"boolean\": \"Bool\",\n        \"date\": \"Date\",\n        \"number\": \"Num\",\n        \"string\": \"String\",\n        \"function\": \"(a -> b)\"\n    } [t] || \"Bottom\";\n};",
     "tags": [
       "JS Prelude"
     ]
