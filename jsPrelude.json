@@ -779,6 +779,12 @@
       "core"
     ]
   },
+  "eqDateTime": {
+    "code": "// eqDateTime :: Int -> Date -> Date -> Bool\nconst eqDateTime = n =>\n    // Equivalence of two JS DateTime values\n    // at a granularity of n minutes.\n    // e.g.\n    //  Same minute: eqDateTime(1)\n    //  Same hour:   eqDateTime(60)\n    on(a => b => a === b)(\n        x => Math.floor(x / (\n            0 < n ? (\n                (6E4 * n) + 1\n            ) : 1\n        ))\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "evalJSLR": {
     "code": "// evalJSLR :: String -> Either String a\nconst evalJSLR = s => {\n    try {\n        // eslint-disable-next-line no-eval\n        return Right(eval(`(${s})`));\n    } catch (e) {\n        return Left(e.message);\n    }\n};",
     "tags": [
