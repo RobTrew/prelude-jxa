@@ -1230,13 +1230,9 @@ const eqDateTime = n =>
     // at a granularity of n minutes.
     // e.g.
     //  Same minute: eqDateTime(1)
-    //  Same hour:   eqDateTime(60)
+    //    Same hour: eqDateTime(60)
     on(a => b => a === b)(
-        x => Math.floor(x / (
-            0 < n ? (
-                (6E4 * n) + 1
-            ) : 1
-        ))
+        flip(div)(6E4 * n)
     );
 
 // evalJSLR :: String -> Either String a

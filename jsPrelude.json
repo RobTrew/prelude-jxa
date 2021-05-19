@@ -780,7 +780,7 @@
     ]
   },
   "eqDateTime": {
-    "code": "// eqDateTime :: Int -> Date -> Date -> Bool\nconst eqDateTime = n =>\n    // Equivalence of two JS DateTime values\n    // at a granularity of n minutes.\n    // e.g.\n    //  Same minute: eqDateTime(1)\n    //  Same hour:   eqDateTime(60)\n    on(a => b => a === b)(\n        x => Math.floor(x / (\n            0 < n ? (\n                (6E4 * n) + 1\n            ) : 1\n        ))\n    );",
+    "code": "// eqDateTime :: Int -> Date -> Date -> Bool\nconst eqDateTime = n =>\n    // Equivalence of two JS DateTime values\n    // at a granularity of n minutes.\n    // e.g.\n    //  Same minute: eqDateTime(1)\n    //    Same hour: eqDateTime(60)\n    on(a => b => a === b)(\n        flip(div)(6E4 * n)\n    );",
     "tags": [
       "JS Prelude"
     ]
