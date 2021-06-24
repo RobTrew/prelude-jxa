@@ -1,17 +1,3 @@
-```javascript
-// mapMaybe :: (a -> Maybe b) -> [a] -> [b]
-const mapMaybe = mf =>
-    // A filtered map, retaining only the contents
-    // of Just values. (Nothing values discarded).
-    xs => list(xs).reduce(
-        (a, x) => maybe(a)(
-            j => a.concat(j)
-        )(mf(x)),
-        []
-    );
-```
-
-
 ```applescript
 -- mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 on mapMaybe(mf, xs)
@@ -33,4 +19,18 @@ on mapMaybe(mf, xs)
     end script
     foldl(result, {}, xs)
 end mapMaybe
+```
+
+
+```javascript
+// mapMaybe :: (a -> Maybe b) -> [a] -> [b]
+const mapMaybe = mf =>
+    // A filtered map, retaining only the contents
+    // of Just values. (Nothing values discarded).
+    xs => list(xs).reduce(
+        (a, x) => maybe(a)(
+            j => a.concat(j)
+        )(mf(x)),
+        []
+    );
 ```

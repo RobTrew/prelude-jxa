@@ -30,6 +30,6 @@ const showMenuLR = blnMult =>
 
         return Array.isArray(v) ? (
             Right(v)
-        ) : Left(`User cancelled ${title} menu.`);
-    })() : Left(`${title}: No items to choose from.`);
+        ) : Left(`User cancelled ${menuTitle} menu.`);
+    })() : Left(`${menuTitle}: No items to choose from.`);
 ```

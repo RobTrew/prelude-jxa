@@ -1,14 +1,3 @@
-```javascript
-// rights :: [Either a b] -> [b]
-const rights = xs =>
-    xs.flatMap(
-        x => ("Either" === x.type) && (
-            undefined !== x.Right
-        ) ? [x.Right] : []
-    );
-```
-
-
 ```applescript
 -- rights :: [Either a b] -> [b]
 on rights(xs)
@@ -28,4 +17,15 @@ on rights(xs)
     end script
     concatMap(result, xs)
 end rights
+```
+
+
+```javascript
+// rights :: [Either a b] -> [b]
+const rights = xs =>
+    xs.flatMap(
+        x => ("Either" === x.type) && (
+            undefined !== x.Right
+        ) ? [x.Right] : []
+    );
 ```

@@ -780,7 +780,7 @@
     ]
   },
   "eqDateTime": {
-    "code": "// eqDateTime :: Int -> Date -> Date -> Bool\nconst eqDateTime = n =>\n    // Equivalence of two JS DateTime values\n    // at a granularity of n minutes.\n    // e.g.\n    //  Same minute: eqDateTime(1)\n    //    Same hour: eqDateTime(60)\n    on(a => b => a === b)(\n        flip(div)(6E4 * n)\n    );",
+    "code": "// eqDateTime :: Int -> Date -> Date -> Bool\nconst eqDateTime = n =>\n    // Equivalence of two JS Date values\n    // at a granularity of n minutes.\n    // e.g.\n    //  Same minute: eqDateTime(1)(a)(b)\n    //    Same hour: eqDateTime(60)(a)(b)\n    on(a => b => a === b)(\n        flip(div)(6E4 * n)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1522,7 +1522,7 @@
     ]
   },
   "justifyRight": {
-    "code": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = n =>\n    // The string s, preceded by enough padding (with\n    // the character c) to reach the string length n.\n    c => s => n > s.length ? (\n        s.padStart(n, c)\n    ) : s;",
+    "code": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = n =>\n    // The string s, preceded by enough padding (with\n    // the character c) to reach the string length n.\n    c => s => Boolean(s) ? (\n        s.padStart(n, c)\n    ) : \"\";",
     "tags": [
       "JS Prelude",
       "core"
@@ -2603,7 +2603,7 @@
     ]
   },
   "showMenuLR": {
-    "code": "// showMenuLR :: Bool -> String -> String ->\n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with\n    // a given title and prompt string.\n    // Listing the strings in xs, with\n    // the string `selected` pre-selected\n    // if found in xs.\n    menuTitle => prompt => selected => xs =>\n    0 < xs.length ? (() => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        sa.activate();\n\n        const v = sa.chooseFromList(xs, {\n            withTitle: menuTitle,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: \"OK\",\n            cancelButtonName: \"Cancel\",\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left(`User cancelled ${title} menu.`);\n    })() : Left(`${title}: No items to choose from.`);",
+    "code": "// showMenuLR :: Bool -> String -> String ->\n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with\n    // a given title and prompt string.\n    // Listing the strings in xs, with\n    // the string `selected` pre-selected\n    // if found in xs.\n    menuTitle => prompt => selected => xs =>\n    0 < xs.length ? (() => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        sa.activate();\n\n        const v = sa.chooseFromList(xs, {\n            withTitle: menuTitle,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: \"OK\",\n            cancelButtonName: \"Cancel\",\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left(`User cancelled ${menuTitle} menu.`);\n    })() : Left(`${menuTitle}: No items to choose from.`);",
     "tags": [
       "JS Prelude"
     ]

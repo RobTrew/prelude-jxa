@@ -1226,11 +1226,11 @@ const eqDate = dte =>
 
 // eqDateTime :: Int -> Date -> Date -> Bool
 const eqDateTime = n =>
-    // Equivalence of two JS DateTime values
+    // Equivalence of two JS Date values
     // at a granularity of n minutes.
     // e.g.
-    //  Same minute: eqDateTime(1)
-    //    Same hour: eqDateTime(60)
+    //  Same minute: eqDateTime(1)(a)(b)
+    //    Same hour: eqDateTime(60)(a)(b)
     on(a => b => a === b)(
         flip(div)(6E4 * n)
     );
@@ -2311,9 +2311,9 @@ const justifyLeft = n =>
 const justifyRight = n =>
     // The string s, preceded by enough padding (with
     // the character c) to reach the string length n.
-    c => s => n > s.length ? (
+    c => s => Boolean(s) ? (
         s.padStart(n, c)
-    ) : s;
+    ) : "";
 
 // kCompose (>=>) :: Monad m =>
 // [(a -> m a)] -> (a -> m a)
@@ -3902,8 +3902,8 @@ const showMenuLR = blnMult =>
 
         return Array.isArray(v) ? (
             Right(v)
-        ) : Left(`User cancelled ${title} menu.`);
-    })() : Left(`${title}: No items to choose from.`);
+        ) : Left(`User cancelled ${menuTitle} menu.`);
+    })() : Left(`${menuTitle}: No items to choose from.`);
 
 // showOrdering :: Ordering -> String
 const showOrdering = e =>
