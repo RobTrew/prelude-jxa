@@ -10,8 +10,10 @@ const takeWhileR = p =>
             1 + until(
                 i => !p(ys[i])
             )(
-                i => 1 + i
-            )(ys.length)
+                i => i - 1
+            )(
+                ys.length - 1
+            )
         );
     };
 ```
