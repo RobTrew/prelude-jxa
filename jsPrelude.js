@@ -4501,9 +4501,7 @@ const takeWhileR = p =>
         return ys.slice(
             1 + until(
                 i => !p(ys[i])
-            )(
-                i => i - 1
-            )(
+            )(i => i - 1)(
                 ys.length - 1
             )
         );

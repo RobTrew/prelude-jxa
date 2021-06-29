@@ -2947,7 +2947,7 @@
     ]
   },
   "takeWhileR": {
-    "code": "// takeWhileR :: (a -> Bool) -> [a] -> [a]\nconst takeWhileR = p =>\n    // The longest suffix of xs in which\n    // all elements satisfy p.\n    xs => {\n        const ys = list(xs);\n\n        return ys.slice(\n            1 + until(\n                i => !p(ys[i])\n            )(\n                i => i - 1\n            )(\n                ys.length - 1\n            )\n        );\n    };",
+    "code": "// takeWhileR :: (a -> Bool) -> [a] -> [a]\nconst takeWhileR = p =>\n    // The longest suffix of xs in which\n    // all elements satisfy p.\n    xs => {\n        const ys = list(xs);\n\n        return ys.slice(\n            1 + until(\n                i => !p(ys[i])\n            )(i => i - 1)(\n                ys.length - 1\n            )\n        );\n    };",
     "tags": [
       "JS Prelude",
       "core"
