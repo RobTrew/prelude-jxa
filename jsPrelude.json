@@ -321,7 +321,7 @@
     ]
   },
   "cartesianProduct": {
-    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(\n            y => [\n                [x].concat(y)\n            ]\n        )\n    );",
+    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(\n            y => [\n                [x, y]\n            ]\n        )\n    );",
     "tags": [
       "JS Prelude",
       "core"
