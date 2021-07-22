@@ -1,13 +1,3 @@
-```javascript
-// lastMay :: [a] -> Maybe a
-const lastMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(-1)[0])
-    ) : Nothing()
-)(list(xs));
-```
-
-
 ```applescript
 -- lastMay :: [a] -> Maybe a
 on lastMay(xs)
@@ -17,4 +7,14 @@ on lastMay(xs)
         Nothing()
     end if
 end lastMay
+```
+
+
+```javascript
+// lastMay :: [a] -> Maybe a
+const lastMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys.slice(-1)[0])
+    ) : Nothing()
+)(list(xs));
 ```

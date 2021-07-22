@@ -1,11 +1,3 @@
-```javascript
-// readHex :: String -> Int
-const readHex = s =>
-    // Integer value of hexadecimal expression.
-    parseInt(s, 16);
-```
-
-
 ```applescript
 -- readHex :: String -> Int
 on readHex(s)
@@ -20,4 +12,12 @@ on readHex(s)
     end script
     item 1 of foldr(go, {0, 1}, characters of s)
 end readHex
+```
+
+
+```javascript
+// readHex :: String -> Int
+const readHex = s =>
+    // Integer value of hexadecimal expression.
+    parseInt(s, 16);
 ```
