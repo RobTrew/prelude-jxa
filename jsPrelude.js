@@ -136,7 +136,10 @@ const any = p =>
 const anyTree = p =>
     // True if p holds for any node of the
     // tree to which anyTree(p) is applied.
-    foldTree(x => xs => p(x) || xs.some(Boolean));
+    foldTree(
+        x => xs =>
+            p(x) || xs.some(Boolean)
+    );
 
 // ap (<*>) :: Monad m => m (a -> b) -> m a -> m b
 const ap = mf =>
@@ -557,15 +560,8 @@ const composeR = f =>
     g => x => f(g(x));
 
 // concat :: [[a]] -> [a]
-// concat :: [String] -> String
 const concat = xs =>
-    0 < xs.length ? (
-        (
-            xs.every(x => "string" === typeof x) ? (
-                ""
-            ) : []
-        ).concat(...xs)
-    ) : xs;
+    xs.flat(1);
 
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = f =>
@@ -574,6 +570,10 @@ const concatMap = f =>
     // Any empty lists returned are filtered out by
     // the concatenation.
     xs => xs.flatMap(f);
+
+// concats :: [String] -> String
+const concats = xs =>
+    xs.join("");
 
 // cons :: a -> [a] -> [a]
 const cons = x =>
@@ -4758,7 +4758,7 @@ const treeFromNestedDict = dict => {
 const treeLeaves = tree => {
     const subNest = tree.nest;
 
-    return (0 < subNest.length) ? (
+    return 0 < subNest.length ? (
         subNest.flatMap(treeLeaves)
     ) : [tree];
 };

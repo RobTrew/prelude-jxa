@@ -1,3 +1,18 @@
+```javascript
+// iterate :: (a -> a) -> a -> Gen [a]
+const iterate = f =>
+    // An infinite list of repeated applications of f to x.
+    function* (x) {
+        let v = x;
+
+        while (true) {
+            yield v;
+            v = f(v);
+        }
+    };
+```
+
+
 ```applescript
 -- iterate :: (a -> a) -> a -> Gen [a]
 on iterate(f, x)
@@ -14,19 +29,4 @@ on iterate(f, x)
         end |λ|
     end script
 end iterate
-```
-
-
-```javascript
-// iterate :: (a -> a) -> a -> Gen [a]
-const iterate = f =>
-    // An infinite list of repeated applications of f to x.
-    function* (x) {
-        let v = x;
-
-        while (true) {
-            yield v;
-            v = f(v);
-        }
-    };
 ```

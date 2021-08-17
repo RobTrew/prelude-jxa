@@ -66,6 +66,7 @@ composeListR :: [(a -> a)] -> (a -> a)
 composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
+concats :: [String] -> String
 cons :: a -> [a] -> [a]
 constant :: a -> b -> a
 copyFileLR :: FilePath -> FilePath -> Either String IO ()

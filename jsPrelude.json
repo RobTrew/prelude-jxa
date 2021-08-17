@@ -107,7 +107,7 @@
     ]
   },
   "anyTree": {
-    "code": "// anyTree :: (a -> Bool) -> Tree a -> Bool\nconst anyTree = p =>\n    // True if p holds for any node of the\n    // tree to which anyTree(p) is applied.\n    foldTree(x => xs => p(x) || xs.some(Boolean));",
+    "code": "// anyTree :: (a -> Bool) -> Tree a -> Bool\nconst anyTree = p =>\n    // True if p holds for any node of the\n    // tree to which anyTree(p) is applied.\n    foldTree(\n        x => xs =>\n            p(x) || xs.some(Boolean)\n    );",
     "tags": [
       "JS Prelude",
       "tree"
@@ -422,7 +422,7 @@
     ]
   },
   "concat": {
-    "code": "// concat :: [[a]] -> [a]\n// concat :: [String] -> String\nconst concat = xs =>\n    0 < xs.length ? (\n        (\n            xs.every(x => \"string\" === typeof x) ? (\n                \"\"\n            ) : []\n        ).concat(...xs)\n    ) : xs;",
+    "code": "// concat :: [[a]] -> [a]\nconst concat = xs =>\n    xs.flat(1);",
     "tags": [
       "JS Prelude",
       "core"
@@ -433,6 +433,12 @@
     "tags": [
       "JS Prelude",
       "core"
+    ]
+  },
+  "concats": {
+    "code": "// concats :: [String] -> String\nconst concats = xs =>\n    xs.join(\"\");",
+    "tags": [
+      "JS Prelude"
     ]
   },
   "cons": {
@@ -3081,7 +3087,7 @@
     ]
   },
   "treeLeaves": {
-    "code": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n    const subNest = tree.nest;\n\n    return (0 < subNest.length) ? (\n        subNest.flatMap(treeLeaves)\n    ) : [tree];\n};",
+    "code": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n    const subNest = tree.nest;\n\n    return 0 < subNest.length ? (\n        subNest.flatMap(treeLeaves)\n    ) : [tree];\n};",
     "tags": [
       "JS Prelude",
       "tree"

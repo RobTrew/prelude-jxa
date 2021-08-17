@@ -1,3 +1,12 @@
+```javascript
+// enumFromTo :: Int -> Int -> [Int]
+const enumFromTo = m =>
+    n => Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i);
+```
+
+
 ```applescript
 -- enumFromTo :: Int -> Int -> [Int]
 on enumFromTo(m, n)
@@ -11,13 +20,4 @@ on enumFromTo(m, n)
         {}
     end if
 end enumFromTo
-```
-
-
-```javascript
-// enumFromTo :: Int -> Int -> [Int]
-const enumFromTo = m =>
-    n => Array.from({
-        length: 1 + n - m
-    }, (_, i) => m + i);
 ```
