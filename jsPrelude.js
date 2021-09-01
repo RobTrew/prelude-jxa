@@ -1988,9 +1988,9 @@ const inits = xs =>
     // All prefixes of the argument,
     // shortest first.
     [
-        []
-    ].concat((list(xs))
-        .map((_, i, ys) => ys.slice(0, 1 + i)));
+        [], ...xs
+    ]
+    .map((_, i, ys) => ys.slice(0, 1 + i));
 
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
@@ -2582,11 +2582,12 @@ const mapAccumL = f =>
     // obtained by a combined map and fold,
     // with accumulation from left to right.
     acc => xs => [...xs].reduce(
-        (a, x) => second(
-            append(snd(a))
-        )(
-            f(fst(a))(x)
-        ), Tuple(acc)([])
+        (a, x) => {
+            const tpl = f(a[0])(x);
+
+            return [tpl[0], a[1].concat(tpl[1])];
+        },
+        [acc, []]
     );
 
 // mapAccumLTree :: (acc -> x -> (acc, y)) ->
