@@ -290,6 +290,12 @@
       "JS Prelude"
     ]
   },
+  "both": {
+    "code": "// both :: (a -> b) -> (a, a) -> (b, b)\nconst both = f =>\n    ab => Tuple(\n        f(ab[0])\n    )(\n        f(ab[1])\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "break": {
     "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    xs => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
     "tags": [
@@ -321,7 +327,7 @@
     ]
   },
   "cartesianProduct": {
-    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(\n            y => [\n                [x, y]\n            ]\n        )\n    );",
+    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(\n            y => [Tuple(x)(y)]\n        )\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -352,7 +358,7 @@
     ]
   },
   "chars": {
-    "code": "// chars :: String -> [Char]\nconst chars = s =>\n    [...s];",
+    "code": "// chars :: String -> [Char]\nconst chars = s =>\n    Array.from(s);",
     "tags": [
       "JS Prelude"
     ]
@@ -1598,7 +1604,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, node) => {\n        const [h, ...t] = 0 < a.length ? (\n            a\n        ) : [[], []];\n\n        return [\n            [node.root, ...h],\n            ...node.nest.slice(0)\n            .reverse().reduce(go, t)\n        ];\n    };\n\n    return go([], tree);\n};",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, node) => {\n        const [h, ...t] = 0 < a.length ? (\n            a\n        ) : [\n            [],\n            []\n        ];\n\n        return [\n            [node.root, ...h],\n            ...node.nest.slice(0)\n            .reverse()\n            .reduce(go, t)\n        ];\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2904,7 +2910,7 @@
     ]
   },
   "takeDirectory": {
-    "code": "// takeDirectory :: FilePath -> FilePath\nconst takeDirectory = fp =>\n    \"\" !== fp ? (\n        (xs => xs.length > 0 ? xs.join(\"/\") : \".\")(\n            fp.split(\"/\").slice(0, -1)\n        )\n    ) : \".\";",
+    "code": "// takeDirectory :: FilePath -> FilePath\nconst takeDirectory = fp =>\n    // The directory component of a filepath.\n    \"\" !== fp ? (\n        (xs => xs.length > 0 ? xs.join(\"/\") : \".\")(\n            fp.split(\"/\").slice(0, -1)\n        )\n    ) : \".\";",
     "tags": [
       "JS Prelude"
     ]
@@ -2922,7 +2928,7 @@
     ]
   },
   "takeFileName": {
-    "code": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = fp =>\n    \"\" !== fp ? (\n        \"/\" !== fp[fp.length - 1] ? (\n            fp.split(\"/\").slice(-1)[0]\n        ) : \"\"\n    ) : \"\";",
+    "code": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = fp =>\n    // The file name component of a filepath.\n    \"\" !== fp ? (\n        \"/\" !== fp[fp.length - 1] ? (\n            fp.split(\"/\").slice(-1)[0]\n        ) : \"\"\n    ) : \"\";",
     "tags": [
       "JS Prelude"
     ]

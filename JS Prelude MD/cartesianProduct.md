@@ -3,9 +3,7 @@
 const cartesianProduct = xs =>
     ys => [...xs].flatMap(
         x => [...ys].flatMap(
-            y => [
-                [x, y]
-            ]
+            y => [Tuple(x)(y)]
         )
     );
 ```

@@ -6,15 +6,16 @@ const levels = tree => {
     const go = (a, node) => {
         const [h, ...t] = 0 < a.length ? (
             a
-        ) : [[], []];
+        ) : [
+            [],
+            []
+        ];
 
         return [
             [node.root, ...h],
             ...node.nest.slice(0)
-            .reverse().reduce(go, t)
+            .reverse()
+            .reduce(go, t)
         ];
     };
-
-    return go([], tree);
-};
 ```

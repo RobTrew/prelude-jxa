@@ -1,3 +1,10 @@
+```javascript
+// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
+const composeR = f =>
+    g => x => f(g(x));
+```
+
+
 ```applescript
 -- composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 on composeR(f, g)
@@ -7,11 +14,4 @@ on composeR(f, g)
         end |λ|
     end script
 end composeR
-```
-
-
-```javascript
-// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
-const composeR = f =>
-    g => x => f(g(x));
 ```

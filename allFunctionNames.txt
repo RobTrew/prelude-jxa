@@ -43,6 +43,7 @@ bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
 bool :: a -> a -> Bool -> a
+both :: (a -> b) -> (a, a) -> (b, b)
 break :: (a -> Bool) -> [a] -> ([a], [a])
 breakOn :: String -> String -> (String, String)
 breakOnAll :: String -> String -> [(String, String)]

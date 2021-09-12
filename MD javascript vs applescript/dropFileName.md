@@ -1,3 +1,18 @@
+```javascript
+// dropFileName :: FilePath -> FilePath
+const dropFileName = fp =>
+    "" !== fp ? (() => {
+        const
+            xs = (fp.split("/"))
+            .slice(0, -1);
+
+        return 0 < xs.length ? (
+            `${xs.join("/")}/`
+        ) : "./";
+    })() : "./";
+```
+
+
 ```applescript
 -- dropFileName :: FilePath -> FilePath
 on dropFileName(strPath)
@@ -16,19 +31,4 @@ on dropFileName(strPath)
         "./"
     end if
 end dropFileName
-```
-
-
-```javascript
-// dropFileName :: FilePath -> FilePath
-const dropFileName = fp =>
-    "" !== fp ? (() => {
-        const
-            xs = (fp.split("/"))
-            .slice(0, -1);
-
-        return 0 < xs.length ? (
-            `${xs.join("/")}/`
-        ) : "./";
-    })() : "./";
 ```

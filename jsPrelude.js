@@ -357,6 +357,14 @@ const bindTuple = tpl =>
 const bool = f =>
     t => p => p ? t : f;
 
+// both :: (a -> b) -> (a, a) -> (b, b)
+const both = f =>
+    ab => Tuple(
+        f(ab[0])
+    )(
+        f(ab[1])
+    );
+
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     xs => {
@@ -419,9 +427,7 @@ const bulleted = strTab =>
 const cartesianProduct = xs =>
     ys => [...xs].flatMap(
         x => [...ys].flatMap(
-            y => [
-                [x, y]
-            ]
+            y => [Tuple(x)(y)]
         )
     );
 
@@ -468,7 +474,7 @@ const center = n =>
 
 // chars :: String -> [Char]
 const chars = s =>
-    [...s];
+    Array.from(s);
 
 // chop :: ([a] -> (b, [a])) -> [a] -> [b]
 const chop = f =>
@@ -2397,17 +2403,18 @@ const levels = tree => {
     const go = (a, node) => {
         const [h, ...t] = 0 < a.length ? (
             a
-        ) : [[], []];
+        ) : [
+            [],
+            []
+        ];
 
         return [
             [node.root, ...h],
             ...node.nest.slice(0)
-            .reverse().reduce(go, t)
+            .reverse()
+            .reduce(go, t)
         ];
     };
-
-    return go([], tree);
-};
 
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
@@ -4397,6 +4404,7 @@ const takeCycle = n =>
 
 // takeDirectory :: FilePath -> FilePath
 const takeDirectory = fp =>
+    // The directory component of a filepath.
     "" !== fp ? (
         (xs => xs.length > 0 ? xs.join("/") : ".")(
             fp.split("/").slice(0, -1)
@@ -4423,6 +4431,7 @@ const takeExtension = fp => (
 
 // takeFileName :: FilePath -> FilePath
 const takeFileName = fp =>
+    // The file name component of a filepath.
     "" !== fp ? (
         "/" !== fp[fp.length - 1] ? (
             fp.split("/").slice(-1)[0]

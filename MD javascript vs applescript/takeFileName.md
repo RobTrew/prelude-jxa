@@ -1,3 +1,15 @@
+```javascript
+// takeFileName :: FilePath -> FilePath
+const takeFileName = fp =>
+    // The file name component of a filepath.
+    "" !== fp ? (
+        "/" !== fp[fp.length - 1] ? (
+            fp.split("/").slice(-1)[0]
+        ) : ""
+    ) : "";
+```
+
+
 ```applescript
 -- takeFileName :: FilePath -> FilePath
 on takeFileName(strPath)
@@ -7,15 +19,4 @@ on takeFileName(strPath)
         ""
     end if
 end takeFileName
-```
-
-
-```javascript
-// takeFileName :: FilePath -> FilePath
-const takeFileName = fp =>
-    "" !== fp ? (
-        "/" !== fp[fp.length - 1] ? (
-            fp.split("/").slice(-1)[0]
-        ) : ""
-    ) : "";
 ```
