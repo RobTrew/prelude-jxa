@@ -1,5 +1,5 @@
 ```javascript
-// writeFileLR :: FilePath -> Either String IO FilePath
+// writeFileLR :: FilePath -> String -> Either String IO FilePath
 const writeFileLR = fp =>
     s => {
         const

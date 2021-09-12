@@ -3302,7 +3302,7 @@
     ]
   },
   "writeFileLR": {
-    "code": "// writeFileLR :: FilePath -> Either String IO FilePath\nconst writeFileLR = fp =>\n    s => {\n        const\n            e = $(),\n            efp = $(fp)\n            .stringByStandardizingPath;\n\n        return $.NSString.alloc.initWithUTF8String(s)\n            .writeToFileAtomicallyEncodingError(\n                efp, false,\n                $.NSUTF8StringEncoding, e\n            ) ? (\n                Right(ObjC.unwrap(efp))\n            ) : Left(ObjC.unwrap(e.localizedDescription));\n    };",
+    "code": "// writeFileLR :: FilePath -> String -> Either String IO FilePath\nconst writeFileLR = fp =>\n    s => {\n        const\n            e = $(),\n            efp = $(fp)\n            .stringByStandardizingPath;\n\n        return $.NSString.alloc.initWithUTF8String(s)\n            .writeToFileAtomicallyEncodingError(\n                efp, false,\n                $.NSUTF8StringEncoding, e\n            ) ? (\n                Right(ObjC.unwrap(efp))\n            ) : Left(ObjC.unwrap(e.localizedDescription));\n    };",
     "tags": [
       "JS Prelude",
       "jxa"

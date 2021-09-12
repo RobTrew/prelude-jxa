@@ -407,7 +407,7 @@ const writeFile = fp => s =>
         $.NSUTF8StringEncoding, null
     );
 
-// writeFileLR :: FilePath -> Either String IO FilePath
+// writeFileLR :: FilePath -> String -> Either String IO FilePath
 const writeFileLR = fp =>
     s => {
         const
