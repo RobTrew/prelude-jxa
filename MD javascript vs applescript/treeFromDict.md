@@ -1,25 +1,3 @@
-```javascript
-// treeFromDict :: String -> Dict -> Tree String
-const treeFromDict = rootLabel =>
-    dict => {
-        const go = x =>
-            "object" !== typeof x ? [] : (
-                Array.isArray(x) ? (
-                    x.flatMap(go)
-                ) : keys(x).map(
-                    k => Node(k)(
-                        go(x[k])
-                    )
-                )
-            );
-
-        return Node(rootLabel)(
-            go(dict)
-        );
-    };
-```
-
-
 ```applescript
 -- treeFromDict :: String -> Dict -> Tree String
 on treeFromDict(treeTitle, recDict)
@@ -47,4 +25,26 @@ on treeFromDict(treeTitle, recDict)
     end script
     Node(treeTitle, go's |λ|(recDict))
 end treeFromDict
+```
+
+
+```javascript
+// treeFromDict :: String -> Dict -> Tree String
+const treeFromDict = rootLabel =>
+    dict => {
+        const go = x =>
+            "object" !== typeof x ? [] : (
+                Array.isArray(x) ? (
+                    x.flatMap(go)
+                ) : keys(x).map(
+                    k => Node(k)(
+                        go(x[k])
+                    )
+                )
+            );
+
+        return Node(rootLabel)(
+            go(dict)
+        );
+    };
 ```

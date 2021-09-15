@@ -1,12 +1,3 @@
-```javascript
-// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
-const intersectListsBy = eqFn => xs =>
-    foldr1(
-        (a => x => intersectBy(eqFn)(a)(x))
-    )(list(xs));
-```
-
-
 ```applescript
 -- intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
 on intersectListsBy(fnEq, xs)
@@ -18,4 +9,13 @@ on intersectListsBy(fnEq, xs)
     end script
     foldr1(result, xs)
 end intersectionBy
+```
+
+
+```javascript
+// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
+const intersectListsBy = eqFn => xs =>
+    foldr1(
+        (a => x => intersectBy(eqFn)(a)(x))
+    )(list(xs));
 ```

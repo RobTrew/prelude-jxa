@@ -1,10 +1,3 @@
-```javascript
-// or :: [Bool] -> Bool
-const or = xs =>
-    xs.some(Boolean);
-```
-
-
 ```applescript
 -- or :: [Bool] -> Bool
 on |or|(ps)
@@ -13,4 +6,11 @@ on |or|(ps)
     end repeat
     return false
 end |or|
+```
+
+
+```javascript
+// or :: [Bool] -> Bool
+const or = xs =>
+    xs.some(Boolean);
 ```

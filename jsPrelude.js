@@ -2415,6 +2415,7 @@ const levels = tree => {
             .reduce(go, t)
         ];
     };
+};
 
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
