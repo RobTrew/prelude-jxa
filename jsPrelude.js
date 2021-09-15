@@ -2404,17 +2404,17 @@ const levels = tree => {
         const [h, ...t] = 0 < a.length ? (
             a
         ) : [
-            [],
             []
         ];
 
         return [
             [node.root, ...h],
             ...node.nest.slice(0)
-            .reverse()
-            .reduce(go, t)
+            .reduceRight(go, t)
         ];
     };
+
+    return go([], tree);
 };
 
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c

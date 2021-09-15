@@ -7,16 +7,16 @@ const levels = tree => {
         const [h, ...t] = 0 < a.length ? (
             a
         ) : [
-            [],
             []
         ];
 
         return [
             [node.root, ...h],
             ...node.nest.slice(0)
-            .reverse()
-            .reduce(go, t)
+            .reduceRight(go, t)
         ];
     };
+
+    return go([], tree);
 };
 ```

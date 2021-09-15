@@ -1,3 +1,17 @@
+```javascript
+// takeIterate n f x == [x, f x, f (f x), ...]
+// takeIterate :: Int -> (a -> a) -> a -> [a]
+const takeIterate = n => f => x =>
+    snd(mapAccumL(a => _ => i => {
+        const v = 0 !== i ? f(a) : x;
+
+        return [v, v];
+    }, x, Array.from({
+        length: n
+    })));
+```
+
+
 ```applescript
 -- takeIterate n f x == [x, f x, f (f x), ...]
 -- takeIterate :: Int -> (a -> a) -> a -> [a]
@@ -12,18 +26,4 @@ on takeIterate(n, f, x)
     end tell
     return vs
 end takeIterate
-```
-
-
-```javascript
-// takeIterate n f x == [x, f x, f (f x), ...]
-// takeIterate :: Int -> (a -> a) -> a -> [a]
-const takeIterate = n => f => x =>
-    snd(mapAccumL(a => _ => i => {
-        const v = 0 !== i ? f(a) : x;
-
-        return [v, v];
-    }, x, Array.from({
-        length: n
-    })));
 ```

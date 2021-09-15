@@ -1,3 +1,27 @@
+```javascript
+// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
+// isSubsequenceOf :: String -> String -> Bool
+const isSubsequenceOf = xs =>
+    // True if xs is a sub-sequence of ys.
+    ys => {
+        const go = a => b =>
+            0 < a.length ? (
+                0 < b.length ? (
+                    go(
+                        a[0] === b[0] ? (
+                            a.slice(1)
+                        ) : a
+                    )(b.slice(1))
+                ) : false
+            ) : true;
+
+        return go(list(xs))(
+            list(ys)
+        );
+    };
+```
+
+
 ```applescript
 -- isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
 -- isSubsequenceOf :: String -> String -> Bool
@@ -26,28 +50,4 @@ on isSubsequenceOf(xs, ys)
         tell iss to |λ|(xs, ys)
     end if
 end isSubsequenceOf
-```
-
-
-```javascript
-// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
-// isSubsequenceOf :: String -> String -> Bool
-const isSubsequenceOf = xs =>
-    // True if xs is a sub-sequence of ys.
-    ys => {
-        const go = a => b =>
-            0 < a.length ? (
-                0 < b.length ? (
-                    go(
-                        a[0] === b[0] ? (
-                            a.slice(1)
-                        ) : a
-                    )(b.slice(1))
-                ) : false
-            ) : true;
-
-        return go(list(xs))(
-            list(ys)
-        );
-    };
 ```
