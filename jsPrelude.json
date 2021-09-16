@@ -1604,7 +1604,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, node) => {\n        const [h, ...t] = 0 < a.length ? (\n            a\n        ) : [\n            []\n        ];\n\n        return [\n            [node.root, ...h],\n            ...node.nest.reduceRight(go, t)\n        ];\n    };\n\n    return go([], tree);\n};",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, node) => {\n        const [h, ...t] = 0 < a.length ? a : [\n            []\n        ];\n\n        return [\n            [node.root, ...h],\n            ...node.nest.reduceRight(go, t)\n        ];\n    };\n\n    return go([], tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
