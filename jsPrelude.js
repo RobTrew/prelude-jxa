@@ -2409,8 +2409,7 @@ const levels = tree => {
 
         return [
             [node.root, ...h],
-            ...node.nest.slice(0)
-            .reduceRight(go, t)
+            ...node.nest.reduceRight(go, t)
         ];
     };
 
