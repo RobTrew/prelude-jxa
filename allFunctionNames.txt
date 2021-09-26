@@ -33,6 +33,7 @@ argvLength :: Function -> Int
 assocs :: Map k a -> [(k, a)]
 base64decode :: String -> String
 base64encode :: String -> String
+biList :: (a, a) -> [a]
 bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)
 bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d
 bimapN :: (a -> b) -> (c -> d) -> TupleN -> TupleN
@@ -262,7 +263,6 @@ list :: StringOrArrayLike b => b -> [a]
 listDirectory :: FilePath -> [FilePath]
 listFromMaybe :: Maybe a -> [a]
 listFromTree :: Tree a -> [a]
-listFromTuple :: (a, a ...) -> [a]
 listToMaybe :: [a] -> Maybe a
 log :: Float -> Float
 lookup :: Eq a => a -> Container -> Maybe b

@@ -92,7 +92,8 @@ const TupleN = (...args) => {
 
 // abs :: Num -> Num
 const abs =
-    // Absolute value of a given number - without the sign.
+    // Absolute value of a given number
+    // without the sign.
     x => 0 > x ? (
         -x
     ) : x;
@@ -263,6 +264,11 @@ const assocs = m =>
     Object.entries(m).map(
         kv => Tuple(...kv)
     );
+
+// biList :: (a, a) -> [a]
+const biList = ab =>
+    // A list of two items derived from a tuple.
+    Array.from(ab);
 
 // bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)
 const bimap = f =>
@@ -2247,7 +2253,8 @@ const iso8601Local = dte =>
 
 // iterate :: (a -> a) -> a -> Gen [a]
 const iterate = f =>
-    // An infinite list of repeated applications of f to x.
+    // An infinite list of repeated
+    // applications of f to x.
     function* (x) {
         let v = x;
 
@@ -2518,10 +2525,6 @@ const listFromTree = tree => {
 
     return go(tree);
 };
-
-// listFromTuple :: (a, a ...) -> [a]
-const listFromTuple = tpl =>
-    Array.from(tpl);
 
 // listToMaybe :: [a] -> Maybe a
 const listToMaybe = xs =>
@@ -3286,9 +3289,9 @@ const product = xs =>
 
 // properFracRatio :: Ratio -> (Int, Ratio)
 const properFracRatio = nd => {
-    const [q, r] = Array.from(quotRem(nd.n, nd.d));
+    const [q, r] = Array.from(quotRem(nd.n)(nd.d));
 
-    return Tuple(q, ratio(r, nd.d));
+    return Tuple(q)(Ratio(r)(nd.d));
 };
 
 // properFraction :: Real -> (Int, Real)
@@ -3457,9 +3460,9 @@ const ratioMinus = n1 => n2 => {
     const [r1, r2] = [n1, n2].map(rational);
     const d = lcm(r1.d)(r2.d);
 
-    return ratio((r1.n * (d / r1.d)) - (r2.n * (d / r2.d)))(
-        d
-    );
+    return Ratio(
+        (r1.n * (d / r1.d)) - (r2.n * (d / r2.d))
+    )(d);
 };
 
 // ratioMult :: Rational -> Rational -> Rational
@@ -3489,7 +3492,7 @@ const ratioPlus = n1 =>
 // rational :: Num a => a -> Rational
 const rational = x =>
     isNaN(x) ? x : Number.isInteger(x) ? (
-        ratio(x)(1)
+        Ratio(x)(1)
     ) : approxRatio(undefined)(x);
 
 // read :: Read a => String -> a

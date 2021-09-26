@@ -61,7 +61,7 @@
     ]
   },
   "abs": {
-    "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number - without the sign.\n    x => 0 > x ? (\n        -x\n    ) : x;",
+    "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number\n    // without the sign.\n    x => 0 > x ? (\n        -x\n    ) : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -226,6 +226,12 @@
     "tags": [
       "JS Prelude",
       "jxa"
+    ]
+  },
+  "biList": {
+    "code": "// biList :: (a, a) -> [a]\nconst biList = ab =>\n    // A list of two items derived from a tuple.\n    Array.from(ab);",
+    "tags": [
+      "JS Prelude"
     ]
   },
   "bimap": {
@@ -1489,7 +1495,7 @@
     ]
   },
   "iterate": {
-    "code": "// iterate :: (a -> a) -> a -> Gen [a]\nconst iterate = f =>\n    // An infinite list of repeated applications of f to x.\n    function* (x) {\n        let v = x;\n\n        while (true) {\n            yield v;\n            v = f(v);\n        }\n    };",
+    "code": "// iterate :: (a -> a) -> a -> Gen [a]\nconst iterate = f =>\n    // An infinite list of repeated\n    // applications of f to x.\n    function* (x) {\n        let v = x;\n\n        while (true) {\n            yield v;\n            v = f(v);\n        }\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -1684,12 +1690,6 @@
     "tags": [
       "JS Prelude",
       "tree"
-    ]
-  },
-  "listFromTuple": {
-    "code": "// listFromTuple :: (a, a ...) -> [a]\nconst listFromTuple = tpl =>\n    Array.from(tpl);",
-    "tags": [
-      "JS Prelude"
     ]
   },
   "listToMaybe": {
@@ -2159,7 +2159,7 @@
     ]
   },
   "properFracRatio": {
-    "code": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = Array.from(quotRem(nd.n, nd.d));\n\n    return Tuple(q, ratio(r, nd.d));\n};",
+    "code": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = Array.from(quotRem(nd.n)(nd.d));\n\n    return Tuple(q)(Ratio(r)(nd.d));\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2270,7 +2270,7 @@
     ]
   },
   "ratioMinus": {
-    "code": "// ratioMinus :: Rational -> Rational -> Rational\nconst ratioMinus = n1 => n2 => {\n    const [r1, r2] = [n1, n2].map(rational);\n    const d = lcm(r1.d)(r2.d);\n\n    return ratio((r1.n * (d / r1.d)) - (r2.n * (d / r2.d)))(\n        d\n    );\n};",
+    "code": "// ratioMinus :: Rational -> Rational -> Rational\nconst ratioMinus = n1 => n2 => {\n    const [r1, r2] = [n1, n2].map(rational);\n    const d = lcm(r1.d)(r2.d);\n\n    return Ratio(\n        (r1.n * (d / r1.d)) - (r2.n * (d / r2.d))\n    )(d);\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2288,7 +2288,7 @@
     ]
   },
   "rational": {
-    "code": "// rational :: Num a => a -> Rational\nconst rational = x =>\n    isNaN(x) ? x : Number.isInteger(x) ? (\n        ratio(x)(1)\n    ) : approxRatio(undefined)(x);",
+    "code": "// rational :: Num a => a -> Rational\nconst rational = x =>\n    isNaN(x) ? x : Number.isInteger(x) ? (\n        Ratio(x)(1)\n    ) : approxRatio(undefined)(x);",
     "tags": [
       "JS Prelude"
     ]
@@ -2327,7 +2327,7 @@
     ]
   },
   "readPlistFileLR": {
-    "code": "// readPlistFileLR :: FilePath -> Either String Object\nconst readPlistFileLR = fp =>\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(fpFull => {\n        const\n            e = $(),\n            maybeDict = (\n                $.NSDictionary\n                .dictionaryWithContentsOfURLError(\n                    $.NSURL.fileURLWithPath(fpFull),\n                    e\n                )\n            );\n\n        return maybeDict.isNil() ? (() => {\n            const msg = ObjC.unwrap(e.localizedDescription);\n\n            return Left(`readPlistFileLR:\\n\\t${msg}`);\n        })() : Right(ObjC.deepUnwrap(maybeDict));\n    });",
+    "code": "// readPlistFileLR :: FilePath -> Either String Object\nconst readPlistFileLR = fp =>\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(\n        fpFull => {\n            const\n                e = $(),\n                maybeDict = (\n                    $.NSDictionary\n                    .dictionaryWithContentsOfURLError(\n                        $.NSURL.fileURLWithPath(fpFull),\n                        e\n                    )\n                );\n\n            return maybeDict.isNil() ? (() => {\n                const\n                    msg = ObjC.unwrap(\n                        e.localizedDescription\n                    );\n\n                return Left(`readPlistFileLR:\\n\\t${msg}`);\n            })() : Right(ObjC.deepUnwrap(maybeDict));\n        }\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
