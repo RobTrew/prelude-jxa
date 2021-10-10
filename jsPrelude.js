@@ -63,7 +63,14 @@ const Tuple = a =>
         type: "Tuple",
         "0": a,
         "1": b,
-        length: 2
+        length: 2,
+        *[Symbol.iterator]() {
+            for (const k in this) {
+                if (!isNaN(k)) {
+                    yield this[k];
+                }
+            }
+        }
     });
 
 // Tuple3 (,,) :: a -> b -> c -> (a, b, c)
@@ -72,7 +79,14 @@ const Tuple3 = a => b => c => ({
     "0": a,
     "1": b,
     "2": c,
-    length: 3
+    length: 3,
+    *[Symbol.iterator]() {
+        for (const k in this) {
+            if (!isNaN(k)) {
+                yield this[k];
+            }
+        }
+    }
 });
 
 // TupleN :: a -> b ...  -> (a, b ... )
@@ -85,7 +99,14 @@ const TupleN = (...args) => {
             [i]: x
         }), {
             type: `Tuple${n}`,
-            length: n
+            length: n,
+            *[Symbol.iterator]() {
+                for (const k in this) {
+                    if (!isNaN(k)) {
+                        yield this[k];
+                    }
+                }
+            }
         })
     ) : args.reduce((f, x) => f(x), Tuple);
 };

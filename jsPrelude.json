@@ -40,21 +40,21 @@
     ]
   },
   "Tuple": {
-    "code": "// Tuple (,) :: a -> b -> (a, b)\nconst Tuple = a =>\n    b => ({\n        type: \"Tuple\",\n        \"0\": a,\n        \"1\": b,\n        length: 2\n    });",
+    "code": "// Tuple (,) :: a -> b -> (a, b)\nconst Tuple = a =>\n    b => ({\n        type: \"Tuple\",\n        \"0\": a,\n        \"1\": b,\n        length: 2,\n        *[Symbol.iterator]() {\n            for (const k in this) {\n                if (!isNaN(k)) {\n                    yield this[k];\n                }\n            }\n        }\n    });",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "Tuple3": {
-    "code": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n    type: \"Tuple3\",\n    \"0\": a,\n    \"1\": b,\n    \"2\": c,\n    length: 3\n});",
+    "code": "// Tuple3 (,,) :: a -> b -> c -> (a, b, c)\nconst Tuple3 = a => b => c => ({\n    type: \"Tuple3\",\n    \"0\": a,\n    \"1\": b,\n    \"2\": c,\n    length: 3,\n    *[Symbol.iterator]() {\n        for (const k in this) {\n            if (!isNaN(k)) {\n                yield this[k];\n            }\n        }\n    }\n});",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "TupleN": {
-    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nconst TupleN = (...args) => {\n    // A Tuple of an arbitrary number of items.\n    const n = args.length;\n\n    return 2 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: `Tuple${n}`,\n            length: n\n        })\n    ) : args.reduce((f, x) => f(x), Tuple);\n};",
+    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nconst TupleN = (...args) => {\n    // A Tuple of an arbitrary number of items.\n    const n = args.length;\n\n    return 2 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: `Tuple${n}`,\n            length: n,\n            *[Symbol.iterator]() {\n                for (const k in this) {\n                    if (!isNaN(k)) {\n                        yield this[k];\n                    }\n                }\n            }\n        })\n    ) : args.reduce((f, x) => f(x), Tuple);\n};",
     "tags": [
       "JS Prelude",
       "core"

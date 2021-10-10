@@ -9,7 +9,14 @@ const TupleN = (...args) => {
             [i]: x
         }), {
             type: `Tuple${n}`,
-            length: n
+            length: n,
+            *[Symbol.iterator]() {
+                for (const k in this) {
+                    if (!isNaN(k)) {
+                        yield this[k];
+                    }
+                }
+            }
         })
     ) : args.reduce((f, x) => f(x), Tuple);
 };

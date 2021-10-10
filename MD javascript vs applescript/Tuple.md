@@ -5,7 +5,14 @@ const Tuple = a =>
         type: "Tuple",
         "0": a,
         "1": b,
-        length: 2
+        length: 2,
+        *[Symbol.iterator]() {
+            for (const k in this) {
+                if (!isNaN(k)) {
+                    yield this[k];
+                }
+            }
+        }
     });
 ```
 
