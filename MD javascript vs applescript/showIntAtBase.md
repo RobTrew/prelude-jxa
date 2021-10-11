@@ -1,12 +1,16 @@
 ```javascript
-// showIntAtBase :: Int -> (Int -> Char) -> Int -> String -> String
+// showIntAtBase :: Int -> (Int -> Char) ->
+// Int -> String -> String
 const showIntAtBase = base =>
+    // A string representation of n, in the given base,
+    // using a supplied (Int -> Char) function for digits,
+    // and a supplied suffix string.
     toChr => n => rs => {
         const go = ([x, d], r) => {
             const r_ = toChr(d) + r;
 
             return 0 !== x ? (
-                go(Array.from(quotRem(n)(base)), r_)
+                go(quotRem(x)(base), r_)
             ) : r_;
         };
 
@@ -14,7 +18,7 @@ const showIntAtBase = base =>
             "error: showIntAtBase applied to unsupported base"
         ) : 0 > n ? (
             "error: showIntAtBase applied to negative number"
-        ) : go(Array.from(quotRem(n)(base)), rs);
+        ) : go(quotRem(n)(base), rs);
     };
 ```
 

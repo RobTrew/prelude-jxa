@@ -6,7 +6,7 @@ const chop = f =>
     xs => {
         const go = ys =>
             0 < ys.length ? (() => {
-                const [b, bs] = Array.from(f(ys));
+                const [b, bs] = f(ys);
 
                 return [b].concat(go(bs));
             })() : [];
