@@ -1284,7 +1284,7 @@
     ]
   },
   "indexedTree": {
-    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value\n    // is paired with a top-down\n    // left-right index, where the root node\n    // starts at the supplied rootIndex;\n    tree => mapAccumLTree(\n        i => x => [1 + i, [x, {\n            index: i\n        }]]\n    )(rootIndex)(tree)[1];",
+    "code": "// indexedTree :: Int -> Tree a -> Tree (a, Int)\nconst indexedTree = rootIndex =>\n    // A tree in which each root value\n    // is paired with a top-down\n    // left-right index, where the root node\n    // starts at the supplied rootIndex;\n    tree => mapAccumLTree(\n        i => x => Tuple(1 + i)(\n            Tuple(x)({\n                index: i\n            })\n        )\n    )(rootIndex)(tree)[1];",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1749,7 +1749,7 @@
     ]
   },
   "mapAccumLTree": {
-    "code": "// mapAccumLTree :: (acc -> x -> (acc, y)) ->\n// acc -> Tree -> (acc, Tree)\nconst mapAccumLTree = f => {\n    const go = a => x => {\n        const\n            pair = f(a)(root(x)),\n            tpl = mapAccumL(go)(pair[0])(nest(x));\n\n        return Tuple(tpl[0])(\n            Node(pair[1])(tpl[1])\n        );\n    };\n\n    return go;\n};",
+    "code": "// mapAccumLTree :: (acc -> x -> (acc, y)) ->\n// acc -> Tree -> (acc, Tree)\nconst mapAccumLTree = f => {\n    const go = a => x => {\n        const [acc, v] = f(a)(root(x));\n\n        return second(Node(v))(\n            mapAccumL(go)(acc)(nest(x))\n        );\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"

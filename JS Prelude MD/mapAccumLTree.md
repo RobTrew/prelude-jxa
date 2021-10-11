@@ -3,12 +3,10 @@
 // acc -> Tree -> (acc, Tree)
 const mapAccumLTree = f => {
     const go = a => x => {
-        const
-            pair = f(a)(root(x)),
-            tpl = mapAccumL(go)(pair[0])(nest(x));
+        const [acc, v] = f(a)(root(x));
 
-        return Tuple(tpl[0])(
-            Node(pair[1])(tpl[1])
+        return second(Node(v))(
+            mapAccumL(go)(acc)(nest(x))
         );
     };
 

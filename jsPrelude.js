@@ -1973,9 +1973,11 @@ const indexedTree = rootIndex =>
     // left-right index, where the root node
     // starts at the supplied rootIndex;
     tree => mapAccumLTree(
-        i => x => [1 + i, [x, {
-            index: i
-        }]]
+        i => x => Tuple(1 + i)(
+            Tuple(x)({
+                index: i
+            })
+        )
     )(rootIndex)(tree)[1];
 
 // init :: [a] -> [a]
@@ -2604,12 +2606,10 @@ const mapAccumL = f =>
 // acc -> Tree -> (acc, Tree)
 const mapAccumLTree = f => {
     const go = a => x => {
-        const
-            pair = f(a)(root(x)),
-            tpl = mapAccumL(go)(pair[0])(nest(x));
+        const [acc, v] = f(a)(root(x));
 
-        return Tuple(tpl[0])(
-            Node(pair[1])(tpl[1])
+        return second(Node(v))(
+            mapAccumL(go)(acc)(nest(x))
         );
     };
 

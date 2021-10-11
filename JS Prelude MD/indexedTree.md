@@ -6,8 +6,10 @@ const indexedTree = rootIndex =>
     // left-right index, where the root node
     // starts at the supplied rootIndex;
     tree => mapAccumLTree(
-        i => x => [1 + i, [x, {
-            index: i
-        }]]
+        i => x => Tuple(1 + i)(
+            Tuple(x)({
+                index: i
+            })
+        )
     )(rootIndex)(tree)[1];
 ```
