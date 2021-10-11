@@ -6,13 +6,11 @@ const findGen = p =>
     // if no match is found.
     xs => {
         const
-            mb = until(tpl => {
-                const nxt = tpl[0];
-
-                return nxt.done || p(nxt.value);
-            })(
-                tpl => Tuple(tpl[1].next())(
-                    tpl[1]
+            mb = until(
+                ([nxt]) => nxt.done || p(nxt.value)
+            )(
+                ([, b]) => Tuple(b.next())(
+                    b
                 )
             )(Tuple(xs.next())(xs))[0];
 
