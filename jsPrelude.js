@@ -4058,8 +4058,10 @@ const splitArrow = f =>
     // The functions f and g combined in a single function
     // from a tuple (x, y) to a tuple of (f(x), g(y))
     // (see bimap)
-    g => tpl => Tuple(f(tpl[0]))(
-        g(tpl[1])
+    g => ([a, b]) => Tuple(
+        f(a)
+    )(
+        g(b)
     );
 
 // splitAt :: Int -> [a] -> ([a], [a])
@@ -4140,14 +4142,14 @@ const splitOn = pat => src =>
     ) : (() => {
         const
             lng = pat.length,
-            tpl = findIndices(matching(pat))(src).reduce(
-                (a, i) => Tuple(
-                    fst(a).concat([src.slice(snd(a), i)])
+            [a, b] = findIndices(matching(pat))(src).reduce(
+                ([x, y], i) => Tuple(
+                    x.concat([src.slice(y, i)])
                 )(lng + i),
                 Tuple([])(0)
             );
 
-        return fst(tpl).concat([src.slice(snd(tpl))]);
+        return a.concat([src.slice(b)]);
     })();
 
 // splitRegex :: Regex -> String -> [String]
@@ -4679,9 +4681,9 @@ const traverseTree = f => {
 };
 
 // traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
-const traverseTuple = f => tpl =>
-    fmap(Tuple(tpl[0]))(
-        f(tpl[1])
+const traverseTuple = f => ([a, b]) =>
+    fmap(Tuple(a))(
+        f(b)
     );
 
 // treeFromDict :: String -> Dict -> Tree String

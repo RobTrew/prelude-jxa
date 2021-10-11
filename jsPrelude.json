@@ -2723,7 +2723,7 @@
     ]
   },
   "splitArrow (***)": {
-    "code": "// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))\nconst splitArrow = f =>\n    // The functions f and g combined in a single function\n    // from a tuple (x, y) to a tuple of (f(x), g(y))\n    // (see bimap)\n    g => tpl => Tuple(f(tpl[0]))(\n        g(tpl[1])\n    );",
+    "code": "// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))\nconst splitArrow = f =>\n    // The functions f and g combined in a single function\n    // from a tuple (x, y) to a tuple of (f(x), g(y))\n    // (see bimap)\n    g => ([a, b]) => Tuple(\n        f(a)\n    )(\n        g(b)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -2753,7 +2753,7 @@
     ]
   },
   "splitOn": {
-    "code": "// splitOn :: [a] -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = pat => src =>\n    // A list of the strings delimited by\n    // instances of a given pattern in s.\n    (\"string\" === typeof src) ? (\n        src.split(pat)\n    ) : (() => {\n        const\n            lng = pat.length,\n            tpl = findIndices(matching(pat))(src).reduce(\n                (a, i) => Tuple(\n                    fst(a).concat([src.slice(snd(a), i)])\n                )(lng + i),\n                Tuple([])(0)\n            );\n\n        return fst(tpl).concat([src.slice(snd(tpl))]);\n    })();",
+    "code": "// splitOn :: [a] -> [a] -> [[a]]\n// splitOn :: String -> String -> [String]\nconst splitOn = pat => src =>\n    // A list of the strings delimited by\n    // instances of a given pattern in s.\n    (\"string\" === typeof src) ? (\n        src.split(pat)\n    ) : (() => {\n        const\n            lng = pat.length,\n            [a, b] = findIndices(matching(pat))(src).reduce(\n                ([x, y], i) => Tuple(\n                    x.concat([src.slice(y, i)])\n                )(lng + i),\n                Tuple([])(0)\n            );\n\n        return a.concat([src.slice(b)]);\n    })();",
     "tags": [
       "JS Prelude"
     ]
@@ -3066,7 +3066,7 @@
     ]
   },
   "traverseTuple": {
-    "code": "// traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)\nconst traverseTuple = f => tpl =>\n    fmap(Tuple(tpl[0]))(\n        f(tpl[1])\n    );",
+    "code": "// traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)\nconst traverseTuple = f => ([a, b]) =>\n    fmap(Tuple(a))(\n        f(b)\n    );",
     "tags": [
       "JS Prelude"
     ]

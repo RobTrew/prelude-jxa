@@ -9,14 +9,14 @@ const splitOn = pat => src =>
     ) : (() => {
         const
             lng = pat.length,
-            tpl = findIndices(matching(pat))(src).reduce(
-                (a, i) => Tuple(
-                    fst(a).concat([src.slice(snd(a), i)])
+            [a, b] = findIndices(matching(pat))(src).reduce(
+                ([x, y], i) => Tuple(
+                    x.concat([src.slice(y, i)])
                 )(lng + i),
                 Tuple([])(0)
             );
 
-        return fst(tpl).concat([src.slice(snd(tpl))]);
+        return a.concat([src.slice(b)]);
     })();
 ```
 
