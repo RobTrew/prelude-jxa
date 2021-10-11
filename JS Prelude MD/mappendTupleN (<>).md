@@ -6,8 +6,9 @@ const mappendTupleN = t => t1 => {
 
     return lng === t1.length ? (
         TupleN(
-            ...Array.from(t)
-            .map((x, i) => mappend(x)(t1[i]))
+            [...t].map(
+                (x, i) => mappend(x)(t1[i])
+            )
         )
     ) : undefined;
 };

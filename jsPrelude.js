@@ -2749,8 +2749,9 @@ const mappendTupleN = t => t1 => {
 
     return lng === t1.length ? (
         TupleN(
-            ...Array.from(t)
-            .map((x, i) => mappend(x)(t1[i]))
+            [...t].map(
+                (x, i) => mappend(x)(t1[i])
+            )
         )
     ) : undefined;
 };
@@ -3306,7 +3307,7 @@ const product = xs =>
 
 // properFracRatio :: Ratio -> (Int, Ratio)
 const properFracRatio = nd => {
-    const [q, r] = Array.from(quotRem(nd.n)(nd.d));
+    const [q, r] = quotRem(nd.n)(nd.d);
 
     return Tuple(q)(Ratio(r)(nd.d));
 };

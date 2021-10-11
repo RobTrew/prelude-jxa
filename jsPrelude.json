@@ -1823,7 +1823,7 @@
     ]
   },
   "mappendTupleN (<>)": {
-    "code": "// mappendTupleN (<>) ::\n// (a, b, ...) -> (a, b, ...) -> (a, b, ...)\nconst mappendTupleN = t => t1 => {\n    const lng = t.length;\n\n    return lng === t1.length ? (\n        TupleN(\n            ...Array.from(t)\n            .map((x, i) => mappend(x)(t1[i]))\n        )\n    ) : undefined;\n};",
+    "code": "// mappendTupleN (<>) ::\n// (a, b, ...) -> (a, b, ...) -> (a, b, ...)\nconst mappendTupleN = t => t1 => {\n    const lng = t.length;\n\n    return lng === t1.length ? (\n        TupleN(\n            [...t].map(\n                (x, i) => mappend(x)(t1[i])\n            )\n        )\n    ) : undefined;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2159,7 +2159,7 @@
     ]
   },
   "properFracRatio": {
-    "code": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = Array.from(quotRem(nd.n)(nd.d));\n\n    return Tuple(q)(Ratio(r)(nd.d));\n};",
+    "code": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = quotRem(nd.n)(nd.d);\n\n    return Tuple(q)(Ratio(r)(nd.d));\n};",
     "tags": [
       "JS Prelude"
     ]
