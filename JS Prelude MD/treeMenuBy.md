@@ -10,9 +10,9 @@ const treeMenuBy = fNodeKey => {
             ).sort();
 
         return until(
-            tpl => !fst(tpl) || !isNull(snd(tpl))
+            ([a, b]) => !a || !isNull(b)
         )(
-            tpl => either(
+            () => either(
                 x => Tuple(false)([])
             )(
                 Tuple(true)

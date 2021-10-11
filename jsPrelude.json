@@ -152,7 +152,7 @@
     ]
   },
   "apTuple (<*>)": {
-    "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = tpl =>\n    liftA2Tuple(x => x)(tpl);",
+    "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = ab =>\n    liftA2Tuple(x => x)(ab);",
     "tags": [
       "JS Prelude"
     ]
@@ -481,7 +481,7 @@
     ]
   },
   "curry": {
-    "code": "// curry :: ((a, b) -> c) -> a -> b -> c\nconst curry = f =>\n    a => b => f(a, b);",
+    "code": "// curry :: ((a, b) -> c) -> a -> b -> c\nconst curry = f =>\n    a => b => 1 < f.length ? (\n        f(a, b)\n    ) : f(Tuple(a)(b));",
     "tags": [
       "JS Prelude"
     ]
@@ -1742,7 +1742,7 @@
     ]
   },
   "mapAccumL": {
-    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->\n// [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        ([a, b], x) => second(\n            v => b.concat(v)\n        )(\n            f(a)(x)\n        ),\n        Tuple(acc)([])\n    );",
+    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->\n// [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        ([a, bs], x) => second(\n            v => bs.concat(v)\n        )(\n            f(a)(x)\n        ),\n        Tuple(acc)([])\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -3114,7 +3114,7 @@
     ]
   },
   "treeMenuBy": {
-    "code": "// treeMenuBy :: (a -> String) Tree a -> IO [a]\nconst treeMenuBy = fNodeKey => {\n    const go = tree => {\n        const\n            strTitle = fNodeKey(tree.root),\n            subTrees = nest(tree),\n            menu = subTrees.map(\n                compose(fNodeKey, root)\n            ).sort();\n\n        return until(\n            tpl => !fst(tpl) || !isNull(snd(tpl))\n        )(\n            tpl => either(\n                x => Tuple(false)([])\n            )(\n                Tuple(true)\n            )(\n                bindLR(\n                    showMenuLR(true)(strTitle)(menu)\n                )(\n                    ks => {\n                        const\n                            k0 = ks[0],\n                            msg = `${k0}: not found in ${ks}`;\n\n                        return maybe(\n                            Left(msg)\n                        )(Right)(\n                            bindMay(\n                                find(\n                                    x => k0 === fNodeKey(\n                                        x.root\n                                    )\n                                )(subTrees)\n                            )(\n                                firstChosen => Just(\n                                    isNull(\n                                        nest(firstChosen)\n                                    ) ? (\n                                        ks.map(\n                                            k => find(\n                                                x => k === fNodeKey(\n                                                    x.root\n                                                )\n                                            )(subTrees).Just\n                                        )\n                                    ) : go(firstChosen)\n                                )\n                            )\n                        );\n                    }\n                )\n            )\n        )(Tuple(true)([]))[1];\n    };\n\n    return go;\n};",
+    "code": "// treeMenuBy :: (a -> String) Tree a -> IO [a]\nconst treeMenuBy = fNodeKey => {\n    const go = tree => {\n        const\n            strTitle = fNodeKey(tree.root),\n            subTrees = nest(tree),\n            menu = subTrees.map(\n                compose(fNodeKey, root)\n            ).sort();\n\n        return until(\n            ([a, b]) => !a || !isNull(b)\n        )(\n            () => either(\n                x => Tuple(false)([])\n            )(\n                Tuple(true)\n            )(\n                bindLR(\n                    showMenuLR(true)(strTitle)(menu)\n                )(\n                    ks => {\n                        const\n                            k0 = ks[0],\n                            msg = `${k0}: not found in ${ks}`;\n\n                        return maybe(\n                            Left(msg)\n                        )(Right)(\n                            bindMay(\n                                find(\n                                    x => k0 === fNodeKey(\n                                        x.root\n                                    )\n                                )(subTrees)\n                            )(\n                                firstChosen => Just(\n                                    isNull(\n                                        nest(firstChosen)\n                                    ) ? (\n                                        ks.map(\n                                            k => find(\n                                                x => k === fNodeKey(\n                                                    x.root\n                                                )\n                                            )(subTrees).Just\n                                        )\n                                    ) : go(firstChosen)\n                                )\n                            )\n                        );\n                    }\n                )\n            )\n        )(Tuple(true)([]))[1];\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3373,7 +3373,7 @@
     ]
   },
   "zipWithGen": {
-    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f => ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const\n                [fta, sta] = a.Just,\n                [ftb, stb] = b.Just;\n\n            yield f(fta)(ftb);\n            a = uncons(sta);\n            b = uncons(stb);\n        }\n    };\n\n    return go(uncons(ga), uncons(gb));\n};",
+    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f => ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const [fta, sta] = a.Just;\n            const [ftb, stb] = b.Just;\n\n            yield f(fta)(ftb);\n            a = uncons(sta);\n            b = uncons(stb);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]

@@ -216,8 +216,8 @@ const apTree = tf =>
     )(tf);
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
-const apTuple = tpl =>
-    liftA2Tuple(x => x)(tpl);
+const apTuple = ab =>
+    liftA2Tuple(x => x)(ab);
 
 // append (<>) :: [a] -> [a] -> [a]
 const append = xs =>
@@ -623,7 +623,9 @@ const constant = k =>
 
 // curry :: ((a, b) -> c) -> a -> b -> c
 const curry = f =>
-    a => b => f(a, b);
+    a => b => 1 < f.length ? (
+        f(a, b)
+    ) : f(Tuple(a)(b));
 
 // curryN :: Curry a b => a -> b
 const curryN = f =>
@@ -2594,8 +2596,8 @@ const mapAccumL = f =>
     // obtained by a combined map and fold,
     // with accumulation from left to right.
     acc => xs => [...xs].reduce(
-        ([a, b], x) => second(
-            v => b.concat(v)
+        ([a, bs], x) => second(
+            v => bs.concat(v)
         )(
             f(a)(x)
         ),
@@ -4846,9 +4848,9 @@ const treeMenuBy = fNodeKey => {
             ).sort();
 
         return until(
-            tpl => !fst(tpl) || !isNull(snd(tpl))
+            ([a, b]) => !a || !isNull(b)
         )(
-            tpl => either(
+            () => either(
                 x => Tuple(false)([])
             )(
                 Tuple(true)
@@ -5301,18 +5303,14 @@ const zipWithGen = f => ga => gb => {
             b = mb;
 
         while (!a.Nothing && !b.Nothing) {
-            const
-                [fta, sta] = a.Just,
-                [ftb, stb] = b.Just;
+            const [fta, sta] = a.Just;
+            const [ftb, stb] = b.Just;
 
             yield f(fta)(ftb);
             a = uncons(sta);
             b = uncons(stb);
         }
     };
-
-    return go(uncons(ga), uncons(gb));
-};
 
 // zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWithList = f =>
