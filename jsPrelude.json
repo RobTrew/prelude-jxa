@@ -1019,7 +1019,7 @@
     ]
   },
   "fmapTuple (<$>)": {
-    "code": "// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)\nconst fmapTuple = f => tpl =>\n    Tuple(tpl[0])(\n        f(tpl[1])\n    );",
+    "code": "// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)\nconst fmapTuple = f =>\n    second(f);",
     "tags": [
       "JS Prelude"
     ]
@@ -1193,7 +1193,7 @@
     ]
   },
   "groupBy": {
-    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = fEq =>\n    // Typical usage: groupBy(on(eq)(f), xs)\n    xs => (ys => 0 < ys.length ? (() => {\n        const\n            tpl = ys.slice(1).reduce(\n                (gw, x) => {\n                    const\n                        gps = gw[0],\n                        wkg = gw[1];\n\n                    return fEq(wkg[0])(x) ? (\n                        Tuple(gps)(wkg.concat([x]))\n                    ) : Tuple(gps.concat([wkg]))([x]);\n                },\n                Tuple([])([ys[0]])\n            ),\n            v = tpl[0].concat([tpl[1]]);\n\n        return \"string\" !== typeof xs ? (\n            v\n        ) : v.map(x => x.join(\"\"));\n    })() : [])(list(xs));",
+    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = fEq =>\n    // Typical usage: groupBy(on(eq)(f), xs)\n    xs => {\n        const ys = list(xs);\n\n        return 0 < ys.length ? (() => {\n            const [v, r] = ys.slice(1)\n                .reduce(([gps, wkg], x) =>\n                    fEq(wkg[0])(x) ? (\n                        Tuple(gps)(wkg.concat([x]))\n                    ) : Tuple(gps.concat([wkg]))([x]),\n                    Tuple([])([ys[0]])\n                ),\n                vs = v.concat([r]);\n\n            return \"string\" !== typeof xs ? (\n                vs\n            ) : vs.map(x => x.join(\"\"));\n        })() : [];\n    };",
     "tags": [
       "JS Prelude",
       "core"
