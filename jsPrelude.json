@@ -2940,7 +2940,7 @@
     ]
   },
   "takeIterate": {
-    "code": "// takeIterate n f x == [x, f x, f (f x), ...]\n// takeIterate :: Int -> (a -> a) -> a -> [a]\nconst takeIterate = n => f => x =>\n    snd(mapAccumL(a => _ => i => {\n        const v = 0 !== i ? f(a) : x;\n\n        return [v, v];\n    }, x, Array.from({\n        length: n\n    })));",
+    "code": "// takeIterate n f x == [x, f x, f (f x), ...]\n// takeIterate :: Int -> (a -> a) -> a -> [a]\nconst takeIterate = n =>\n    f => x => Array.from({\n        length: n - 1\n    }).reduce(\n        ([a, vs]) => {\n            const v = f(a);\n\n            return Tuple(v)(vs.concat(v));\n        },\n        Tuple(x)([x])\n    )[1];",
     "tags": [
       "JS Prelude"
     ]
@@ -3373,7 +3373,7 @@
     ]
   },
   "zipWithGen": {
-    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f => ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const\n                ta = a.Just,\n                tb = b.Just;\n\n            yield f(fst(ta))(fst(tb));\n            a = uncons(snd(ta));\n            b = uncons(snd(tb));\n        }\n    };\n\n    return go(uncons(ga), uncons(gb));\n};",
+    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f => ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const\n                [fta, sta] = a.Just,\n                [ftb, stb] = b.Just;\n\n            yield f(fta)(ftb);\n            a = uncons(sta);\n            b = uncons(stb);\n        }\n    };\n\n    return go(uncons(ga), uncons(gb));\n};",
     "tags": [
       "JS Prelude"
     ]

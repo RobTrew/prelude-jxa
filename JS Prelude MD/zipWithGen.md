@@ -9,12 +9,12 @@ const zipWithGen = f => ga => gb => {
 
         while (!a.Nothing && !b.Nothing) {
             const
-                ta = a.Just,
-                tb = b.Just;
+                [fta, sta] = a.Just,
+                [ftb, stb] = b.Just;
 
-            yield f(fst(ta))(fst(tb));
-            a = uncons(snd(ta));
-            b = uncons(snd(tb));
+            yield f(fta)(ftb);
+            a = uncons(sta);
+            b = uncons(stb);
         }
     };
 

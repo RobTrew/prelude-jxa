@@ -1,14 +1,17 @@
 ```javascript
 // takeIterate n f x == [x, f x, f (f x), ...]
 // takeIterate :: Int -> (a -> a) -> a -> [a]
-const takeIterate = n => f => x =>
-    snd(mapAccumL(a => _ => i => {
-        const v = 0 !== i ? f(a) : x;
+const takeIterate = n =>
+    f => x => Array.from({
+        length: n - 1
+    }).reduce(
+        ([a, vs]) => {
+            const v = f(a);
 
-        return [v, v];
-    }, x, Array.from({
-        length: n
-    })));
+            return Tuple(v)(vs.concat(v));
+        },
+        Tuple(x)([x])
+    )[1];
 ```
 
 
