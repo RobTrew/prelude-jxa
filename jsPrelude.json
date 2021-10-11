@@ -209,7 +209,7 @@
     ]
   },
   "assocs": {
-    "code": "// assocs :: Map k a -> [(k, a)]\nconst assocs = m =>\n    Object.entries(m).map(\n        kv => Tuple(...kv)\n    );",
+    "code": "// assocs :: Map k a -> [(k, a)]\nconst assocs = m =>\n    Object.entries(m).map(\n        ([k, v]) => Tuple(k)(v)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -229,13 +229,13 @@
     ]
   },
   "biList": {
-    "code": "// biList :: (a, a) -> [a]\nconst biList = ab =>\n    // A list of two items derived from a tuple.\n    Array.from(ab);",
+    "code": "// biList :: (a, a) -> [a]\nconst biList = ab =>\n    // A list of two items derived from a tuple.\n    [...ab]",
     "tags": [
       "JS Prelude"
     ]
   },
   "bimap": {
-    "code": "// bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)\nconst bimap = f =>\n    // Tuple instance of bimap.\n    // A tuple of the application of f and g to the\n    // first and second values respectively.\n    g => tpl => 2 !== tpl.length ? (\n        bimapN(f)(g)(tpl)\n    ) : Tuple(f(tpl[0]))(\n        g(tpl[1])\n    );",
+    "code": "// bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)\nconst bimap = f =>\n    // Tuple instance of bimap.\n    // A tuple of the application of f and g to the\n    // first and second values respectively.\n    g => ([a, b]) => Tuple(f(a))(g(b));",
     "tags": [
       "JS Prelude"
     ]
@@ -1742,7 +1742,7 @@
     ]
   },
   "mapAccumL": {
-    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->\n// [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        (a, x) => {\n            const tpl = f(a[0])(x);\n\n            return Tuple(tpl[0])(\n                a[1].concat(tpl[1])\n            );\n        },\n        Tuple(acc)([])\n    );",
+    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->\n// [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        ([a, b], x) => second(\n            v => b.concat(v)\n        )(\n            f(a)(x)\n        ),\n        Tuple(acc)([])\n    );",
     "tags": [
       "JS Prelude",
       "core"

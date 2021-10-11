@@ -283,24 +283,20 @@ const argvLength = f =>
 // assocs :: Map k a -> [(k, a)]
 const assocs = m =>
     Object.entries(m).map(
-        kv => Tuple(...kv)
+        ([k, v]) => Tuple(k)(v)
     );
 
 // biList :: (a, a) -> [a]
 const biList = ab =>
     // A list of two items derived from a tuple.
-    Array.from(ab);
+    [...ab]
 
 // bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)
 const bimap = f =>
     // Tuple instance of bimap.
     // A tuple of the application of f and g to the
     // first and second values respectively.
-    g => tpl => 2 !== tpl.length ? (
-        bimapN(f)(g)(tpl)
-    ) : Tuple(f(tpl[0]))(
-        g(tpl[1])
-    );
+    g => ([a, b]) => Tuple(f(a))(g(b));
 
 // bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d
 const bimapLR = f =>
@@ -2612,13 +2608,11 @@ const mapAccumL = f =>
     // obtained by a combined map and fold,
     // with accumulation from left to right.
     acc => xs => [...xs].reduce(
-        (a, x) => {
-            const tpl = f(a[0])(x);
-
-            return Tuple(tpl[0])(
-                a[1].concat(tpl[1])
-            );
-        },
+        ([a, b], x) => second(
+            v => b.concat(v)
+        )(
+            f(a)(x)
+        ),
         Tuple(acc)([])
     );
 
