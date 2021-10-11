@@ -1,14 +1,25 @@
 ```javascript
-// breakOn :: String -> String -> (String, String)
-const breakOn = pat =>
-    // Needle -> Haystack -> (prefix before match, match + rest)
-    src => 0 < pat.length ? (() => {
-        const xs = src.split(pat);
+// breakOn :: Eq a => [a] -> [a] -> ([a], [a])
+// breakOn :: String -> String -> ([Char], [Char])
+const breakOn = needle =>
+    // A tuple of the prefix before the first match
+    // and the whole remainder (including the match).
+    haystack => {
+        const ns = [...needle];
 
-        return 1 < xs.length ? Tuple(
-            xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)("");
-    })() : null;
+        const go = hs =>
+            isPrefixOf(ns)(hs) ? (
+                Tuple([])(hs)
+            ) : 0 === hs.length ? (
+                Tuple([])([])
+            ) : first(
+                v => [hs[0]].concat(v)
+            )(
+                go(hs.slice(1))
+            );
+
+        return go([...haystack]);
+    };
 ```
 
 
