@@ -1,10 +1,10 @@
 ```javascript
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
-const mappendTuple = t => t1 =>
-    Tuple(
-        mappend(t[0])(t1[0])
+const mappendTuple = ([a, b]) =>
+    ([c, d]) => Tuple(
+        mappend(a)(c)
     )(
-        mappend(t[1])(t1[1])
+        mappend(b)(d)
     );
 ```
 

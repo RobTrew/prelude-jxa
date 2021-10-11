@@ -1,9 +1,9 @@
 ```javascript
 // both :: (a -> b) -> (a, a) -> (b, b)
 const both = f =>
-    ab => Tuple(
-        f(ab[0])
+    ([a, b]) => Tuple(
+        f(a)
     )(
-        f(ab[1])
+        f(b)
     );
 ```

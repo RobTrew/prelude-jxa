@@ -285,7 +285,7 @@
     ]
   },
   "bindTuple (>>=)": {
-    "code": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = tpl =>\n    f => {\n        const t2 = f(tpl[1]);\n\n        return Tuple(\n            mappend(tpl[0])(t2[0])\n        )(\n            t2[1]\n        );\n    };",
+    "code": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = ([a, b]) =>\n    f => first(mappend(a))(\n        f(b)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -297,7 +297,7 @@
     ]
   },
   "both": {
-    "code": "// both :: (a -> b) -> (a, a) -> (b, b)\nconst both = f =>\n    ab => Tuple(\n        f(ab[0])\n    )(\n        f(ab[1])\n    );",
+    "code": "// both :: (a -> b) -> (a, a) -> (b, b)\nconst both = f =>\n    ([a, b]) => Tuple(\n        f(a)\n    )(\n        f(b)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -955,7 +955,7 @@
     ]
   },
   "first": {
-    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    xy => {\n        const tpl = Tuple(f(xy[0]))(xy[1]);\n\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
+    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    ([x, y]) => Tuple(f(x))(y);",
     "tags": [
       "JS Prelude"
     ]
@@ -1654,7 +1654,7 @@
     ]
   },
   "liftA2Tuple": {
-    "code": "// liftA2Tuple :: Monoid m =>\n// (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)\nconst liftA2Tuple = f =>\n    a => b => Tuple(mappend(a[0])(b[0]))(\n        f(a[1])(b[1])\n    );",
+    "code": "// liftA2Tuple :: Monoid m =>\n// (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)\nconst liftA2Tuple = f =>\n    ([a, b]) => ([c, d]) => Tuple(\n        mappend(a)(c)\n    )(\n        f(b)(d)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1817,7 +1817,7 @@
     ]
   },
   "mappendTuple (<>)": {
-    "code": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = t => t1 =>\n    Tuple(\n        mappend(t[0])(t1[0])\n    )(\n        mappend(t[1])(t1[1])\n    );",
+    "code": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = ([a, b]) =>\n    ([c, d]) => Tuple(\n        mappend(a)(c)\n    )(\n        mappend(b)(d)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3157,7 +3157,7 @@
     ]
   },
   "uncurry": {
-    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a pair, derived\n    // from a curried function.\n    (...args) => {\n        const\n            xy = Boolean(args.length % 2) ? (\n                args[0]\n            ) : args;\n\n        return f(xy[0])(xy[1]);\n    };",
+    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a pair, derived\n    // from a curried function.\n    (...args) => {\n        const\n            [x, y] = Boolean(args.length % 2) ? (\n                args[0]\n            ) : args;\n\n        return f(x)(y);\n    };",
     "tags": [
       "JS Prelude"
     ]

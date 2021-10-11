@@ -365,16 +365,10 @@ const bindMay = mb =>
     ) : mf(mb.Just);
 
 // bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
-const bindTuple = tpl =>
-    f => {
-        const t2 = f(tpl[1]);
-
-        return Tuple(
-            mappend(tpl[0])(t2[0])
-        )(
-            t2[1]
-        );
-    };
+const bindTuple = ([a, b]) =>
+    f => first(mappend(a))(
+        f(b)
+    );
 
 // bool :: a -> a -> Bool -> a
 const bool = f =>
@@ -382,10 +376,10 @@ const bool = f =>
 
 // both :: (a -> b) -> (a, a) -> (b, b)
 const both = f =>
-    ab => Tuple(
-        f(ab[0])
+    ([a, b]) => Tuple(
+        f(a)
     )(
-        f(ab[1])
+        f(b)
     );
 
 // break :: (a -> Bool) -> [a] -> ([a], [a])
@@ -1537,13 +1531,7 @@ const findTree = p => {
 const first = f =>
     // A simple function lifted to one which applies
     // to a tuple, transforming only its first item.
-    xy => {
-        const tpl = Tuple(f(xy[0]))(xy[1]);
-
-        return Array.isArray(xy) ? (
-            Array.from(tpl)
-        ) : tpl;
-    };
+    ([x, y]) => Tuple(f(x))(y);
 
 // flatten :: NestedList a -> [a]
 const flatten = nest =>
@@ -2507,8 +2495,10 @@ const liftA2Tree = f =>
 // liftA2Tuple :: Monoid m =>
 // (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 const liftA2Tuple = f =>
-    a => b => Tuple(mappend(a[0])(b[0]))(
-        f(a[1])(b[1])
+    ([a, b]) => ([c, d]) => Tuple(
+        mappend(a)(c)
+    )(
+        f(b)(d)
     );
 
 // lines :: String -> [String]
@@ -2736,11 +2726,11 @@ const mappendOrd = x =>
     ) : y;
 
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
-const mappendTuple = t => t1 =>
-    Tuple(
-        mappend(t[0])(t1[0])
+const mappendTuple = ([a, b]) =>
+    ([c, d]) => Tuple(
+        mappend(a)(c)
     )(
-        mappend(t[1])(t1[1])
+        mappend(b)(d)
     );
 
 // mappendTupleN (<>) ::
@@ -4986,11 +4976,11 @@ const uncurry = f =>
     // from a curried function.
     (...args) => {
         const
-            xy = Boolean(args.length % 2) ? (
+            [x, y] = Boolean(args.length % 2) ? (
                 args[0]
             ) : args;
 
-        return f(xy[0])(xy[1]);
+        return f(x)(y);
     };
 
 // uncurryN :: Curry a b => b -> a
