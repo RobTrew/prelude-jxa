@@ -12,10 +12,10 @@ const findTree = p => {
                 lng = xs.length;
 
             return 0 < lng ? until(
-                tpl => lng <= tpl[0] || !tpl[1].Nothing
+                ([i, v]) => lng <= i || !v.Nothing
             )(
-                tpl => Tuple(1 + tpl[0])(
-                    go(xs[tpl[0]])
+                ([i]) => Tuple(1 + i)(
+                    go(xs[i])
                 )
             )(
                 Tuple(0)(
