@@ -1874,7 +1874,7 @@
     ]
   },
   "maximumOn": {
-    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v > tpl[1] ? [\n                    x, v\n                ] : tpl;\n            },\n            (h => [h, f(h)])(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v > tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude"
     ]
@@ -1969,7 +1969,7 @@
     ]
   },
   "minimumOn": {
-    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v < tpl[1] ? [\n                    x, v\n                ] : tpl;\n            },\n            (h => [h, f(h)])(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v < tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude"
     ]

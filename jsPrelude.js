@@ -2834,11 +2834,11 @@ const maximumOn = f =>
             (tpl, x) => {
                 const v = f(x);
 
-                return v > tpl[1] ? [
-                    x, v
-                ] : tpl;
+                return v > tpl[1] ? (
+                    Tuple(x)(v)
+                ) : tpl;
             },
-            (h => [h, f(h)])(xs[0])
+            (h => Tuple(h)(f(h)))(xs[0])
         )[0]
     ) : undefined;
 
@@ -3040,11 +3040,11 @@ const minimumOn = f =>
             (tpl, x) => {
                 const v = f(x);
 
-                return v < tpl[1] ? [
-                    x, v
-                ] : tpl;
+                return v < tpl[1] ? (
+                    Tuple(x)(v)
+                ) : tpl;
             },
-            (h => [h, f(h)])(xs[0])
+            (h => Tuple(h)(f(h)))(xs[0])
         )[0]
     ) : undefined;
 
