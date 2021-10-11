@@ -2605,7 +2605,8 @@ const map = f =>
     // (The image of xs under f).
     xs => [...xs].map(f);
 
-// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->
+// [x] -> (acc, [y])
 const mapAccumL = f =>
     // A tuple of an accumulation and a list
     // obtained by a combined map and fold,
@@ -2614,9 +2615,11 @@ const mapAccumL = f =>
         (a, x) => {
             const tpl = f(a[0])(x);
 
-            return [tpl[0], a[1].concat(tpl[1])];
+            return Tuple(tpl[0])(
+                a[1].concat(tpl[1])
+            );
         },
-        [acc, []]
+        Tuple(acc)([])
     );
 
 // mapAccumLTree :: (acc -> x -> (acc, y)) ->
@@ -3731,13 +3734,7 @@ const second = f =>
     // A function over a simple value lifted
     // to a function over a tuple.
     // f (a, b) -> (a, f(b))
-    xy => {
-        const tpl = Tuple(xy[0])(f(xy[1]));
-
-        return Array.isArray(xy) ? (
-            Array.from(tpl)
-        ) : tpl;
-    };
+    ([x, y]) => Tuple(x)(f(y));
 
 // sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 const sequenceA = tfa =>

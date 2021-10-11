@@ -1742,7 +1742,7 @@
     ]
   },
   "mapAccumL": {
-    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        (a, x) => {\n            const tpl = f(a[0])(x);\n\n            return [tpl[0], a[1].concat(tpl[1])];\n        },\n        [acc, []]\n    );",
+    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->\n// [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        (a, x) => {\n            const tpl = f(a[0])(x);\n\n            return Tuple(tpl[0])(\n                a[1].concat(tpl[1])\n            );\n        },\n        Tuple(acc)([])\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2487,7 +2487,7 @@
     ]
   },
   "second": {
-    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => {\n        const tpl = Tuple(xy[0])(f(xy[1]));\n\n        return Array.isArray(xy) ? (\n            Array.from(tpl)\n        ) : tpl;\n    };",
+    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    ([x, y]) => Tuple(x)(f(y));",
     "tags": [
       "JS Prelude"
     ]

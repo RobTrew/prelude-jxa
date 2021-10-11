@@ -1,5 +1,6 @@
 ```javascript
-// mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
+// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->
+// [x] -> (acc, [y])
 const mapAccumL = f =>
     // A tuple of an accumulation and a list
     // obtained by a combined map and fold,
@@ -8,8 +9,10 @@ const mapAccumL = f =>
         (a, x) => {
             const tpl = f(a[0])(x);
 
-            return [tpl[0], a[1].concat(tpl[1])];
+            return Tuple(tpl[0])(
+                a[1].concat(tpl[1])
+            );
         },
-        [acc, []]
+        Tuple(acc)([])
     );
 ```
