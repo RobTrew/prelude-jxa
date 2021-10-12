@@ -1,6 +1,6 @@
 ```javascript
 // cycle :: [a] -> Generator [a]
-const cycle = function *(xs) {
+const cycle = function* (xs) {
     // An infinite repetition of xs,
     // from which an arbitrary prefix
     // may be taken.

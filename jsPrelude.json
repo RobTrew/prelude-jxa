@@ -454,7 +454,7 @@
     ]
   },
   "cons": {
-    "code": "// cons :: a -> [a] -> [a]\nconst cons = x =>\n// A list constructed from the item x,\n// followed by the existing list xs.\n    xs => Array.isArray(xs) ? (\n        [x].concat(xs)\n    ) : \"GeneratorFunction\" !== xs.constructor.constructor.name ? (\n        x + xs\n    ) : (\n        function *() {\n            yield x;\n            let nxt = xs.next();\n\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = xs.next();\n            }\n        }());",
+    "code": "// cons :: a -> [a] -> [a]\nconst cons = x =>\n// A list constructed from the item x,\n// followed by the existing list xs.\n    xs => Array.isArray(xs) ? (\n        [x].concat(xs)\n    ) : \"GeneratorFunction\" !== xs.constructor.constructor.name ? (\n        x + xs\n    ) : (\n        function *() {\n            yield x;\n            let nxt = xs.next();\n\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = xs.next();\n            }\n        }()\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -493,7 +493,7 @@
     ]
   },
   "cycle": {
-    "code": "// cycle :: [a] -> Generator [a]\nconst cycle = function *(xs) {\n    // An infinite repetition of xs,\n    // from which an arbitrary prefix\n    // may be taken.\n    const lng = xs.length;\n    let i = 0;\n\n    while (true) {\n        yield xs[i];\n        i = (1 + i) % lng;\n    }\n};",
+    "code": "// cycle :: [a] -> Generator [a]\nconst cycle = function* (xs) {\n    // An infinite repetition of xs,\n    // from which an arbitrary prefix\n    // may be taken.\n    const lng = xs.length;\n    let i = 0;\n\n    while (true) {\n        yield xs[i];\n        i = (1 + i) % lng;\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -841,7 +841,7 @@
     ]
   },
   "fanArrow (&&&)": {
-    "code": "// fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))\nconst fanArrow = f =>\n    // A function from x to a tuple of (f(x), g(x))\n    // ((,) . f <*> g)\n    g => x => Tuple(f(x))(\n        g(x)\n    );",
+    "code": "// fanArrow (&&&) ::\n// (a -> b) -> (a -> c) -> (a -> (b, c))\nconst fanArrow = f =>\n    // A combined function, given f and g,\n    // from x to a tuple of (f(x), g(x))\n    // ((,) . f <*> g)\n    g => x => Tuple(f(x))(\n        g(x)\n    );",
     "tags": [
       "JS Prelude"
     ]

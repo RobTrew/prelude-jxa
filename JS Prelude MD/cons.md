@@ -16,5 +16,6 @@ const cons = x =>
                 yield nxt.value;
                 nxt = xs.next();
             }
-        }());
+        }()
+    );
 ```

@@ -626,7 +626,8 @@ const cons = x =>
                 yield nxt.value;
                 nxt = xs.next();
             }
-        }());
+        }()
+    );
 
 // constant :: a -> b -> a
 const constant = k =>
@@ -652,7 +653,7 @@ const curryN = f =>
     };
 
 // cycle :: [a] -> Generator [a]
-const cycle = function *(xs) {
+const cycle = function* (xs) {
     // An infinite repetition of xs,
     // from which an arbitrary prefix
     // may be taken.
@@ -1350,9 +1351,11 @@ const fType = g => {
 //     ) : x => [x];
 // };
 
-// fanArrow (&&&) :: (a -> b) -> (a -> c) -> (a -> (b, c))
+// fanArrow (&&&) ::
+// (a -> b) -> (a -> c) -> (a -> (b, c))
 const fanArrow = f =>
-    // A function from x to a tuple of (f(x), g(x))
+    // A combined function, given f and g,
+    // from x to a tuple of (f(x), g(x))
     // ((,) . f <*> g)
     g => x => Tuple(f(x))(
         g(x)
