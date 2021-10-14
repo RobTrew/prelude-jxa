@@ -1,23 +1,18 @@
 ```javascript
-// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = fEq =>
-    // Typical usage: groupBy(on(eq)(f), xs)
-    xs => {
-        const ys = list(xs);
+// groupBy :: (a -> a -> Bool) [a] -> [[a]]
+const groupBy = eqOp =>
+    // A list of lists, each containing only elements
+    // equal under the given equality operator,
+    // such that the concatenation of these lists is xs.
+    xs => 0 < xs.length ? (() => {
+        const [h, ...t] = xs;
+        const [v, r] = t.reduce(
+            ([gs, a], x) => eqOp(x)(a[0]) ? (
+                Tuple(gs)([...a, x])
+            ) : Tuple([...gs, a])([x]),
+            Tuple([])([h])
+        );
 
-        return 0 < ys.length ? (() => {
-            const [v, r] = ys.slice(1)
-                .reduce(([gps, wkg], x) =>
-                    fEq(wkg[0])(x) ? (
-                        Tuple(gps)(wkg.concat([x]))
-                    ) : Tuple(gps.concat([wkg]))([x]),
-                    Tuple([])([ys[0]])
-                ),
-                vs = v.concat([r]);
-
-            return "string" !== typeof xs ? (
-                vs
-            ) : vs.map(x => x.join(""));
-        })() : [];
-    };
+        return [...v, r];
+    })() : [];
 ```

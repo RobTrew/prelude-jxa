@@ -183,8 +183,8 @@ getDirectoryContents :: FilePath -> IO [FilePath]
 getDirectoryContentsLR :: FilePath ->
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath
-group :: Eq a => [a] -> [[a]]
-groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
+group :: [a] -> [[a]]
+groupBy :: (a -> a -> Bool) [a] -> [[a]]
 groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 gt :: Ord a => a -> a -> Bool
@@ -211,6 +211,7 @@ intercalateS :: String -> [String] -> String
 intersect :: (Eq a) => [a] -> [a] -> [a]
 intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
+intersectSet :: Set -> Set -> Set
 intersection :: Ord a => Set a -> Set a -> Set a
 intersperse :: a -> [a] -> [a]
 isAlpha :: Char -> Bool

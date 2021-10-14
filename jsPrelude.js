@@ -1738,12 +1738,12 @@ const foldr = f =>
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = f =>
-    xs => (ys => 0 < ys.length ? (
-        init(ys).reduceRight(
+    xs => 0 < xs.length ? (
+        xs.slice(0, -1).reduceRight(
             uncurry(f),
-            last(ys)
+            xs.slice(-1)[0]
         )
-    ) : [])(list(xs));
+    ) : [];
 
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldr1May = f =>
@@ -1821,48 +1821,29 @@ const genericIndexMay = xs =>
         Just(xs[i])
     ) : Nothing();
 
-// group :: Eq a => [a] -> [[a]]
-const group = xs => {
-    // A list of lists, each containing only equal elements,
+// group :: [a] -> [[a]]
+const group = xs =>
+    // A list of lists, each containing only
+    // elements equal under (===), such that the
+    // concatenation of these lists is xs.
+    groupBy(a => b => a === b)(xs);
+
+// groupBy :: (a -> a -> Bool) [a] -> [[a]]
+const groupBy = eqOp =>
+    // A list of lists, each containing only elements
+    // equal under the given equality operator,
     // such that the concatenation of these lists is xs.
-    const go = ys =>
-        0 < ys.length ? (() => {
-            const
-                h = ys[0],
-                i = ys.findIndex(y => h !== y);
+    xs => 0 < xs.length ? (() => {
+        const [h, ...t] = xs;
+        const [v, r] = t.reduce(
+            ([gs, a], x) => eqOp(x)(a[0]) ? (
+                Tuple(gs)([...a, x])
+            ) : Tuple([...gs, a])([x]),
+            Tuple([])([h])
+        );
 
-            return i !== -1 ? (
-                [ys.slice(0, i)].concat(go(ys.slice(i)))
-            ) : [ys];
-        })() : [];
-    const v = go(list(xs));
-
-    return "string" === typeof xs ? (
-        v.map(x => x.join(""))
-    ) : v;
-};
-
-// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-const groupBy = fEq =>
-    // Typical usage: groupBy(on(eq)(f), xs)
-    xs => {
-        const ys = list(xs);
-
-        return 0 < ys.length ? (() => {
-            const [v, r] = ys.slice(1)
-                .reduce(([gps, wkg], x) =>
-                    fEq(wkg[0])(x) ? (
-                        Tuple(gps)(wkg.concat([x]))
-                    ) : Tuple(gps.concat([wkg]))([x]),
-                    Tuple([])([ys[0]])
-                ),
-                vs = v.concat([r]);
-
-            return "string" !== typeof xs ? (
-                vs
-            ) : vs.map(x => x.join(""));
-        })() : [];
-    };
+        return [...v, r];
+    })() : [];
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
@@ -2094,6 +2075,11 @@ const intersectListsBy = eqFn => xs =>
     foldr1(
         (a => x => intersectBy(eqFn)(a)(x))
     )(list(xs));
+
+// intersectSet :: Set -> Set -> Set
+const intersectSet = a =>
+    // The intersection of two sets.
+    b => new Set([...a].filter(i => b.has(i)));
 
 // intersection :: Ord a => Set a -> Set a -> Set a
 const intersection = s => s1 =>

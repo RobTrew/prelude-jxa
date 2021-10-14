@@ -1,12 +1,12 @@
 ```javascript
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = f =>
-    xs => (ys => 0 < ys.length ? (
-        init(ys).reduceRight(
+    xs => 0 < xs.length ? (
+        xs.slice(0, -1).reduceRight(
             uncurry(f),
-            last(ys)
+            xs.slice(-1)[0]
         )
-    ) : [])(list(xs));
+    ) : [];
 ```
 
 
