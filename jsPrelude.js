@@ -5316,6 +5316,7 @@ const zipWithGen = f => ga => gb => {
             b = uncons(stb);
         }
     };
+};
 
 // zipWithList :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWithList = f =>

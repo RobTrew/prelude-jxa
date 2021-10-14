@@ -3379,7 +3379,7 @@
     ]
   },
   "zipWithGen": {
-    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f => ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const [fta, sta] = a.Just;\n            const [ftb, stb] = b.Just;\n\n            yield f(fta)(ftb);\n            a = uncons(sta);\n            b = uncons(stb);\n        }\n    };",
+    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f => ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const [fta, sta] = a.Just;\n            const [ftb, stb] = b.Just;\n\n            yield f(fta)(ftb);\n            a = uncons(sta);\n            b = uncons(stb);\n        }\n    };\n};",
     "tags": [
       "JS Prelude"
     ]

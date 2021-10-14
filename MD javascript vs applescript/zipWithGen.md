@@ -16,6 +16,7 @@ const zipWithGen = f => ga => gb => {
             b = uncons(stb);
         }
     };
+};
 ```
 
 
