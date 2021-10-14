@@ -324,7 +324,6 @@ odd :: Int -> Bool
 on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 or :: [Bool] -> Bool
 ord :: Char -> Int
-ordering :: () -> Ordering
 outdented :: String -> String
 parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})
 partition :: (a -> Bool) -> [a] -> ([a], [a])

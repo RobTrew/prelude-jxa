@@ -3129,16 +3129,6 @@ const ord = c =>
     // Unicode ordinal value of the character.
     c.codePointAt(0);
 
-// ordering :: () -> Ordering
-const
-    ordering = enumFromPairs(
-        "Ordering",
-        [["LT", -1], ["EQ", 0], ["GT", 1]]
-    ),
-    LT = ordering.LT,
-    EQ = ordering.EQ,
-    GT = ordering.GT;
-
 // outdented :: String -> String
 const outdented = s => {
     // All lines in the string outdented by the same amount

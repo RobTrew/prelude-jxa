@@ -2076,12 +2076,6 @@
       "JS Prelude"
     ]
   },
-  "ordering": {
-    "code": "// ordering :: () -> Ordering\nconst\n    ordering = enumFromPairs(\n        \"Ordering\",\n        [[\"LT\", -1], [\"EQ\", 0], [\"GT\", 1]]\n    ),\n    LT = ordering.LT,\n    EQ = ordering.EQ,\n    GT = ordering.GT;",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
   "outdented": {
     "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines\n    //  have no remaining indent)\n    // All relative indents are left unchanged\n    const\n        // Leading space characters.\n        rgx = /^ */u,\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n\n    return unlines(map(drop(n))(xs));\n};",
     "tags": [
