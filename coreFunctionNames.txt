@@ -38,7 +38,7 @@ flip :: (a -> b -> c) -> b -> a -> c
 foldl :: (a -> b -> a) -> a -> [b] -> a
 foldr :: (a -> b -> b) -> b -> [a] -> b
 fst :: (a, b) -> a
-groupBy :: (a -> a -> Bool) [a] -> [[a]]
+groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 head :: [a] -> a
 headDef :: a -> [a] -> a
 headMay :: [a] -> Maybe a

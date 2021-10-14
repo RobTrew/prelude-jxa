@@ -1828,7 +1828,7 @@ const group = xs =>
     // concatenation of these lists is xs.
     groupBy(a => b => a === b)(xs);
 
-// groupBy :: (a -> a -> Bool) [a] -> [[a]]
+// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = eqOp =>
     // A list of lists, each containing only elements
     // equal under the given equality operator,

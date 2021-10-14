@@ -1,5 +1,5 @@
 ```javascript
-// groupBy :: (a -> a -> Bool) [a] -> [[a]]
+// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = eqOp =>
     // A list of lists, each containing only elements
     // equal under the given equality operator,
