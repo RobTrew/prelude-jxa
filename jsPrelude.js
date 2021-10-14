@@ -3795,7 +3795,8 @@ const showDate = dte =>
     dte.toJSON;
 
 // showDict :: Dict -> String
-const showDict = show;
+const showDict = () =>
+    show();
 
 // showFn :: (a -> b) -> String
 const showFn = f =>

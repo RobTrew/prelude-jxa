@@ -1,6 +1,7 @@
 ```javascript
 // showDict :: Dict -> String
-const showDict = show;
+const showDict = () =>
+    show();
 ```
 
 
