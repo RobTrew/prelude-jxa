@@ -2554,7 +2554,7 @@
     ]
   },
   "showDict": {
-    "code": "// showDict :: Dict -> String\nconst showDict = () =>\n    show();",
+    "code": "// showDict :: Dict -> String\nconst showDict = x =>\n    show(x);",
     "tags": [
       "JS Prelude"
     ]
