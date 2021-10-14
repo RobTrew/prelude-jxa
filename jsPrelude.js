@@ -1835,14 +1835,14 @@ const groupBy = eqOp =>
     // such that the concatenation of these lists is xs.
     xs => 0 < xs.length ? (() => {
         const [h, ...t] = xs;
-        const [v, r] = t.reduce(
+        const [groups, g] = t.reduce(
             ([gs, a], x) => eqOp(x)(a[0]) ? (
                 Tuple(gs)([...a, x])
             ) : Tuple([...gs, a])([x]),
             Tuple([])([h])
         );
 
-        return [...v, r];
+        return [...groups, g];
     })() : [];
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
