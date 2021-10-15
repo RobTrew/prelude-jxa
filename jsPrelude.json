@@ -3373,7 +3373,7 @@
     ]
   },
   "zipWithGen": {
-    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f =>\n    // A composite generator formed by the application\n    // of f to each pair of values in a zip of two\n    // generators.\n    ga => gb => {\n        const go = function* (ma, mb) {\n            let\n                a = ma,\n                b = mb;\n\n            while (!a.Nothing && !b.Nothing) {\n                const [fta, sta] = a.Just;\n                const [ftb, stb] = b.Just;\n\n                yield f(fta)(ftb);\n                a = uncons(sta);\n                b = uncons(stb);\n            }\n        };\n        \n        return go(uncons(ga), uncons(gb));\n    };",
+    "code": "// zipWithGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipWithGen = f =>\n    // A composite generator formed by the application\n    // of f to each pair of values in a zip of two\n    // generators.\n    ga => gb => {\n        const go = function* (ma, mb) {\n            let\n                a = ma,\n                b = mb;\n\n            while (!a.Nothing && !b.Nothing) {\n                const [ax, axs] = a.Just;\n                const [bx, bxs] = b.Just;\n\n                yield f(ax)(bx);\n                a = uncons(axs);\n                b = uncons(bxs);\n            }\n        };\n\n        return go(uncons(ga), uncons(gb));\n    };",
     "tags": [
       "JS Prelude"
     ]

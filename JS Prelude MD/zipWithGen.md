@@ -12,15 +12,15 @@ const zipWithGen = f =>
                 b = mb;
 
             while (!a.Nothing && !b.Nothing) {
-                const [fta, sta] = a.Just;
-                const [ftb, stb] = b.Just;
+                const [ax, axs] = a.Just;
+                const [bx, bxs] = b.Just;
 
-                yield f(fta)(ftb);
-                a = uncons(sta);
-                b = uncons(stb);
+                yield f(ax)(bx);
+                a = uncons(axs);
+                b = uncons(bxs);
             }
         };
-        
+
         return go(uncons(ga), uncons(gb));
     };
 ```
