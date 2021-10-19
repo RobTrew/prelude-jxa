@@ -9,25 +9,8 @@ const fType = g => {
         Left
     ) : s.includes("Nothing") ? (
         Just
-    ) : true ? (
-        constant
     ) : s.includes("Node") ? (
         flip(Node)([])
     ) : x => [x];
 };
-
-// // fType :: (a -> f b) -> f
-// const fType = g => {
-//     const s = g.toString();
-
-//     return s.includes("Left") ? (
-//         Right
-//     ) : s.includes("Nothing") ? (
-//         Just
-//     ) : s.includes("Node") ? (
-//         flip(Node)([])
-//     ) : 1 < (s.match(/ =>/gu) || []).length ? (
-//         constant
-//     ) : x => [x];
-// };
 ```

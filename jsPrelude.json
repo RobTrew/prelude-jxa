@@ -229,7 +229,7 @@
     ]
   },
   "biList": {
-    "code": "// biList :: (a, a) -> [a]\nconst biList = ab =>\n    // A list of two items derived from a tuple.\n    [...ab]",
+    "code": "// biList :: (a, a) -> [a]\nconst biList = ab =>\n    // A list of two items derived from a tuple.\n    [...ab];",
     "tags": [
       "JS Prelude"
     ]
@@ -835,7 +835,7 @@
     ]
   },
   "fType": {
-    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    const s = g.toString();\n\n    return s.includes(\"Right\") ? (\n        Right\n    ) : s.includes(\"Left\") ? (\n        Left\n    ) : s.includes(\"Nothing\") ? (\n        Just\n    ) : true ? (\n        constant\n    ) : s.includes(\"Node\") ? (\n        flip(Node)([])\n    ) : x => [x];\n};\n\n// // fType :: (a -> f b) -> f\n// const fType = g => {\n//     const s = g.toString();\n\n//     return s.includes(\"Left\") ? (\n//         Right\n//     ) : s.includes(\"Nothing\") ? (\n//         Just\n//     ) : s.includes(\"Node\") ? (\n//         flip(Node)([])\n//     ) : 1 < (s.match(/ =>/gu) || []).length ? (\n//         constant\n//     ) : x => [x];\n// };",
+    "code": "// fType :: (a -> f b) -> f\nconst fType = g => {\n    const s = g.toString();\n\n    return s.includes(\"Right\") ? (\n        Right\n    ) : s.includes(\"Left\") ? (\n        Left\n    ) : s.includes(\"Nothing\") ? (\n        Just\n    ) : s.includes(\"Node\") ? (\n        flip(Node)([])\n    ) : x => [x];\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1641,7 +1641,7 @@
     ]
   },
   "liftA2List": {
-    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator op applied to each pair of arguments \n    // in the cartesian product of xs and ys.\n    // A binary operator lifed to a function over two lists. \n    xs => ys => list(xs).flatMap(\n        x => list(ys).map(op(x))\n    );",
+    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator op applied to each pair of\n    // arguments in the cartesian product of xs and ys.\n    // A binary operator lifed to a function over two lists.\n    xs => ys => list(xs).flatMap(\n        x => list(ys).map(op(x))\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1905,7 +1905,7 @@
     ]
   },
   "measuredTree": {
-    "code": "// measuredTree :: Tree a -> \n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
+    "code": "// measuredTree :: Tree a ->\n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2039,7 +2039,7 @@
     ]
   },
   "nub": {
-    "code": "// nub :: [a] -> [a]\nconst nub = xs =>\n    [...new Set(xs)]",
+    "code": "// nub :: [a] -> [a]\nconst nub = xs =>\n    [...new Set(xs)];",
     "tags": [
       "JS Prelude",
       "core"

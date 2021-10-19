@@ -1,5 +1,5 @@
 ```javascript
-// measuredTree :: Tree a -> 
+// measuredTree :: Tree a ->
 // Tree (a, {leafSum::Int, layerSum::Int,
 //           nodeSum::Int, index::Int})
 const measuredTree = tree => {

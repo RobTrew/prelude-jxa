@@ -289,7 +289,7 @@ const assocs = m =>
 // biList :: (a, a) -> [a]
 const biList = ab =>
     // A list of two items derived from a tuple.
-    [...ab]
+    [...ab];
 
 // bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)
 const bimap = f =>
@@ -1329,27 +1329,10 @@ const fType = g => {
         Left
     ) : s.includes("Nothing") ? (
         Just
-    ) : true ? (
-        constant
     ) : s.includes("Node") ? (
         flip(Node)([])
     ) : x => [x];
 };
-
-// // fType :: (a -> f b) -> f
-// const fType = g => {
-//     const s = g.toString();
-
-//     return s.includes("Left") ? (
-//         Right
-//     ) : s.includes("Nothing") ? (
-//         Just
-//     ) : s.includes("Node") ? (
-//         flip(Node)([])
-//     ) : 1 < (s.match(/ =>/gu) || []).length ? (
-//         constant
-//     ) : x => [x];
-// };
 
 // fanArrow (&&&) ::
 // (a -> b) -> (a -> c) -> (a -> (b, c))
@@ -2459,9 +2442,9 @@ const liftA2LR = f =>
 
 // liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 const liftA2List = op =>
-    // The binary operator op applied to each pair of arguments 
-    // in the cartesian product of xs and ys.
-    // A binary operator lifed to a function over two lists. 
+    // The binary operator op applied to each pair of
+    // arguments in the cartesian product of xs and ys.
+    // A binary operator lifed to a function over two lists.
     xs => ys => list(xs).flatMap(
         x => list(ys).map(op(x))
     );
@@ -2868,7 +2851,7 @@ const mean = xs => (
     ys => ys.reduce((a, y) => a + y, 0) / ys.length
 )(list(xs));
 
-// measuredTree :: Tree a -> 
+// measuredTree :: Tree a ->
 // Tree (a, {leafSum::Int, layerSum::Int,
 //           nodeSum::Int, index::Int})
 const measuredTree = tree => {
@@ -3097,7 +3080,7 @@ const notElem = x =>
 
 // nub :: [a] -> [a]
 const nub = xs =>
-    [...new Set(xs)]
+    [...new Set(xs)];
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
 const nubBy = p =>
