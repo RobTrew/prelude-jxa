@@ -2,7 +2,7 @@
 // bindLR (>>=) :: Either a ->
 // (a -> Either b) -> Either b
 const bindLR = m =>
-    mf => m.Left ? (
+    mf => "Left" in m ? (
         m
     ) : mf(m.Right);
 ```

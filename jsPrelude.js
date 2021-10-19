@@ -348,7 +348,7 @@ const bindFn = f =>
 // bindLR (>>=) :: Either a ->
 // (a -> Either b) -> Either b
 const bindLR = m =>
-    mf => m.Left ? (
+    mf => "Left" in m ? (
         m
     ) : mf(m.Right);
 
@@ -360,7 +360,7 @@ const bindList = xs =>
 const bindMay = mb =>
     // Nothing if mb is Nothing, or the application of the
     // (a -> Maybe b) function mf to the contents of mb.
-    mf => mb.Nothing ? (
+    mf => "Nothing" in mb ? (
         mb
     ) : mf(mb.Just);
 
@@ -3183,9 +3183,9 @@ const partition = p =>
 // partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>
     xs.reduce(
-        (a, x) => undefined !== x.Left ? (
-            Tuple(a[0].concat(x.Left))(a[1])
-        ) : Tuple(a[0])(a[1].concat(x.Right)),
+        (a, x) => "Left" in x ? (
+            Tuple(a[0])(a[1].concat(x.Right))
+        ) : Tuple(a[0].concat(x.Left))(a[1]),
         Tuple([])([])
     );
 
@@ -4660,7 +4660,7 @@ const traverseList = f =>
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 const traverseMay = f => mb =>
-    mb.Nothing ? (
+    "Nothing" in mb ? (
         [mb]
     ) : fmap(Just)(
         f(mb.Just)

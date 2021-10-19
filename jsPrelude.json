@@ -265,7 +265,7 @@
     ]
   },
   "bindLR (>>=)": {
-    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    mf => m.Left ? (\n        m\n    ) : mf(m.Right);",
+    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    mf => \"Left\" in m ? (\n        m\n    ) : mf(m.Right);",
     "tags": [
       "JS Prelude",
       "core"
@@ -278,7 +278,7 @@
     ]
   },
   "bindMay (>>=)": {
-    "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing ? (\n        mb\n    ) : mf(mb.Just);",
+    "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => \"Nothing\" in mb ? (\n        mb\n    ) : mf(mb.Just);",
     "tags": [
       "JS Prelude",
       "core"
@@ -2097,7 +2097,7 @@
     ]
   },
   "partitionEithers": {
-    "code": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    xs.reduce(\n        (a, x) => undefined !== x.Left ? (\n            Tuple(a[0].concat(x.Left))(a[1])\n        ) : Tuple(a[0])(a[1].concat(x.Right)),\n        Tuple([])([])\n    );",
+    "code": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    xs.reduce(\n        (a, x) => \"Left\" in x ? (\n            Tuple(a[0])(a[1].concat(x.Right))\n        ) : Tuple(a[0].concat(x.Left))(a[1]),\n        Tuple([])([])\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3053,7 +3053,7 @@
     ]
   },
   "traverseMay": {
-    "code": "// traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)\nconst traverseMay = f => mb =>\n    mb.Nothing ? (\n        [mb]\n    ) : fmap(Just)(\n        f(mb.Just)\n    );",
+    "code": "// traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)\nconst traverseMay = f => mb =>\n    \"Nothing\" in mb ? (\n        [mb]\n    ) : fmap(Just)(\n        f(mb.Just)\n    );",
     "tags": [
       "JS Prelude"
     ]
