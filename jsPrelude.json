@@ -2097,7 +2097,7 @@
     ]
   },
   "partitionEithers": {
-    "code": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    xs.reduce(\n        (a, x) => \"Left\" in x ? (\n            Tuple(a[0])(a[1].concat(x.Right))\n        ) : Tuple(a[0].concat(x.Left))(a[1]),\n        Tuple([])([])\n    );",
+    "code": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    xs.reduce(\n        (a, x) => (\n            \"Left\" in x ? (\n                first(ys => ys.concat(x.Left))\n            ) : second(ys => ys.concat(x.Right))\n        )(a),\n        Tuple([])([])\n    );",
     "tags": [
       "JS Prelude"
     ]
