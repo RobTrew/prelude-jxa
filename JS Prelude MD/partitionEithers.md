@@ -4,8 +4,8 @@ const partitionEithers = xs =>
     xs.reduce(
         (a, x) => (
             "Left" in x ? (
-                first(ys => ys.concat(x.Left))
-            ) : second(ys => ys.concat(x.Right))
+                first(ys => [...ys, x.Left])
+            ) : second(ys => [...ys, x.Right])
         )(a),
         Tuple([])([])
     );
