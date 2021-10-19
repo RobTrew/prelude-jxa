@@ -3173,10 +3173,12 @@ const parentIndexedTree = tree => {
 const partition = p =>
     // A tuple of two lists - those elements in
     // xs which match p, and those which do not.
-    xs => list(xs).reduce(
-        (a, x) => p(x) ? (
-            Tuple(a[0].concat(x))(a[1])
-        ) : Tuple(a[0])(a[1].concat(x)),
+    xs => [...xs].reduce(
+        (a, x) => (
+            p(x) ? (
+                first
+            ) : second
+        )(ys => [...ys, x])(a),
         Tuple([])([])
     );
 

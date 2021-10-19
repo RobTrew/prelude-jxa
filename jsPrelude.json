@@ -2090,7 +2090,7 @@
     ]
   },
   "partition": {
-    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => list(xs).reduce(\n        (a, x) => p(x) ? (\n            Tuple(a[0].concat(x))(a[1])\n        ) : Tuple(a[0])(a[1].concat(x)),\n        Tuple([])([])\n    );",
+    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => [...xs].reduce(\n        (a, x) => (\n            p(x) ? (\n                first\n            ) : second\n        )(ys => [...ys, x])(a),\n        Tuple([])([])\n    );",
     "tags": [
       "JS Prelude",
       "core"
