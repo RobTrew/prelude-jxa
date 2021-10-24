@@ -1,18 +1,25 @@
 ```javascript
 // permutations :: [a] -> [[a]]
-const permutations = xs => (
-    ys => ys.reduceRight(
-        (a, y) => a.flatMap(
-            zs => Array.from({
-                length: 1 + zs.length
+const permutations = xs =>
+    // All possible orderings of the items in xs.
+    // N factorial permutations, where N === length(xs).
+    xs.reduceRight(
+        (orderings, x) => orderings.flatMap(
+            ordering => Array.from({
+                length: 1 + ordering.length
             }, (_, i) => i)
-            .map(n => zs.slice(0, n)
-                .concat(y)
-                .concat(zs.slice(n))
-            )
-        ), [[]]
-    )
-)(list(xs));
+            // One additional permutation for each
+            // possible position of x in each
+            // existing permutation.
+            .map(position => [
+                ...ordering.slice(0, position),
+                x,
+                ...ordering.slice(position)
+            ])
+        ), [
+            []
+        ]
+    );
 ```
 
 

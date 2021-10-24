@@ -1014,7 +1014,7 @@ const dropLengthMaybe = xs =>
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 // dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = p =>
-    // The suffix remainining after takeWhile p xs.
+    // The suffix remaining after takeWhile p xs.
     xs => {
         const n = xs.length;
 
@@ -3177,19 +3177,26 @@ const partitionEithers = xs =>
     );
 
 // permutations :: [a] -> [[a]]
-const permutations = xs => (
-    ys => ys.reduceRight(
-        (a, y) => a.flatMap(
-            zs => Array.from({
-                length: 1 + zs.length
+const permutations = xs =>
+    // All possible orderings of the items in xs.
+    // N factorial permutations, where N === length(xs).
+    xs.reduceRight(
+        (orderings, x) => orderings.flatMap(
+            ordering => Array.from({
+                length: 1 + ordering.length
             }, (_, i) => i)
-            .map(n => zs.slice(0, n)
-                .concat(y)
-                .concat(zs.slice(n))
-            )
-        ), [[]]
-    )
-)(list(xs));
+            // One additional permutation for each
+            // possible position of x in each
+            // existing permutation.
+            .map(position => [
+                ...ordering.slice(0, position),
+                x,
+                ...ordering.slice(position)
+            ])
+        ), [
+            []
+        ]
+    );
 
 // pi :: Float
 const pi = Math.PI;
@@ -5228,7 +5235,7 @@ const zipList = xs => ys => {
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 const zipN = (...argv) => {
-    const args = argv.map(list);
+    const args = argv.map(xs => Array.from(xs));
 
     return 1 < args.length ? (
         take(
