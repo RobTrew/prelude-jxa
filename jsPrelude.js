@@ -4985,11 +4985,11 @@ const uncurryN = f =>
             (a, x) => a(x),
             f(xs[0])
         )
-    )(Array.from(
+    )([...(
         1 < args.length ? (
             args
         ) : args[0]
-    ));
+    )]);
 
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 const unfoldForest = f =>
@@ -5373,7 +5373,7 @@ const zipWithN = (...args) => {
     return 0 < n ? (
         take(n)(rows[0]).map(
             (x, i) => f(TupleN(
-                ...rows.flatMap(v => v[i])
+                rows.flatMap(v => v[i])
             ))
         )
     ) : [];

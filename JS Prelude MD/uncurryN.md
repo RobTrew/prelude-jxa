@@ -8,9 +8,9 @@ const uncurryN = f =>
             (a, x) => a(x),
             f(xs[0])
         )
-    )(Array.from(
+    )([...(
         1 < args.length ? (
             args
         ) : args[0]
-    ));
+    )]);
 ```

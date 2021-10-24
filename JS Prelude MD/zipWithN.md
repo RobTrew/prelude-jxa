@@ -9,7 +9,7 @@ const zipWithN = (...args) => {
     return 0 < n ? (
         take(n)(rows[0]).map(
             (x, i) => f(TupleN(
-                ...rows.flatMap(v => v[i])
+                rows.flatMap(v => v[i])
             ))
         )
     ) : [];

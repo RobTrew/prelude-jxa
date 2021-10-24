@@ -3163,7 +3163,7 @@
     ]
   },
   "uncurryN": {
-    "code": "// uncurryN :: Curry a b => b -> a\nconst uncurryN = f =>\n    // A function over a tuple of values, derived from\n    // a curried function of any number of arguments.\n    (...args) => (\n        xs => xs.slice(1).reduce(\n            (a, x) => a(x),\n            f(xs[0])\n        )\n    )(Array.from(\n        1 < args.length ? (\n            args\n        ) : args[0]\n    ));",
+    "code": "// uncurryN :: Curry a b => b -> a\nconst uncurryN = f =>\n    // A function over a tuple of values, derived from\n    // a curried function of any number of arguments.\n    (...args) => (\n        xs => xs.slice(1).reduce(\n            (a, x) => a(x),\n            f(xs[0])\n        )\n    )([...(\n        1 < args.length ? (\n            args\n        ) : args[0]\n    )]);",
     "tags": [
       "JS Prelude"
     ]
@@ -3403,7 +3403,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    const\n        rows = args.slice(1).map(xs => Array.from(xs)),\n        n = Math.min(...rows.map(x => x.length)),\n        f = uncurryN(args[0]);\n\n    return 0 < n ? (\n        take(n)(rows[0]).map(\n            (x, i) => f(TupleN(\n                ...rows.flatMap(v => v[i])\n            ))\n        )\n    ) : [];\n};",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    const\n        rows = args.slice(1).map(xs => Array.from(xs)),\n        n = Math.min(...rows.map(x => x.length)),\n        f = uncurryN(args[0]);\n\n    return 0 < n ? (\n        take(n)(rows[0]).map(\n            (x, i) => f(TupleN(\n                rows.flatMap(v => v[i])\n            ))\n        )\n    ) : [];\n};",
     "tags": [
       "JS Prelude"
     ]
