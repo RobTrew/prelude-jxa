@@ -2,39 +2,10 @@
 (() => {
     "use strict";
 
-// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
-const zipWithN = (...args) => {
-    const
-        rows = args.slice(1).map(xs => Array.from(xs)),
-        n = Math.min(...rows.map(x => x.length)),
-        f = uncurryN(args[0]);
-
-    return 0 < n ? (
-        take(n)(rows[0]).map(
-            (x, i) => f(TupleN(
-                rows.flatMap(v => v[i])
-            ))
-        )
-    ) : [];
-};
-
-// uncurryN :: Curry a b => b -> a
-const uncurryN = f =>
-    // A function over a tuple of values, derived from
-    // a curried function of any number of arguments.
-    (...args) => (
-        xs => xs.slice(1).reduce(
-            (a, x) => a(x),
-            f(xs[0])
-        )
-    )([...(
-        1 < args.length ? (
-            args
-        ) : args[0]
-    )]);
-
     // main :: IO ()
     const main = () => {
+
+
 
         const inner = () =>
             zipWithN(x => y => z => `${x} -> ${y} -> ${z}`,

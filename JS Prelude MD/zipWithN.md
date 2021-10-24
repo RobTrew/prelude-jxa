@@ -7,11 +7,12 @@ const zipWithN = (...args) => {
         f = uncurryN(args[0]);
 
     return 0 < n ? (
-        take(n)(rows[0]).map(
-            (x, i) => f(TupleN(
-                rows.flatMap(v => v[i])
-            ))
+        take(n)
+    )(rows[0]).map(
+        (x, i) => f(
+            TupleN(...rows.flatMap(v => v[i]))
         )
+
     ) : [];
 };
 ```
