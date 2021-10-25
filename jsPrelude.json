@@ -1316,13 +1316,13 @@
     ]
   },
   "insertBy": {
-    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            0 < ys.length ? (\n                0 < cmp(y)(ys[0]) ? (\n                    cons(ys[0])(\n                        go(y)(ys.slice(1))\n                    )\n                ) : cons(y)(ys)\n            ) : [y];\n\n        return go(x)(list(xs));\n    };",
+    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            0 < ys.length ? (\n                0 < cmp(y)(ys[0]) ? [\n                    ys[0],\n                    ...go(y)(ys.slice(1))\n                ] : [y, ...ys]\n            ) : [y];\n\n        return go(x)(xs);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "insertDict": {
-    "code": "// insertDict :: String -> a -> Dict -> Dict\nconst insertDict = k => v => dct =>\n    Object.assign({}, dct, {\n        [k]: v\n    });",
+    "code": "// insertDict :: String -> a -> Dict -> Dict\nconst insertDict = k =>\n    v => dct => Object.assign({}, dct, {\n        [k]: v\n    });",
     "tags": [
       "JS Prelude"
     ]

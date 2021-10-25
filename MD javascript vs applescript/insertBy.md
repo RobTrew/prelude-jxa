@@ -4,14 +4,13 @@ const insertBy = cmp =>
     x => xs => {
         const go = y => ys =>
             0 < ys.length ? (
-                0 < cmp(y)(ys[0]) ? (
-                    cons(ys[0])(
-                        go(y)(ys.slice(1))
-                    )
-                ) : cons(y)(ys)
+                0 < cmp(y)(ys[0]) ? [
+                    ys[0],
+                    ...go(y)(ys.slice(1))
+                ] : [y, ...ys]
             ) : [y];
 
-        return go(x)(list(xs));
+        return go(x)(xs);
     };
 ```
 
