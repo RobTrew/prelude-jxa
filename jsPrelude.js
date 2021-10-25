@@ -2220,7 +2220,7 @@ const isSuffixOf = needle =>
                 dropLength(delta)(haystack)
             )
         )
-    ) : hs.endsWith(needle);
+    ) : haystack.endsWith(needle);
 
 // isUpper :: Char -> Bool
 const isUpper = c =>

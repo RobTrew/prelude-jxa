@@ -10,7 +10,7 @@ const isSuffixOf = needle =>
                 dropLength(delta)(haystack)
             )
         )
-    ) : hs.endsWith(needle);
+    ) : haystack.endsWith(needle);
 ```
 
 

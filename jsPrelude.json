@@ -1482,7 +1482,7 @@
     ]
   },
   "isSuffixOf": {
-    "code": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = needle =>\n    haystack => \"string\" !== typeof haystack ? (\n        bindMay(\n            dropLengthMaybe(needle)(haystack)\n        )(\n            delta => eq(needle)(\n                dropLength(delta)(haystack)\n            )\n        )\n    ) : hs.endsWith(needle);",
+    "code": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = needle =>\n    haystack => \"string\" !== typeof haystack ? (\n        bindMay(\n            dropLengthMaybe(needle)(haystack)\n        )(\n            delta => eq(needle)(\n                dropLength(delta)(haystack)\n            )\n        )\n    ) : haystack.endsWith(needle);",
     "tags": [
       "JS Prelude"
     ]
