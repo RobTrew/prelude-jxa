@@ -1,10 +1,10 @@
 ```javascript
 // head :: [a] -> a
-const head = xs => (
-    ys => ys.length ? (
-        ys[0]
-    ) : undefined
-)(list(xs));
+const head = xs =>
+    // The first item (if any) in a list.
+    xs.length ? (
+        xs[0]
+    ) : null;
 ```
 
 

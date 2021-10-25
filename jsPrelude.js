@@ -1849,11 +1849,11 @@ const gt = x => y =>
     ) : (x > y);
 
 // head :: [a] -> a
-const head = xs => (
-    ys => ys.length ? (
-        ys[0]
-    ) : undefined
-)(list(xs));
+const head = xs =>
+    // The first item (if any) in a list.
+    xs.length ? (
+        xs[0]
+    ) : null;
 
 // headDef :: a -> [a] -> a
 const headDef = v =>
@@ -1959,12 +1959,11 @@ const indexedTree = rootIndex =>
     )(rootIndex)(tree)[1];
 
 // init :: [a] -> [a]
-const init = xs => (
-// All elements of a list except the last.
-    ys => 0 < ys.length ? (
-        ys.slice(0, -1)
-    ) : null
-)(list(xs));
+const init = xs =>
+    // All elements of a list except the last.
+    0 < xs.length ? (
+        xs.slice(0, -1)
+    ) : null;
 
 // initMay :: [a] -> Maybe [a]
 const initMay = xs => (

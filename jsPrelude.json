@@ -1218,7 +1218,7 @@
     ]
   },
   "head": {
-    "code": "// head :: [a] -> a\nconst head = xs => (\n    ys => ys.length ? (\n        ys[0]\n    ) : undefined\n)(list(xs));",
+    "code": "// head :: [a] -> a\nconst head = xs =>\n    // The first item (if any) in a list.\n    xs.length ? (\n        xs[0]\n    ) : null;",
     "tags": [
       "JS Prelude",
       "core"
@@ -1291,7 +1291,7 @@
     ]
   },
   "init": {
-    "code": "// init :: [a] -> [a]\nconst init = xs => (\n// All elements of a list except the last.\n    ys => 0 < ys.length ? (\n        ys.slice(0, -1)\n    ) : null\n)(list(xs));",
+    "code": "// init :: [a] -> [a]\nconst init = xs =>\n    // All elements of a list except the last.\n    0 < xs.length ? (\n        xs.slice(0, -1)\n    ) : null;",
     "tags": [
       "JS Prelude",
       "core"
