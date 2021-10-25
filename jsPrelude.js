@@ -1682,19 +1682,17 @@ const foldl1 = f =>
     // Left to right reduction of the non-empty list xs,
     // using the binary operator f, with the head of xs
     // as the initial acccumulator value.
-    xs => (
-        ys => 1 < ys.length ? ys.slice(1)
-        .reduce(uncurry(f), ys[0]) : ys[0]
-    )(list(xs));
+    xs => 1 < xs.length ? (
+        xs.slice(1)
+        .reduce(uncurry(f), xs[0])
+    ) : xs[0];
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
-    xs => (
-        ys => 0 < ys.length ? (
-            Just(ys.slice(1)
-                .reduce(uncurry(f), ys[0]))
-        ) : Nothing()
-    )(list(xs));
+    xs => 0 < xs.length ? (
+        Just(xs.slice(1)
+            .reduce(uncurry(f), xs[0]))
+    ) : Nothing();
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
 const foldlTree = f =>

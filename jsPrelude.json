@@ -1058,13 +1058,13 @@
     ]
   },
   "foldl1": {
-    "code": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f =>\n    // Left to right reduction of the non-empty list xs,\n    // using the binary operator f, with the head of xs\n    // as the initial acccumulator value.\n    xs => (\n        ys => 1 < ys.length ? ys.slice(1)\n        .reduce(uncurry(f), ys[0]) : ys[0]\n    )(list(xs));",
+    "code": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f =>\n    // Left to right reduction of the non-empty list xs,\n    // using the binary operator f, with the head of xs\n    // as the initial acccumulator value.\n    xs => 1 < xs.length ? (\n        xs.slice(1)\n        .reduce(uncurry(f), xs[0])\n    ) : xs[0];",
     "tags": [
       "JS Prelude"
     ]
   },
   "foldl1May": {
-    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => (\n        ys => 0 < ys.length ? (\n            Just(ys.slice(1)\n                .reduce(uncurry(f), ys[0]))\n        ) : Nothing()\n    )(list(xs));",
+    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => 0 < xs.length ? (\n        Just(xs.slice(1)\n            .reduce(uncurry(f), xs[0]))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
