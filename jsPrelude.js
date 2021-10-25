@@ -1729,12 +1729,13 @@ const foldr1May = f =>
     // Nothing if xs is empty, or Just a right
     // fold of f over the list using the last
     // item of xs as the initial accumulator value.
-    xs => (
-        ys => 0 < ys.length ? (
-            Just(ys.slice(0, -1)
-                .reduceRight(uncurry(f), ys.slice(-1)[0]))
-        ) : Nothing()
-    )(list(xs));
+    xs => 0 < xs.length ? (
+        Just(
+            xs.slice(0, -1).reduceRight(
+                uncurry(f),
+                xs.slice(-1)[0])
+        )
+    ) : Nothing();
 
 // foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 const foldrTree = f =>
@@ -1826,10 +1827,11 @@ const groupBy = eqOp =>
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
-    xs => compose(
+    // e.g. groupSortBy(comparing(length))
+    compose(
         groupBy(a => b => 0 === f(a)(b)),
         sortBy(f)
-    )(list(xs));
+    );
 
 // groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 const groupSortOn = f =>

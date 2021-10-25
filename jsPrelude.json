@@ -1090,7 +1090,7 @@
     ]
   },
   "foldr1May": {
-    "code": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = f =>\n    // Nothing if xs is empty, or Just a right\n    // fold of f over the list using the last\n    // item of xs as the initial accumulator value.\n    xs => (\n        ys => 0 < ys.length ? (\n            Just(ys.slice(0, -1)\n                .reduceRight(uncurry(f), ys.slice(-1)[0]))\n        ) : Nothing()\n    )(list(xs));",
+    "code": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = f =>\n    // Nothing if xs is empty, or Just a right\n    // fold of f over the list using the last\n    // item of xs as the initial accumulator value.\n    xs => 0 < xs.length ? (\n        Just(\n            xs.slice(0, -1).reduceRight(\n                uncurry(f),\n                xs.slice(-1)[0])\n        )\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1200,7 +1200,7 @@
     ]
   },
   "groupSortBy": {
-    "code": "// groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]\nconst groupSortBy = f =>\n    xs => compose(\n        groupBy(a => b => 0 === f(a)(b)),\n        sortBy(f)\n    )(list(xs));",
+    "code": "// groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]\nconst groupSortBy = f =>\n    // e.g. groupSortBy(comparing(length))\n    compose(\n        groupBy(a => b => 0 === f(a)(b)),\n        sortBy(f)\n    );",
     "tags": [
       "JS Prelude"
     ]
