@@ -15,8 +15,6 @@ const isSubsequenceOf = xs =>
                 ) : false
             ) : true;
 
-        return go(list(xs))(
-            list(ys)
-        );
+        return go(xs)(ys);
     };
 ```

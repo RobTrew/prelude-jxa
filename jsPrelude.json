@@ -278,7 +278,7 @@
     ]
   },
   "bindMay (>>=)": {
-    "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => \"Nothing\" in mb ? (\n        mb\n    ) : mf(mb.Just);",
+    "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing ? (\n        mb\n    ) : mf(mb.Just);",
     "tags": [
       "JS Prelude",
       "core"
@@ -1298,7 +1298,7 @@
     ]
   },
   "initMay": {
-    "code": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(0, -1))\n    ) : Nothing()\n)(list(xs));",
+    "code": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(0, -1))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1310,7 +1310,7 @@
     ]
   },
   "insert": {
-    "code": "// insert :: Ord a => a -> [a] -> [a]\nconst insert = x =>\n    ys => {\n        const [pre, post] = Array.from(\n            break_(y => y >= x)(ys)\n        );\n\n        return [...pre, x, ...post];\n    };",
+    "code": "// insert :: Ord a => a -> [a] -> [a]\nconst insert = x =>\n    xs => {\n        const i = xs.findIndex(y => y >= x);\n\n        return [\n            ...xs.slice(0, i),\n            x,\n            ...xs.slice(i)\n        ];\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1355,7 +1355,7 @@
     ]
   },
   "intersectBy": {
-    "code": "// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst intersectBy = eqFn =>\n    // The intersection of the lists xs and ys\n    // in terms of the equality defined by eq.\n    xs => ys => {\n        const zs = list(ys);\n\n        return list(xs).filter(\n            x => zs.some(eqFn(x))\n        );\n    };",
+    "code": "// intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst intersectBy = eqFn =>\n    // The intersection of the lists xs and ys\n    // in terms of the equality defined by eq.\n    xs => ys => xs.filter(\n        x => ys.some(eqFn(x))\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1470,7 +1470,7 @@
     ]
   },
   "isSubsequenceOf": {
-    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = a => b =>\n            0 < a.length ? (\n                0 < b.length ? (\n                    go(\n                        a[0] === b[0] ? (\n                            a.slice(1)\n                        ) : a\n                    )(b.slice(1))\n                ) : false\n            ) : true;\n\n        return go(list(xs))(\n            list(ys)\n        );\n    };",
+    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = a => b =>\n            0 < a.length ? (\n                0 < b.length ? (\n                    go(\n                        a[0] === b[0] ? (\n                            a.slice(1)\n                        ) : a\n                    )(b.slice(1))\n                ) : false\n            ) : true;\n\n        return go(xs)(ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1482,7 +1482,7 @@
     ]
   },
   "isSuffixOf": {
-    "code": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = ns => hs =>\n    \"string\" !== typeof hs ? (\n        (xs, ys) => bindMay(\n            dropLengthMaybe(xs)(ys)\n        )(d => eq(xs)(dropLength(d)(ys)))\n    )(list(ns), list(hs)) : hs.endsWith(ns);",
+    "code": "// isSuffixOf :: Eq a => [a] -> [a] -> Bool\n// isSuffixOf :: String -> String -> Bool\nconst isSuffixOf = needle =>\n    haystack => \"string\" !== typeof haystack ? (\n        bindMay(\n            dropLengthMaybe(needle)(haystack)\n        )(\n            delta => eq(needle)(\n                dropLength(delta)(haystack)\n            )\n        )\n    ) : hs.endsWith(needle);",
     "tags": [
       "JS Prelude"
     ]
@@ -3195,14 +3195,14 @@
     ]
   },
   "union": {
-    "code": "// union :: [a] -> [a] -> [a]\nconst union = xs => ys =>\n  unionBy(a => b => a === b)(\n      list(xs)\n  )(list(ys));",
+    "code": "// union :: [a] -> [a] -> [a]\nconst union = xs => ys =>\n    unionBy(a => b => a === b)(xs)(ys);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "unionBy": {
-    "code": "// unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst unionBy = fnEq => xs => ys => {\n    const sx = nubBy(fnEq)(xs);\n\n    return sx.concat(\n        sx.reduce(\n            (a, x) => deleteBy(fnEq)(\n                x\n            )(a),\n            nubBy(fnEq)(ys)\n        )\n    );\n};",
+    "code": "// unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst unionBy = fnEq =>\n    // The union of xs and ys in terms of the\n    // equality function given in fnEq\n    xs => ys => {\n        const sx = nubBy(fnEq)(xs);\n\n        return sx.concat(\n            sx.reduce(\n                (a, x) => deleteBy(fnEq)(\n                    x\n                )(a),\n                nubBy(fnEq)(ys)\n            )\n        );\n    };",
     "tags": [
       "JS Prelude",
       "core"

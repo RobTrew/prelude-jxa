@@ -1,12 +1,14 @@
 ```javascript
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
-    ys => {
-        const [pre, post] = Array.from(
-            break_(y => y >= x)(ys)
-        );
+    xs => {
+        const i = xs.findIndex(y => y >= x);
 
-        return [...pre, x, ...post];
+        return [
+            ...xs.slice(0, i),
+            x,
+            ...xs.slice(i)
+        ];
     };
 ```
 

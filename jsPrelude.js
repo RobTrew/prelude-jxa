@@ -360,7 +360,7 @@ const bindList = xs =>
 const bindMay = mb =>
     // Nothing if mb is Nothing, or the application of the
     // (a -> Maybe b) function mf to the contents of mb.
-    mf => "Nothing" in mb ? (
+    mf => mb.Nothing ? (
         mb
     ) : mf(mb.Just);
 
@@ -1966,11 +1966,10 @@ const init = xs =>
     ) : null;
 
 // initMay :: [a] -> Maybe [a]
-const initMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(0, -1))
-    ) : Nothing()
-)(list(xs));
+const initMay = xs =>
+    0 < xs.length ? (
+        Just(xs.slice(0, -1))
+    ) : Nothing();
 
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
@@ -1984,12 +1983,14 @@ const inits = xs =>
 
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
-    ys => {
-        const [pre, post] = Array.from(
-            break_(y => y >= x)(ys)
-        );
+    xs => {
+        const i = xs.findIndex(y => y >= x);
 
-        return [...pre, x, ...post];
+        return [
+            ...xs.slice(0, i),
+            x,
+            ...xs.slice(i)
+        ];
     };
 
 // insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
@@ -2040,14 +2041,10 @@ const intersect = xs =>
 // intersectBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
 const intersectBy = eqFn =>
     // The intersection of the lists xs and ys
-    // in terms of the equality defined by eqFn.
-    xs => ys => {
-        const zs = list(ys);
-
-        return list(xs).filter(
-            x => zs.some(eqFn(x))
-        );
-    };
+    // in terms of the equality defined by eq.
+    xs => ys => xs.filter(
+        x => ys.some(eqFn(x))
+    );
 
 // intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]
 const intersectListsBy = eqFn => xs =>
@@ -2198,9 +2195,7 @@ const isSubsequenceOf = xs =>
                 ) : false
             ) : true;
 
-        return go(list(xs))(
-            list(ys)
-        );
+        return go(xs)(ys);
     };
 
 // isSubsetOf :: Ord a => Set a -> Set a -> Bool
@@ -2216,12 +2211,16 @@ const isSubsetOf = a => b => {
 
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
-const isSuffixOf = ns => hs =>
-    "string" !== typeof hs ? (
-        (xs, ys) => bindMay(
-            dropLengthMaybe(xs)(ys)
-        )(d => eq(xs)(dropLength(d)(ys)))
-    )(list(ns), list(hs)) : hs.endsWith(ns);
+const isSuffixOf = needle =>
+    haystack => "string" !== typeof haystack ? (
+        bindMay(
+            dropLengthMaybe(needle)(haystack)
+        )(
+            delta => eq(needle)(
+                dropLength(delta)(haystack)
+            )
+        )
+    ) : hs.endsWith(needle);
 
 // isUpper :: Char -> Bool
 const isUpper = c =>
@@ -5057,23 +5056,24 @@ const unfoldr = f =>
 
 // union :: [a] -> [a] -> [a]
 const union = xs => ys =>
-  unionBy(a => b => a === b)(
-      list(xs)
-  )(list(ys));
+    unionBy(a => b => a === b)(xs)(ys);
 
 // unionBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]
-const unionBy = fnEq => xs => ys => {
-    const sx = nubBy(fnEq)(xs);
+const unionBy = fnEq =>
+    // The union of xs and ys in terms of the
+    // equality function given in fnEq
+    xs => ys => {
+        const sx = nubBy(fnEq)(xs);
 
-    return sx.concat(
-        sx.reduce(
-            (a, x) => deleteBy(fnEq)(
-                x
-            )(a),
-            nubBy(fnEq)(ys)
-        )
-    );
-};
+        return sx.concat(
+            sx.reduce(
+                (a, x) => deleteBy(fnEq)(
+                    x
+                )(a),
+                nubBy(fnEq)(ys)
+            )
+        );
+    };
 
 // unionSet :: Ord a => Set a -> Set a -> Set a
 const unionSet = s => s1 =>
