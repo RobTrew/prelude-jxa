@@ -916,7 +916,7 @@
     ]
   },
   "find": {
-    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which\n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (() => {\n        const\n            ys = list(xs),\n            i = ys.findIndex(p);\n\n        return -1 !== i ? (\n            Just(ys[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
+    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which\n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (() => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Just(xs[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
     "tags": [
       "JS Prelude",
       "core"

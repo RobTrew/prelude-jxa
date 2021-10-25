@@ -7,12 +7,10 @@ const find = p =>
     xs => xs.constructor.constructor.name !== (
         "GeneratorFunction"
     ) ? (() => {
-        const
-            ys = list(xs),
-            i = ys.findIndex(p);
+        const i = xs.findIndex(p);
 
         return -1 !== i ? (
-            Just(ys[i])
+            Just(xs[i])
         ) : Nothing();
     })() : findGen(p)(xs);
 ```
