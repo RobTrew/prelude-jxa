@@ -4002,13 +4002,20 @@ const snoc = xs =>
     // The mirror image of cons
     // A new copy of the given list,
     // with an atom appended at the end.
-    x => list(xs).concat(x);
+    x => xs.concat(x);
 
 // sort :: Ord a => [a] -> [a]
 const sort = xs =>
     // An A-Z sorted copy of xs.
-    list(xs).slice()
-    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));
+    xs.slice().sort(
+        (a, b) => a < b ? (
+            -1
+        ) : (
+            a > b ? (
+                1
+            ) : 0
+        )
+    );
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>

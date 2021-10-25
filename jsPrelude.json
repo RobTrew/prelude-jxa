@@ -2689,13 +2689,13 @@
     ]
   },
   "snoc": {
-    "code": "// snoc :: [a] -> a -> [a]\nconst snoc = xs =>\n    // The mirror image of cons\n    // A new copy of the given list,\n    // with an atom appended at the end.\n    x => list(xs).concat(x);",
+    "code": "// snoc :: [a] -> a -> [a]\nconst snoc = xs =>\n    // The mirror image of cons\n    // A new copy of the given list,\n    // with an atom appended at the end.\n    x => xs.concat(x);",
     "tags": [
       "JS Prelude"
     ]
   },
   "sort": {
-    "code": "// sort :: Ord a => [a] -> [a]\nconst sort = xs =>\n    // An A-Z sorted copy of xs.\n    list(xs).slice()\n    .sort((a, b) => a < b ? -1 : (a > b ? 1 : 0));",
+    "code": "// sort :: Ord a => [a] -> [a]\nconst sort = xs =>\n    // An A-Z sorted copy of xs.\n    xs.slice().sort(\n        (a, b) => a < b ? (\n            -1\n        ) : (\n            a > b ? (\n                1\n            ) : 0\n        )\n    );",
     "tags": [
       "JS Prelude",
       "core"
