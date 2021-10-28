@@ -1361,7 +1361,7 @@
     ]
   },
   "intersectListsBy": {
-    "code": "// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectListsBy = eqFn => xs =>\n    foldr1(\n        (a => x => intersectBy(eqFn)(a)(x))\n    )(list(xs));",
+    "code": "// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectListsBy = eqFn =>\n    foldr1(intersectBy(eqFn));",
     "tags": [
       "JS Prelude"
     ]
