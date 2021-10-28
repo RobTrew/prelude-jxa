@@ -1874,13 +1874,13 @@
     ]
   },
   "maximumByMay": {
-    "code": "// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = f =>\n    xs => xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => 0 < f(a)(x) ? (\n                a\n            ) : x, xs[0]))\n    ) : Nothing();",
+    "code": "// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = f =>\n    xs => xs.length > 0 ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => 0 < f(a)(x) ? (\n                a\n            ) : x,\n            xs[0]\n        ))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "maximumMay": {
-    "code": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(1)\n            .reduce((a, y) => (y > a ? y : a), ys[0]))\n    ) : Nothing()\n)(list(xs));",
+    "code": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1905,7 +1905,7 @@
     ]
   },
   "mean": {
-    "code": "// mean :: [Num] -> Num\nconst mean = xs => (\n    ys => ys.reduce((a, y) => a + y, 0) / ys.length\n)(list(xs));",
+    "code": "// mean :: [Num] -> Num\nconst mean = xs =>\n    xs.reduce(\n        (a, x) => a + x,\n        0\n    ) / xs.length;",
     "tags": [
       "JS Prelude"
     ]

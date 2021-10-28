@@ -1,8 +1,10 @@
 ```javascript
 // mean :: [Num] -> Num
-const mean = xs => (
-    ys => ys.reduce((a, y) => a + y, 0) / ys.length
-)(list(xs));
+const mean = xs =>
+    xs.reduce(
+        (a, x) => a + x,
+        0
+    ) / xs.length;
 ```
 
 

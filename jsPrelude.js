@@ -2786,19 +2786,24 @@ const maximumBy = f =>
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const maximumByMay = f =>
     xs => xs.length > 0 ? (
-        Just(xs.slice(1)
-            .reduce((a, x) => 0 < f(a)(x) ? (
+        Just(xs.slice(1).reduce(
+            (a, x) => 0 < f(a)(x) ? (
                 a
-            ) : x, xs[0]))
+            ) : x,
+            xs[0]
+        ))
     ) : Nothing();
 
 // maximumMay :: Ord a => [a] -> Maybe a
-const maximumMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(1)
-            .reduce((a, y) => (y > a ? y : a), ys[0]))
-    ) : Nothing()
-)(list(xs));
+const maximumMay = xs =>
+    0 < xs.length ? (
+        Just(xs.slice(1).reduce(
+            (a, x) => x > a ? (
+                x
+            ) : a,
+            xs[0]
+        ))
+    ) : Nothing();
 
 // maximumOn :: (Ord b) => (a -> b) -> [a] -> a
 const maximumOn = f =>
@@ -2836,9 +2841,11 @@ const mconcatOrd = cmps =>
     ) : compare;
 
 // mean :: [Num] -> Num
-const mean = xs => (
-    ys => ys.reduce((a, y) => a + y, 0) / ys.length
-)(list(xs));
+const mean = xs =>
+    xs.reduce(
+        (a, x) => a + x,
+        0
+    ) / xs.length;
 
 // measuredTree :: Tree a ->
 // Tree (a, {leafSum::Int, layerSum::Int,
