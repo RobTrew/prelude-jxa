@@ -1860,21 +1860,21 @@
     ]
   },
   "maximum": {
-    "code": "// maximum :: Ord a => [a] -> a\nconst maximum = xs => (\n    // The largest value in a non-empty list.\n    ys => 0 < ys.length ? (\n        ys.slice(1).reduce(\n            (a, y) => y > a ? (\n                y\n            ) : a, ys[0]\n        )\n    ) : undefined\n)(list(xs));",
+    "code": "// maximum :: Ord a => [a] -> a\nconst maximum = xs =>\n    // The largest value in a non-empty list.\n    0 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "maximumBy": {
-    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => {\n        const ys = list(xs);\n\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 < f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
+    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => 0 < f(x)(a) ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "maximumByMay": {
-    "code": "// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = f =>\n    xs => (\n        ys => ys.length > 0 ? (\n            Just(ys.slice(1)\n                .reduce((a, y) => 0 < f(a)(y) ? (\n                    a\n                ) : y, ys[0]))\n        ) : Nothing()\n    )(list(xs));",
+    "code": "// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = f =>\n    xs => xs.length > 0 ? (\n        Just(xs.slice(1)\n            .reduce((a, x) => 0 < f(a)(x) ? (\n                a\n            ) : x, xs[0]))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]

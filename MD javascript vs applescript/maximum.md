@@ -1,15 +1,15 @@
 ```javascript
 // maximum :: Ord a => [a] -> a
-const maximum = xs => (
+const maximum = xs =>
     // The largest value in a non-empty list.
-    ys => 0 < ys.length ? (
-        ys.slice(1).reduce(
-            (a, y) => y > a ? (
-                y
-            ) : a, ys[0]
+    0 < xs.length ? (
+        xs.slice(1).reduce(
+            (a, x) => x > a ? (
+                x
+            ) : a,
+            xs[0]
         )
-    ) : undefined
-)(list(xs));
+    ) : undefined;
 ```
 
 
