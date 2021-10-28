@@ -60,6 +60,12 @@
       "core"
     ]
   },
+  "Untitled Note": {
+    "code": "",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "abs": {
     "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number\n    // without the sign.\n    x => 0 > x ? (\n        -x\n    ) : x;",
     "tags": [
@@ -1641,7 +1647,7 @@
     ]
   },
   "liftA2List": {
-    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator op applied to each pair of\n    // arguments in the cartesian product of xs and ys.\n    // A binary operator lifed to a function over two lists.\n    xs => ys => list(xs).flatMap(\n        x => list(ys).map(op(x))\n    );",
+    "code": "// liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst liftA2List = op =>\n    // The binary operator op applied to each pair of\n    // arguments in the cartesian product of xs and ys.\n    // A binary operator lifed to a function over two lists.\n    xs => ys => xs.flatMap(\n        x => ys.map(op(x))\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1781,7 +1787,7 @@
     ]
   },
   "mapMaybe": {
-    "code": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = mf =>\n    // A filtered map, retaining only the contents\n    // of Just values. (Nothing values discarded).\n    xs => list(xs).reduce(\n        (a, x) => maybe(a)(\n            j => a.concat(j)\n        )(mf(x)),\n        []\n    );",
+    "code": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = mf =>\n    // A filtered map, retaining only the contents\n    // of Just values. (Nothing values discarded).\n    xs => xs.reduce(\n        (a, x) => maybe(a)(\n            j => a.concat(j)\n        )(mf(x)),\n        []\n    );",
     "tags": [
       "JS Prelude"
     ]

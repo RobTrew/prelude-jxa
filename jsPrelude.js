@@ -111,6 +111,8 @@ const TupleN = (...args) => {
     ) : args.reduce((f, x) => f(x), Tuple);
 };
 
+
+
 // abs :: Num -> Num
 const abs =
     // Absolute value of a given number
@@ -2338,10 +2340,11 @@ const last = xs =>
     ) : null;
 
 // lastMay :: [a] -> Maybe a
-const lastMay = xs =>
-    0 < xs.length ? (
-        Just(xs.slice(-1)[0])
-    ) : Nothing();
+const lastMay = xs => (
+    ys => 0 < ys.length ? (
+        Just(ys.slice(-1)[0])
+    ) : Nothing()
+)(list(xs));
 
 // lcm :: Int -> Int -> Int
 const lcm = x =>
@@ -2437,8 +2440,8 @@ const liftA2List = op =>
     // The binary operator op applied to each pair of
     // arguments in the cartesian product of xs and ys.
     // A binary operator lifed to a function over two lists.
-    xs => ys => list(xs).flatMap(
-        x => list(ys).map(op(x))
+    xs => ys => xs.flatMap(
+        x => ys.map(op(x))
     );
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
@@ -2625,7 +2628,7 @@ const mapKeys = f =>
 const mapMaybe = mf =>
     // A filtered map, retaining only the contents
     // of Just values. (Nothing values discarded).
-    xs => list(xs).reduce(
+    xs => xs.reduce(
         (a, x) => maybe(a)(
             j => a.concat(j)
         )(mf(x)),
