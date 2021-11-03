@@ -607,6 +607,24 @@ const concatMap = f =>
     // the concatenation.
     xs => xs.flatMap(f);
 
+// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]
+const concatMapGen = f =>
+    // The concatenated map of f over 
+    // a stream of generator values.
+    function* (gen) {
+        let v = gen.next();
+        let vs = [];
+
+        while (!v.done) {
+            vs = f(v.value);
+            if (0 < vs.length) {
+                yield vs[0];
+            }
+
+            v = gen.next();
+        }
+    };
+
 // concats :: [String] -> String
 const concats = xs =>
     xs.join("");
@@ -2340,11 +2358,10 @@ const last = xs =>
     ) : null;
 
 // lastMay :: [a] -> Maybe a
-const lastMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(-1)[0])
-    ) : Nothing()
-)(list(xs));
+const lastMay = xs =>
+    0 < xs.length ? (
+        Just(xs.slice(-1)[0])
+    ) : Nothing();
 
 // lcm :: Int -> Int -> Int
 const lcm = x =>
@@ -2972,32 +2989,27 @@ const minBound = x => {
 };
 
 // minimum :: Ord a => [a] -> a
-const minimum = xs => (
+const minimum = xs =>
     // The least value of xs.
-    ys => 0 < ys.length ? (
-        ys.slice(1)
-        .reduce((a, y) => y < a ? y : a, ys[0])
-    ) : null
-)(list(xs));
+    0 < xs.length ? (
+        xs.slice(1)
+        .reduce((a, y) => y < a ? y : a, xs[0])
+    ) : null;
 
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = f =>
-    xs => {
-        const ys = list(xs);
-
-        return 0 < ys.length ? (
-            ys.slice(1).reduce(
-                (a, y) => 0 > f(y)(a) ? (
-                    y
-                ) : a,
-                ys[0]
-            )
-        ) : undefined;
-    };
+    xs => 0 < xs.length ? (
+        xs.slice(1).reduce(
+            (a, x) => 0 > f(x)(a) ? (
+                x
+            ) : a,
+            xs[0]
+        )
+    ) : undefined;
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const minimumByMay = f =>
-    xs => list(xs).reduce((a, x) =>
+    xs => xs.reduce((a, x) =>
         a.Nothing ? Just(x) : (
             f(x)(a.Just) < 0 ? (
                 Just(x)
@@ -3005,13 +3017,15 @@ const minimumByMay = f =>
         ), Nothing());
 
 // minimumMay :: [a] -> Maybe a
-const minimumMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(1)
-            .reduce((a, y) => y < a ? y : a, ys[0])
-        )
-    ) : Nothing()
-)(list(xs));
+const minimumMay = xs =>
+    0 < xs.length ? (
+        Just(xs.slice(1).reduce(
+            (a, x) => x < a ? (
+                x
+            ) : a,
+            xs[0]
+        ))
+    ) : Nothing();
 
 // minimumOn :: (Ord b) => (a -> b) -> [a] -> a
 const minimumOn = f =>

@@ -1,12 +1,14 @@
 ```javascript
 // minimumMay :: [a] -> Maybe a
-const minimumMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(1)
-            .reduce((a, y) => y < a ? y : a, ys[0])
-        )
-    ) : Nothing()
-)(list(xs));
+const minimumMay = xs =>
+    0 < xs.length ? (
+        Just(xs.slice(1).reduce(
+            (a, x) => x < a ? (
+                x
+            ) : a,
+            xs[0]
+        ))
+    ) : Nothing();
 ```
 
 

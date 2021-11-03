@@ -453,6 +453,12 @@
       "core"
     ]
   },
+  "concatMapGen": {
+    "code": "// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]\nconst concatMapGen = f =>\n    // The concatenated map of f over \n    // a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n        let vs = [];\n\n        while (!v.done) {\n            vs = f(v.value);\n            if (0 < vs.length) {\n                yield vs[0];\n            }\n\n            v = gen.next();\n        }\n    };",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "concats": {
     "code": "// concats :: [String] -> String\nconst concats = xs =>\n    xs.join(\"\");",
     "tags": [
@@ -1584,7 +1590,7 @@
     ]
   },
   "lastMay": {
-    "code": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(-1)[0])\n    ) : Nothing()\n)(list(xs));",
+    "code": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(-1)[0])\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1955,27 +1961,27 @@
     ]
   },
   "minimum": {
-    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs => (\n    // The least value of xs.\n    ys => 0 < ys.length ? (\n        ys.slice(1)\n        .reduce((a, y) => y < a ? y : a, ys[0])\n    ) : null\n)(list(xs));",
+    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    // The least value of xs.\n    0 < xs.length ? (\n        xs.slice(1)\n        .reduce((a, y) => y < a ? y : a, xs[0])\n    ) : null;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "minimumBy": {
-    "code": "// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = f =>\n    xs => {\n        const ys = list(xs);\n\n        return 0 < ys.length ? (\n            ys.slice(1).reduce(\n                (a, y) => 0 > f(y)(a) ? (\n                    y\n                ) : a,\n                ys[0]\n            )\n        ) : undefined;\n    };",
+    "code": "// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = f =>\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => 0 > f(x)(a) ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "minimumByMay": {
-    "code": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = f =>\n    xs => list(xs).reduce((a, x) =>\n        a.Nothing ? Just(x) : (\n            f(x)(a.Just) < 0 ? (\n                Just(x)\n            ) : a\n        ), Nothing());",
+    "code": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = f =>\n    xs => xs.reduce((a, x) =>\n        a.Nothing ? Just(x) : (\n            f(x)(a.Just) < 0 ? (\n                Just(x)\n            ) : a\n        ), Nothing());",
     "tags": [
       "JS Prelude"
     ]
   },
   "minimumMay": {
-    "code": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(1)\n            .reduce((a, y) => y < a ? y : a, ys[0])\n        )\n    ) : Nothing()\n)(list(xs));",
+    "code": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]

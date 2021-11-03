@@ -1,7 +1,7 @@
 ```javascript
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const minimumByMay = f =>
-    xs => list(xs).reduce((a, x) =>
+    xs => xs.reduce((a, x) =>
         a.Nothing ? Just(x) : (
             f(x)(a.Just) < 0 ? (
                 Just(x)
