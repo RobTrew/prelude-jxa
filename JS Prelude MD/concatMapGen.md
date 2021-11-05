@@ -1,7 +1,7 @@
 ```javascript
 // concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]
 const concatMapGen = f =>
-    // The concatenated map of f over 
+    // The concatenated map of f over
     // a stream of generator values.
     function* (gen) {
         let v = gen.next();

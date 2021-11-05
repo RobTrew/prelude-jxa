@@ -454,7 +454,7 @@
     ]
   },
   "concatMapGen": {
-    "code": "// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]\nconst concatMapGen = f =>\n    // The concatenated map of f over \n    // a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n        let vs = [];\n\n        while (!v.done) {\n            vs = f(v.value);\n            if (0 < vs.length) {\n                yield vs[0];\n            }\n\n            v = gen.next();\n        }\n    };",
+    "code": "// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]\nconst concatMapGen = f =>\n    // The concatenated map of f over\n    // a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n        let vs = [];\n\n        while (!v.done) {\n            vs = f(v.value);\n            if (0 < vs.length) {\n                yield vs[0];\n            }\n\n            v = gen.next();\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
