@@ -1,7 +1,7 @@
 ```javascript
 // scanr :: (a -> b -> b) -> b -> [a] -> [b]
 const scanr = f =>
-    startValue => xs => list(xs).reduceRight(
+    startValue => xs => xs.reduceRight(
         (a, x) => {
             const v = f(x)(a[0]);
 

@@ -1,11 +1,10 @@
 ```javascript
 // tails :: [a] -> [[a]]
-const tails = xs => (
-    es => es.map((_, i) => es.slice(i))
+const tails = xs =>
+    xs.map((_, i) => xs.slice(i))
     .concat([
         []
-    ])
-)(list(xs));
+    ]);
 ```
 
 

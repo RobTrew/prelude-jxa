@@ -2165,7 +2165,7 @@
     ]
   },
   "product": {
-    "code": "// product :: [Num] -> Num\nconst product = xs =>\n    list(xs).reduce((a, x) => a * x, 1);",
+    "code": "// product :: [Num] -> Num\nconst product = xs =>\n    xs.reduce((a, x) => a * x, 1);",
     "tags": [
       "JS Prelude"
     ]
@@ -2404,7 +2404,7 @@
     ]
   },
   "replicateM": {
-    "code": "// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = n =>\n    // Instance for lists (arrays) only here.\n    xs => {\n        const go = x => 0 >= x ? [\n            []\n        ] : liftA2List(cons)(\n            list(xs)\n        )(go(x - 1));\n\n        return go(n);\n    };",
+    "code": "// replicateM :: Int -> [a] -> [[a]]\nconst replicateM = n =>\n    // Instance for lists (arrays) only here.\n    xs => {\n        const go = x => 0 >= x ? [\n            []\n        ] : liftA2List(cons)(xs)(\n            go(x - 1)\n        );\n\n        return go(n);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2486,7 +2486,7 @@
     ]
   },
   "scanr": {
-    "code": "// scanr :: (a -> b -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => list(xs).reduceRight(\n        (a, x) => {\n            const v = f(x)(a[0]);\n\n            return Tuple(v)([v].concat(a[1]));\n        }, Tuple(startValue)([startValue])\n    )[1];",
+    "code": "// scanr :: (a -> b -> b) -> b -> [a] -> [b]\nconst scanr = f =>\n    startValue => xs => xs.reduceRight(\n        (a, x) => {\n            const v = f(x)(a[0]);\n\n            return Tuple(v)([v].concat(a[1]));\n        }, Tuple(startValue)([startValue])\n    )[1];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2714,7 +2714,7 @@
     ]
   },
   "sortBy": {
-    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    xs => list(xs).slice()\n    .sort((a, b) => f(a)(b));",
+    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    xs => xs.slice()\n    .sort((a, b) => f(a)(b));",
     "tags": [
       "JS Prelude",
       "core"
@@ -2878,20 +2878,20 @@
     ]
   },
   "tail": {
-    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name ? (\n        (ys => 0 < ys.length ? ys.slice(1) : [])(\n            list(xs)\n        )\n    ) : (take(1)(xs), xs);",
+    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name ? (\n        0 < xs.length ? (\n            xs.slice(1)\n        ) : undefined\n    ) : (take(1)(xs), xs);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "tailMay": {
-    "code": "// tailMay :: [a] -> Maybe [a]\nconst tailMay = xs => (\n    ys => 0 < ys.length ? (\n        Just(ys.slice(1))\n    ) : Nothing()\n)(list(xs));",
+    "code": "// tailMay :: [a] -> Maybe [a]\nconst tailMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "tails": {
-    "code": "// tails :: [a] -> [[a]]\nconst tails = xs => (\n    es => es.map((_, i) => es.slice(i))\n    .concat([\n        []\n    ])\n)(list(xs));",
+    "code": "// tails :: [a] -> [[a]]\nconst tails = xs =>\n    xs.map((_, i) => xs.slice(i))\n    .concat([\n        []\n    ]);",
     "tags": [
       "JS Prelude"
     ]
@@ -2971,7 +2971,7 @@
     ]
   },
   "takeWhileR": {
-    "code": "// takeWhileR :: (a -> Bool) -> [a] -> [a]\nconst takeWhileR = p =>\n    // The longest suffix of xs in which\n    // all elements satisfy p.\n    xs => {\n        const ys = list(xs);\n\n        return ys.slice(\n            1 + until(\n                i => !p(ys[i])\n            )(i => i - 1)(\n                ys.length - 1\n            )\n        );\n    };",
+    "code": "// takeWhileR :: (a -> Bool) -> [a] -> [a]\nconst takeWhileR = p =>\n    // The longest suffix of xs in which\n    // all elements satisfy p.\n    xs => xs.slice(\n        1 + until(\n            i => !p(xs[i])\n        )(i => i - 1)(\n            xs.length - 1\n        )\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -3059,7 +3059,7 @@
     ]
   },
   "traverseList": {
-    "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => (\n        zs => 0 < zs.length ? (() => {\n            const\n                vLast = f(zs.slice(-1)[0]),\n                t = typeName(vLast);\n\n            return zs.slice(0, -1).reduceRight(\n                (ys, z) => liftA2(cons)(f(z))(ys),\n                liftA2(cons)(vLast)(pureT(t)([]))\n            );\n        })() : fType(f)([])\n    )(list(xs));",
+    "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => 0 < xs.length ? (() => {\n        const\n            vLast = f(xs.slice(-1)[0]),\n            t = typeName(vLast);\n\n        return xs.slice(0, -1).reduceRight(\n            (ys, x) => liftA2(cons)(f(x))(ys),\n            liftA2(cons)(vLast)(pureT(t)([]))\n        );\n    })() : fType(f)([]);",
     "tags": [
       "JS Prelude"
     ]
@@ -3335,14 +3335,14 @@
     ]
   },
   "zip3": {
-    "code": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = xs =>\n    ys => zs => list(xs)\n    .slice(0, Math.min(...[xs, ys, zs].map(length)))\n    .map((x, i) => TupleN(x, ys[i], zs[i]));",
+    "code": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = xs =>\n    ys => zs => xs\n    .slice(0, Math.min(...[xs, ys, zs].map(length)))\n    .map((x, i) => TupleN(x, ys[i], zs[i]));",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "zip4": {
-    "code": "// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]\nconst zip4 = ws =>\n    xs => ys => zs => list(ws)\n    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))\n    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));",
+    "code": "// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]\nconst zip4 = ws =>\n    xs => ys => zs => ws\n    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))\n    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));",
     "tags": [
       "JS Prelude"
     ]
@@ -3354,7 +3354,7 @@
     ]
   },
   "zipList": {
-    "code": "// zipList :: [a] -> [b] -> [(a, b)]\nconst zipList = xs => ys => {\n    const\n        n = Math.min(length(xs), length(ys)),\n        vs = take(n)(list(ys));\n\n    return take(n)(list(xs))\n        .map((x, i) => Tuple(x)(vs[i]));\n};",
+    "code": "// zipList :: [a] -> [b] -> [(a, b)]\nconst zipList = xs => ys => {\n    const\n        n = Math.min(length(xs), length(ys)),\n        vs = take(n)(ys);\n\n    return take(n)(xs)\n        .map((x, i) => Tuple(x)(vs[i]));\n};",
     "tags": [
       "JS Prelude"
     ]

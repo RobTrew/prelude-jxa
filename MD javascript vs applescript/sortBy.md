@@ -1,7 +1,7 @@
 ```javascript
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
-    xs => list(xs).slice()
+    xs => xs.slice()
     .sort((a, b) => f(a)(b));
 ```
 

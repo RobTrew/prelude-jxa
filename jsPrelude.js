@@ -3286,7 +3286,7 @@ const print = x => {
 
 // product :: [Num] -> Num
 const product = xs =>
-    list(xs).reduce((a, x) => a * x, 1);
+    xs.reduce((a, x) => a * x, 1);
 
 // properFracRatio :: Ratio -> (Int, Ratio)
 const properFracRatio = nd => {
@@ -3568,9 +3568,9 @@ const replicateM = n =>
     xs => {
         const go = x => 0 >= x ? [
             []
-        ] : liftA2List(cons)(
-            list(xs)
-        )(go(x - 1));
+        ] : liftA2List(cons)(xs)(
+            go(x - 1)
+        );
 
         return go(n);
     };
@@ -3687,7 +3687,7 @@ const scanlGen = f =>
 
 // scanr :: (a -> b -> b) -> b -> [a] -> [b]
 const scanr = f =>
-    startValue => xs => list(xs).reduceRight(
+    startValue => xs => xs.reduceRight(
         (a, x) => {
             const v = f(x)(a[0]);
 
@@ -4034,7 +4034,7 @@ const sort = xs =>
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
-    xs => list(xs).slice()
+    xs => xs.slice()
     .sort((a, b) => f(a)(b));
 
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
@@ -4337,25 +4337,23 @@ const tail = xs =>
     // items of xs except the first.
     "GeneratorFunction" !== xs.constructor
     .constructor.name ? (
-        (ys => 0 < ys.length ? ys.slice(1) : [])(
-            list(xs)
-        )
+        0 < xs.length ? (
+            xs.slice(1)
+        ) : undefined
     ) : (take(1)(xs), xs);
 
 // tailMay :: [a] -> Maybe [a]
-const tailMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(1))
-    ) : Nothing()
-)(list(xs));
+const tailMay = xs =>
+    0 < xs.length ? (
+        Just(xs.slice(1))
+    ) : Nothing();
 
 // tails :: [a] -> [[a]]
-const tails = xs => (
-    es => es.map((_, i) => es.slice(i))
+const tails = xs =>
+    xs.map((_, i) => xs.slice(i))
     .concat([
         []
-    ])
-)(list(xs));
+    ]);
 
 // take :: Int -> [a] -> [a]
 // take :: Int -> String -> String
@@ -4518,17 +4516,13 @@ const takeWhileGen = p => xs => {
 const takeWhileR = p =>
     // The longest suffix of xs in which
     // all elements satisfy p.
-    xs => {
-        const ys = list(xs);
-
-        return ys.slice(
-            1 + until(
-                i => !p(ys[i])
-            )(i => i - 1)(
-                ys.length - 1
-            )
-        );
-    };
+    xs => xs.slice(
+        1 + until(
+            i => !p(xs[i])
+        )(i => i - 1)(
+            xs.length - 1
+        )
+    );
 
 // taskPaperDateString :: Date -> String
 const taskPaperDateString = dte => {
@@ -4656,18 +4650,16 @@ const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating
     // these actions from left to right.
-    xs => (
-        zs => 0 < zs.length ? (() => {
-            const
-                vLast = f(zs.slice(-1)[0]),
-                t = typeName(vLast);
+    xs => 0 < xs.length ? (() => {
+        const
+            vLast = f(xs.slice(-1)[0]),
+            t = typeName(vLast);
 
-            return zs.slice(0, -1).reduceRight(
-                (ys, z) => liftA2(cons)(f(z))(ys),
-                liftA2(cons)(vLast)(pureT(t)([]))
-            );
-        })() : fType(f)([])
-    )(list(xs));
+        return xs.slice(0, -1).reduceRight(
+            (ys, x) => liftA2(cons)(f(x))(ys),
+            liftA2(cons)(vLast)(pureT(t)([]))
+        );
+    })() : fType(f)([]);
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 const traverseMay = f => mb =>
@@ -5207,13 +5199,13 @@ const zip = xs =>
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>
-    ys => zs => list(xs)
+    ys => zs => xs
     .slice(0, Math.min(...[xs, ys, zs].map(length)))
     .map((x, i) => TupleN(x, ys[i], zs[i]));
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 const zip4 = ws =>
-    xs => ys => zs => list(ws)
+    xs => ys => zs => ws
     .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))
     .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 
@@ -5245,9 +5237,9 @@ const zipGen = ga => gb => {
 const zipList = xs => ys => {
     const
         n = Math.min(length(xs), length(ys)),
-        vs = take(n)(list(ys));
+        vs = take(n)(ys);
 
-    return take(n)(list(xs))
+    return take(n)(xs)
         .map((x, i) => Tuple(x)(vs[i]));
 };
 

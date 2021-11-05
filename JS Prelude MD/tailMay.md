@@ -1,8 +1,7 @@
 ```javascript
 // tailMay :: [a] -> Maybe [a]
-const tailMay = xs => (
-    ys => 0 < ys.length ? (
-        Just(ys.slice(1))
-    ) : Nothing()
-)(list(xs));
+const tailMay = xs =>
+    0 < xs.length ? (
+        Just(xs.slice(1))
+    ) : Nothing();
 ```
