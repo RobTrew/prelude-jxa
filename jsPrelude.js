@@ -2991,7 +2991,11 @@ const minimum = xs =>
     // The least value of xs.
     0 < xs.length ? (
         xs.slice(1)
-        .reduce((a, y) => y < a ? y : a, xs[0])
+        .reduce((a, x) => x < a ? (
+                x
+            ) : a,
+            xs[0]
+        )
     ) : null;
 
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
@@ -4610,7 +4614,7 @@ const transpose_ = rows =>
     // Simpler version of transpose, assuming input
     // rows of even length.
     0 < rows.length ? rows[0].map(
-        (x, i) => rows.flatMap(
+        (_, i) => rows.flatMap(
             v => v[i]
         )
     ) : [];

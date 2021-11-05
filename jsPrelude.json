@@ -60,12 +60,6 @@
       "core"
     ]
   },
-  "Untitled Note": {
-    "code": "",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
   "abs": {
     "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number\n    // without the sign.\n    x => 0 > x ? (\n        -x\n    ) : x;",
     "tags": [
@@ -1961,7 +1955,7 @@
     ]
   },
   "minimum": {
-    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    // The least value of xs.\n    0 < xs.length ? (\n        xs.slice(1)\n        .reduce((a, y) => y < a ? y : a, xs[0])\n    ) : null;",
+    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    // The least value of xs.\n    0 < xs.length ? (\n        xs.slice(1)\n        .reduce((a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : null;",
     "tags": [
       "JS Prelude",
       "core"
@@ -3041,7 +3035,7 @@
     ]
   },
   "transpose_": {
-    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input\n    // rows of even length.\n    0 < rows.length ? rows[0].map(\n        (x, i) => rows.flatMap(\n            v => v[i]\n        )\n    ) : [];",
+    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input\n    // rows of even length.\n    0 < rows.length ? rows[0].map(\n        (_, i) => rows.flatMap(\n            v => v[i]\n        )\n    ) : [];",
     "tags": [
       "JS Prelude"
     ]
