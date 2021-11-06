@@ -315,7 +315,7 @@
     ]
   },
   "breakOnAll": {
-    "code": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = needle =>\n    // Tuples breaking the string at\n    // all non-overlapping instances\n    // of the needle in the haystack.\n    haystack => \"\" !== needle ? (\n        haystack.split(needle)\n        .reduce((a, _, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(\n                        xs.slice(0, i).join(needle)\n                    )(\n                        needle + xs.slice(i)\n                        .join(needle)\n                    )\n                ])\n            ) : a, [])\n    ) : null;",
+    "code": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = needle =>\n    // Tuples breaking the string at\n    // all non-overlapping instances\n    // of the needle in the haystack.\n    haystack => Boolean(needle) ? (\n        haystack.split(needle)\n        .reduce((a, _, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(\n                        xs.slice(0, i).join(needle)\n                    )(\n                        needle + xs.slice(i)\n                        .join(needle)\n                    )\n                ])\n            ) : a, [])\n    ) : null;",
     "tags": [
       "JS Prelude"
     ]

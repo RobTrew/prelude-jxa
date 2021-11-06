@@ -4,7 +4,7 @@ const breakOnAll = needle =>
     // Tuples breaking the string at
     // all non-overlapping instances
     // of the needle in the haystack.
-    haystack => "" !== needle ? (
+    haystack => Boolean(needle) ? (
         haystack.split(needle)
         .reduce((a, _, i, xs) =>
             0 < i ? (
