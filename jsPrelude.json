@@ -80,7 +80,7 @@
     ]
   },
   "allSame": {
-    "code": "// allSame :: [a] -> Bool\nconst allSame = xs =>\n    2 > xs.length || (\n        h => xs.slice(1).every(x => h === x)\n    )(xs[0]);",
+    "code": "// allSame :: [a] -> Bool\nconst allSame = xs =>\n    // True if no items in xs have differing values.\n    2 > xs.length || (\n        h => xs.slice(1).every(x => h === x)\n    )(xs[0]);",
     "tags": [
       "JS Prelude"
     ]
@@ -152,7 +152,7 @@
     ]
   },
   "apTuple (<*>)": {
-    "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = ab =>\n    liftA2Tuple(x => x)(ab);",
+    "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = ab =>\n    // A tuple obtained by applying the function in the second\n    // value of ab to the second value in an existing tuple,\n    // and concatenating the first values of each tuple.\n    liftA2Tuple(x => x)(ab);",
     "tags": [
       "JS Prelude"
     ]
@@ -197,32 +197,32 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = eps =>\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const _gcd = (a, b) =>\n                    b < e ? (\n                        a\n                    ) : _gcd(b, a % b);\n\n                return _gcd(Math.abs(x), Math.abs(y));\n            },\n            c = gcde(Boolean(eps) ? (\n                eps\n            ) : (1 / 10000), 1, n);\n\n        return Ratio(\n            Math.floor(n / c)\n        )(\n            Math.floor(1 / c)\n        );\n    };",
+    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = epsilon =>\n    // A ratio approximating the floating point n\n    // to within the given margin (small epsilon value).\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const _gcd = (a, b) =>\n                    b < e ? (\n                        a\n                    ) : _gcd(b, a % b);\n\n                return _gcd(Math.abs(x), Math.abs(y));\n            },\n            c = gcde(Boolean(epsilon) ? (\n                epsilon\n            ) : (1 / 10000), 1, n);\n\n        return Ratio(\n            Math.floor(n / c)\n        )(\n            Math.floor(1 / c)\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "argvLength": {
-    "code": "// argvLength :: Function -> Int\nconst argvLength = f =>\n    f.length;",
+    "code": "// argvLength :: Function -> Int\nconst argvLength = f =>\n    // The number of arguments defined for the given function.\n    f.length;",
     "tags": [
       "JS Prelude"
     ]
   },
   "assocs": {
-    "code": "// assocs :: Map k a -> [(k, a)]\nconst assocs = m =>\n    Object.entries(m).map(\n        ([k, v]) => Tuple(k)(v)\n    );",
+    "code": "// assocs :: Map k a -> [(k, a)]\nconst assocs = m =>\n    // A list of (key, value) tuples derived from\n    // the given dictionary.\n    Object.entries(m).map(\n        ([k, v]) => Tuple(k)(v)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "base64decode": {
-    "code": "// base64decode :: String -> String\nconst base64decode = s =>\n    ObjC.unwrap(\n        $.NSString.alloc.initWithDataEncoding(\n            $.NSData.alloc.initWithBase64EncodedStringOptions(\n                s, 0\n            ),\n            $.NSUTF8StringEncoding\n        )\n    );",
+    "code": "// base64decode :: String -> String\nconst base64decode = s =>\n    // Base64 decoding of the given string.\n    ObjC.unwrap(\n        $.NSString.alloc.initWithDataEncoding(\n            $.NSData.alloc.initWithBase64EncodedStringOptions(\n                s, 0\n            ),\n            $.NSUTF8StringEncoding\n        )\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "base64encode": {
-    "code": "// base64encode :: String -> String\nconst base64encode = s =>\n    ObjC.unwrap(\n        $.NSString.stringWithString(s)\n        .dataUsingEncoding(\n            $.NSUTF8StringEncoding\n        )\n        .base64EncodedStringWithOptions(0)\n    );",
+    "code": "// base64encode :: String -> String\nconst base64encode = s =>\n    // Base64 encoding of the given string.\n    ObjC.unwrap(\n        $.NSString.stringWithString(s)\n        .dataUsingEncoding(\n            $.NSUTF8StringEncoding\n        )\n        .base64EncodedStringWithOptions(0)\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -265,14 +265,14 @@
     ]
   },
   "bindLR (>>=)": {
-    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    mf => \"Left\" in m ? (\n        m\n    ) : mf(m.Right);",
+    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    // The bind operator for Either types.\n    mf => \"Left\" in m ? (\n        m\n    ) : mf(m.Right);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "bindList (>>=)": {
-    "code": "// bindList (>>=) :: [a] -> (a -> [b]) -> [b]\nconst bindList = xs =>\n    mf => [...xs].flatMap(mf);",
+    "code": "// bindList (>>=) :: [a] -> (a -> [b]) -> [b]\nconst bindList = xs =>\n    // The bind operator for Arrays.\n    mf => [...xs].flatMap(mf);",
     "tags": [
       "JS Prelude"
     ]
@@ -285,25 +285,25 @@
     ]
   },
   "bindTuple (>>=)": {
-    "code": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = ([a, b]) =>\n    f => first(mappend(a))(\n        f(b)\n    );",
+    "code": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = ([a, b]) =>\n    // The bind operator for Tuples\n    f => first(mappend(a))(\n        f(b)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "bool": {
-    "code": "// bool :: a -> a -> Bool -> a\nconst bool = f =>\n    t => p => p ? t : f;",
+    "code": "// bool :: a -> a -> Bool -> a\nconst bool = f =>\n    // t if p(x) else f.\n    t => p => p ? t : f;",
     "tags": [
       "JS Prelude"
     ]
   },
   "both": {
-    "code": "// both :: (a -> b) -> (a, a) -> (b, b)\nconst both = f =>\n    ([a, b]) => Tuple(\n        f(a)\n    )(\n        f(b)\n    );",
+    "code": "// both :: (a -> b) -> (a, a) -> (b, b)\nconst both = f =>\n    // A tuple obtained by applying f to both values\n    // in the given tuple.\n    ([a, b]) => Tuple(\n        f(a)\n    )(\n        f(b)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "break": {
-    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    xs => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
+    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    // The longest prefix of xs for in which\n    // all value return true for p.\n    xs => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -315,7 +315,7 @@
     ]
   },
   "breakOnAll": {
-    "code": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = pat =>\n    src => \"\" !== pat ? (\n        src.split(pat)\n        .reduce((a, _, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(xs.slice(0, i).join(pat))(\n                        pat + xs.slice(i).join(pat)\n                    )\n                ])\n            ) : a, [])\n    ) : null;",
+    "code": "// breakOnAll :: String -> String -> [(String, String)]\nconst breakOnAll = needle =>\n    // Tuples breaking the string at\n    // all non-overlapping instances\n    // of the needle in the haystack.\n    haystack => \"\" !== needle ? (\n        haystack.split(needle)\n        .reduce((a, _, i, xs) =>\n            0 < i ? (\n                a.concat([\n                    Tuple(\n                        xs.slice(0, i).join(needle)\n                    )(\n                        needle + xs.slice(i)\n                        .join(needle)\n                    )\n                ])\n            ) : a, [])\n    ) : null;",
     "tags": [
       "JS Prelude"
     ]

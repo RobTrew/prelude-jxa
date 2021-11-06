@@ -1,13 +1,19 @@
 ```javascript
 // breakOnAll :: String -> String -> [(String, String)]
-const breakOnAll = pat =>
-    src => "" !== pat ? (
-        src.split(pat)
+const breakOnAll = needle =>
+    // Tuples breaking the string at
+    // all non-overlapping instances
+    // of the needle in the haystack.
+    haystack => "" !== needle ? (
+        haystack.split(needle)
         .reduce((a, _, i, xs) =>
             0 < i ? (
                 a.concat([
-                    Tuple(xs.slice(0, i).join(pat))(
-                        pat + xs.slice(i).join(pat)
+                    Tuple(
+                        xs.slice(0, i).join(needle)
+                    )(
+                        needle + xs.slice(i)
+                        .join(needle)
                     )
                 ])
             ) : a, [])

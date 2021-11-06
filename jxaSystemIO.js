@@ -83,6 +83,7 @@ const appendFileMay = strPath =>
 
 // base64decode :: String -> String
 const base64decode = s =>
+    // Base64 decoding of the given string.
     ObjC.unwrap(
         $.NSString.alloc.initWithDataEncoding(
             $.NSData.alloc.initWithBase64EncodedStringOptions(
@@ -94,6 +95,7 @@ const base64decode = s =>
 
 // base64encode :: String -> String
 const base64encode = s =>
+    // Base64 encoding of the given string.
     ObjC.unwrap(
         $.NSString.stringWithString(s)
         .dataUsingEncoding(

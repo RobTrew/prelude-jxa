@@ -131,6 +131,7 @@ const all = p =>
 
 // allSame :: [a] -> Bool
 const allSame = xs =>
+    // True if no items in xs have differing values.
     2 > xs.length || (
         h => xs.slice(1).every(x => h === x)
     )(xs[0]);
@@ -217,6 +218,9 @@ const apTree = tf =>
 
 // apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 const apTuple = ab =>
+    // A tuple obtained by applying the function in the second
+    // value of ab to the second value in an existing tuple,
+    // and concatenating the first values of each tuple.
     liftA2Tuple(x => x)(ab);
 
 // append (<>) :: [a] -> [a] -> [a]
@@ -254,7 +258,9 @@ const applyN = n =>
     .reduce((a, g) => g(a), x);
 
 // approxRatio :: Float -> Float -> Ratio
-const approxRatio = eps =>
+const approxRatio = epsilon =>
+    // A ratio approximating the floating point n
+    // to within the given margin (small epsilon value).
     n => {
         const
             gcde = (e, x, y) => {
@@ -265,8 +271,8 @@ const approxRatio = eps =>
 
                 return _gcd(Math.abs(x), Math.abs(y));
             },
-            c = gcde(Boolean(eps) ? (
-                eps
+            c = gcde(Boolean(epsilon) ? (
+                epsilon
             ) : (1 / 10000), 1, n);
 
         return Ratio(
@@ -278,10 +284,13 @@ const approxRatio = eps =>
 
 // argvLength :: Function -> Int
 const argvLength = f =>
+    // The number of arguments defined for the given function.
     f.length;
 
 // assocs :: Map k a -> [(k, a)]
 const assocs = m =>
+    // A list of (key, value) tuples derived from
+    // the given dictionary.
     Object.entries(m).map(
         ([k, v]) => Tuple(k)(v)
     );
@@ -348,12 +357,14 @@ const bindFn = f =>
 // bindLR (>>=) :: Either a ->
 // (a -> Either b) -> Either b
 const bindLR = m =>
+    // The bind operator for Either types.
     mf => "Left" in m ? (
         m
     ) : mf(m.Right);
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 const bindList = xs =>
+    // The bind operator for Arrays.
     mf => [...xs].flatMap(mf);
 
 // bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
@@ -366,16 +377,20 @@ const bindMay = mb =>
 
 // bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
 const bindTuple = ([a, b]) =>
+    // The bind operator for Tuples
     f => first(mappend(a))(
         f(b)
     );
 
 // bool :: a -> a -> Bool -> a
 const bool = f =>
+    // t if p(x) else f.
     t => p => p ? t : f;
 
 // both :: (a -> b) -> (a, a) -> (b, b)
 const both = f =>
+    // A tuple obtained by applying f to both values
+    // in the given tuple.
     ([a, b]) => Tuple(
         f(a)
     )(
@@ -384,6 +399,8 @@ const both = f =>
 
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
+    // The longest prefix of xs for in which
+    // all value return true for p.
     xs => {
         const i = xs.findIndex(p);
 
@@ -417,14 +434,20 @@ const breakOn = needle =>
     };
 
 // breakOnAll :: String -> String -> [(String, String)]
-const breakOnAll = pat =>
-    src => "" !== pat ? (
-        src.split(pat)
+const breakOnAll = needle =>
+    // Tuples breaking the string at
+    // all non-overlapping instances
+    // of the needle in the haystack.
+    haystack => "" !== needle ? (
+        haystack.split(needle)
         .reduce((a, _, i, xs) =>
             0 < i ? (
                 a.concat([
-                    Tuple(xs.slice(0, i).join(pat))(
-                        pat + xs.slice(i).join(pat)
+                    Tuple(
+                        xs.slice(0, i).join(needle)
+                    )(
+                        needle + xs.slice(i)
+                        .join(needle)
                     )
                 ])
             ) : a, [])

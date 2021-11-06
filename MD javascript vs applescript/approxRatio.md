@@ -1,6 +1,8 @@
 ```javascript
 // approxRatio :: Float -> Float -> Ratio
-const approxRatio = eps =>
+const approxRatio = epsilon =>
+    // A ratio approximating the floating point n
+    // to within the given margin (small epsilon value).
     n => {
         const
             gcde = (e, x, y) => {
@@ -11,8 +13,8 @@ const approxRatio = eps =>
 
                 return _gcd(Math.abs(x), Math.abs(y));
             },
-            c = gcde(Boolean(eps) ? (
-                eps
+            c = gcde(Boolean(epsilon) ? (
+                epsilon
             ) : (1 / 10000), 1, n);
 
         return Ratio(
