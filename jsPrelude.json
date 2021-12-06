@@ -265,7 +265,7 @@
     ]
   },
   "bindLR (>>=)": {
-    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = m =>\n    // The bind operator for Either types.\n    mf => \"Left\" in m ? (\n        m\n    ) : mf(m.Right);",
+    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = lr =>\n    // Bind operator for the Either option type.\n    // If lr has a Left value then lr unchanged,\n    // otherwise the function mf applied to the\n    // Right value in lr.\n    mf => \"Left\" in lr ? (\n        lr\n    ) : mf(lr.Right);",
     "tags": [
       "JS Prelude",
       "core"
@@ -954,7 +954,7 @@
     ]
   },
   "findTree": {
-    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match the predicate p\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                lng = xs.length;\n\n            return 0 < lng ? until(\n                ([i, v]) => lng <= i || !v.Nothing\n            )(\n                ([i]) => Tuple(1 + i)(\n                    go(xs[i])\n                )\n            )(\n                Tuple(0)(\n                    Nothing()\n                )\n            )[1] : Nothing();\n        })();\n\n    return go;\n};",
+    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match the predicate p\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                lng = xs.length;\n\n            return 0 < lng ? until(\n                ([i, mb]) => lng <= i || !mb.Nothing\n            )(\n                ([i]) => Tuple(1 + i)(\n                    go(xs[i])\n                )\n            )(\n                Tuple(0)(\n                    Nothing()\n                )\n            )[1] : Nothing();\n        })();\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2364,6 +2364,12 @@
       "core"
     ]
   },
+  "remQuot": {
+    "code": "// remQuot :: Integral a => a -> a -> (a, a)\nconst remQuot = m =>\n    // The remainder, tupled with the quotient.\n    n => Tuple(\n        m % n\n    )(\n        Math.trunc(m / n)\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "removeFile": {
     "code": "// removeFile :: FilePath -> Either String String\nconst removeFile = fp => {\n    const error = $();\n\n    return $.NSFileManager.defaultManager\n        .removeItemAtPathError(fp, error) ? (\n            Right(`Removed: ${fp}`)\n        ) : Left(ObjC.unwrap(error.localizedDescription));\n};",
     "tags": [
@@ -2934,7 +2940,7 @@
     ]
   },
   "takeFileName": {
-    "code": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = fp =>\n    // The file name component of a filepath.\n    \"\" !== fp ? (\n        \"/\" !== fp[fp.length - 1] ? (\n            fp.split(\"/\").slice(-1)[0]\n        ) : \"\"\n    ) : \"\";",
+    "code": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = fp =>\n    // The file name component of a filepath.\n    Boolean(fp) ? (\n        \"/\" !== fp[fp.length - 1] ? (\n            fp.split(\"/\").slice(-1)[0]\n        ) : \"\"\n    ) : \"\";",
     "tags": [
       "JS Prelude"
     ]

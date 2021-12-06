@@ -356,11 +356,14 @@ const bindFn = f =>
 
 // bindLR (>>=) :: Either a ->
 // (a -> Either b) -> Either b
-const bindLR = m =>
-    // The bind operator for Either types.
-    mf => "Left" in m ? (
-        m
-    ) : mf(m.Right);
+const bindLR = lr =>
+    // Bind operator for the Either option type.
+    // If lr has a Left value then lr unchanged,
+    // otherwise the function mf applied to the
+    // Right value in lr.
+    mf => "Left" in lr ? (
+        lr
+    ) : mf(lr.Right);
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 const bindList = xs =>
@@ -1548,7 +1551,7 @@ const findTree = p => {
                 lng = xs.length;
 
             return 0 < lng ? until(
-                ([i, v]) => lng <= i || !v.Nothing
+                ([i, mb]) => lng <= i || !mb.Nothing
             )(
                 ([i]) => Tuple(1 + i)(
                     go(xs[i])
@@ -3563,6 +3566,15 @@ const rem = n =>
         BigInt(n) % BigInt(m)
     ) : n % m;
 
+// remQuot :: Integral a => a -> a -> (a, a)
+const remQuot = m =>
+    // The remainder, tupled with the quotient.
+    n => Tuple(
+        m % n
+    )(
+        Math.trunc(m / n)
+    );
+
 // repeat :: a -> Generator [a]
 const repeat = function* (x) {
     while (true) {
@@ -4465,7 +4477,7 @@ const takeExtension = fp => (
 // takeFileName :: FilePath -> FilePath
 const takeFileName = fp =>
     // The file name component of a filepath.
-    "" !== fp ? (
+    Boolean(fp) ? (
         "/" !== fp[fp.length - 1] ? (
             fp.split("/").slice(-1)[0]
         ) : ""

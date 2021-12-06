@@ -12,7 +12,7 @@ const findTree = p => {
                 lng = xs.length;
 
             return 0 < lng ? until(
-                ([i, v]) => lng <= i || !v.Nothing
+                ([i, mb]) => lng <= i || !mb.Nothing
             )(
                 ([i]) => Tuple(1 + i)(
                     go(xs[i])

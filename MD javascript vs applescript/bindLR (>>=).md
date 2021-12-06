@@ -1,11 +1,14 @@
 ```javascript
 // bindLR (>>=) :: Either a ->
 // (a -> Either b) -> Either b
-const bindLR = m =>
-    // The bind operator for Either types.
-    mf => "Left" in m ? (
-        m
-    ) : mf(m.Right);
+const bindLR = lr =>
+    // Bind operator for the Either option type.
+    // If lr has a Left value then lr unchanged,
+    // otherwise the function mf applied to the
+    // Right value in lr.
+    mf => "Left" in lr ? (
+        lr
+    ) : mf(lr.Right);
 ```
 
 
