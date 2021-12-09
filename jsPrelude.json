@@ -402,7 +402,7 @@
     ]
   },
   "compareList": {
-    "code": "// compareList :: ([a], [a]) -> Ordering\nconst compareList = (xs, ys) => {\n    const\n        nx = xs.length,\n        ny = ys.length;\n\n    return 0 === nx ? (\n        0 === ny ? 0 : -1\n    ) : 0 === ny ? (\n        1\n    ) : (() => {\n        const ord = compare(xs[0], ys[0]);\n\n        return 0 === ord ? (\n            compareList(xs.slice(1), ys.slice(1))\n        ) : ord;\n    })();\n};",
+    "code": "// compareList :: [a] -> [a] -> Ordering\nconst compareList = xs => ys => {\n    const\n        nx = xs.length,\n        ny = ys.length;\n\n    return 0 === nx ? (\n        0 === ny ? 0 : -1\n    ) : 0 === ny ? 1 : (() => {\n        const ord = compare(xs[0])(ys[0]);\n\n        return 0 === ord ? (\n            compareList(xs.slice(1))(ys.slice(1))\n        ) : ord;\n    })();\n};",
     "tags": [
       "JS Prelude"
     ]
