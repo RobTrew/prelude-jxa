@@ -588,12 +588,12 @@ const compare = a =>
 // compareList :: [a] -> [a] -> Ordering
 const compareList = xs => ys => {
     const
-        nx = xs.length,
-        ny = ys.length;
+        xEmpty = 0 === xs.length,
+        yEmpty = 0 === ys.length;
 
-    return 0 === nx ? (
-        0 === ny ? 0 : -1
-    ) : 0 === ny ? 1 : (() => {
+    return xEmpty || yEmpty ? (
+        compare(Number(xEmpty))(Number(yEmpty))
+    ) : (() => {
         const ord = compare(xs[0])(ys[0]);
 
         return 0 === ord ? (
