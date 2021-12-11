@@ -402,7 +402,7 @@
     ]
   },
   "compareList": {
-    "code": "// compareList :: [a] -> [a] -> Ordering\nconst compareList = xs =>\n    // 0 if two lists are identical.\n    // -1 if xs is empty, or has a lower leftward value.\n    // 1 if ys is empty, or has a lower leftward value.\n    ys => compare(\n        Number(0 === xs.length)\n    )(\n        Number(0 === ys.length)\n    ) || compare(xs[0])(ys[0]) || (\n        compareList(xs.slice(1))(ys.slice(1))\n    );",
+    "code": "// compareList :: [a] -> [a] -> Ordering\nconst compareList = xs =>\n    // 0 if two lists are identical.\n    // -1 if xs is empty, or has a lower leftward value.\n    // 1 if ys is empty, or has a lower leftward value.\n    ys => compare(0 === xs.length)(0 === ys.length) || (\n        compare(xs[0])(ys[0]) || (\n            compareList(xs.slice(1))(ys.slice(1))\n        )\n    );",
     "tags": [
       "JS Prelude"
     ]
