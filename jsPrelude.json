@@ -987,7 +987,7 @@
     ]
   },
   "flip": {
-    "code": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with\n    // its arguments reversed.\n    1 < op.length ? (\n        (a, b) => op(b, a)\n    ) : (x => y => op(y)(x));",
+    "code": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with\n    // its arguments reversed.\n    1 !== op.length ? (\n        (a, b) => op(b, a)\n    ) : (a => b => op(b)(a));",
     "tags": [
       "JS Prelude",
       "core"
