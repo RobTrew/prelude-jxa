@@ -1114,6 +1114,12 @@
       "tree"
     ]
   },
+  "forestFromJSONLR": {
+    "code": "// forestFromJSONLR :: JSON String -> Either String Forest a\nconst forestFromJSONLR = json => {\n    // Either a message string or a Forest.\n    // Assumes a recursive [root, nest] JSON format,\n    // in which `root` is a parseable value string,\n    // and `nest` is a possibly empty list of\n    // [`root`, `nest`] pairs.\n    const go = vxs =>\n        Node(vxs[0])(vxs[1].map(go));\n\n    return bindLR(\n        jsonParseLR(json)\n    )(\n        xs => Right(xs.map(go))\n    );\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "fromEnum": {
     "code": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x =>\n    typeof x !== \"string\" ? (\n        x.constructor === Object ? (\n            x.value\n        ) : parseInt(Number(x), 10)\n    ) : x.codePointAt(0);",
     "tags": [
