@@ -305,7 +305,9 @@ const bimap = f =>
     // Tuple instance of bimap.
     // A tuple of the application of f and g to the
     // first and second values respectively.
-    g => ([a, b]) => Tuple(f(a))(g(b));
+    g => tpl => Tuple(f(tpl[0]))(
+        g(tpl[1])
+    );
 
 // bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d
 const bimapLR = f =>
@@ -4546,20 +4548,14 @@ const takeIterate = n =>
     )[1];
 
 // takeWhile :: (a -> Bool) -> [a] -> [a]
-// takeWhile :: (Char -> Bool) -> String -> String
 const takeWhile = p =>
-    // The longest prefix of xs in which
-    // every element satisfies p.
-    xs => xs.constructor.constructor.name !==
-    "GeneratorFunction" ? (() => {
-        const n = xs.length;
+    xs => {
+        const i = xs.findIndex(x => !p(x));
 
-        return xs.slice(
-            0, 0 < n ? until(
-                i => n === i || !p(xs[i])
-            )(i => 1 + i)(0) : 0
-        );
-    })() : takeWhileGen(p)(xs);
+        return -1 !== i ? (
+            xs.slice(0, i)
+        ) : xs;
+    };
 
 // takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
 const takeWhileGen = p => xs => {
