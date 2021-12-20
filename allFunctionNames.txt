@@ -237,7 +237,7 @@ isSuffixOf :: Eq a => [a] -> [a] -> Bool
 isUpper :: Char -> Bool
 iso8601Local :: Date -> String
 iterate :: (a -> a) -> a -> Gen [a]
-iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
+iterateUntil :: (a -> Bool) -> (a -> a) -> a -> Generator [a]
 join :: Monad m => m (m a) -> m a
 jsonFromTree :: Tree a -> String
 jsonLog :: a -> IO ()
@@ -276,7 +276,7 @@ lt (<) :: Ord a => a -> a -> Bool
 mReturn :: First-class m => (a -> b) -> m (a -> b)
 map :: (a -> b) -> [a] -> [b]
 mapAccumL :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
-mapAccumLTree :: (acc -> x -> (acc, y)) -> acc -> Tree -> (acc, Tree)
+mapAccumLTree :: (s -> a -> (s, b)) -> s -> Tree a -> (s, Tree b)
 mapAccumR :: (acc -> x -> (acc, y)) -> acc -> [x] -> (acc, [y])
 mapFromList :: [(String, a)] -> Dict
 mapKeys :: (Key -> Key) -> IntMap a -> IntMap a

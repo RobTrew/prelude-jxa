@@ -1,7 +1,8 @@
 ```javascript
-// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
+// iterateUntil :: (a -> Bool) -> (a -> a) -> 
+// a -> Generator [a]
 const iterateUntil = p =>
-    f => function*(x) {
+    f => function* (x) {
         let v = x;
 
         while (!p(v)) {

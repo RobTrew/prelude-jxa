@@ -1,0 +1,130 @@
+<html>
+
+<head />
+
+<body>
+    <script type="text/javascript">
+        (() => {
+            "use strict";
+
+            const main = () => {
+                const
+                    km = window.KeyboardMaestro,
+                    kmValue = km.GetVariable,
+                    kmTokens = km.ProcessTokens,
+                    [name, codeLines, fontName] = [
+                        "chordName",
+                        "chordCodes",
+                        "chordFontName"
+                    ]
+                    .map(kmValue),
+                    codes = lines(codeLines),
+                    nCodes = codes.length,
+                    user = kmTokens('%UserLoginID%'),
+                    fontPath = (
+                        `/Users/${user}/Library/Fonts/${fontName}.otf`
+                    ),
+                    query = document.querySelector,
+                    [style, div] = [
+                        ["head", "style"],
+                        ["body", "div"]
+                    ]
+                    .map(
+                        ([k, v]) => document.querySelector(k)
+                        .appendChild(
+                            document.createElement(v)
+                        )
+                    );
+
+                style.innerHTML = cssFromDict({
+                    "@font-face": {
+                        "font-family": fontName,
+                        "src": `url("${fontPath}") format("opentype")`
+                    },
+                    "body": {
+                        "font-family": "Verdana",
+                        "font-size": "14px",
+                        "background": "rgba(240, 237, 227, 1)",
+                    },
+                    "table": {
+                        "border-spacing": "1em 1em",
+                    },
+                    "table tr td": {
+                        "border": "1px solid #ddd",
+                        "padding": "18px"
+                    },
+                    "th": {
+                        "color": "rgba(133,126,107,1)"
+                    },
+                    "td": {
+                        "background": "rgba(255, 255, 255, 1)",
+                        "font-family": fontName,
+                        "font-size": "24pt"
+                    },
+                    "td:hover": {
+                        "color": "rgba(255,0,0,1);" + (
+                            "-webkit-transition:color .15s ease-in-out"
+                        )
+                    }
+                });
+
+                div.innerHTML = chordsDiv(name)(codes);
+
+                const
+                    tableRect = document.querySelector(
+                        "body > div > table"
+                    ).getBoundingClientRect();
+
+                document.querySelector("body")
+                    .setAttribute(
+                        "data-kmwindow", [
+                            "SCREEN(Main,Left, 20%)",
+                            "SCREEN(Main,Top, 20%)",
+                            `${50 + tableRect.width}, ${150 + tableRect.height}`
+                        ].join(",")
+                    );
+            };
+
+            // ------------------ HTML -------------------
+            // chordsDiv :: String -> [String] -> HTML String
+            const chordsDiv = name => codes => {
+                const
+                    n = codes.length,
+                    th = `<th colspan="${n}">${name}</th>`,
+                    thead = `<thead><tr>${th}</tr></thead>`,
+                    submit = "window.KeyboardMaestro.Submit",
+                    td = k => `<td onclick="${submit}('${k}')">${k}</td>`,
+                    tr = `<tr>${codes.map(td).join("\n")}</tr>`,
+                    tbody = `<tbody>${tr}</tbody>`;
+
+                return `<table>${thead}${tbody}</table>`;
+            };
+
+            // ----------------- GENERIC -----------------
+
+            // cssFromDict :: Dict -> CSS String
+            const cssFromDict = dict =>
+                Object.entries(dict).map(
+                    ([x, xdict]) => [
+                        `${x} {`,
+                        Object.entries(xdict).map(
+                            ([k, v]) => `    ${k}: ${v};`
+                        )
+                        .join("\n"),
+                        "}"
+                    ].join("\n")
+                )
+                .join("\n");
+
+            // lines :: String -> [String]
+            const lines = s =>
+                0 < s.length ? (
+                    s.split(/[\r\n]+/u)
+                ) : [];
+
+            return main();
+        })();
+    </script>
+</body>
+
+</html>

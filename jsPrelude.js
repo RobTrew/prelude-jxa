@@ -59,6 +59,8 @@ const Right = x => ({
 
 // Tuple (,) :: a -> b -> (a, b)
 const Tuple = a =>
+    // A pair of values, possibly of
+    // different types.
     b => ({
         type: "Tuple",
         "0": a,
@@ -131,10 +133,13 @@ const all = p =>
 
 // allSame :: [a] -> Bool
 const allSame = xs =>
-    // True if no items in xs have differing values.
-    2 > xs.length || (
-        h => xs.slice(1).every(x => h === x)
-    )(xs[0]);
+    // True if xs has less than 2 items, or every item 
+    // in the tail of the list is identical to the head.
+    2 > xs.length || (() => {
+        const [h, ...t] = xs;
+
+        return t.every(x => h === x);
+    })();
 
 // allTree :: (a -> Bool) -> Tree a -> Bool
 const allTree = p =>
@@ -2317,9 +2322,10 @@ const iterate = f =>
         }
     };
 
-// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
+// iterateUntil :: (a -> Bool) -> (a -> a) -> 
+// a -> Generator [a]
 const iterateUntil = p =>
-    f => function*(x) {
+    f => function* (x) {
         let v = x;
 
         while (!p(v)) {
@@ -2433,9 +2439,9 @@ const le = x =>
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
     xs.flatMap(
-        x => ("Either" === x.type) && (
-            undefined !== x.Left
-        ) ? [x.Left] : []
+        x => ("Left" in x) ? [
+            x.Left
+        ] : []
     );
 
 // length :: [a] -> Int
@@ -2653,9 +2659,13 @@ const mapAccumL = f =>
         Tuple(acc)([])
     );
 
-// mapAccumLTree :: (acc -> x -> (acc, y)) ->
-// acc -> Tree -> (acc, Tree)
+// mapAccumLTree :: (s -> a -> (s, b)) -> s ->
+// Tree a -> (s, Tree b)
 const mapAccumLTree = f => {
+    // A tuple of an accumulation and a tree
+    // obtained by a combined map and fold,
+    // with accumulation from left to right over
+    // the subForest.
     const go = a => x => {
         const [acc, v] = f(a)(root(x));
 
@@ -3656,9 +3666,9 @@ const reverse = xs =>
 // rights :: [Either a b] -> [b]
 const rights = xs =>
     xs.flatMap(
-        x => ("Either" === x.type) && (
-            undefined !== x.Right
-        ) ? [x.Right] : []
+        x => ("Right" in x) ? [
+            x.Right
+        ] : []
     );
 
 // root :: Tree a -> a

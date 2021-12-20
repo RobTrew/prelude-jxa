@@ -1,8 +1,11 @@
 ```javascript
 // allSame :: [a] -> Bool
 const allSame = xs =>
-    // True if no items in xs have differing values.
-    2 > xs.length || (
-        h => xs.slice(1).every(x => h === x)
-    )(xs[0]);
+    // True if xs has less than 2 items, or every item 
+    // in the tail of the list is identical to the head.
+    2 > xs.length || (() => {
+        const [h, ...t] = xs;
+
+        return t.every(x => h === x);
+    })();
 ```
