@@ -133,7 +133,7 @@ const all = p =>
 
 // allSame :: [a] -> Bool
 const allSame = xs =>
-    // True if xs has less than 2 items, or every item 
+    // True if xs has less than 2 items, or every item
     // in the tail of the list is identical to the head.
     2 > xs.length || (() => {
         const [h, ...t] = xs;
@@ -2322,7 +2322,7 @@ const iterate = f =>
         }
     };
 
-// iterateUntil :: (a -> Bool) -> (a -> a) -> 
+// iterateUntil :: (a -> Bool) -> (a -> a) ->
 // a -> Generator [a]
 const iterateUntil = p =>
     f => function* (x) {
