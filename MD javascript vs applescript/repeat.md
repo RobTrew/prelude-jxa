@@ -1,13 +1,3 @@
-```javascript
-// repeat :: a -> Generator [a]
-const repeat = function* (x) {
-    while (true) {
-        yield x;
-    }
-};
-```
-
-
 ```applescript
 -- repeat :: a -> Generator [a]
 on |repeat|(x)
@@ -17,4 +7,14 @@ on |repeat|(x)
         end |λ|
     end script
 end |repeat|
+```
+
+
+```javascript
+// repeat :: a -> Generator [a]
+const repeat = function* (x) {
+    while (true) {
+        yield x;
+    }
+};
 ```

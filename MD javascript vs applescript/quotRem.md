@@ -1,3 +1,11 @@
+```applescript
+-- quotRem :: Int -> Int -> (Int, Int)
+on quotRem(m, n)
+    {m div n, m mod n}
+end quotRem
+```
+
+
 ```javascript
 // quotRem :: Integral a => a -> a -> (a, a)
 const quotRem = m =>
@@ -7,12 +15,4 @@ const quotRem = m =>
     )(
         m % n
     );
-```
-
-
-```applescript
--- quotRem :: Int -> Int -> (Int, Int)
-on quotRem(m, n)
-    {m div n, m mod n}
-end quotRem
 ```

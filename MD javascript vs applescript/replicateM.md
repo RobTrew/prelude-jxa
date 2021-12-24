@@ -1,19 +1,3 @@
-```javascript
-// replicateM :: Int -> [a] -> [[a]]
-const replicateM = n =>
-    // Instance for lists (arrays) only here.
-    xs => {
-        const go = x => 0 >= x ? [
-            []
-        ] : liftA2List(cons)(xs)(
-            go(x - 1)
-        );
-
-        return go(n);
-    };
-```
-
-
 ```applescript
 -- Instance for lists only here
 
@@ -39,4 +23,20 @@ on replicateM(n, xs)
     
     go's |λ|(n)
 end replicateM
+```
+
+
+```javascript
+// replicateM :: Int -> [a] -> [[a]]
+const replicateM = n =>
+    // Instance for lists (arrays) only here.
+    xs => {
+        const go = x => 0 >= x ? [
+            []
+        ] : liftA2List(cons)(xs)(
+            go(x - 1)
+        );
+
+        return go(n);
+    };
 ```

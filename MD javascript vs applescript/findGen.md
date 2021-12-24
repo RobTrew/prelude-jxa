@@ -1,3 +1,23 @@
+```applescript
+-- findGen :: (a -> Bool) -> Gen [a] -> Maybe a
+on findGen(p, gen)
+    -- Just the first match for the predicate p
+    -- in the generator stream gen, or Nothing
+    -- if no match is found.
+    set mp to mReturn(p)
+    set v to gen's |λ|()
+    repeat until missing value is v or (|λ|(v) of mp)
+        set v to (|λ|() of gen)
+    end repeat
+    if missing value is v then
+        Nothing()
+    else
+        Just(v)
+    end if
+end findGen
+```
+
+
 ```javascript
 // findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 const findGen = p =>
@@ -18,24 +38,4 @@ const findGen = p =>
             Nothing()
         ) : Just(mb.value);
     };
-```
-
-
-```applescript
--- findGen :: (a -> Bool) -> Gen [a] -> Maybe a
-on findGen(p, gen)
-    -- Just the first match for the predicate p
-    -- in the generator stream gen, or Nothing
-    -- if no match is found.
-    set mp to mReturn(p)
-    set v to gen's |λ|()
-    repeat until missing value is v or (|λ|(v) of mp)
-        set v to (|λ|() of gen)
-    end repeat
-    if missing value is v then
-        Nothing()
-    else
-        Just(v)
-    end if
-end findGen
 ```

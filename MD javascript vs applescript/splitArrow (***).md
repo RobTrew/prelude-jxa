@@ -1,17 +1,3 @@
-```javascript
-// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
-const splitArrow = f =>
-    // The functions f and g combined in a single function
-    // from a tuple (x, y) to a tuple of (f(x), g(y))
-    // (see bimap)
-    g => ([a, b]) => Tuple(
-        f(a)
-    )(
-        g(b)
-    );
-```
-
-
 ```applescript
 -- splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
 on splitArrow(f, g)
@@ -23,4 +9,18 @@ on splitArrow(f, g)
         end |λ|
     end script
 end splitArrow
+```
+
+
+```javascript
+// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))
+const splitArrow = f =>
+    // The functions f and g combined in a single function
+    // from a tuple (x, y) to a tuple of (f(x), g(y))
+    // (see bimap)
+    g => ([a, b]) => Tuple(
+        f(a)
+    )(
+        g(b)
+    );
 ```
