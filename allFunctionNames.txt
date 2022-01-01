@@ -1,3 +1,4 @@
+Endo :: (a -> a) -> Endo a
 Just :: a -> Maybe a
 Left :: a -> Either a b
 Node :: a -> [Tree a] -> Tree a
@@ -22,6 +23,7 @@ apList (<*>) :: [(a -> b)] -> [a] -> [b]
 apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
+appEndo :: Endo a -> (a -> a)
 append (<>) :: [a] -> [a] -> [a]
 appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
@@ -173,6 +175,7 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr1 :: (a -> a -> a) -> [a] -> a
 foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 foldrTree :: (a -> b -> b) -> b -> Tree a -> b
+foldrTree2 :: (a -> b -> b) -> b -> t a -> b
 forestFromJSONLR :: JSON String -> Either String Forest a
 fromEnum :: Enum a => a -> Int
 fromLeft :: a -> Either a b -> a
@@ -283,6 +286,7 @@ mapFromList :: [(String, a)] -> Dict
 mapKeys :: (Key -> Key) -> IntMap a -> IntMap a
 mapMaybe :: (a -> Maybe b) -> [a] -> [b]
 mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
+mappEndo (<>) :: Endo a -> Endo a -> Endo a
 mappend (<>) :: Monoid a => a -> a -> a
 mappendComparing (<>) :: (a -> a -> Bool) (a -> a -> Bool) -> (a -> a -> Bool)
 mappendFn (<>) :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)

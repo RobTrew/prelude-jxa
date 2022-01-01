@@ -5,6 +5,7 @@ const mappend = a =>
     // defined for various monoids.
     ({
         "(a -> b)": () => mappendFn,
+        "Endo": () => mappEndo,
         "List": () => append,
         "Maybe": () => mappendMaybe,
         "Num": () => mappendOrd,

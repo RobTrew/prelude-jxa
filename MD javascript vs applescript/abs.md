@@ -1,11 +1,9 @@
 ```javascript
 // abs :: Num -> Num
-const abs =
+const abs = x =>
     // Absolute value of a given number
     // without the sign.
-    x => 0 > x ? (
-        -x
-    ) : x;
+    0 > x ? -x : x;
 ```
 
 

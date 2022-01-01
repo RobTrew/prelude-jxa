@@ -3,6 +3,16 @@
 /* eslint-disable strict */
 /* eslint-disable no-unused-vars */
 
+// Endo :: (a -> a) -> Endo a
+const Endo = f =>
+    // An endofunction lifted into an Endo object.
+    // A wrapper around an (a -> a) function, used as
+    // the monoid of endomorphisms under composition.
+    ({
+        type: "Endo",
+        appEndo: f
+    });
+
 // Just :: a -> Maybe a
 const Just = x => ({
     type: "Maybe",
@@ -114,12 +124,10 @@ const TupleN = (...args) => {
 };
 
 // abs :: Num -> Num
-const abs =
+const abs = x =>
     // Absolute value of a given number
     // without the sign.
-    x => 0 > x ? (
-        -x
-    ) : x;
+    0 > x ? -x : x;
 
 // add (+) :: Num a => a -> a -> a
 const add = a =>
@@ -227,6 +235,11 @@ const apTuple = ab =>
     // value of ab to the second value in an existing tuple,
     // and concatenating the first values of each tuple.
     liftA2Tuple(x => x)(ab);
+
+// appEndo :: Endo a -> (a -> a)
+const appEndo = endo =>
+    // Accessor for the function in an Endo type.
+    endo.appEndo;
 
 // append (<>) :: [a] -> [a] -> [a]
 const append = xs =>
@@ -1827,6 +1840,16 @@ const foldrTree = f =>
         return go(acc, node);
     };
 
+// foldrTree2 :: (a -> b -> b) -> b -> t a -> b
+const foldrTree2 = f =>
+    // A derivation of foldrTree
+    // from foldMapTree
+    z => t => appEndo(
+        foldMapTree(
+            compose(Endo, f)
+        )(t)
+    )(z);
+
 // forestFromJSONLR :: JSON String -> Either String Forest a
 const forestFromJSONLR = json => {
     // Either a message string or a Forest.
@@ -2752,12 +2775,19 @@ const mapMaybeGen = mf =>
         }
     };
 
+// mappEndo (<>) :: Endo a -> Endo a -> Endo a
+const mappEndo = a =>
+    // mappend is defined as composition
+    // for the Endo type.
+    b => Endo(x => a.appEndo(b.appEndo(x)));
+
 // mappend (<>) :: Monoid a => a -> a -> a
 const mappend = a =>
     // Associative operation
     // defined for various monoids.
     ({
         "(a -> b)": () => mappendFn,
+        "Endo": () => mappEndo,
         "List": () => append,
         "Maybe": () => mappendMaybe,
         "Num": () => mappendOrd,

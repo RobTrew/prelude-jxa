@@ -1,4 +1,10 @@
 {
+  "Endo": {
+    "code": "// Endo :: (a -> a) -> Endo a\nconst Endo = f =>\n    // An endofunction lifted into an Endo object.\n    // A wrapper around an (a -> a) function, used as\n    // the monoid of endomorphisms under composition.\n    ({\n        type: \"Endo\",\n        appEndo: f\n    });",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "Just": {
     "code": "// Just :: a -> Maybe a\nconst Just = x => ({\n    type: \"Maybe\",\n    Nothing: false,\n    Just: x\n});",
     "tags": [
@@ -61,7 +67,7 @@
     ]
   },
   "abs": {
-    "code": "// abs :: Num -> Num\nconst abs =\n    // Absolute value of a given number\n    // without the sign.\n    x => 0 > x ? (\n        -x\n    ) : x;",
+    "code": "// abs :: Num -> Num\nconst abs = x =>\n    // Absolute value of a given number\n    // without the sign.\n    0 > x ? -x : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -153,6 +159,12 @@
   },
   "apTuple (<*>)": {
     "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = ab =>\n    // A tuple obtained by applying the function in the second\n    // value of ab to the second value in an existing tuple,\n    // and concatenating the first values of each tuple.\n    liftA2Tuple(x => x)(ab);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "appEndo": {
+    "code": "// appEndo :: Endo a -> (a -> a)\nconst appEndo = endo =>\n    // Accessor for the function in an Endo type.\n    endo.appEndo;",
     "tags": [
       "JS Prelude"
     ]
@@ -1120,6 +1132,12 @@
       "tree"
     ]
   },
+  "foldrTree2": {
+    "code": "// foldrTree2 :: (a -> b -> b) -> b -> t a -> b\nconst foldrTree2 = f =>\n    // A derivation of foldrTree\n    // from foldMapTree\n    z => t => appEndo(\n        foldMapTree(\n            compose(Endo, f)\n        )(t)\n    )(z);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "forestFromJSONLR": {
     "code": "// forestFromJSONLR :: JSON String -> Either String Forest a\nconst forestFromJSONLR = json => {\n    // Either a message string or a Forest.\n    // Assumes a recursive [root, nest] JSON format,\n    // in which `root` is a parseable value string,\n    // and `nest` is a possibly empty list of\n    // [`root`, `nest`] pairs.\n    const go = vxs =>\n        Node(vxs[0])(vxs[1].map(go));\n\n    return bindLR(\n        jsonParseLR(json)\n    )(\n        xs => Right(xs.map(go))\n    );\n};",
     "tags": [
@@ -1816,8 +1834,14 @@
       "JS Prelude"
     ]
   },
+  "mappEndo": {
+    "code": "// mappEndo (<>) :: Endo a -> Endo a -> Endo a\nconst mappEndo = a =>\n    // mappend is defined as composition\n    // for the Endo type.\n    b => Endo(x => a.appEndo(b.appEndo(x)));",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "mappend (<>)": {
-    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation\n    // defined for various monoids.\n    ({\n        \"(a -> b)\": () => mappendFn,\n        \"List\": () => append,\n        \"Maybe\": () => mappendMaybe,\n        \"Num\": () => mappendOrd,\n        \"String\": () => append,\n        \"Tuple\": () => mappendTupleN,\n        \"TupleN\": () => mappendTupleN\n    })[typeName(a)]()(a);",
+    "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation\n    // defined for various monoids.\n    ({\n        \"(a -> b)\": () => mappendFn,\n        \"Endo\": () => mappEndo,\n        \"List\": () => append,\n        \"Maybe\": () => mappendMaybe,\n        \"Num\": () => mappendOrd,\n        \"String\": () => append,\n        \"Tuple\": () => mappendTupleN,\n        \"TupleN\": () => mappendTupleN\n    })[typeName(a)]()(a);",
     "tags": [
       "JS Prelude"
     ]
