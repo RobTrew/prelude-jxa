@@ -1,11 +1,3 @@
-```applescript
--- showList :: [a] -> String
-on showList(xs)
-    "[" & intercalateS(", ", map(my show, xs)) & "]"
-end showList
-```
-
-
 ```javascript
 // showList :: [a] -> String
 const showList = xs => {
@@ -16,4 +8,12 @@ const showList = xs => {
 
     return `[${s}]`;
 };
+```
+
+
+```applescript
+-- showList :: [a] -> String
+on showList(xs)
+    "[" & intercalateS(", ", map(my show, xs)) & "]"
+end showList
 ```

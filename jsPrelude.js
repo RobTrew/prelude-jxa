@@ -1421,6 +1421,30 @@ const filePathTree = fpAnchor => trees => {
     );
 };
 
+// filesCopiedLR :: FilePath -> [FilePath] ->
+// FilePath -> IO Either String [FilePath]
+const filesCopiedLR = fpSourceFolder =>
+    // Either a message, or a list of the files
+    // successfully copied from the source folder
+    // to the target folder, or already found in place.
+    fileNames => fpTargetFolder => {
+        const
+            lrs = fileNames.map(k => {
+                const tgt = combine(fpTargetFolder)(k);
+
+                return doesFileExist(tgt) ? (
+                    Right(tgt)
+                ) : copyFileLR(
+                    combine(fpSourceFolder)(k)
+                )(tgt);
+            }),
+            ls = lefts(lrs);
+
+        return 0 < ls.length ? (
+            Left(ls[0])
+        ) : Right(rights(lrs));
+    };
+
 // filter :: (a -> Bool) -> [a] -> [a]
 const filter = p =>
     // The elements of xs which match
@@ -1699,19 +1723,12 @@ const foldMapList = f =>
 const foldMapTree = f => {
     // Result of mapping each element of the tree to
     // a monoid, and combining with mappend.
-    const go = tree => {
-        const
-            x = root(tree),
-            xs = nest(tree);
-
-        return 0 < xs.length ? (
-            mappend(
-                f(x)
-            )(
-                foldl1(mappend)(xs.map(go))
-            )
-        ) : f(x);
-    };
+    const go = tree =>
+        nest(tree).map(go)
+        .reduce(
+            uncurry(mappend),
+            f(root(tree))
+        );
 
     return go;
 };
@@ -1856,8 +1873,10 @@ const fst = tpl =>
     // First member of a pair.
     tpl[0];
 
-// ft :: (Int, Int) -> [Int]
+// ft :: Int -> Int -> [Int]
 const ft = m =>
+    // From To. 
+    // An abbreviation of enumFromTo.
     n => Array.from({
         length: 1 + n - m
     }, (_, i) => m + i);

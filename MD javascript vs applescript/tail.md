@@ -1,3 +1,17 @@
+```javascript
+// tail :: [a] -> [a]
+const tail = xs =>
+    // A new list consisting of all
+    // items of xs except the first.
+    "GeneratorFunction" !== xs.constructor
+    .constructor.name ? (
+        0 < xs.length ? (
+            xs.slice(1)
+        ) : undefined
+    ) : (take(1)(xs), xs);
+```
+
+
 ```applescript
 -- tail :: [a] -> [a]
 on tail(xs)
@@ -20,18 +34,4 @@ on tail(xs)
         end if
     end if
 end tail
-```
-
-
-```javascript
-// tail :: [a] -> [a]
-const tail = xs =>
-    // A new list consisting of all
-    // items of xs except the first.
-    "GeneratorFunction" !== xs.constructor
-    .constructor.name ? (
-        0 < xs.length ? (
-            xs.slice(1)
-        ) : undefined
-    ) : (take(1)(xs), xs);
 ```

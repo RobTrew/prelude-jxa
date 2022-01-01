@@ -1,12 +1,3 @@
-```applescript
--- sort :: Ord a => [a] -> [a]
-on sort(xs)
-    ((current application's NSArray's arrayWithArray:xs)'s ¬
-        sortedArrayUsingSelector:"compare:") as list
-end sort
-```
-
-
 ```javascript
 // sort :: Ord a => [a] -> [a]
 const sort = xs =>
@@ -20,4 +11,13 @@ const sort = xs =>
             ) : 0
         )
     );
+```
+
+
+```applescript
+-- sort :: Ord a => [a] -> [a]
+on sort(xs)
+    ((current application's NSArray's arrayWithArray:xs)'s ¬
+        sortedArrayUsingSelector:"compare:") as list
+end sort
 ```

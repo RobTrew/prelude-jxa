@@ -1,3 +1,20 @@
+```javascript
+// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
+const foldMapTree = f => {
+    // Result of mapping each element of the tree to
+    // a monoid, and combining with mappend.
+    const go = tree =>
+        nest(tree).map(go)
+        .reduce(
+            uncurry(mappend),
+            f(root(tree))
+        );
+
+    return go;
+};
+```
+
+
 ```applescript
 -- foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 on foldMapTree(f, tree)
@@ -14,28 +31,4 @@ on foldMapTree(f, tree)
     end script
     |λ|(tree) of go
 end foldMapTree
-```
-
-
-```javascript
-// foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
-const foldMapTree = f => {
-    // Result of mapping each element of the tree to
-    // a monoid, and combining with mappend.
-    const go = tree => {
-        const
-            x = root(tree),
-            xs = nest(tree);
-
-        return 0 < xs.length ? (
-            mappend(
-                f(x)
-            )(
-                foldl1(mappend)(xs.map(go))
-            )
-        ) : f(x);
-    };
-
-    return go;
-};
 ```

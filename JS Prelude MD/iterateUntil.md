@@ -1,5 +1,5 @@
 ```javascript
-// iterateUntil :: (a -> Bool) -> (a -> a) -> 
+// iterateUntil :: (a -> Bool) -> (a -> a) ->
 // a -> Generator [a]
 const iterateUntil = p =>
     f => function* (x) {

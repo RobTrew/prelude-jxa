@@ -138,6 +138,7 @@ filePathTree :: filePath -> [Tree String] -> Tree FilePath
 fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
+filesCopiedLR :: FilePath -> [FilePath] -> FilePath -> IO Either String [FilePath]
 filter :: (a -> Bool) -> [a] -> [a]
 filterGen :: (a -> Bool) -> Gen [a] -> Gen [a]
 filterTree (a -> Bool) -> Tree a -> [a]
@@ -178,7 +179,7 @@ fromLeft :: a -> Either a b -> a
 fromMaybe :: a -> Maybe a -> a
 fromRight :: b -> Either a b -> b
 fst :: (a, b) -> a
-ft :: (Int, Int) -> [Int]
+ft :: Int -> Int -> [Int]
 gcd :: Integral a => a -> a -> a
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
