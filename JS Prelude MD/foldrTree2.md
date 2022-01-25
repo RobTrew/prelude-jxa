@@ -3,9 +3,7 @@
 const foldrTree2 = f =>
     // A derivation of foldrTree
     // from foldMapTree
-    z => t => appEndo(
-        foldMapTree(
-            compose(Endo, f)
-        )(t)
-    )(z);
+    z => t => foldMapTree(
+        compose(Endo, f)
+    )(t).appEndo(z);
 ```

@@ -164,6 +164,7 @@ fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 fmapTree :: (a -> b) -> Tree a -> Tree b
 fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
 foldList :: Monoid m => [m] -> m
+foldMap :: Monoid m => (a -> m) -> t a -> m
 foldMapList :: Monoid m => (a -> m) -> t a -> m
 foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 foldTree :: (a -> [b] -> b) -> Tree a -> b
@@ -176,6 +177,7 @@ foldr1 :: (a -> a -> a) -> [a] -> a
 foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 foldrTree2 :: (a -> b -> b) -> b -> t a -> b
+foldr_ :: (a -> b -> b) -> b -> t a -> b
 forestFromJSONLR :: JSON String -> Either String Forest a
 fromEnum :: Enum a => a -> Int
 fromLeft :: a -> Either a b -> a

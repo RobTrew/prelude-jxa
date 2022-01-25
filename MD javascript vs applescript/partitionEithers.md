@@ -1,17 +1,3 @@
-```javascript
-// partitionEithers :: [Either a b] -> ([a],[b])
-const partitionEithers = xs =>
-    xs.reduce(
-        (a, x) => (
-            "Left" in x ? (
-                first(ys => [...ys, x.Left])
-            ) : second(ys => [...ys, x.Right])
-        )(a),
-        Tuple([])([])
-    );
-```
-
-
 ```applescript
 -- partitionEithers :: [Either a b] -> ([a],[b])
 on partitionEithers(xs)
@@ -26,4 +12,18 @@ on partitionEithers(xs)
     end repeat
     Tuple(ys, zs)
 end partitionEithers
+```
+
+
+```javascript
+// partitionEithers :: [Either a b] -> ([a],[b])
+const partitionEithers = xs =>
+    xs.reduce(
+        (a, x) => (
+            "Left" in x ? (
+                first(ys => [...ys, x.Left])
+            ) : second(ys => [...ys, x.Right])
+        )(a),
+        Tuple([])([])
+    );
 ```

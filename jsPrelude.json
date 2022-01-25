@@ -1060,6 +1060,12 @@
       "JS Prelude"
     ]
   },
+  "foldMap": {
+    "code": "// foldMap :: Monoid m => (a -> m) -> t a -> m\nconst foldMap = f => t =>\n    // Each element of the structure mapped to a monoid,\n    // with the results combined by (<>)\n    ({\n        Node: () => foldMapTree(f),\n        List: () => foldMapList(f)\n    })[typeName(t)]()(t);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "foldMapList": {
     "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over the combined values of a structure.\n    xs => 1 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => mappend(a)(f(x)),\n            xs[0]\n        )\n    ) : xs.map(f);",
     "tags": [
@@ -1133,7 +1139,13 @@
     ]
   },
   "foldrTree2": {
-    "code": "// foldrTree2 :: (a -> b -> b) -> b -> t a -> b\nconst foldrTree2 = f =>\n    // A derivation of foldrTree\n    // from foldMapTree\n    z => t => appEndo(\n        foldMapTree(\n            compose(Endo, f)\n        )(t)\n    )(z);",
+    "code": "// foldrTree2 :: (a -> b -> b) -> b -> t a -> b\nconst foldrTree2 = f =>\n    // A derivation of foldrTree\n    // from foldMapTree\n    z => t => foldMapTree(\n        compose(Endo, f)\n    )(t).appEndo(z);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "foldr_": {
+    "code": "// foldr_ :: (a -> b -> b) -> b -> t a -> b\nconst foldr_ = f =>\n    // Reduction of a structure, in terms of a binary\n    // operator, from right to left.\n    // A generic foldr, applicable to trees as well\n    // as to lists.\n    z => t => appEndo(\n        foldMap(\n            compose(Endo, f)\n        )(t)\n    )(z);",
     "tags": [
       "JS Prelude"
     ]
@@ -2763,7 +2775,7 @@
     ]
   },
   "sortOn": {
-    "code": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = f =>\n    // Equivalent to sortBy(comparing(f)), but with f(x)\n    // evaluated only once for each x in xs.\n    // ('Schwartzian' decorate-sort-undecorate).\n    xs => xs.map(\n        x => Tuple(f(x))(x)\n    )\n    .sort(uncurry(comparing(fst)))\n    .map(snd);",
+    "code": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = f =>\n    // Equivalent to sortBy(comparing(f)), but with f(x)\n    // evaluated only once for each x in xs.\n    // ('Schwartzian' decorate-sort-undecorate).\n    xs => xs.map(\n        x => Tuple(f(x))(x)\n    )\n    .sort(uncurry(comparing(x => x[0])))\n    .map(x => x[1]);",
     "tags": [
       "JS Prelude",
       "core"

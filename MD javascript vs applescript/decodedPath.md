@@ -1,9 +1,3 @@
-```javascript
-// decodedPath :: Percent Encoded String -> FilePath
-const decodedPath = decodeURI;
-```
-
-
 ```applescript
 -- decodedPath :: Percent Encoded String -> FilePath
 on decodedPath(fp)
@@ -13,4 +7,10 @@ on decodedPath(fp)
             of stringWithString_(fp) ¬
             of its NSString) as string
 end decodedPath
+```
+
+
+```javascript
+// decodedPath :: Percent Encoded String -> FilePath
+const decodedPath = decodeURI;
 ```

@@ -1722,6 +1722,15 @@ const foldList = xs =>
     // The elements of xs combined.
     foldMapList(x => x)(xs);
 
+// foldMap :: Monoid m => (a -> m) -> t a -> m
+const foldMap = f => t =>
+    // Each element of the structure mapped to a monoid,
+    // with the results combined by (<>)
+    ({
+        Node: () => foldMapTree(f),
+        List: () => foldMapList(f)
+    })[typeName(t)]()(t);
+
 // foldMapList :: Monoid m => (a -> m) -> t a -> m
 const foldMapList = f =>
     // f mapped over the combined values of a structure.
@@ -1844,8 +1853,18 @@ const foldrTree = f =>
 const foldrTree2 = f =>
     // A derivation of foldrTree
     // from foldMapTree
+    z => t => foldMapTree(
+        compose(Endo, f)
+    )(t).appEndo(z);
+
+// foldr_ :: (a -> b -> b) -> b -> t a -> b
+const foldr_ = f =>
+    // Reduction of a structure, in terms of a binary
+    // operator, from right to left.
+    // A generic foldr, applicable to trees as well
+    // as to lists.
     z => t => appEndo(
-        foldMapTree(
+        foldMap(
             compose(Endo, f)
         )(t)
     )(z);
@@ -4171,8 +4190,8 @@ const sortOn = f =>
     xs => xs.map(
         x => Tuple(f(x))(x)
     )
-    .sort(uncurry(comparing(fst)))
-    .map(snd);
+    .sort(uncurry(comparing(x => x[0])))
+    .map(x => x[1]);
 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p =>

@@ -1,15 +1,3 @@
-```javascript
-// liftA2Tuple :: Monoid m =>
-// (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
-const liftA2Tuple = f =>
-    ([a, b]) => ([c, d]) => Tuple(
-        mappend(a)(c)
-    )(
-        f(b)(d)
-    );
-```
-
-
 ```applescript
 -- liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
 on liftA2Tuple(f, a, b)
@@ -22,4 +10,16 @@ on liftA2Tuple(f, a, b)
     end if
     Tuple(mappend(|1| of a, b1), mReturn(f)'s |λ|(|2| of a, b2))
 end liftA2Tuple
+```
+
+
+```javascript
+// liftA2Tuple :: Monoid m =>
+// (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
+const liftA2Tuple = f =>
+    ([a, b]) => ([c, d]) => Tuple(
+        mappend(a)(c)
+    )(
+        f(b)(d)
+    );
 ```

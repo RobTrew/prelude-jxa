@@ -1,16 +1,3 @@
-```javascript
-// evalJSMay :: String -> Maybe a
-const evalJSMay = s => {
-    try {
-        // eslint-disable-next-line no-eval
-        return Just(eval(`(${s})`));
-    } catch (e) {
-        return Nothing();
-    }
-};
-```
-
-
 ```applescript
 -- evalJSMay :: String -> Maybe a
 on evalJSMay(strJS)
@@ -35,4 +22,17 @@ on evalJSMay(strJS)
         Just(v)
     end if
 end evalJSMay
+```
+
+
+```javascript
+// evalJSMay :: String -> Maybe a
+const evalJSMay = s => {
+    try {
+        // eslint-disable-next-line no-eval
+        return Just(eval(`(${s})`));
+    } catch (e) {
+        return Nothing();
+    }
+};
 ```

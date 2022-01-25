@@ -1,3 +1,11 @@
+```applescript
+-- maximumMay :: Ord a => [a] -> Maybe a
+on maximumMay(xs)
+    foldl1May(max, xs)
+end maximumMay
+```
+
+
 ```javascript
 // maximumMay :: Ord a => [a] -> Maybe a
 const maximumMay = xs =>
@@ -9,12 +17,4 @@ const maximumMay = xs =>
             xs[0]
         ))
     ) : Nothing();
-```
-
-
-```applescript
--- maximumMay :: Ord a => [a] -> Maybe a
-on maximumMay(xs)
-    foldl1May(max, xs)
-end maximumMay
 ```

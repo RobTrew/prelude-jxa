@@ -7,6 +7,6 @@ const sortOn = f =>
     xs => xs.map(
         x => Tuple(f(x))(x)
     )
-    .sort(uncurry(comparing(fst)))
-    .map(snd);
+    .sort(uncurry(comparing(x => x[0])))
+    .map(x => x[1]);
 ```
