@@ -358,7 +358,7 @@
     ]
   },
   "catMaybes": {
-    "code": "// catMaybes :: [Maybe a] -> [a]\nconst catMaybes = mbs =>\n    mbs.flatMap(m => m.Nothing ? [] : [m.Just]);",
+    "code": "// catMaybes :: [Maybe a] -> [a]\nconst catMaybes = mbs =>\n    mbs.flatMap(\n        m => m.Nothing ? (\n            []\n        ) : [m.Just]\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -925,7 +925,7 @@
     ]
   },
   "filterTree": {
-    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all values in the tree\n    // which match the predicate p.\n    foldTree(x => xs => concat(\n        p(x) ? [\n            [x], ...xs\n        ] : xs\n    ));",
+    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all values in the tree\n    // which match the predicate p.\n    foldTree(x => xs =>\n        (\n            p(x) ? [\n                [x], ...xs\n            ] : xs\n        ).flat(1)\n    );",
     "tags": [
       "JS Prelude",
       "tree"

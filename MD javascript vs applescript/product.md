@@ -1,3 +1,10 @@
+```javascript
+// product :: [Num] -> Num
+const product = xs =>
+    xs.reduce((a, x) => a * x, 1);
+```
+
+
 ```applescript
 -- product :: [Num] -> Num
 on product(xs)
@@ -9,11 +16,4 @@ on product(xs)
     
     foldl(multiply, 1, xs)
 end product
-```
-
-
-```javascript
-// product :: [Num] -> Num
-const product = xs =>
-    xs.reduce((a, x) => a * x, 1);
 ```

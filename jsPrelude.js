@@ -520,7 +520,11 @@ const caseOf = pvs =>
 
 // catMaybes :: [Maybe a] -> [a]
 const catMaybes = mbs =>
-    mbs.flatMap(m => m.Nothing ? [] : [m.Just]);
+    mbs.flatMap(
+        m => m.Nothing ? (
+            []
+        ) : [m.Just]
+    );
 
 // ceiling :: Num -> Int
 const ceiling = x => {
@@ -1489,11 +1493,13 @@ const filterGen = p =>
 const filterTree = p =>
     // List of all values in the tree
     // which match the predicate p.
-    foldTree(x => xs => concat(
-        p(x) ? [
-            [x], ...xs
-        ] : xs
-    ));
+    foldTree(x => xs =>
+        (
+            p(x) ? [
+                [x], ...xs
+            ] : xs
+        ).flat(1)
+    );
 
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 const filteredSubTrees = p => {

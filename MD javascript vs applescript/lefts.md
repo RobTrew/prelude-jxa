@@ -1,3 +1,14 @@
+```javascript
+// lefts :: [Either a b] -> [a]
+const lefts = xs =>
+    xs.flatMap(
+        x => ("Left" in x) ? [
+            x.Left
+        ] : []
+    );
+```
+
+
 ```applescript
 -- lefts :: [Either a b] -> [a]
 on lefts(xs)
@@ -17,15 +28,4 @@ on lefts(xs)
     end script
     concatMap(go, xs)
 end lefts
-```
-
-
-```javascript
-// lefts :: [Either a b] -> [a]
-const lefts = xs =>
-    xs.flatMap(
-        x => ("Left" in x) ? [
-            x.Left
-        ] : []
-    );
 ```

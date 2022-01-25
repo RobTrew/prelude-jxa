@@ -1,3 +1,14 @@
+```javascript
+// catMaybes :: [Maybe a] -> [a]
+const catMaybes = mbs =>
+    mbs.flatMap(
+        m => m.Nothing ? (
+            []
+        ) : [m.Just]
+    );
+```
+
+
 ```applescript
 -- catMaybes :: [Maybe a] -> [a]
 on catMaybes(mbs)
@@ -12,11 +23,4 @@ on catMaybes(mbs)
     end script
     concatMap(emptyOrListed, mbs)
 end catMaybes
-```
-
-
-```javascript
-// catMaybes :: [Maybe a] -> [a]
-const catMaybes = mbs =>
-    mbs.flatMap(m => m.Nothing ? [] : [m.Just]);
 ```
