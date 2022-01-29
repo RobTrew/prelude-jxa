@@ -4276,8 +4276,8 @@ const splitExtension = fp => {
 
 // splitFileName :: FilePath -> (String, String)
 const splitFileName = strPath =>
-    // Tuple of directory and file name, derived from file path.
-    // Inverse of combine.
+    // Tuple of directory and file name,
+    // derived from file path. (Inverse of combine).
     ("" !== strPath) ? (
         ("/" !== strPath[strPath.length - 1]) ? (() => {
             const
