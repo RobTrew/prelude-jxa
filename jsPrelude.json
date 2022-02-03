@@ -370,7 +370,7 @@
     ]
   },
   "center": {
-    "code": "// center :: Int -> Char -> String -> String\nconst center = n =>\n    // Size of space -> filler Char ->\n    // String -> Centered String\n    c => s => {\n        const gap = n - s.length;\n\n        return 0 < gap ? (() => {\n            const pre = c.repeat(Math.floor(gap / 2));\n\n            return pre + s + pre + c.repeat(gap % 2);\n        })() : s;\n    };",
+    "code": "// center :: Int -> Char -> String -> String\nconst center = n =>\n    // Size of space -> filler Char ->\n    // String -> Centered String\n    c => s => {\n        const gap = n - s.length;\n\n        return 0 < gap ? (() => {\n            const\n                margin = c.repeat(Math.floor(gap / 2)),\n                dust = c.repeat(gap % 2);\n\n            return `${margin}${s}${margin}${dust}`;\n        })() : s;\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1042,7 +1042,7 @@
     ]
   },
   "fmapTree (<$>)": {
-    "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a\n    // structure-preserving application of f\n    // to each root in the existing tree.\n    const go = t => Node(\n        f(t.root)\n    )(\n        t.nest.map(go)\n    );\n\n    return go;\n};",
+    "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a\n    // structure-preserving application of f\n    // to each root in the existing tree.\n    const go = t => Node(\n        f(root(t))\n    )(\n        nest(t).map(go)\n    );\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1562,7 +1562,13 @@
     ]
   },
   "iterateUntil": {
-    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) ->\n// a -> Generator [a]\nconst iterateUntil = p =>\n    f => function* (x) {\n        let v = x;\n\n        while (!p(v)) {\n            yield v;\n            v = f(v);\n        }\n    };",
+    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p => f => x => {\n    const\n        go = v => p(v) ? (\n            v\n        ) : [v].concat(go(f(v)));\n\n    return go(x);\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "iterateUntilGen": {
+    "code": "// iterateUntilGen :: (a -> Bool) -> (a -> a) ->\n// a -> Generator [a]\nconst iterateUntilGen = p =>\n    f => function* (x) {\n        let v = x;\n\n        while (!p(v)) {\n            yield v;\n            v = f(v);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1600,7 +1606,7 @@
     ]
   },
   "justifyRight": {
-    "code": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = n =>\n    // The string s, preceded by enough padding (with\n    // the character c) to reach the string length n.\n    c => s => Boolean(s) ? (\n        s.padStart(n, c)\n    ) : \"\";",
+    "code": "// justifyRight :: Int -> Char -> String -> String\nconst justifyRight = n =>\n    // The string s, preceded by enough padding (with\n    // the character c) to reach the string length n.\n    c => s => n > s.length ? (\n        s.padStart(n, c)\n    ) : s;",
     "tags": [
       "JS Prelude",
       "core"

@@ -1,15 +1,13 @@
 ```javascript
-// iterateUntil :: (a -> Bool) -> (a -> a) ->
-// a -> Generator [a]
-const iterateUntil = p =>
-    f => function* (x) {
-        let v = x;
+// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
+const iterateUntil = p => f => x => {
+    const
+        go = v => p(v) ? (
+            v
+        ) : [v].concat(go(f(v)));
 
-        while (!p(v)) {
-            yield v;
-            v = f(v);
-        }
-    };
+    return go(x);
+};
 ```
 
 

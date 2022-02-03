@@ -243,7 +243,8 @@ isSuffixOf :: Eq a => [a] -> [a] -> Bool
 isUpper :: Char -> Bool
 iso8601Local :: Date -> String
 iterate :: (a -> a) -> a -> Gen [a]
-iterateUntil :: (a -> Bool) -> (a -> a) -> a -> Generator [a]
+iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
+iterateUntilGen :: (a -> Bool) -> (a -> a) -> a -> Generator [a]
 join :: Monad m => m (m a) -> m a
 jsonFromTree :: Tree a -> String
 jsonLog :: a -> IO ()
