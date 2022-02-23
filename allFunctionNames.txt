@@ -490,7 +490,7 @@ toTitle :: String -> String
 toUpper :: String -> String
 transpose :: [[a]] -> [[a]]
 transpose_ :: [[a]] -> [[a]]
-traverse :: (Applicative f" Traversable t) -> (a -> f b) -> t a -> f (t b)
+traverse :: (Applicative f, Traversable t) -> (a -> f b) -> t a -> f (t b)
 traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
 traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)

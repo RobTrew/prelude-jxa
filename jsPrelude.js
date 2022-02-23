@@ -4785,7 +4785,7 @@ const transpose_ = rows =>
         )
     ) : [];
 
-// traverse :: (Applicative f" Traversable t) ->
+// traverse :: (Applicative f, Traversable t) ->
 // (a -> f b) -> t a -> f (t b)
 const traverse = f =>
     // Each element of a structure mapped to an
