@@ -326,8 +326,10 @@ const readFileLR = fp => {
     ) : Right(ObjC.unwrap(ns));
 };
 
-// readPlistFileLR :: FilePath -> Either String Object
+// readPlistFileLR :: FilePath -> Either String Dict
 const readPlistFileLR = fp =>
+    // Either a message or a dictionary of key-value
+    // pairs read from the given file path.
     bindLR(
         doesFileExist(fp) ? (
             Right(filePath(fp))
@@ -336,12 +338,10 @@ const readPlistFileLR = fp =>
         fpFull => {
             const
                 e = $(),
-                maybeDict = (
-                    $.NSDictionary
-                    .dictionaryWithContentsOfURLError(
-                        $.NSURL.fileURLWithPath(fpFull),
-                        e
-                    )
+                maybeDict = $.NSDictionary
+                .dictionaryWithContentsOfURLError(
+                    $.NSURL.fileURLWithPath(fpFull),
+                    e
                 );
 
             return maybeDict.isNil() ? (() => {

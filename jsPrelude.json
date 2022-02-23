@@ -1906,6 +1906,12 @@
       "JS Prelude"
     ]
   },
+  "matrix": {
+    "code": "// matrix Int -> Int -> (Int -> Int -> a) -> [[a]]\nconst matrix = nRows => nCols =>\n    // A matrix of a given number of columns and rows,\n    // in which each value is a given function of its\n    // (zero-based) column and row indices.\n    f => Array.from({\n        length: nRows\n    }, (_, iRow) => Array.from({\n        length: nCols\n    }, (__, iCol) => f(iRow)(iCol)));",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "max": {
     "code": "// max :: Ord a => a -> a -> a\nconst max = a =>\n    // b if its greater than a,\n    // otherwise a.\n    b => gt(b)(a) ? (\n        b\n    ) : a;",
     "tags": [
@@ -2393,7 +2399,7 @@
     ]
   },
   "readPlistFileLR": {
-    "code": "// readPlistFileLR :: FilePath -> Either String Object\nconst readPlistFileLR = fp =>\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(\n        fpFull => {\n            const\n                e = $(),\n                maybeDict = (\n                    $.NSDictionary\n                    .dictionaryWithContentsOfURLError(\n                        $.NSURL.fileURLWithPath(fpFull),\n                        e\n                    )\n                );\n\n            return maybeDict.isNil() ? (() => {\n                const\n                    msg = ObjC.unwrap(\n                        e.localizedDescription\n                    );\n\n                return Left(`readPlistFileLR:\\n\\t${msg}`);\n            })() : Right(ObjC.deepUnwrap(maybeDict));\n        }\n    );",
+    "code": "// readPlistFileLR :: FilePath -> Either String Dict\nconst readPlistFileLR = fp =>\n    // Either a message or a dictionary of key-value\n    // pairs read from the given file path.\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(\n        fpFull => {\n            const\n                e = $(),\n                maybeDict = $.NSDictionary\n                .dictionaryWithContentsOfURLError(\n                    $.NSURL.fileURLWithPath(fpFull),\n                    e\n                );\n\n            return maybeDict.isNil() ? (() => {\n                const\n                    msg = ObjC.unwrap(\n                        e.localizedDescription\n                    );\n\n                return Left(`readPlistFileLR:\\n\\t${msg}`);\n            })() : Right(ObjC.deepUnwrap(maybeDict));\n        }\n    );",
     "tags": [
       "JS Prelude",
       "jxa"

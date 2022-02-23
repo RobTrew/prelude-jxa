@@ -298,6 +298,7 @@ mappendOrd (<>) :: Ordering -> Ordering -> Ordering
 mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 mappendTupleN (<>) :: (a, b, ...) -> (a, b, ...) -> (a, b, ...)
 matching :: [a] -> (a -> Int -> [a] -> Bool)
+matrix Int -> Int -> (Int -> Int -> a) -> [[a]]
 max :: Ord a => a -> a -> a
 maxBound :: a -> a
 maximum :: Ord a => [a] -> a
@@ -375,7 +376,7 @@ readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String IO String
 readHex :: String -> Int
 readLR :: Read a => String -> Either String a
-readPlistFileLR :: FilePath -> Either String Object
+readPlistFileLR :: FilePath -> Either String Dict
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
 regexMatches :: Regex String -> String -> [[String]]

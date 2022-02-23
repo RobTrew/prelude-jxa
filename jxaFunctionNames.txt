@@ -21,7 +21,7 @@ modificationTime :: FilePath -> Either String Date
 newUUID :: () -> IO UUID String
 readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String IO String
-readPlistFileLR :: FilePath -> Either String Object
+readPlistFileLR :: FilePath -> Either String Dict
 removeFile :: FilePath -> Either String String
 renamedFile :: FilePath -> FilePath ->
 setCurrentDirectory :: String -> IO ()
