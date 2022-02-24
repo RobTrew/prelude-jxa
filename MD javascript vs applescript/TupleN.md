@@ -1,3 +1,13 @@
+```applescript
+-- Requires N arguments to be wrapped as one list in AS 
+-- (the JS version accepts N separate arguments)
+-- TupleN :: a -> b ...  -> (a, b ... )
+on TupleN(argv)
+    tupleFromList(argv)
+end TupleN
+```
+
+
 ```javascript
 // TupleN :: a -> b ...  -> (a, b ... )
 const TupleN = (...args) => {
@@ -20,14 +30,4 @@ const TupleN = (...args) => {
         })
     ) : args.reduce((f, x) => f(x), Tuple);
 };
-```
-
-
-```applescript
--- Requires N arguments to be wrapped as one list in AS 
--- (the JS version accepts N separate arguments)
--- TupleN :: a -> b ...  -> (a, b ... )
-on TupleN(argv)
-    tupleFromList(argv)
-end TupleN
 ```

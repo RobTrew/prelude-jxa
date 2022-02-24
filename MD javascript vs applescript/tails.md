@@ -1,13 +1,3 @@
-```javascript
-// tails :: [a] -> [[a]]
-const tails = xs =>
-    xs.map((_, i) => xs.slice(i))
-    .concat([
-        []
-    ]);
-```
-
-
 ```applescript
 -- tails :: [a] -> [[a]]
 on tails(xs)
@@ -23,4 +13,14 @@ on tails(xs)
     end script
     map(residue, es) & {{}}
 end tails
+```
+
+
+```javascript
+// tails :: [a] -> [[a]]
+const tails = xs =>
+    xs.map((_, i) => xs.slice(i))
+    .concat([
+        []
+    ]);
 ```
