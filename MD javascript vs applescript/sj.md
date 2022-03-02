@@ -1,12 +1,3 @@
-```applescript
--- Abbreviation for quick testing
--- sj :: a -> String
-on sj(x)
-    showJSON(x)
-end sj
-```
-
-
 ```javascript
 // sj :: a -> String
 const sj = (...args) =>
@@ -20,4 +11,13 @@ const sj = (...args) =>
             args[1], null, args[0]
         ] : [args[0], null, 2]
     );
+```
+
+
+```applescript
+-- Abbreviation for quick testing
+-- sj :: a -> String
+on sj(x)
+    showJSON(x)
+end sj
 ```

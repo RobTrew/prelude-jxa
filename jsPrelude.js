@@ -2161,6 +2161,19 @@ const insertDict = k =>
         [k]: v
     });
 
+// insertWith :: Ord k => (a -> a -> a) ->
+// k -> a -> Map k a -> Map k a
+const insertWith = f =>
+    // A new dictionary updated with a (k, f(v)(x)) pair.
+    // Where there is no existing v for k, the supplied
+    // x is used directly.
+    k => x => dict => Object.assign({},
+        dict, {
+            [k]: k in dict ? (
+                f(dict[k])(x)
+            ) : x
+        });
+
 // intToDigit :: Int -> Char
 const intToDigit = n =>
     n >= 0 && n < 16 ? (
@@ -4047,6 +4060,18 @@ const showLog = (...args) =>
         .map(JSON.stringify)
         .join(" -> ")
     );
+
+// showMatrix :: (a -> String) -> [[a]] -> String
+const showMatrix = fShow =>
+    rows => 0 < rows.length ? (() => {
+        const w = fShow(Math.max(...rows.flat())).length;
+
+        return rows.map(
+            cells => cells.map(
+                x => fShow(x).padStart(w, " ")
+            ).join(" ")
+        ).join("\n");
+    })() : "";
 
 // showMaybe :: Maybe a -> String
 const showMaybe = mb =>

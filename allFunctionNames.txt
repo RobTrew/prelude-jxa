@@ -214,6 +214,7 @@ inits :: [a] -> [[a]]
 insert :: Ord a => a -> [a] -> [a]
 insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
 insertDict :: String -> a -> Dict -> Dict
+insertWith :: Ord k => (a -> a -> a) -> k -> a -> Map k a -> Map k a
 intToDigit :: Int -> Char
 intercalate :: [a] -> [[a]] -> [a]
 intercalateS :: String -> [String] -> String
@@ -422,6 +423,7 @@ showJSON :: a -> String
 showLR :: Either a b -> String
 showList :: [a] -> String
 showLog :: a -> IO ()
+showMatrix :: (a -> String) -> [[a]] -> String
 showMaybe :: Maybe a -> String
 showMenuLR :: Bool -> String -> String -> [String] -> String -> Either String [String]
 showOrdering :: Ordering -> String
