@@ -138,7 +138,7 @@ const add = a =>
 // Dict Key a -> Dict Key a
 const adjust = f => k => dict =>
     // The orginal dictionary, unmodified, if k is
-    // not an existing key,
+    // not an existing key.
     // Otherwise, a new copy in which the existing
     // value of k is updated by application of f.
     k in dict ? (
