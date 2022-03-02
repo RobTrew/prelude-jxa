@@ -78,6 +78,12 @@
       "JS Prelude"
     ]
   },
+  "adjust": {
+    "code": "// adjust :: (a -> a) -> Key ->\n// Dict Key a -> Dict Key a\nconst adjust = f => k => dict =>\n    // The orginal dictionary, unmodified, if k is\n    // not an existing key,\n    // Otherwise, a new copy in which the existing\n    // value of k is updated by application of f.\n    k in dict ? (\n        Object.assign({}, dict, {\n            [k]: f(dict[k])\n        })\n    ) : dict;",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "all": {
     "code": "// all :: (a -> Bool) -> [a] -> Bool\nconst all = p =>\n    // True if p(x) holds for every x in xs.\n    xs => [...xs].every(p);",
     "tags": [
