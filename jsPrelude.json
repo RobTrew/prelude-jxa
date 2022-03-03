@@ -79,7 +79,7 @@
     ]
   },
   "adjust": {
-    "code": "// adjust :: (a -> a) -> Key ->\n// Dict Key a -> Dict Key a\nconst adjust = f => k => dict =>\n    // The orginal dictionary, unmodified, if k is\n    // not an existing key.\n    // Otherwise, a new copy in which the existing\n    // value of k is updated by application of f.\n    k in dict ? (\n        Object.assign({}, dict, {\n            [k]: f(dict[k])\n        })\n    ) : dict;",
+    "code": "// adjust :: (a -> a) -> Key ->\n// Dict Key a -> Dict Key a\nconst adjust = f =>\n    // The orginal dictionary, unmodified, if k is\n    // not an existing key.\n    // Otherwise, a new copy in which the existing\n    // value of k is updated by application of f.\n    k => dict => k in dict ? (\n        Object.assign({}, dict, {\n            [k]: f(dict[k])\n        })\n    ) : dict;",
     "tags": [
       "JS Prelude"
     ]
