@@ -4,11 +4,11 @@ const sortOn = f =>
     // Equivalent to sortBy(comparing(f)), but with f(x)
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
-    xs => xs.map(
-        x => Tuple(f(x))(x)
-    )
-    .sort(uncurry(comparing(x => x[0])))
-    .map(x => x[1]);
+    xs => sortBy(
+        comparing(x => x[0])
+    )(
+        xs.map(x => [f(x), x])
+    );
 ```
 
 

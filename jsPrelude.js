@@ -503,6 +503,9 @@ const breakOnMay = pat =>
 
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
+    // A copy of s in which each line is
+    // preceded by a whitespace indent,
+    // followed by a hyphen and space.
     s => s.split(/[\n\r]+/u).map(
         x => "" !== x ? (
             `${strTab}- ${x}`
@@ -512,6 +515,8 @@ const bulleted = strTab =>
 
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
+    // Every tuple in the cartesian product
+    // of xs and ys.
     ys => [...xs].flatMap(
         x => [...ys].flatMap(
             y => [Tuple(x)(y)]
@@ -4246,6 +4251,7 @@ const sort = xs =>
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
+    // A copy of xs sorted by the comparator function f.
     xs => xs.slice()
     .sort((a, b) => f(a)(b));
 
@@ -4254,11 +4260,11 @@ const sortOn = f =>
     // Equivalent to sortBy(comparing(f)), but with f(x)
     // evaluated only once for each x in xs.
     // ('Schwartzian' decorate-sort-undecorate).
-    xs => xs.map(
-        x => Tuple(f(x))(x)
-    )
-    .sort(uncurry(comparing(x => x[0])))
-    .map(x => x[1]);
+    xs => sortBy(
+        comparing(x => x[0])
+    )(
+        xs.map(x => [f(x), x])
+    );
 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p =>
@@ -4639,15 +4645,13 @@ const takeDropCycle = n =>
     );
 
 // takeExtension :: FilePath -> String
-const takeExtension = fp => (
-    fs => {
-        const fn = last(fs);
+const takeExtension = fp => {
+    const fn = last(fp.split("/"));
 
-        return fn.includes(".") ? (
-            `.${last(fn.split("."))}`
-        ) : "";
-    }
-)(fp.split("/"));
+    return fn.includes(".") ? (
+        `.${last(fn.split("."))}`
+    ) : "";
+};
 
 // takeFileName :: FilePath -> FilePath
 const takeFileName = fp =>

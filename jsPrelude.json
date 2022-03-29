@@ -345,13 +345,13 @@
     ]
   },
   "bulleted": {
-    "code": "// bulleted :: String -> String -> String\nconst bulleted = strTab =>\n    s => s.split(/[\\n\\r]+/u).map(\n        x => \"\" !== x ? (\n            `${strTab}- ${x}`\n        ) : x\n    )\n    .join(\"\\n\");",
+    "code": "// bulleted :: String -> String -> String\nconst bulleted = strTab =>\n    // A copy of s in which each line is\n    // preceded by a whitespace indent,\n    // followed by a hyphen and space.\n    s => s.split(/[\\n\\r]+/u).map(\n        x => \"\" !== x ? (\n            `${strTab}- ${x}`\n        ) : x\n    )\n    .join(\"\\n\");",
     "tags": [
       "JS Prelude"
     ]
   },
   "cartesianProduct": {
-    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(\n            y => [Tuple(x)(y)]\n        )\n    );",
+    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    // Every tuple in the cartesian product\n    // of xs and ys.\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(\n            y => [Tuple(x)(y)]\n        )\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2798,14 +2798,14 @@
     ]
   },
   "sortBy": {
-    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    xs => xs.slice()\n    .sort((a, b) => f(a)(b));",
+    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    // A copy of xs sorted by the comparator function f.\n    xs => xs.slice()\n    .sort((a, b) => f(a)(b));",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "sortOn": {
-    "code": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = f =>\n    // Equivalent to sortBy(comparing(f)), but with f(x)\n    // evaluated only once for each x in xs.\n    // ('Schwartzian' decorate-sort-undecorate).\n    xs => xs.map(\n        x => Tuple(f(x))(x)\n    )\n    .sort(uncurry(comparing(x => x[0])))\n    .map(x => x[1]);",
+    "code": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = f =>\n    // Equivalent to sortBy(comparing(f)), but with f(x)\n    // evaluated only once for each x in xs.\n    // ('Schwartzian' decorate-sort-undecorate).\n    xs => sortBy(\n        comparing(x => x[0])\n    )(\n        xs.map(x => [f(x), x])\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -3018,7 +3018,7 @@
     ]
   },
   "takeExtension": {
-    "code": "// takeExtension :: FilePath -> String\nconst takeExtension = fp => (\n    fs => {\n        const fn = last(fs);\n\n        return fn.includes(\".\") ? (\n            `.${last(fn.split(\".\"))}`\n        ) : \"\";\n    }\n)(fp.split(\"/\"));",
+    "code": "// takeExtension :: FilePath -> String\nconst takeExtension = fp => {\n    const fn = last(fp.split(\"/\"));\n\n    return fn.includes(\".\") ? (\n        `.${last(fn.split(\".\"))}`\n    ) : \"\";\n};",
     "tags": [
       "JS Prelude"
     ]
