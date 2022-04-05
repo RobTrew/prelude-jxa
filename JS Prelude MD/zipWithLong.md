@@ -8,8 +8,8 @@ const zipWithLong = f => {
     // Any unpaired values, where list lengths differ,
     // are simply appended.
     const go = xs =>
-        ys => 0 < xs.length ? (
-            0 < ys.length ? (
+        ys => Boolean(xs.length) ? (
+            Boolean(ys.length) ? (
                 [f(xs[0])(ys[0])].concat(
                     go(xs.slice(1))(ys.slice(1))
                 )

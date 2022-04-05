@@ -2523,7 +2523,7 @@ const kleisliCompose = f =>
 // last :: [a] -> a
 const last = xs =>
     // The last item of a list.
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         xs.slice(-1)[0]
     ) : null;
 
@@ -2575,19 +2575,16 @@ const levelNodes = tree =>
 const levels = tree => {
     // A list of lists, grouping the root
     // values of each level of the tree.
-    const go = (a, node) => {
-        const [h, ...t] = 0 < a.length ? a : [
+    const go = (a, x) => {
+        const [h, ...t] = Boolean(a.length) ? a : [
             []
         ];
 
         return [
-            [node.root, ...h],
-            ...node.nest.reduceRight(go, t)
+            [root(x), ...h],
+            ...nest(x).reduceRight(go, t)
         ];
     };
-
-    return go([], tree);
-};
 
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
@@ -2666,10 +2663,10 @@ const liftA2Tuple = f =>
 
 // lines :: String -> [String]
 const lines = s =>
-// A list of strings derived from a single
-// string delimited by newline and or CR.
-    0 < s.length ? (
-        s.split(/[\r\n]+/u)
+    // A list of strings derived from a single string
+    // which is delimited by \n or by \r\n or \r.
+    Boolean(s.length) ? (
+        s.split(/\r\n|\n|\r/u)
     ) : [];
 
 // list :: StringOrArrayLike b => b -> [a]
@@ -3602,7 +3599,7 @@ const raise = x =>
     // X to the power of n.
     n => x ** n;
 
-// randomRInt :: Int -> Int -> IO () -> Int
+// randomRInt :: Int -> Int -> (() -> IO Int)
 const randomRInt = low =>
     // The return value of randomRInt is itself
     // a function, which, whenever evaluated,
@@ -5323,17 +5320,15 @@ const unsnoc = xs =>
 
 // until :: (a -> Bool) -> (a -> a) -> a -> a
 const until = p =>
-    // The value resulting from repeated applications
-    // of f to the seed value x, terminating when
-    // that result returns true for the predicate p.
-    f => x => {
-        let v = x;
+    // The value resulting from successive applications
+    // of f to f(x), starting with a seed value x,
+    // and terminating when the result returns true 
+    // for the predicate p.
+    f => {
+        const go = x =>
+            p(x) ? x : go(f(x));
 
-        while (!p(v)) {
-            v = f(v);
-        }
-
-        return v;
+        return go;
     };
 
 // unwords :: [String] -> String
@@ -5562,8 +5557,8 @@ const zipWithLong = f => {
     // Any unpaired values, where list lengths differ,
     // are simply appended.
     const go = xs =>
-        ys => 0 < xs.length ? (
-            0 < ys.length ? (
+        ys => Boolean(xs.length) ? (
+            Boolean(ys.length) ? (
                 [f(xs[0])(ys[0])].concat(
                     go(xs.slice(1))(ys.slice(1))
                 )

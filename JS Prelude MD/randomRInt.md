@@ -1,5 +1,5 @@
 ```javascript
-// randomRInt :: Int -> Int -> IO () -> Int
+// randomRInt :: Int -> Int -> (() -> IO Int)
 const randomRInt = low =>
     // The return value of randomRInt is itself
     // a function, which, whenever evaluated,

@@ -1644,7 +1644,7 @@
     ]
   },
   "last": {
-    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    0 < xs.length ? (\n        xs.slice(-1)[0]\n    ) : null;",
+    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    Boolean(xs.length) ? (\n        xs.slice(-1)[0]\n    ) : null;",
     "tags": [
       "JS Prelude"
     ]
@@ -1688,7 +1688,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, node) => {\n        const [h, ...t] = 0 < a.length ? a : [\n            []\n        ];\n\n        return [\n            [node.root, ...h],\n            ...node.nest.reduceRight(go, t)\n        ];\n    };\n\n    return go([], tree);\n};",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, x) => {\n        const [h, ...t] = Boolean(a.length) ? a : [\n            []\n        ];\n\n        return [\n            [root(x), ...h],\n            ...nest(x).reduceRight(go, t)\n        ];\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1738,7 +1738,7 @@
     ]
   },
   "lines": {
-    "code": "// lines :: String -> [String]\nconst lines = s =>\n// A list of strings derived from a single\n// string delimited by newline and or CR.\n    0 < s.length ? (\n        s.split(/[\\r\\n]+/u)\n    ) : [];",
+    "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single string\n    // which is delimited by \\n or by \\r\\n or \\r.\n    Boolean(s.length) ? (\n        s.split(/\\r\\n|\\n|\\r/u)\n    ) : [];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2336,7 +2336,7 @@
     ]
   },
   "randomRInt": {
-    "code": "// randomRInt :: Int -> Int -> IO () -> Int\nconst randomRInt = low =>\n    // The return value of randomRInt is itself\n    // a function, which, whenever evaluated,\n    // yields a a new pseudo-random integer\n    // in the range [low..high].\n    high => () => low + Math.floor(\n        Math.random() * (1 + (high - low))\n    );",
+    "code": "// randomRInt :: Int -> Int -> (() -> IO Int)\nconst randomRInt = low =>\n    // The return value of randomRInt is itself\n    // a function, which, whenever evaluated,\n    // yields a a new pseudo-random integer\n    // in the range [low..high].\n    high => () => low + Math.floor(\n        Math.random() * (1 + (high - low))\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -2385,7 +2385,7 @@
     ]
   },
   "readFile": {
-    "code": "// readFile :: FilePath -> IO String\nconst readFile = fp => {\n    // The contents of a text file at the\n    // filepath fp.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ObjC.unwrap(\n        ns.isNil() ? (\n            e.localizedDescription\n        ) : ns\n    );\n};",
+    "code": "// readFile :: FilePath -> IO String\nconst readFile = fp => {\n    // The contents of a text file at the\n    // given file path.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ObjC.unwrap(\n        ns.isNil() ? (\n            e.localizedDescription\n        ) : ns\n    );\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -3324,7 +3324,7 @@
     ]
   },
   "until": {
-    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    // The value resulting from repeated applications\n    // of f to the seed value x, terminating when\n    // that result returns true for the predicate p.\n    f => x => {\n        let v = x;\n\n        while (!p(v)) {\n            v = f(v);\n        }\n\n        return v;\n    };",
+    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    // The value resulting from successive applications\n    // of f to f(x), starting with a seed value x,\n    // and terminating when the result returns true \n    // for the predicate p.\n    f => {\n        const go = x =>\n            p(x) ? x : go(f(x));\n\n        return go;\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -3487,7 +3487,7 @@
     ]
   },
   "zipWithLong": {
-    "code": "// zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]\nconst zipWithLong = f => {\n    // A list with the length of the *longer* of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    // Any unpaired values, where list lengths differ,\n    // are simply appended.\n    const go = xs =>\n        ys => 0 < xs.length ? (\n            0 < ys.length ? (\n                [f(xs[0])(ys[0])].concat(\n                    go(xs.slice(1))(ys.slice(1))\n                )\n            ) : xs\n        ) : ys;\n\n    return go;\n};",
+    "code": "// zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]\nconst zipWithLong = f => {\n    // A list with the length of the *longer* of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    // Any unpaired values, where list lengths differ,\n    // are simply appended.\n    const go = xs =>\n        ys => Boolean(xs.length) ? (\n            Boolean(ys.length) ? (\n                [f(xs[0])(ys[0])].concat(\n                    go(xs.slice(1))(ys.slice(1))\n                )\n            ) : xs\n        ) : ys;\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]
