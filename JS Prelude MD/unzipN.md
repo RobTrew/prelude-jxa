@@ -6,7 +6,7 @@ const unzipN = tpls =>
             (x, i) => x.concat(tpl[i])
         ),
         replicate(
-            0 < tpls.length ? (
+            Boolean(tpls.length) ? (
                 tpls[0].length
             ) : 0, []
         )

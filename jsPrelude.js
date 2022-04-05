@@ -496,7 +496,7 @@ const breakOnMay = pat =>
     src => Boolean(pat) ? (() => {
         const xs = src.split(pat);
 
-        return Just(0 < xs.length ? Tuple(
+        return Just(Boolean(xs.length) ? Tuple(
             xs[0], src.slice(xs[0].length)
         ) : Tuple(src)(""));
     })() : Nothing();
@@ -854,7 +854,7 @@ const differenceGen = ga =>
 
         let xy = take(1)(stream);
 
-        while (0 < xy.length) {
+        while (Boolean(xy.length)) {
             const [x, y] = Array.from(xy[0]);
 
             sb.add(y);
@@ -1088,8 +1088,8 @@ const dropFileName = fp =>
 const dropLength = xs =>
     ys => {
         const go = (x, y) =>
-            0 < x.length ? (
-                0 < y.length ? (
+            Boolean(x.length) ? (
+                Boolean(y.length) ? (
                     go(x.slice(1), y.slice(1))
                 ) : []
             ) : y;
@@ -1101,8 +1101,8 @@ const dropLength = xs =>
 const dropLengthMaybe = xs =>
     ys => {
         const go = (x, y) =>
-            0 < x.length ? (
-                0 < y.length ? (
+            Boolean(x.length) ? (
+                Boolean(y.length) ? (
                     go(x.slice(1), y.slice(1))
                 ) : Nothing()
             ) : Just(y);
@@ -1816,7 +1816,7 @@ const foldl1 = f =>
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         Just(xs.slice(1)
             .reduce(uncurry(f), xs[0]))
     ) : Nothing();
@@ -2025,7 +2025,7 @@ const head = xs =>
 const headDef = v =>
     // The first item of a non-empty list,
     // or a default value if the list is empty.
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         xs[0]
     ) : v;
 
@@ -2033,7 +2033,7 @@ const headDef = v =>
 const headMay = xs =>
     // Just the first item of xs, or
     // Nothing if xs is an empty list.
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         Just(xs[0])
     ) : Nothing();
 
@@ -2050,9 +2050,10 @@ const if_ = bln =>
 
 // indented :: String -> String -> String
 const indented = strIndent =>
-    s => s.split(/[\r\n]/u)
-    .map(
-        x => "" !== x ? strIndent + x : x
+    s => lines(s).map(
+        x => Boolean(x) ? (
+            strIndent + x
+        ) : x
     )
     .join("\n");
 
@@ -2075,7 +2076,7 @@ const index = xs =>
 const indexForest = trees =>
     // Index into a forest of measured trees.
     // (see measuredTree)
-    i => 0 < trees.length ? (() => {
+    i => Boolean(trees.length) ? (() => {
         const
             headNode = trees[0],
             headSize = headNode.root[1].nodeSum;
@@ -2133,7 +2134,7 @@ const init = xs =>
 
 // initMay :: [a] -> Maybe [a]
 const initMay = xs =>
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         Just(xs.slice(0, -1))
     ) : Nothing();
 
@@ -2163,7 +2164,7 @@ const insert = x =>
 const insertBy = cmp =>
     x => xs => {
         const go = y => ys =>
-            0 < ys.length ? (
+            Boolean(ys.length) ? (
                 0 < cmp(y)(ys[0]) ? [
                     ys[0],
                     ...go(y)(ys.slice(1))
@@ -2362,8 +2363,8 @@ const isSubsequenceOf = xs =>
     // True if xs is a sub-sequence of ys.
     ys => {
         const go = a => b =>
-            0 < a.length ? (
-                0 < b.length ? (
+            Boolean(a.length) ? (
+                Boolean(b.length) ? (
                     go(
                         a[0] === b[0] ? (
                             a.slice(1)
@@ -2503,7 +2504,7 @@ const kCompose = (...fs) =>
     // Left Right composition of a sequence
     // of functions which lift a raw value
     // of the same type into the same monad.
-    x => 0 < fs.length ? (
+    x => Boolean(fs.length) ? (
         fs.slice(1).reduce(
             (m, f) => bind(m)(f),
             fs[0](x)
@@ -2529,7 +2530,7 @@ const last = xs =>
 
 // lastMay :: [a] -> Maybe a
 const lastMay = xs =>
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         Just(xs.slice(-1)[0])
     ) : Nothing();
 
@@ -2699,7 +2700,7 @@ const listFromTree = tree => {
 // listToMaybe :: [a] -> Maybe a
 const listToMaybe = xs =>
     // Nothing if xs is empty, or Just the head of xs.
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         Just(xs[0])
     ) : Nothing();
 
@@ -2833,7 +2834,7 @@ const mapMaybeGen = mf =>
     function*(gen) {
         let v = take(1, gen);
 
-        while (0 < v.length) {
+        while (Boolean(v.length)) {
             const mb = mf(v[0]);
 
             if (!mb.Nothing) {
@@ -3043,7 +3044,7 @@ const mconcatOrd = cmps =>
     // A sort compare function derived from
     // a list of such functions, providing
     // for composition of n-ary sorts.
-    0 < cmps.length ? (
+    Boolean(cmps.length) ? (
         foldl(
             mappendOrd
         )(cmps[0])(cmps.slice(1))
@@ -3148,8 +3149,8 @@ const mergeBy = f =>
     // given comparator function.
     xs => ys => {
         const go = (as, bs) =>
-            0 < bs.length ? (
-                0 < as.length ? (
+            Boolean(bs.length) ? (
+                Boolean(as.length) ? (
                     1 !== f(as[0])(bs[0]) ? (
                         [as[0]].concat(
                             go(as.slice(1), bs)
@@ -4444,7 +4445,7 @@ const stripStart = s =>
 // subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
 const subTreeAtPath = tree => path => {
     const go = (subNest, xs) =>
-        0 < nest.length && 0 < xs.length ? (() => {
+        Boolean(nest.length) && Boolean(xs.length) ? (() => {
             const h = xs[0];
 
             return bindMay(find(t => h === t.root, subNest))(
@@ -4484,7 +4485,7 @@ const subsequences = qs => {
 // subsets :: [a] -> [[a]]
 const subsets = xs => {
     const go = ys =>
-        0 < ys.length ? (() => {
+        Boolean(ys.length) ? (() => {
             const
                 h = ys[0],
                 zs = go(ys.slice(1));
@@ -5374,7 +5375,7 @@ const unzipN = tpls =>
             (x, i) => x.concat(tpl[i])
         ),
         replicate(
-            0 < tpls.length ? (
+            Boolean(tpls.length) ? (
                 tpls[0].length
             ) : 0, []
         )

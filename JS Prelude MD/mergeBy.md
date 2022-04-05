@@ -6,8 +6,8 @@ const mergeBy = f =>
     // given comparator function.
     xs => ys => {
         const go = (as, bs) =>
-            0 < bs.length ? (
-                0 < as.length ? (
+            Boolean(bs.length) ? (
+                Boolean(as.length) ? (
                     1 !== f(as[0])(bs[0]) ? (
                         [as[0]].concat(
                             go(as.slice(1), bs)

@@ -2,7 +2,7 @@
 // subsets :: [a] -> [[a]]
 const subsets = xs => {
     const go = ys =>
-        0 < ys.length ? (() => {
+        Boolean(ys.length) ? (() => {
             const
                 h = ys[0],
                 zs = go(ys.slice(1));

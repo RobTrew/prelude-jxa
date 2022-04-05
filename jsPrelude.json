@@ -339,7 +339,7 @@
     ]
   },
   "breakOnMay": {
-    "code": "// breakOnMay :: String -> String -> Maybe (String, String)\nconst breakOnMay = pat =>\n    // Needle -> Haystack ->\n    // maybe (prefix before match, match + rest)\n    src => Boolean(pat) ? (() => {\n        const xs = src.split(pat);\n\n        return Just(0 < xs.length ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)(\"\"));\n    })() : Nothing();",
+    "code": "// breakOnMay :: String -> String -> Maybe (String, String)\nconst breakOnMay = pat =>\n    // Needle -> Haystack ->\n    // maybe (prefix before match, match + rest)\n    src => Boolean(pat) ? (() => {\n        const xs = src.split(pat);\n\n        return Just(Boolean(xs.length) ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)(\"\"));\n    })() : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -590,7 +590,7 @@
     ]
   },
   "differenceGen": {
-    "code": "// differenceGen :: Gen [a] -> Gen [a] -> Gen [a]\nconst differenceGen = ga =>\n    function *(gb) {\n        // All values of generator stream ga except any\n        // already seen in generator stream gb.\n        const\n            stream = zipGen(ga)(gb),\n            sb = new Set([]);\n\n        let xy = take(1)(stream);\n\n        while (0 < xy.length) {\n            const [x, y] = Array.from(xy[0]);\n\n            sb.add(y);\n            if (!sb.has(x)) {\n                yield x;\n            }\n            xy = take(1)(stream);\n        }\n    };",
+    "code": "// differenceGen :: Gen [a] -> Gen [a] -> Gen [a]\nconst differenceGen = ga =>\n    function *(gb) {\n        // All values of generator stream ga except any\n        // already seen in generator stream gb.\n        const\n            stream = zipGen(ga)(gb),\n            sb = new Set([]);\n\n        let xy = take(1)(stream);\n\n        while (Boolean(xy.length)) {\n            const [x, y] = Array.from(xy[0]);\n\n            sb.add(y);\n            if (!sb.has(x)) {\n                yield x;\n            }\n            xy = take(1)(stream);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -689,13 +689,13 @@
     ]
   },
   "dropLength": {
-    "code": "// dropLength :: [a] -> [b] -> [b]\nconst dropLength = xs =>\n    ys => {\n        const go = (x, y) =>\n            0 < x.length ? (\n                0 < y.length ? (\n                    go(x.slice(1), y.slice(1))\n                ) : []\n            ) : y;\n\n        return go(xs, ys);\n    };",
+    "code": "// dropLength :: [a] -> [b] -> [b]\nconst dropLength = xs =>\n    ys => {\n        const go = (x, y) =>\n            Boolean(x.length) ? (\n                Boolean(y.length) ? (\n                    go(x.slice(1), y.slice(1))\n                ) : []\n            ) : y;\n\n        return go(xs, ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "dropLengthMaybe": {
-    "code": "// dropLengthMaybe :: [a] -> [b] -> Maybe [b]\nconst dropLengthMaybe = xs =>\n    ys => {\n        const go = (x, y) =>\n            0 < x.length ? (\n                0 < y.length ? (\n                    go(x.slice(1), y.slice(1))\n                ) : Nothing()\n            ) : Just(y);\n\n        return go(xs, ys);\n    };",
+    "code": "// dropLengthMaybe :: [a] -> [b] -> Maybe [b]\nconst dropLengthMaybe = xs =>\n    ys => {\n        const go = (x, y) =>\n            Boolean(x.length) ? (\n                Boolean(y.length) ? (\n                    go(x.slice(1), y.slice(1))\n                ) : Nothing()\n            ) : Just(y);\n\n        return go(xs, ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1106,7 +1106,7 @@
     ]
   },
   "foldl1May": {
-    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => 0 < xs.length ? (\n        Just(xs.slice(1)\n            .reduce(uncurry(f), xs[0]))\n    ) : Nothing();",
+    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => Boolean(xs.length) ? (\n        Just(xs.slice(1)\n            .reduce(uncurry(f), xs[0]))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1285,14 +1285,14 @@
     ]
   },
   "headDef": {
-    "code": "// headDef :: a -> [a] -> a\nconst headDef = v =>\n    // The first item of a non-empty list,\n    // or a default value if the list is empty.\n    xs => 0 < xs.length ? (\n        xs[0]\n    ) : v;",
+    "code": "// headDef :: a -> [a] -> a\nconst headDef = v =>\n    // The first item of a non-empty list,\n    // or a default value if the list is empty.\n    xs => Boolean(xs.length) ? (\n        xs[0]\n    ) : v;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "headMay": {
-    "code": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    // Just the first item of xs, or\n    // Nothing if xs is an empty list.\n    0 < xs.length ? (\n        Just(xs[0])\n    ) : Nothing();",
+    "code": "// headMay :: [a] -> Maybe a\nconst headMay = xs =>\n    // Just the first item of xs, or\n    // Nothing if xs is an empty list.\n    Boolean(xs.length) ? (\n        Just(xs[0])\n    ) : Nothing();",
     "tags": [
       "JS Prelude",
       "core"
@@ -1312,7 +1312,7 @@
     ]
   },
   "indented": {
-    "code": "// indented :: String -> String -> String\nconst indented = strIndent =>\n    s => s.split(/[\\r\\n]/u)\n    .map(\n        x => \"\" !== x ? strIndent + x : x\n    )\n    .join(\"\\n\");",
+    "code": "// indented :: String -> String -> String\nconst indented = strIndent =>\n    s => lines(s).map(\n        x => Boolean(x) ? (\n            strIndent + x\n        ) : x\n    )\n    .join(\"\\n\");",
     "tags": [
       "JS Prelude"
     ]
@@ -1324,7 +1324,7 @@
     ]
   },
   "indexForest": {
-    "code": "// indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->\n// Maybe Tree (a, { nodeSum :: Int })\nconst indexForest = trees =>\n    // Index into a forest of measured trees.\n    // (see measuredTree)\n    i => 0 < trees.length ? (() => {\n        const\n            headNode = trees[0],\n            headSize = headNode.root[1].nodeSum;\n\n        return i > (headSize - 1) ? (\n            indexForest(trees.slice(1))(i - headSize)\n        ) : indexTree(headNode)(i);\n    })() : Nothing();",
+    "code": "// indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->\n// Maybe Tree (a, { nodeSum :: Int })\nconst indexForest = trees =>\n    // Index into a forest of measured trees.\n    // (see measuredTree)\n    i => Boolean(trees.length) ? (() => {\n        const\n            headNode = trees[0],\n            headSize = headNode.root[1].nodeSum;\n\n        return i > (headSize - 1) ? (\n            indexForest(trees.slice(1))(i - headSize)\n        ) : indexTree(headNode)(i);\n    })() : Nothing();",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1358,7 +1358,7 @@
     ]
   },
   "initMay": {
-    "code": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(0, -1))\n    ) : Nothing();",
+    "code": "// initMay :: [a] -> Maybe [a]\nconst initMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(0, -1))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1376,7 +1376,7 @@
     ]
   },
   "insertBy": {
-    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            0 < ys.length ? (\n                0 < cmp(y)(ys[0]) ? [\n                    ys[0],\n                    ...go(y)(ys.slice(1))\n                ] : [y, ...ys]\n            ) : [y];\n\n        return go(x)(xs);\n    };",
+    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            Boolean(ys.length) ? (\n                0 < cmp(y)(ys[0]) ? [\n                    ys[0],\n                    ...go(y)(ys.slice(1))\n                ] : [y, ...ys]\n            ) : [y];\n\n        return go(x)(xs);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1536,7 +1536,7 @@
     ]
   },
   "isSubsequenceOf": {
-    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = a => b =>\n            0 < a.length ? (\n                0 < b.length ? (\n                    go(\n                        a[0] === b[0] ? (\n                            a.slice(1)\n                        ) : a\n                    )(b.slice(1))\n                ) : false\n            ) : true;\n\n        return go(xs)(ys);\n    };",
+    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = a => b =>\n            Boolean(a.length) ? (\n                Boolean(b.length) ? (\n                    go(\n                        a[0] === b[0] ? (\n                            a.slice(1)\n                        ) : a\n                    )(b.slice(1))\n                ) : false\n            ) : true;\n\n        return go(xs)(ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1625,7 +1625,7 @@
     ]
   },
   "kCompose": {
-    "code": "// kCompose (>=>) :: Monad m =>\n// [(a -> m a)] -> (a -> m a)\nconst kCompose = (...fs) =>\n    // Left Right composition of a sequence\n    // of functions which lift a raw value\n    // of the same type into the same monad.\n    x => 0 < fs.length ? (\n        fs.slice(1).reduce(\n            (m, f) => bind(m)(f),\n            fs[0](x)\n        )\n    ) : x;",
+    "code": "// kCompose (>=>) :: Monad m =>\n// [(a -> m a)] -> (a -> m a)\nconst kCompose = (...fs) =>\n    // Left Right composition of a sequence\n    // of functions which lift a raw value\n    // of the same type into the same monad.\n    x => Boolean(fs.length) ? (\n        fs.slice(1).reduce(\n            (m, f) => bind(m)(f),\n            fs[0](x)\n        )\n    ) : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -1650,7 +1650,7 @@
     ]
   },
   "lastMay": {
-    "code": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(-1)[0])\n    ) : Nothing();",
+    "code": "// lastMay :: [a] -> Maybe a\nconst lastMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(-1)[0])\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1771,7 +1771,7 @@
     ]
   },
   "listToMaybe": {
-    "code": "// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    // Nothing if xs is empty, or Just the head of xs.\n    0 < xs.length ? (\n        Just(xs[0])\n    ) : Nothing();",
+    "code": "// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    // Nothing if xs is empty, or Just the head of xs.\n    Boolean(xs.length) ? (\n        Just(xs[0])\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1859,7 +1859,7 @@
     ]
   },
   "mapMaybeGen": {
-    "code": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nconst mapMaybeGen = mf =>\n    // A filtered map over a generator, returning only the\n    // contents of Just values. (Nothing values discarded).\n    function*(gen) {\n        let v = take(1, gen);\n\n        while (0 < v.length) {\n            const mb = mf(v[0]);\n\n            if (!mb.Nothing) {\n                yield mb.Just;\n            }\n            v = take(1, gen);\n        }\n    };",
+    "code": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nconst mapMaybeGen = mf =>\n    // A filtered map over a generator, returning only the\n    // contents of Just values. (Nothing values discarded).\n    function*(gen) {\n        let v = take(1, gen);\n\n        while (Boolean(v.length)) {\n            const mb = mf(v[0]);\n\n            if (!mb.Nothing) {\n                yield mb.Just;\n            }\n            v = take(1, gen);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1977,7 +1977,7 @@
     ]
   },
   "mconcatOrd": {
-    "code": "// mconcatOrd :: [Ordering] -> Ordering\nconst mconcatOrd = cmps =>\n    // A sort compare function derived from\n    // a list of such functions, providing\n    // for composition of n-ary sorts.\n    0 < cmps.length ? (\n        foldl(\n            mappendOrd\n        )(cmps[0])(cmps.slice(1))\n    ) : compare;",
+    "code": "// mconcatOrd :: [Ordering] -> Ordering\nconst mconcatOrd = cmps =>\n    // A sort compare function derived from\n    // a list of such functions, providing\n    // for composition of n-ary sorts.\n    Boolean(cmps.length) ? (\n        foldl(\n            mappendOrd\n        )(cmps[0])(cmps.slice(1))\n    ) : compare;",
     "tags": [
       "JS Prelude"
     ]
@@ -2014,7 +2014,7 @@
     ]
   },
   "mergeBy": {
-    "code": "// mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]\nconst mergeBy = f =>\n    // A single list defined by the ordered\n    // merging of xs and ys in terms of the\n    // given comparator function.\n    xs => ys => {\n        const go = (as, bs) =>\n            0 < bs.length ? (\n                0 < as.length ? (\n                    1 !== f(as[0])(bs[0]) ? (\n                        [as[0]].concat(\n                            go(as.slice(1), bs)\n                        )\n                    ) : [bs[0]].concat(\n                        go(as, bs.slice(1))\n                    )\n                ) : bs\n            ) : as;\n\n        return [].concat(...go(xs, ys));\n    };",
+    "code": "// mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]\nconst mergeBy = f =>\n    // A single list defined by the ordered\n    // merging of xs and ys in terms of the\n    // given comparator function.\n    xs => ys => {\n        const go = (as, bs) =>\n            Boolean(bs.length) ? (\n                Boolean(as.length) ? (\n                    1 !== f(as[0])(bs[0]) ? (\n                        [as[0]].concat(\n                            go(as.slice(1), bs)\n                        )\n                    ) : [bs[0]].concat(\n                        go(as, bs.slice(1))\n                    )\n                ) : bs\n            ) : as;\n\n        return [].concat(...go(xs, ys));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2911,7 +2911,7 @@
     ]
   },
   "subTreeAtPath": {
-    "code": "// subTreeAtPath :: Tree String -> [String] -> Maybe Tree String\nconst subTreeAtPath = tree => path => {\n    const go = (subNest, xs) =>\n        0 < nest.length && 0 < xs.length ? (() => {\n            const h = xs[0];\n\n            return bindMay(find(t => h === t.root, subNest))(\n                t => 1 < xs.length ? (\n                    go(t.nest, xs.slice(1))\n                ) : Just(t)\n            );\n        })() : Nothing();\n\n    return go([tree], path);\n};",
+    "code": "// subTreeAtPath :: Tree String -> [String] -> Maybe Tree String\nconst subTreeAtPath = tree => path => {\n    const go = (subNest, xs) =>\n        Boolean(nest.length) && Boolean(xs.length) ? (() => {\n            const h = xs[0];\n\n            return bindMay(find(t => h === t.root, subNest))(\n                t => 1 < xs.length ? (\n                    go(t.nest, xs.slice(1))\n                ) : Just(t)\n            );\n        })() : Nothing();\n\n    return go([tree], path);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2924,7 +2924,7 @@
     ]
   },
   "subsets": {
-    "code": "// subsets :: [a] -> [[a]]\nconst subsets = xs => {\n    const go = ys =>\n        0 < ys.length ? (() => {\n            const\n                h = ys[0],\n                zs = go(ys.slice(1));\n\n            return zs.concat(\n                zs.map(z => [h].concat(z))\n            );\n        })() : [\n            []\n        ];\n\n    return go(xs);\n};",
+    "code": "// subsets :: [a] -> [[a]]\nconst subsets = xs => {\n    const go = ys =>\n        Boolean(ys.length) ? (() => {\n            const\n                h = ys[0],\n                zs = go(ys.slice(1));\n\n            return zs.concat(\n                zs.map(z => [h].concat(z))\n            );\n        })() : [\n            []\n        ];\n\n    return go(xs);\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3365,7 +3365,7 @@
     ]
   },
   "unzipN": {
-    "code": "// unzipN :: [(a,b,...)] -> ([a],[b],...)\nconst unzipN = tpls =>\n    TupleN(...tpls.reduce(\n        (a, tpl) => a.map(\n            (x, i) => x.concat(tpl[i])\n        ),\n        replicate(\n            0 < tpls.length ? (\n                tpls[0].length\n            ) : 0, []\n        )\n    ));",
+    "code": "// unzipN :: [(a,b,...)] -> ([a],[b],...)\nconst unzipN = tpls =>\n    TupleN(...tpls.reduce(\n        (a, tpl) => a.map(\n            (x, i) => x.concat(tpl[i])\n        ),\n        replicate(\n            Boolean(tpls.length) ? (\n                tpls[0].length\n            ) : 0, []\n        )\n    ));",
     "tags": [
       "JS Prelude"
     ]

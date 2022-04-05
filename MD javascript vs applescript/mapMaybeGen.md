@@ -6,7 +6,7 @@ const mapMaybeGen = mf =>
     function*(gen) {
         let v = take(1, gen);
 
-        while (0 < v.length) {
+        while (Boolean(v.length)) {
             const mb = mf(v[0]);
 
             if (!mb.Nothing) {

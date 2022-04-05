@@ -10,7 +10,7 @@ const differenceGen = ga =>
 
         let xy = take(1)(stream);
 
-        while (0 < xy.length) {
+        while (Boolean(xy.length)) {
             const [x, y] = Array.from(xy[0]);
 
             sb.add(y);

@@ -2,7 +2,7 @@
 // subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
 const subTreeAtPath = tree => path => {
     const go = (subNest, xs) =>
-        0 < nest.length && 0 < xs.length ? (() => {
+        Boolean(nest.length) && Boolean(xs.length) ? (() => {
             const h = xs[0];
 
             return bindMay(find(t => h === t.root, subNest))(

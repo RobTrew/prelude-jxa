@@ -5,8 +5,8 @@ const isSubsequenceOf = xs =>
     // True if xs is a sub-sequence of ys.
     ys => {
         const go = a => b =>
-            0 < a.length ? (
-                0 < b.length ? (
+            Boolean(a.length) ? (
+                Boolean(b.length) ? (
                     go(
                         a[0] === b[0] ? (
                             a.slice(1)
