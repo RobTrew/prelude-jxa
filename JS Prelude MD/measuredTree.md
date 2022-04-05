@@ -26,7 +26,7 @@ const measuredTree = tree => {
 
             return xs => Node(
                 Tuple(x)(
-                    0 < xs.length ? (() => {
+                    Boolean(xs.length) ? (() => {
                         const dct = xs.reduce(
                             (a, node) => {
                                 const dimns = node.root[1];

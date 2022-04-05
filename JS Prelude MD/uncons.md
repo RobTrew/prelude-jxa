@@ -5,7 +5,7 @@ const uncons = xs => {
     // Or Nothing if xs is an empty list.
     const lng = length(xs);
 
-    return (0 < lng) ? (
+    return Boolean(lng) ? (
         Infinity > lng ? (
             // Finite list
             Just(Tuple(xs[0])(xs.slice(1)))
@@ -13,7 +13,7 @@ const uncons = xs => {
             // Lazy generator
             const nxt = take(1)(xs);
 
-            return 0 < nxt.length ? (
+            return Boolean(nxt.length) ? (
                 Just(Tuple(nxt[0])(xs))
             ) : Nothing();
         })()

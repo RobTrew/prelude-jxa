@@ -18,7 +18,7 @@ const filesCopiedLR = fpSourceFolder =>
             }),
             ls = lefts(lrs);
 
-        return 0 < ls.length ? (
+        return Boolean(ls.length) ? (
             Left(ls[0])
         ) : Right(rights(lrs));
     };

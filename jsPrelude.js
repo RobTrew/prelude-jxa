@@ -1477,7 +1477,7 @@ const filesCopiedLR = fpSourceFolder =>
             }),
             ls = lefts(lrs);
 
-        return 0 < ls.length ? (
+        return Boolean(ls.length) ? (
             Left(ls[0])
         ) : Right(rights(lrs));
     };
@@ -2127,7 +2127,7 @@ const indexedTree = rootIndex =>
 // init :: [a] -> [a]
 const init = xs =>
     // All elements of a list except the last.
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         xs.slice(0, -1)
     ) : null;
 
@@ -2201,7 +2201,7 @@ const intToDigit = n =>
 // intercalate :: [a] -> [[a]] -> [a]
 // intercalate :: String -> [String] -> String
 const intercalate = sep => xs =>
-    0 < xs.length && "string" === typeof sep &&
+    Boolean(xs.length) && "string" === typeof sep &&
     "string" === typeof xs[0] ? (
         xs.join(sep)
     ) : concat(intersperse(sep)(xs));
@@ -3083,7 +3083,7 @@ const measuredTree = tree => {
 
             return xs => Node(
                 Tuple(x)(
-                    0 < xs.length ? (() => {
+                    Boolean(xs.length) ? (() => {
                         const dct = xs.reduce(
                             (a, node) => {
                                 const dimns = node.root[1];
@@ -3183,7 +3183,7 @@ const minBound = x => {
 // minimum :: Ord a => [a] -> a
 const minimum = xs =>
     // The least value of xs.
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         xs.slice(1)
         .reduce((a, x) => x < a ? (
                 x
@@ -3194,7 +3194,7 @@ const minimum = xs =>
 
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = f =>
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         xs.slice(1).reduce(
             (a, x) => 0 > f(x)(a) ? (
                 x
@@ -3214,7 +3214,7 @@ const minimumByMay = f =>
 
 // minimumMay :: [a] -> Maybe a
 const minimumMay = xs =>
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         Just(xs.slice(1).reduce(
             (a, x) => x < a ? (
                 x
@@ -3227,7 +3227,7 @@ const minimumMay = xs =>
 const minimumOn = f =>
     // The item in xs for which f
     // returns the highest value.
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
@@ -5167,7 +5167,7 @@ const uncons = xs => {
     // Or Nothing if xs is an empty list.
     const lng = length(xs);
 
-    return (0 < lng) ? (
+    return Boolean(lng) ? (
         Infinity > lng ? (
             // Finite list
             Just(Tuple(xs[0])(xs.slice(1)))
@@ -5175,7 +5175,7 @@ const uncons = xs => {
             // Lazy generator
             const nxt = take(1)(xs);
 
-            return 0 < nxt.length ? (
+            return Boolean(nxt.length) ? (
                 Just(Tuple(nxt[0])(xs))
             ) : Nothing();
         })()
@@ -5317,7 +5317,7 @@ const unlines = xs =>
 const unsnoc = xs =>
     // Nothing if the list is empty, otherwise
     // Just the init and the last.
-    (0 < xs.length) ? (
+    Boolean(xs.length) ? (
         Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))
     ) : Nothing();
 

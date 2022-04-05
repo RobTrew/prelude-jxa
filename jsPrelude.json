@@ -912,7 +912,7 @@
     ]
   },
   "filesCopiedLR": {
-    "code": "// filesCopiedLR :: FilePath -> [FilePath] ->\n// FilePath -> IO Either String [FilePath]\nconst filesCopiedLR = fpSourceFolder =>\n    // Either a message, or a list of the files\n    // successfully copied from the source folder\n    // to the target folder, or already found in place.\n    fileNames => fpTargetFolder => {\n        const\n            lrs = fileNames.map(k => {\n                const tgt = combine(fpTargetFolder)(k);\n\n                return doesFileExist(tgt) ? (\n                    Right(tgt)\n                ) : copyFileLR(\n                    combine(fpSourceFolder)(k)\n                )(tgt);\n            }),\n            ls = lefts(lrs);\n\n        return 0 < ls.length ? (\n            Left(ls[0])\n        ) : Right(rights(lrs));\n    };",
+    "code": "// filesCopiedLR :: FilePath -> [FilePath] ->\n// FilePath -> IO Either String [FilePath]\nconst filesCopiedLR = fpSourceFolder =>\n    // Either a message, or a list of the files\n    // successfully copied from the source folder\n    // to the target folder, or already found in place.\n    fileNames => fpTargetFolder => {\n        const\n            lrs = fileNames.map(k => {\n                const tgt = combine(fpTargetFolder)(k);\n\n                return doesFileExist(tgt) ? (\n                    Right(tgt)\n                ) : copyFileLR(\n                    combine(fpSourceFolder)(k)\n                )(tgt);\n            }),\n            ls = lefts(lrs);\n\n        return Boolean(ls.length) ? (\n            Left(ls[0])\n        ) : Right(rights(lrs));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1351,7 +1351,7 @@
     ]
   },
   "init": {
-    "code": "// init :: [a] -> [a]\nconst init = xs =>\n    // All elements of a list except the last.\n    0 < xs.length ? (\n        xs.slice(0, -1)\n    ) : null;",
+    "code": "// init :: [a] -> [a]\nconst init = xs =>\n    // All elements of a list except the last.\n    Boolean(xs.length) ? (\n        xs.slice(0, -1)\n    ) : null;",
     "tags": [
       "JS Prelude",
       "core"
@@ -1400,7 +1400,7 @@
     ]
   },
   "intercalate": {
-    "code": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = sep => xs =>\n    0 < xs.length && \"string\" === typeof sep &&\n    \"string\" === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep)(xs));",
+    "code": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = sep => xs =>\n    Boolean(xs.length) && \"string\" === typeof sep &&\n    \"string\" === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep)(xs));",
     "tags": [
       "JS Prelude",
       "core"
@@ -1989,7 +1989,7 @@
     ]
   },
   "measuredTree": {
-    "code": "// measuredTree :: Tree a ->\n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
+    "code": "// measuredTree :: Tree a ->\n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    Boolean(xs.length) ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2033,14 +2033,14 @@
     ]
   },
   "minimum": {
-    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    // The least value of xs.\n    0 < xs.length ? (\n        xs.slice(1)\n        .reduce((a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : null;",
+    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    // The least value of xs.\n    Boolean(xs.length) ? (\n        xs.slice(1)\n        .reduce((a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : null;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "minimumBy": {
-    "code": "// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = f =>\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => 0 > f(x)(a) ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
+    "code": "// minimumBy :: (a -> a -> Ordering) -> [a] -> a\nconst minimumBy = f =>\n    xs => Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (a, x) => 0 > f(x)(a) ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
     "tags": [
       "JS Prelude",
       "core"
@@ -2053,13 +2053,13 @@
     ]
   },
   "minimumMay": {
-    "code": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
+    "code": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "minimumOn": {
-    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v < tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v < tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude"
     ]
@@ -3247,7 +3247,7 @@
     ]
   },
   "uncons": {
-    "code": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    // Just a tuple of the head of xs and its tail,\n    // Or Nothing if xs is an empty list.\n    const lng = length(xs);\n\n    return (0 < lng) ? (\n        Infinity > lng ? (\n            // Finite list\n            Just(Tuple(xs[0])(xs.slice(1)))\n        ) : (() => {\n            // Lazy generator\n            const nxt = take(1)(xs);\n\n            return 0 < nxt.length ? (\n                Just(Tuple(nxt[0])(xs))\n            ) : Nothing();\n        })()\n    ) : Nothing();\n};",
+    "code": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    // Just a tuple of the head of xs and its tail,\n    // Or Nothing if xs is an empty list.\n    const lng = length(xs);\n\n    return Boolean(lng) ? (\n        Infinity > lng ? (\n            // Finite list\n            Just(Tuple(xs[0])(xs.slice(1)))\n        ) : (() => {\n            // Lazy generator\n            const nxt = take(1)(xs);\n\n            return Boolean(nxt.length) ? (\n                Just(Tuple(nxt[0])(xs))\n            ) : Nothing();\n        })()\n    ) : Nothing();\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3318,7 +3318,7 @@
     ]
   },
   "unsnoc": {
-    "code": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    // Nothing if the list is empty, otherwise\n    // Just the init and the last.\n    (0 < xs.length) ? (\n        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))\n    ) : Nothing();",
+    "code": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    // Nothing if the list is empty, otherwise\n    // Just the init and the last.\n    Boolean(xs.length) ? (\n        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
