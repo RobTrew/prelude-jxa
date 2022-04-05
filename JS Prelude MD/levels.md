@@ -13,4 +13,7 @@ const levels = tree => {
             ...nest(x).reduceRight(go, t)
         ];
     };
+
+    return go([], tree);
+};
 ```

@@ -9,7 +9,7 @@ const concatMapGen = f =>
 
         while (!v.done) {
             vs = f(v.value);
-            if (0 < vs.length) {
+            if (Boolean(vs.length)) {
                 yield vs[0];
             }
 

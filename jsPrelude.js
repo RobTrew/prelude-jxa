@@ -580,7 +580,7 @@ const chop = f =>
     // function which returns a (prefix, residue) tuple.
     xs => {
         const go = ys =>
-            0 < ys.length ? (() => {
+            Boolean(ys.length) ? (() => {
                 const [b, bs] = f(ys);
 
                 return [b].concat(go(bs));
@@ -602,7 +602,7 @@ const chunksOf = n => {
     const go = xs => {
         const chunk = xs.slice(0, n);
 
-        return 0 < chunk.length ? (
+        return Boolean(chunk.length) ? (
             [chunk].concat(
                 go(xs.slice(n))
             )
@@ -696,7 +696,7 @@ const concatMapGen = f =>
 
         while (!v.done) {
             vs = f(v.value);
-            if (0 < vs.length) {
+            if (Boolean(vs.length)) {
                 yield vs[0];
             }
 
@@ -776,7 +776,7 @@ const degrees = r =>
 const delete_ = x => {
     // xs with first instance of x (if any) removed.
     const go = xs =>
-        0 < xs.length ? (
+        Boolean(xs.length) ? (
             (x === xs[0]) ? (
                 xs.slice(1)
             ) : [xs[0]].concat(go(xs.slice(1)))
@@ -796,7 +796,7 @@ const deleteAt = i =>
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 const deleteBy = fEq =>
     x => {
-        const go = xs => 0 < xs.length ? (
+        const go = xs => Boolean(xs.length) ? (
             fEq(x)(xs[0]) ? (
                 xs.slice(1)
             ) : [xs[0]].concat(go(xs.slice(1)))
@@ -807,7 +807,7 @@ const deleteBy = fEq =>
 
 // deleteFirst :: a -> [a] -> [a]
 const deleteFirst = x => {
-    const go = xs => 0 < xs.length ? (
+    const go = xs => Boolean(xs.length) ? (
         x === xs[0] ? (
             xs.slice(1)
         ) : [xs[0]].concat(go(xs.slice(1)))
@@ -1079,7 +1079,7 @@ const dropFileName = fp =>
             xs = (fp.split("/"))
             .slice(0, -1);
 
-        return 0 < xs.length ? (
+        return Boolean(xs.length) ? (
             `${xs.join("/")}/`
         ) : "./";
     })() : "./";
@@ -1118,7 +1118,7 @@ const dropWhile = p =>
         const n = xs.length;
 
         return xs.slice(
-            0 < n ? until(
+            Boolean(n) ? until(
                 i => n === i || !p(xs[i])
             )(i => 1 + i)(0) : 0
         );
@@ -1844,7 +1844,7 @@ const foldr = f =>
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = f =>
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         xs.slice(0, -1).reduceRight(
             uncurry(f),
             xs.slice(-1)[0]
@@ -1856,7 +1856,7 @@ const foldr1May = f =>
     // Nothing if xs is empty, or Just a right
     // fold of f over the list using the last
     // item of xs as the initial accumulator value.
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         Just(
             xs.slice(0, -1).reduceRight(
                 uncurry(f),
@@ -1979,7 +1979,7 @@ const groupBy = eqOp =>
     // A list of lists, each containing only elements
     // equal under the given equality operator,
     // such that the concatenation of these lists is xs.
-    xs => 0 < xs.length ? (() => {
+    xs => Boolean(xs.length) ? (() => {
         const [h, ...t] = xs;
         const [groups, g] = t.reduce(
             ([gs, a], x) => eqOp(x)(a[0]) ? (
@@ -2586,6 +2586,9 @@ const levels = tree => {
         ];
     };
 
+    return go([], tree);
+};
+
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
     // Lift a binary function to actions.
@@ -2969,7 +2972,7 @@ const maxBound = x => {
 // maximum :: Ord a => [a] -> a
 const maximum = xs =>
     // The largest value in a non-empty list.
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         xs.slice(1).reduce(
             (a, x) => x > a ? (
                 x
@@ -2980,7 +2983,7 @@ const maximum = xs =>
 
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
 const maximumBy = f =>
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         xs.slice(1).reduce(
             (a, x) => 0 < f(x)(a) ? (
                 x
@@ -2991,7 +2994,7 @@ const maximumBy = f =>
 
 // maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const maximumByMay = f =>
-    xs => xs.length > 0 ? (
+    xs => Boolean(xs.length) ? (
         Just(xs.slice(1).reduce(
             (a, x) => 0 < f(a)(x) ? (
                 a
@@ -3002,7 +3005,7 @@ const maximumByMay = f =>
 
 // maximumMay :: Ord a => [a] -> Maybe a
 const maximumMay = xs =>
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         Just(xs.slice(1).reduce(
             (a, x) => x > a ? (
                 x
@@ -3015,7 +3018,7 @@ const maximumMay = xs =>
 const maximumOn = f =>
     // The item in xs for which f
     // returns the highest value.
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
@@ -4078,7 +4081,7 @@ const showLog = (...args) =>
 
 // showMatrix :: (a -> String) -> [[a]] -> String
 const showMatrix = fShow =>
-    rows => 0 < rows.length ? (() => {
+    rows => Boolean(rows.length) ? (() => {
         const w = fShow(Math.max(...rows.flat())).length;
 
         return rows.map(
@@ -4103,7 +4106,7 @@ const showMenuLR = blnMult =>
     // the string `selected` pre-selected
     // if found in xs.
     menuTitle => prompt => selected => xs =>
-    0 < xs.length ? (() => {
+    Boolean(xs.length) ? (() => {
         const sa = Object.assign(
             Application("System Events"), {
                 includeStandardAdditions: true
@@ -4552,14 +4555,14 @@ const tail = xs =>
     // items of xs except the first.
     "GeneratorFunction" !== xs.constructor
     .constructor.name ? (
-        0 < xs.length ? (
+        Boolean(xs.length) ? (
             xs.slice(1)
         ) : undefined
     ) : (take(1)(xs), xs);
 
 // tailMay :: [a] -> Maybe [a]
 const tailMay = xs =>
-    0 < xs.length ? (
+    Boolean(xs.length) ? (
         Just(xs.slice(1))
     ) : Nothing();
 
@@ -4768,14 +4771,14 @@ const toRatio = n =>
 const toSentence = s =>
     // Sentence case - initial char capitalized
     // and rest lowercase.
-    (0 < s.length) ? (
+    Boolean(s.length) ? (
         s[0].toUpperCase() + s.slice(1)
         .toLowerCase()
     ) : s;
 
 // toTitle :: String -> String
 const toTitle = s =>
-    0 < s.length ? (
+    Boolean(s.length) ? (
         `${toUpper(s[0])}${toLower(s.slice(1))}`
     ) : "";
 
@@ -4790,15 +4793,15 @@ const transpose = rows => {
     // > transpose [[10,11],[20],[],[30,31,32]]
     //             == [[10,20,30],[11,31],[32]]
     const go = xss =>
-        0 < xss.length ? (() => {
+        Boolean(xss.length) ? (() => {
             const
                 h = xss[0],
                 t = xss.slice(1);
 
-            return 0 < h.length ? [
+            return Boolean(h.length) ? [
                 [h[0]].concat(t.reduce(
                     (a, xs) => a.concat(
-                        0 < xs.length ? (
+                        Boolean(xs.length) ? (
                             [xs[0]]
                         ) : []
                     ),
@@ -4818,7 +4821,7 @@ const transpose_ = rows =>
     // into new rows.
     // Simpler version of transpose, assuming input
     // rows of even length.
-    0 < rows.length ? rows[0].map(
+    Boolean(rows.length) ? rows[0].map(
         (_, i) => rows.flatMap(
             v => v[i]
         )
@@ -4857,7 +4860,7 @@ const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating
     // these actions from left to right.
-    xs => 0 < xs.length ? (() => {
+    xs => Boolean(xs.length) ? (() => {
         const
             vLast = f(xs.slice(-1)[0]),
             t = typeName(vLast);
@@ -4980,7 +4983,7 @@ const treeFromNestedDict = dict => {
 const treeLeaves = tree => {
     const subNest = tree.nest;
 
-    return 0 < subNest.length ? (
+    return Boolean(subNest.length) ? (
         subNest.flatMap(treeLeaves)
     ) : [tree];
 };
@@ -5602,8 +5605,8 @@ const zipWith_ = f => {
     // custom function, rather than with the
     // default tuple constructor.
     const go = xs =>
-        ys => 0 < xs.length ? (
-            0 < ys.length ? (
+        ys => Boolean(xs.length) ? (
+            Boolean(ys.length) ? (
                 [f(xs[0])(ys[0])].concat(
                     go(xs.slice(1))(ys.slice(1))
                 )

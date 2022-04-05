@@ -3,7 +3,7 @@
 const maximumOn = f =>
     // The item in xs for which f
     // returns the highest value.
-    xs => 0 < xs.length ? (
+    xs => Boolean(xs.length) ? (
         xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);

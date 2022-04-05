@@ -5,7 +5,7 @@ const transpose_ = rows =>
     // into new rows.
     // Simpler version of transpose, assuming input
     // rows of even length.
-    0 < rows.length ? rows[0].map(
+    Boolean(rows.length) ? rows[0].map(
         (_, i) => rows.flatMap(
             v => v[i]
         )

@@ -5,7 +5,7 @@ const chop = f =>
     // function which returns a (prefix, residue) tuple.
     xs => {
         const go = ys =>
-            0 < ys.length ? (() => {
+            Boolean(ys.length) ? (() => {
                 const [b, bs] = f(ys);
 
                 return [b].concat(go(bs));

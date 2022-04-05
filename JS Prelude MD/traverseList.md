@@ -5,7 +5,7 @@ const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating
     // these actions from left to right.
-    xs => 0 < xs.length ? (() => {
+    xs => Boolean(xs.length) ? (() => {
         const
             vLast = f(xs.slice(-1)[0]),
             t = typeName(vLast);

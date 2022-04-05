@@ -8,7 +8,7 @@ const showMenuLR = blnMult =>
     // the string `selected` pre-selected
     // if found in xs.
     menuTitle => prompt => selected => xs =>
-    0 < xs.length ? (() => {
+    Boolean(xs.length) ? (() => {
         const sa = Object.assign(
             Application("System Events"), {
                 includeStandardAdditions: true

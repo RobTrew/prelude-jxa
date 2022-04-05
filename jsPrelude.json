@@ -388,7 +388,7 @@
     ]
   },
   "chop": {
-    "code": "// chop :: ([a] -> (b, [a])) -> [a] -> [b]\nconst chop = f =>\n    // A segmentation of xs by tail recursion with a\n    // function which returns a (prefix, residue) tuple.\n    xs => {\n        const go = ys =>\n            0 < ys.length ? (() => {\n                const [b, bs] = f(ys);\n\n                return [b].concat(go(bs));\n            })() : [];\n\n        return go([...xs]);\n    };",
+    "code": "// chop :: ([a] -> (b, [a])) -> [a] -> [b]\nconst chop = f =>\n    // A segmentation of xs by tail recursion with a\n    // function which returns a (prefix, residue) tuple.\n    xs => {\n        const go = ys =>\n            Boolean(ys.length) ? (() => {\n                const [b, bs] = f(ys);\n\n                return [b].concat(go(bs));\n            })() : [];\n\n        return go([...xs]);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -400,7 +400,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return 0 < chunk.length ? (\n            [chunk].concat(\n                go(xs.slice(n))\n            )\n        ) : [];\n    };\n\n    return go;\n};",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return Boolean(chunk.length) ? (\n            [chunk].concat(\n                go(xs.slice(n))\n            )\n        ) : [];\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -472,7 +472,7 @@
     ]
   },
   "concatMapGen": {
-    "code": "// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]\nconst concatMapGen = f =>\n    // The concatenated map of f over\n    // a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n        let vs = [];\n\n        while (!v.done) {\n            vs = f(v.value);\n            if (0 < vs.length) {\n                yield vs[0];\n            }\n\n            v = gen.next();\n        }\n    };",
+    "code": "// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]\nconst concatMapGen = f =>\n    // The concatenated map of f over\n    // a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n        let vs = [];\n\n        while (!v.done) {\n            vs = f(v.value);\n            if (Boolean(vs.length)) {\n                yield vs[0];\n            }\n\n            v = gen.next();\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -542,7 +542,7 @@
     ]
   },
   "delete": {
-    "code": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = x => {\n    // xs with first instance of x (if any) removed.\n    const go = xs =>\n        0 < xs.length ? (\n            (x === xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n\n    return go;\n};",
+    "code": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = x => {\n    // xs with first instance of x (if any) removed.\n    const go = xs =>\n        Boolean(xs.length) ? (\n            (x === xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -554,13 +554,13 @@
     ]
   },
   "deleteBy": {
-    "code": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = fEq =>\n    x => {\n        const go = xs => 0 < xs.length ? (\n            fEq(x)(xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n\n        return go;\n    };",
+    "code": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = fEq =>\n    x => {\n        const go = xs => Boolean(xs.length) ? (\n            fEq(x)(xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n\n        return go;\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "deleteFirst": {
-    "code": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = x => {\n    const go = xs => 0 < xs.length ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(go(xs.slice(1)))\n    ) : [];\n\n    return go;\n};",
+    "code": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = x => {\n    const go = xs => Boolean(xs.length) ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(go(xs.slice(1)))\n    ) : [];\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -683,7 +683,7 @@
     ]
   },
   "dropFileName": {
-    "code": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = fp =>\n    \"\" !== fp ? (() => {\n        const\n            xs = (fp.split(\"/\"))\n            .slice(0, -1);\n\n        return 0 < xs.length ? (\n            `${xs.join(\"/\")}/`\n        ) : \"./\";\n    })() : \"./\";",
+    "code": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = fp =>\n    \"\" !== fp ? (() => {\n        const\n            xs = (fp.split(\"/\"))\n            .slice(0, -1);\n\n        return Boolean(xs.length) ? (\n            `${xs.join(\"/\")}/`\n        ) : \"./\";\n    })() : \"./\";",
     "tags": [
       "JS Prelude"
     ]
@@ -701,7 +701,7 @@
     ]
   },
   "dropWhile": {
-    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = p =>\n    // The suffix remaining after takeWhile p xs.\n    xs => {\n        const n = xs.length;\n\n        return xs.slice(\n            0 < n ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    };",
+    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\n// dropWhile :: (Char -> Bool) -> String -> String\nconst dropWhile = p =>\n    // The suffix remaining after takeWhile p xs.\n    xs => {\n        const n = xs.length;\n\n        return xs.slice(\n            Boolean(n) ? until(\n                i => n === i || !p(xs[i])\n            )(i => 1 + i)(0) : 0\n        );\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -1126,13 +1126,13 @@
     ]
   },
   "foldr1": {
-    "code": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = f =>\n    xs => 0 < xs.length ? (\n        xs.slice(0, -1).reduceRight(\n            uncurry(f),\n            xs.slice(-1)[0]\n        )\n    ) : [];",
+    "code": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = f =>\n    xs => Boolean(xs.length) ? (\n        xs.slice(0, -1).reduceRight(\n            uncurry(f),\n            xs.slice(-1)[0]\n        )\n    ) : [];",
     "tags": [
       "JS Prelude"
     ]
   },
   "foldr1May": {
-    "code": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = f =>\n    // Nothing if xs is empty, or Just a right\n    // fold of f over the list using the last\n    // item of xs as the initial accumulator value.\n    xs => 0 < xs.length ? (\n        Just(\n            xs.slice(0, -1).reduceRight(\n                uncurry(f),\n                xs.slice(-1)[0])\n        )\n    ) : Nothing();",
+    "code": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = f =>\n    // Nothing if xs is empty, or Just a right\n    // fold of f over the list using the last\n    // item of xs as the initial accumulator value.\n    xs => Boolean(xs.length) ? (\n        Just(\n            xs.slice(0, -1).reduceRight(\n                uncurry(f),\n                xs.slice(-1)[0])\n        )\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1253,7 +1253,7 @@
     ]
   },
   "groupBy": {
-    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator,\n    // such that the concatenation of these lists is xs.\n    xs => 0 < xs.length ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => eqOp(x)(a[0]) ? (\n                Tuple(gs)([...a, x])\n            ) : Tuple([...gs, a])([x]),\n            Tuple([])([h])\n        );\n\n        return [...groups, g];\n    })() : [];",
+    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator,\n    // such that the concatenation of these lists is xs.\n    xs => Boolean(xs.length) ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => eqOp(x)(a[0]) ? (\n                Tuple(gs)([...a, x])\n            ) : Tuple([...gs, a])([x]),\n            Tuple([])([h])\n        );\n\n        return [...groups, g];\n    })() : [];",
     "tags": [
       "JS Prelude",
       "core"
@@ -1688,7 +1688,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, x) => {\n        const [h, ...t] = Boolean(a.length) ? a : [\n            []\n        ];\n\n        return [\n            [root(x), ...h],\n            ...nest(x).reduceRight(go, t)\n        ];\n    };",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, x) => {\n        const [h, ...t] = Boolean(a.length) ? a : [\n            []\n        ];\n\n        return [\n            [root(x), ...h],\n            ...nest(x).reduceRight(go, t)\n        ];\n    };\n\n    return go([], tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1938,33 +1938,33 @@
     ]
   },
   "maximum": {
-    "code": "// maximum :: Ord a => [a] -> a\nconst maximum = xs =>\n    // The largest value in a non-empty list.\n    0 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
+    "code": "// maximum :: Ord a => [a] -> a\nconst maximum = xs =>\n    // The largest value in a non-empty list.\n    Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "maximumBy": {
-    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => 0 < f(x)(a) ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
+    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (a, x) => 0 < f(x)(a) ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "maximumByMay": {
-    "code": "// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = f =>\n    xs => xs.length > 0 ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => 0 < f(a)(x) ? (\n                a\n            ) : x,\n            xs[0]\n        ))\n    ) : Nothing();",
+    "code": "// maximumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst maximumByMay = f =>\n    xs => Boolean(xs.length) ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => 0 < f(a)(x) ? (\n                a\n            ) : x,\n            xs[0]\n        ))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "maximumMay": {
-    "code": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
+    "code": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "maximumOn": {
-    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v > tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v > tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude"
     ]
@@ -2699,7 +2699,7 @@
     ]
   },
   "showMatrix": {
-    "code": "// showMatrix :: (a -> String) -> [[a]] -> String\nconst showMatrix = fShow =>\n    rows => 0 < rows.length ? (() => {\n        const w = fShow(Math.max(...rows.flat())).length;\n\n        return rows.map(\n            cells => cells.map(\n                x => fShow(x).padStart(w, \" \")\n            ).join(\" \")\n        ).join(\"\\n\");\n    })() : \"\";",
+    "code": "// showMatrix :: (a -> String) -> [[a]] -> String\nconst showMatrix = fShow =>\n    rows => Boolean(rows.length) ? (() => {\n        const w = fShow(Math.max(...rows.flat())).length;\n\n        return rows.map(\n            cells => cells.map(\n                x => fShow(x).padStart(w, \" \")\n            ).join(\" \")\n        ).join(\"\\n\");\n    })() : \"\";",
     "tags": [
       "JS Prelude"
     ]
@@ -2711,7 +2711,7 @@
     ]
   },
   "showMenuLR": {
-    "code": "// showMenuLR :: Bool -> String -> String ->\n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with\n    // a given title and prompt string.\n    // Listing the strings in xs, with\n    // the string `selected` pre-selected\n    // if found in xs.\n    menuTitle => prompt => selected => xs =>\n    0 < xs.length ? (() => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        sa.activate();\n\n        const v = sa.chooseFromList(xs, {\n            withTitle: menuTitle,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: \"OK\",\n            cancelButtonName: \"Cancel\",\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left(`User cancelled ${menuTitle} menu.`);\n    })() : Left(`${menuTitle}: No items to choose from.`);",
+    "code": "// showMenuLR :: Bool -> String -> String ->\n// [String] -> String -> Either String [String]\nconst showMenuLR = blnMult =>\n    // An optionally multi-choice menu, with\n    // a given title and prompt string.\n    // Listing the strings in xs, with\n    // the string `selected` pre-selected\n    // if found in xs.\n    menuTitle => prompt => selected => xs =>\n    Boolean(xs.length) ? (() => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        sa.activate();\n\n        const v = sa.chooseFromList(xs, {\n            withTitle: menuTitle,\n            withPrompt: prompt,\n            defaultItems: xs.includes(selected) ? (\n                [selected]\n            ) : [xs[0]],\n            okButtonName: \"OK\",\n            cancelButtonName: \"Cancel\",\n            multipleSelectionsAllowed: blnMult,\n            emptySelectionAllowed: false\n        });\n\n        return Array.isArray(v) ? (\n            Right(v)\n        ) : Left(`User cancelled ${menuTitle} menu.`);\n    })() : Left(`${menuTitle}: No items to choose from.`);",
     "tags": [
       "JS Prelude"
     ]
@@ -2962,14 +2962,14 @@
     ]
   },
   "tail": {
-    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name ? (\n        0 < xs.length ? (\n            xs.slice(1)\n        ) : undefined\n    ) : (take(1)(xs), xs);",
+    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name ? (\n        Boolean(xs.length) ? (\n            xs.slice(1)\n        ) : undefined\n    ) : (take(1)(xs), xs);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "tailMay": {
-    "code": "// tailMay :: [a] -> Maybe [a]\nconst tailMay = xs =>\n    0 < xs.length ? (\n        Just(xs.slice(1))\n    ) : Nothing();",
+    "code": "// tailMay :: [a] -> Maybe [a]\nconst tailMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(1))\n    ) : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -3100,13 +3100,13 @@
     ]
   },
   "toSentence": {
-    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - initial char capitalized\n    // and rest lowercase.\n    (0 < s.length) ? (\n        s[0].toUpperCase() + s.slice(1)\n        .toLowerCase()\n    ) : s;",
+    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - initial char capitalized\n    // and rest lowercase.\n    Boolean(s.length) ? (\n        s[0].toUpperCase() + s.slice(1)\n        .toLowerCase()\n    ) : s;",
     "tags": [
       "JS Prelude"
     ]
   },
   "toTitle": {
-    "code": "// toTitle :: String -> String\nconst toTitle = s =>\n    0 < s.length ? (\n        `${toUpper(s[0])}${toLower(s.slice(1))}`\n    ) : \"\";",
+    "code": "// toTitle :: String -> String\nconst toTitle = s =>\n    Boolean(s.length) ? (\n        `${toUpper(s[0])}${toLower(s.slice(1))}`\n    ) : \"\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3119,13 +3119,13 @@
     ]
   },
   "transpose": {
-    "code": "// transpose :: [[a]] -> [[a]]\nconst transpose = rows => {\n    // If any rows are shorter than those that follow,\n    // their elements are skipped:\n    // > transpose [[10,11],[20],[],[30,31,32]]\n    //             == [[10,20,30],[11,31],[32]]\n    const go = xss =>\n        0 < xss.length ? (() => {\n            const\n                h = xss[0],\n                t = xss.slice(1);\n\n            return 0 < h.length ? [\n                [h[0]].concat(t.reduce(\n                    (a, xs) => a.concat(\n                        0 < xs.length ? (\n                            [xs[0]]\n                        ) : []\n                    ),\n                    []\n                ))\n            ].concat(go([h.slice(1)].concat(\n                t.map(xs => xs.slice(1))\n            ))) : go(t);\n        })() : [];\n\n    return go(rows);\n};",
+    "code": "// transpose :: [[a]] -> [[a]]\nconst transpose = rows => {\n    // If any rows are shorter than those that follow,\n    // their elements are skipped:\n    // > transpose [[10,11],[20],[],[30,31,32]]\n    //             == [[10,20,30],[11,31],[32]]\n    const go = xss =>\n        Boolean(xss.length) ? (() => {\n            const\n                h = xss[0],\n                t = xss.slice(1);\n\n            return Boolean(h.length) ? [\n                [h[0]].concat(t.reduce(\n                    (a, xs) => a.concat(\n                        Boolean(xs.length) ? (\n                            [xs[0]]\n                        ) : []\n                    ),\n                    []\n                ))\n            ].concat(go([h.slice(1)].concat(\n                t.map(xs => xs.slice(1))\n            ))) : go(t);\n        })() : [];\n\n    return go(rows);\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "transpose_": {
-    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input\n    // rows of even length.\n    0 < rows.length ? rows[0].map(\n        (_, i) => rows.flatMap(\n            v => v[i]\n        )\n    ) : [];",
+    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input\n    // rows of even length.\n    Boolean(rows.length) ? rows[0].map(\n        (_, i) => rows.flatMap(\n            v => v[i]\n        )\n    ) : [];",
     "tags": [
       "JS Prelude"
     ]
@@ -3143,7 +3143,7 @@
     ]
   },
   "traverseList": {
-    "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => 0 < xs.length ? (() => {\n        const\n            vLast = f(xs.slice(-1)[0]),\n            t = typeName(vLast);\n\n        return xs.slice(0, -1).reduceRight(\n            (ys, x) => liftA2(cons)(f(x))(ys),\n            liftA2(cons)(vLast)(pureT(t)([]))\n        );\n    })() : fType(f)([]);",
+    "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => Boolean(xs.length) ? (() => {\n        const\n            vLast = f(xs.slice(-1)[0]),\n            t = typeName(vLast);\n\n        return xs.slice(0, -1).reduceRight(\n            (ys, x) => liftA2(cons)(f(x))(ys),\n            liftA2(cons)(vLast)(pureT(t)([]))\n        );\n    })() : fType(f)([]);",
     "tags": [
       "JS Prelude"
     ]
@@ -3189,7 +3189,7 @@
     ]
   },
   "treeLeaves": {
-    "code": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n    const subNest = tree.nest;\n\n    return 0 < subNest.length ? (\n        subNest.flatMap(treeLeaves)\n    ) : [tree];\n};",
+    "code": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n    const subNest = tree.nest;\n\n    return Boolean(subNest.length) ? (\n        subNest.flatMap(treeLeaves)\n    ) : [tree];\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3505,7 +3505,7 @@
     ]
   },
   "zipWith_": {
-    "code": "// zipWith_ :: (a -> a -> b) -> [a] -> [b]\nconst zipWith_ = f => {\n    // A list with the length of the shorter of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    const go = xs =>\n        ys => 0 < xs.length ? (\n            0 < ys.length ? (\n                [f(xs[0])(ys[0])].concat(\n                    go(xs.slice(1))(ys.slice(1))\n                )\n            ) : []\n        ) : [];\n\n    return go;\n};",
+    "code": "// zipWith_ :: (a -> a -> b) -> [a] -> [b]\nconst zipWith_ = f => {\n    // A list with the length of the shorter of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    const go = xs =>\n        ys => Boolean(xs.length) ? (\n            Boolean(ys.length) ? (\n                [f(xs[0])(ys[0])].concat(\n                    go(xs.slice(1))(ys.slice(1))\n                )\n            ) : []\n        ) : [];\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]

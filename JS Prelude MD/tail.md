@@ -5,7 +5,7 @@ const tail = xs =>
     // items of xs except the first.
     "GeneratorFunction" !== xs.constructor
     .constructor.name ? (
-        0 < xs.length ? (
+        Boolean(xs.length) ? (
             xs.slice(1)
         ) : undefined
     ) : (take(1)(xs), xs);
