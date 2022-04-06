@@ -1,13 +1,3 @@
-```javascript
-// mean :: [Num] -> Num
-const mean = xs =>
-    xs.reduce(
-        (a, x) => a + x,
-        0
-    ) / xs.length;
-```
-
-
 ```applescript
 -- mean :: [Num] -> Num
 on mean(xs)
@@ -15,4 +5,14 @@ on mean(xs)
     ((ca's NSArray's arrayWithArray:xs)'s ¬
         valueForKeyPath:"@avg.self") as real
 end mean
+```
+
+
+```javascript
+// mean :: [Num] -> Num
+const mean = xs =>
+    xs.reduce(
+        (a, x) => a + x,
+        0
+    ) / xs.length;
 ```
