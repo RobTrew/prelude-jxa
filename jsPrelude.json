@@ -1970,7 +1970,7 @@
     ]
   },
   "maybe": {
-    "code": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = v =>\n    // Default value (v) if m is Nothing, or f(m.Just)\n    f => m => m.Nothing ? (\n        v\n    ) : f(m.Just);",
+    "code": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = v =>\n    // Default value (v) if m is Nothing, or f(m.Just)\n    f => m => \"Just\" in m ? (\n        f(m.Just)\n    ) : v;",
     "tags": [
       "JS Prelude",
       "core"
