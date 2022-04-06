@@ -3,12 +3,13 @@
 const mapMaybe = mf =>
     // A filtered map, retaining only the contents
     // of Just values. (Nothing values discarded).
-    xs => xs.reduce(
-        (a, x) => maybe(a)(
-            j => a.concat(j)
-        )(mf(x)),
-        []
-    );
+    xs => xs.flatMap(x => {
+        const mb = mf(x);
+
+        return "Just" in mb ? (
+            [mb.Just]
+        ) : [];
+    });
 ```
 
 

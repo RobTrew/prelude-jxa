@@ -2820,12 +2820,13 @@ const mapKeys = f =>
 const mapMaybe = mf =>
     // A filtered map, retaining only the contents
     // of Just values. (Nothing values discarded).
-    xs => xs.reduce(
-        (a, x) => maybe(a)(
-            j => a.concat(j)
-        )(mf(x)),
-        []
-    );
+    xs => xs.flatMap(x => {
+        const mb = mf(x);
+
+        return "Just" in mb ? (
+            [mb.Just]
+        ) : [];
+    });
 
 // mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
 const mapMaybeGen = mf =>
@@ -3917,7 +3918,7 @@ const second = f =>
     // A function over a simple value lifted
     // to a function over a tuple.
     // f (a, b) -> (a, f(b))
-    ([x, y]) => Tuple(x)(f(y));
+    ([x, y]) => [x, f(y)];
 
 // sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 const sequenceA = tfa =>
@@ -4744,9 +4745,7 @@ const taskPaperDateString = dte => {
 
 // taskPaperDayString :: Date -> String
 const taskPaperDayString = dte =>
-    take(10)(
-        taskPaperDateString(dte)
-    );
+    taskPaperDateString(dte).slice(0, 10);
 
 // toEnum :: a -> Int -> a
 const toEnum = e =>

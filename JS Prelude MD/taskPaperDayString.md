@@ -1,7 +1,5 @@
 ```javascript
 // taskPaperDayString :: Date -> String
 const taskPaperDayString = dte =>
-    take(10)(
-        taskPaperDateString(dte)
-    );
+    taskPaperDateString(dte).slice(0, 10);
 ```

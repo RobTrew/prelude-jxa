@@ -1853,7 +1853,7 @@
     ]
   },
   "mapMaybe": {
-    "code": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = mf =>\n    // A filtered map, retaining only the contents\n    // of Just values. (Nothing values discarded).\n    xs => xs.reduce(\n        (a, x) => maybe(a)(\n            j => a.concat(j)\n        )(mf(x)),\n        []\n    );",
+    "code": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = mf =>\n    // A filtered map, retaining only the contents\n    // of Just values. (Nothing values discarded).\n    xs => xs.flatMap(x => {\n        const mb = mf(x);\n\n        return \"Just\" in mb ? (\n            [mb.Just]\n        ) : [];\n    });",
     "tags": [
       "JS Prelude"
     ]
@@ -2577,7 +2577,7 @@
     ]
   },
   "second": {
-    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    ([x, y]) => Tuple(x)(f(y));",
+    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    ([x, y]) => [x, f(y)];",
     "tags": [
       "JS Prelude"
     ]
@@ -3068,7 +3068,7 @@
     ]
   },
   "taskPaperDayString": {
-    "code": "// taskPaperDayString :: Date -> String\nconst taskPaperDayString = dte =>\n    take(10)(\n        taskPaperDateString(dte)\n    );",
+    "code": "// taskPaperDayString :: Date -> String\nconst taskPaperDayString = dte =>\n    taskPaperDateString(dte).slice(0, 10);",
     "tags": [
       "JS Prelude"
     ]
