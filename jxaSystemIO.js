@@ -175,7 +175,7 @@ const doesFileExist = fp => {
         .fileExistsAtPathIsDirectory(
             $(fp)
             .stringByStandardizingPath, ref
-        ) && 1 !== ref[0];
+        ) && !ref[0];
 };
 
 // doesPathExist :: FilePath -> IO Bool

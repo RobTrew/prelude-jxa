@@ -1,3 +1,16 @@
+```javascript
+// zipList :: [a] -> [b] -> [(a, b)]
+const zipList = xs => ys => {
+    const
+        n = Math.min(length(xs), length(ys)),
+        vs = take(n)(ys);
+
+    return take(n)(xs)
+        .map((x, i) => Tuple(x)(vs[i]));
+};
+```
+
+
 ```applescript
 -- zipList :: [a] -> [b] -> [(a, b)]
 on zipList(xs, ys)
@@ -9,17 +22,4 @@ on zipList(xs, ys)
     end script
     map(go, items 1 thru lng of xs)
 end zipList
-```
-
-
-```javascript
-// zipList :: [a] -> [b] -> [(a, b)]
-const zipList = xs => ys => {
-    const
-        n = Math.min(length(xs), length(ys)),
-        vs = take(n)(ys);
-
-    return take(n)(xs)
-        .map((x, i) => Tuple(x)(vs[i]));
-};
 ```
