@@ -66,6 +66,12 @@
       "core"
     ]
   },
+  "Untitled Note": {
+    "code": "",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "abs": {
     "code": "// abs :: Num -> Num\nconst abs = x =>\n    // Absolute value of a given number\n    // without the sign.\n    0 > x ? -x : x;",
     "tags": [
@@ -400,7 +406,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return Boolean(chunk.length) ? (\n            [chunk].concat(\n                go(xs.slice(n))\n            )\n        ) : [];\n    };\n\n    return go;\n};",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return Boolean(chunk.length) ? [\n            chunk, ...go(xs.slice(n))\n        ] : [];\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -426,7 +432,7 @@
     ]
   },
   "comparing": {
-    "code": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
+    "code": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    // The ordering of f(x) and f(y) as a value\n    // drawn from {-1, 0, 1}, representing {LT, EQ, GT}.\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
     "tags": [
       "JS Prelude",
       "core"

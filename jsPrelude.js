@@ -123,6 +123,8 @@ const TupleN = (...args) => {
     ) : args.reduce((f, x) => f(x), Tuple);
 };
 
+
+
 // abs :: Num -> Num
 const abs = x =>
     // Absolute value of a given number
@@ -602,11 +604,9 @@ const chunksOf = n => {
     const go = xs => {
         const chunk = xs.slice(0, n);
 
-        return Boolean(chunk.length) ? (
-            [chunk].concat(
-                go(xs.slice(n))
-            )
-        ) : [];
+        return Boolean(chunk.length) ? [
+            chunk, ...go(xs.slice(n))
+        ] : [];
     };
 
     return go;
@@ -642,6 +642,8 @@ const compareList = xs =>
 
 // comparing :: (a -> b) -> (a -> a -> Ordering)
 const comparing = f =>
+    // The ordering of f(x) and f(y) as a value
+    // drawn from {-1, 0, 1}, representing {LT, EQ, GT}.
     x => y => {
         const
             a = f(x),
