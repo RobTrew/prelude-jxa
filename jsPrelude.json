@@ -2811,7 +2811,7 @@
     ]
   },
   "sortOn": {
-    "code": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = f =>\n    // Equivalent to sortBy(comparing(f)), but with f(x)\n    // evaluated only once for each x in xs.\n    // ('Schwartzian' decorate-sort-undecorate).\n    xs => sortBy(\n        comparing(x => x[0])\n    )(\n        xs.map(x => [f(x), x])\n    );",
+    "code": "// sortOn :: Ord b => (a -> b) -> [a] -> [a]\nconst sortOn = f =>\n    // Equivalent to sortBy(comparing(f)), but with f(x)\n    // evaluated only once for each x in xs.\n    // ('Schwartzian' decorate-sort-undecorate).\n    xs => sortBy(\n        comparing(x => x[0])\n    )(\n        xs.map(x => [f(x), x])\n    )\n    .map(x => x[1]);",
     "tags": [
       "JS Prelude",
       "core"

@@ -4274,7 +4274,8 @@ const sortOn = f =>
         comparing(x => x[0])
     )(
         xs.map(x => [f(x), x])
-    );
+    )
+    .map(x => x[1]);
 
 // span :: (a -> Bool) -> [a] -> ([a], [a])
 const span = p =>
