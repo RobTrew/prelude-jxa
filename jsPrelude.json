@@ -566,7 +566,7 @@
     ]
   },
   "deleteFirst": {
-    "code": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = x => {\n    const go = xs => Boolean(xs.length) ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [xs[0]].concat(go(xs.slice(1)))\n    ) : [];\n\n    return go;\n};",
+    "code": "// deleteFirst :: a -> [a] -> [a]\nconst deleteFirst = x => {\n    const go = xs => Boolean(xs.length) ? (\n        x === xs[0] ? (\n            xs.slice(1)\n        ) : [...xs[0], ...go(xs.slice(1))]\n    ) : [];\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]

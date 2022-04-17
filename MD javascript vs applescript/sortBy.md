@@ -1,12 +1,3 @@
-```javascript
-// sortBy :: (a -> a -> Ordering) -> [a] -> [a]
-const sortBy = f =>
-    // A copy of xs sorted by the comparator function f.
-    xs => xs.slice()
-    .sort((a, b) => f(a)(b));
-```
-
-
 ```applescript
 -- sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 on sortBy(f, xs)
@@ -29,4 +20,13 @@ on sortBy(f, xs)
         xs
     end if
 end sortBy
+```
+
+
+```javascript
+// sortBy :: (a -> a -> Ordering) -> [a] -> [a]
+const sortBy = f =>
+    // A copy of xs sorted by the comparator function f.
+    xs => xs.slice()
+    .sort((a, b) => f(a)(b));
 ```

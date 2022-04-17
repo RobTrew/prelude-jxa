@@ -1,10 +1,3 @@
-```javascript
-// isAlpha :: Char -> Bool
-const isAlpha = c =>
-    (/[A-Za-z\u00C0-\u00FF]/u).test(c);
-```
-
-
 ```applescript
 -- isAlpha :: Char -> Bool
 on isAlpha(c)
@@ -17,4 +10,11 @@ on isAlpha(c)
     0 < (oRgx's numberOfMatchesInString:oString options:0 ¬
         range:{location:0, |length|:1})
 end isAlpha
+```
+
+
+```javascript
+// isAlpha :: Char -> Bool
+const isAlpha = c =>
+    (/[A-Za-z\u00C0-\u00FF]/u).test(c);
 ```

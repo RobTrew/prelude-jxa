@@ -1,13 +1,3 @@
-```javascript
-// snoc :: [a] -> a -> [a]
-const snoc = xs =>
-    // The mirror image of cons
-    // A new copy of the given list,
-    // with an atom appended at the end.
-    x => xs.concat(x);
-```
-
-
 ```applescript
 -- Mirror image of cons
 -- New copy of the list, with an atom added at the end
@@ -15,4 +5,14 @@ const snoc = xs =>
 on snoc(xs, x)
     xs & {x}
 end snoc
+```
+
+
+```javascript
+// snoc :: [a] -> a -> [a]
+const snoc = xs =>
+    // The mirror image of cons
+    // A new copy of the given list,
+    // with an atom appended at the end.
+    x => xs.concat(x);
 ```
