@@ -19,7 +19,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
 
             return TupleN(ls.map(f), g(m), rs.map(h));
         };
-        
+
     const lmrBuild = (f, w) => wsTree => {
         const
             leftPad = n => s => " ".repeat(n) + s,
@@ -77,7 +77,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             ));
         })();
     };
-    
+
     const
         measuredTree = fmapTree(
             v => {

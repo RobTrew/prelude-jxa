@@ -123,8 +123,6 @@ const TupleN = (...args) => {
     ) : args.reduce((f, x) => f(x), Tuple);
 };
 
-
-
 // abs :: Num -> Num
 const abs = x =>
     // Absolute value of a given number
@@ -974,7 +972,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
 
             return TupleN(ls.map(f), g(m), rs.map(h));
         };
-        
+
     const lmrBuild = (f, w) => wsTree => {
         const
             leftPad = n => s => " ".repeat(n) + s,
@@ -1032,7 +1030,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             ));
         })();
     };
-    
+
     const
         measuredTree = fmapTree(
             v => {
@@ -1947,7 +1945,7 @@ const fst = tpl =>
 
 // ft :: Int -> Int -> [Int]
 const ft = m =>
-    // From To. 
+    // From To.
     // An abbreviation of enumFromTo.
     n => Array.from({
         length: 1 + n - m
@@ -5334,7 +5332,7 @@ const unsnoc = xs =>
 const until = p =>
     // The value resulting from successive applications
     // of f to f(x), starting with a seed value x,
-    // and terminating when the result returns true 
+    // and terminating when the result returns true
     // for the predicate p.
     f => {
         const go = x =>

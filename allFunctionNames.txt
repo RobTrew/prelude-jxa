@@ -8,7 +8,6 @@ Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 TupleN :: a -> b ...  -> (a, b ... )
-
 abs :: Num -> Num
 add (+) :: Num a => a -> a -> a
 adjust :: (a -> a) -> Key -> Dict Key a -> Dict Key a
