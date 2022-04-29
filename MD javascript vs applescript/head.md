@@ -1,3 +1,13 @@
+```javascript
+// head :: [a] -> a
+const head = xs =>
+    // The first item (if any) in a list.
+    xs.length ? (
+        xs[0]
+    ) : null;
+```
+
+
 ```applescript
 -- head :: [a] -> a
 on head(xs)
@@ -7,14 +17,4 @@ on head(xs)
         item 1 of xs
     end if
 end head
-```
-
-
-```javascript
-// head :: [a] -> a
-const head = xs =>
-    // The first item (if any) in a list.
-    xs.length ? (
-        xs[0]
-    ) : null;
 ```

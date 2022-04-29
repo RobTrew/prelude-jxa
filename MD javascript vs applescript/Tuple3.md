@@ -1,11 +1,3 @@
-```applescript
--- Tuple3 (,,) :: a -> b -> c -> (a, b, c)
-on Tuple3(x, y, z)
-    {type:"Tuple3", |1|:x, |2|:y, |3|:z, length:3}
-end Tuple3
-```
-
-
 ```javascript
 // Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 const Tuple3 = a => b => c => ({
@@ -22,4 +14,12 @@ const Tuple3 = a => b => c => ({
         }
     }
 });
+```
+
+
+```applescript
+-- Tuple3 (,,) :: a -> b -> c -> (a, b, c)
+on Tuple3(x, y, z)
+    {type:"Tuple3", |1|:x, |2|:y, |3|:z, length:3}
+end Tuple3
 ```

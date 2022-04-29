@@ -1,3 +1,10 @@
+```javascript
+// mul (*) :: Num a => a -> a -> a
+const mul = a =>
+    b => a * b;
+```
+
+
 ```applescript
 -- mul (*) :: Num a => a -> a -> a
 on mul(a)
@@ -8,11 +15,4 @@ on mul(a)
         end |λ|
     end script
 end mul
-```
-
-
-```javascript
-// mul (*) :: Num a => a -> a -> a
-const mul = a =>
-    b => a * b;
 ```

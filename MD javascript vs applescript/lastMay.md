@@ -1,3 +1,12 @@
+```javascript
+// lastMay :: [a] -> Maybe a
+const lastMay = xs =>
+    Boolean(xs.length) ? (
+        Just(xs.slice(-1)[0])
+    ) : Nothing();
+```
+
+
 ```applescript
 -- lastMay :: [a] -> Maybe a
 on lastMay(xs)
@@ -7,13 +16,4 @@ on lastMay(xs)
         Nothing()
     end if
 end lastMay
-```
-
-
-```javascript
-// lastMay :: [a] -> Maybe a
-const lastMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(-1)[0])
-    ) : Nothing();
 ```

@@ -1,3 +1,14 @@
+```javascript
+// ft :: Int -> Int -> [Int]
+const ft = m =>
+    // From To.
+    // An abbreviation of enumFromTo.
+    n => Array.from({
+        length: 1 + n - m
+    }, (_, i) => m + i);
+```
+
+
 ```applescript
 -- ft :: (Int, Int) -> [Int]
 on ft(m, n)
@@ -12,15 +23,4 @@ on ft(m, n)
         return {}
     end if
 end ft
-```
-
-
-```javascript
-// ft :: Int -> Int -> [Int]
-const ft = m =>
-    // From To.
-    // An abbreviation of enumFromTo.
-    n => Array.from({
-        length: 1 + n - m
-    }, (_, i) => m + i);
 ```
