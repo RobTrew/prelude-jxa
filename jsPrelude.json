@@ -406,6 +406,12 @@
       "core"
     ]
   },
+  "combinations": {
+    "code": "// combinations :: Int -> [a] -> [[a]]\nconst combinations = n =>\n    // All combinations, without repetition,\n    // of n items drawn from xs.\n    xs => {\n        const go = (m, ys) =>\n            1 > m ? [\n                []\n            ] : 0 === ys.length ? (\n                []\n            ) : ((h, tail) => go(m - 1, tail)\n                .map(t => [h].concat(t))\n                .concat(go(m, tail))\n            )(ys[0], ys.slice(1));\n\n        return (go)(n, xs);\n    };",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "combine": {
     "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // Two paths combined with a path separator.\n    // Just the second path if that starts with\n    // a path separator.\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        \"/\" === fp1.slice(0, 1) ? (\n            fp1\n        ) : \"/\" === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
     "tags": [
