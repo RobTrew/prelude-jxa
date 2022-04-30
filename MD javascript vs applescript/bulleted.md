@@ -1,18 +1,3 @@
-```javascript
-// bulleted :: String -> String -> String
-const bulleted = strTab =>
-    // A copy of s in which each line is
-    // preceded by a whitespace indent,
-    // followed by a hyphen and space.
-    s => s.split(/[\n\r]+/u).map(
-        x => "" !== x ? (
-            `${strTab}- ${x}`
-        ) : x
-    )
-    .join("\n");
-```
-
-
 ```applescript
 -- bulleted :: String -> String -> String
 on bulleted(strIndent, s)
@@ -27,4 +12,19 @@ on bulleted(strIndent, s)
     end script
     unlines(map(go, paragraphs of s))
 end bulleted
+```
+
+
+```javascript
+// bulleted :: String -> String -> String
+const bulleted = strTab =>
+    // A copy of s in which each line is
+    // preceded by a whitespace indent,
+    // followed by a hyphen and space.
+    s => s.split(/[\n\r]+/u).map(
+        x => "" !== x ? (
+            `${strTab}- ${x}`
+        ) : x
+    )
+    .join("\n");
 ```

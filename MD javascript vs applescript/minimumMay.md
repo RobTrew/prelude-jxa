@@ -1,17 +1,3 @@
-```javascript
-// minimumMay :: [a] -> Maybe a
-const minimumMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(1).reduce(
-            (a, x) => x < a ? (
-                x
-            ) : a,
-            xs[0]
-        ))
-    ) : Nothing();
-```
-
-
 ```applescript
 -- minimumMay :: [a] -> Maybe a
 on minimumMay(xs)
@@ -29,4 +15,18 @@ on minimumMay(xs)
         Just(item 1 of xs)
     end if
 end minimumMay
+```
+
+
+```javascript
+// minimumMay :: [a] -> Maybe a
+const minimumMay = xs =>
+    Boolean(xs.length) ? (
+        Just(xs.slice(1).reduce(
+            (a, x) => x < a ? (
+                x
+            ) : a,
+            xs[0]
+        ))
+    ) : Nothing();
 ```

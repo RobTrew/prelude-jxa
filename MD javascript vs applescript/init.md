@@ -1,13 +1,3 @@
-```javascript
-// init :: [a] -> [a]
-const init = xs =>
-    // All elements of a list except the last.
-    Boolean(xs.length) ? (
-        xs.slice(0, -1)
-    ) : null;
-```
-
-
 ```applescript
 -- init :: [a] -> [a]
 -- init :: [String] -> [String]
@@ -32,4 +22,14 @@ on init(xs)
     end if
 end init
 
+```
+
+
+```javascript
+// init :: [a] -> [a]
+const init = xs =>
+    // All elements of a list except the last.
+    Boolean(xs.length) ? (
+        xs.slice(0, -1)
+    ) : null;
 ```

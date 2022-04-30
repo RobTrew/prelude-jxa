@@ -1,20 +1,3 @@
-```javascript
-// takeIterate n f x == [x, f x, f (f x), ...]
-// takeIterate :: Int -> (a -> a) -> a -> [a]
-const takeIterate = n =>
-    f => x => Array.from({
-        length: n - 1
-    }).reduce(
-        ([a, vs]) => {
-            const v = f(a);
-
-            return Tuple(v)(vs.concat(v));
-        },
-        Tuple(x)([x])
-    )[1];
-```
-
-
 ```applescript
 -- takeIterate n f x == [x, f x, f (f x), ...]
 -- takeIterate :: Int -> (a -> a) -> a -> [a]
@@ -29,4 +12,21 @@ on takeIterate(n, f, x)
     end tell
     return vs
 end takeIterate
+```
+
+
+```javascript
+// takeIterate n f x == [x, f x, f (f x), ...]
+// takeIterate :: Int -> (a -> a) -> a -> [a]
+const takeIterate = n =>
+    f => x => Array.from({
+        length: n - 1
+    }).reduce(
+        ([a, vs]) => {
+            const v = f(a);
+
+            return Tuple(v)(vs.concat(v));
+        },
+        Tuple(x)([x])
+    )[1];
 ```

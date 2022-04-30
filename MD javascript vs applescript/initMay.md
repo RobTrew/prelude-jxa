@@ -1,12 +1,3 @@
-```javascript
-// initMay :: [a] -> Maybe [a]
-const initMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(0, -1))
-    ) : Nothing();
-```
-
-
 ```applescript
 -- initMay :: [a] -> Maybe [a]
 -- initMay :: [String] -> Maybe [String]
@@ -29,4 +20,13 @@ on initMay(xs)
         Nothing()
     end if
 end initMay
+```
+
+
+```javascript
+// initMay :: [a] -> Maybe [a]
+const initMay = xs =>
+    Boolean(xs.length) ? (
+        Just(xs.slice(0, -1))
+    ) : Nothing();
 ```

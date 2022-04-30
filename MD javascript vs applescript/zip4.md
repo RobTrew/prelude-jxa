@@ -1,12 +1,3 @@
-```javascript
-// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
-const zip4 = ws =>
-    xs => ys => zs => ws
-    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))
-    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
-```
-
-
 ```applescript
 -- zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 on zip4(ws, xs, ys, zs)
@@ -18,4 +9,13 @@ on zip4(ws, xs, ys, zs)
     map(result, items 1 thru ¬
         minimum({length of xs, length of ys, length of zs}) of xs)
 end zip4
+```
+
+
+```javascript
+// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
+const zip4 = ws =>
+    xs => ys => zs => ws
+    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))
+    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 ```

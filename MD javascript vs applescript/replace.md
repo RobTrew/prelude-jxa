@@ -1,16 +1,3 @@
-```javascript
-// replace :: String -> String -> String -> String
-// replace :: Regex -> String -> String -> String
-const replace = needle =>
-    strNew => strHaystack => strHaystack.replace(
-        "string" !== typeof needle ? (
-            needle
-        ) : new RegExp(needle, "gu"),
-        strNew
-    );
-```
-
-
 ```applescript
 -- replace :: String -> String -> String -> String
 on replace(strNeedle, strNew, strHayStack)
@@ -21,4 +8,17 @@ on replace(strNeedle, strNew, strHayStack)
     set my text item delimiters to dlm
     return strReplaced
 end replace
+```
+
+
+```javascript
+// replace :: String -> String -> String -> String
+// replace :: Regex -> String -> String -> String
+const replace = needle =>
+    strNew => strHaystack => strHaystack.replace(
+        "string" !== typeof needle ? (
+            needle
+        ) : new RegExp(needle, "gu"),
+        strNew
+    );
 ```
