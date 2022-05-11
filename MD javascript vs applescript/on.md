@@ -1,3 +1,11 @@
+```javascript
+// on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
+const on = f =>
+    // e.g. groupBy(on(eq)(length))
+    g => a => b => f(g(a))(g(b));
+```
+
+
 ```applescript
 -- on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 on |on|(f, g)
@@ -9,12 +17,4 @@ on |on|(f, g)
         end |λ|
     end script
 end |on|
-```
-
-
-```javascript
-// on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
-const on = f =>
-    // e.g. groupBy(on(eq)(length))
-    g => a => b => f(g(a))(g(b));
 ```

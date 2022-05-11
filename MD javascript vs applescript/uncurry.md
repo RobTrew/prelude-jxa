@@ -1,3 +1,19 @@
+```javascript
+// uncurry :: (a -> b -> c) -> ((a, b) -> c)
+const uncurry = f =>
+    // A function over a pair, derived
+    // from a curried function.
+    (...args) => {
+        const
+            [x, y] = Boolean(args.length % 2) ? (
+                args[0]
+            ) : args;
+
+        return f(x)(y);
+    };
+```
+
+
 ```applescript
 -- Given a curried/default function, returns an
 -- equivalent function on a tuple or list pair.
@@ -28,20 +44,4 @@ on uncurry(f)
     end if
 end uncurry
 
-```
-
-
-```javascript
-// uncurry :: (a -> b -> c) -> ((a, b) -> c)
-const uncurry = f =>
-    // A function over a pair, derived
-    // from a curried function.
-    (...args) => {
-        const
-            [x, y] = Boolean(args.length % 2) ? (
-                args[0]
-            ) : args;
-
-        return f(x)(y);
-    };
 ```

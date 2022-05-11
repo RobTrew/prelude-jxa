@@ -1,3 +1,11 @@
+```javascript
+// bindList (>>=) :: [a] -> (a -> [b]) -> [b]
+const bindList = xs =>
+    // The bind operator for Arrays.
+    mf => [...xs].flatMap(mf);
+```
+
+
 ```applescript
 -- bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 on bindList(xs, f)
@@ -9,12 +17,4 @@ on bindList(xs, f)
     end tell
     return acc
 end bindList
-```
-
-
-```javascript
-// bindList (>>=) :: [a] -> (a -> [b]) -> [b]
-const bindList = xs =>
-    // The bind operator for Arrays.
-    mf => [...xs].flatMap(mf);
 ```

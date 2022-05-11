@@ -1,3 +1,12 @@
+```javascript
+// splitAt :: Int -> [a] -> ([a], [a])
+const splitAt = n =>
+    xs => Tuple(xs.slice(0, n))(
+        xs.slice(n)
+    );
+```
+
+
 ```applescript
 -- splitAt :: Int -> [a] -> ([a], [a])
 on splitAt(n, xs)
@@ -16,13 +25,4 @@ on splitAt(n, xs)
         end if
     end if
 end splitAt
-```
-
-
-```javascript
-// splitAt :: Int -> [a] -> ([a], [a])
-const splitAt = n =>
-    xs => Tuple(xs.slice(0, n))(
-        xs.slice(n)
-    );
 ```

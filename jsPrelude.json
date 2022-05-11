@@ -560,7 +560,7 @@
     ]
   },
   "deleteBy": {
-    "code": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = fEq =>\n    x => {\n        const go = xs => Boolean(xs.length) ? (\n            fEq(x)(xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0]].concat(go(xs.slice(1)))\n        ) : [];\n\n        return go;\n    };",
+    "code": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = fEq =>\n    // A copy of the given list excluding the first\n    // item which matches x in terms of the supplied\n    // fEq equality operator.\n    x => {\n        const go = xs => Boolean(xs.length) ? (\n            fEq(x)(xs[0]) ? (\n                xs.slice(1)\n            ) : [xs[0], ...go(xs.slice(1))]\n        ) : [];\n\n        return go;\n    };",
     "tags": [
       "JS Prelude"
     ]

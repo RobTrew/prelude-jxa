@@ -1,3 +1,16 @@
+```javascript
+// lookupDict :: a -> Dict -> Maybe b
+const lookupDict = k =>
+    dct => {
+        const v = dct[k];
+
+        return undefined !== v ? (
+            Just(v)
+        ) : Nothing();
+    };
+```
+
+
 ```applescript
 -- lookupDict :: a -> Dict -> Maybe b
 on lookupDict(k, dct)
@@ -11,17 +24,4 @@ on lookupDict(k, dct)
         Nothing()
     end if
 end lookupDict
-```
-
-
-```javascript
-// lookupDict :: a -> Dict -> Maybe b
-const lookupDict = k =>
-    dct => {
-        const v = dct[k];
-
-        return undefined !== v ? (
-            Just(v)
-        ) : Nothing();
-    };
 ```
