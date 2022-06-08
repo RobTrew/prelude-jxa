@@ -1,5 +1,5 @@
 ```javascript
-// nub :: [a] -> [a]
+// nub :: Eq a => [a] -> [a]
 const nub = xs =>
     [...new Set(xs)];
 ```

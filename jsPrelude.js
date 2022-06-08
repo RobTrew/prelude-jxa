@@ -1738,9 +1738,9 @@ const fmapGen = f =>
 
 // fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
 const fmapLR = f => lr =>
-    undefined === lr.Left ? (
-        Right(f(lr.Right))
-    ) : lr;
+    "Left" in lr ? (
+        lr
+    ) : Right(f(lr.Right));
 
 // fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 const fmapMay = f => mb =>
@@ -3313,7 +3313,7 @@ const not = b =>
 const notElem = x =>
     xs => !xs.includes(x);
 
-// nub :: [a] -> [a]
+// nub :: Eq a => [a] -> [a]
 const nub = xs =>
     [...new Set(xs)];
 
@@ -4057,8 +4057,8 @@ const showHex = n =>
 // Int -> String -> String
 const showIntAtBase = base =>
     // A string representation of n, in the given base,
-    // using a supplied (Int -> Char) function for digits,
-    // and a supplied suffix string.
+    // using a supplied (Int -> Char) function for
+    // digits, and a supplied suffix string.
     toChr => n => rs => {
         const go = ([x, d], r) => {
             const r_ = toChr(d) + r;
@@ -4068,10 +4068,12 @@ const showIntAtBase = base =>
             ) : r_;
         };
 
+        const e = "error: showIntAtBase applied to";
+
         return 1 >= base ? (
-            "error: showIntAtBase applied to unsupported base"
+            `${e} unsupported base`
         ) : 0 > n ? (
-            "error: showIntAtBase applied to negative number"
+            `${e} negative number`
         ) : go(quotRem(n)(base), rs);
     };
 
@@ -5435,9 +5437,11 @@ const zip = xs =>
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>
-    ys => zs => xs
-    .slice(0, Math.min(...[xs, ys, zs].map(length)))
-    .map((x, i) => TupleN(x, ys[i], zs[i]));
+    ys => zs => xs.slice(
+        0,
+        Math.min(...[xs, ys, zs].map(x => x.length))
+    )
+    .map((x, i) => [x, ys[i], zs[i]]);
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 const zip4 = ws =>

@@ -1042,7 +1042,7 @@
     ]
   },
   "fmapLR (<$>)": {
-    "code": "// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b\nconst fmapLR = f => lr =>\n    undefined === lr.Left ? (\n        Right(f(lr.Right))\n    ) : lr;",
+    "code": "// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b\nconst fmapLR = f => lr =>\n    \"Left\" in lr ? (\n        lr\n    ) : Right(f(lr.Right));",
     "tags": [
       "JS Prelude"
     ]
@@ -2129,7 +2129,7 @@
     ]
   },
   "nub": {
-    "code": "// nub :: [a] -> [a]\nconst nub = xs =>\n    [...new Set(xs)];",
+    "code": "// nub :: Eq a => [a] -> [a]\nconst nub = xs =>\n    [...new Set(xs)];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2675,7 +2675,7 @@
     ]
   },
   "showIntAtBase": {
-    "code": "// showIntAtBase :: Int -> (Int -> Char) ->\n// Int -> String -> String\nconst showIntAtBase = base =>\n    // A string representation of n, in the given base,\n    // using a supplied (Int -> Char) function for digits,\n    // and a supplied suffix string.\n    toChr => n => rs => {\n        const go = ([x, d], r) => {\n            const r_ = toChr(d) + r;\n\n            return 0 !== x ? (\n                go(quotRem(x)(base), r_)\n            ) : r_;\n        };\n\n        return 1 >= base ? (\n            \"error: showIntAtBase applied to unsupported base\"\n        ) : 0 > n ? (\n            \"error: showIntAtBase applied to negative number\"\n        ) : go(quotRem(n)(base), rs);\n    };",
+    "code": "// showIntAtBase :: Int -> (Int -> Char) ->\n// Int -> String -> String\nconst showIntAtBase = base =>\n    // A string representation of n, in the given base,\n    // using a supplied (Int -> Char) function for\n    // digits, and a supplied suffix string.\n    toChr => n => rs => {\n        const go = ([x, d], r) => {\n            const r_ = toChr(d) + r;\n\n            return 0 !== x ? (\n                go(quotRem(x)(base), r_)\n            ) : r_;\n        };\n\n        const e = \"error: showIntAtBase applied to\";\n\n        return 1 >= base ? (\n            `${e} unsupported base`\n        ) : 0 > n ? (\n            `${e} negative number`\n        ) : go(quotRem(n)(base), rs);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -3425,7 +3425,7 @@
     ]
   },
   "zip3": {
-    "code": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = xs =>\n    ys => zs => xs\n    .slice(0, Math.min(...[xs, ys, zs].map(length)))\n    .map((x, i) => TupleN(x, ys[i], zs[i]));",
+    "code": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = xs =>\n    ys => zs => xs.slice(\n        0,\n        Math.min(...[xs, ys, zs].map(x => x.length))\n    )\n    .map((x, i) => [x, ys[i], zs[i]]);",
     "tags": [
       "JS Prelude",
       "core"

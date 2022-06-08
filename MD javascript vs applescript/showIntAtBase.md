@@ -3,8 +3,8 @@
 // Int -> String -> String
 const showIntAtBase = base =>
     // A string representation of n, in the given base,
-    // using a supplied (Int -> Char) function for digits,
-    // and a supplied suffix string.
+    // using a supplied (Int -> Char) function for
+    // digits, and a supplied suffix string.
     toChr => n => rs => {
         const go = ([x, d], r) => {
             const r_ = toChr(d) + r;
@@ -14,10 +14,12 @@ const showIntAtBase = base =>
             ) : r_;
         };
 
+        const e = "error: showIntAtBase applied to";
+
         return 1 >= base ? (
-            "error: showIntAtBase applied to unsupported base"
+            `${e} unsupported base`
         ) : 0 > n ? (
-            "error: showIntAtBase applied to negative number"
+            `${e} negative number`
         ) : go(quotRem(n)(base), rs);
     };
 ```

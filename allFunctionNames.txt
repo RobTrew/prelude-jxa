@@ -333,7 +333,7 @@ nest :: Tree a -> [a]
 newUUID :: () -> IO UUID String
 not :: Bool -> Bool
 notElem :: Eq a => a -> [a] -> Bool
-nub :: [a] -> [a]
+nub :: Eq a => [a] -> [a]
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 odd :: Int -> Bool
 on :: (b -> b -> c) -> (a -> b) -> a -> a -> c

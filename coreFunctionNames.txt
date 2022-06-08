@@ -66,7 +66,7 @@ min :: Ord a => a -> a -> a
 minimum :: Ord a => [a] -> a
 minimumBy :: (a -> a -> Ordering) -> [a] -> a
 mod :: Int -> Int -> Int
-nub :: [a] -> [a]
+nub :: Eq a => [a] -> [a]
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 pred :: Enum a => a -> a
