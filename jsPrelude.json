@@ -2136,7 +2136,7 @@
     ]
   },
   "nubBy": {
-    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    //  (as defined by the equality predicate p)\n    //   are excluded.\n    xs => xs.reduce(\n        (acc, x) => acc.some(p(x)) ? (\n            acc\n        ) : [x].concat(acc),\n        []\n    );",
+    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x)) ? (\n            seen\n        ) : [x].concat(seen),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2167,7 +2167,7 @@
     ]
   },
   "outdented": {
-    "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines\n    //  have no remaining indent)\n    // All relative indents are left unchanged\n    const\n        // Leading space characters.\n        rgx = /^ */u,\n        xs = lines(s),\n        n = length(minimumBy(comparing(length))(\n            xs.map(txt => rgx.exec(txt)[0])\n        ));\n\n    return unlines(map(drop(n))(xs));\n};",
+    "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines\n    //  have no remaining indent)\n    // All relative indents are left unchanged.\n    const\n        rgx = /^\\s*/u,\n        xs = lines(s),\n        n = Math.min(\n            ...xs.map(txt => rgx.exec(txt)[0].length)\n        );\n\n    return Boolean(n) ? (\n        xs.map(x => x.slice(n)).join(\"\\n\")\n    ) : s.slice(0);\n};",
     "tags": [
       "JS Prelude"
     ]

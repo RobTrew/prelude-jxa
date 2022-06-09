@@ -3320,12 +3320,12 @@ const nub = xs =>
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
 const nubBy = p =>
     // A sublist of xs from which all duplicates,
-    //  (as defined by the equality predicate p)
-    //   are excluded.
+    // (as defined by the equality predicate p)
+    // are excluded.
     xs => xs.reduce(
-        (acc, x) => acc.some(p(x)) ? (
-            acc
-        ) : [x].concat(acc),
+        (seen, x) => seen.some(p(x)) ? (
+            seen
+        ) : [x].concat(seen),
         []
     );
 
@@ -3352,16 +3352,17 @@ const outdented = s => {
     // All lines in the string outdented by the same amount
     // (just enough to ensure that the least indented lines
     //  have no remaining indent)
-    // All relative indents are left unchanged
+    // All relative indents are left unchanged.
     const
-        // Leading space characters.
-        rgx = /^ */u,
+        rgx = /^\s*/u,
         xs = lines(s),
-        n = length(minimumBy(comparing(length))(
-            xs.map(txt => rgx.exec(txt)[0])
-        ));
+        n = Math.min(
+            ...xs.map(txt => rgx.exec(txt)[0].length)
+        );
 
-    return unlines(map(drop(n))(xs));
+    return Boolean(n) ? (
+        xs.map(x => x.slice(n)).join("\n")
+    ) : s.slice(0);
 };
 
 // parentIndexedTree :: Tree (a, {...index :: Int}) ->
