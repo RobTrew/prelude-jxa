@@ -997,7 +997,7 @@
     ]
   },
   "first": {
-    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    ([x, y]) => Tuple(f(x))(y);",
+    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    ([x, y]) => [f(x), y];",
     "tags": [
       "JS Prelude"
     ]
@@ -1580,7 +1580,7 @@
     ]
   },
   "iterateUntil": {
-    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p => f => x => {\n    const\n        go = v => p(v) ? (\n            v\n        ) : [v].concat(go(f(v)));\n\n    return go(x);\n};",
+    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p =>\n    // Like `until`, but returns a list of\n    // all intermediate values, where until\n    // returns only a final value.\n    f => x => {\n        const\n            go = v => p(v) ? (\n                v\n            ) : [v].concat(go(f(v)));\n\n        return go(x);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2167,7 +2167,7 @@
     ]
   },
   "outdented": {
-    "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines\n    //  have no remaining indent)\n    // All relative indents are left unchanged.\n    const\n        rgx = /^\\s*/u,\n        xs = lines(s),\n        n = Math.min(\n            ...xs.map(txt => rgx.exec(txt)[0].length)\n        );\n\n    return Boolean(n) ? (\n        xs.map(x => x.slice(n)).join(\"\\n\")\n    ) : s.slice(0);\n};",
+    "code": "// outdented :: String -> String\nconst outdented = s => {\n    // All lines in the string outdented by the same amount\n    // (just enough to ensure that the least indented lines\n    //  have no remaining indent)\n    // All relative indents are left unchanged\n    const\n        // Leading indentation characters.\n        rgx = /^\\s*/u,\n        xs = lines(s),\n        n = Math.min(\n            ...xs.map(txt => rgx.exec(txt)[0].length)\n        );\n\n    return 0 < n ? (\n        xs.map(x => x.slice(n)).join(\"\\n\")\n    ) : s.slice(0);\n};",
     "tags": [
       "JS Prelude"
     ]

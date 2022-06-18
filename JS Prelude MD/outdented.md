@@ -4,15 +4,16 @@ const outdented = s => {
     // All lines in the string outdented by the same amount
     // (just enough to ensure that the least indented lines
     //  have no remaining indent)
-    // All relative indents are left unchanged.
+    // All relative indents are left unchanged
     const
+        // Leading indentation characters.
         rgx = /^\s*/u,
         xs = lines(s),
         n = Math.min(
             ...xs.map(txt => rgx.exec(txt)[0].length)
         );
 
-    return Boolean(n) ? (
+    return 0 < n ? (
         xs.map(x => x.slice(n)).join("\n")
     ) : s.slice(0);
 };

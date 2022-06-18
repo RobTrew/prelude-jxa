@@ -1674,7 +1674,7 @@ const findTree = p => {
 const first = f =>
     // A simple function lifted to one which applies
     // to a tuple, transforming only its first item.
-    ([x, y]) => Tuple(f(x))(y);
+    ([x, y]) => [f(x), y];
 
 // flatten :: NestedList a -> [a]
 const flatten = nest =>
@@ -2447,14 +2447,18 @@ const iterate = f =>
     };
 
 // iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]
-const iterateUntil = p => f => x => {
-    const
-        go = v => p(v) ? (
-            v
-        ) : [v].concat(go(f(v)));
+const iterateUntil = p =>
+    // Like `until`, but returns a list of
+    // all intermediate values, where until
+    // returns only a final value.
+    f => x => {
+        const
+            go = v => p(v) ? (
+                v
+            ) : [v].concat(go(f(v)));
 
-    return go(x);
-};
+        return go(x);
+    };
 
 // iterateUntilGen :: (a -> Bool) -> (a -> a) ->
 // a -> Generator [a]
@@ -3352,15 +3356,16 @@ const outdented = s => {
     // All lines in the string outdented by the same amount
     // (just enough to ensure that the least indented lines
     //  have no remaining indent)
-    // All relative indents are left unchanged.
+    // All relative indents are left unchanged
     const
+        // Leading indentation characters.
         rgx = /^\s*/u,
         xs = lines(s),
         n = Math.min(
             ...xs.map(txt => rgx.exec(txt)[0].length)
         );
 
-    return Boolean(n) ? (
+    return 0 < n ? (
         xs.map(x => x.slice(n)).join("\n")
     ) : s.slice(0);
 };
