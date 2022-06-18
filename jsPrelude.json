@@ -1580,7 +1580,7 @@
     ]
   },
   "iterateUntil": {
-    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p =>\n    // Like `until`, but returns a list of\n    // intermediate values, where until\n    // returns only a final value.\n    // iterateUntil(x => 5 < x)(x => 2 * x)(1)\n    // -> [1, 2, 4, 8]\n    f => x => {\n        const\n            go = v => p(v) ? (\n                v\n            ) : [v].concat(go(f(v)));\n\n        return go(x);\n    };",
+    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p =>\n    // Like `until`, but returns a list of\n    // intermediate values, where until\n    // returns only a final value.\n    // iterateUntil(x => 5 < x)(x => 2 * x)(1)\n    // -> [1, 2, 4, 8]\n    f => x => {\n        const\n            go = v => p(v) ? (\n                [v]\n            ) : [v, ...go(f(v))];\n\n        return go(x);\n    };",
     "tags": [
       "JS Prelude"
     ]
