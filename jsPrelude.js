@@ -656,7 +656,7 @@ const compareList = xs =>
         )
     );
 
-// comparing :: (a -> b) -> (a -> a -> Ordering)
+// comparing :: Ord a => (b -> a) -> b -> b -> Ordering
 const comparing = f =>
     // The ordering of f(x) and f(y) as a value
     // drawn from {-1, 0, 1}, representing {LT, EQ, GT}.
@@ -1469,7 +1469,7 @@ const fanArrow = f =>
 // filePathTree :: filePath -> [Tree String] -> Tree FilePath
 const filePathTree = fpAnchor => trees => {
     const go = fp => tree => {
-        const path = `${fp}/${tree.root}`;
+        const path = `${fp}/${tree.root.text}`;
 
         return Node(path)(
             tree.nest.map(go(path))

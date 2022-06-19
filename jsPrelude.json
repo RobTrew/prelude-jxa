@@ -432,7 +432,7 @@
     ]
   },
   "comparing": {
-    "code": "// comparing :: (a -> b) -> (a -> a -> Ordering)\nconst comparing = f =>\n    // The ordering of f(x) and f(y) as a value\n    // drawn from {-1, 0, 1}, representing {LT, EQ, GT}.\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
+    "code": "// comparing :: Ord a => (b -> a) -> b -> b -> Ordering\nconst comparing = f =>\n    // The ordering of f(x) and f(y) as a value\n    // drawn from {-1, 0, 1}, representing {LT, EQ, GT}.\n    x => y => {\n        const\n            a = f(x),\n            b = f(y);\n\n        return a < b ? -1 : (a > b ? 1 : 0);\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -890,7 +890,7 @@
     ]
   },
   "filePathTree": {
-    "code": "// filePathTree :: filePath -> [Tree String] -> Tree FilePath\nconst filePathTree = fpAnchor => trees => {\n    const go = fp => tree => {\n        const path = `${fp}/${tree.root}`;\n\n        return Node(path)(\n            tree.nest.map(go(path))\n        );\n    };\n\n    return Node(fpAnchor)(\n      trees.map(go(fpAnchor))\n    );\n};",
+    "code": "// filePathTree :: filePath -> [Tree String] -> Tree FilePath\nconst filePathTree = fpAnchor => trees => {\n    const go = fp => tree => {\n        const path = `${fp}/${tree.root.text}`;\n\n        return Node(path)(\n            tree.nest.map(go(path))\n        );\n    };\n\n    return Node(fpAnchor)(\n      trees.map(go(fpAnchor))\n    );\n};",
     "tags": [
       "JS Prelude",
       "tree"

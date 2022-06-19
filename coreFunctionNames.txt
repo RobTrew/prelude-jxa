@@ -14,7 +14,7 @@ bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
 cartesianProduct :: [a] -> [b] -> [[a, b]]
 chunksOf :: Int -> [a] -> [[a]]
 compare :: a -> a -> Ordering
-comparing :: (a -> b) -> (a -> a -> Ordering)
+comparing :: Ord a => (b -> a) -> b -> b -> Ordering
 compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 concat :: [[a]] -> [a]
 concatMap :: (a -> [b]) -> [a] -> [b]

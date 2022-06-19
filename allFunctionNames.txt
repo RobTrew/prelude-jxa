@@ -66,7 +66,7 @@ combinations :: Int -> [a] -> [[a]]
 combine (</>) :: FilePath -> FilePath -> FilePath
 compare :: a -> a -> Ordering
 compareList :: [a] -> [a] -> Ordering
-comparing :: (a -> b) -> (a -> a -> Ordering)
+comparing :: Ord a => (b -> a) -> b -> b -> Ordering
 compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
 composeList :: [(a -> a)] -> (a -> a)
 composeListR :: [(a -> a)] -> (a -> a)
