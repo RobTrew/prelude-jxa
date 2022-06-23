@@ -1042,7 +1042,7 @@
     ]
   },
   "fmapLR (<$>)": {
-    "code": "// fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b\nconst fmapLR = f => lr =>\n    \"Left\" in lr ? (\n        lr\n    ) : Right(f(lr.Right));",
+    "code": "// fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c\nconst fmapLR = f =>\n    // Either f mapped into the contents of any Right\n    // value in e, or e unchanged if is a Left value.\n    e => \"Left\" in e ? (\n        e\n    ) : Right(f(e.Right));",
     "tags": [
       "JS Prelude"
     ]

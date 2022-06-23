@@ -161,7 +161,7 @@ flip :: (a -> b -> c) -> b -> a -> c
 floor :: Num -> Int
 fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
 fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
-fmapLR (<$>) :: (a -> b) -> Either a a -> Either a b
+fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c
 fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 fmapTree :: (a -> b) -> Tree a -> Tree b
 fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
