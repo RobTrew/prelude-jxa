@@ -413,7 +413,7 @@
     ]
   },
   "combine": {
-    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // Two paths combined with a path separator.\n    // Just the second path if that starts with\n    // a path separator.\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        \"/\" === fp1.slice(0, 1) ? (\n            fp1\n        ) : \"/\" === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
+    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // The concatenation of two filePath segments,\n\t// without omission or duplication of \"/\".\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        \"/\" === fp1.slice(0, 1) ? (\n            fp1\n        ) : \"/\" === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
     "tags": [
       "JS Prelude"
     ]

@@ -1,9 +1,8 @@
 ```javascript
 // combine (</>) :: FilePath -> FilePath -> FilePath
 const combine = fp =>
-    // Two paths combined with a path separator.
-    // Just the second path if that starts with
-    // a path separator.
+    // The concatenation of two filePath segments,
+	// without omission or duplication of "/".
     fp1 => Boolean(fp) && Boolean(fp1) ? (
         "/" === fp1.slice(0, 1) ? (
             fp1
