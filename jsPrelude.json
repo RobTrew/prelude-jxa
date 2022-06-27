@@ -3351,7 +3351,7 @@
     ]
   },
   "unzip": {
-    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    xys.reduce(\n        (ab, xy) => Tuple(ab[0].concat(xy[0]))(\n            ab[1].concat(xy[1])\n        ),\n        Tuple([])([])\n    );",
+    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    xys.reduce(\n        ([a, b], [x, y]) => [\n            [...a, x],\n            [...b, y]\n        ],\n        [\n            [],\n            []\n        ]\n    );",
     "tags": [
       "JS Prelude",
       "core"
