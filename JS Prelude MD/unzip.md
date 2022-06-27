@@ -1,10 +1,13 @@
 ```javascript
 // unzip :: [(a,b)] -> ([a],[b])
 const unzip = xys =>
-    xys.reduce(
+    // A list of the first items in each pair
+    // of the zip, tupled with a list of all
+    // the second items.
+    xys.reduceRight(
         ([a, b], [x, y]) => [
-            [...a, x],
-            [...b, y]
+            [x, ...a],
+            [y, ...b]
         ],
         [
             [],

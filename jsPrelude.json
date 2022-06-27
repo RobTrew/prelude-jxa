@@ -3351,7 +3351,7 @@
     ]
   },
   "unzip": {
-    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    xys.reduce(\n        ([a, b], [x, y]) => [\n            [...a, x],\n            [...b, y]\n        ],\n        [\n            [],\n            []\n        ]\n    );",
+    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    // A list of the first items in each pair\n    // of the zip, tupled with a list of all\n    // the second items.\n    xys.reduceRight(\n        ([a, b], [x, y]) => [\n            [x, ...a],\n            [y, ...b]\n        ],\n        [\n            [],\n            []\n        ]\n    );",
     "tags": [
       "JS Prelude",
       "core"
