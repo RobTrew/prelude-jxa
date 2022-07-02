@@ -5,7 +5,7 @@ const base64decode = s =>
     ObjC.unwrap(
         $.NSString.alloc.initWithDataEncoding(
             $.NSData.alloc.initWithBase64EncodedStringOptions(
-                s, 0
+                s, $.NSDataBase64DecodingIgnoreUnknownCharacters
             ),
             $.NSUTF8StringEncoding
         )

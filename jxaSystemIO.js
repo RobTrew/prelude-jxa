@@ -87,7 +87,7 @@ const base64decode = s =>
     ObjC.unwrap(
         $.NSString.alloc.initWithDataEncoding(
             $.NSData.alloc.initWithBase64EncodedStringOptions(
-                s, 0
+                s, $.NSDataBase64DecodingIgnoreUnknownCharacters
             ),
             $.NSUTF8StringEncoding
         )
@@ -189,8 +189,9 @@ const doesPathExist = fp =>
 const filePath = s =>
     // The given file path with any tilde expanded
     // to the full user directory path.
-    ObjC.unwrap(ObjC.wrap(s)
-        .stringByStandardizingPath);
+    ObjC.unwrap(
+        ObjC.wrap(s).stringByStandardizingPath
+    );
 
 // fileSize :: FilePath -> Either String Int
 const fileSize = fp =>

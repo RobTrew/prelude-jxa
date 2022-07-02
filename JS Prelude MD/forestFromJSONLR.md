@@ -1,5 +1,6 @@
 ```javascript
-// forestFromJSONLR :: JSON String -> Either String Forest a
+// forestFromJSONLR ::
+// JSON String -> Either String Forest a
 const forestFromJSONLR = json => {
     // Either a message string or a Forest.
     // Assumes a recursive [root, nest] JSON format,
@@ -7,12 +8,14 @@ const forestFromJSONLR = json => {
     // and `nest` is a possibly empty list of
     // [`root`, `nest`] pairs.
     const go = vxs =>
-        Node(vxs[0])(vxs[1].map(go));
+        Node(vxs[0])(
+            vxs[1].map(go)
+        );
 
-    return bindLR(
-        jsonParseLR(json)
+    return fmapLR(
+        xs => xs.map(go)
     )(
-        xs => Right(xs.map(go))
+        jsonParseLR(json)
     );
 };
 ```

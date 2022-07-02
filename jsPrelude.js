@@ -436,7 +436,7 @@ const both = f =>
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     // The longest prefix of xs for in which
-    // all value return true for p.
+    // all values return true for p.
     xs => {
         const i = xs.findIndex(p);
 
@@ -490,15 +490,16 @@ const breakOnAll = needle =>
     ) : null;
 
 // breakOnMay :: String -> String -> Maybe (String, String)
-const breakOnMay = pat =>
-    // Needle -> Haystack ->
+const breakOnMay = needle =>
     // maybe (prefix before match, match + rest)
-    src => Boolean(pat) ? (() => {
-        const xs = src.split(pat);
+    haystack => Boolean(needle) ? (() => {
+        const xs = haystack.split(needle);
 
         return Just(Boolean(xs.length) ? Tuple(
-            xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)(""));
+            xs[0]
+        )(
+            haystack.slice(xs[0].length)
+        ) : Tuple(haystack)(""));
     })() : Nothing();
 
 // bulleted :: String -> String -> String
@@ -1919,7 +1920,8 @@ const foldr_ = f =>
         )(t)
     )(z);
 
-// forestFromJSONLR :: JSON String -> Either String Forest a
+// forestFromJSONLR ::
+// JSON String -> Either String Forest a
 const forestFromJSONLR = json => {
     // Either a message string or a Forest.
     // Assumes a recursive [root, nest] JSON format,
@@ -1927,12 +1929,14 @@ const forestFromJSONLR = json => {
     // and `nest` is a possibly empty list of
     // [`root`, `nest`] pairs.
     const go = vxs =>
-        Node(vxs[0])(vxs[1].map(go));
+        Node(vxs[0])(
+            vxs[1].map(go)
+        );
 
-    return bindLR(
-        jsonParseLR(json)
+    return fmapLR(
+        xs => xs.map(go)
     )(
-        xs => Right(xs.map(go))
+        jsonParseLR(json)
     );
 };
 

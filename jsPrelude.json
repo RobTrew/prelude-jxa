@@ -233,7 +233,7 @@
     ]
   },
   "base64decode": {
-    "code": "// base64decode :: String -> String\nconst base64decode = s =>\n    // Base64 decoding of the given string.\n    ObjC.unwrap(\n        $.NSString.alloc.initWithDataEncoding(\n            $.NSData.alloc.initWithBase64EncodedStringOptions(\n                s, 0\n            ),\n            $.NSUTF8StringEncoding\n        )\n    );",
+    "code": "// base64decode :: String -> String\nconst base64decode = s =>\n    // Base64 decoding of the given string.\n    ObjC.unwrap(\n        $.NSString.alloc.initWithDataEncoding(\n            $.NSData.alloc.initWithBase64EncodedStringOptions(\n                s, $.NSDataBase64DecodingIgnoreUnknownCharacters\n            ),\n            $.NSUTF8StringEncoding\n        )\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -321,7 +321,7 @@
     ]
   },
   "break": {
-    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    // The longest prefix of xs for in which\n    // all value return true for p.\n    xs => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
+    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    // The longest prefix of xs for in which\n    // all values return true for p.\n    xs => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -339,7 +339,7 @@
     ]
   },
   "breakOnMay": {
-    "code": "// breakOnMay :: String -> String -> Maybe (String, String)\nconst breakOnMay = pat =>\n    // Needle -> Haystack ->\n    // maybe (prefix before match, match + rest)\n    src => Boolean(pat) ? (() => {\n        const xs = src.split(pat);\n\n        return Just(Boolean(xs.length) ? Tuple(\n            xs[0], src.slice(xs[0].length)\n        ) : Tuple(src)(\"\"));\n    })() : Nothing();",
+    "code": "// breakOnMay :: String -> String -> Maybe (String, String)\nconst breakOnMay = needle =>\n    // maybe (prefix before match, match + rest)\n    haystack => Boolean(needle) ? (() => {\n        const xs = haystack.split(needle);\n\n        return Just(Boolean(xs.length) ? Tuple(\n            xs[0]\n        )(\n            haystack.slice(xs[0].length)\n        ) : Tuple(haystack)(\"\"));\n    })() : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -883,7 +883,7 @@
     ]
   },
   "filePath": {
-    "code": "// filePath :: String -> FilePath\nconst filePath = s =>\n    // The given file path with any tilde expanded\n    // to the full user directory path.\n    ObjC.unwrap(ObjC.wrap(s)\n        .stringByStandardizingPath);",
+    "code": "// filePath :: String -> FilePath\nconst filePath = s =>\n    // The given file path with any tilde expanded\n    // to the full user directory path.\n    ObjC.unwrap(\n        ObjC.wrap(s).stringByStandardizingPath\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -1163,7 +1163,7 @@
     ]
   },
   "forestFromJSONLR": {
-    "code": "// forestFromJSONLR :: JSON String -> Either String Forest a\nconst forestFromJSONLR = json => {\n    // Either a message string or a Forest.\n    // Assumes a recursive [root, nest] JSON format,\n    // in which `root` is a parseable value string,\n    // and `nest` is a possibly empty list of\n    // [`root`, `nest`] pairs.\n    const go = vxs =>\n        Node(vxs[0])(vxs[1].map(go));\n\n    return bindLR(\n        jsonParseLR(json)\n    )(\n        xs => Right(xs.map(go))\n    );\n};",
+    "code": "// forestFromJSONLR ::\n// JSON String -> Either String Forest a\nconst forestFromJSONLR = json => {\n    // Either a message string or a Forest.\n    // Assumes a recursive [root, nest] JSON format,\n    // in which `root` is a parseable value string,\n    // and `nest` is a possibly empty list of\n    // [`root`, `nest`] pairs.\n    const go = vxs =>\n        Node(vxs[0])(\n            vxs[1].map(go)\n        );\n\n    return fmapLR(\n        xs => xs.map(go)\n    )(\n        jsonParseLR(json)\n    );\n};",
     "tags": [
       "JS Prelude"
     ]

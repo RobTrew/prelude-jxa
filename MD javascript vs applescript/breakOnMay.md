@@ -1,14 +1,15 @@
 ```javascript
 // breakOnMay :: String -> String -> Maybe (String, String)
-const breakOnMay = pat =>
-    // Needle -> Haystack ->
+const breakOnMay = needle =>
     // maybe (prefix before match, match + rest)
-    src => Boolean(pat) ? (() => {
-        const xs = src.split(pat);
+    haystack => Boolean(needle) ? (() => {
+        const xs = haystack.split(needle);
 
         return Just(Boolean(xs.length) ? Tuple(
-            xs[0], src.slice(xs[0].length)
-        ) : Tuple(src)(""));
+            xs[0]
+        )(
+            haystack.slice(xs[0].length)
+        ) : Tuple(haystack)(""));
     })() : Nothing();
 ```
 
