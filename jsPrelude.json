@@ -840,7 +840,7 @@
     ]
   },
   "eqSet": {
-    "code": "// eqSet :: Set a -> Set a -> Bool\nconst eqSet = a =>\n    // True if the two sets have\n    // the same set of members.\n    b => a.size === b.size && (\n        Array.from(a).every(x => b.has(x))\n    );",
+    "code": "// eqSet :: Set a -> Set a -> Bool\nconst eqSet = a =>\n    // True if the two sets have\n    // the same size and members.\n    b => a.size === b.size && (\n        Array.from(a).every(x => b.has(x))\n    );",
     "tags": [
       "JS Prelude"
     ]
