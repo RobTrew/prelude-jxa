@@ -1394,6 +1394,14 @@ const eqDateTime = n =>
         flip(div)(6E4 * n)
     );
 
+// eqSet :: Set a -> Set a -> Bool
+const eqSet = a =>
+    // True if the two sets have
+    // the same set of members.
+    b => a.size === b.size && (
+        Array.from(a).every(x => b.has(x))
+    );
+
 // evalJSLR :: String -> Either String a
 const evalJSLR = s => {
     try {
@@ -4645,6 +4653,7 @@ const takeAround = p => xs => {
 
 // takeBaseName :: FilePath -> String
 const takeBaseName = fp =>
+    // The filepath without any extension.
     ("" !== fp) ? (
         ("/" !== fp[fp.length - 1]) ? (() => {
             const fn = fp.split("/").slice(-1)[0];

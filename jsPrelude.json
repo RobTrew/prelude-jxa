@@ -839,6 +839,12 @@
       "JS Prelude"
     ]
   },
+  "eqSet": {
+    "code": "// eqSet :: Set a -> Set a -> Bool\nconst eqSet = a =>\n    // True if the two sets have\n    // the same set of members.\n    b => a.size === b.size && (\n        Array.from(a).every(x => b.has(x))\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "evalJSLR": {
     "code": "// evalJSLR :: String -> Either String a\nconst evalJSLR = s => {\n    try {\n        // eslint-disable-next-line no-eval\n        return Right(eval(`(${s})`));\n    } catch (e) {\n        return Left(e.message);\n    }\n};",
     "tags": [
@@ -3000,7 +3006,7 @@
     ]
   },
   "takeBaseName": {
-    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = fp =>\n    (\"\" !== fp) ? (\n        (\"/\" !== fp[fp.length - 1]) ? (() => {\n            const fn = fp.split(\"/\").slice(-1)[0];\n\n            return fn.includes(\".\") ? (\n                fn.split(\".\").slice(0, -1)\n                .join(\".\")\n            ) : fn;\n        })() : \"\"\n    ) : \"\";",
+    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = fp =>\n    // The filepath without any extension.\n    (\"\" !== fp) ? (\n        (\"/\" !== fp[fp.length - 1]) ? (() => {\n            const fn = fp.split(\"/\").slice(-1)[0];\n\n            return fn.includes(\".\") ? (\n                fn.split(\".\").slice(0, -1)\n                .join(\".\")\n            ) : fn;\n        })() : \"\"\n    ) : \"\";",
     "tags": [
       "JS Prelude"
     ]

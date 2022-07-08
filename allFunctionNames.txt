@@ -130,6 +130,7 @@ enumFromTo_ :: Enum a => a -> a -> [a]
 eq (==) :: Eq a => a -> a -> Bool
 eqDate :: Date -> Date -> Bool
 eqDateTime :: Int -> Date -> Date -> Bool
+eqSet :: Set a -> Set a -> Bool
 evalJSLR :: String -> Either String a
 evalJSMay :: String -> Maybe a
 even :: Int -> Bool
