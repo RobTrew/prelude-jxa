@@ -9,10 +9,10 @@ const findTree = p => {
         ) : (() => {
             const
                 xs = tree.nest,
-                lng = xs.length;
+                n = xs.length;
 
-            return 0 < lng ? until(
-                ([i, mb]) => lng <= i || !mb.Nothing
+            return 0 < n ? until(
+                ([i, mb]) => n <= i || !mb.Nothing
             )(
                 ([i]) => Tuple(1 + i)(
                     go(xs[i])

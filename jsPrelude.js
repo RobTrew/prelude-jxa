@@ -772,14 +772,14 @@ const curryN = f =>
 // cycle :: [a] -> Generator [a]
 const cycle = function* (xs) {
     // An infinite repetition of xs,
-    // from which an arbitrary prefix
-    // may be taken.
-    const lng = xs.length;
+    // from which a prefix of arbritrary
+    // length may be drawn.
+    const n = xs.length;
     let i = 0;
 
     while (true) {
         yield xs[i];
-        i = (1 + i) % lng;
+        i = (1 + i) % n;
     }
 };
 
@@ -1660,10 +1660,10 @@ const findTree = p => {
         ) : (() => {
             const
                 xs = tree.nest,
-                lng = xs.length;
+                n = xs.length;
 
-            return 0 < lng ? until(
-                ([i, mb]) => lng <= i || !mb.Nothing
+            return 0 < n ? until(
+                ([i, mb]) => n <= i || !mb.Nothing
             )(
                 ([i]) => Tuple(1 + i)(
                     go(xs[i])
@@ -2448,8 +2448,8 @@ const iso8601Local = dte =>
 
 // iterate :: (a -> a) -> a -> Gen [a]
 const iterate = f =>
-    // An infinite list of repeated
-    // applications of f to x.
+    // An infinite list of repeated applications
+    // of f, starting with the seed value x.
     function* (x) {
         let v = x;
 
