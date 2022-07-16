@@ -1085,7 +1085,7 @@
     ]
   },
   "fmapZL (<$>)": {
-    "code": "// fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    zl => ZipList(zl.getZipList.map(f));",
+    "code": "// fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    // of finite or infinite length.\n    zl => ZipList(\n        (() => {\n            const xs = zl.getZipList;\n\n            return Infinity > xs.length ? (\n                xs.map(f)\n            ) : fmapGen(f)(xs);\n        })()\n    );",
     "tags": [
       "JS Prelude"
     ]
