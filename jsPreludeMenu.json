@@ -169,7 +169,7 @@
   "fmapMay (<$>)": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = f => mb =>\n    mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));",
   "fmapTree (<$>)": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a\n    // structure-preserving application of f\n    // to each root in the existing tree.\n    const go = t => Node(\n        f(root(t))\n    )(\n        nest(t).map(go)\n    );\n\n    return go;\n};",
   "fmapTuple (<$>)": "// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)\nconst fmapTuple = f =>\n    second(f);",
-  "fmapZL": "// fmapZL :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    zl => ZipList(zl.getZipList.map(f));",
+  "fmapZL (<$>)": "// fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    zl => ZipList(zl.getZipList.map(f));",
   "foldList": "// foldList :: Monoid m => [m] -> m\nconst foldList = xs =>\n    // The elements of xs combined.\n    foldMapList(x => x)(xs);",
   "foldMap": "// foldMap :: Monoid m => (a -> m) -> t a -> m\nconst foldMap = f => t =>\n    // Each element of the structure mapped to a monoid,\n    // with the results combined by (<>)\n    ({\n        Node: () => foldMapTree(f),\n        List: () => foldMapList(f)\n    })[typeName(t)]()(t);",
   "foldMapList": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over the combined values of a structure.\n    xs => 1 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => mappend(a)(f(x)),\n            xs[0]\n        )\n    ) : xs.map(f);",

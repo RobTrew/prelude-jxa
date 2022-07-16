@@ -1789,7 +1789,7 @@ const fmapTree = f => {
 const fmapTuple = f =>
     second(f);
 
-// fmapZL :: (a -> b) -> ZipList a -> ZipList b
+// fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b
 const fmapZL = f =>
     // f mapped over the contents of a ZipList
     zl => ZipList(zl.getZipList.map(f));

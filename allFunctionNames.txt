@@ -168,7 +168,7 @@ fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c
 fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 fmapTree :: (a -> b) -> Tree a -> Tree b
 fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
-fmapZL :: (a -> b) -> ZipList a -> ZipList b
+fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b
 foldList :: Monoid m => [m] -> m
 foldMap :: Monoid m => (a -> m) -> t a -> m
 foldMapList :: Monoid m => (a -> m) -> t a -> m

@@ -1084,8 +1084,8 @@
       "JS Prelude"
     ]
   },
-  "fmapZL": {
-    "code": "// fmapZL :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    zl => ZipList(zl.getZipList.map(f));",
+  "fmapZL (<$>)": {
+    "code": "// fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    zl => ZipList(zl.getZipList.map(f));",
     "tags": [
       "JS Prelude"
     ]
