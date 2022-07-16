@@ -8,6 +8,7 @@ Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 TupleN :: a -> b ...  -> (a, b ... )
+ZipList :: a -> {getZipList :: [a]}
 abs :: Num -> Num
 add (+) :: Num a => a -> a -> a
 adjust :: (a -> a) -> Key -> Dict Key a -> Dict Key a
@@ -24,6 +25,7 @@ apList (<*>) :: [(a -> b)] -> [a] -> [b]
 apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
+apZL (<*>) :: ZipList (a -> b) -> ZipList a -> ZipList b
 appEndo :: Endo a -> (a -> a)
 append (<>) :: [a] -> [a] -> [a]
 appendFile :: FilePath -> String -> IO Bool
@@ -166,6 +168,7 @@ fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c
 fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 fmapTree :: (a -> b) -> Tree a -> Tree b
 fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
+fmapZL :: (a -> b) -> ZipList a -> ZipList b
 foldList :: Monoid m => [m] -> m
 foldMap :: Monoid m => (a -> m) -> t a -> m
 foldMapList :: Monoid m => (a -> m) -> t a -> m
@@ -273,6 +276,7 @@ liftA2List :: (a -> b -> c) -> [a] -> [b] -> [c]
 liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 liftA2Tuple :: Monoid m => (a -> b -> c) -> (m, a) -> (m, b) -> (m, c)
+liftA2ZL :: (a -> b -> c) -> ZipList a -> ZipList b -> ZipList c
 lines :: String -> [String]
 list :: StringOrArrayLike b => b -> [a]
 listDirectory :: FilePath -> [FilePath]
@@ -361,6 +365,7 @@ pureMay :: a -> Maybe a
 pureT :: String -> f a -> (a -> f a)
 pureTree :: a -> Tree a
 pureTuple :: a -> (a, a)
+pureZL :: a -> ZipList a
 quickSort :: (Ord a) => [a] -> [a]
 quickSortBy :: (a -> a -> Ordering) -> [a] -> [a]
 quot :: Integral a => a -> a -> a
@@ -542,7 +547,6 @@ zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
-zipList :: [a] -> [b] -> [(a, b)]
 zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]

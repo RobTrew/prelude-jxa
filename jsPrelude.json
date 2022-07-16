@@ -66,6 +66,12 @@
       "core"
     ]
   },
+  "ZipList": {
+    "code": "// ZipList :: a -> {getZipList :: [a]}\nconst ZipList = x => ({\n    // Constructor for an applicative ZipList\n    type: \"ZipList\",\n    getZipList: x\n});",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "abs": {
     "code": "// abs :: Num -> Num\nconst abs = x =>\n    // Absolute value of a given number\n    // without the sign.\n    0 > x ? -x : x;",
     "tags": [
@@ -165,6 +171,12 @@
   },
   "apTuple (<*>)": {
     "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = ab =>\n    // A tuple obtained by applying the function in the second\n    // value of ab to the second value in an existing tuple,\n    // and concatenating the first values of each tuple.\n    liftA2Tuple(x => x)(ab);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "apZL": {
+    "code": "// apZL (<*>) :: ZipList (a -> b) -> ZipList a -> ZipList b\n// The application of a function in one ZipList\n// to each value in another ZipList.\nconst apZL = zf =>\n    liftA2ZL(x => x)(zf);",
     "tags": [
       "JS Prelude"
     ]
@@ -1072,6 +1084,12 @@
       "JS Prelude"
     ]
   },
+  "fmapZL": {
+    "code": "// fmapZL :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    zl => ZipList(zl.getZipList.map(f));",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "foldList": {
     "code": "// foldList :: Monoid m => [m] -> m\nconst foldList = xs =>\n    // The elements of xs combined.\n    foldMapList(x => x)(xs);",
     "tags": [
@@ -1749,6 +1767,12 @@
       "JS Prelude"
     ]
   },
+  "liftA2ZL": {
+    "code": "// liftA2ZL :: (a -> b -> c) -> ZipList a ->\n// ZipList b -> ZipList c\nconst liftA2ZL = op =>\n    // A ZipList formed by the pairwise application of\n    // binary op over the values of two existing ZipLists\n    // up to the length of the shorter of these.\n    zxs => zys => ZipList(\n        zipWith(op)(\n            zxs.getZipList\n        )(\n            zys.getZipList\n        )\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "lines": {
     "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single string\n    // which is delimited by \\n or by \\r\\n or \\r.\n    Boolean(s.length) ? (\n        s.split(/\\r\\n|\\n|\\r/u)\n    ) : [];",
     "tags": [
@@ -2299,6 +2323,12 @@
   },
   "pureTuple": {
     "code": "// pureTuple :: a -> (a, a)\nconst pureTuple = x =>\n    Tuple(\"\")(x);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "pureZL": {
+    "code": "// pureZL :: a -> ZipList a\nconst pureZL = x =>\n    // A value lifted into a ZipList\n    ZipList(repeat(x));",
     "tags": [
       "JS Prelude"
     ]
@@ -3445,12 +3475,6 @@
   },
   "zipGen": {
     "code": "// zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]\nconst zipGen = ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const\n                ta = a.Just,\n                tb = b.Just;\n\n            yield Tuple(fst(ta))(\n                fst(tb)\n            );\n\n            a = uncons(snd(ta));\n            b = uncons(snd(tb));\n        }\n    };\n\n    return go(uncons(ga), uncons(gb));\n};",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
-  "zipList": {
-    "code": "// zipList :: [a] -> [b] -> [(a, b)]\nconst zipList = xs => ys => {\n    const\n        n = Math.min(length(xs), length(ys)),\n        vs = take(n)(ys);\n\n    return take(n)(xs)\n        .map((x, i) => Tuple(x)(vs[i]));\n};",
     "tags": [
       "JS Prelude"
     ]

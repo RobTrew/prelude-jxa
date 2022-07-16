@@ -123,6 +123,13 @@ const TupleN = (...args) => {
     ) : args.reduce((f, x) => f(x), Tuple);
 };
 
+// ZipList :: a -> {getZipList :: [a]}
+const ZipList = x => ({
+    // Constructor for an applicative ZipList
+    type: "ZipList",
+    getZipList: x
+});
+
 // abs :: Num -> Num
 const abs = x =>
     // Absolute value of a given number
@@ -248,6 +255,12 @@ const apTuple = ab =>
     // value of ab to the second value in an existing tuple,
     // and concatenating the first values of each tuple.
     liftA2Tuple(x => x)(ab);
+
+// apZL (<*>) :: ZipList (a -> b) -> ZipList a -> ZipList b
+// The application of a function in one ZipList
+// to each value in another ZipList.
+const apZL = zf =>
+    liftA2ZL(x => x)(zf);
 
 // appEndo :: Endo a -> (a -> a)
 const appEndo = endo =>
@@ -1776,6 +1789,11 @@ const fmapTree = f => {
 const fmapTuple = f =>
     second(f);
 
+// fmapZL :: (a -> b) -> ZipList a -> ZipList b
+const fmapZL = f =>
+    // f mapped over the contents of a ZipList
+    zl => ZipList(zl.getZipList.map(f));
+
 // foldList :: Monoid m => [m] -> m
 const foldList = xs =>
     // The elements of xs combined.
@@ -2707,6 +2725,20 @@ const liftA2Tuple = f =>
         f(b)(d)
     );
 
+// liftA2ZL :: (a -> b -> c) -> ZipList a ->
+// ZipList b -> ZipList c
+const liftA2ZL = op =>
+    // A ZipList formed by the pairwise application of
+    // binary op over the values of two existing ZipLists
+    // up to the length of the shorter of these.
+    zxs => zys => ZipList(
+        zipWith(op)(
+            zxs.getZipList
+        )(
+            zys.getZipList
+        )
+    );
+
 // lines :: String -> [String]
 const lines = s =>
     // A list of strings derived from a single string
@@ -3582,6 +3614,11 @@ const pureTree = x =>
 // pureTuple :: a -> (a, a)
 const pureTuple = x =>
     Tuple("")(x);
+
+// pureZL :: a -> ZipList a
+const pureZL = x =>
+    // A value lifted into a ZipList
+    ZipList(repeat(x));
 
 // quickSort :: (Ord a) => [a] -> [a]
 const quickSort = xs =>
@@ -5500,16 +5537,6 @@ const zipGen = ga => gb => {
     };
 
     return go(uncons(ga), uncons(gb));
-};
-
-// zipList :: [a] -> [b] -> [(a, b)]
-const zipList = xs => ys => {
-    const
-        n = Math.min(length(xs), length(ys)),
-        vs = take(n)(ys);
-
-    return take(n)(xs)
-        .map((x, i) => Tuple(x)(vs[i]));
 };
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
