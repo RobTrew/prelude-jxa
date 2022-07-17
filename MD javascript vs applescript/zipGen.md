@@ -1,27 +1,28 @@
 ```javascript
-// zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
-const zipGen = ga => gb => {
-    const go = function* (ma, mb) {
-        let
-            a = ma,
-            b = mb;
+// zipGen :: (a -> b -> c) ->
+// Gen [a] -> Gen [b] -> Gen [c]
+const zipGen = ga =>
+    // A composite generator formed by the application
+    // of f to each pair of values in a zip of two
+    // generators.
+    gb => {
+        const go = function* (ma, mb) {
+            let
+                a = ma,
+                b = mb;
 
-        while (!a.Nothing && !b.Nothing) {
-            const
-                ta = a.Just,
-                tb = b.Just;
+            while (!a.Nothing && !b.Nothing) {
+                const [ax, axs] = a.Just;
+                const [bx, bxs] = b.Just;
 
-            yield Tuple(fst(ta))(
-                fst(tb)
-            );
+                yield [ax, bx];
+                a = uncons(axs);
+                b = uncons(bxs);
+            }
+        };
 
-            a = uncons(snd(ta));
-            b = uncons(snd(tb));
-        }
+        return go(uncons(ga), uncons(gb));
     };
-
-    return go(uncons(ga), uncons(gb));
-};
 ```
 
 

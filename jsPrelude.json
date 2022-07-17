@@ -3289,7 +3289,7 @@
     ]
   },
   "uncons": {
-    "code": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    // Just a tuple of the head of xs and its tail,\n    // Or Nothing if xs is an empty list.\n    const lng = length(xs);\n\n    return Boolean(lng) ? (\n        Infinity > lng ? (\n            // Finite list\n            Just(Tuple(xs[0])(xs.slice(1)))\n        ) : (() => {\n            // Lazy generator\n            const nxt = take(1)(xs);\n\n            return Boolean(nxt.length) ? (\n                Just(Tuple(nxt[0])(xs))\n            ) : Nothing();\n        })()\n    ) : Nothing();\n};",
+    "code": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    // Just a tuple of the head of xs and its tail,\n    // Or Nothing if xs is an empty list.\n    const n = length(xs);\n\n    return Boolean(n) ? (\n        Infinity > n ? (\n            // Finite list\n            Just(Tuple(xs[0])(xs.slice(1)))\n        ) : (() => {\n            // Lazy generator\n            const nxt = take(1)(xs);\n\n            return Boolean(nxt.length) ? (\n                Just(Tuple(nxt[0])(xs))\n            ) : Nothing();\n        })()\n    ) : Nothing();\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3454,7 +3454,7 @@
     ]
   },
   "zip": {
-    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    ys => Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => Tuple(xs[i])(ys[i]));",
+    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    ys => Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => [xs[i], ys[i]]);",
     "tags": [
       "JS Prelude",
       "core"
@@ -3474,7 +3474,7 @@
     ]
   },
   "zipGen": {
-    "code": "// zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]\nconst zipGen = ga => gb => {\n    const go = function* (ma, mb) {\n        let\n            a = ma,\n            b = mb;\n\n        while (!a.Nothing && !b.Nothing) {\n            const\n                ta = a.Just,\n                tb = b.Just;\n\n            yield Tuple(fst(ta))(\n                fst(tb)\n            );\n\n            a = uncons(snd(ta));\n            b = uncons(snd(tb));\n        }\n    };\n\n    return go(uncons(ga), uncons(gb));\n};",
+    "code": "// zipGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipGen = ga =>\n    // A composite generator formed by the application\n    // of f to each pair of values in a zip of two\n    // generators.\n    gb => {\n        const go = function* (ma, mb) {\n            let\n                a = ma,\n                b = mb;\n\n            while (!a.Nothing && !b.Nothing) {\n                const [ax, axs] = a.Just;\n                const [bx, bxs] = b.Just;\n\n                yield [ax, bx];\n                a = uncons(axs);\n                b = uncons(bxs);\n            }\n        };\n\n        return go(uncons(ga), uncons(gb));\n    };",
     "tags": [
       "JS Prelude"
     ]

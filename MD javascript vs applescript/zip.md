@@ -5,7 +5,7 @@ const zip = xs =>
     // the length of the shorter of the two lists.
     ys => Array.from({
         length: Math.min(xs.length, ys.length)
-    }, (_, i) => Tuple(xs[i])(ys[i]));
+    }, (_, i) => [xs[i], ys[i]]);
 ```
 
 

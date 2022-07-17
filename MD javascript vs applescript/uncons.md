@@ -3,10 +3,10 @@
 const uncons = xs => {
     // Just a tuple of the head of xs and its tail,
     // Or Nothing if xs is an empty list.
-    const lng = length(xs);
+    const n = length(xs);
 
-    return Boolean(lng) ? (
-        Infinity > lng ? (
+    return Boolean(n) ? (
+        Infinity > n ? (
             // Finite list
             Just(Tuple(xs[0])(xs.slice(1)))
         ) : (() => {

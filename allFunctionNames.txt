@@ -546,7 +546,7 @@ writeTempFile :: String -> String -> IO FilePath
 zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
-zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
+zipGen :: (a -> b -> c) -> Gen [a] -> Gen [b] -> Gen [c]
 zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]

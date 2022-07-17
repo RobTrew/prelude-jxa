@@ -5263,10 +5263,10 @@ const unQuoted = s =>
 const uncons = xs => {
     // Just a tuple of the head of xs and its tail,
     // Or Nothing if xs is an empty list.
-    const lng = length(xs);
+    const n = length(xs);
 
-    return Boolean(lng) ? (
-        Infinity > lng ? (
+    return Boolean(n) ? (
+        Infinity > n ? (
             // Finite list
             Just(Tuple(xs[0])(xs.slice(1)))
         ) : (() => {
@@ -5508,7 +5508,7 @@ const zip = xs =>
     // the length of the shorter of the two lists.
     ys => Array.from({
         length: Math.min(xs.length, ys.length)
-    }, (_, i) => Tuple(xs[i])(ys[i]));
+    }, (_, i) => [xs[i], ys[i]]);
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>
@@ -5524,29 +5524,30 @@ const zip4 = ws =>
     .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))
     .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
 
-// zipGen :: Gen [a] -> Gen [b] -> Gen [(a, b)]
-const zipGen = ga => gb => {
-    const go = function* (ma, mb) {
-        let
-            a = ma,
-            b = mb;
+// zipGen :: (a -> b -> c) ->
+// Gen [a] -> Gen [b] -> Gen [c]
+const zipGen = ga =>
+    // A composite generator formed by the application
+    // of f to each pair of values in a zip of two
+    // generators.
+    gb => {
+        const go = function* (ma, mb) {
+            let
+                a = ma,
+                b = mb;
 
-        while (!a.Nothing && !b.Nothing) {
-            const
-                ta = a.Just,
-                tb = b.Just;
+            while (!a.Nothing && !b.Nothing) {
+                const [ax, axs] = a.Just;
+                const [bx, bxs] = b.Just;
 
-            yield Tuple(fst(ta))(
-                fst(tb)
-            );
+                yield [ax, bx];
+                a = uncons(axs);
+                b = uncons(bxs);
+            }
+        };
 
-            a = uncons(snd(ta));
-            b = uncons(snd(tb));
-        }
+        return go(uncons(ga), uncons(gb));
     };
-
-    return go(uncons(ga), uncons(gb));
-};
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 const zipN = (...argv) => {
