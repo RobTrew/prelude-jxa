@@ -1895,7 +1895,7 @@
     ]
   },
   "mapMaybeGen": {
-    "code": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nconst mapMaybeGen = mf =>\n    // A filtered map over a generator, returning only the\n    // contents of Just values. (Nothing values discarded).\n    function*(gen) {\n        let v = take(1, gen);\n\n        while (Boolean(v.length)) {\n            const mb = mf(v[0]);\n\n            if (!mb.Nothing) {\n                yield mb.Just;\n            }\n            v = take(1, gen);\n        }\n    };",
+    "code": "// mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]\nconst mapMaybeGen = mf =>\n    // A filtered map over a generator, returning only the\n    // contents of Just values. (Nothing values discarded).\n    function*(gen) {\n        let v = take(1)(gen);\n\n        while (Boolean(v.length)) {\n            const mb = mf(v[0]);\n\n            if (!(\"Nothing\" in mb)) {\n                yield mb.Just;\n            }\n            v = take(1)(gen);\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
