@@ -3142,7 +3142,7 @@
     ]
   },
   "toSentence": {
-    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - initial char capitalized\n    // and rest lowercase.\n    Boolean(s.length) ? (\n        s[0].toLocaleUpperCase() + s.slice(1)\n        .toLocaleLowerCase()\n    ) : s;",
+    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - first character\n    // capitalized, and rest lowercase.\n    Boolean(s.length) ? (\n        s[0].toLocaleUpperCase() + s.slice(1)\n        .toLocaleLowerCase()\n    ) : s;",
     "tags": [
       "JS Prelude"
     ]
