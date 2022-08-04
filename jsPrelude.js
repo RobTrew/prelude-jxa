@@ -16,7 +16,6 @@ const Endo = f =>
 // Just :: a -> Maybe a
 const Just = x => ({
     type: "Maybe",
-    Nothing: false,
     Just: x
 });
 
@@ -1989,8 +1988,10 @@ const fromLeft = def =>
     lr => isLeft(lr) ? lr.Left : def;
 
 // fromMaybe :: a -> Maybe a -> a
-const fromMaybe = def =>
-    mb => mb.Nothing ? def : mb.Just;
+const fromMaybe = v =>
+    mb => "Nothing" in mb ? (
+        v
+    ) : mb.Just;
 
 // fromRight :: b -> Either a b -> b
 const fromRight = def =>
@@ -2841,16 +2842,16 @@ const map = f =>
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc ->
 // [x] -> (acc, [y])
 const mapAccumL = f =>
-    // A tuple of an accumulation and a list
-    // obtained by a combined map and fold,
-    // with accumulation from left to right.
+// A tuple of an accumulation and a list
+// obtained by a combined map and fold,
+// with accumulation from left to right.
     acc => xs => [...xs].reduce(
         ([a, bs], x) => second(
-            v => bs.concat(v)
+            v => [...bs, v]
         )(
             f(a)(x)
         ),
-        Tuple(acc)([])
+        [acc, []]
     );
 
 // mapAccumLTree :: (s -> a -> (s, b)) -> s ->
@@ -4870,8 +4871,8 @@ const toSentence = s =>
     // Sentence case - initial char capitalized
     // and rest lowercase.
     Boolean(s.length) ? (
-        s[0].toUpperCase() + s.slice(1)
-        .toLowerCase()
+        s[0].toLocaleUpperCase() + s.slice(1)
+        .toLocaleLowerCase()
     ) : s;
 
 // toTitle :: String -> String

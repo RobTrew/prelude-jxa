@@ -1,5 +1,7 @@
 ```javascript
 // fromMaybe :: a -> Maybe a -> a
-const fromMaybe = def =>
-    mb => mb.Nothing ? def : mb.Just;
+const fromMaybe = v =>
+    mb => "Nothing" in mb ? (
+        v
+    ) : mb.Just;
 ```

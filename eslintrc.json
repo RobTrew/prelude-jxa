@@ -46,7 +46,13 @@
         "id-blacklist": 2,
         "id-denylist": 2,
         "id-match": 2,
-        "indent": 0,
+        "indent": [
+            "error",
+            4,
+            {
+                "MemberExpression": 0
+            }
+        ],
         "indent-legacy": 0,
         "init-declarations": 2,
         "jsx-quotes": 2,
@@ -241,7 +247,10 @@
         "prefer-spread": 2,
         "prefer-template": 2,
         "quote-props": 0,
-        "quotes": [1, "double"],
+        "quotes": [
+            1,
+            "double"
+        ],
         "radix": 2,
         "require-atomic-updates": 2,
         "require-await": 2,
