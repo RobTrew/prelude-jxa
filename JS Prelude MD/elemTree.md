@@ -4,9 +4,9 @@ const elemTree = x =>
     // True if the root of any node in the tree
     // has the value x.
     tree => {
-        const go = v => t =>
-            v === t.root || t.nest.some(go(v));
+        const go = t =>
+            x === t.root || t.nest.some(go);
 
-        return go(x)(tree);
+        return go(tree);
     };
 ```

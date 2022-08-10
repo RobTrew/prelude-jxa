@@ -771,7 +771,7 @@
     ]
   },
   "elemTree": {
-    "code": "// elemTree :: a -> Tree a -> Bool\nconst elemTree = x =>\n    // True if the root of any node in the tree\n    // has the value x.\n    tree => {\n        const go = v => t =>\n            v === t.root || t.nest.some(go(v));\n\n        return go(x)(tree);\n    };",
+    "code": "// elemTree :: a -> Tree a -> Bool\nconst elemTree = x =>\n    // True if the root of any node in the tree\n    // has the value x.\n    tree => {\n        const go = t =>\n            x === t.root || t.nest.some(go);\n\n        return go(tree);\n    };",
     "tags": [
       "JS Prelude"
     ]
