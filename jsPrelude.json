@@ -770,6 +770,12 @@
       "JS Prelude"
     ]
   },
+  "elemTree": {
+    "code": "// elemTree :: a -> Tree a -> Bool\nconst elemTree = x =>\n    // True if the root of any node in the tree\n    // has the value x.\n    tree => {\n        const go = v => t =>\n            v === t.root || t.nest.some(go(v));\n\n        return go(x)(tree);\n    };",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "elems": {
     "code": "// elems :: Map k a -> [a]\n// elems :: Set a -> [a]\nconst elems = x =>\n    \"Set\" !== x.constructor.name ? (\n        Object.values(x)\n    ) : Array.from(x.values());",
     "tags": [
@@ -1308,7 +1314,7 @@
     ]
   },
   "head": {
-    "code": "// head :: [a] -> a\nconst head = xs =>\n    // The first item (if any) in a list.\n    xs.length ? (\n        xs[0]\n    ) : null;",
+    "code": "// head :: [a] -> a\nconst head = xs =>\n    // The first item (if any) in a list.\n    Boolean(xs.length) ? (\n        xs[0]\n    ) : undefined;",
     "tags": [
       "JS Prelude",
       "core"

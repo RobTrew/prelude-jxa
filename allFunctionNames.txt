@@ -119,6 +119,7 @@ elem :: Eq a => a -> [a] -> Bool
 elemAtMay :: Int -> Dict -> Maybe (String, a)
 elemIndex :: Eq a => a -> [a] -> Maybe Int
 elemIndices :: Eq a => a -> [a] -> [Int]
+elemTree :: a -> Tree a -> Bool
 elems :: Map k a -> [a]
 encodedPath :: FilePath -> Percent Encoded String
 enumFrom :: Enum a => a -> [a]

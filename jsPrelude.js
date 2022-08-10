@@ -1248,6 +1248,17 @@ const elemIndices = x =>
         ) : []
     );
 
+// elemTree :: a -> Tree a -> Bool
+const elemTree = x =>
+    // True if the root of any node in the tree
+    // has the value x.
+    tree => {
+        const go = v => t =>
+            v === t.root || t.nest.some(go(v));
+
+        return go(x)(tree);
+    };
+
 // elems :: Map k a -> [a]
 // elems :: Set a -> [a]
 const elems = x =>
@@ -2081,9 +2092,9 @@ const gt = x => y =>
 // head :: [a] -> a
 const head = xs =>
     // The first item (if any) in a list.
-    xs.length ? (
+    Boolean(xs.length) ? (
         xs[0]
-    ) : null;
+    ) : undefined;
 
 // headDef :: a -> [a] -> a
 const headDef = v =>

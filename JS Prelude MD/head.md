@@ -2,7 +2,7 @@
 // head :: [a] -> a
 const head = xs =>
     // The first item (if any) in a list.
-    xs.length ? (
+    Boolean(xs.length) ? (
         xs[0]
-    ) : null;
+    ) : undefined;
 ```
