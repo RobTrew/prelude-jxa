@@ -1014,7 +1014,7 @@
     ]
   },
   "findTree": {
-    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match the predicate p\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                n = xs.length;\n\n            return 0 < n ? until(\n                ([i, mb]) => n <= i || !mb.Nothing\n            )(\n                ([i]) => Tuple(1 + i)(\n                    go(xs[i])\n                )\n            )(\n                Tuple(0)(\n                    Nothing()\n                )\n            )[1] : Nothing();\n        })();\n\n    return go;\n};",
+    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match\n    // the predicate p.\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                n = xs.length;\n\n            return Boolean(n) ? until(\n                ([i, mb]) => n <= i || !(\"Nothing\" in mb)\n            )(\n                ([i]) => [1 + i, go(xs[i])]\n            )(\n                [0, Nothing()]\n            )[1] : Nothing();\n        })();\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
