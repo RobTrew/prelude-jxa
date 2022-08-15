@@ -1,7 +1,7 @@
 ```javascript
 // takeBaseName :: FilePath -> String
 const takeBaseName = fp =>
-    // The filepath without any extension.
+    // The filename without any extension.
     ("" !== fp) ? (
         ("/" !== fp[fp.length - 1]) ? (() => {
             const fn = fp.split("/").slice(-1)[0];

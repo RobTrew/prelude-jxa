@@ -4708,7 +4708,7 @@ const takeAround = p => xs => {
 
 // takeBaseName :: FilePath -> String
 const takeBaseName = fp =>
-    // The filepath without any extension.
+    // The filename without any extension.
     ("" !== fp) ? (
         ("/" !== fp[fp.length - 1]) ? (() => {
             const fn = fp.split("/").slice(-1)[0];
@@ -4729,11 +4729,9 @@ const takeCycle = n =>
         return (
             n <= lng ? (
                 xs
-            ) : concat(
-                replicate(Math.ceil(n / lng))(
-                    xs
-                )
-            )
+            ) : replicate(
+                Math.ceil(n / lng)
+            )(xs).flat(1)
         ).slice(0, n);
     };
 

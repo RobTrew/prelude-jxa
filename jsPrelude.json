@@ -3042,13 +3042,13 @@
     ]
   },
   "takeBaseName": {
-    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = fp =>\n    // The filepath without any extension.\n    (\"\" !== fp) ? (\n        (\"/\" !== fp[fp.length - 1]) ? (() => {\n            const fn = fp.split(\"/\").slice(-1)[0];\n\n            return fn.includes(\".\") ? (\n                fn.split(\".\").slice(0, -1)\n                .join(\".\")\n            ) : fn;\n        })() : \"\"\n    ) : \"\";",
+    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = fp =>\n    // The filename without any extension.\n    (\"\" !== fp) ? (\n        (\"/\" !== fp[fp.length - 1]) ? (() => {\n            const fn = fp.split(\"/\").slice(-1)[0];\n\n            return fn.includes(\".\") ? (\n                fn.split(\".\").slice(0, -1)\n                .join(\".\")\n            ) : fn;\n        })() : \"\"\n    ) : \"\";",
     "tags": [
       "JS Prelude"
     ]
   },
   "takeCycle": {
-    "code": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = n =>\n    // First n elements of a non-finite cycle of xs.\n    xs => {\n        const lng = xs.length;\n\n        return (\n            n <= lng ? (\n                xs\n            ) : concat(\n                replicate(Math.ceil(n / lng))(\n                    xs\n                )\n            )\n        ).slice(0, n);\n    };",
+    "code": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = n =>\n    // First n elements of a non-finite cycle of xs.\n    xs => {\n        const lng = xs.length;\n\n        return (\n            n <= lng ? (\n                xs\n            ) : replicate(\n                Math.ceil(n / lng)\n            )(xs).flat(1)\n        ).slice(0, n);\n    };",
     "tags": [
       "JS Prelude"
     ]

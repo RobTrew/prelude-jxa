@@ -8,11 +8,9 @@ const takeCycle = n =>
         return (
             n <= lng ? (
                 xs
-            ) : concat(
-                replicate(Math.ceil(n / lng))(
-                    xs
-                )
-            )
+            ) : replicate(
+                Math.ceil(n / lng)
+            )(xs).flat(1)
         ).slice(0, n);
     };
 ```
