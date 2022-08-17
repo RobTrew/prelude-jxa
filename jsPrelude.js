@@ -708,6 +708,24 @@ const composeR = f =>
 const concat = xs =>
     xs.flat(1);
 
+// concatGen :: Gen [[a]] -> Gen [a]
+const concatGen = gen =>
+    // A flattened stream of generator values;
+    (function* (g) {
+        let m = g.next();
+
+        while (!m.done) {
+            const xs = lazyList(m.value);
+            let x = xs.next();
+
+            while (!x.done) {
+                yield x.value;
+                x = xs.next();
+            }
+            m = g.next();
+        }
+    }(gen));
+
 // concatMap :: (a -> [b]) -> [a] -> [b]
 const concatMap = f =>
     // Concatenated results of a map of f over xs.
@@ -715,24 +733,6 @@ const concatMap = f =>
     // Any empty lists returned are filtered out by
     // the concatenation.
     xs => xs.flatMap(f);
-
-// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]
-const concatMapGen = f =>
-    // The concatenated map of f over
-    // a stream of generator values.
-    function* (gen) {
-        let v = gen.next();
-        let vs = [];
-
-        while (!v.done) {
-            vs = f(v.value);
-            if (Boolean(vs.length)) {
-                yield vs[0];
-            }
-
-            v = gen.next();
-        }
-    };
 
 // concats :: [String] -> String
 const concats = xs =>
@@ -1673,14 +1673,16 @@ const findIndices = p =>
         );
     };
 
-// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
+// findTree :: (a -> Bool) -> Tree a -> Maybe a
 const findTree = p => {
     // The first of any nodes in the tree which match
     // the predicate p.
     // (For all matches, see treeMatches)
-    const go = tree =>
-        p(tree.root) ? (
-            Just(tree)
+    const go = tree => {
+        const x = tree.root;
+
+        return p(x) ? (
+            Just(x)
         ) : (() => {
             const
                 xs = tree.nest,
@@ -1694,6 +1696,7 @@ const findTree = p => {
                 [0, Nothing()]
             )[1] : Nothing();
         })();
+    };
 
     return go;
 };
@@ -1823,6 +1826,20 @@ const foldMap = f => t =>
         Node: () => foldMapTree(f),
         List: () => foldMapList(f)
     })[typeName(t)]()(t);
+
+// foldMapGen :: (a -> [b]) -> [a] -> Gen [b]
+const foldMapGen = f =>
+    // A lazy list of concatenated values
+    // obtained by mapping f over xs
+    xs => concatGen(
+        function* () {
+            const ys = [...xs];
+
+            while (Boolean(ys.length)) {
+                yield f(ys.shift());
+            }
+        }(xs)
+    );
 
 // foldMapList :: Monoid m => (a -> m) -> t a -> m
 const foldMapList = f =>

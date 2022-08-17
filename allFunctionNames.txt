@@ -74,8 +74,8 @@ composeList :: [(a -> a)] -> (a -> a)
 composeListR :: [(a -> a)] -> (a -> a)
 composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c
 concat :: [[a]] -> [a]
+concatGen :: Gen [[a]] -> Gen [a]
 concatMap :: (a -> [b]) -> [a] -> [b]
-concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]
 concats :: [String] -> String
 cons :: a -> [a] -> [a]
 constant :: a -> b -> a
@@ -157,7 +157,7 @@ findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 findIndex :: (a -> Bool) -> [a] -> Maybe Int
 findIndexR :: (a -> Bool) -> [a] -> Maybe Int
 findIndices :: (a -> Bool) -> [a] -> [Int]
-findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
+findTree :: (a -> Bool) -> Tree a -> Maybe a
 first :: (a -> b) -> ((a, c) -> (b, c))
 flatten :: NestedList a -> [a]
 flattenTree :: Tree a -> [a]
@@ -172,6 +172,7 @@ fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)
 fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b
 foldList :: Monoid m => [m] -> m
 foldMap :: Monoid m => (a -> m) -> t a -> m
+foldMapGen :: (a -> [b]) -> [a] -> Gen [b]
 foldMapList :: Monoid m => (a -> m) -> t a -> m
 foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 foldTree :: (a -> [b] -> b) -> Tree a -> b

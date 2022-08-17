@@ -1,12 +1,14 @@
 ```javascript
-// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a
+// findTree :: (a -> Bool) -> Tree a -> Maybe a
 const findTree = p => {
     // The first of any nodes in the tree which match
     // the predicate p.
     // (For all matches, see treeMatches)
-    const go = tree =>
-        p(tree.root) ? (
-            Just(tree)
+    const go = tree => {
+        const x = tree.root;
+
+        return p(x) ? (
+            Just(x)
         ) : (() => {
             const
                 xs = tree.nest,
@@ -20,6 +22,7 @@ const findTree = p => {
                 [0, Nothing()]
             )[1] : Nothing();
         })();
+    };
 
     return go;
 };

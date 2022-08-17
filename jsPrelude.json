@@ -482,17 +482,17 @@
       "core"
     ]
   },
+  "concatGen": {
+    "code": "// concatGen :: Gen [[a]] -> Gen [a]\nconst concatGen = gen =>\n    // A flattened stream of generator values;\n    (function* (g) {\n        let m = g.next();\n\n        while (!m.done) {\n            const xs = lazyList(m.value);\n            let x = xs.next();\n\n            while (!x.done) {\n                yield x.value;\n                x = xs.next();\n            }\n            m = g.next();\n        }\n    }(gen));",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "concatMap": {
     "code": "// concatMap :: (a -> [b]) -> [a] -> [b]\nconst concatMap = f =>\n    // Concatenated results of a map of f over xs.\n    // f is any function which returns a list value.\n    // Any empty lists returned are filtered out by\n    // the concatenation.\n    xs => xs.flatMap(f);",
     "tags": [
       "JS Prelude",
       "core"
-    ]
-  },
-  "concatMapGen": {
-    "code": "// concatMap :: (a -> [b]) -> Gen [a] -> Gen [b]\nconst concatMapGen = f =>\n    // The concatenated map of f over\n    // a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n        let vs = [];\n\n        while (!v.done) {\n            vs = f(v.value);\n            if (Boolean(vs.length)) {\n                yield vs[0];\n            }\n\n            v = gen.next();\n        }\n    };",
-    "tags": [
-      "JS Prelude"
     ]
   },
   "concats": {
@@ -1014,7 +1014,7 @@
     ]
   },
   "findTree": {
-    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe Tree a\nconst findTree = p => {\n    // The first of any nodes in the tree which match\n    // the predicate p.\n    // (For all matches, see treeMatches)\n    const go = tree =>\n        p(tree.root) ? (\n            Just(tree)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                n = xs.length;\n\n            return Boolean(n) ? until(\n                ([i, mb]) => n <= i || !(\"Nothing\" in mb)\n            )(\n                ([i]) => [1 + i, go(xs[i])]\n            )(\n                [0, Nothing()]\n            )[1] : Nothing();\n        })();\n\n    return go;\n};",
+    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe a\nconst findTree = p => {\n    // The first of any nodes in the tree which match\n    // the predicate p.\n    // (For all matches, see treeMatches)\n    const go = tree => {\n        const x = tree.root;\n\n        return p(x) ? (\n            Just(x)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                n = xs.length;\n\n            return Boolean(n) ? until(\n                ([i, mb]) => n <= i || !(\"Nothing\" in mb)\n            )(\n                ([i]) => [1 + i, go(xs[i])]\n            )(\n                [0, Nothing()]\n            )[1] : Nothing();\n        })();\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1104,6 +1104,12 @@
   },
   "foldMap": {
     "code": "// foldMap :: Monoid m => (a -> m) -> t a -> m\nconst foldMap = f => t =>\n    // Each element of the structure mapped to a monoid,\n    // with the results combined by (<>)\n    ({\n        Node: () => foldMapTree(f),\n        List: () => foldMapList(f)\n    })[typeName(t)]()(t);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "foldMapGen": {
+    "code": "// foldMapGen :: (a -> [b]) -> [a] -> Gen [b]\nconst foldMapGen = f =>\n    // A lazy list of concatenated values\n    // obtained by mapping f over xs\n    xs => concatGen(\n        function* () {\n            const ys = [...xs];\n\n            while (Boolean(ys.length)) {\n                yield f(ys.shift());\n            }\n        }(xs)\n    );",
     "tags": [
       "JS Prelude"
     ]
