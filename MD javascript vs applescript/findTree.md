@@ -15,7 +15,7 @@ const findTree = p => {
                 n = xs.length;
 
             return Boolean(n) ? until(
-                ([i, mb]) => n <= i || !("Nothing" in mb)
+                ([i, mb]) => n <= i || ("Just" in mb)
             )(
                 ([i]) => [1 + i, go(xs[i])]
             )(

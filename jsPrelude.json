@@ -1014,7 +1014,7 @@
     ]
   },
   "findTree": {
-    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe a\nconst findTree = p => {\n    // The first of any nodes in the tree which match\n    // the predicate p.\n    // (For all matches, see treeMatches)\n    const go = tree => {\n        const x = tree.root;\n\n        return p(x) ? (\n            Just(x)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                n = xs.length;\n\n            return Boolean(n) ? until(\n                ([i, mb]) => n <= i || !(\"Nothing\" in mb)\n            )(\n                ([i]) => [1 + i, go(xs[i])]\n            )(\n                [0, Nothing()]\n            )[1] : Nothing();\n        })();\n    };\n\n    return go;\n};",
+    "code": "// findTree :: (a -> Bool) -> Tree a -> Maybe a\nconst findTree = p => {\n    // The first of any nodes in the tree which match\n    // the predicate p.\n    // (For all matches, see treeMatches)\n    const go = tree => {\n        const x = tree.root;\n\n        return p(x) ? (\n            Just(x)\n        ) : (() => {\n            const\n                xs = tree.nest,\n                n = xs.length;\n\n            return Boolean(n) ? until(\n                ([i, mb]) => n <= i || (\"Just\" in mb)\n            )(\n                ([i]) => [1 + i, go(xs[i])]\n            )(\n                [0, Nothing()]\n            )[1] : Nothing();\n        })();\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
