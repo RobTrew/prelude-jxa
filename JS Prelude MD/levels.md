@@ -4,13 +4,14 @@ const levels = tree => {
     // A list of lists, grouping the root
     // values of each level of the tree.
     const go = (a, x) => {
-        const [h, ...t] = Boolean(a.length) ? a : [
-            []
-        ];
+        const
+            [h, ...t] = Boolean(a.length) ? (
+                a
+            ) : [[]];
 
         return [
-            [root(x), ...h],
-            ...nest(x).reduceRight(go, t)
+            [x.root, ...h],
+            ...x.nest.reduceRight(go, t)
         ];
     };
 
