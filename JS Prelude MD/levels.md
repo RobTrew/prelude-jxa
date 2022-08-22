@@ -5,7 +5,7 @@ const levels = tree => {
     // values of each level of the tree.
     const go = (a, x) => {
         const
-            [h, ...t] = Boolean(a.length) ? (
+            [h, ...t] = 0 < a.length ? (
                 a
             ) : [[]];
 
