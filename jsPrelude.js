@@ -1776,8 +1776,8 @@ const fmapLR = f =>
     ) : Right(f(e.Right));
 
 // fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
-const fmapMay = f => mb =>
-    mb.Nothing ? (
+const fmapMay = f => 
+    mb => mb.Nothing ? (
         mb
     ) : Just(f(mb.Just));
 
@@ -2678,8 +2678,8 @@ const levels = tree => {
             ) : [[]];
 
         return [
-            [x.root, ...h],
-            ...x.nest.reduceRight(go, t)
+            h.concat(x.root),
+            ...x.nest.reduce(go, t)
         ];
     };
 

@@ -10,8 +10,8 @@ const levels = tree => {
             ) : [[]];
 
         return [
-            [x.root, ...h],
-            ...x.nest.reduceRight(go, t)
+            h.concat(x.root),
+            ...x.nest.reduce(go, t)
         ];
     };
 
