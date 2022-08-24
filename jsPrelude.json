@@ -1730,7 +1730,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (a, x) => {\n        const\n            [h, ...t] = 0 < a.length ? (\n                a\n            ) : [[]];\n\n        return [\n            h.concat(x.root),\n            ...x.nest.reduce(go, t)\n        ];\n    };\n\n    return go([], tree);\n};",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (layers, t) => {\n        const\n            [\n                topLayer, ...lowerLayers\n            ] = 0 < layers.length ? layers : [[]];\n\n        return [\n            topLayer.concat(t.root),\n            ...t.nest.reduce(go, lowerLayers)\n        ];\n    };\n\n    return go([], tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
