@@ -2138,10 +2138,10 @@ const if_ = bln =>
     ) : y;
 
 // indented :: String -> String -> String
-const indented = strIndent =>
+const indented = indent =>
     s => lines(s).map(
         x => Boolean(x) ? (
-            strIndent + x
+            indent + x
         ) : x
     )
     .join("\n");
@@ -2656,10 +2656,19 @@ const length = xs =>
     // length. This enables zip and zipWith to choose
     // the shorter argument when one is non-finite,
     // like cycle, repeat etc
-    "GeneratorFunction" !== xs.constructor
-    .constructor.name ? (
-        xs.length
-    ) : Infinity;
+    "Node" !== xs.type ? (
+        "GeneratorFunction" !== xs.constructor
+        .constructor.name ? (
+                xs.length
+            ) : Infinity
+    ) : lengthTree(xs);
+
+// lengthTree :: Tree a -> Int
+const lengthTree = tree =>
+    // The count of nodes in a given tree.
+    foldTree(
+        () => xs => xs.reduce((a, x) => a + x, 1)
+    )(tree);
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>

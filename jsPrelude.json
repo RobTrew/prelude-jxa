@@ -194,15 +194,8 @@
       "core"
     ]
   },
-  "appendFile": {
-    "code": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = fp =>\n    // The file at fp updated with a new string\n    // appended to its existing contents.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(fp)\n            .stringByStandardizingPath,\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle.fileHandleForWritingAtPath(\n                            oFullPath\n                        );\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile,\n                        true\n                    );\n                })() : false\n            ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (\n                writeFile(oFullPath)(txt),\n                true\n            ) : false;\n    };",
-    "tags": [
-      "JS Prelude",
-      "jxa"
-    ]
-  },
   "appendFileMay": {
-    "code": "// appendFileMay :: FilePath -> String -> Maybe IO FilePath\nconst appendFileMay = strPath =>\n    // Just the fully-expanded file path of\n    // any file at found strPath, after it has been\n    // updated by appending the given string, or\n    // Nothing if no file is found at that path,\n    // or the file is found but can not be updated.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(strPath)\n            .stringByStandardizingPath,\n            strFullPath = ObjC.unwrap(oFullPath),\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle\n                        .fileHandleForWritingAtPath(oFullPath);\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile, {\n                            Nothing: false,\n                            Just: strFullPath\n                        }\n                    );\n                })() : Nothing()\n                // Text appending to directory is undefined\n            ) : doesDirectoryExist(takeDirectory(strFullPath)) ? (\n                writeFile(oFullPath)(txt),\n                Just(strFullPath)\n            ) : Nothing();\n    };",
+    "code": "// appendFileMay :: FilePath -> String -> Maybe IO FilePath\nconst appendFileMay = strPath =>\n    // Just the fully-expanded file path of\n    // any file at found strPath, after it has been\n    // updated by appending the given string, or\n    // Nothing if no file is found at that path,\n    // or the file is found but can not be updated.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(strPath)\n            .stringByStandardizingPath,\n            strFullPath = ObjC.unwrap(oFullPath),\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (() => {\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle\n                        .fileHandleForWritingAtPath(oFullPath);\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile, {\n                            Nothing: false,\n                            Just: strFullPath\n                        }\n                    );\n                })() : Nothing()\n                // Text appending to directory is undefined\n            })() : doesDirectoryExist(takeDirectory(strFullPath)) ? (\n                writeFile(oFullPath)(txt),\n                Just(strFullPath)\n            ) : Nothing();\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -1354,7 +1347,7 @@
     ]
   },
   "indented": {
-    "code": "// indented :: String -> String -> String\nconst indented = strIndent =>\n    s => lines(s).map(\n        x => Boolean(x) ? (\n            strIndent + x\n        ) : x\n    )\n    .join(\"\\n\");",
+    "code": "// indented :: String -> String -> String\nconst indented = indent =>\n    s => lines(s).map(\n        x => Boolean(x) ? (\n            indent + x\n        ) : x\n    )\n    .join(\"\\n\");",
     "tags": [
       "JS Prelude"
     ]
@@ -1716,10 +1709,16 @@
     ]
   },
   "length": {
-    "code": "// length :: [a] -> Int\nconst length = xs =>\n    // Returns Infinity over objects without finite\n    // length. This enables zip and zipWith to choose\n    // the shorter argument when one is non-finite,\n    // like cycle, repeat etc\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name ? (\n        xs.length\n    ) : Infinity;",
+    "code": "// length :: [a] -> Int\nconst length = xs =>\n    // Returns Infinity over objects without finite\n    // length. This enables zip and zipWith to choose\n    // the shorter argument when one is non-finite,\n    // like cycle, repeat etc\n    \"Node\" !== xs.type ? (\n        \"GeneratorFunction\" !== xs.constructor\n        .constructor.name ? (\n                xs.length\n            ) : Infinity\n    ) : lengthTree(xs);",
     "tags": [
       "JS Prelude",
       "core"
+    ]
+  },
+  "lengthTree": {
+    "code": "// lengthTree :: Tree a -> Int\nconst lengthTree = tree =>\n    // The count of nodes in a given tree.\n    foldTree(\n        () => xs => xs.reduce((a, x) => a + x, 1)\n    )(tree);",
+    "tags": [
+      "JS Prelude"
     ]
   },
   "levelNodes": {

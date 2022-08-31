@@ -1,9 +1,9 @@
 ```javascript
 // indented :: String -> String -> String
-const indented = strIndent =>
+const indented = indent =>
     s => lines(s).map(
         x => Boolean(x) ? (
-            strIndent + x
+            indent + x
         ) : x
     )
     .join("\n");

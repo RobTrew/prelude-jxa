@@ -17,7 +17,7 @@ const appendFileMay = strPath =>
         .fileExistsAtPathIsDirectory(
             oFullPath
             .stringByStandardizingPath, ref
-        ) ? (
+        ) ? (() => {
                 0 === ref[0] ? (() => {
                     const
                         oData = ObjC.wrap(txt)
@@ -35,7 +35,7 @@ const appendFileMay = strPath =>
                     );
                 })() : Nothing()
                 // Text appending to directory is undefined
-            ) : doesDirectoryExist(takeDirectory(strFullPath)) ? (
+            })() : doesDirectoryExist(takeDirectory(strFullPath)) ? (
                 writeFile(oFullPath)(txt),
                 Just(strFullPath)
             ) : Nothing();

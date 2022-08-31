@@ -28,7 +28,6 @@ apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 apZL (<*>) :: ZipList (a -> b) -> ZipList a -> ZipList b
 appEndo :: Endo a -> (a -> a)
 append (<>) :: [a] -> [a] -> [a]
-appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
 appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 apply ($) :: (a -> b) -> a -> b
@@ -269,6 +268,7 @@ lcm :: Int -> Int -> Int
 le :: Ord a => a -> a -> a
 lefts :: [Either a b] -> [a]
 length :: [a] -> Int
+lengthTree :: Tree a -> Int
 levelNodes :: Tree a -> [[Tree a]]
 levels :: Tree a -> [[a]]
 liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
