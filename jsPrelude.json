@@ -1480,7 +1480,7 @@
     ]
   },
   "intersperse": {
-    "code": "// intersperse :: a -> [a] -> [a]\n// intersperse :: Char -> String -> String\nconst intersperse = sep => xs => {\n    // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]\n    const bln = \"string\" === typeof xs;\n\n    return xs.length > 1 ? (\n        (bln ? concat : x => x)(\n            (bln ? (\n                xs.split(\"\")\n            ) : xs)\n            .slice(1)\n            .reduce((a, x) => a.concat([sep, x]), [xs[0]])\n        )) : xs;\n};",
+    "code": "// intersperse :: a -> [a] -> [a]\nconst intersperse = sep =>\n    // intersperse(0)([1,2,3]) -> [1, 0, 2, 0, 3]\n    xs => 0 < xs.length ? [\n        xs[0], ...xs.slice(1)\n        .flatMap(x => [sep, x])\n    ] : [];",
     "tags": [
       "JS Prelude"
     ]
@@ -1716,7 +1716,7 @@
     ]
   },
   "lengthTree": {
-    "code": "// lengthTree :: Tree a -> Int\nconst lengthTree = tree =>\n    // The count of nodes in a given tree.\n    foldTree(\n        () => xs => xs.reduce((a, x) => a + x, 1)\n    )(tree);",
+    "code": "// lengthTree :: Tree a -> Int\nconst lengthTree = tree =>\n    // The count of nodes in a given tree.\n    foldTree(\n        () => xs => xs.reduce(\n            (a, x) => a + x, 1\n        )\n    )(tree);",
     "tags": [
       "JS Prelude"
     ]

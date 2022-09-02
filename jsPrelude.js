@@ -2329,20 +2329,12 @@ const intersection = s => s1 =>
     new Set([...s].filter(x => s1.has(x)));
 
 // intersperse :: a -> [a] -> [a]
-// intersperse :: Char -> String -> String
-const intersperse = sep => xs => {
-    // intersperse(0, [1,2,3]) -> [1, 0, 2, 0, 3]
-    const bln = "string" === typeof xs;
-
-    return xs.length > 1 ? (
-        (bln ? concat : x => x)(
-            (bln ? (
-                xs.split("")
-            ) : xs)
-            .slice(1)
-            .reduce((a, x) => a.concat([sep, x]), [xs[0]])
-        )) : xs;
-};
+const intersperse = sep =>
+    // intersperse(0)([1,2,3]) -> [1, 0, 2, 0, 3]
+    xs => 0 < xs.length ? [
+        xs[0], ...xs.slice(1)
+        .flatMap(x => [sep, x])
+    ] : [];
 
 // isAlpha :: Char -> Bool
 const isAlpha = c =>
@@ -2667,7 +2659,9 @@ const length = xs =>
 const lengthTree = tree =>
     // The count of nodes in a given tree.
     foldTree(
-        () => xs => xs.reduce((a, x) => a + x, 1)
+        () => xs => xs.reduce(
+            (a, x) => a + x, 1
+        )
     )(tree);
 
 // levelNodes :: Tree a -> [[Tree a]]
