@@ -1052,6 +1052,12 @@
       "JS Prelude"
     ]
   },
+  "fmapDict": {
+    "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict).reduce(\n        (a, [k, v]) => Object.assign(\n            {[k]: f(v)},\n            a\n        ),\n        {}\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "fmapGen <$>": {
     "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    // The map of f over a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n\n        while (!v.done) {\n            yield f(v.value);\n            v = gen.next();\n        }\n    };",
     "tags": [
@@ -1435,7 +1441,7 @@
     ]
   },
   "intercalate": {
-    "code": "// intercalate :: [a] -> [[a]] -> [a]\n// intercalate :: String -> [String] -> String\nconst intercalate = sep => xs =>\n    Boolean(xs.length) && \"string\" === typeof sep &&\n    \"string\" === typeof xs[0] ? (\n        xs.join(sep)\n    ) : concat(intersperse(sep)(xs));",
+    "code": "// intercalate :: [a] -> [[a]] -> [a]\nconst intercalate = sep =>\n    // Flattened interspersal of a list between\n    // the elements of a list of lists.\n    xs => intersperse(sep)(xs).flat();",
     "tags": [
       "JS Prelude",
       "core"

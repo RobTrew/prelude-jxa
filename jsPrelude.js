@@ -1755,6 +1755,19 @@ const fmap = f =>
         "Tuple": () => fmapTuple
     })[typeName(x)]()(f)(x);
 
+// fmapDict :: (a -> b) ->
+// {String :: a} -> {String :: b}
+const fmapDict = f =>
+    // A map of f over every value
+    // in the given dictionary.
+    dict => Object.entries(dict).reduce(
+        (a, [k, v]) => Object.assign(
+            {[k]: f(v)},
+            a
+        ),
+        {}
+    );
+
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
     // The map of f over a stream of generator values.
@@ -2289,12 +2302,10 @@ const intToDigit = n =>
     ) : "?";
 
 // intercalate :: [a] -> [[a]] -> [a]
-// intercalate :: String -> [String] -> String
-const intercalate = sep => xs =>
-    Boolean(xs.length) && "string" === typeof sep &&
-    "string" === typeof xs[0] ? (
-        xs.join(sep)
-    ) : concat(intersperse(sep)(xs));
+const intercalate = sep =>
+    // Flattened interspersal of a list between
+    // the elements of a list of lists.
+    xs => intersperse(sep)(xs).flat();
 
 // intercalateS :: String -> [String] -> String
 const intercalateS = s =>

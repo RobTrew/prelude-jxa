@@ -163,6 +163,7 @@ flattenTree :: Tree a -> [a]
 flip :: (a -> b -> c) -> b -> a -> c
 floor :: Num -> Int
 fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
+fmapDict :: (a -> b) -> {String :: a} -> {String :: b}
 fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c
 fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
