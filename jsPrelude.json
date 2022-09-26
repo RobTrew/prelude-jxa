@@ -1052,13 +1052,13 @@
       "JS Prelude"
     ]
   },
-  "fmapDict": {
+  "fmapDict (<$>)": {
     "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict).reduce(\n        (a, [k, v]) => Object.assign(\n            {[k]: f(v)},\n            a\n        ),\n        {}\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
-  "fmapGen <$>": {
+  "fmapGen (<$>)": {
     "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    // The map of f over a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n\n        while (!v.done) {\n            yield f(v.value);\n            v = gen.next();\n        }\n    };",
     "tags": [
       "JS Prelude"
@@ -1294,10 +1294,16 @@
     ]
   },
   "groupBy": {
-    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator,\n    // such that the concatenation of these lists is xs.\n    xs => Boolean(xs.length) ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => eqOp(x)(a[0]) ? (\n                Tuple(gs)([...a, x])\n            ) : Tuple([...gs, a])([x]),\n            Tuple([])([h])\n        );\n\n        return [...groups, g];\n    })() : [];",
+    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator,\n    // such that the concatenation of these lists is xs.\n    xs => 0 < xs.length ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => eqOp(x)(a[0]) ? (\n                Tuple(gs)([...a, x])\n            ) : Tuple([...gs, a])([x]),\n            Tuple([])([h])\n        );\n\n        return [...groups, g];\n    })() : [];",
     "tags": [
       "JS Prelude",
       "core"
+    ]
+  },
+  "groupOn": {
+    "code": "// groupOn :: (a -> b) -> [a] -> [[a]]\nconst groupOn = f =>\n    // A list of lists, each containing only elements\n    // which return equal values for f,\n    // such that the concatenation of these lists is xs.\n    xs => 0 < xs.length ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => f(x) === f(a[0]) ? (\n                Tuple(gs)([...a, x])\n            ) : Tuple([...gs, a])([x]),\n            Tuple([])([h])\n        );\n\n        return [...groups, g];\n    })() : [];",
+    "tags": [
+      "JS Prelude"
     ]
   },
   "groupSortBy": {
@@ -3436,7 +3442,7 @@
     ]
   },
   "words": {
-    "code": "// words :: String -> [String]\nconst words = s =>\n    // List of space-delimited sub-strings.\n    s.split(/\\s+/u);",
+    "code": "// words :: String -> [String]\nconst words = s =>\n    // List of space-delimited sub-strings.\n    // Leading and trailling space ignored.\n    s.split(/\\s+/u).filter(Boolean);",
     "tags": [
       "JS Prelude",
       "core"

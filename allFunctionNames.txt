@@ -202,6 +202,7 @@ getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath
 group :: [a] -> [[a]]
 groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
+groupOn :: (a -> b) -> [a] -> [[a]]
 groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 groupSortOn :: Ord b => (a -> b) -> [a] -> [[a]]
 gt :: Ord a => a -> a -> Bool

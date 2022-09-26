@@ -2,7 +2,8 @@
 // words :: String -> [String]
 const words = s =>
     // List of space-delimited sub-strings.
-    s.split(/\s+/u);
+    // Leading and trailling space ignored.
+    s.split(/\s+/u).filter(Boolean);
 ```
 
 

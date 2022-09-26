@@ -2081,10 +2081,27 @@ const groupBy = eqOp =>
     // A list of lists, each containing only elements
     // equal under the given equality operator,
     // such that the concatenation of these lists is xs.
-    xs => Boolean(xs.length) ? (() => {
+    xs => 0 < xs.length ? (() => {
         const [h, ...t] = xs;
         const [groups, g] = t.reduce(
             ([gs, a], x) => eqOp(x)(a[0]) ? (
+                Tuple(gs)([...a, x])
+            ) : Tuple([...gs, a])([x]),
+            Tuple([])([h])
+        );
+
+        return [...groups, g];
+    })() : [];
+
+// groupOn :: (a -> b) -> [a] -> [[a]]
+const groupOn = f =>
+    // A list of lists, each containing only elements
+    // which return equal values for f,
+    // such that the concatenation of these lists is xs.
+    xs => 0 < xs.length ? (() => {
+        const [h, ...t] = xs;
+        const [groups, g] = t.reduce(
+            ([gs, a], x) => f(x) === f(a[0]) ? (
                 Tuple(gs)([...a, x])
             ) : Tuple([...gs, a])([x]),
             Tuple([])([h])
@@ -5539,7 +5556,8 @@ const variance = xs => {
 // words :: String -> [String]
 const words = s =>
     // List of space-delimited sub-strings.
-    s.split(/\s+/u);
+    // Leading and trailling space ignored.
+    s.split(/\s+/u).filter(Boolean);
 
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs =>
