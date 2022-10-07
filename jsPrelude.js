@@ -2084,10 +2084,10 @@ const groupBy = eqOp =>
     xs => 0 < xs.length ? (() => {
         const [h, ...t] = xs;
         const [groups, g] = t.reduce(
-            ([gs, a], x) => eqOp(x)(a[0]) ? (
-                Tuple(gs)([...a, x])
-            ) : Tuple([...gs, a])([x]),
-            Tuple([])([h])
+            ([gs, a], x) => eqOp(a[0])(x) ? (
+                [gs, [...a, x]]
+            ) : [[...gs, a], [x]],
+            [[], [h]]
         );
 
         return [...groups, g];
