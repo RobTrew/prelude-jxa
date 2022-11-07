@@ -706,6 +706,8 @@ const composeR = f =>
 
 // concat :: [[a]] -> [a]
 const concat = xs =>
+    // The concatenation of all the lists
+    // in a list of lists.
     xs.flat(1);
 
 // concatGen :: Gen [[a]] -> Gen [a]
@@ -2079,8 +2081,8 @@ const group = xs =>
 // groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 const groupBy = eqOp =>
     // A list of lists, each containing only elements
-    // equal under the given equality operator,
-    // such that the concatenation of these lists is xs.
+    // equal under the given equality operator, such
+    // that the concatenation of these lists is xs.
     xs => 0 < xs.length ? (() => {
         const [h, ...t] = xs;
         const [groups, g] = t.reduce(
@@ -2639,7 +2641,7 @@ const kleisliCompose = f =>
 // last :: [a] -> a
 const last = xs =>
     // The last item of a list.
-    Boolean(xs.length) ? (
+    0 < xs.length ? (
         xs.slice(-1)[0]
     ) : null;
 
@@ -2899,9 +2901,9 @@ const map = f =>
 // mapAccumL :: (acc -> x -> (acc, y)) -> acc ->
 // [x] -> (acc, [y])
 const mapAccumL = f =>
-// A tuple of an accumulation and a list
-// obtained by a combined map and fold,
-// with accumulation from left to right.
+    // A tuple of an accumulation and a list
+    // obtained by a combined map and fold,
+    // with accumulation from left to right.
     acc => xs => [...xs].reduce(
         ([a, bs], x) => second(
             v => [...bs, v]
@@ -4070,7 +4072,7 @@ const second = f =>
     // A function over a simple value lifted
     // to a function over a tuple.
     // f (a, b) -> (a, f(b))
-    ([x, y]) => [x, f(y)];
+    xy => [xy[0], f(xy[1])];
 
 // sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 const sequenceA = tfa =>
@@ -4891,11 +4893,11 @@ const takeWhileR = p =>
     );
 
 // taskPaperDateString :: Date -> String
-const taskPaperDateString = dte => {
-    const [d, t] = iso8601Local(dte).split("T");
-
-    return [d, t.slice(0, 5)].join(" ");
-};
+const taskPaperDateString = dte =>
+    second(t => t.slice(0, 5))(
+        iso8601Local(dte).split("T")
+    )
+    .join(" ");
 
 // taskPaperDayString :: Date -> String
 const taskPaperDayString = dte =>

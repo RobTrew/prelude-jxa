@@ -469,7 +469,7 @@
     ]
   },
   "concat": {
-    "code": "// concat :: [[a]] -> [a]\nconst concat = xs =>\n    xs.flat(1);",
+    "code": "// concat :: [[a]] -> [a]\nconst concat = xs =>\n    // The concatenation of all the lists\n    // in a list of lists.\n    xs.flat(1);",
     "tags": [
       "JS Prelude",
       "core"
@@ -1294,7 +1294,7 @@
     ]
   },
   "groupBy": {
-    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator,\n    // such that the concatenation of these lists is xs.\n    xs => 0 < xs.length ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => eqOp(a[0])(x) ? (\n                [gs, [...a, x]]\n            ) : [[...gs, a], [x]],\n            [[], [h]]\n        );\n\n        return [...groups, g];\n    })() : [];",
+    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator, such\n    // that the concatenation of these lists is xs.\n    xs => 0 < xs.length ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => eqOp(a[0])(x) ? (\n                [gs, [...a, x]]\n            ) : [[...gs, a], [x]],\n            [[], [h]]\n        );\n\n        return [...groups, g];\n    })() : [];",
     "tags": [
       "JS Prelude",
       "core"
@@ -1691,7 +1691,7 @@
     ]
   },
   "last": {
-    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    Boolean(xs.length) ? (\n        xs.slice(-1)[0]\n    ) : null;",
+    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    0 < xs.length ? (\n        xs.slice(-1)[0]\n    ) : null;",
     "tags": [
       "JS Prelude"
     ]
@@ -1879,7 +1879,7 @@
     ]
   },
   "mapAccumL": {
-    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->\n// [x] -> (acc, [y])\nconst mapAccumL = f =>\n// A tuple of an accumulation and a list\n// obtained by a combined map and fold,\n// with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        ([a, bs], x) => second(\n            v => [...bs, v]\n        )(\n            f(a)(x)\n        ),\n        [acc, []]\n    );",
+    "code": "// mapAccumL :: (acc -> x -> (acc, y)) -> acc ->\n// [x] -> (acc, [y])\nconst mapAccumL = f =>\n    // A tuple of an accumulation and a list\n    // obtained by a combined map and fold,\n    // with accumulation from left to right.\n    acc => xs => [...xs].reduce(\n        ([a, bs], x) => second(\n            v => [...bs, v]\n        )(\n            f(a)(x)\n        ),\n        [acc, []]\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2642,7 +2642,7 @@
     ]
   },
   "second": {
-    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    ([x, y]) => [x, f(y)];",
+    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => [xy[0], f(xy[1])];",
     "tags": [
       "JS Prelude"
     ]
@@ -3127,7 +3127,7 @@
     ]
   },
   "taskPaperDateString": {
-    "code": "// taskPaperDateString :: Date -> String\nconst taskPaperDateString = dte => {\n    const [d, t] = iso8601Local(dte).split(\"T\");\n\n    return [d, t.slice(0, 5)].join(\" \");\n};",
+    "code": "// taskPaperDateString :: Date -> String\nconst taskPaperDateString = dte =>\n    second(t => t.slice(0, 5))(\n        iso8601Local(dte).split(\"T\")\n    )\n    .join(\" \");",
     "tags": [
       "JS Prelude"
     ]
