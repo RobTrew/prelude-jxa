@@ -1014,7 +1014,7 @@
     ]
   },
   "first": {
-    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    ([x, y]) => [f(x), y];",
+    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    xy => [f(xy[0]), xy[1]];",
     "tags": [
       "JS Prelude"
     ]
