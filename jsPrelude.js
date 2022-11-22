@@ -1677,7 +1677,7 @@ const findIndices = p =>
 
 // findTree :: (a -> Bool) -> Tree a -> Maybe a
 const findTree = p => {
-    // The first of any nodes in the tree which match
+    // The first of any node values in the tree which match
     // the predicate p.
     // (For all matches, see treeMatches)
     const go = tree => {
@@ -2104,13 +2104,32 @@ const groupOn = f =>
         const [h, ...t] = xs;
         const [groups, g] = t.reduce(
             ([gs, a], x) => f(x) === f(a[0]) ? (
-                Tuple(gs)([...a, x])
-            ) : Tuple([...gs, a])([x]),
-            Tuple([])([h])
+                [gs, [...a, x]]
+            ) : [[...gs, a], [x]],
+            [[], [h]]
         );
 
         return [...groups, g];
     })() : [];
+
+// groupOnKey :: Eq k => (a -> k) -> [a] -> [(k, [a])]
+const groupOnKey = f => {
+    // A list of (k, [a]) tuples, in which each [a]
+    // contains only elements for which f returns the
+    // same value, and in which k is that value.
+    const go = xs =>
+        0 < xs.length ? (() => {
+            const
+                x = xs[0],
+                t = xs.slice(1),
+                fx = f(x),
+                [yes, no] = span(y => fx === f(y))(t);
+
+            return [[fx, [x, ...yes]]].concat(go(no));
+        })() : [];
+
+    return go;
+};
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
@@ -2650,6 +2669,21 @@ const lastMay = xs =>
     Boolean(xs.length) ? (
         Just(xs.slice(-1)[0])
     ) : Nothing();
+
+// lazyList :: [a] -> Gen [a]
+const lazyList = xs => {
+    // The values of a given array
+    // lazily yielded one by one.
+    const go = function* () {
+        const vs = Array.from(xs);
+
+        while (0 < vs.length) {
+            yield vs.shift();
+        }
+    };
+
+    return go();
+};
 
 // lcm :: Int -> Int -> Int
 const lcm = x =>
@@ -4432,11 +4466,10 @@ const span = p =>
     xs => {
         const i = xs.findIndex(x => !p(x));
 
-        return -1 !== i ? (
-            Tuple(xs.slice(0, i))(
-                xs.slice(i)
-            )
-        ) : Tuple(xs)([]);
+        return -1 !== i ? [
+            xs.slice(0, i),
+            xs.slice(i)
+        ] : [xs, []];
     };
 
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))

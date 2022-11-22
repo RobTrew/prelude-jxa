@@ -1,7 +1,7 @@
 ```javascript
 // findTree :: (a -> Bool) -> Tree a -> Maybe a
 const findTree = p => {
-    // The first of any nodes in the tree which match
+    // The first of any node values in the tree which match
     // the predicate p.
     // (For all matches, see treeMatches)
     const go = tree => {

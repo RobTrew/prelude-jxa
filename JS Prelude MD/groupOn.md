@@ -8,9 +8,9 @@ const groupOn = f =>
         const [h, ...t] = xs;
         const [groups, g] = t.reduce(
             ([gs, a], x) => f(x) === f(a[0]) ? (
-                Tuple(gs)([...a, x])
-            ) : Tuple([...gs, a])([x]),
-            Tuple([])([h])
+                [gs, [...a, x]]
+            ) : [[...gs, a], [x]],
+            [[], [h]]
         );
 
         return [...groups, g];
