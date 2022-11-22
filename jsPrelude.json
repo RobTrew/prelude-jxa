@@ -1307,7 +1307,7 @@
     ]
   },
   "groupOnKey": {
-    "code": "// groupOnKey :: Eq k => (a -> k) -> [a] -> [(k, [a])]\nconst groupOnKey = f => {\n    // A list of (k, [a]) tuples, in which each [a]\n    // contains only elements for which f returns the\n    // same value, and in which k is that value.\n    const go = xs =>\n        0 < xs.length ? (() => {\n            const\n                x = xs[0],\n                t = xs.slice(1),\n                fx = f(x),\n                [yes, no] = span(y => fx === f(y))(t);\n\n            return [[fx, [x, ...yes]]].concat(go(no));\n        })() : [];\n\n    return go;\n};",
+    "code": "// groupOnKey :: Eq k => (a -> k) -> [a] -> [(k, [a])]\nconst groupOnKey = f => {\n    // A list of (k, [a]) tuples, in which each [a]\n    // contains only elements for which f returns the\n    // same value, and in which k is that value.\n    // The concatenation of the [a] in each tuple === xs.\n    const go = xs =>\n        0 < xs.length ? (() => {\n            const\n                x = xs[0],\n                fx = f(x),\n                [yes, no] = span(y => fx === f(y))(\n                    xs.slice(1)\n                );\n\n            return [[fx, [x, ...yes]]].concat(go(no));\n        })() : [];\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]
