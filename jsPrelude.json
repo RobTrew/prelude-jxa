@@ -60,7 +60,7 @@
     ]
   },
   "TupleN": {
-    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nconst TupleN = (...args) => {\n    // A Tuple of an arbitrary number of items.\n    const n = args.length;\n\n    return 2 < n ? Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: `Tuple${n}`,\n            length: n,\n            *[Symbol.iterator]() {\n                for (const k in this) {\n                    if (!isNaN(k)) {\n                        yield this[k];\n                    }\n                }\n            }\n        })\n    ) : args.reduce((f, x) => f(x), Tuple);\n};",
+    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nconst TupleN = (...args) => {\n// A Tuple of an arbitrary number of items.\n    const n = args.length;\n\n    return Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 2 !== n ? `Tuple${n}` : \"Tuple\",\n            length: n,\n            *[Symbol.iterator]() {\n                for (const k in this) {\n                    if (!isNaN(k)) {\n                        yield this[k];\n                    }\n                }\n            }\n        })\n    );\n};",
     "tags": [
       "JS Prelude",
       "core"
