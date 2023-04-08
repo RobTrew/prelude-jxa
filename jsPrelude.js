@@ -133,7 +133,9 @@ const ZipList = x => ({
 const abs = x =>
     // Absolute value of a given number
     // without the sign.
-    0 > x ? -x : x;
+    0 > x
+       ? -x 
+       : x;
 
 // add (+) :: Num a => a -> a -> a
 const add = a =>
@@ -448,7 +450,8 @@ const both = f =>
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     // The longest prefix of xs for in which
-    // all values return true for p.
+    // all values return true for p,
+    // tupled with the rest.
     xs => {
         const i = xs.findIndex(p);
 
@@ -2848,9 +2851,9 @@ const liftA2ZL = op =>
 const lines = s =>
     // A list of strings derived from a single string
     // which is delimited by \n or by \r\n or \r.
-    Boolean(s.length) ? (
-        s.split(/\r\n|\n|\r/u)
-    ) : [];
+    0 < s.length
+        ? s.split(/\r\n|\n|\r/u)
+        : [];
 
 // list :: StringOrArrayLike b => b -> [a]
 const list = xs =>
@@ -3481,7 +3484,7 @@ const nubBy = p =>
     xs => xs.reduce(
         (seen, x) => seen.some(p(x)) ? (
             seen
-        ) : [x].concat(seen),
+        ) : seen.concat(x),
         []
     );
 

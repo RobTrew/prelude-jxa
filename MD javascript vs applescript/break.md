@@ -2,7 +2,8 @@
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
     // The longest prefix of xs for in which
-    // all values return true for p.
+    // all values return true for p,
+    // tupled with the rest.
     xs => {
         const i = xs.findIndex(p);
 

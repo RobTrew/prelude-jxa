@@ -3,7 +3,7 @@
 const lines = s =>
     // A list of strings derived from a single string
     // which is delimited by \n or by \r\n or \r.
-    Boolean(s.length) ? (
-        s.split(/\r\n|\n|\r/u)
-    ) : [];
+    0 < s.length
+        ? s.split(/\r\n|\n|\r/u)
+        : [];
 ```

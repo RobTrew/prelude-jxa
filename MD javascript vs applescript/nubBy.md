@@ -7,7 +7,7 @@ const nubBy = p =>
     xs => xs.reduce(
         (seen, x) => seen.some(p(x)) ? (
             seen
-        ) : [x].concat(seen),
+        ) : seen.concat(x),
         []
     );
 ```

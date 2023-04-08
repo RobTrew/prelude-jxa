@@ -73,7 +73,7 @@
     ]
   },
   "abs": {
-    "code": "// abs :: Num -> Num\nconst abs = x =>\n    // Absolute value of a given number\n    // without the sign.\n    0 > x ? -x : x;",
+    "code": "// abs :: Num -> Num\nconst abs = x =>\n    // Absolute value of a given number\n    // without the sign.\n    0 > x\n       ? -x \n       : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -326,7 +326,7 @@
     ]
   },
   "break": {
-    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    // The longest prefix of xs for in which\n    // all values return true for p.\n    xs => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
+    "code": "// break :: (a -> Bool) -> [a] -> ([a], [a])\nconst break_ = p =>\n    // The longest prefix of xs for in which\n    // all values return true for p,\n    // tupled with the rest.\n    xs => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Tuple(xs.slice(0, i))(\n                xs.slice(i)\n            )\n        ) : Tuple(xs)([]);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1809,7 +1809,7 @@
     ]
   },
   "lines": {
-    "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single string\n    // which is delimited by \\n or by \\r\\n or \\r.\n    Boolean(s.length) ? (\n        s.split(/\\r\\n|\\n|\\r/u)\n    ) : [];",
+    "code": "// lines :: String -> [String]\nconst lines = s =>\n    // A list of strings derived from a single string\n    // which is delimited by \\n or by \\r\\n or \\r.\n    0 < s.length\n        ? s.split(/\\r\\n|\\n|\\r/u)\n        : [];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2201,7 +2201,7 @@
     ]
   },
   "nubBy": {
-    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x)) ? (\n            seen\n        ) : [x].concat(seen),\n        []\n    );",
+    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x)) ? (\n            seen\n        ) : seen.concat(x),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"
