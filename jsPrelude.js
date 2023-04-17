@@ -449,8 +449,8 @@ const both = f =>
 
 // break :: (a -> Bool) -> [a] -> ([a], [a])
 const break_ = p =>
-    // The longest prefix of xs for in which
-    // all values return true for p,
+    // The longest prefix of xs in which
+    // all values return false for p,
     // tupled with the rest.
     xs => {
         const i = xs.findIndex(p);
