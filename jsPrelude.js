@@ -273,7 +273,7 @@ const append = xs =>
     // Two lists joined into one.
     ys => xs.concat(ys);
 
-// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
+// appendGen (<>) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
 // A new generator composed from the
 // concatenation of two existing generators.

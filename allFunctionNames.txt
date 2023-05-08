@@ -29,7 +29,7 @@ apZL (<*>) :: ZipList (a -> b) -> ZipList a -> ZipList b
 appEndo :: Endo a -> (a -> a)
 append (<>) :: [a] -> [a] -> [a]
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
-appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
+appendGen (<>) :: Gen [a] -> Gen [a] -> Gen [a]
 apply ($) :: (a -> b) -> a -> b
 applyN :: Int -> (a -> a) -> a -> a
 approxRatio :: Float -> Float -> Ratio
