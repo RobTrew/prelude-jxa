@@ -1602,7 +1602,7 @@
     ]
   },
   "isSubsequenceOf": {
-    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = a => b =>\n            Boolean(a.length) ? (\n                Boolean(b.length) ? (\n                    go(\n                        a[0] === b[0] ? (\n                            a.slice(1)\n                        ) : a\n                    )(b.slice(1))\n                ) : false\n            ) : true;\n\n        return go(xs)(ys);\n    };",
+    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = (a, b) =>\n            Boolean(a.length)\n                ? Boolean(b.length)\n                    ? go(\n                        a[0] === b[0]\n                            ? a.slice(1)\n                            : a,\n                        b.slice(1)\n                    )\n                    : false\n                : true;\n\n        return go(xs, ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
