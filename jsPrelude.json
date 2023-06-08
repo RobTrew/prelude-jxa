@@ -1442,7 +1442,7 @@
     ]
   },
   "insertBy": {
-    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = y => ys =>\n            Boolean(ys.length) ? (\n                0 < cmp(y)(ys[0]) ? [\n                    ys[0],\n                    ...go(y)(ys.slice(1))\n                ] : [y, ...ys]\n            ) : [y];\n\n        return go(x)(xs);\n    };",
+    "code": "// insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]\nconst insertBy = cmp =>\n    x => xs => {\n        const go = (y, ys) =>\n            Boolean(ys.length)\n                ? 0 < cmp(y)(ys[0])\n                    ? [ys[0], ...go(y, ys.slice(1))]\n                    : [y, ...ys]\n                : [y];\n\n        return go(x, xs);\n    };",
     "tags": [
       "JS Prelude"
     ]
