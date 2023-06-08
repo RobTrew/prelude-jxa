@@ -1,6 +1,10 @@
 ```javascript
 // insertBy :: (a -> a -> Ordering) -> a -> [a] -> [a]
 const insertBy = cmp =>
+    // A new list in in which x is inserted into the
+    // values of the given list at the first position
+    // at which a supplied comparison function, applied
+    // to x and the following value, returns LT or EQ.
     x => xs => {
         const go = (y, ys) =>
             Boolean(ys.length)
