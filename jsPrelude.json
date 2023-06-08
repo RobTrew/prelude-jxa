@@ -66,6 +66,12 @@
       "core"
     ]
   },
+  "Untitled Note": {
+    "code": "",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "ZipList": {
     "code": "// ZipList :: a -> {getZipList :: [a]}\nconst ZipList = x => ({\n    // Constructor for an applicative ZipList\n    type: \"ZipList\",\n    getZipList: x\n});",
     "tags": [
@@ -194,6 +200,13 @@
       "core"
     ]
   },
+  "appendFile": {
+    "code": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = fp =>\n    // The file at fp updated with a new string\n    // appended to its existing contents.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(fp)\n            .stringByStandardizingPath,\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle.fileHandleForWritingAtPath(\n                            oFullPath\n                        );\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile,\n                        true\n                    );\n                })() : false\n            ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (\n                writeFile(oFullPath)(txt),\n                true\n            ) : false;\n    };",
+    "tags": [
+      "JS Prelude",
+      "jxa"
+    ]
+  },
   "appendFileMay": {
     "code": "// appendFileMay :: FilePath -> String -> Maybe IO FilePath\nconst appendFileMay = strPath =>\n    // Just the fully-expanded file path of\n    // any file at found strPath, after it has been\n    // updated by appending the given string, or\n    // Nothing if no file is found at that path,\n    // or the file is found but can not be updated.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(strPath)\n            .stringByStandardizingPath,\n            strFullPath = ObjC.unwrap(oFullPath),\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (() => {\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle\n                        .fileHandleForWritingAtPath(oFullPath);\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile, {\n                            Nothing: false,\n                            Just: strFullPath\n                        }\n                    );\n                })() : Nothing()\n                // Text appending to directory is undefined\n            })() : doesDirectoryExist(takeDirectory(strFullPath)) ? (\n                writeFile(oFullPath)(txt),\n                Just(strFullPath)\n            ) : Nothing();\n    };",
     "tags": [
@@ -202,7 +215,7 @@
     ]
   },
   "appendGen": {
-    "code": "// appendGen (<>) :: Gen [a] -> Gen [a] -> Gen [a]\nconst appendGen = xs =>\n// A new generator composed from the\n// concatenation of two existing generators.\n    function *(ys) {\n        for (const vs of [xs, ys]) {\n            let nxt = vs.next();\n\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = vs.next();\n            }\n        }\n    };",
+    "code": "// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]\nconst appendGen = xs =>\n// A new generator composed from the\n// concatenation of two existing generators.\n    function *(ys) {\n        for (const vs of [xs, ys]) {\n            let nxt = vs.next();\n\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = vs.next();\n            }\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2201,7 +2214,7 @@
     ]
   },
   "nubBy": {
-    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x))\n            ? seen\n            : seen.concat([x]),\n        []\n    );",
+    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x))\n            ? seen\n            : seen.concat(x),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2297,6 +2310,12 @@
   },
   "predMay": {
     "code": "// predMay :: Enum a => a -> Maybe a\nconst predMay = x => {\n    const t = typeof x;\n\n    return \"number\" !== t ? (() => {\n        const [i, mn] = [x, minBound(x)].map(fromEnum);\n\n        return i > mn ? (\n            Just(toEnum(x)(i - 1))\n        ) : Nothing();\n    })() : x > Number.MIN_SAFE_INTEGER ? (\n        Just(x - 1)\n    ) : Nothing();\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "prependToAll": {
+    "code": "// prependToAll :: a -> [a] -> [a]\nconst prependToAll = sep =>\n    // prependToAll(0)([1,2,3]) -> [0, 1, 0, 2, 0, 3]\n    xs => 0 < xs.length ? [\n        sep, xs[0],\n        ...prependToAll(sep)(xs.slice(1))\n    ] : [];",
     "tags": [
       "JS Prelude"
     ]
@@ -2988,7 +3007,7 @@
     ]
   },
   "subTreeAtPath": {
-    "code": "// subTreeAtPath :: Tree String -> [String] -> Maybe Tree String\nconst subTreeAtPath = tree => path => {\n    const go = (subNest, xs) =>\n        Boolean(nest.length) && Boolean(xs.length) ? (() => {\n            const h = xs[0];\n\n            return bindMay(find(t => h === t.root, subNest))(\n                t => 1 < xs.length ? (\n                    go(t.nest, xs.slice(1))\n                ) : Just(t)\n            );\n        })() : Nothing();\n\n    return go([tree], path);\n};",
+    "code": "// subTreeAtPath :: Tree String -> [String] -> Maybe Tree String\nconst subTreeAtPath = tree => path => {\n    const go = (subNest, xs) =>\n        Boolean(subNest.length) && Boolean(xs.length)\n            ? (() => {\n                const h = xs[0];\n\n                return bindMay(\n                    find(t => h === t.root)(subNest)\n                )(\n                    t => 1 < xs.length\n                        ? go(t.nest, xs.slice(1))\n                        : Just(t)\n                );\n            })()\n            : Nothing();\n\n    return go([tree], path);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3510,6 +3529,12 @@
   },
   "zipGen": {
     "code": "// zipGen :: (a -> b -> c) ->\n// Gen [a] -> Gen [b] -> Gen [c]\nconst zipGen = ga =>\n    // A composite generator formed by the application\n    // of f to each pair of values in a zip of two\n    // generators.\n    gb => {\n        const go = function* (ma, mb) {\n            let\n                a = ma,\n                b = mb;\n\n            while (!a.Nothing && !b.Nothing) {\n                const [ax, axs] = a.Just;\n                const [bx, bxs] = b.Just;\n\n                yield [ax, bx];\n                a = uncons(axs);\n                b = uncons(bxs);\n            }\n        };\n\n        return go(uncons(ga), uncons(gb));\n    };",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "zipList": {
+    "code": "// zipList :: [a] -> [b] -> [(a, b)]\nconst zipList = xs => ys => {\n    const\n        n = Math.min(length(xs), length(ys)),\n        vs = take(n)(ys);\n\n    return take(n)(xs)\n        .map((x, i) => Tuple(x)(vs[i]));\n};",
     "tags": [
       "JS Prelude"
     ]

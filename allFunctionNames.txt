@@ -8,6 +8,7 @@ Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 TupleN :: a -> b ...  -> (a, b ... )
+
 ZipList :: a -> {getZipList :: [a]}
 abs :: Num -> Num
 add (+) :: Num a => a -> a -> a
@@ -28,8 +29,9 @@ apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 apZL (<*>) :: ZipList (a -> b) -> ZipList a -> ZipList b
 appEndo :: Endo a -> (a -> a)
 append (<>) :: [a] -> [a] -> [a]
+appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
-appendGen (<>) :: Gen [a] -> Gen [a] -> Gen [a]
+appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 apply ($) :: (a -> b) -> a -> b
 applyN :: Int -> (a -> a) -> a -> a
 approxRatio :: Float -> Float -> Ratio
@@ -361,6 +363,7 @@ plus :: Num -> Num -> Num
 postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
 predMay :: Enum a => a -> Maybe a
+prependToAll :: a -> [a] -> [a]
 print :: a -> IO ()
 product :: [Num] -> Num
 properFracRatio :: Ratio -> (Int, Ratio)
@@ -553,6 +556,7 @@ zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 zipGen :: (a -> b -> c) -> Gen [a] -> Gen [b] -> Gen [c]
+zipList :: [a] -> [b] -> [(a, b)]
 zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]

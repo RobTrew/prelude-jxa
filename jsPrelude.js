@@ -122,6 +122,8 @@ const TupleN = (...args) => {
     );
 };
 
+
+
 // ZipList :: a -> {getZipList :: [a]}
 const ZipList = x => ({
     // Constructor for an applicative ZipList
@@ -273,7 +275,7 @@ const append = xs =>
     // Two lists joined into one.
     ys => xs.concat(ys);
 
-// appendGen (<>) :: Gen [a] -> Gen [a] -> Gen [a]
+// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
 // A new generator composed from the
 // concatenation of two existing generators.
@@ -3485,7 +3487,7 @@ const nubBy = p =>
     xs => xs.reduce(
         (seen, x) => seen.some(p(x))
             ? seen
-            : seen.concat([x]),
+            : seen.concat(x),
         []
     );
 
@@ -3651,6 +3653,14 @@ const predMay = x => {
         Just(x - 1)
     ) : Nothing();
 };
+
+// prependToAll :: a -> [a] -> [a]
+const prependToAll = sep =>
+    // prependToAll(0)([1,2,3]) -> [0, 1, 0, 2, 0, 3]
+    xs => 0 < xs.length ? [
+        sep, xs[0],
+        ...prependToAll(sep)(xs.slice(1))
+    ] : [];
 
 // print :: a -> IO ()
 const print = x => {
@@ -4642,15 +4652,19 @@ const stripStart = s =>
 // subTreeAtPath :: Tree String -> [String] -> Maybe Tree String
 const subTreeAtPath = tree => path => {
     const go = (subNest, xs) =>
-        Boolean(nest.length) && Boolean(xs.length) ? (() => {
-            const h = xs[0];
+        Boolean(subNest.length) && Boolean(xs.length)
+            ? (() => {
+                const h = xs[0];
 
-            return bindMay(find(t => h === t.root, subNest))(
-                t => 1 < xs.length ? (
-                    go(t.nest, xs.slice(1))
-                ) : Just(t)
-            );
-        })() : Nothing();
+                return bindMay(
+                    find(t => h === t.root)(subNest)
+                )(
+                    t => 1 < xs.length
+                        ? go(t.nest, xs.slice(1))
+                        : Just(t)
+                );
+            })()
+            : Nothing();
 
     return go([tree], path);
 };
@@ -5646,6 +5660,16 @@ const zipGen = ga =>
 
         return go(uncons(ga), uncons(gb));
     };
+
+// zipList :: [a] -> [b] -> [(a, b)]
+const zipList = xs => ys => {
+    const
+        n = Math.min(length(xs), length(ys)),
+        vs = take(n)(ys);
+
+    return take(n)(xs)
+        .map((x, i) => Tuple(x)(vs[i]));
+};
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
 const zipN = (...argv) => {
