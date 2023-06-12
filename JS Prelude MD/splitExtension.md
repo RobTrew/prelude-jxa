@@ -1,18 +1,15 @@
 ```javascript
 // splitExtension :: FilePath -> (String, String)
 const splitExtension = fp => {
-    // A tuple of the basename and the extension,
-    // in which the latter includes the "."
     const
-        xs = fp.split("."),
-        lng = xs.length;
+        lastIndex = [...fp].findLastIndex(
+            c => "/.".includes(c)
+        );
 
-    return 1 < lng ? (
-        Tuple(
-            xs.slice(0, -1).join(".")
-        )(
-            `.${xs[lng - 1]}`
-        )
-    ) : Tuple(fp)("");
+    return (-1 === lastIndex) || ("." !== fp[lastIndex])
+        ? Tuple(fp.slice())("")
+        : Tuple(fp.slice(0, lastIndex))(
+            fp.slice(lastIndex)
+        );
 };
 ```

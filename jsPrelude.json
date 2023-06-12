@@ -2933,7 +2933,7 @@
     ]
   },
   "splitExtension": {
-    "code": "// splitExtension :: FilePath -> (String, String)\nconst splitExtension = fp => {\n    // A tuple of the basename and the extension,\n    // in which the latter includes the \".\"\n    const\n        xs = fp.split(\".\"),\n        lng = xs.length;\n\n    return 1 < lng ? (\n        Tuple(\n            xs.slice(0, -1).join(\".\")\n        )(\n            `.${xs[lng - 1]}`\n        )\n    ) : Tuple(fp)(\"\");\n};",
+    "code": "// splitExtension :: FilePath -> (String, String)\nconst splitExtension = fp => {\n    const\n        lastIndex = [...fp].findLastIndex(\n            c => \"/.\".includes(c)\n        );\n\n    return (-1 === lastIndex) || (\".\" !== fp[lastIndex])\n        ? Tuple(fp.slice())(\"\")\n        : Tuple(fp.slice(0, lastIndex))(\n            fp.slice(lastIndex)\n        );\n};",
     "tags": [
       "JS Prelude"
     ]
