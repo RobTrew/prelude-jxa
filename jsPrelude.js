@@ -4538,6 +4538,8 @@ const splitBy = p =>
 
 // splitExtension :: FilePath -> (String, String)
 const splitExtension = fp => {
+    // The file path split before any extension, or
+    // tupled with the empty string if no extension is seen.
     const
         lastIndex = [...fp].findLastIndex(
             c => "/.".includes(c)
