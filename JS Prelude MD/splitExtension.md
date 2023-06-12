@@ -9,7 +9,7 @@ const splitExtension = fp => {
         );
 
     return (-1 === lastIndex) || ("." !== fp[lastIndex])
-        ? Tuple(fp.slice())("")
+        ? Tuple(fp)("")
         : Tuple(fp.slice(0, lastIndex))(
             fp.slice(lastIndex)
         );
