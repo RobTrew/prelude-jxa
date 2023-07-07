@@ -423,9 +423,9 @@ const bindList = xs =>
 const bindMay = mb =>
     // Nothing if mb is Nothing, or the application of the
     // (a -> Maybe b) function mf to the contents of mb.
-    mf => mb.Nothing ? (
-        mb
-    ) : mf(mb.Just);
+    mf => mb.Nothing
+        ? mb
+        : mf(mb.Just);
 
 // bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)
 const bindTuple = ([a, b]) =>
@@ -1733,9 +1733,9 @@ const flattenTree = tree => {
 const flip = op =>
     // The binary function op with
     // its arguments reversed.
-    1 !== op.length ? (
-        (a, b) => op(b, a)
-    ) : (a => b => op(b)(a));
+    1 !== op.length
+        ? (a, b) => op(b, a)
+        : (a => b => op(b)(a));
 
 // floor :: Num -> Int
 const floor = x => {
@@ -5618,6 +5618,12 @@ const words = s =>
     // Leading and trailling space ignored.
     s.split(/\s+/u).filter(Boolean);
 
+// zeroPadded :: Int -> Int -> String
+const zeroPadded = w =>
+    // A string representation of the integer n,
+    // zero padded at left to width w.
+    n => `${n}`.padStart(w, "0");
+
 // zip :: [a] -> [b] -> [(a, b)]
 const zip = xs =>
     // The paired members of xs and ys, up to
@@ -5784,13 +5790,13 @@ const zipWithLong = f => {
     // Any unpaired values, where list lengths differ,
     // are simply appended.
     const go = xs =>
-        ys => Boolean(xs.length) ? (
-            Boolean(ys.length) ? (
-                [f(xs[0])(ys[0])].concat(
+        ys => 0 < xs.length
+            ? 0 < ys.length
+                ? [f(xs[0], ys[0])].concat(
                     go(xs.slice(1))(ys.slice(1))
                 )
-            ) : xs
-        ) : ys;
+                : xs
+            : ys;
 
     return go;
 };

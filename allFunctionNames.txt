@@ -552,6 +552,7 @@ wrap :: a -> NSObject
 writeFile :: FilePath -> String -> IO ()
 writeFileLR :: FilePath -> String -> Either String IO FilePath
 writeTempFile :: String -> String -> IO FilePath
+zeroPadded :: Int -> Int -> String
 zip :: [a] -> [b] -> [(a, b)]
 zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]

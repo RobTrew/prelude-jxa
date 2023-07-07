@@ -314,7 +314,7 @@
     ]
   },
   "bindMay (>>=)": {
-    "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing ? (\n        mb\n    ) : mf(mb.Just);",
+    "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing\n        ? mb\n        : mf(mb.Just);",
     "tags": [
       "JS Prelude",
       "core"
@@ -1047,7 +1047,7 @@
     ]
   },
   "flip": {
-    "code": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with\n    // its arguments reversed.\n    1 !== op.length ? (\n        (a, b) => op(b, a)\n    ) : (a => b => op(b)(a));",
+    "code": "// flip :: (a -> b -> c) -> b -> a -> c\nconst flip = op =>\n    // The binary function op with\n    // its arguments reversed.\n    1 !== op.length\n        ? (a, b) => op(b, a)\n        : (a => b => op(b)(a));",
     "tags": [
       "JS Prelude",
       "core"
@@ -3507,6 +3507,12 @@
       "jxa"
     ]
   },
+  "zeroPadded": {
+    "code": "// zeroPadded :: Int -> Int -> String\nconst zeroPadded = w =>\n    // A string representation of the integer n,\n    // zero padded at left to width w.\n    n => `${n}`.padStart(w, \"0\");",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "zip": {
     "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    ys => Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => [xs[i], ys[i]]);",
     "tags": [
@@ -3583,7 +3589,7 @@
     ]
   },
   "zipWithLong": {
-    "code": "// zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]\nconst zipWithLong = f => {\n    // A list with the length of the *longer* of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    // Any unpaired values, where list lengths differ,\n    // are simply appended.\n    const go = xs =>\n        ys => Boolean(xs.length) ? (\n            Boolean(ys.length) ? (\n                [f(xs[0])(ys[0])].concat(\n                    go(xs.slice(1))(ys.slice(1))\n                )\n            ) : xs\n        ) : ys;\n\n    return go;\n};",
+    "code": "// zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]\nconst zipWithLong = f => {\n    // A list with the length of the *longer* of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    // Any unpaired values, where list lengths differ,\n    // are simply appended.\n    const go = xs =>\n        ys => 0 < xs.length\n            ? 0 < ys.length\n                ? [f(xs[0], ys[0])].concat(\n                    go(xs.slice(1))(ys.slice(1))\n                )\n                : xs\n            : ys;\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]
