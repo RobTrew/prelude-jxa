@@ -2106,38 +2106,28 @@ const groupOn = f =>
     // A list of lists, each containing only elements
     // which return equal values for f,
     // such that the concatenation of these lists is xs.
-    xs => 0 < xs.length ? (() => {
-        const [h, ...t] = xs;
-        const [groups, g] = t.reduce(
-            ([gs, a], x) => f(x) === f(a[0]) ? (
-                [gs, [...a, x]]
-            ) : [[...gs, a], [x]],
-            [[], [h]]
-        );
-
-        return [...groups, g];
-    })() : [];
+    xs => 0 < xs.length
+        ? groupBy(a => b => a[0] === b[0])(
+            xs.map(x => [f(x), x])
+        )
+        .map(gp => gp.map(ab => ab[1]))
+        : [];
 
 // groupOnKey :: Eq k => (a -> k) -> [a] -> [(k, [a])]
-const groupOnKey = f => {
+const groupOnKey = f =>
     // A list of (k, [a]) tuples, in which each [a]
     // contains only elements for which f returns the
     // same value, and in which k is that value.
     // The concatenation of the [a] in each tuple === xs.
-    const go = xs =>
-        0 < xs.length ? (() => {
-            const
-                x = xs[0],
-                fx = f(x),
-                [yes, no] = span(y => fx === f(y))(
-                    xs.slice(1)
-                );
-
-            return [[fx, [x, ...yes]]].concat(go(no));
-        })() : [];
-
-    return go;
-};
+    xs => 0 < xs.length
+        ? groupBy(a => b => a[0] === b[0])(
+            xs.map(x => [f(x), x])
+        )
+        .map(gp => [
+            gp[0][0],
+            gp.map(ab => ab[1])
+        ])
+        : [];
 
 // groupSortBy :: (a -> a -> Ordering) -> [a] -> [[a]]
 const groupSortBy = f =>
