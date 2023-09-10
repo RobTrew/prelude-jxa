@@ -6,23 +6,26 @@ const transpose = rows => {
     // > transpose [[10,11],[20],[],[30,31,32]]
     //             == [[10,20,30],[11,31],[32]]
     const go = xss =>
-        Boolean(xss.length) ? (() => {
+        0 < xss.length ? (() => {
             const
                 h = xss[0],
                 t = xss.slice(1);
 
-            return Boolean(h.length) ? [
-                [h[0]].concat(t.reduce(
-                    (a, xs) => a.concat(
-                        Boolean(xs.length) ? (
-                            [xs[0]]
-                        ) : []
-                    ),
-                    []
-                ))
-            ].concat(go([h.slice(1)].concat(
-                t.map(xs => xs.slice(1))
-            ))) : go(t);
+            return 0 < h.length
+                ? [[h[0],
+                    ...t.reduce(
+                        (a, xs) => a.concat(
+                            0 < xs.length
+                                ? [xs[0]]
+                                : []
+                        ),
+                        []
+                    )],
+                ...go([
+                    h.slice(1),
+                    ...t.map(xs => xs.slice(1))
+                ])]
+                : go(t);
         })() : [];
 
     return go(rows);
