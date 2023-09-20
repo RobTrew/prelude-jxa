@@ -4708,8 +4708,8 @@ const subsets = xs => {
                     zs = go(ys.slice(1));
 
                 return [
-                    ...zs,
-                    ...zs.map(z => [h, ...z])
+                    ...zs.map(z => [h, ...z]),
+                    ...zs
                 ];
             })()
             : [[]];

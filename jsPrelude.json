@@ -3020,7 +3020,7 @@
     ]
   },
   "subsets": {
-    "code": "// subsets :: [a] -> [[a]]\nconst subsets = xs => {\n    // The list of sublists of xs,\n    // including the empty list.\n    const go = ys =>\n        0 < ys.length\n            ? (() => {\n                const\n                    h = ys[0],\n                    zs = go(ys.slice(1));\n\n                return [\n                    ...zs,\n                    ...zs.map(z => [h, ...z])\n                ];\n            })()\n            : [[]];\n\n    return go(xs);\n};",
+    "code": "// subsets :: [a] -> [[a]]\nconst subsets = xs => {\n    // The list of sublists of xs,\n    // including the empty list.\n    const go = ys =>\n        0 < ys.length\n            ? (() => {\n                const\n                    h = ys[0],\n                    zs = go(ys.slice(1));\n\n                return [\n                    ...zs.map(z => [h, ...z]),\n                    ...zs\n                ];\n            })()\n            : [[]];\n\n    return go(xs);\n};",
     "tags": [
       "JS Prelude"
     ]
