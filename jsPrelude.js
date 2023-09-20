@@ -304,29 +304,33 @@ const applyN = n =>
     }, () => f)
     .reduce((a, g) => g(a), x);
 
-// approxRatio :: Float -> Float -> Ratio
+// approxRatio :: Real -> Real -> Ratio
 const approxRatio = epsilon =>
-    // A ratio approximating the floating point n
-    // to within the given margin (small epsilon value).
     n => {
         const
-            gcde = (e, x, y) => {
-                const _gcd = (a, b) =>
-                    b < e ? (
-                        a
-                    ) : _gcd(b, a % b);
-
-                return _gcd(Math.abs(x), Math.abs(y));
-            },
-            c = gcde(Boolean(epsilon) ? (
-                epsilon
-            ) : (1 / 10000), 1, n);
+            c = gcdApprox(
+                Boolean(epsilon)
+                    ? epsilon
+                    : (1 / 10000)
+            )(1, n);
 
         return Ratio(
-            Math.floor(n / c)
-        )(
+            Math.floor(n / c),
             Math.floor(1 / c)
         );
+    };
+
+
+// gcdApprox :: Real -> (Real, Real) -> Real
+const gcdApprox = epsilon =>
+    (x, y) => {
+        const _gcd = (a, b) => (
+            b < epsilon
+                ? a
+                : _gcd(b, a % b)
+        );
+
+        return _gcd(Math.abs(x), Math.abs(y));
     };
 
 // argvLength :: Function -> Int
@@ -635,14 +639,19 @@ const combinations = n =>
     // of n items drawn from xs.
     xs => {
         const go = (m, ys) =>
-            1 > m ? [
-                []
-            ] : 0 === ys.length ? (
-                []
-            ) : ((h, tail) => go(m - 1, tail)
-                .map(t => [h].concat(t))
-                .concat(go(m, tail))
-            )(ys[0], ys.slice(1));
+            1 > m
+                ? [[]]
+                : 0 === ys.length
+                    ? []
+                    : (
+                        (h, rest) => [
+                            ...go(m - 1, rest)
+                            .map(t => [h, ...t]),
+                            ...go(m, rest)
+                        ]
+                    )(
+                        ys[0], ys.slice(1)
+                    );
 
         return (go)(n, xs);
     };
@@ -4689,18 +4698,21 @@ const subsequences = qs => {
 
 // subsets :: [a] -> [[a]]
 const subsets = xs => {
+    // The list of sublists of xs,
+    // including the empty list.
     const go = ys =>
-        Boolean(ys.length) ? (() => {
-            const
-                h = ys[0],
-                zs = go(ys.slice(1));
+        0 < ys.length
+            ? (() => {
+                const
+                    h = ys[0],
+                    zs = go(ys.slice(1));
 
-            return zs.concat(
-                zs.map(z => [h].concat(z))
-            );
-        })() : [
-            []
-        ];
+                return [
+                    ...zs,
+                    ...zs.map(z => [h, ...z])
+                ];
+            })()
+            : [[]];
 
     return go(xs);
 };

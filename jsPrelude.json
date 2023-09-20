@@ -233,7 +233,7 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Float -> Float -> Ratio\nconst approxRatio = epsilon =>\n    // A ratio approximating the floating point n\n    // to within the given margin (small epsilon value).\n    n => {\n        const\n            gcde = (e, x, y) => {\n                const _gcd = (a, b) =>\n                    b < e ? (\n                        a\n                    ) : _gcd(b, a % b);\n\n                return _gcd(Math.abs(x), Math.abs(y));\n            },\n            c = gcde(Boolean(epsilon) ? (\n                epsilon\n            ) : (1 / 10000), 1, n);\n\n        return Ratio(\n            Math.floor(n / c)\n        )(\n            Math.floor(1 / c)\n        );\n    };",
+    "code": "// approxRatio :: Real -> Real -> Ratio\nconst approxRatio = epsilon =>\n    n => {\n        const\n            c = gcdApprox(\n                Boolean(epsilon)\n                    ? epsilon\n                    : (1 / 10000)\n            )(1, n);\n\n        return Ratio(\n            Math.floor(n / c),\n            Math.floor(1 / c)\n        );\n    };\n\n\n// gcdApprox :: Real -> (Real, Real) -> Real\nconst gcdApprox = epsilon =>\n    (x, y) => {\n        const _gcd = (a, b) => (\n            b < epsilon\n                ? a\n                : _gcd(b, a % b)\n        );\n\n        return _gcd(Math.abs(x), Math.abs(y));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -425,7 +425,7 @@
     ]
   },
   "combinations": {
-    "code": "// combinations :: Int -> [a] -> [[a]]\nconst combinations = n =>\n    // All combinations, without repetition,\n    // of n items drawn from xs.\n    xs => {\n        const go = (m, ys) =>\n            1 > m ? [\n                []\n            ] : 0 === ys.length ? (\n                []\n            ) : ((h, tail) => go(m - 1, tail)\n                .map(t => [h].concat(t))\n                .concat(go(m, tail))\n            )(ys[0], ys.slice(1));\n\n        return (go)(n, xs);\n    };",
+    "code": "// combinations :: Int -> [a] -> [[a]]\nconst combinations = n =>\n    // All combinations, without repetition,\n    // of n items drawn from xs.\n    xs => {\n        const go = (m, ys) =>\n            1 > m\n                ? [[]]\n                : 0 === ys.length\n                    ? []\n                    : (\n                        (h, rest) => [\n                            ...go(m - 1, rest)\n                            .map(t => [h, ...t]),\n                            ...go(m, rest)\n                        ]\n                    )(\n                        ys[0], ys.slice(1)\n                    );\n\n        return (go)(n, xs);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -3020,7 +3020,7 @@
     ]
   },
   "subsets": {
-    "code": "// subsets :: [a] -> [[a]]\nconst subsets = xs => {\n    const go = ys =>\n        Boolean(ys.length) ? (() => {\n            const\n                h = ys[0],\n                zs = go(ys.slice(1));\n\n            return zs.concat(\n                zs.map(z => [h].concat(z))\n            );\n        })() : [\n            []\n        ];\n\n    return go(xs);\n};",
+    "code": "// subsets :: [a] -> [[a]]\nconst subsets = xs => {\n    // The list of sublists of xs,\n    // including the empty list.\n    const go = ys =>\n        0 < ys.length\n            ? (() => {\n                const\n                    h = ys[0],\n                    zs = go(ys.slice(1));\n\n                return [\n                    ...zs,\n                    ...zs.map(z => [h, ...z])\n                ];\n            })()\n            : [[]];\n\n    return go(xs);\n};",
     "tags": [
       "JS Prelude"
     ]
