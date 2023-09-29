@@ -1,6 +1,8 @@
 ```javascript
 // takeWhile :: (a -> Bool) -> [a] -> [a]
 const takeWhile = p =>
+    // The longest prefix of xs in which
+    // all elements satisfy p.
     xs => {
         const i = xs.findIndex(x => !p(x));
 
