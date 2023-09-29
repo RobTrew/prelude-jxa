@@ -4943,13 +4943,13 @@ const takeWhileGen = p => xs => {
 const takeWhileR = p =>
     // The longest suffix of xs in which
     // all elements satisfy p.
-    xs => xs.slice(
-        1 + until(
-            i => !p(xs[i])
-        )(i => i - 1)(
-            xs.length - 1
-        )
-    );
+    xs => {
+        const i = xs.findLastIndex(x => !p(x));
+
+        return -1 !== i
+            ? xs.slice(1 + i)
+            : [];
+    };
 
 // taskPaperDateString :: Date -> String
 const taskPaperDateString = dte =>
