@@ -1513,19 +1513,20 @@ const fanArrow = f =>
     );
 
 // filePathTree :: filePath -> [Tree String] -> Tree FilePath
-const filePathTree = fpAnchor => trees => {
-    const go = fp => tree => {
-        const path = `${fp}/${tree.root.text}`;
+const filePathTree = fpAnchor =>
+    trees => {
+        const go = fp => tree => {
+            const path = `${fp}/${tree.root.text}`;
 
-        return Node(path)(
-            tree.nest.map(go(path))
+            return Node(path)(
+                tree.nest.map(go(path))
+            );
+        };
+
+        return Node(fpAnchor)(
+            trees.map(go(fpAnchor))
         );
     };
-
-    return Node(fpAnchor)(
-      trees.map(go(fpAnchor))
-    );
-};
 
 // filesCopiedLR :: FilePath -> [FilePath] ->
 // FilePath -> IO Either String [FilePath]
@@ -1619,15 +1620,17 @@ const find = p =>
     // Just the first element in xs which
     // matches the predicate p, or
     // Nothing if no match is found.
-    xs => xs.constructor.constructor.name !== (
-        "GeneratorFunction"
-    ) ? (() => {
-        const i = xs.findIndex(p);
+    xs => "GeneratorFunction" !== (
+        xs.constructor.constructor.name
+    )
+        ? (() => {
+            const i = xs.findIndex(p);
 
-        return -1 !== i ? (
-            Just(xs[i])
-        ) : Nothing();
-    })() : findGen(p)(xs);
+            return -1 !== i
+                ? Just(xs[i])
+                : Nothing();
+        })()
+        : findGen(p)(xs);
 
 // findGen :: (a -> Bool) -> Gen [a] -> Maybe a
 const findGen = p =>
@@ -1804,10 +1807,10 @@ const fmapLR = f =>
     ) : Right(f(e.Right));
 
 // fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
-const fmapMay = f => 
-    mb => mb.Nothing ? (
-        mb
-    ) : Just(f(mb.Just));
+const fmapMay = f =>
+    mb => mb.Nothing
+        ? mb
+        : Just(f(mb.Just));
 
 // fmapTree :: (a -> b) -> Tree a -> Tree b
 const fmapTree = f => {

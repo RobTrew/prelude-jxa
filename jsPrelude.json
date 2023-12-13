@@ -914,7 +914,7 @@
     ]
   },
   "filePathTree": {
-    "code": "// filePathTree :: filePath -> [Tree String] -> Tree FilePath\nconst filePathTree = fpAnchor => trees => {\n    const go = fp => tree => {\n        const path = `${fp}/${tree.root.text}`;\n\n        return Node(path)(\n            tree.nest.map(go(path))\n        );\n    };\n\n    return Node(fpAnchor)(\n      trees.map(go(fpAnchor))\n    );\n};",
+    "code": "// filePathTree :: filePath -> [Tree String] -> Tree FilePath\nconst filePathTree = fpAnchor =>\n    trees => {\n        const go = fp => tree => {\n            const path = `${fp}/${tree.root.text}`;\n\n            return Node(path)(\n                tree.nest.map(go(path))\n            );\n        };\n\n        return Node(fpAnchor)(\n            trees.map(go(fpAnchor))\n        );\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -982,7 +982,7 @@
     ]
   },
   "find": {
-    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which\n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (() => {\n        const i = xs.findIndex(p);\n\n        return -1 !== i ? (\n            Just(xs[i])\n        ) : Nothing();\n    })() : findGen(p)(xs);",
+    "code": "// find :: (a -> Bool) -> [a] -> Maybe a\nconst find = p =>\n    // Just the first element in xs which\n    // matches the predicate p, or\n    // Nothing if no match is found.\n    xs => \"GeneratorFunction\" !== (\n        xs.constructor.constructor.name\n    )\n        ? (() => {\n            const i = xs.findIndex(p);\n\n            return -1 !== i\n                ? Just(xs[i])\n                : Nothing();\n        })()\n        : findGen(p)(xs);",
     "tags": [
       "JS Prelude",
       "core"
@@ -1078,7 +1078,7 @@
     ]
   },
   "fmapMay (<$>)": {
-    "code": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = f => \n    mb => mb.Nothing ? (\n        mb\n    ) : Just(f(mb.Just));",
+    "code": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = f =>\n    mb => mb.Nothing\n        ? mb\n        : Just(f(mb.Just));",
     "tags": [
       "JS Prelude"
     ]
