@@ -1154,7 +1154,7 @@
     ]
   },
   "foldl1May": {
-    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => Boolean(xs.length) ? (\n        Just(xs.slice(1)\n            .reduce(uncurry(f), xs[0]))\n    ) : Nothing();",
+    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => Boolean(xs.length)\n        ? Just(\n            xs.slice(1)\n            .reduce(uncurry(f), xs[0])\n        )\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1578,7 +1578,7 @@
     ]
   },
   "isRight": {
-    "code": "// isRight :: Either a b -> Bool\nconst isRight = lr =>\n  (\"undefined\" !== typeof lr) &&\n  (\"Either\" === lr.type) && (undefined !== lr.Right);",
+    "code": "// isRight :: Either a b -> Bool\nconst isRight = lr =>\n    (\"undefined\" !== typeof lr) && (\n        \"Either\" === lr.type\n    ) && (undefined !== lr.Right);",
     "tags": [
       "JS Prelude"
     ]
@@ -1753,7 +1753,7 @@
     ]
   },
   "levelNodes": {
-    "code": "// levelNodes :: Tree a -> [[Tree a]]\nconst levelNodes = tree =>\n  iterateUntil(xs => 1 > xs.length)(\n    xs => xs.flatMap(x => x.nest)\n  )([tree]);",
+    "code": "// levelNodes :: Tree a -> [[Tree a]]\nconst levelNodes = tree =>\n    iterateUntil(xs => 1 > xs.length)(\n        xs => xs.flatMap(x => x.nest)\n    )([tree]);",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1967,7 +1967,7 @@
     ]
   },
   "mappendMaybe (<>)": {
-    "code": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = a =>\n     b => a.Nothing ? (\n        b\n    ) : b.Nothing ? (\n        a\n    ) : Just(\n        mappend(a.Just)(\n            b.Just\n        )\n    );",
+    "code": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = a =>\n    b => a.Nothing\n        ? b\n        : b.Nothing\n            ? a\n            : Just(\n                mappend(a.Just)(b.Just)\n            );",
     "tags": [
       "JS Prelude"
     ]
@@ -2111,7 +2111,7 @@
     ]
   },
   "minimum": {
-    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    // The least value of xs.\n    Boolean(xs.length) ? (\n        xs.slice(1)\n        .reduce((a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : null;",
+    "code": "// minimum :: Ord a => [a] -> a\nconst minimum = xs =>\n    // The least value of xs.\n    0 < xs.length\n        ? xs.slice(1).reduce(\n            (a, x) => x < a\n                ? x\n                : a,\n            xs[0]\n        )\n        : null;",
     "tags": [
       "JS Prelude",
       "core"
@@ -2432,7 +2432,7 @@
     ]
   },
   "range": {
-    "code": "// range :: Ix a => (a, a) -> [a]\nconst range = (...args) => {\n    // The list of values in the subrange defined by a bounding pair.\n    // range([0, 2]) -> [0,1,2]\n    // range([[0,0], [2,2]])\n    //  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]\n    // range([[0,0,0],[1,1,1]])\n    //  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]\n    const\n        ab = 1 !== args.length ? (\n            args\n        ) : args[0],\n        [as, bs] = [ab[0], ab[1]].map(\n            x => Array.isArray(x) ? (\n                x\n            ) : (undefined !== x.type) &&\n            (x.type.startsWith(\"Tuple\")) ? (\n                listFromTuple(x)\n            ) : [x]\n        ),\n        an = as.length;\n\n    return (an === bs.length) ? (\n        1 < an ? (\n            traverseList(x => x)(\n                as.map((_, i) => enumFromTo(as[i])(bs[i]))\n            )\n        ) : enumFromTo(as[0])(bs[0])\n    ) : [];\n};",
+    "code": "// range :: Ix a => (a, a) -> [a]\nconst range = (...args) => {\n    // The list of values in the subrange defined by a bounding pair.\n    // range([0, 2]) -> [0,1,2]\n    // range([[0,0], [2,2]])\n    //  -> [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]\n    // range([[0,0,0],[1,1,1]])\n    //  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]\n    const\n        ab = 1 !== args.length\n            ? args\n            : args[0],\n        [as, bs] = [ab[0], ab[1]].map(\n            x => Array.isArray(x)\n                ? x\n                : (undefined !== x.type) && (\n                    x.type.startsWith(\"Tuple\")\n                )\n                    ? listFromTuple(x)\n                    : [x]\n        ),\n        an = as.length;\n\n    return (an === bs.length)\n        ? 1 < an\n            ? traverseList(x => x)(\n                as.map(\n                    (_, i) => enumFromTo(as[i])(bs[i])\n                )\n            )\n            : enumFromTo(as[0])(bs[0])\n        : [];\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2635,7 +2635,7 @@
     ]
   },
   "scanl": {
-    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f => startValue => xs =>\n    // The series of interim values arising\n    // from a catamorphism. Parallel to foldl.\n    xs.constructor.constructor.name !== (\n        \"GeneratorFunction\"\n    ) ? (\n        xs.reduce((a, x) => {\n            const v = f(a[0])(x);\n\n            return [v, a[1].concat(v)];\n        }, [startValue, [startValue]])[1]\n    ) : scanlGen(f)(startValue)(xs);",
+    "code": "// scanl :: (b -> a -> b) -> b -> [a] -> [b]\nconst scanl = f =>\n    // The series of interim values arising\n    // from a catamorphism. Parallel to foldl.\n    startValue => xs =>\n        \"GeneratorFunction\" !== (\n            xs.constructor.constructor.name\n        )\n            ? xs.reduce(\n                (a, x) => {\n                    const v = f(a[0])(x);\n\n                    return [v, a[1].concat(v)];\n                }, [startValue, [startValue]]\n            )[1]\n            : scanlGen(f)(startValue)(xs);",
     "tags": [
       "JS Prelude",
       "core"

@@ -1931,10 +1931,12 @@ const foldl1 = f =>
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
-    xs => Boolean(xs.length) ? (
-        Just(xs.slice(1)
-            .reduce(uncurry(f), xs[0]))
-    ) : Nothing();
+    xs => Boolean(xs.length)
+        ? Just(
+            xs.slice(1)
+            .reduce(uncurry(f), xs[0])
+        )
+        : Nothing();
 
 // foldlTree :: (b -> a -> b) -> b -> Tree a -> b
 const foldlTree = f =>
@@ -2480,8 +2482,9 @@ const isPrefixOf = xs =>
 
 // isRight :: Either a b -> Bool
 const isRight = lr =>
-  ("undefined" !== typeof lr) &&
-  ("Either" === lr.type) && (undefined !== lr.Right);
+    ("undefined" !== typeof lr) && (
+        "Either" === lr.type
+    ) && (undefined !== lr.Right);
 
 // isSortedBy :: (a -> a -> Bool) -> [a] -> Bool
 const isSortedBy = p =>
@@ -2742,9 +2745,9 @@ const lengthTree = tree =>
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
-  iterateUntil(xs => 1 > xs.length)(
-    xs => xs.flatMap(x => x.nest)
-  )([tree]);
+    iterateUntil(xs => 1 > xs.length)(
+        xs => xs.flatMap(x => x.nest)
+    )([tree]);
 
 // levels :: Tree a -> [[a]]
 const levels = tree => {
@@ -3074,15 +3077,13 @@ const mappendFn = f =>
 
 // mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 const mappendMaybe = a =>
-     b => a.Nothing ? (
-        b
-    ) : b.Nothing ? (
-        a
-    ) : Just(
-        mappend(a.Just)(
-            b.Just
-        )
-    );
+    b => a.Nothing
+        ? b
+        : b.Nothing
+            ? a
+            : Just(
+                mappend(a.Just)(b.Just)
+            );
 
 // mappendOrd (<>) :: Ordering -> Ordering -> Ordering
 const mappendOrd = x =>
@@ -3378,14 +3379,14 @@ const minBound = x => {
 // minimum :: Ord a => [a] -> a
 const minimum = xs =>
     // The least value of xs.
-    Boolean(xs.length) ? (
-        xs.slice(1)
-        .reduce((a, x) => x < a ? (
-                x
-            ) : a,
+    0 < xs.length
+        ? xs.slice(1).reduce(
+            (a, x) => x < a
+                ? x
+                : a,
             xs[0]
         )
-    ) : null;
+        : null;
 
 // minimumBy :: (a -> a -> Ordering) -> [a] -> a
 const minimumBy = f =>
@@ -3831,26 +3832,29 @@ const range = (...args) => {
     // range([[0,0,0],[1,1,1]])
     //  -> [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]]
     const
-        ab = 1 !== args.length ? (
-            args
-        ) : args[0],
+        ab = 1 !== args.length
+            ? args
+            : args[0],
         [as, bs] = [ab[0], ab[1]].map(
-            x => Array.isArray(x) ? (
-                x
-            ) : (undefined !== x.type) &&
-            (x.type.startsWith("Tuple")) ? (
-                listFromTuple(x)
-            ) : [x]
+            x => Array.isArray(x)
+                ? x
+                : (undefined !== x.type) && (
+                    x.type.startsWith("Tuple")
+                )
+                    ? listFromTuple(x)
+                    : [x]
         ),
         an = as.length;
 
-    return (an === bs.length) ? (
-        1 < an ? (
-            traverseList(x => x)(
-                as.map((_, i) => enumFromTo(as[i])(bs[i]))
+    return (an === bs.length)
+        ? 1 < an
+            ? traverseList(x => x)(
+                as.map(
+                    (_, i) => enumFromTo(as[i])(bs[i])
+                )
             )
-        ) : enumFromTo(as[0])(bs[0])
-    ) : [];
+            : enumFromTo(as[0])(bs[0])
+        : [];
 };
 
 // ratioDiv :: Rational -> Rational -> Rational
@@ -4060,18 +4064,21 @@ const safeMay = p => f => x =>
     p(x) ? Just(f(x)) : Nothing();
 
 // scanl :: (b -> a -> b) -> b -> [a] -> [b]
-const scanl = f => startValue => xs =>
+const scanl = f =>
     // The series of interim values arising
     // from a catamorphism. Parallel to foldl.
-    xs.constructor.constructor.name !== (
-        "GeneratorFunction"
-    ) ? (
-        xs.reduce((a, x) => {
-            const v = f(a[0])(x);
+    startValue => xs =>
+        "GeneratorFunction" !== (
+            xs.constructor.constructor.name
+        )
+            ? xs.reduce(
+                (a, x) => {
+                    const v = f(a[0])(x);
 
-            return [v, a[1].concat(v)];
-        }, [startValue, [startValue]])[1]
-    ) : scanlGen(f)(startValue)(xs);
+                    return [v, a[1].concat(v)];
+                }, [startValue, [startValue]]
+            )[1]
+            : scanlGen(f)(startValue)(xs);
 
 // scanl1 :: (a -> a -> a) -> [a] -> [a]
 const scanl1 = f =>
