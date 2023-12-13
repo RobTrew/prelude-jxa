@@ -134,8 +134,8 @@ const abs = x =>
     // Absolute value of a given number
     // without the sign.
     0 > x
-       ? -x 
-       : x;
+        ? -x
+        : x;
 
 // add (+) :: Num a => a -> a -> a
 const add = a =>
@@ -443,7 +443,7 @@ const bool = f =>
 
 // both :: (a -> b) -> (a, a) -> (b, b)
 const both = f =>
-    // A tuple obtained by separately 
+    // A tuple obtained by separately
     // applying f to each of the two
     // values in the given tuple.
     ([a, b]) => Tuple(
@@ -657,7 +657,7 @@ const combinations = n =>
 // combine (</>) :: FilePath -> FilePath -> FilePath
 const combine = fp =>
     // The concatenation of two filePath segments,
-	// without omission or duplication of "/".
+    // without omission or duplication of "/".
     fp1 => Boolean(fp) && Boolean(fp1) ? (
         "/" === fp1.slice(0, 1) ? (
             fp1
@@ -668,7 +668,7 @@ const combine = fp =>
 
 // compare :: a -> a -> Ordering
 const compare = a =>
-  b => a < b ? -1 : (a > b ? 1 : 0);
+    b => a < b ? -1 : (a > b ? 1 : 0);
 
 // compareList :: [a] -> [a] -> Ordering
 const compareList = xs =>
@@ -1014,7 +1014,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             return TupleN(ls, rs[0], rs.slice(1));
         },
         stringsFromLMR = lmr =>
-        Array.from(lmr).reduce((a, x) => a.concat(x), []),
+            Array.from(lmr).reduce((a, x) => a.concat(x), []),
         fghOverLMR = (f, g, h) => lmr => {
             const [ls, m, rs] = Array.from(lmr);
 
@@ -1032,7 +1032,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         return 0 === lng ? (
             TupleN([], "─".repeat(w - nChars) + x, [])
 
-            // --------- NODE WITH SINGLE CHILD ----------
+        // --------- NODE WITH SINGLE CHILD ----------
         ) : 1 === lng ? (() => {
             const indented = leftPad(1 + w);
 
@@ -4487,10 +4487,12 @@ const span = p =>
     xs => {
         const i = xs.findIndex(x => !p(x));
 
-        return -1 !== i ? [
-            xs.slice(0, i),
-            xs.slice(i)
-        ] : [xs, []];
+        return -1 !== i
+            ? Tuple(
+                xs.slice(0, i)
+            )(
+                xs.slice(i)
+            ) : Tuple(xs)([]);
     };
 
 // splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))

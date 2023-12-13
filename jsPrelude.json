@@ -73,7 +73,7 @@
     ]
   },
   "abs": {
-    "code": "// abs :: Num -> Num\nconst abs = x =>\n    // Absolute value of a given number\n    // without the sign.\n    0 > x\n       ? -x \n       : x;",
+    "code": "// abs :: Num -> Num\nconst abs = x =>\n    // Absolute value of a given number\n    // without the sign.\n    0 > x\n        ? -x\n        : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -327,7 +327,7 @@
     ]
   },
   "both": {
-    "code": "// both :: (a -> b) -> (a, a) -> (b, b)\nconst both = f =>\n    // A tuple obtained by separately \n    // applying f to each of the two\n    // values in the given tuple.\n    ([a, b]) => Tuple(\n        f(a)\n    )(\n        f(b)\n    );",
+    "code": "// both :: (a -> b) -> (a, a) -> (b, b)\nconst both = f =>\n    // A tuple obtained by separately\n    // applying f to each of the two\n    // values in the given tuple.\n    ([a, b]) => Tuple(\n        f(a)\n    )(\n        f(b)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -425,13 +425,13 @@
     ]
   },
   "combine": {
-    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // The concatenation of two filePath segments,\n\t// without omission or duplication of \"/\".\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        \"/\" === fp1.slice(0, 1) ? (\n            fp1\n        ) : \"/\" === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
+    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // The concatenation of two filePath segments,\n    // without omission or duplication of \"/\".\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        \"/\" === fp1.slice(0, 1) ? (\n            fp1\n        ) : \"/\" === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
     "tags": [
       "JS Prelude"
     ]
   },
   "compare": {
-    "code": "// compare :: a -> a -> Ordering\nconst compare = a =>\n  b => a < b ? -1 : (a > b ? 1 : 0);",
+    "code": "// compare :: a -> a -> Ordering\nconst compare = a =>\n    b => a < b ? -1 : (a > b ? 1 : 0);",
     "tags": [
       "JS Prelude",
       "core"
@@ -681,7 +681,7 @@
     ]
   },
   "drawTree2": {
-    "code": "// drawTree2 :: Bool -> Bool -> Tree String -> String\nconst drawTree2 = blnCompact => blnPruned => tree => {\n    // Tree design and algorithm inspired by the Haskell snippet at:\n    // https://doisinkidney.com/snippets/drawing-trees.html\n    const\n        // Lefts, Middle, Rights\n        lmrFromStrings = xs => {\n            const [ls, rs] = Array.from(splitAt(\n                Math.floor(xs.length / 2)\n            )(xs));\n\n            return TupleN(ls, rs[0], rs.slice(1));\n        },\n        stringsFromLMR = lmr =>\n        Array.from(lmr).reduce((a, x) => a.concat(x), []),\n        fghOverLMR = (f, g, h) => lmr => {\n            const [ls, m, rs] = Array.from(lmr);\n\n            return TupleN(ls.map(f), g(m), rs.map(h));\n        };\n\n    const lmrBuild = (f, w) => wsTree => {\n        const\n            leftPad = n => s => \" \".repeat(n) + s,\n            xs = wsTree.nest,\n            lng = xs.length,\n            [nChars, x] = Array.from(wsTree.root);\n\n        // ------------------ LEAF NODE ------------------\n        return 0 === lng ? (\n            TupleN([], \"─\".repeat(w - nChars) + x, [])\n\n            // --------- NODE WITH SINGLE CHILD ----------\n        ) : 1 === lng ? (() => {\n            const indented = leftPad(1 + w);\n\n            return fghOverLMR(\n                indented,\n                z => `${\"─\".repeat(w - nChars)}${x}-${z}`,\n                indented\n            )(f(xs[0]));\n\n            // ----------- NODE WITH CHILDREN ------------\n        })() : (() => {\n            const\n                cFix = y => ys => y + ys,\n                treeFix = (l, m, r) => compose(\n                    stringsFromLMR,\n                    fghOverLMR(cFix(l), cFix(m), cFix(r))\n                ),\n                _x = \"─\".repeat(w - nChars) + x,\n                indented = leftPad(w),\n                lmrs = xs.map(f);\n\n            return fghOverLMR(\n                indented,\n                s => _x + ({\n                    \"┌\": \"┬\",\n                    \"├\": \"┼\",\n                    \"│\": \"┤\",\n                    \"└\": \"┴\"\n                })[s[0]] + s.slice(1),\n                indented\n            )(lmrFromStrings(\n                intercalate(\n                    blnCompact ? [] : [\"│\"]\n                )(\n                    [treeFix(\" \", \"┌\", \"│\")(lmrs[0])]\n                    .concat(init(lmrs.slice(1)).map(\n                        treeFix(\"│\", \"├\", \"│\")\n                    ))\n                    .concat([treeFix(\"│\", \"└\", \" \")(\n                        lmrs[lmrs.length - 1]\n                    )])\n                )\n            ));\n        })();\n    };\n\n    const\n        measuredTree = fmapTree(\n            v => {\n                const s = ` ${v} `;\n\n                return Tuple(s.length)(s);\n            })(tree),\n        levelWidths = levels(measuredTree)\n        .reduce(\n            (a, level) => a.concat(maximum(level.map(fst))),\n            []\n        ),\n        treeLines = stringsFromLMR(\n            levelWidths.reduceRight(\n                lmrBuild, x => x\n            )(measuredTree)\n        );\n\n    return unlines(\n        blnPruned ? (\n            treeLines.filter(\n                s => s.split(\"\")\n                .some(c => !\" │\".includes(c))\n            )\n        ) : treeLines\n    );\n};",
+    "code": "// drawTree2 :: Bool -> Bool -> Tree String -> String\nconst drawTree2 = blnCompact => blnPruned => tree => {\n    // Tree design and algorithm inspired by the Haskell snippet at:\n    // https://doisinkidney.com/snippets/drawing-trees.html\n    const\n        // Lefts, Middle, Rights\n        lmrFromStrings = xs => {\n            const [ls, rs] = Array.from(splitAt(\n                Math.floor(xs.length / 2)\n            )(xs));\n\n            return TupleN(ls, rs[0], rs.slice(1));\n        },\n        stringsFromLMR = lmr =>\n            Array.from(lmr).reduce((a, x) => a.concat(x), []),\n        fghOverLMR = (f, g, h) => lmr => {\n            const [ls, m, rs] = Array.from(lmr);\n\n            return TupleN(ls.map(f), g(m), rs.map(h));\n        };\n\n    const lmrBuild = (f, w) => wsTree => {\n        const\n            leftPad = n => s => \" \".repeat(n) + s,\n            xs = wsTree.nest,\n            lng = xs.length,\n            [nChars, x] = Array.from(wsTree.root);\n\n        // ------------------ LEAF NODE ------------------\n        return 0 === lng ? (\n            TupleN([], \"─\".repeat(w - nChars) + x, [])\n\n        // --------- NODE WITH SINGLE CHILD ----------\n        ) : 1 === lng ? (() => {\n            const indented = leftPad(1 + w);\n\n            return fghOverLMR(\n                indented,\n                z => `${\"─\".repeat(w - nChars)}${x}-${z}`,\n                indented\n            )(f(xs[0]));\n\n            // ----------- NODE WITH CHILDREN ------------\n        })() : (() => {\n            const\n                cFix = y => ys => y + ys,\n                treeFix = (l, m, r) => compose(\n                    stringsFromLMR,\n                    fghOverLMR(cFix(l), cFix(m), cFix(r))\n                ),\n                _x = \"─\".repeat(w - nChars) + x,\n                indented = leftPad(w),\n                lmrs = xs.map(f);\n\n            return fghOverLMR(\n                indented,\n                s => _x + ({\n                    \"┌\": \"┬\",\n                    \"├\": \"┼\",\n                    \"│\": \"┤\",\n                    \"└\": \"┴\"\n                })[s[0]] + s.slice(1),\n                indented\n            )(lmrFromStrings(\n                intercalate(\n                    blnCompact ? [] : [\"│\"]\n                )(\n                    [treeFix(\" \", \"┌\", \"│\")(lmrs[0])]\n                    .concat(init(lmrs.slice(1)).map(\n                        treeFix(\"│\", \"├\", \"│\")\n                    ))\n                    .concat([treeFix(\"│\", \"└\", \" \")(\n                        lmrs[lmrs.length - 1]\n                    )])\n                )\n            ));\n        })();\n    };\n\n    const\n        measuredTree = fmapTree(\n            v => {\n                const s = ` ${v} `;\n\n                return Tuple(s.length)(s);\n            })(tree),\n        levelWidths = levels(measuredTree)\n        .reduce(\n            (a, level) => a.concat(maximum(level.map(fst))),\n            []\n        ),\n        treeLines = stringsFromLMR(\n            levelWidths.reduceRight(\n                lmrBuild, x => x\n            )(measuredTree)\n        );\n\n    return unlines(\n        blnPruned ? (\n            treeLines.filter(\n                s => s.split(\"\")\n                .some(c => !\" │\".includes(c))\n            )\n        ) : treeLines\n    );\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2902,7 +2902,7 @@
     ]
   },
   "span": {
-    "code": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const i = xs.findIndex(x => !p(x));\n\n        return -1 !== i ? [\n            xs.slice(0, i),\n            xs.slice(i)\n        ] : [xs, []];\n    };",
+    "code": "// span :: (a -> Bool) -> [a] -> ([a], [a])\nconst span = p =>\n    // Longest prefix of xs consisting of elements which\n    // all satisfy p, tupled with the remainder of xs.\n    xs => {\n        const i = xs.findIndex(x => !p(x));\n\n        return -1 !== i\n            ? Tuple(\n                xs.slice(0, i)\n            )(\n                xs.slice(i)\n            ) : Tuple(xs)([]);\n    };",
     "tags": [
       "JS Prelude",
       "core"

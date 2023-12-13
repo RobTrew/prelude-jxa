@@ -6,9 +6,11 @@ const span = p =>
     xs => {
         const i = xs.findIndex(x => !p(x));
 
-        return -1 !== i ? [
-            xs.slice(0, i),
-            xs.slice(i)
-        ] : [xs, []];
+        return -1 !== i
+            ? Tuple(
+                xs.slice(0, i)
+            )(
+                xs.slice(i)
+            ) : Tuple(xs)([]);
     };
 ```

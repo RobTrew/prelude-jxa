@@ -13,7 +13,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             return TupleN(ls, rs[0], rs.slice(1));
         },
         stringsFromLMR = lmr =>
-        Array.from(lmr).reduce((a, x) => a.concat(x), []),
+            Array.from(lmr).reduce((a, x) => a.concat(x), []),
         fghOverLMR = (f, g, h) => lmr => {
             const [ls, m, rs] = Array.from(lmr);
 
@@ -31,7 +31,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         return 0 === lng ? (
             TupleN([], "─".repeat(w - nChars) + x, [])
 
-            // --------- NODE WITH SINGLE CHILD ----------
+        // --------- NODE WITH SINGLE CHILD ----------
         ) : 1 === lng ? (() => {
             const indented = leftPad(1 + w);
 
