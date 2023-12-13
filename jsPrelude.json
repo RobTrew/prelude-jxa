@@ -66,12 +66,6 @@
       "core"
     ]
   },
-  "Untitled Note": {
-    "code": "",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
   "ZipList": {
     "code": "// ZipList :: a -> {getZipList :: [a]}\nconst ZipList = x => ({\n    // Constructor for an applicative ZipList\n    type: \"ZipList\",\n    getZipList: x\n});",
     "tags": [
@@ -418,7 +412,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return Boolean(chunk.length) ? [\n            chunk, ...go(xs.slice(n))\n        ] : [];\n    };\n\n    return go;\n};",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return 0 < chunk.length\n            ? [chunk, ...go(xs.slice(n))]\n            : [];\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -744,7 +738,7 @@
     ]
   },
   "either": {
-    "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => \"Left\" in e ? (\n        fl(e.Left)\n    ) : fr(e.Right);",
+    "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => \"Left\" in e\n        ? fl(e.Left)\n        : fr(e.Right);",
     "tags": [
       "JS Prelude",
       "core"
@@ -1027,7 +1021,7 @@
     ]
   },
   "first": {
-    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    xy => [f(xy[0]), xy[1]];",
+    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    ([x, y]) => Tuple(f(x))(y);",
     "tags": [
       "JS Prelude"
     ]
@@ -3221,7 +3215,7 @@
     ]
   },
   "transpose_": {
-    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input\n    // rows of even length.\n    Boolean(rows.length) ? rows[0].map(\n        (_, i) => rows.flatMap(\n            v => v[i]\n        )\n    ) : [];",
+    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input\n    // rows of even length.\n    0 < rows.length\n        ? rows[0].map(\n            (_, i) => rows.flatMap(\n                v => v[i]\n            )\n        )\n        : [];",
     "tags": [
       "JS Prelude"
     ]

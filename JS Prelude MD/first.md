@@ -3,5 +3,5 @@
 const first = f =>
     // A simple function lifted to one which applies
     // to a tuple, transforming only its first item.
-    xy => [f(xy[0]), xy[1]];
+    ([x, y]) => Tuple(f(x))(y);
 ```

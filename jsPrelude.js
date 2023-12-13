@@ -122,8 +122,6 @@ const TupleN = (...args) => {
     );
 };
 
-
-
 // ZipList :: a -> {getZipList :: [a]}
 const ZipList = x => ({
     // Constructor for an applicative ZipList
@@ -625,9 +623,9 @@ const chunksOf = n => {
     const go = xs => {
         const chunk = xs.slice(0, n);
 
-        return Boolean(chunk.length) ? [
-            chunk, ...go(xs.slice(n))
-        ] : [];
+        return 0 < chunk.length
+            ? [chunk, ...go(xs.slice(n))]
+            : [];
     };
 
     return go;
@@ -1210,9 +1208,9 @@ const either = fl =>
     // Application of the function fl to the
     // contents of any Left value in e, or
     // the application of fr to its Right value.
-    fr => e => "Left" in e ? (
-        fl(e.Left)
-    ) : fr(e.Right);
+    fr => e => "Left" in e
+        ? fl(e.Left)
+        : fr(e.Right);
 
 // elem :: Eq a => a -> [a] -> Bool
 const elem = x =>
@@ -1722,7 +1720,7 @@ const findTree = p => {
 const first = f =>
     // A simple function lifted to one which applies
     // to a tuple, transforming only its first item.
-    xy => [f(xy[0]), xy[1]];
+    ([x, y]) => Tuple(f(x))(y);
 
 // flatten :: NestedList a -> [a]
 const flatten = nest =>
@@ -5041,11 +5039,13 @@ const transpose_ = rows =>
     // into new rows.
     // Simpler version of transpose, assuming input
     // rows of even length.
-    Boolean(rows.length) ? rows[0].map(
-        (_, i) => rows.flatMap(
-            v => v[i]
+    0 < rows.length
+        ? rows[0].map(
+            (_, i) => rows.flatMap(
+                v => v[i]
+            )
         )
-    ) : [];
+        : [];
 
 // traverse :: (Applicative f, Traversable t) ->
 // (a -> f b) -> t a -> f (t b)

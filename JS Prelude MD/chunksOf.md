@@ -7,9 +7,9 @@ const chunksOf = n => {
     const go = xs => {
         const chunk = xs.slice(0, n);
 
-        return Boolean(chunk.length) ? [
-            chunk, ...go(xs.slice(n))
-        ] : [];
+        return 0 < chunk.length
+            ? [chunk, ...go(xs.slice(n))]
+            : [];
     };
 
     return go;
