@@ -4,5 +4,9 @@ const second = f =>
     // A function over a simple value lifted
     // to a function over a tuple.
     // f (a, b) -> (a, f(b))
-    xy => [xy[0], f(xy[1])];
+    xy => Tuple(
+        xy[0]
+    )(
+        f(xy[1])
+    );
 ```

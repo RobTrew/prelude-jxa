@@ -2667,7 +2667,7 @@
     ]
   },
   "second": {
-    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => [xy[0], f(xy[1])];",
+    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => Tuple(\n        xy[0]\n    )(\n        f(xy[1])\n    );",
     "tags": [
       "JS Prelude"
     ]
