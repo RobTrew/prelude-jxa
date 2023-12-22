@@ -9,8 +9,8 @@ const uncurryN = f =>
             f(xs[0])
         )
     )([...(
-        1 < args.length ? (
-            args
-        ) : args[0]
+        1 < args.length 
+            ? args
+            : args[0]
     )]);
 ```

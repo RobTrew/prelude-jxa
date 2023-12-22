@@ -295,7 +295,7 @@
     ]
   },
   "bindLR (>>=)": {
-    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = lr =>\n    // Bind operator for the Either option type.\n    // If lr has a Left value then lr unchanged,\n    // otherwise the function mf applied to the\n    // Right value in lr.\n    mf => \"Left\" in lr ? (\n        lr\n    ) : mf(lr.Right);",
+    "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = lr =>\n    // Bind operator for the Either option type.\n    // If lr has a Left value then lr unchanged,\n    // otherwise the function mf applied to the\n    // Right value in lr.\n    mf => \"Left\" in lr\n        ? lr\n        : mf(lr.Right);",
     "tags": [
       "JS Prelude",
       "core"
@@ -1072,7 +1072,7 @@
     ]
   },
   "fmapLR (<$>)": {
-    "code": "// fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c\nconst fmapLR = f =>\n    // Either f mapped into the contents of any Right\n    // value in e, or e unchanged if is a Left value.\n    e => \"Left\" in e ? (\n        e\n    ) : Right(f(e.Right));",
+    "code": "// fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c\nconst fmapLR = f =>\n    // Either f mapped into the contents of any Right\n    // value in e, or e unchanged if is a Left value.\n    e => \"Left\" in e\n        ? e\n        : Right(f(e.Right));",
     "tags": [
       "JS Prelude"
     ]
@@ -1154,7 +1154,7 @@
     ]
   },
   "foldl1May": {
-    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => Boolean(xs.length)\n        ? Just(\n            xs.slice(1)\n            .reduce(uncurry(f), xs[0])\n        )\n        : Nothing();",
+    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => 0 < xs.length\n        ? Just(\n            xs.slice(1)\n            .reduce(uncurry(f), xs[0])\n        )\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1301,7 +1301,7 @@
     ]
   },
   "groupBy": {
-    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator, such\n    // that the concatenation of these lists is xs.\n    xs => 0 < xs.length ? (() => {\n        const [h, ...t] = xs;\n        const [groups, g] = t.reduce(\n            ([gs, a], x) => eqOp(a[0])(x) ? (\n                [gs, [...a, x]]\n            ) : [[...gs, a], [x]],\n            [[], [h]]\n        );\n\n        return [...groups, g];\n    })() : [];",
+    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator, such\n    // that the concatenation of these lists is xs.\n    xs => 0 < xs.length\n        ? (() => {\n            const [h, ...t] = xs;\n            const [groups, g] = t.reduce(\n                ([gs, a], x) => eqOp(a[0])(x)\n                    ? [gs, [...a, x]]\n                    : [[...gs, a], [x]],\n                [[], [h]]\n            );\n\n            return [...groups, g];\n        })()\n        : [];",
     "tags": [
       "JS Prelude",
       "core"
@@ -2475,14 +2475,14 @@
     ]
   },
   "readFile": {
-    "code": "// readFile :: FilePath -> IO String\nconst readFile = fp => {\n    // The contents of a text file at the\n    // given file path.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ObjC.unwrap(\n        ns.isNil() ? (\n            e.localizedDescription\n        ) : ns\n    );\n};",
+    "code": "// readFile :: FilePath -> IO String\nconst readFile = fp => {\n    // The contents of a text file at the\n    // given file path.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ObjC.unwrap(\n        ns.isNil()\n            ? e.localizedDescription\n            : ns\n    );\n};",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "readFileLR": {
-    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    // Either a message or the contents of any\n    // text file at the given filepath.\n    const\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ns.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(ns));\n};",
+    "code": "// readFileLR :: FilePath -> Either String IO String\nconst readFileLR = fp => {\n    // Either a message or the contents of any\n    // text file at the given filepath.\n    const\n        uw = ObjC.unwrap,\n        e = $(),\n        ns = $.NSString\n        .stringWithContentsOfFileEncodingError(\n            $(fp).stringByStandardizingPath,\n            $.NSUTF8StringEncoding,\n            e\n        );\n\n    return ns.isNil()\n        ? Left(uw(e.localizedDescription))\n        : Right(uw(ns));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2679,7 +2679,7 @@
     ]
   },
   "setCurrentDirectory": {
-    "code": "// setCurrentDirectory :: String -> IO ()\nconst setCurrentDirectory = strPath =>\n    $.NSFileManager.defaultManager\n    .changeCurrentDirectoryPath(\n        ObjC.wrap(strPath)\n        .stringByStandardizingPath\n    );",
+    "code": "// setCurrentDirectory :: FilePath -> IO ()\nconst setCurrentDirectory = fp =>\n    $.NSFileManager.defaultManager\n    .changeCurrentDirectoryPath(\n        ObjC.wrap(fp)\n        .stringByStandardizingPath\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -3139,7 +3139,7 @@
     ]
   },
   "takeWhileGen": {
-    "code": "// takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst takeWhileGen = p => xs => {\n    const ys = [];\n    let\n        nxt = xs.next(),\n        v = nxt.value;\n\n    while (!nxt.done && p(v)) {\n        ys.push(v);\n        nxt = xs.next();\n        v = nxt.value;\n    }\n\n    return ys;\n};",
+    "code": "// takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst takeWhileGen = p =>\n    xs => {\n        const ys = [];\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n\n        while (!nxt.done && p(v)) {\n            ys.push(v);\n            nxt = xs.next();\n            v = nxt.value;\n        }\n\n        return ys;\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -3343,13 +3343,13 @@
     ]
   },
   "uncurry": {
-    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a pair, derived\n    // from a curried function.\n    (...args) => {\n        const\n            [x, y] = Boolean(args.length % 2) ? (\n                args[0]\n            ) : args;\n\n        return f(x)(y);\n    };",
+    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a pair, derived\n    // from a curried function.\n    (...args) => {\n        const\n            [x, y] = Boolean(args.length % 2)\n                ? args[0]\n                : args;\n\n        return f(x)(y);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "uncurryN": {
-    "code": "// uncurryN :: Curry a b => b -> a\nconst uncurryN = f =>\n    // A function over a tuple of values, derived from\n    // a curried function of any number of arguments.\n    (...args) => (\n        xs => xs.slice(1).reduce(\n            (a, x) => a(x),\n            f(xs[0])\n        )\n    )([...(\n        1 < args.length ? (\n            args\n        ) : args[0]\n    )]);",
+    "code": "// uncurryN :: Curry a b => b -> a\nconst uncurryN = f =>\n    // A function over a tuple of values, derived from\n    // a curried function of any number of arguments.\n    (...args) => (\n        xs => xs.slice(1).reduce(\n            (a, x) => a(x),\n            f(xs[0])\n        )\n    )([...(\n        1 < args.length \n            ? args\n            : args[0]\n    )]);",
     "tags": [
       "JS Prelude"
     ]
@@ -3414,7 +3414,7 @@
     ]
   },
   "until": {
-    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    // The value resulting from successive applications\n    // of f to f(x), starting with a seed value x,\n    // and terminating when the result returns true\n    // for the predicate p.\n    f => {\n        const go = x =>\n            p(x) ? x : go(f(x));\n\n        return go;\n    };",
+    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    // The value resulting from successive applications\n    // of f to f(x), starting with a seed value x,\n    // and terminating when the result returns true\n    // for the predicate p.\n    f => x => {\n        let v = x;\n\n        while (!p(v)) {\n            v = f(v);\n        }\n\n        return v;\n    };",
     "tags": [
       "JS Prelude",
       "core"

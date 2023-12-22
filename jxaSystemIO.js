@@ -303,9 +303,9 @@ const readFile = fp => {
         );
 
     return ObjC.unwrap(
-        ns.isNil() ? (
-            e.localizedDescription
-        ) : ns
+        ns.isNil()
+            ? e.localizedDescription
+            : ns
     );
 };
 
@@ -314,6 +314,7 @@ const readFileLR = fp => {
     // Either a message or the contents of any
     // text file at the given filepath.
     const
+        uw = ObjC.unwrap,
         e = $(),
         ns = $.NSString
         .stringWithContentsOfFileEncodingError(
@@ -322,9 +323,9 @@ const readFileLR = fp => {
             e
         );
 
-    return ns.isNil() ? (
-        Left(ObjC.unwrap(e.localizedDescription))
-    ) : Right(ObjC.unwrap(ns));
+    return ns.isNil()
+        ? Left(uw(e.localizedDescription))
+        : Right(uw(ns));
 };
 
 // readPlistFileLR :: FilePath -> Either String Dict
@@ -382,11 +383,11 @@ const renamedFile = fp =>
             ));
     };
 
-// setCurrentDirectory :: String -> IO ()
-const setCurrentDirectory = strPath =>
+// setCurrentDirectory :: FilePath -> IO ()
+const setCurrentDirectory = fp =>
     $.NSFileManager.defaultManager
     .changeCurrentDirectoryPath(
-        ObjC.wrap(strPath)
+        ObjC.wrap(fp)
         .stringByStandardizingPath
     );
 

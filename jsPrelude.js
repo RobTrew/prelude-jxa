@@ -412,9 +412,9 @@ const bindLR = lr =>
     // If lr has a Left value then lr unchanged,
     // otherwise the function mf applied to the
     // Right value in lr.
-    mf => "Left" in lr ? (
-        lr
-    ) : mf(lr.Right);
+    mf => "Left" in lr
+        ? lr
+        : mf(lr.Right);
 
 // bindList (>>=) :: [a] -> (a -> [b]) -> [b]
 const bindList = xs =>
@@ -1802,9 +1802,9 @@ const fmapGen = f =>
 const fmapLR = f =>
     // Either f mapped into the contents of any Right
     // value in e, or e unchanged if is a Left value.
-    e => "Left" in e ? (
-        e
-    ) : Right(f(e.Right));
+    e => "Left" in e
+        ? e
+        : Right(f(e.Right));
 
 // fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b
 const fmapMay = f =>
@@ -1931,7 +1931,7 @@ const foldl1 = f =>
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
-    xs => Boolean(xs.length)
+    xs => 0 < xs.length
         ? Just(
             xs.slice(1)
             .reduce(uncurry(f), xs[0])
@@ -2101,17 +2101,19 @@ const groupBy = eqOp =>
     // A list of lists, each containing only elements
     // equal under the given equality operator, such
     // that the concatenation of these lists is xs.
-    xs => 0 < xs.length ? (() => {
-        const [h, ...t] = xs;
-        const [groups, g] = t.reduce(
-            ([gs, a], x) => eqOp(a[0])(x) ? (
-                [gs, [...a, x]]
-            ) : [[...gs, a], [x]],
-            [[], [h]]
-        );
+    xs => 0 < xs.length
+        ? (() => {
+            const [h, ...t] = xs;
+            const [groups, g] = t.reduce(
+                ([gs, a], x) => eqOp(a[0])(x)
+                    ? [gs, [...a, x]]
+                    : [[...gs, a], [x]],
+                [[], [h]]
+            );
 
-        return [...groups, g];
-    })() : [];
+            return [...groups, g];
+        })()
+        : [];
 
 // groupOn :: (a -> b) -> [a] -> [[a]]
 const groupOn = f =>
@@ -4940,20 +4942,21 @@ const takeWhile = p =>
     };
 
 // takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]
-const takeWhileGen = p => xs => {
-    const ys = [];
-    let
-        nxt = xs.next(),
-        v = nxt.value;
+const takeWhileGen = p =>
+    xs => {
+        const ys = [];
+        let
+            nxt = xs.next(),
+            v = nxt.value;
 
-    while (!nxt.done && p(v)) {
-        ys.push(v);
-        nxt = xs.next();
-        v = nxt.value;
-    }
+        while (!nxt.done && p(v)) {
+            ys.push(v);
+            nxt = xs.next();
+            v = nxt.value;
+        }
 
-    return ys;
-};
+        return ys;
+    };
 
 // takeWhileR :: (a -> Bool) -> [a] -> [a]
 const takeWhileR = p =>
@@ -5424,9 +5427,9 @@ const uncurry = f =>
     // from a curried function.
     (...args) => {
         const
-            [x, y] = Boolean(args.length % 2) ? (
-                args[0]
-            ) : args;
+            [x, y] = Boolean(args.length % 2)
+                ? args[0]
+                : args;
 
         return f(x)(y);
     };
@@ -5441,9 +5444,9 @@ const uncurryN = f =>
             f(xs[0])
         )
     )([...(
-        1 < args.length ? (
-            args
-        ) : args[0]
+        1 < args.length 
+            ? args
+            : args[0]
     )]);
 
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
@@ -5563,11 +5566,14 @@ const until = p =>
     // of f to f(x), starting with a seed value x,
     // and terminating when the result returns true
     // for the predicate p.
-    f => {
-        const go = x =>
-            p(x) ? x : go(f(x));
+    f => x => {
+        let v = x;
 
-        return go;
+        while (!p(v)) {
+            v = f(v);
+        }
+
+        return v;
     };
 
 // unwords :: [String] -> String

@@ -4,6 +4,7 @@ const readFileLR = fp => {
     // Either a message or the contents of any
     // text file at the given filepath.
     const
+        uw = ObjC.unwrap,
         e = $(),
         ns = $.NSString
         .stringWithContentsOfFileEncodingError(
@@ -12,9 +13,9 @@ const readFileLR = fp => {
             e
         );
 
-    return ns.isNil() ? (
-        Left(ObjC.unwrap(e.localizedDescription))
-    ) : Right(ObjC.unwrap(ns));
+    return ns.isNil()
+        ? Left(uw(e.localizedDescription))
+        : Right(uw(ns));
 };
 ```
 

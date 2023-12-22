@@ -13,9 +13,9 @@ const readFile = fp => {
         );
 
     return ObjC.unwrap(
-        ns.isNil() ? (
-            e.localizedDescription
-        ) : ns
+        ns.isNil()
+            ? e.localizedDescription
+            : ns
     );
 };
 ```

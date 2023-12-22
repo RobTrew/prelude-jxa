@@ -1,9 +1,9 @@
 ```javascript
-// setCurrentDirectory :: String -> IO ()
-const setCurrentDirectory = strPath =>
+// setCurrentDirectory :: FilePath -> IO ()
+const setCurrentDirectory = fp =>
     $.NSFileManager.defaultManager
     .changeCurrentDirectoryPath(
-        ObjC.wrap(strPath)
+        ObjC.wrap(fp)
         .stringByStandardizingPath
     );
 ```

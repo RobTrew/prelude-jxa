@@ -421,7 +421,7 @@ scanr :: (a -> b -> b) -> b -> [a] -> [b]
 scanr1 :: (a -> a -> a) -> [a] -> [a]
 second :: (a -> b) -> ((c, a) -> (c, b))
 sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
-setCurrentDirectory :: String -> IO ()
+setCurrentDirectory :: FilePath -> IO ()
 setFromList :: Ord a => [a] -> Set a
 setInsert :: Ord a => a -> Set a -> Set a
 setMember :: Ord a => a -> Set a -> Bool

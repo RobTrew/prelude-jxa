@@ -3,9 +3,9 @@
 const fmapLR = f =>
     // Either f mapped into the contents of any Right
     // value in e, or e unchanged if is a Left value.
-    e => "Left" in e ? (
-        e
-    ) : Right(f(e.Right));
+    e => "Left" in e
+        ? e
+        : Right(f(e.Right));
 ```
 
 

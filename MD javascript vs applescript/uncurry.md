@@ -5,9 +5,9 @@ const uncurry = f =>
     // from a curried function.
     (...args) => {
         const
-            [x, y] = Boolean(args.length % 2) ? (
-                args[0]
-            ) : args;
+            [x, y] = Boolean(args.length % 2)
+                ? args[0]
+                : args;
 
         return f(x)(y);
     };

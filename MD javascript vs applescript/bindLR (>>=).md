@@ -6,9 +6,9 @@ const bindLR = lr =>
     // If lr has a Left value then lr unchanged,
     // otherwise the function mf applied to the
     // Right value in lr.
-    mf => "Left" in lr ? (
-        lr
-    ) : mf(lr.Right);
+    mf => "Left" in lr
+        ? lr
+        : mf(lr.Right);
 ```
 
 
