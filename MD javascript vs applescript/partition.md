@@ -5,9 +5,9 @@ const partition = p =>
     // xs which match p, and those which do not.
     xs => [...xs].reduce(
         (a, x) => (
-            p(x) ? (
-                first
-            ) : second
+            p(x)
+                ? first
+                : second
         )(ys => [...ys, x])(a),
         Tuple([])([])
     );

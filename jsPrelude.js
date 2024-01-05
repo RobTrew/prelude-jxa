@@ -2677,9 +2677,9 @@ const kleisliCompose = f =>
 // last :: [a] -> a
 const last = xs =>
     // The last item of a list.
-    0 < xs.length ? (
-        xs.slice(-1)[0]
-    ) : null;
+    0 < xs.length
+        ? xs.slice(-1)[0]
+        : null;
 
 // lastMay :: [a] -> Maybe a
 const lastMay = xs =>
@@ -2905,9 +2905,9 @@ const log = Math.log;
 const lookup = k =>
     // Just of value of the key k in m,
     // or Nothing if m does not contain k.
-    m => (Array.isArray(m) ? (
-        lookupTuples
-    ) : lookupDict)(k)(m);
+    m => (Array.isArray(m)
+        ? lookupTuples
+        : lookupDict)(k)(m);
 
 // lookupDict :: a -> Dict -> Maybe b
 const lookupDict = k =>
@@ -3564,20 +3564,23 @@ const partition = p =>
     // xs which match p, and those which do not.
     xs => [...xs].reduce(
         (a, x) => (
-            p(x) ? (
-                first
-            ) : second
+            p(x)
+                ? first
+                : second
         )(ys => [...ys, x])(a),
         Tuple([])([])
     );
 
 // partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>
+    // A tuple of two lists:
+    // first all the Left values in xs,
+    // and then all the Right values in xs.
     xs.reduce(
         (a, x) => (
-            "Left" in x ? (
-                first(ys => [...ys, x.Left])
-            ) : second(ys => [...ys, x.Right])
+            "Left" in x
+                ? first(ys => [...ys, x.Left])
+                : second(ys => [...ys, x.Right])
         )(a),
         Tuple([])([])
     );
@@ -4835,16 +4838,18 @@ const takeAround = p => xs => {
 // takeBaseName :: FilePath -> String
 const takeBaseName = fp =>
     // The filename without any extension.
-    ("" !== fp) ? (
-        ("/" !== fp[fp.length - 1]) ? (() => {
-            const fn = fp.split("/").slice(-1)[0];
+    ("" !== fp)
+        ? ("/" !== fp[fp.length - 1])
+            ? (() => {
+                const fn = fp.split("/").slice(-1)[0];
 
-            return fn.includes(".") ? (
-                fn.split(".").slice(0, -1)
-                .join(".")
-            ) : fn;
-        })() : ""
-    ) : "";
+                return fn.includes(".")
+                    ? fn.split(".").slice(0, -1)
+                    .join(".")
+                    : fn;
+            })()
+            : ""
+        : "";
 
 // takeCycle :: Int -> [a] -> [a]
 const takeCycle = n =>
@@ -4881,9 +4886,9 @@ const takeDropCycle = n =>
 const takeExtension = fp => {
     const fn = last(fp.split("/"));
 
-    return fn.includes(".") ? (
-        `.${last(fn.split("."))}`
-    ) : "";
+    return fn.includes(".")
+        ? `.${last(fn.split("."))}`
+        : "";
 };
 
 // takeFileName :: FilePath -> FilePath

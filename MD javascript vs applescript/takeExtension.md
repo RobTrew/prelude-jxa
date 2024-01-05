@@ -3,9 +3,9 @@
 const takeExtension = fp => {
     const fn = last(fp.split("/"));
 
-    return fn.includes(".") ? (
-        `.${last(fn.split("."))}`
-    ) : "";
+    return fn.includes(".")
+        ? `.${last(fn.split("."))}`
+        : "";
 };
 ```
 

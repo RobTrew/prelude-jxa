@@ -1704,7 +1704,7 @@
     ]
   },
   "last": {
-    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    0 < xs.length ? (\n        xs.slice(-1)[0]\n    ) : null;",
+    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    0 < xs.length\n        ? xs.slice(-1)[0]\n        : null;",
     "tags": [
       "JS Prelude"
     ]
@@ -1861,7 +1861,7 @@
     ]
   },
   "lookup": {
-    "code": "// lookup :: Eq a => a -> Container -> Maybe b\nconst lookup = k =>\n    // Just of value of the key k in m,\n    // or Nothing if m does not contain k.\n    m => (Array.isArray(m) ? (\n        lookupTuples\n    ) : lookupDict)(k)(m);",
+    "code": "// lookup :: Eq a => a -> Container -> Maybe b\nconst lookup = k =>\n    // Just of value of the key k in m,\n    // or Nothing if m does not contain k.\n    m => (Array.isArray(m)\n        ? lookupTuples\n        : lookupDict)(k)(m);",
     "tags": [
       "JS Prelude"
     ]
@@ -2252,14 +2252,14 @@
     ]
   },
   "partition": {
-    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => [...xs].reduce(\n        (a, x) => (\n            p(x) ? (\n                first\n            ) : second\n        )(ys => [...ys, x])(a),\n        Tuple([])([])\n    );",
+    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => [...xs].reduce(\n        (a, x) => (\n            p(x)\n                ? first\n                : second\n        )(ys => [...ys, x])(a),\n        Tuple([])([])\n    );",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "partitionEithers": {
-    "code": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    xs.reduce(\n        (a, x) => (\n            \"Left\" in x ? (\n                first(ys => [...ys, x.Left])\n            ) : second(ys => [...ys, x.Right])\n        )(a),\n        Tuple([])([])\n    );",
+    "code": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    // A tuple of two lists:\n    // first all the Left values in xs,\n    // and then all the Right values in xs.\n    xs.reduce(\n        (a, x) => (\n            \"Left\" in x\n                ? first(ys => [...ys, x.Left])\n                : second(ys => [...ys, x.Right])\n        )(a),\n        Tuple([])([])\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3084,7 +3084,7 @@
     ]
   },
   "takeBaseName": {
-    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = fp =>\n    // The filename without any extension.\n    (\"\" !== fp) ? (\n        (\"/\" !== fp[fp.length - 1]) ? (() => {\n            const fn = fp.split(\"/\").slice(-1)[0];\n\n            return fn.includes(\".\") ? (\n                fn.split(\".\").slice(0, -1)\n                .join(\".\")\n            ) : fn;\n        })() : \"\"\n    ) : \"\";",
+    "code": "// takeBaseName :: FilePath -> String\nconst takeBaseName = fp =>\n    // The filename without any extension.\n    (\"\" !== fp)\n        ? (\"/\" !== fp[fp.length - 1])\n            ? (() => {\n                const fn = fp.split(\"/\").slice(-1)[0];\n\n                return fn.includes(\".\")\n                    ? fn.split(\".\").slice(0, -1)\n                    .join(\".\")\n                    : fn;\n            })()\n            : \"\"\n        : \"\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3108,7 +3108,7 @@
     ]
   },
   "takeExtension": {
-    "code": "// takeExtension :: FilePath -> String\nconst takeExtension = fp => {\n    const fn = last(fp.split(\"/\"));\n\n    return fn.includes(\".\") ? (\n        `.${last(fn.split(\".\"))}`\n    ) : \"\";\n};",
+    "code": "// takeExtension :: FilePath -> String\nconst takeExtension = fp => {\n    const fn = last(fp.split(\"/\"));\n\n    return fn.includes(\".\")\n        ? `.${last(fn.split(\".\"))}`\n        : \"\";\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3164,7 +3164,7 @@
     ]
   },
   "tempFilePath": {
-    "code": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template =>\n    // File name template to temporary path\n    // Random digit sequence inserted between\n    // template base and extension\n    ObjC.unwrap($.NSTemporaryDirectory()) +\n    takeBaseName(template) + Math.random()\n    .toString()\n    .substring(3) + takeExtension(template);",
+    "code": "// tempFilePath :: String -> IO FilePath\nconst tempFilePath = template => {\n    // File name template to temporary path\n    // Random digit sequence inserted between\n    // template base and extension\n    const\n        fldr = ObjC.unwrap($.NSTemporaryDirectory()),\n        name = takeBaseName(template),\n        xtn = takeExtension(template),\n        rnd = Math.random().toString()\n        .substring(3);\n\n    return `${fldr}${name}${rnd}${xtn}`;\n};",
     "tags": [
       "JS Prelude",
       "jxa"
