@@ -370,7 +370,7 @@ properFraction :: Real -> (Int, Real)
 pureLR :: a -> Either e a
 pureList :: a -> [a]
 pureMay :: a -> Maybe a
-pureT :: String -> f a -> (a -> f a)
+pureT :: String -> (a -> f a)
 pureTree :: a -> Tree a
 pureTuple :: a -> (a, a)
 pureZL :: a -> ZipList a

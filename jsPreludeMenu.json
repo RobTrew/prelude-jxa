@@ -371,7 +371,7 @@
   "pureLR": "// pureLR :: a -> Either e a\nconst pureLR = x =>\n    // The value x lifted into the Either monad.\n    Right(x);",
   "pureList": "// pureList :: a -> [a]\nconst pureList = x =>\n    [x];",
   "pureMay": "// pureMay :: a -> Maybe a\nconst pureMay = x =>\n    Just(x);",
-  "pureT": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a\n    // specialised \"pure\", where\n    // \"pure\" lifts a value into a particular functor.\n    ({\n        \"Either\": () => pureLR,\n        \"(a -> b)\": () => constant,\n        \"Maybe\": () => pureMay,\n        \"Node\": () => pureTree,\n        \"Tuple\": () => pureTuple,\n        \"List\": () => pureList\n    })[t || \"List\"]();",
+  "pureT": "// pureT :: String -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a\n    // specialised \"pure\", where\n    // \"pure\" lifts a value into a particular functor.\n    ({\n        \"Either\": () => pureLR,\n        \"(a -> b)\": () => constant,\n        \"Maybe\": () => pureMay,\n        \"Node\": () => pureTree,\n        \"Tuple\": () => pureTuple,\n        \"List\": () => pureList\n    })[t || \"List\"]();",
   "pureTree": "// pureTree :: a -> Tree a\nconst pureTree = x =>\n    Node(x)([]);",
   "pureTuple": "// pureTuple :: a -> (a, a)\nconst pureTuple = x =>\n    Tuple(\"\")(x);",
   "pureZL": "// pureZL :: a -> ZipList a\nconst pureZL = x =>\n    // A value lifted into a ZipList\n    ZipList(repeat(x));",

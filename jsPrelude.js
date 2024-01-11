@@ -3722,7 +3722,7 @@ const pureList = x =>
 const pureMay = x =>
     Just(x);
 
-// pureT :: String -> f a -> (a -> f a)
+// pureT :: String -> (a -> f a)
 const pureT = t =>
     // Given a type name string, returns a
     // specialised "pure", where

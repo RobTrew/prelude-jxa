@@ -2357,7 +2357,7 @@
     ]
   },
   "pureT": {
-    "code": "// pureT :: String -> f a -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a\n    // specialised \"pure\", where\n    // \"pure\" lifts a value into a particular functor.\n    ({\n        \"Either\": () => pureLR,\n        \"(a -> b)\": () => constant,\n        \"Maybe\": () => pureMay,\n        \"Node\": () => pureTree,\n        \"Tuple\": () => pureTuple,\n        \"List\": () => pureList\n    })[t || \"List\"]();",
+    "code": "// pureT :: String -> (a -> f a)\nconst pureT = t =>\n    // Given a type name string, returns a\n    // specialised \"pure\", where\n    // \"pure\" lifts a value into a particular functor.\n    ({\n        \"Either\": () => pureLR,\n        \"(a -> b)\": () => constant,\n        \"Maybe\": () => pureMay,\n        \"Node\": () => pureTree,\n        \"Tuple\": () => pureTuple,\n        \"List\": () => pureList\n    })[t || \"List\"]();",
     "tags": [
       "JS Prelude"
     ]
