@@ -4869,11 +4869,15 @@ const takeCycle = n =>
 // takeDirectory :: FilePath -> FilePath
 const takeDirectory = fp =>
     // The directory component of a filepath.
-    "" !== fp ? (
-        (xs => xs.length > 0 ? xs.join("/") : ".")(
-            fp.split("/").slice(0, -1)
-        )
-    ) : ".";
+    "" !== fp
+        ? (() => {
+            const xs = fp.split("/").slice(0, -1);
+
+            return 0 < xs.length
+                ? xs.join("/")
+                : ".";
+        })()
+        : ".";
 
 // takeDropCycle :: Int -> [a] -> [a]
 const takeDropCycle = n =>
@@ -4894,11 +4898,11 @@ const takeExtension = fp => {
 // takeFileName :: FilePath -> FilePath
 const takeFileName = fp =>
     // The file name component of a filepath.
-    Boolean(fp) ? (
-        "/" !== fp[fp.length - 1] ? (
-            fp.split("/").slice(-1)[0]
-        ) : ""
-    ) : "";
+    0 < fp.length
+        ? "/" !== fp[fp.length - 1]
+            ? fp.split("/").slice(-1)[0]
+            : ""
+        : "";
 
 // takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
 const takeFromThenTo = a => b => z => xs => {

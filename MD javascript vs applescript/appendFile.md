@@ -4,35 +4,31 @@ const appendFile = fp =>
     // The file at fp updated with a new string
     // appended to its existing contents.
     txt => {
-        const
-            oFullPath = ObjC.wrap(fp)
-            .stringByStandardizingPath,
-            ref = Ref();
+        const fpFull = filePath(fp);
 
-        return $.NSFileManager.defaultManager
-        .fileExistsAtPathIsDirectory(
-            oFullPath
-            .stringByStandardizingPath, ref
-        ) ? (
-                0 === ref[0] ? (() => {
-                    const
-                        oData = ObjC.wrap(txt)
-                        .dataUsingEncoding($.NSUTF8StringEncoding),
-                        h = $.NSFileHandle.fileHandleForWritingAtPath(
-                            oFullPath
-                        );
-
-                    return (
-                        h.seekToEndOfFile,
-                        h.writeData(oData),
-                        h.closeFile,
-                        true
+        return doesFileExist(fpFull)
+            ? (() => {
+                const
+                    h = $.NSFileHandle
+                    .fileHandleForWritingAtPath(
+                        $(fpFull)
                     );
-                })() : false
-            ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (
-                writeFile(oFullPath)(txt),
-                true
-            ) : false;
+
+                return (
+                    h.seekToEndOfFile,
+                    h.writeData(
+                        $(txt)
+                        .dataUsingEncoding(
+                            $.NSUTF8StringEncoding
+                        )
+                    ),
+                    h.closeFile,
+                    true
+                );
+            })()
+            : doesDirectoryExist(takeDirectory(fpFull))
+                ? (writeFile(fpFull)(txt), true)
+                : false;
     };
 ```
 

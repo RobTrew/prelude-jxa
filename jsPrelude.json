@@ -195,7 +195,7 @@
     ]
   },
   "appendFile": {
-    "code": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = fp =>\n    // The file at fp updated with a new string\n    // appended to its existing contents.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(fp)\n            .stringByStandardizingPath,\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle.fileHandleForWritingAtPath(\n                            oFullPath\n                        );\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile,\n                        true\n                    );\n                })() : false\n            ) : doesDirectoryExist(takeDirectory(ObjC.unwrap(fp))) ? (\n                writeFile(oFullPath)(txt),\n                true\n            ) : false;\n    };",
+    "code": "// appendFile :: FilePath -> String -> IO Bool\nconst appendFile = fp =>\n    // The file at fp updated with a new string\n    // appended to its existing contents.\n    txt => {\n        const fpFull = filePath(fp);\n\n        return doesFileExist(fpFull)\n            ? (() => {\n                const\n                    h = $.NSFileHandle\n                    .fileHandleForWritingAtPath(\n                        $(fpFull)\n                    );\n\n                return (\n                    h.seekToEndOfFile,\n                    h.writeData(\n                        $(txt)\n                        .dataUsingEncoding(\n                            $.NSUTF8StringEncoding\n                        )\n                    ),\n                    h.closeFile,\n                    true\n                );\n            })()\n            : doesDirectoryExist(takeDirectory(fpFull))\n                ? (writeFile(fpFull)(txt), true)\n                : false;\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -633,14 +633,14 @@
     ]
   },
   "doesDirectoryExist": {
-    "code": "// doesDirectoryExist :: FilePath -> IO Bool\nconst doesDirectoryExist = fp => {\n    const ref = Ref();\n\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(fp)\n            .stringByStandardizingPath, ref\n        ) && ref[0];\n};",
+    "code": "// doesDirectoryExist :: FilePath -> IO Bool\nconst doesDirectoryExist = fp => {\n    const ref = Ref();\n\n    return $.NSFileManager.defaultManager\n    .fileExistsAtPathIsDirectory(\n        $(fp)\n        .stringByStandardizingPath, ref\n    ) && ref[0];\n};",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "doesFileExist": {
-    "code": "// doesFileExist :: FilePath -> IO Bool\nconst doesFileExist = fp => {\n    const ref = Ref();\n\n    return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            $(fp)\n            .stringByStandardizingPath, ref\n        ) && !ref[0];\n};",
+    "code": "// doesFileExist :: FilePath -> IO Bool\nconst doesFileExist = fp => {\n    const ref = Ref();\n\n    return $.NSFileManager\n    .defaultManager\n    .fileExistsAtPathIsDirectory(\n        $(fp).stringByStandardizingPath,\n        ref\n    ) && !ref[0];\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -907,7 +907,7 @@
     ]
   },
   "filePath": {
-    "code": "// filePath :: String -> FilePath\nconst filePath = s =>\n    // The given file path with any tilde expanded\n    // to the full user directory path.\n    ObjC.unwrap(\n        ObjC.wrap(s).stringByStandardizingPath\n    );",
+    "code": "// filePath :: String -> FilePath\nconst filePath = s =>\n    // The given file path with any tilde expanded\n    // to the full user directory path.\n    ObjC.unwrap(\n        $(s).stringByStandardizingPath\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -3096,7 +3096,7 @@
     ]
   },
   "takeDirectory": {
-    "code": "// takeDirectory :: FilePath -> FilePath\nconst takeDirectory = fp =>\n    // The directory component of a filepath.\n    \"\" !== fp ? (\n        (xs => xs.length > 0 ? xs.join(\"/\") : \".\")(\n            fp.split(\"/\").slice(0, -1)\n        )\n    ) : \".\";",
+    "code": "// takeDirectory :: FilePath -> FilePath\nconst takeDirectory = fp =>\n    // The directory component of a filepath.\n    \"\" !== fp\n        ? (() => {\n            const xs = fp.split(\"/\").slice(0, -1);\n\n            return 0 < xs.length\n                ? xs.join(\"/\")\n                : \".\";\n        })()\n        : \".\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3114,7 +3114,7 @@
     ]
   },
   "takeFileName": {
-    "code": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = fp =>\n    // The file name component of a filepath.\n    Boolean(fp) ? (\n        \"/\" !== fp[fp.length - 1] ? (\n            fp.split(\"/\").slice(-1)[0]\n        ) : \"\"\n    ) : \"\";",
+    "code": "// takeFileName :: FilePath -> FilePath\nconst takeFileName = fp =>\n    // The file name component of a filepath.\n    0 < fp.length\n        ? \"/\" !== fp[fp.length - 1]\n            ? fp.split(\"/\").slice(-1)[0]\n            : \"\"\n        : \"\";",
     "tags": [
       "JS Prelude"
     ]

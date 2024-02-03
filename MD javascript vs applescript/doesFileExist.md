@@ -3,11 +3,12 @@
 const doesFileExist = fp => {
     const ref = Ref();
 
-    return $.NSFileManager.defaultManager
-        .fileExistsAtPathIsDirectory(
-            $(fp)
-            .stringByStandardizingPath, ref
-        ) && !ref[0];
+    return $.NSFileManager
+    .defaultManager
+    .fileExistsAtPathIsDirectory(
+        $(fp).stringByStandardizingPath,
+        ref
+    ) && !ref[0];
 };
 ```
 
