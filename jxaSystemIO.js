@@ -198,7 +198,7 @@ const fileStatus = fp => {
         e = $(),
         dct = $.NSFileManager.defaultManager
         .attributesOfItemAtPathError(
-            ObjC.wrap(fp).stringByStandardizingPath,
+            $(fp).stringByStandardizingPath,
             e
         );
 

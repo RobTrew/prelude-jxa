@@ -209,7 +209,7 @@
     ]
   },
   "appendGen": {
-    "code": "// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]\nconst appendGen = xs =>\n// A new generator composed from the\n// concatenation of two existing generators.\n    function *(ys) {\n        for (const vs of [xs, ys]) {\n            let nxt = vs.next();\n\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = vs.next();\n            }\n        }\n    };",
+    "code": "// appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]\nconst appendGen = xs =>\n    // A new generator composed from the\n    // concatenation of two existing generators.\n    function *(ys) {\n        for (const vs of [xs, ys]) {\n            let nxt = vs.next();\n\n            while (!nxt.done) {\n                yield nxt.value;\n                nxt = vs.next();\n            }\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -928,7 +928,7 @@
     ]
   },
   "fileStatus": {
-    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(\n            ObjC.wrap(fp).stringByStandardizingPath,\n            e\n        );\n\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};",
+    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(\n            $(fp).stringByStandardizingPath,\n            e\n        );\n\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
