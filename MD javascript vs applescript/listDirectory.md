@@ -4,8 +4,7 @@ const listDirectory = fp =>
     ObjC.unwrap(
         $.NSFileManager.defaultManager
         .contentsOfDirectoryAtPathError(
-            ObjC.wrap(fp)
-            .stringByStandardizingPath,
+            $(fp).stringByStandardizingPath,
             null
         ))
     .map(ObjC.unwrap);

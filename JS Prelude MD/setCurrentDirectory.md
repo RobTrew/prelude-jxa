@@ -3,7 +3,6 @@
 const setCurrentDirectory = fp =>
     $.NSFileManager.defaultManager
     .changeCurrentDirectoryPath(
-        ObjC.wrap(fp)
-        .stringByStandardizingPath
+        $(fp).stringByStandardizingPath
     );
 ```

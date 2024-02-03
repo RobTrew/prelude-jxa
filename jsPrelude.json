@@ -202,7 +202,7 @@
     ]
   },
   "appendFileMay": {
-    "code": "// appendFileMay :: FilePath -> String -> Maybe IO FilePath\nconst appendFileMay = strPath =>\n    // Just the fully-expanded file path of\n    // any file at found strPath, after it has been\n    // updated by appending the given string, or\n    // Nothing if no file is found at that path,\n    // or the file is found but can not be updated.\n    txt => {\n        const\n            oFullPath = ObjC.wrap(strPath)\n            .stringByStandardizingPath,\n            strFullPath = ObjC.unwrap(oFullPath),\n            ref = Ref();\n\n        return $.NSFileManager.defaultManager\n        .fileExistsAtPathIsDirectory(\n            oFullPath\n            .stringByStandardizingPath, ref\n        ) ? (() => {\n                0 === ref[0] ? (() => {\n                    const\n                        oData = ObjC.wrap(txt)\n                        .dataUsingEncoding($.NSUTF8StringEncoding),\n                        h = $.NSFileHandle\n                        .fileHandleForWritingAtPath(oFullPath);\n\n                    return (\n                        h.seekToEndOfFile,\n                        h.writeData(oData),\n                        h.closeFile, {\n                            Nothing: false,\n                            Just: strFullPath\n                        }\n                    );\n                })() : Nothing()\n                // Text appending to directory is undefined\n            })() : doesDirectoryExist(takeDirectory(strFullPath)) ? (\n                writeFile(oFullPath)(txt),\n                Just(strFullPath)\n            ) : Nothing();\n    };",
+    "code": "// appendFileMay :: FilePath -> String -> Maybe IO FilePath\nconst appendFileMay = fp =>\n    // Just the fully-expanded file path of\n    // any file at found strPath, after it has been\n    // updated by appending the given string, or\n    // Nothing if no file is found at that path,\n    // or the file is found but can not be updated.\n    txt => {\n        const fpFull = filePath(fp);\n\n        return doesFileExist(fpFull)\n            ? (() => {\n                const\n                    h = $.NSFileHandle\n                    .fileHandleForWritingAtPath(\n                        $(fpFull)\n                    );\n\n                return (\n                    h.seekToEndOfFile,\n                    h.writeData(\n                        $(txt)\n                        .dataUsingEncoding(\n                            $.NSUTF8StringEncoding\n                        )\n                    ),\n                    h.closeFile,\n                    Just(fpFull)\n                );\n            })()\n            : doesDirectoryExist(takeDirectory(fpFull))\n                ? (\n                    writeFile(fpFull)(txt),\n                    Just(fpFull)\n                )\n                : Nothing();\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -1823,13 +1823,13 @@
     ]
   },
   "list": {
-    "code": "// list :: StringOrArrayLike b => b -> [a]\nconst list = xs =>\n    // xs itself, if it is an Array,\n    // or an Array derived from xs.\n    Array.isArray(xs) ? (\n        xs\n    ) : Array.from(xs || []);",
+    "code": "// list :: StringOrArrayLike b => b -> [a]\nconst list = xs =>\n// xs itself, if it is an Array,\n// or an Array derived from xs.\n    Array.isArray(xs)\n        ? xs\n        : Array.from(xs || []);",
     "tags": [
       "JS Prelude"
     ]
   },
   "listDirectory": {
-    "code": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = fp =>\n    ObjC.unwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            ObjC.wrap(fp)\n            .stringByStandardizingPath,\n            null\n        ))\n    .map(ObjC.unwrap);",
+    "code": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = fp =>\n    ObjC.unwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp).stringByStandardizingPath,\n            null\n        ))\n    .map(ObjC.unwrap);",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2679,7 +2679,7 @@
     ]
   },
   "setCurrentDirectory": {
-    "code": "// setCurrentDirectory :: FilePath -> IO ()\nconst setCurrentDirectory = fp =>\n    $.NSFileManager.defaultManager\n    .changeCurrentDirectoryPath(\n        ObjC.wrap(fp)\n        .stringByStandardizingPath\n    );",
+    "code": "// setCurrentDirectory :: FilePath -> IO ()\nconst setCurrentDirectory = fp =>\n    $.NSFileManager.defaultManager\n    .changeCurrentDirectoryPath(\n        $(fp).stringByStandardizingPath\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
