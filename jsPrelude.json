@@ -3190,13 +3190,13 @@
     ]
   },
   "toSentence": {
-    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - first character\n    // capitalized, and rest lowercase.\n    Boolean(s.length) ? (\n        s[0].toLocaleUpperCase() + s.slice(1)\n        .toLocaleLowerCase()\n    ) : s;",
+    "code": "// toSentence :: String -> String\nconst toSentence = s =>\n    // Sentence case - first character\n    // capitalized, and rest lowercase.\n    0 < s.length\n        ? s[0].toLocaleUpperCase() + s.slice(1)\n        .toLocaleLowerCase()\n        : s;",
     "tags": [
       "JS Prelude"
     ]
   },
   "toTitle": {
-    "code": "// toTitle :: String -> String\nconst toTitle = s =>\n    Boolean(s.length) ? (\n        `${toUpper(s[0])}${toLower(s.slice(1))}`\n    ) : \"\";",
+    "code": "// toTitle :: String -> String\nconst toTitle = s =>\n    0 < s.length\n        ? `${toUpper(s[0])}${toLower(s.slice(1))}`\n        : \"\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3234,6 +3234,12 @@
   },
   "traverseList": {
     "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => Boolean(xs.length) ? (() => {\n        const\n            vLast = f(xs.slice(-1)[0]),\n            t = typeName(vLast);\n\n        return xs.slice(0, -1).reduceRight(\n            (ys, x) => liftA2(cons)(f(x))(ys),\n            liftA2(cons)(vLast)(pureT(t)([]))\n        );\n    })() : fType(f)([]);",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "traverseListLR": {
+    "code": "// traverseListLR (a -> Either b c) ->\n// [a] -> Either b [c]\nconst traverseListLR = flr =>\n// Traverse over [a] with (a -> Either b c)\n// Either Left b or Right [c]\n    xs => {\n        const n = xs.length;\n\n        return 0 < n\n            ? until(\n                ([i, lr]) => (n === i) || (\"Left\" in lr)\n            )(\n                ([i, lr]) => {\n                    const lrx = flr(xs[i], i);\n\n                    return [\n                        1 + i,\n                        \"Right\" in lrx\n                            ? Right(\n                                lr.Right.concat([\n                                    lrx.Right\n                                ])\n                            )\n                            : lrx\n                    ];\n                }\n            )(\n                Tuple(0)(Right([]))\n            )[1]\n            : Right([]);\n    };",
     "tags": [
       "JS Prelude"
     ]

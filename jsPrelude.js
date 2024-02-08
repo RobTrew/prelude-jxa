@@ -5014,16 +5014,16 @@ const toRatio = n =>
 const toSentence = s =>
     // Sentence case - first character
     // capitalized, and rest lowercase.
-    Boolean(s.length) ? (
-        s[0].toLocaleUpperCase() + s.slice(1)
+    0 < s.length
+        ? s[0].toLocaleUpperCase() + s.slice(1)
         .toLocaleLowerCase()
-    ) : s;
+        : s;
 
 // toTitle :: String -> String
 const toTitle = s =>
-    Boolean(s.length) ? (
-        `${toUpper(s[0])}${toLower(s.slice(1))}`
-    ) : "";
+    0 < s.length
+        ? `${toUpper(s[0])}${toLower(s.slice(1))}`
+        : "";
 
 // toUpper :: String -> String
 const toUpper = s =>
@@ -5118,6 +5118,38 @@ const traverseList = f =>
             liftA2(cons)(vLast)(pureT(t)([]))
         );
     })() : fType(f)([]);
+
+// traverseListLR (a -> Either b c) ->
+// [a] -> Either b [c]
+const traverseListLR = flr =>
+// Traverse over [a] with (a -> Either b c)
+// Either Left b or Right [c]
+    xs => {
+        const n = xs.length;
+
+        return 0 < n
+            ? until(
+                ([i, lr]) => (n === i) || ("Left" in lr)
+            )(
+                ([i, lr]) => {
+                    const lrx = flr(xs[i], i);
+
+                    return [
+                        1 + i,
+                        "Right" in lrx
+                            ? Right(
+                                lr.Right.concat([
+                                    lrx.Right
+                                ])
+                            )
+                            : lrx
+                    ];
+                }
+            )(
+                Tuple(0)(Right([]))
+            )[1]
+            : Right([]);
+    };
 
 // traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 const traverseMay = f => mb =>

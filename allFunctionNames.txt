@@ -511,6 +511,7 @@ transpose_ :: [[a]] -> [[a]]
 traverse :: (Applicative f, Traversable t) -> (a -> f b) -> t a -> f (t b)
 traverseLR :: Applicative f => (t -> f b) -> Either a t -> f (Either a b)
 traverseList :: (Applicative f) => (a -> f b) -> [a] -> f [b]
+traverseListLR (a -> Either b c) -> [a] -> Either b [c]
 traverseMay :: Applicative f => (t -> f a) -> Maybe t -> f (Maybe a)
 traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
 traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
