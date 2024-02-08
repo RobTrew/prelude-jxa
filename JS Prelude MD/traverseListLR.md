@@ -2,8 +2,8 @@
 // traverseListLR (a -> Either b c) ->
 // [a] -> Either b [c]
 const traverseListLR = flr =>
-// Traverse over [a] with (a -> Either b c)
-// Either Left b or Right [c]
+    // Traverse over [a] with (a -> Either b c)
+    // Either Left b or Right [c]
     xs => {
         const n = xs.length;
 
@@ -12,6 +12,8 @@ const traverseListLR = flr =>
                 ([i, lr]) => (n === i) || ("Left" in lr)
             )(
                 ([i, lr]) => {
+                    // Passing an option index argument
+                    // which flr can ignore or use
                     const lrx = flr(xs[i], i);
 
                     return [
