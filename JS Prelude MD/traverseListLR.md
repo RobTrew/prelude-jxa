@@ -12,8 +12,8 @@ const traverseListLR = flr =>
                 ([i, lr]) => (n === i) || ("Left" in lr)
             )(
                 ([i, lr]) => {
-                    // Passing an option index argument
-                    // which flr can ignore or use
+                    // Passing an optional index argument
+                    // which flr can ignore or use.
                     const lrx = flr(xs[i], i);
 
                     return [
