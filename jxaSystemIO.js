@@ -325,9 +325,9 @@ const readPlistFileLR = fp =>
     // Either a message or a dictionary of key-value
     // pairs read from the given file path.
     bindLR(
-        doesFileExist(fp) ? (
-            Right(filePath(fp))
-        ) : Left(`No file found at path:\n\t${fp}`)
+        doesFileExist(fp)
+            ? Right(filePath(fp))
+            : Left(`No file found at path:\n\t${fp}`)
     )(
         fpFull => {
             const
@@ -338,14 +338,16 @@ const readPlistFileLR = fp =>
                     e
                 );
 
-            return maybeDict.isNil() ? (() => {
-                const
-                    msg = ObjC.unwrap(
-                        e.localizedDescription
-                    );
+            return maybeDict.isNil()
+                ? (() => {
+                    const
+                        msg = ObjC.unwrap(
+                            e.localizedDescription
+                        );
 
-                return Left(`readPlistFileLR:\n\t${msg}`);
-            })() : Right(ObjC.deepUnwrap(maybeDict));
+                    return Left(`readPlistFileLR:\n\t${msg}`);
+                })()
+                : Right(ObjC.deepUnwrap(maybeDict));
         }
     );
 
@@ -354,9 +356,9 @@ const removeFile = fp => {
     const error = $();
 
     return $.NSFileManager.defaultManager
-        .removeItemAtPathError(fp, error) ? (
-            Right(`Removed: ${fp}`)
-        ) : Left(ObjC.unwrap(error.localizedDescription));
+    .removeItemAtPathError(fp, error)
+        ? Right(`Removed: ${fp}`)
+        : Left(ObjC.unwrap(error.localizedDescription));
 };
 
 // renamedFile :: FilePath -> FilePath ->

@@ -45,17 +45,19 @@ const Nothing = () => ({
 // Ratio :: Integral a => a -> a -> Ratio a
 const Ratio = a => b => {
     const go = (x, y) =>
-        0 !== y ? (() => {
-            const d = gcd(x)(y);
+        0 !== y
+            ? (() => {
+                const d = gcd(x)(y);
 
-            return {
-                type: "Ratio",
-                // numerator
-                "n": Math.trunc(x / d),
-                // denominator
-                "d": Math.trunc(y / d)
-            };
-        })() : undefined;
+                return {
+                    type: "Ratio",
+                    // numerator
+                    "n": Math.trunc(x / d),
+                    // denominator
+                    "d": Math.trunc(y / d)
+                };
+            })()
+            : undefined;
 
     return go(a * signum(b), abs(b));
 };
@@ -3487,12 +3489,12 @@ const nub = xs =>
     [...new Set(xs)];
 
 // nubBy :: (a -> a -> Bool) -> [a] -> [a]
-const nubBy = p =>
+const nubBy = pEq =>
     // A sublist of xs from which all duplicates,
-    // (as defined by the equality predicate p)
+    // (as defined by the equality predicate pEq)
     // are excluded.
     xs => xs.reduce(
-        (seen, x) => seen.some(p(x))
+        (seen, x) => seen.some(pEq(x))
             ? seen
             : seen.concat([x]),
         []
@@ -3907,9 +3909,11 @@ const ratioPlus = n1 =>
 
 // rational :: Num a => a -> Rational
 const rational = x =>
-    isNaN(x) ? x : Number.isInteger(x) ? (
-        Ratio(x)(1)
-    ) : approxRatio(undefined)(x);
+    isNaN(x)
+        ? x
+        : Number.isInteger(x)
+            ? Ratio(x)(1)
+            : approxRatio(undefined)(x);
 
 // read :: Read a => String -> a
 const read = JSON.parse;
@@ -3930,7 +3934,9 @@ const readLR = s => {
 
 // recip :: Num -> Num
 const recip = n =>
-    0 !== n ? (1 / n) : undefined;
+    0 !== n
+        ? (1 / n)
+        : undefined;
 
 // recipMay :: Num -> Maybe Num
 const recipMay = n =>

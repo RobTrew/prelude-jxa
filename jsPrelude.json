@@ -34,7 +34,7 @@
     ]
   },
   "Ratio": {
-    "code": "// Ratio :: Integral a => a -> a -> Ratio a\nconst Ratio = a => b => {\n    const go = (x, y) =>\n        0 !== y ? (() => {\n            const d = gcd(x)(y);\n\n            return {\n                type: \"Ratio\",\n                // numerator\n                \"n\": Math.trunc(x / d),\n                // denominator\n                \"d\": Math.trunc(y / d)\n            };\n        })() : undefined;\n\n    return go(a * signum(b), abs(b));\n};",
+    "code": "// Ratio :: Integral a => a -> a -> Ratio a\nconst Ratio = a => b => {\n    const go = (x, y) =>\n        0 !== y\n            ? (() => {\n                const d = gcd(x)(y);\n\n                return {\n                    type: \"Ratio\",\n                    // numerator\n                    \"n\": Math.trunc(x / d),\n                    // denominator\n                    \"d\": Math.trunc(y / d)\n                };\n            })()\n            : undefined;\n\n    return go(a * signum(b), abs(b));\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2208,7 +2208,7 @@
     ]
   },
   "nubBy": {
-    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x))\n            ? seen\n            : seen.concat([x]),\n        []\n    );",
+    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = pEq =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate pEq)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(pEq(x))\n            ? seen\n            : seen.concat([x]),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2462,7 +2462,7 @@
     ]
   },
   "rational": {
-    "code": "// rational :: Num a => a -> Rational\nconst rational = x =>\n    isNaN(x) ? x : Number.isInteger(x) ? (\n        Ratio(x)(1)\n    ) : approxRatio(undefined)(x);",
+    "code": "// rational :: Num a => a -> Rational\nconst rational = x =>\n    isNaN(x)\n        ? x\n        : Number.isInteger(x)\n            ? Ratio(x)(1)\n            : approxRatio(undefined)(x);",
     "tags": [
       "JS Prelude"
     ]
@@ -2501,14 +2501,14 @@
     ]
   },
   "readPlistFileLR": {
-    "code": "// readPlistFileLR :: FilePath -> Either String Dict\nconst readPlistFileLR = fp =>\n    // Either a message or a dictionary of key-value\n    // pairs read from the given file path.\n    bindLR(\n        doesFileExist(fp) ? (\n            Right(filePath(fp))\n        ) : Left(`No file found at path:\\n\\t${fp}`)\n    )(\n        fpFull => {\n            const\n                e = $(),\n                maybeDict = $.NSDictionary\n                .dictionaryWithContentsOfURLError(\n                    $.NSURL.fileURLWithPath(fpFull),\n                    e\n                );\n\n            return maybeDict.isNil() ? (() => {\n                const\n                    msg = ObjC.unwrap(\n                        e.localizedDescription\n                    );\n\n                return Left(`readPlistFileLR:\\n\\t${msg}`);\n            })() : Right(ObjC.deepUnwrap(maybeDict));\n        }\n    );",
+    "code": "// readPlistFileLR :: FilePath -> Either String Dict\nconst readPlistFileLR = fp =>\n    // Either a message or a dictionary of key-value\n    // pairs read from the given file path.\n    bindLR(\n        doesFileExist(fp)\n            ? Right(filePath(fp))\n            : Left(`No file found at path:\\n\\t${fp}`)\n    )(\n        fpFull => {\n            const\n                e = $(),\n                maybeDict = $.NSDictionary\n                .dictionaryWithContentsOfURLError(\n                    $.NSURL.fileURLWithPath(fpFull),\n                    e\n                );\n\n            return maybeDict.isNil()\n                ? (() => {\n                    const\n                        msg = ObjC.unwrap(\n                            e.localizedDescription\n                        );\n\n                    return Left(`readPlistFileLR:\\n\\t${msg}`);\n                })()\n                : Right(ObjC.deepUnwrap(maybeDict));\n        }\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "recip": {
-    "code": "// recip :: Num -> Num\nconst recip = n =>\n    0 !== n ? (1 / n) : undefined;",
+    "code": "// recip :: Num -> Num\nconst recip = n =>\n    0 !== n\n        ? (1 / n)\n        : undefined;",
     "tags": [
       "JS Prelude"
     ]
@@ -2539,7 +2539,7 @@
     ]
   },
   "removeFile": {
-    "code": "// removeFile :: FilePath -> Either String String\nconst removeFile = fp => {\n    const error = $();\n\n    return $.NSFileManager.defaultManager\n        .removeItemAtPathError(fp, error) ? (\n            Right(`Removed: ${fp}`)\n        ) : Left(ObjC.unwrap(error.localizedDescription));\n};",
+    "code": "// removeFile :: FilePath -> Either String String\nconst removeFile = fp => {\n    const error = $();\n\n    return $.NSFileManager.defaultManager\n    .removeItemAtPathError(fp, error)\n        ? Right(`Removed: ${fp}`)\n        : Left(ObjC.unwrap(error.localizedDescription));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
