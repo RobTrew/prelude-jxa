@@ -3494,7 +3494,7 @@ const nubBy = p =>
     xs => xs.reduce(
         (seen, x) => seen.some(p(x))
             ? seen
-            : seen.concat(x),
+            : seen.concat([x]),
         []
     );
 

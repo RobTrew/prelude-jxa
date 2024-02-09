@@ -2208,7 +2208,7 @@
     ]
   },
   "nubBy": {
-    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x))\n            ? seen\n            : seen.concat(x),\n        []\n    );",
+    "code": "// nubBy :: (a -> a -> Bool) -> [a] -> [a]\nconst nubBy = p =>\n    // A sublist of xs from which all duplicates,\n    // (as defined by the equality predicate p)\n    // are excluded.\n    xs => xs.reduce(\n        (seen, x) => seen.some(p(x))\n            ? seen\n            : seen.concat([x]),\n        []\n    );",
     "tags": [
       "JS Prelude",
       "core"
