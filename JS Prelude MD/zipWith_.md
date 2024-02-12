@@ -6,13 +6,13 @@ const zipWith_ = f => {
     // custom function, rather than with the
     // default tuple constructor.
     const go = xs =>
-        ys => Boolean(xs.length) ? (
-            Boolean(ys.length) ? (
-                [f(xs[0])(ys[0])].concat(
+        ys => 0 < xs.length
+            ? 0 < ys.length
+                ? [f(xs[0])(ys[0])].concat(
                     go(xs.slice(1))(ys.slice(1))
                 )
-            ) : []
-        ) : [];
+                : []
+            : [];
 
     return go;
 };
