@@ -1588,11 +1588,9 @@ const filterTree = p =>
     // List of all values in the tree
     // which match the predicate p.
     foldTree(x => xs =>
-        (
-            p(x) ? [
-                [x], ...xs
-            ] : xs
-        ).flat(1)
+        p(x)
+            ? [x, ...xs.flat()]
+            : xs.flat()
     );
 
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]

@@ -961,7 +961,7 @@
     ]
   },
   "filterTree": {
-    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all values in the tree\n    // which match the predicate p.\n    foldTree(x => xs =>\n        (\n            p(x) ? [\n                [x], ...xs\n            ] : xs\n        ).flat(1)\n    );",
+    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all values in the tree\n    // which match the predicate p.\n    foldTree(x => xs =>\n        p(x)\n            ? [x, ...xs.flat()]\n            : xs.flat()\n    );",
     "tags": [
       "JS Prelude",
       "tree"
