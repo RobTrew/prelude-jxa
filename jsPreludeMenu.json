@@ -368,6 +368,7 @@
   "product": "// product :: [Num] -> Num\nconst product = xs =>\n    xs.reduce((a, x) => a * x, 1);",
   "properFracRatio": "// properFracRatio :: Ratio -> (Int, Ratio)\nconst properFracRatio = nd => {\n    const [q, r] = quotRem(nd.n)(nd.d);\n\n    return Tuple(q)(Ratio(r)(nd.d));\n};",
   "properFraction": "// properFraction :: Real -> (Int, Real)\nconst properFraction = n => {\n    const i = Math.floor(n) + (n < 0 ? 1 : 0);\n\n    return Tuple(i)(n - i);\n};",
+  "prunedForest": "// prunedForest (a -> Bool) -> Forest a -> Forest a\nconst prunedForest = p => {\n    // A forest of trees in which every node matches p.\n    // That is, a forest including only nodes which:\n    // 1. match the predicate p, AND\n    // 2. have no ancestors which do not match p.\n    const\n        go = trees => trees.flatMap(tree => {\n            const x = tree.root;\n\n            return p(x)\n                ? [\n                    Node(x)(\n                        go(tree.nest)\n                    )\n                ]\n                : [];\n        });\n\n    return go;\n};",
   "pureLR": "// pureLR :: a -> Either e a\nconst pureLR = x =>\n    // The value x lifted into the Either monad.\n    Right(x);",
   "pureList": "// pureList :: a -> [a]\nconst pureList = x =>\n    [x];",
   "pureMay": "// pureMay :: a -> Maybe a\nconst pureMay = x =>\n    Just(x);",

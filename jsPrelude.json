@@ -2338,6 +2338,12 @@
       "JS Prelude"
     ]
   },
+  "prunedForest": {
+    "code": "// prunedForest (a -> Bool) -> Forest a -> Forest a\nconst prunedForest = p => {\n    // A forest of trees in which every node matches p.\n    // That is, a forest including only nodes which:\n    // 1. match the predicate p, AND\n    // 2. have no ancestors which do not match p.\n    const\n        go = trees => trees.flatMap(tree => {\n            const x = tree.root;\n\n            return p(x)\n                ? [\n                    Node(x)(\n                        go(tree.nest)\n                    )\n                ]\n                : [];\n        });\n\n    return go;\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "pureLR": {
     "code": "// pureLR :: a -> Either e a\nconst pureLR = x =>\n    // The value x lifted into the Either monad.\n    Right(x);",
     "tags": [

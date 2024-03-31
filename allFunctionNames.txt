@@ -367,6 +367,7 @@ print :: a -> IO ()
 product :: [Num] -> Num
 properFracRatio :: Ratio -> (Int, Ratio)
 properFraction :: Real -> (Int, Real)
+prunedForest (a -> Bool) -> Forest a -> Forest a
 pureLR :: a -> Either e a
 pureList :: a -> [a]
 pureMay :: a -> Maybe a
