@@ -101,27 +101,26 @@ const copyFileLR = fpFrom =>
     fpTo => {
         const fpTargetFolder = takeDirectory(fpTo);
 
-        return doesFileExist(fpFrom) ? (
-            doesDirectoryExist(fpTargetFolder) ? (() => {
-                const
-                    e = $(),
-                    blnCopied = ObjC.unwrap(
+        return doesFileExist(fpFrom)
+            ? doesDirectoryExist(fpTargetFolder)
+                ? (() => {
+                    const
+                        e = $(),
+                        fpTarget = $(fpTo).stringByStandardizingPath;
+
+                    return (
                         $.NSFileManager.defaultManager
                         .copyItemAtPathToPathError(
                             $(fpFrom).stringByStandardizingPath,
-                            $(fpTo).stringByStandardizingPath,
+                            fpTarget,
                             e
                         )
+                            ? Right(ObjC.unwrap(fpTarget))
+                            : Left(ObjC.unwrap(e.localizedDescription))
                     );
-
-                return blnCopied ? (
-                    Right(fpTo)
-                ) : Left(ObjC.unwrap(e.localizedDescription));
-
-            })() : Left(
-                `Target folder not found: ${fpTargetFolder}`
-            )
-        ) : Left(`Source file not found: ${fpFrom}`);
+                })()
+                : Left(`Target folder not found: ${fpTargetFolder}`)
+            : Left(`Source file not found: ${fpFrom}`);
     };
 
 // createDirectoryIfMissingLR :: Bool -> FilePath

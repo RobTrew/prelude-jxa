@@ -515,7 +515,7 @@
     ]
   },
   "copyFileLR": {
-    "code": "// copyFileLR :: FilePath -> FilePath -> Either String IO ()\nconst copyFileLR = fpFrom =>\n    fpTo => {\n        const fpTargetFolder = takeDirectory(fpTo);\n\n        return doesFileExist(fpFrom) ? (\n            doesDirectoryExist(fpTargetFolder) ? (() => {\n                const\n                    e = $(),\n                    blnCopied = ObjC.unwrap(\n                        $.NSFileManager.defaultManager\n                        .copyItemAtPathToPathError(\n                            $(fpFrom).stringByStandardizingPath,\n                            $(fpTo).stringByStandardizingPath,\n                            e\n                        )\n                    );\n\n                return blnCopied ? (\n                    Right(fpTo)\n                ) : Left(ObjC.unwrap(e.localizedDescription));\n\n            })() : Left(\n                `Target folder not found: ${fpTargetFolder}`\n            )\n        ) : Left(`Source file not found: ${fpFrom}`);\n    };",
+    "code": "// copyFileLR :: FilePath -> FilePath -> Either String IO ()\nconst copyFileLR = fpFrom =>\n    fpTo => {\n        const fpTargetFolder = takeDirectory(fpTo);\n\n        return doesFileExist(fpFrom)\n            ? doesDirectoryExist(fpTargetFolder)\n                ? (() => {\n                    const\n                        e = $(),\n                        fpTarget = $(fpTo).stringByStandardizingPath;\n\n                    return (\n                        $.NSFileManager.defaultManager\n                        .copyItemAtPathToPathError(\n                            $(fpFrom).stringByStandardizingPath,\n                            fpTarget,\n                            e\n                        )\n                            ? Right(ObjC.unwrap(fpTarget))\n                            : Left(ObjC.unwrap(e.localizedDescription))\n                    );\n                })()\n                : Left(`Target folder not found: ${fpTargetFolder}`)\n            : Left(`Source file not found: ${fpFrom}`);\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -820,7 +820,7 @@
     ]
   },
   "enumFromTo": {
-    "code": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = m =>\n    n => Array.from({\n        length: 1 + n - m\n    }, (_, i) => m + i);",
+    "code": "// enumFromTo :: Int -> Int -> [Int]\nconst enumFromTo = m =>\n    // Enumeration of the integers from m to n.\n    n => Array.from(\n        {length: 1 + n - m},\n        (_, i) => m + i\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -2862,7 +2862,7 @@
     ]
   },
   "sj": {
-    "code": "// sj :: a -> String\nconst sj = (...args) =>\n    // Abbreviation of showJSON for quick testing.\n    // Default indent size is two, which can be\n    // overriden by any integer supplied as the\n    // first argument of more than one.\n    JSON.stringify.apply(\n        null,\n        1 < args.length && !isNaN(args[0]) ? [\n            args[1], null, args[0]\n        ] : [args[0], null, 2]\n    );",
+    "code": "// sj :: a -> String\nconst sj = (...args) =>\n    // Abbreviation of showJSON for quick testing.\n    // Default indent size is two, which can be\n    // overriden by any integer supplied as the\n    // first argument of more than one.\n    JSON.stringify.apply(\n        null,\n        1 < args.length && !isNaN(args[0])\n            ? [args[1], null, args[0]]\n            : [args[0], null, 2]\n    );",
     "tags": [
       "JS Prelude"
     ]

@@ -1365,9 +1365,11 @@ const enumFromThenToChar = x1 =>
 
 // enumFromTo :: Int -> Int -> [Int]
 const enumFromTo = m =>
-    n => Array.from({
-        length: 1 + n - m
-    }, (_, i) => m + i);
+    // Enumeration of the integers from m to n.
+    n => Array.from(
+        {length: 1 + n - m},
+        (_, i) => m + i
+    );
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = m => n => {
@@ -4453,9 +4455,9 @@ const sj = (...args) =>
     // first argument of more than one.
     JSON.stringify.apply(
         null,
-        1 < args.length && !isNaN(args[0]) ? [
-            args[1], null, args[0]
-        ] : [args[0], null, 2]
+        1 < args.length && !isNaN(args[0])
+            ? [args[1], null, args[0]]
+            : [args[0], null, 2]
     );
 
 // snd :: (a, b) -> b
