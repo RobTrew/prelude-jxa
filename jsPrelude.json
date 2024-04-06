@@ -425,7 +425,7 @@
     ]
   },
   "combine": {
-    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // The concatenation of two filePath segments,\n    // without omission or duplication of \"/\".\n    fp1 => Boolean(fp) && Boolean(fp1) ? (\n        \"/\" === fp1.slice(0, 1) ? (\n            fp1\n        ) : \"/\" === fp.slice(-1) ? (\n            fp + fp1\n        ) : `${fp}/${fp1}`\n    ) : fp + fp1;",
+    "code": "// combine (</>) :: FilePath -> FilePath -> FilePath\nconst combine = fp =>\n    // The concatenation of two filePath segments,\n    // without omission or duplication of \"/\".\n    fp1 => Boolean(fp) && Boolean(fp1)\n        ? \"/\" === fp1.slice(0, 1)\n            ? fp1\n            : \"/\" === fp.slice(-1)\n                ? fp + fp1\n                : `${fp}/${fp1}`\n        : (fp + fp1);",
     "tags": [
       "JS Prelude"
     ]
@@ -522,7 +522,7 @@
     ]
   },
   "createDirectoryIfMissingLR": {
-    "code": "// createDirectoryIfMissingLR :: Bool -> FilePath\n// -> Either String FilePath\nconst createDirectoryIfMissingLR = blnParents =>\n    dirPath => {\n        const fp = filePath(dirPath);\n\n        return doesPathExist(fp) ? (\n            Right(fp)\n        ) : (() => {\n            const\n                e = $(),\n                blnOK = $.NSFileManager\n                .defaultManager[\n                    \"createDirectoryAtPath\" + (\n                        \"WithIntermediateDirectories\"\n                    ) + \"AttributesError\"\n                ](fp, blnParents, void 0, e);\n\n            return blnOK ? (\n                Right(fp)\n            ) : Left(e.localizedDescription);\n        })();\n    };",
+    "code": "// createDirectoryIfMissingLR :: Bool -> FilePath\n// -> Either String FilePath\nconst createDirectoryIfMissingLR = blnParents =>\n    dirPath => {\n        const fp = filePath(dirPath);\n\n        return doesPathExist(fp)\n            ? Right(fp)\n            : (() => {\n                const\n                    e = $(),\n                    blnOK = $.NSFileManager\n                    .defaultManager[\n                    \"createDirectoryAtPath\" + (\n                        \"WithIntermediateDirectories\"\n                    ) + \"AttributesError\"\n                    ](fp, blnParents, void 0, e);\n\n                return blnOK\n                    ? Right(fp)\n                    : Left(e.localizedDescription);\n            })();\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2175,7 +2175,7 @@
     ]
   },
   "nest": {
-    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs ? (\n        xs\n    ) : xs(root(tree));\n};",
+    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n// Allowing for lazy (on-demand) evaluation.\n// If the nest turns out to be a function –\n// rather than a list – that function is applied\n// here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs\n        ? xs\n        : xs(root(tree));\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2339,7 +2339,7 @@
     ]
   },
   "prunedForest": {
-    "code": "// prunedForest (a -> Bool) -> Forest a -> Forest a\nconst prunedForest = p => {\n    // A forest of trees in which every node matches p.\n    // That is, a forest including only nodes which:\n    // 1. match the predicate p, AND\n    // 2. have no ancestors which do not match p.\n    const\n        go = trees => trees.flatMap(tree => {\n            const x = tree.root;\n\n            return p(x)\n                ? [\n                    Node(x)(\n                        go(tree.nest)\n                    )\n                ]\n                : [];\n        });\n\n    return go;\n};",
+    "code": "// prunedForest (a -> Bool) -> Forest a -> Forest a\nconst prunedForest = p => {\n    // A forest of trees in which every node matches p.\n    // That is, a forest including only nodes which:\n    // 1. match the predicate p, AND\n    // 2. descend from ancestors which all match p.\n    const\n        go = trees => trees.flatMap(tree => {\n            const x = root(tree);\n\n            return p(x)\n                ? [\n                    Node(x)(\n                        go(nest(tree))\n                    )\n                ]\n                : [];\n        });\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]

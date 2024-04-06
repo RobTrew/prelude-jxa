@@ -660,13 +660,13 @@ const combinations = n =>
 const combine = fp =>
     // The concatenation of two filePath segments,
     // without omission or duplication of "/".
-    fp1 => Boolean(fp) && Boolean(fp1) ? (
-        "/" === fp1.slice(0, 1) ? (
-            fp1
-        ) : "/" === fp.slice(-1) ? (
-            fp + fp1
-        ) : `${fp}/${fp1}`
-    ) : fp + fp1;
+    fp1 => Boolean(fp) && Boolean(fp1)
+        ? "/" === fp1.slice(0, 1)
+            ? fp1
+            : "/" === fp.slice(-1)
+                ? fp + fp1
+                : `${fp}/${fp1}`
+        : (fp + fp1);
 
 // compare :: a -> a -> Ordering
 const compare = a =>
@@ -3465,15 +3465,15 @@ const negate = n =>
 
 // nest :: Tree a -> [a]
 const nest = tree => {
-    // Allowing for lazy (on-demand) evaluation.
-    // If the nest turns out to be a function –
-    // rather than a list – that function is applied
-    // here to the root, and returns a list.
+// Allowing for lazy (on-demand) evaluation.
+// If the nest turns out to be a function –
+// rather than a list – that function is applied
+// here to the root, and returns a list.
     const xs = tree.nest;
 
-    return "function" !== typeof xs ? (
-        xs
-    ) : xs(root(tree));
+    return "function" !== typeof xs
+        ? xs
+        : xs(root(tree));
 };
 
 // not :: Bool -> Bool
@@ -3716,15 +3716,15 @@ const prunedForest = p => {
     // A forest of trees in which every node matches p.
     // That is, a forest including only nodes which:
     // 1. match the predicate p, AND
-    // 2. have no ancestors which do not match p.
+    // 2. descend from ancestors which all match p.
     const
         go = trees => trees.flatMap(tree => {
-            const x = tree.root;
+            const x = root(tree);
 
             return p(x)
                 ? [
                     Node(x)(
-                        go(tree.nest)
+                        go(nest(tree))
                     )
                 ]
                 : [];
