@@ -5,11 +5,11 @@ const traverseLR = f =>
     // instance of Traversable (Either a) where
     //    traverse _ (Left x) = pure (Left x)
     //    traverse f (Right y) = Right <$> f y
-    lr => "Left" in lr ? (
-        [lr]
-    ) : fmap(Right)(
-        f(lr.Right)
-    );
+    lr => "Left" in lr
+        ? [lr]
+        : fmap(Right)(
+            f(lr.Right)
+        );
 ```
 
 

@@ -1003,11 +1003,12 @@ const drawTree = tree =>
     draw(tree).join("\n");
 
 // drawTree2 :: Bool -> Bool -> Tree String -> String
+// eslint-disable-next-line max-lines-per-function
 const drawTree2 = blnCompact => blnPruned => tree => {
     // Tree design and algorithm inspired by the Haskell snippet at:
     // https://doisinkidney.com/snippets/drawing-trees.html
     const
-        // Lefts, Middle, Rights
+    // Lefts, Middle, Rights
         lmrFromStrings = xs => {
             const [ls, rs] = Array.from(splitAt(
                 Math.floor(xs.length / 2)
@@ -1023,6 +1024,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             return TupleN(ls.map(f), g(m), rs.map(h));
         };
 
+    // eslint-disable-next-line max-lines-per-function
     const lmrBuild = (f, w) => wsTree => {
         const
             leftPad = n => s => " ".repeat(n) + s,
@@ -1031,54 +1033,58 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             [nChars, x] = Array.from(wsTree.root);
 
         // ------------------ LEAF NODE ------------------
-        return 0 === lng ? (
-            TupleN([], "─".repeat(w - nChars) + x, [])
+        return 0 === lng
+            ? TupleN([], "─".repeat(w - nChars) + x, [])
 
         // --------- NODE WITH SINGLE CHILD ----------
-        ) : 1 === lng ? (() => {
-            const indented = leftPad(1 + w);
+            : 1 === lng
+                ? (() => {
+                    const indented = leftPad(1 + w);
 
-            return fghOverLMR(
-                indented,
-                z => `${"─".repeat(w - nChars)}${x}-${z}`,
-                indented
-            )(f(xs[0]));
+                    return fghOverLMR(
+                        indented,
+                        z => `${"─".repeat(w - nChars)}${x}-${z}`,
+                        indented
+                    )(f(xs[0]));
 
-            // ----------- NODE WITH CHILDREN ------------
-        })() : (() => {
-            const
-                cFix = y => ys => y + ys,
-                treeFix = (l, m, r) => compose(
-                    stringsFromLMR,
-                    fghOverLMR(cFix(l), cFix(m), cFix(r))
-                ),
-                _x = "─".repeat(w - nChars) + x,
-                indented = leftPad(w),
-                lmrs = xs.map(f);
+                // ----------- NODE WITH CHILDREN ------------
+                })()
+                : (() => {
+                    const
+                        cFix = y => ys => y + ys,
+                        treeFix = (l, m, r) => compose(
+                            stringsFromLMR,
+                            fghOverLMR(cFix(l), cFix(m), cFix(r))
+                        ),
+                        _x = "─".repeat(w - nChars) + x,
+                        indented = leftPad(w),
+                        lmrs = xs.map(f);
 
-            return fghOverLMR(
-                indented,
-                s => _x + ({
-                    "┌": "┬",
-                    "├": "┼",
-                    "│": "┤",
-                    "└": "┴"
-                })[s[0]] + s.slice(1),
-                indented
-            )(lmrFromStrings(
-                intercalate(
-                    blnCompact ? [] : ["│"]
-                )(
-                    [treeFix(" ", "┌", "│")(lmrs[0])]
-                    .concat(init(lmrs.slice(1)).map(
-                        treeFix("│", "├", "│")
-                    ))
-                    .concat([treeFix("│", "└", " ")(
-                        lmrs[lmrs.length - 1]
-                    )])
-                )
-            ));
-        })();
+                    return fghOverLMR(
+                        indented,
+                        s => _x + ({
+                            "┌": "┬",
+                            "├": "┼",
+                            "│": "┤",
+                            "└": "┴"
+                        })[s[0]] + s.slice(1),
+                        indented
+                    )(lmrFromStrings(
+                        intercalate(
+                            blnCompact
+                                ? []
+                                : ["│"]
+                        )(
+                            [treeFix(" ", "┌", "│")(lmrs[0])]
+                            .concat(init(lmrs.slice(1)).map(
+                                treeFix("│", "├", "│")
+                            ))
+                            .concat([treeFix("│", "└", " ")(
+                                lmrs[lmrs.length - 1]
+                            )])
+                        )
+                    ));
+                })();
     };
 
     const
@@ -1100,12 +1106,12 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         );
 
     return unlines(
-        blnPruned ? (
-            treeLines.filter(
+        blnPruned
+            ? treeLines.filter(
                 s => s.split("")
                 .some(c => !" │".includes(c))
             )
-        ) : treeLines
+            : treeLines
     );
 };
 
@@ -1701,25 +1707,24 @@ const findTree = p => {
     const go = tree => {
         const x = tree.root;
 
-        return p(x) ? (
-            Just(x)
-        ) : (() => {
-            const
-                xs = tree.nest,
-                n = xs.length;
+        return p(x)
+            ? Just(x)
+            : (() => {
+                const
+                    xs = tree.nest,
+                    n = xs.length;
 
-            return Boolean(n) ? until(
-                ([i, mb]) => n <= i || ("Just" in mb)
-            )(
-                ([i]) => [1 + i, go(xs[i])]
-            )(
-                [0, Nothing()]
-            )[1] : Nothing();
-        })();
+                return 0 < n
+                    ? until(
+                        ([i, mb]) => n <= i || ("Just" in mb)
+                    )(
+                        ([i]) => [1 + i, go(xs[i])]
+                    )(
+                        [0, Nothing()]
+                    )[1]
+                    : Nothing();
+            })();
     };
-
-    return go;
-};
 
 // first :: (a -> b) -> ((a, c) -> (b, c))
 const first = f =>
@@ -3966,6 +3971,15 @@ const recipMay = n =>
         Nothing()
     ) : Just(1 / n);
 
+// regexIndexedMatches :: Regex -> String -> [(Int, String)]
+const regexIndexedMatches = rgx =>
+    // (Index, String) tuples for all matches of a
+    // regular expression in a given string.
+    s => Array.from(
+        s.matchAll(rgx),
+        m => [m.index, m[0]]
+    );
+
 // regexMatches :: Regex String -> String -> [[String]]
 const regexMatches = rgx =>
     // All matches for the given regular expression
@@ -5124,11 +5138,11 @@ const traverseLR = f =>
     // instance of Traversable (Either a) where
     //    traverse _ (Left x) = pure (Left x)
     //    traverse f (Right y) = Right <$> f y
-    lr => "Left" in lr ? (
-        [lr]
-    ) : fmap(Right)(
-        f(lr.Right)
-    );
+    lr => "Left" in lr
+        ? [lr]
+        : fmap(Right)(
+            f(lr.Right)
+        );
 
 // traverseList :: (Applicative f) => (a -> f b) ->
 // [a] -> f [b]
@@ -5214,15 +5228,15 @@ const traverseTuple = f => ([a, b]) =>
 const treeFromDict = rootLabel =>
     dict => {
         const go = x =>
-            "object" !== typeof x ? [] : (
-                Array.isArray(x) ? (
-                    x.flatMap(go)
-                ) : keys(x).map(
-                    k => Node(k)(
-                        go(x[k])
-                    )
-                )
-            );
+            "object" !== typeof x
+                ? []
+                : Array.isArray(x)
+                    ? x.flatMap(go)
+                    : keys(x).map(
+                        k => Node(k)(
+                            go(x[k])
+                        )
+                    );
 
         return Node(rootLabel)(
             go(dict)
@@ -5298,15 +5312,42 @@ const treeLeaves = tree => {
     ) : [tree];
 };
 
+// treeMatch :: (a -> Bool) -> Tree a -> [Tree a]
+const treeMatch = p => {
+    // Either a list containing the the first node
+    // in the tree which matches the predicate p,
+    // or an empty list if no match is found.
+    const go = tree =>
+        p(tree.root)
+            ? [tree]
+            : f(tree.nest);
+
+    const f = xs => {
+        const n = xs.length;
+
+        return until(
+            ([i, ms]) => (i === n) || (0 < ms.length)
+        )(
+            ([i]) => [1 + i, go(xs[i])]
+        )(
+            [0, []]
+        )[1];
+    };
+
+    return go;
+};
+
 // treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 const treeMatches = p => {
     // A list of all nodes in the tree which match
     // a predicate p.
-    // For the first match only, see findTree.
+    // For the first matching value only, see findTree.
+    // To ignore descendants where an ancestor already matches
+    // write just [tree] in lieu of [tree, ...tree.nest.flatMap(go)]
     const go = tree =>
-        p(tree.root) ? (
-            [tree]
-        ) : tree.nest.flatMap(go);
+        p(tree.root)
+            ? [tree, ...tree.nest.flatMap(go)]
+            : tree.nest.flatMap(go);
 
     return go;
 };

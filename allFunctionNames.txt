@@ -397,6 +397,7 @@ readLR :: Read a => String -> Either String a
 readPlistFileLR :: FilePath -> Either String Dict
 recip :: Num -> Num
 recipMay :: Num -> Maybe Num
+regexIndexedMatches :: Regex -> String -> [(Int, String)]
 regexMatches :: Regex String -> String -> [[String]]
 rem :: Integral a => a -> a -> a
 remQuot :: Integral a => a -> a -> (a, a)
@@ -520,6 +521,7 @@ treeFromDict :: String -> Dict -> Tree String
 treeFromJSON :: JSON String -> Tree a
 treeFromNestedDict -> Dict -> Either String Tree Dict
 treeLeaves :: Tree -> [Tree]
+treeMatch :: (a -> Bool) -> Tree a -> [Tree a]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]
 treeMenuBy :: (a -> String) Tree a -> IO [a]

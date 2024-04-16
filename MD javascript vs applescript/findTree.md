@@ -7,25 +7,24 @@ const findTree = p => {
     const go = tree => {
         const x = tree.root;
 
-        return p(x) ? (
-            Just(x)
-        ) : (() => {
-            const
-                xs = tree.nest,
-                n = xs.length;
+        return p(x)
+            ? Just(x)
+            : (() => {
+                const
+                    xs = tree.nest,
+                    n = xs.length;
 
-            return Boolean(n) ? until(
-                ([i, mb]) => n <= i || ("Just" in mb)
-            )(
-                ([i]) => [1 + i, go(xs[i])]
-            )(
-                [0, Nothing()]
-            )[1] : Nothing();
-        })();
+                return 0 < n
+                    ? until(
+                        ([i, mb]) => n <= i || ("Just" in mb)
+                    )(
+                        ([i]) => [1 + i, go(xs[i])]
+                    )(
+                        [0, Nothing()]
+                    )[1]
+                    : Nothing();
+            })();
     };
-
-    return go;
-};
 ```
 
 

@@ -1,10 +1,11 @@
 ```javascript
 // drawTree2 :: Bool -> Bool -> Tree String -> String
+// eslint-disable-next-line max-lines-per-function
 const drawTree2 = blnCompact => blnPruned => tree => {
     // Tree design and algorithm inspired by the Haskell snippet at:
     // https://doisinkidney.com/snippets/drawing-trees.html
     const
-        // Lefts, Middle, Rights
+    // Lefts, Middle, Rights
         lmrFromStrings = xs => {
             const [ls, rs] = Array.from(splitAt(
                 Math.floor(xs.length / 2)
@@ -20,6 +21,7 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             return TupleN(ls.map(f), g(m), rs.map(h));
         };
 
+    // eslint-disable-next-line max-lines-per-function
     const lmrBuild = (f, w) => wsTree => {
         const
             leftPad = n => s => " ".repeat(n) + s,
@@ -28,54 +30,58 @@ const drawTree2 = blnCompact => blnPruned => tree => {
             [nChars, x] = Array.from(wsTree.root);
 
         // ------------------ LEAF NODE ------------------
-        return 0 === lng ? (
-            TupleN([], "─".repeat(w - nChars) + x, [])
+        return 0 === lng
+            ? TupleN([], "─".repeat(w - nChars) + x, [])
 
         // --------- NODE WITH SINGLE CHILD ----------
-        ) : 1 === lng ? (() => {
-            const indented = leftPad(1 + w);
+            : 1 === lng
+                ? (() => {
+                    const indented = leftPad(1 + w);
 
-            return fghOverLMR(
-                indented,
-                z => `${"─".repeat(w - nChars)}${x}-${z}`,
-                indented
-            )(f(xs[0]));
+                    return fghOverLMR(
+                        indented,
+                        z => `${"─".repeat(w - nChars)}${x}-${z}`,
+                        indented
+                    )(f(xs[0]));
 
-            // ----------- NODE WITH CHILDREN ------------
-        })() : (() => {
-            const
-                cFix = y => ys => y + ys,
-                treeFix = (l, m, r) => compose(
-                    stringsFromLMR,
-                    fghOverLMR(cFix(l), cFix(m), cFix(r))
-                ),
-                _x = "─".repeat(w - nChars) + x,
-                indented = leftPad(w),
-                lmrs = xs.map(f);
+                // ----------- NODE WITH CHILDREN ------------
+                })()
+                : (() => {
+                    const
+                        cFix = y => ys => y + ys,
+                        treeFix = (l, m, r) => compose(
+                            stringsFromLMR,
+                            fghOverLMR(cFix(l), cFix(m), cFix(r))
+                        ),
+                        _x = "─".repeat(w - nChars) + x,
+                        indented = leftPad(w),
+                        lmrs = xs.map(f);
 
-            return fghOverLMR(
-                indented,
-                s => _x + ({
-                    "┌": "┬",
-                    "├": "┼",
-                    "│": "┤",
-                    "└": "┴"
-                })[s[0]] + s.slice(1),
-                indented
-            )(lmrFromStrings(
-                intercalate(
-                    blnCompact ? [] : ["│"]
-                )(
-                    [treeFix(" ", "┌", "│")(lmrs[0])]
-                    .concat(init(lmrs.slice(1)).map(
-                        treeFix("│", "├", "│")
-                    ))
-                    .concat([treeFix("│", "└", " ")(
-                        lmrs[lmrs.length - 1]
-                    )])
-                )
-            ));
-        })();
+                    return fghOverLMR(
+                        indented,
+                        s => _x + ({
+                            "┌": "┬",
+                            "├": "┼",
+                            "│": "┤",
+                            "└": "┴"
+                        })[s[0]] + s.slice(1),
+                        indented
+                    )(lmrFromStrings(
+                        intercalate(
+                            blnCompact
+                                ? []
+                                : ["│"]
+                        )(
+                            [treeFix(" ", "┌", "│")(lmrs[0])]
+                            .concat(init(lmrs.slice(1)).map(
+                                treeFix("│", "├", "│")
+                            ))
+                            .concat([treeFix("│", "└", " ")(
+                                lmrs[lmrs.length - 1]
+                            )])
+                        )
+                    ));
+                })();
     };
 
     const
@@ -97,12 +103,12 @@ const drawTree2 = blnCompact => blnPruned => tree => {
         );
 
     return unlines(
-        blnPruned ? (
-            treeLines.filter(
+        blnPruned
+            ? treeLines.filter(
                 s => s.split("")
                 .some(c => !" │".includes(c))
             )
-        ) : treeLines
+            : treeLines
     );
 };
 ```
