@@ -3150,6 +3150,12 @@
       "core"
     ]
   },
+  "takeWhileEnd": {
+    "code": "// takeWhileEnd :: (a -> Bool) [a] -> [a]\nconst takeWhileEnd = p =>\n    // The longest suffix of xs in which\n    // all elements satisfy p.\n    xs => xs.slice(\n        1 + xs.findLastIndex(x => !p(x))\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "takeWhileGen": {
     "code": "// takeWhileGen :: (a -> Bool) -> Gen [a] -> [a]\nconst takeWhileGen = p =>\n    xs => {\n        const ys = [];\n        let\n            nxt = xs.next(),\n            v = nxt.value;\n\n        while (!nxt.done && p(v)) {\n            ys.push(v);\n            nxt = xs.next();\n            v = nxt.value;\n        }\n\n        return ys;\n    };",
     "tags": [
