@@ -25,6 +25,9 @@ const findTree = p => {
                     : Nothing();
             })();
     };
+
+    return go;
+};
 ```
 
 

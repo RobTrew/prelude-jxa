@@ -13,7 +13,7 @@ const treeMatch = p => {
         const n = xs.length;
 
         return until(
-            ([i, ms]) => (i === n) || (0 < ms.length)
+            ([i, ms]) => (n === i) || (0 < ms.length)
         )(
             ([i]) => [1 + i, go(xs[i])]
         )(

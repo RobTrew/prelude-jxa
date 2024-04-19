@@ -1169,31 +1169,20 @@ const dropLengthMaybe = xs =>
     };
 
 // dropWhile :: (a -> Bool) -> [a] -> [a]
-// dropWhile :: (Char -> Bool) -> String -> String
 const dropWhile = p =>
     // The suffix remaining after takeWhile p xs.
-    xs => {
-        const n = xs.length;
-
-        return xs.slice(
-            Boolean(n) ? until(
-                i => n === i || !p(xs[i])
-            )(i => 1 + i)(0) : 0
-        );
-    };
+    xs => xs.slice(
+        xs.findIndex(x => !p(x))
+    );
 
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
-// dropWhileEnd :: (Char -> Bool) -> String -> [Char]
 const dropWhileEnd = p =>
-    // xs without the longest suffix for which
-    // p returns true for all elements.
+    // xs without the largest suffix in which p holds
+    // for every element.
     xs => xs.slice(
-        0,
-        1 + until(
-            i => (0 >= i) || !p(xs[i])
-        )(
-            x => x - 1
-        )(xs.length - 1)
+        0, 1 + xs.findLastIndex(
+            x => !p(x)
+        )
     );
 
 // dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
@@ -1725,6 +1714,9 @@ const findTree = p => {
                     : Nothing();
             })();
     };
+
+    return go;
+};
 
 // first :: (a -> b) -> ((a, c) -> (b, c))
 const first = f =>
@@ -5326,7 +5318,7 @@ const treeMatch = p => {
         const n = xs.length;
 
         return until(
-            ([i, ms]) => (i === n) || (0 < ms.length)
+            ([i, ms]) => (n === i) || (0 < ms.length)
         )(
             ([i]) => [1 + i, go(xs[i])]
         )(
