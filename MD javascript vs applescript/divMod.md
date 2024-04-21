@@ -6,9 +6,9 @@ const divMod = n => d => {
     // (x `div` y)*y + (x `mod` y) == x
     const [q, r] = [Math.trunc(n / d), n % d];
 
-    return signum(n) === signum(-d) ? (
-        Tuple(q - 1)(r + d)
-    ) : Tuple(q)(r);
+    return signum(n) === signum(-d)
+        ? Tuple(q - 1)(r + d)
+        : Tuple(q)(r);
 };
 ```
 

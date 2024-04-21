@@ -6,9 +6,9 @@ const adjust = f =>
     // not an existing key.
     // Otherwise, a new copy in which the existing
     // value of k is updated by application of f.
-    k => dict => k in dict ? (
-        Object.assign({}, dict, {
+    k => dict => k in dict
+        ? Object.assign({}, dict, {
             [k]: f(dict[k])
         })
-    ) : dict;
+        : dict;
 ```

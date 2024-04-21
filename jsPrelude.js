@@ -151,11 +151,11 @@ const adjust = f =>
     // not an existing key.
     // Otherwise, a new copy in which the existing
     // value of k is updated by application of f.
-    k => dict => k in dict ? (
-        Object.assign({}, dict, {
+    k => dict => k in dict
+        ? Object.assign({}, dict, {
             [k]: f(dict[k])
         })
-    ) : dict;
+        : dict;
 
 // all :: (a -> Bool) -> [a] -> Bool
 const all = p =>
@@ -365,9 +365,9 @@ const bimapLR = f =>
     // Instance of bimap for Either values.
     // Either the application of f to a Left value,
     // or the application of g to a Right value.
-    g => lr => lr.Left ? (
-        Left(f(lr.Left))
-    ) : Right(g(lr.Right));
+    g => lr => lr.Left
+        ? Left(f(lr.Left))
+        : Right(g(lr.Right));
 
 // bimapN :: (a -> b) -> (c -> d) -> TupleN -> TupleN
 const bimapN = f =>
@@ -375,15 +375,15 @@ const bimapN = f =>
     // An n-tuple of unchanged dimension in which
     // the final value is an application of g
     // and the penultimate value is an application of f.
-    g => tpln => {
-        const n = tpln.length;
+    g => nTuple => {
+        const n = nTuple.length;
 
-        return 1 < n ? (
-            TupleN(
-                ...Array.from(tpln).slice(0, n - 2),
-                f(tpln[n - 2]), g(tpln[n - 1])
+        return 1 < n
+            ? TupleN(
+                ...Array.from(nTuple).slice(0, n - 2),
+                f(nTuple[n - 2]), g(nTuple[n - 1])
             )
-        ) : null;
+            : null;
     };
 
 // bind (>>=) :: Monad m => m a -> (a -> m b) -> m b
@@ -391,16 +391,14 @@ const bind = m =>
     // Two computations sequentially composed,
     // with any value produced by the first
     // passed as an argument to the second.
-    mf => Array.isArray(m) ? (
-        bindList(m)(mf)
-    ) : (
-        ({
+    mf => Array.isArray(m)
+        ? bindList(m)(mf)
+        : ({
             "Either": () => bindLR,
             "Maybe": () => bindMay,
             "Tuple": () => bindTuple,
             "function": () => bindFn
-        })[m.type || typeof m]()(m)(mf)
-    );
+        })[m.type || typeof m]()(m)(mf);
 
 // bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c
 const bindFn = f =>
@@ -462,11 +460,11 @@ const break_ = p =>
     xs => {
         const i = xs.findIndex(p);
 
-        return -1 !== i ? (
-            Tuple(xs.slice(0, i))(
+        return -1 !== i
+            ? Tuple(xs.slice(0, i))(
                 xs.slice(i)
             )
-        ) : Tuple(xs)([]);
+            : Tuple(xs)([]);
     };
 
 // breakOn :: Eq a => [a] -> [a] -> ([a], [a])
@@ -478,15 +476,15 @@ const breakOn = needle =>
         const ns = [...needle];
 
         const go = hs =>
-            isPrefixOf(ns)(hs) ? (
-                Tuple([])(hs)
-            ) : 0 === hs.length ? (
-                Tuple([])([])
-            ) : first(
-                v => [hs[0]].concat(v)
-            )(
-                go(hs.slice(1))
-            );
+            isPrefixOf(ns)(hs)
+                ? Tuple([])(hs)
+                : 0 === hs.length
+                    ? Tuple([])([])
+                    : first(
+                        v => [hs[0]].concat(v)
+                    )(
+                        go(hs.slice(1))
+                    );
 
         return go([...haystack]);
     };
@@ -496,11 +494,11 @@ const breakOnAll = needle =>
     // Tuples breaking the string at
     // all non-overlapping instances
     // of the needle in the haystack.
-    haystack => Boolean(needle) ? (
-        haystack.split(needle)
+    haystack => Boolean(needle)
+        ? haystack.split(needle)
         .reduce((a, _, i, xs) =>
-            0 < i ? (
-                a.concat([
+            0 < i
+                ? a.concat([
                     Tuple(
                         xs.slice(0, i).join(needle)
                     )(
@@ -508,21 +506,25 @@ const breakOnAll = needle =>
                         .join(needle)
                     )
                 ])
-            ) : a, [])
-    ) : null;
+                : a, [])
+        : null;
 
 // breakOnMay :: String -> String -> Maybe (String, String)
 const breakOnMay = needle =>
-    // maybe (prefix before match, match + rest)
-    haystack => Boolean(needle) ? (() => {
-        const xs = haystack.split(needle);
+    // Maybe (prefix before match, match + rest)
+    haystack => Boolean(needle)
+        ? (() => {
+            const xs = haystack.split(needle);
 
-        return Just(Boolean(xs.length) ? Tuple(
-            xs[0]
-        )(
-            haystack.slice(xs[0].length)
-        ) : Tuple(haystack)(""));
-    })() : Nothing();
+            return Just(Boolean(xs.length)
+                ? Tuple(
+                    xs[0]
+                )(
+                    haystack.slice(xs[0].length)
+                )
+                : Tuple(haystack)(""));
+        })()
+        : Nothing();
 
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
@@ -530,9 +532,9 @@ const bulleted = strTab =>
     // preceded by a whitespace indent,
     // followed by a hyphen and space.
     s => s.split(/[\n\r]+/u).map(
-        x => "" !== x ? (
-            `${strTab}- ${x}`
-        ) : x
+        x => "" !== x
+            ? `${strTab}- ${x}`
+            : x
     )
     .join("\n");
 
@@ -551,20 +553,26 @@ const caseOf = pvs =>
     // List of (Predicate, value) tuples ->
     // Default value -> Value to test -> Output value
     otherwise => x => {
-        const mb = pvs.reduce((a, pv) =>
-            a.Nothing ? (
-                pv[0](x) ? Just(pv[1]) : a
-            ) : a, Nothing());
+        const mb = pvs.reduce(
+            (a, pv) => a.Nothing
+                ? pv[0](x)
+                    ? Just(pv[1])
+                    : a
+                : a,
+            Nothing()
+        );
 
-        return mb.Nothing ? otherwise : mb.Just;
+        return mb.Nothing
+            ? otherwise
+            : mb.Just;
     };
 
 // catMaybes :: [Maybe a] -> [a]
 const catMaybes = mbs =>
     mbs.flatMap(
-        m => m.Nothing ? (
-            []
-        ) : [m.Just]
+        m => m.Nothing
+            ? []
+            : [m.Just]
     );
 
 // ceiling :: Num -> Int
@@ -574,7 +582,9 @@ const ceiling = x => {
         nr = properFraction(x),
         n = nr[0];
 
-    return 0 < nr[1] ? 1 + n : n;
+    return 0 < nr[1]
+        ? 1 + n
+        : n;
 };
 
 // center :: Int -> Char -> String -> String
@@ -584,13 +594,15 @@ const center = n =>
     c => s => {
         const gap = n - s.length;
 
-        return 0 < gap ? (() => {
-            const
-                margin = c.repeat(Math.floor(gap / 2)),
-                dust = c.repeat(gap % 2);
+        return 0 < gap
+            ? (() => {
+                const
+                    margin = c.repeat(Math.floor(gap / 2)),
+                    dust = c.repeat(gap % 2);
 
-            return `${margin}${s}${margin}${dust}`;
-        })() : s;
+                return `${margin}${s}${margin}${dust}`;
+            })()
+            : s;
     };
 
 // chars :: String -> [Char]
@@ -603,11 +615,13 @@ const chop = f =>
     // function which returns a (prefix, residue) tuple.
     xs => {
         const go = ys =>
-            Boolean(ys.length) ? (() => {
-                const [b, bs] = f(ys);
+            0 < ys.length
+                ? (() => {
+                    const [b, bs] = f(ys);
 
-                return [b].concat(go(bs));
-            })() : [];
+                    return [b].concat(go(bs));
+                })()
+                : [];
 
         return go([...xs]);
     };
@@ -670,7 +684,11 @@ const combine = fp =>
 
 // compare :: a -> a -> Ordering
 const compare = a =>
-    b => a < b ? -1 : (a > b ? 1 : 0);
+    b => a < b
+        ? -1
+        : a > b
+            ? 1
+            : 0;
 
 // compareList :: [a] -> [a] -> Ordering
 const compareList = xs =>
@@ -692,7 +710,11 @@ const comparing = f =>
             a = f(x),
             b = f(y);
 
-        return a < b ? -1 : (a > b ? 1 : 0);
+        return a < b
+            ? -1
+            : a > b
+                ? 1
+                : 0;
     };
 
 // compose (<<<) :: (b -> c) -> (a -> b) -> a -> c
@@ -757,23 +779,23 @@ const concats = xs =>
 
 // cons :: a -> [a] -> [a]
 const cons = x =>
-// A list constructed from the item x,
-// followed by the existing list xs.
-    xs => Array.isArray(xs) ? (
-        [x].concat(xs)
-    ) : "GeneratorFunction" !== xs.constructor.constructor.name ? (
-        x + xs
-    ) : (
-        function *() {
-            yield x;
-            let nxt = xs.next();
+    // A list constructed from the item x,
+    // followed by the existing list xs.
+    xs => Array.isArray(xs)
+        ? [x].concat(xs)
+        : "GeneratorFunction" !== (
+            xs.constructor.constructor.name
+        )
+            ? x + xs
+            : (function *() {
+                yield x;
+                let nxt = xs.next();
 
-            while (!nxt.done) {
-                yield nxt.value;
-                nxt = xs.next();
-            }
-        }()
-    );
+                while (!nxt.done) {
+                    yield nxt.value;
+                    nxt = xs.next();
+                }
+            }());
 
 // constant :: a -> b -> a
 const constant = k =>
@@ -781,19 +803,19 @@ const constant = k =>
 
 // curry :: ((a, b) -> c) -> a -> b -> c
 const curry = f =>
-    a => b => 1 < f.length ? (
-        f(a, b)
-    ) : f(Tuple(a)(b));
+    a => b => 1 < f.length
+        ? f(a, b)
+        : f(Tuple(a)(b));
 
 // curryN :: Curry a b => a -> b
 const curryN = f =>
-    // A curried function derived from a
-    // function over a tuple of any order.
+// A curried function derived from a
+// function over a tuple of any order.
     (...args) => {
         const
-            go = xs => f.length <= xs.length ? (
-                f(...xs)
-            ) : (...ys) => go(xs.concat(ys));
+            go = xs => f.length <= xs.length
+                ? f(...xs)
+                : (...ys) => go(xs.concat(ys));
 
         return go(args);
     };
@@ -823,11 +845,13 @@ const degrees = r =>
 const delete_ = x => {
     // xs with first instance of x (if any) removed.
     const go = xs =>
-        Boolean(xs.length) ? (
-            (x === xs[0]) ? (
-                xs.slice(1)
-            ) : [xs[0]].concat(go(xs.slice(1)))
-        ) : [];
+        0 < xs.length
+            ? x === xs[0]
+                ? xs.slice(1)
+                : [xs[0]].concat(
+                    go(xs.slice(1))
+                )
+            : [];
 
     return go;
 };
@@ -846,22 +870,22 @@ const deleteBy = fEq =>
     // item which matches x in terms of the supplied
     // fEq equality operator.
     x => {
-        const go = xs => Boolean(xs.length) ? (
-            fEq(x)(xs[0]) ? (
-                xs.slice(1)
-            ) : [xs[0], ...go(xs.slice(1))]
-        ) : [];
+        const go = xs => 0 < xs.length
+            ? fEq(x)(xs[0])
+                ? xs.slice(1)
+                : [xs[0], ...go(xs.slice(1))]
+            : [];
 
         return go;
     };
 
 // deleteFirst :: a -> [a] -> [a]
 const deleteFirst = x => {
-    const go = xs => Boolean(xs.length) ? (
-        x === xs[0] ? (
-            xs.slice(1)
-        ) : [...xs[0], ...go(xs.slice(1))]
-    ) : [];
+    const go = xs => 0 < xs.length
+        ? x === xs[0]
+            ? xs.slice(1)
+            : [...xs[0], ...go(xs.slice(1))]
+        : [];
 
     return go;
 };
@@ -921,22 +945,22 @@ const digitToInt = c => {
         ord = x => x.codePointAt(0),
         oc = ord(c);
 
-    return 48 > oc || 102 < oc ? (
-        null
-    ) : (() => {
-        const
-            dec = oc - ord("0"),
-            hexu = oc - ord("A"),
-            hexl = oc - ord("a");
+    return 48 > oc || 102 < oc
+        ? null
+        : (() => {
+            const
+                dec = oc - ord("0"),
+                hexu = oc - ord("A"),
+                hexl = oc - ord("a");
 
-        return 9 >= dec ? (
-            dec
-        ) : 0 <= hexu && 5 >= hexu ? (
-            10 + hexu
-        ) : 0 <= hexl && 5 >= hexl ? (
-            10 + hexl
-        ) : null;
-    })();
+            return 9 >= dec
+                ? dec
+                : 0 <= hexu && 5 >= hexu
+                    ? 10 + hexu
+                    : 0 <= hexl && 5 >= hexl
+                        ? 10 + hexl
+                        : null;
+        })();
 };
 
 // div :: Int -> Int -> Int
@@ -950,9 +974,9 @@ const divMod = n => d => {
     // (x `div` y)*y + (x `mod` y) == x
     const [q, r] = [Math.trunc(n / d), n % d];
 
-    return signum(n) === signum(-d) ? (
-        Tuple(q - 1)(r + d)
-    ) : Tuple(q)(r);
+    return signum(n) === signum(-d)
+        ? Tuple(q - 1)(r + d)
+        : Tuple(q)(r);
 };
 
 // dot (.) :: (b -> c) -> (a -> b) -> a -> c
@@ -1837,9 +1861,9 @@ const fmapZL = f =>
         (() => {
             const xs = zl.getZipList;
 
-            return Infinity > xs.length ? (
-                xs.map(f)
-            ) : fmapGen(f)(xs);
+            return Infinity > xs.length
+                ? xs.map(f)
+                : fmapGen(f)(xs);
         })()
     );
 
@@ -2847,7 +2871,7 @@ const liftA2Tuple = f =>
 // liftA2ZL :: (a -> b -> c) -> ZipList a ->
 // ZipList b -> ZipList c
 const liftA2ZL = op =>
-    // A ZipList formed by the pairwise application of
+    // A ZipList formed by the pairwise application of a
     // binary op over the values of two existing ZipLists
     // up to the length of the shorter of these.
     zxs => zys => ZipList(
@@ -4850,15 +4874,18 @@ const take = n =>
     // The first n elements of a list,
     // string of characters, or stream.
     xs => "GeneratorFunction" !== xs
-    .constructor.constructor.name ? (
-        xs.slice(0, n)
-    ) : Array.from({
-        length: n
-    }, () => {
-        const x = xs.next();
+    .constructor.constructor.name
+        ? xs.slice(0, n)
+        : Array.from({
+            length: n
+        }, () => {
+            const x = xs.next();
 
-        return x.done ? [] : [x.value];
-    }).flat();
+            return x.done
+                ? []
+                : [x.value];
+        })
+        .flat();
 
 // takeAround :: (a -> Bool) -> [a] -> [a]
 const takeAround = p => xs => {

@@ -8,15 +8,15 @@ const breakOn = needle =>
         const ns = [...needle];
 
         const go = hs =>
-            isPrefixOf(ns)(hs) ? (
-                Tuple([])(hs)
-            ) : 0 === hs.length ? (
-                Tuple([])([])
-            ) : first(
-                v => [hs[0]].concat(v)
-            )(
-                go(hs.slice(1))
-            );
+            isPrefixOf(ns)(hs)
+                ? Tuple([])(hs)
+                : 0 === hs.length
+                    ? Tuple([])([])
+                    : first(
+                        v => [hs[0]].concat(v)
+                    )(
+                        go(hs.slice(1))
+                    );
 
         return go([...haystack]);
     };

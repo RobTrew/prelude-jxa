@@ -7,9 +7,9 @@ const fmapZL = f =>
         (() => {
             const xs = zl.getZipList;
 
-            return Infinity > xs.length ? (
-                xs.map(f)
-            ) : fmapGen(f)(xs);
+            return Infinity > xs.length
+                ? xs.map(f)
+                : fmapGen(f)(xs);
         })()
     );
 ```

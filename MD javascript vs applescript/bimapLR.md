@@ -4,9 +4,9 @@ const bimapLR = f =>
     // Instance of bimap for Either values.
     // Either the application of f to a Left value,
     // or the application of g to a Right value.
-    g => lr => lr.Left ? (
-        Left(f(lr.Left))
-    ) : Right(g(lr.Right));
+    g => lr => lr.Left
+        ? Left(f(lr.Left))
+        : Right(g(lr.Right));
 ```
 
 

@@ -4,11 +4,11 @@ const breakOnAll = needle =>
     // Tuples breaking the string at
     // all non-overlapping instances
     // of the needle in the haystack.
-    haystack => Boolean(needle) ? (
-        haystack.split(needle)
+    haystack => Boolean(needle)
+        ? haystack.split(needle)
         .reduce((a, _, i, xs) =>
-            0 < i ? (
-                a.concat([
+            0 < i
+                ? a.concat([
                     Tuple(
                         xs.slice(0, i).join(needle)
                     )(
@@ -16,6 +16,6 @@ const breakOnAll = needle =>
                         .join(needle)
                     )
                 ])
-            ) : a, [])
-    ) : null;
+                : a, [])
+        : null;
 ```

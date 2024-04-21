@@ -5,9 +5,9 @@ const bulleted = strTab =>
     // preceded by a whitespace indent,
     // followed by a hyphen and space.
     s => s.split(/[\n\r]+/u).map(
-        x => "" !== x ? (
-            `${strTab}- ${x}`
-        ) : x
+        x => "" !== x
+            ? `${strTab}- ${x}`
+            : x
     )
     .join("\n");
 ```

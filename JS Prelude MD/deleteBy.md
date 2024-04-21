@@ -5,11 +5,11 @@ const deleteBy = fEq =>
     // item which matches x in terms of the supplied
     // fEq equality operator.
     x => {
-        const go = xs => Boolean(xs.length) ? (
-            fEq(x)(xs[0]) ? (
-                xs.slice(1)
-            ) : [xs[0], ...go(xs.slice(1))]
-        ) : [];
+        const go = xs => 0 < xs.length
+            ? fEq(x)(xs[0])
+                ? xs.slice(1)
+                : [xs[0], ...go(xs.slice(1))]
+            : [];
 
         return go;
     };
