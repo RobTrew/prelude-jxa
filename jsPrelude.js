@@ -986,31 +986,33 @@ const dot = f =>
 
 // draw :: Tree String -> [String]
 const draw = node => {
-    // shift :: String -> String -> [String] -> [String]
+    // shifted :: String -> String -> [String] -> [String]
     const shifted = (first, other, xs) => (
         [first].concat(
             Array.from({
                 length: xs.length - 1
             }, () => other)
-        ).map(
-            (y, i) => y.concat(xs[i])
         )
+        .map((y, i) => y.concat(xs[i]))
     );
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
         const lng = xs.length;
 
-        return 0 < lng ? (
-            1 < lng ? (
-                ["│"].concat(
+        return 0 < lng
+            ? 1 < lng
+                ? ["│"]
+                .concat(
                     shifted("├─ ", "│  ", draw(xs[0]))
                 )
-            ).concat(
-                drawSubTrees(xs.slice(1))
-            ) : ["│"].concat(
-                shifted("└─ ", "   ", draw(xs[0]))
-            )
-        ) : [];
+                .concat(
+                    drawSubTrees(xs.slice(1))
+                )
+                : ["│"]
+                .concat(
+                    shifted("└─ ", "   ", draw(xs[0]))
+                )
+            : [];
     };
 
     return node.root.split("\n").concat(
@@ -1143,9 +1145,9 @@ const drawTree2 = blnCompact => blnPruned => tree => {
 // drop :: Int -> Generator [a] -> Generator [a]
 // drop :: Int -> String -> String
 const drop = n =>
-    xs => Infinity > length(xs) ? (
-        xs.slice(n)
-    ) : (take(n)(xs), xs);
+    xs => Infinity > length(xs)
+        ? xs.slice(n)
+        : (take(n)(xs), xs);
 
 // dropAround :: (a -> Bool) -> [a] -> [a]
 // dropAround :: (Char -> Bool) -> String -> String
@@ -1156,25 +1158,27 @@ const dropAround = p =>
 
 // dropFileName :: FilePath -> FilePath
 const dropFileName = fp =>
-    "" !== fp ? (() => {
-        const
-            xs = (fp.split("/"))
-            .slice(0, -1);
+    "" !== fp
+        ? (() => {
+            const
+                xs = (fp.split("/"))
+                .slice(0, -1);
 
-        return Boolean(xs.length) ? (
-            `${xs.join("/")}/`
-        ) : "./";
-    })() : "./";
+            return Boolean(xs.length)
+                ? `${xs.join("/")}/`
+                : "./";
+        })()
+        : "./";
 
 // dropLength :: [a] -> [b] -> [b]
 const dropLength = xs =>
     ys => {
         const go = (x, y) =>
-            Boolean(x.length) ? (
-                Boolean(y.length) ? (
-                    go(x.slice(1), y.slice(1))
-                ) : []
-            ) : y;
+            0 < x.length
+                ? 0 < y.length
+                    ? go(x.slice(1), y.slice(1))
+                    : []
+                : y;
 
         return go(xs, ys);
     };
