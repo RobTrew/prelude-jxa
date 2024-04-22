@@ -5,8 +5,8 @@ const mod = n =>
     // results. Compare with `rem`, which inherits
     // the sign of the *dividend*.
     d => (n % d) + (
-        signum(n) === signum(-d) ? (
-            d
-        ) : 0
+        signum(n) === signum(-d)
+            ? d
+            : 0
     );
 ```

@@ -2125,25 +2125,25 @@
     ]
   },
   "minimumByMay": {
-    "code": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = f =>\n    xs => xs.reduce((a, x) =>\n        a.Nothing ? Just(x) : (\n            f(x)(a.Just) < 0 ? (\n                Just(x)\n            ) : a\n        ), Nothing());",
+    "code": "// minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a\nconst minimumByMay = f =>\n    xs => xs.reduce(\n        (a, x) => a.Nothing\n            ? Just(x)\n            : f(x)(a.Just) < 0\n                ? Just(x)\n                : a,\n        Nothing()\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "minimumMay": {
-    "code": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x < a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
+    "code": "// minimumMay :: [a] -> Maybe a\nconst minimumMay = xs =>\n    0 < xs.length\n        ? Just(xs.slice(1).reduce(\n            (a, x) => x < a\n                ? x\n                : a,\n            xs[0]\n        ))\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "minimumOn": {
-    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v < tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// minimumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst minimumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length\n        ? xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v < tpl[1]\n                    ? Tuple(x)(v)\n                    : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n        : undefined;",
     "tags": [
       "JS Prelude"
     ]
   },
   "mod": {
-    "code": "// mod :: Int -> Int -> Int\nconst mod = n =>\n    // Inherits the sign of the *divisor* for non zero\n    // results. Compare with `rem`, which inherits\n    // the sign of the *dividend*.\n    d => (n % d) + (\n        signum(n) === signum(-d) ? (\n            d\n        ) : 0\n    );",
+    "code": "// mod :: Int -> Int -> Int\nconst mod = n =>\n    // Inherits the sign of the *divisor* for non zero\n    // results. Compare with `rem`, which inherits\n    // the sign of the *dividend*.\n    d => (n % d) + (\n        signum(n) === signum(-d)\n            ? d\n            : 0\n    );",
     "tags": [
       "JS Prelude",
       "core"

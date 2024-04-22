@@ -3482,40 +3482,42 @@ const minimumBy = f =>
 
 // minimumByMay :: (a -> a -> Ordering) -> [a] -> Maybe a
 const minimumByMay = f =>
-    xs => xs.reduce((a, x) =>
-        a.Nothing ? Just(x) : (
-            f(x)(a.Just) < 0 ? (
-                Just(x)
-            ) : a
-        ), Nothing());
+    xs => xs.reduce(
+        (a, x) => a.Nothing
+            ? Just(x)
+            : f(x)(a.Just) < 0
+                ? Just(x)
+                : a,
+        Nothing()
+    );
 
 // minimumMay :: [a] -> Maybe a
 const minimumMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(1).reduce(
-            (a, x) => x < a ? (
-                x
-            ) : a,
+    0 < xs.length
+        ? Just(xs.slice(1).reduce(
+            (a, x) => x < a
+                ? x
+                : a,
             xs[0]
         ))
-    ) : Nothing();
+        : Nothing();
 
 // minimumOn :: (Ord b) => (a -> b) -> [a] -> a
 const minimumOn = f =>
     // The item in xs for which f
     // returns the highest value.
-    xs => Boolean(xs.length) ? (
-        xs.slice(1).reduce(
+    xs => 0 < xs.length
+        ? xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
 
-                return v < tpl[1] ? (
-                    Tuple(x)(v)
-                ) : tpl;
+                return v < tpl[1]
+                    ? Tuple(x)(v)
+                    : tpl;
             },
             (h => Tuple(h)(f(h)))(xs[0])
         )[0]
-    ) : undefined;
+        : undefined;
 
 // mod :: Int -> Int -> Int
 const mod = n =>
@@ -3523,9 +3525,9 @@ const mod = n =>
     // results. Compare with `rem`, which inherits
     // the sign of the *dividend*.
     d => (n % d) + (
-        signum(n) === signum(-d) ? (
-            d
-        ) : 0
+        signum(n) === signum(-d)
+            ? d
+            : 0
     );
 
 // mul (*) :: Num a => a -> a -> a
