@@ -809,8 +809,8 @@ const curry = f =>
 
 // curryN :: Curry a b => a -> b
 const curryN = f =>
-// A curried function derived from a
-// function over a tuple of any order.
+    // A curried function derived from a
+    // function over a tuple of any order.
     (...args) => {
         const
             go = xs => f.length <= xs.length
@@ -823,7 +823,7 @@ const curryN = f =>
 // cycle :: [a] -> Generator [a]
 const cycle = function* (xs) {
     // An infinite repetition of xs,
-    // from which a prefix of arbritrary
+    // from which a prefix of arbitrary
     // length may be drawn.
     const n = xs.length;
     let i = 0;

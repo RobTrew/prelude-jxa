@@ -535,13 +535,13 @@
     ]
   },
   "curryN": {
-    "code": "// curryN :: Curry a b => a -> b\nconst curryN = f =>\n// A curried function derived from a\n// function over a tuple of any order.\n    (...args) => {\n        const\n            go = xs => f.length <= xs.length\n                ? f(...xs)\n                : (...ys) => go(xs.concat(ys));\n\n        return go(args);\n    };",
+    "code": "// curryN :: Curry a b => a -> b\nconst curryN = f =>\n    // A curried function derived from a\n    // function over a tuple of any order.\n    (...args) => {\n        const\n            go = xs => f.length <= xs.length\n                ? f(...xs)\n                : (...ys) => go(xs.concat(ys));\n\n        return go(args);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "cycle": {
-    "code": "// cycle :: [a] -> Generator [a]\nconst cycle = function* (xs) {\n    // An infinite repetition of xs,\n    // from which a prefix of arbritrary\n    // length may be drawn.\n    const n = xs.length;\n    let i = 0;\n\n    while (true) {\n        yield xs[i];\n        i = (1 + i) % n;\n    }\n};",
+    "code": "// cycle :: [a] -> Generator [a]\nconst cycle = function* (xs) {\n    // An infinite repetition of xs,\n    // from which a prefix of arbitrary\n    // length may be drawn.\n    const n = xs.length;\n    let i = 0;\n\n    while (true) {\n        yield xs[i];\n        i = (1 + i) % n;\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
