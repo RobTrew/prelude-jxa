@@ -2175,7 +2175,7 @@
     ]
   },
   "nest": {
-    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n// Allowing for lazy (on-demand) evaluation.\n// If the nest turns out to be a function –\n// rather than a list – that function is applied\n// here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs\n        ? xs\n        : xs(root(tree));\n};",
+    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs\n        ? xs\n        : xs(root(tree));\n};",
     "tags": [
       "JS Prelude",
       "tree"

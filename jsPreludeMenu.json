@@ -342,7 +342,7 @@
   "mul": "// mul (*) :: Num a => a -> a -> a\nconst mul = a =>\n    b => a * b;",
   "ne": "// ne :: a -> a -> Bool\nconst ne = a =>\n    b => a !== b;",
   "negate": "// negate :: Num -> Num\nconst negate = n =>\n    -n;",
-  "nest": "// nest :: Tree a -> [a]\nconst nest = tree => {\n// Allowing for lazy (on-demand) evaluation.\n// If the nest turns out to be a function –\n// rather than a list – that function is applied\n// here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs\n        ? xs\n        : xs(root(tree));\n};",
+  "nest": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs\n        ? xs\n        : xs(root(tree));\n};",
   "newUUID": "// newUUID :: () -> IO UUID String\nconst newUUID = () =>\n    ObjC.unwrap($.NSUUID.UUID.UUIDString);",
   "not": "// not :: Bool -> Bool\nconst not = b =>\n    !b;",
   "notElem": "// notElem :: Eq a => a -> [a] -> Bool\nconst notElem = x =>\n    xs => !xs.includes(x);",
