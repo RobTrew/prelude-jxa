@@ -7,8 +7,8 @@ const insertWith = f =>
     // x is used directly.
     k => x => dict => Object.assign({},
         dict, {
-            [k]: k in dict ? (
-                f(dict[k])(x)
-            ) : x
+            [k]: k in dict
+                ? f(dict[k])(x)
+                : x
         });
 ```

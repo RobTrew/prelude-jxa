@@ -4,13 +4,15 @@
 const indexForest = trees =>
     // Index into a forest of measured trees.
     // (see measuredTree)
-    i => Boolean(trees.length) ? (() => {
-        const
-            headNode = trees[0],
-            headSize = headNode.root[1].nodeSum;
+    i => 0 < trees.length
+        ? (() => {
+            const
+                headNode = trees[0],
+                headSize = headNode.root[1].nodeSum;
 
-        return i > (headSize - 1) ? (
-            indexForest(trees.slice(1))(i - headSize)
-        ) : indexTree(headNode)(i);
-    })() : Nothing();
+            return i > (headSize - 1)
+                ? indexForest(trees.slice(1))(i - headSize)
+                : indexTree(headNode)(i);
+        })()
+        : Nothing();
 ```

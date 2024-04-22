@@ -1,9 +1,9 @@
 ```javascript
 // if_ :: Bool -> a -> a -> a
-const if_ = bln =>
-    x => y => bln ? (
-        x
-    ) : y;
+const if_ = bool =>
+    x => y => bool
+        ? x
+        : y;
 ```
 
 

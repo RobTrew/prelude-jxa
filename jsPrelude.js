@@ -1531,15 +1531,15 @@ const fTable = s =>
 const fType = g => {
     const s = g.toString();
 
-    return s.includes("Right") ? (
-        Right
-    ) : s.includes("Left") ? (
-        Left
-    ) : s.includes("Nothing") ? (
-        Just
-    ) : s.includes("Node") ? (
-        flip(Node)([])
-    ) : x => [x];
+    return s.includes("Right")
+        ? Right
+        : s.includes("Left")
+            ? Left
+            : s.includes("Nothing")
+                ? Just
+                : s.includes("Node")
+                    ? flip(Node)([])
+                    : x => [x];
 };
 
 // fanArrow (&&&) ::
@@ -2126,18 +2126,18 @@ const gcd = x =>
     y => {
         const zero = x.constructor(0);
         const go = (a, b) =>
-            zero === b ? (
-                a
-            ) : go(b, a % b);
+            zero === b
+                ? a
+                : go(b, a % b);
 
         return go(abs(x), abs(y));
     };
 
 // genericIndexMay :: [a] -> Int -> Maybe a
 const genericIndexMay = xs =>
-    i => (i < xs.length && 0 <= i) ? (
-        Just(xs[i])
-    ) : Nothing();
+    i => (i < xs.length && 0 <= i)
+        ? Just(xs[i])
+        : Nothing();
 
 // group :: [a] -> [[a]]
 const group = xs =>
@@ -2212,16 +2212,16 @@ const groupSortOn = f =>
 
 // gt :: Ord a => a -> a -> Bool
 const gt = x => y =>
-    "Tuple" === x.type ? (
-        x[0] > y[0]
-    ) : (x > y);
+    "Tuple" === x.type
+        ? x[0] > y[0]
+        : (x > y);
 
 // head :: [a] -> a
 const head = xs =>
     // The first item (if any) in a list.
-    Boolean(xs.length) ? (
-        xs[0]
-    ) : undefined;
+    0 < xs.length
+        ? xs[0]
+        : undefined;
 
 // headDef :: a -> [a] -> a
 const headDef = v =>
@@ -2235,9 +2235,9 @@ const headDef = v =>
 const headMay = xs =>
     // Just the first item of xs, or
     // Nothing if xs is an empty list.
-    Boolean(xs.length) ? (
-        Just(xs[0])
-    ) : Nothing();
+    0 < xs.length
+        ? Just(xs[0])
+        : Nothing();
 
 // identity :: a -> a
 const identity = x =>
@@ -2245,17 +2245,17 @@ const identity = x =>
     x;
 
 // if_ :: Bool -> a -> a -> a
-const if_ = bln =>
-    x => y => bln ? (
-        x
-    ) : y;
+const if_ = bool =>
+    x => y => bool
+        ? x
+        : y;
 
 // indented :: String -> String -> String
 const indented = indent =>
     s => lines(s).map(
-        x => Boolean(x) ? (
-            indent + x
-        ) : x
+        x => 0 < x.length
+            ? indent + x
+            : x
     )
     .join("\n");
 
@@ -2266,11 +2266,15 @@ const index = xs =>
     i => {
         const s = xs.constructor.constructor.name;
 
-        return "GeneratorFunction" !== s ? (() => {
-            const v = xs[i];
+        return "GeneratorFunction" !== s
+            ? (() => {
+                const v = xs[i];
 
-            return undefined !== v ? Just(v) : Nothing();
-        })() : (take(i)(xs), xs.next().value);
+                return undefined !== v
+                    ? Just(v)
+                    : Nothing();
+            })()
+            : (take(i)(xs), xs.next().value);
     };
 
 // indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int ->
@@ -2278,40 +2282,42 @@ const index = xs =>
 const indexForest = trees =>
     // Index into a forest of measured trees.
     // (see measuredTree)
-    i => Boolean(trees.length) ? (() => {
-        const
-            headNode = trees[0],
-            headSize = headNode.root[1].nodeSum;
+    i => 0 < trees.length
+        ? (() => {
+            const
+                headNode = trees[0],
+                headSize = headNode.root[1].nodeSum;
 
-        return i > (headSize - 1) ? (
-            indexForest(trees.slice(1))(i - headSize)
-        ) : indexTree(headNode)(i);
-    })() : Nothing();
+            return i > (headSize - 1)
+                ? indexForest(trees.slice(1))(i - headSize)
+                : indexTree(headNode)(i);
+        })()
+        : Nothing();
 
 // indexOf :: Eq a => [a] -> [a] -> Maybe Int
 // indexOf :: String -> String -> Maybe Int
 const indexOf = needle =>
-    haystack => "string" !== typeof haystack ? (
-        findIndex(xs => isPrefixOf(needle)(xs))(
+    haystack => "string" !== typeof haystack
+        ? findIndex(xs => isPrefixOf(needle)(xs))(
             tails(haystack)
         )
-    ) : (() => {
-        const i = haystack.indexOf(needle);
+        : (() => {
+            const i = haystack.indexOf(needle);
 
-        return -1 !== i ? (
-            Just(i)
-        ) : Nothing();
-    })();
+            return -1 !== i
+                ? Just(i)
+                : Nothing();
+        })();
 
 // indexTree :: Tree (a,  { nodeSum :: Int }) -> Int ->
 // Maybe Tree (a,  { nodeSum :: Int })
 const indexTree = tree =>
     // Index into a measured tree. (see measuredTree)
-    i => 0 !== i ? (
-        i > (tree.root[1].nodeSum - 1) ? (
-            Nothing()
-        ) : indexForest(tree.nest)(i - 1)
-    ) : Just(tree);
+    i => 0 !== i
+        ? i > (tree.root[1].nodeSum - 1)
+            ? Nothing()
+            : indexForest(tree.nest)(i - 1)
+        : Just(tree);
 
 // indexedTree :: Int -> Tree a -> Tree (a, Int)
 const indexedTree = rootIndex =>
@@ -2330,25 +2336,24 @@ const indexedTree = rootIndex =>
 // init :: [a] -> [a]
 const init = xs =>
     // All elements of a list except the last.
-    Boolean(xs.length) ? (
-        xs.slice(0, -1)
-    ) : null;
+    0 < xs.length
+        ? xs.slice(0, -1)
+        : null;
 
 // initMay :: [a] -> Maybe [a]
 const initMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(0, -1))
-    ) : Nothing();
+    0 < xs.length
+        ? Just(xs.slice(0, -1))
+        : Nothing();
 
 // inits :: [a] -> [[a]]
 // inits :: String -> [String]
 const inits = xs =>
     // All prefixes of the argument,
     // shortest first.
-    [
-        [], ...xs
-    ]
-    .map((_, i, ys) => ys.slice(0, 1 + i));
+    [[], ...xs].map(
+        (_, i, ys) => ys.slice(0, 1 + i)
+    );
 
 // insert :: Ord a => a -> [a] -> [a]
 const insert = x =>
@@ -2370,7 +2375,7 @@ const insertBy = cmp =>
     // to x and the following value, returns LT or EQ.
     x => xs => {
         const go = (y, ys) =>
-            Boolean(ys.length)
+            0 < ys.length
                 ? 0 < cmp(y)(ys[0])
                     ? [ys[0], ...go(y, ys.slice(1))]
                     : [y, ...ys]
@@ -2393,16 +2398,16 @@ const insertWith = f =>
     // x is used directly.
     k => x => dict => Object.assign({},
         dict, {
-            [k]: k in dict ? (
-                f(dict[k])(x)
-            ) : x
+            [k]: k in dict
+                ? f(dict[k])(x)
+                : x
         });
 
 // intToDigit :: Int -> Char
 const intToDigit = n =>
-    n >= 0 && n < 16 ? (
-        "0123456789ABCDEF".charAt(n)
-    ) : "?";
+    n >= 0 && n < 16
+        ? "0123456789ABCDEF".charAt(n)
+        : "?";
 
 // intercalate :: [a] -> [[a]] -> [a]
 const intercalate = sep =>
@@ -2445,10 +2450,14 @@ const intersection = s => s1 =>
 // intersperse :: a -> [a] -> [a]
 const intersperse = sep =>
     // intersperse(0)([1,2,3]) -> [1, 0, 2, 0, 3]
-    xs => 0 < xs.length ? [
-        xs[0], ...xs.slice(1)
-        .flatMap(x => [sep, x])
-    ] : [];
+    xs => 0 < xs.length
+        ? [
+            xs[0],
+            ...xs.slice(1).flatMap(
+                x => [sep, x]
+            )
+        ]
+        : [];
 
 // isAlpha :: Char -> Bool
 const isAlpha = c =>
@@ -2483,15 +2492,17 @@ const isDigit = c => {
 // isInfixOf :: (Eq a) => [a] -> [a] -> Bool
 // isInfixOf :: String -> String -> Bool
 const isInfixOf = needle => haystack =>
-    "string" !== typeof haystack ? (() => {
-        const
-            lng = needle.length,
-            go = xs => lng <= xs.length ? (
-                isPrefixOf(needle)(xs) || go(xs.slice(1))
-            ) : false;
+    "string" !== typeof haystack
+        ? (() => {
+            const
+                lng = needle.length,
+                go = xs => lng <= xs.length
+                    ? isPrefixOf(needle)(xs) || go(xs.slice(1))
+                    : false;
 
-        return go(haystack);
-    })() : haystack.includes(needle);
+            return go(haystack);
+        })()
+        : haystack.includes(needle);
 
 // isLeft :: Either a b -> Bool
 const isLeft = lr =>
@@ -2515,21 +2526,23 @@ const isNull = xs =>
 // isPrefixOf :: [a] -> [a] -> Bool
 // isPrefixOf :: String -> String -> Bool
 const isPrefixOf = xs =>
-    // True if and only if xs is a prefix of ys.
+// True if and only if xs is a prefix of ys.
     ys => {
         const go = (vs, ws) => {
             const intX = vs.length;
 
-            return 0 < intX ? (
-                ws.length >= intX ? vs[0] === ws[0] && go(
-                    vs.slice(1), ws.slice(1)
-                ) : false
-            ) : true;
+            return 0 < intX
+                ? ws.length >= intX
+                    ? vs[0] === ws[0] && go(
+                        vs.slice(1), ws.slice(1)
+                    )
+                    : false
+                : true;
         };
 
-        return "string" !== typeof xs ? (
-            go(xs, ys)
-        ) : ys.startsWith(xs);
+        return "string" !== typeof xs
+            ? go(xs, ys)
+            : ys.startsWith(xs);
     };
 
 // isRight :: Either a b -> Bool
@@ -2587,15 +2600,15 @@ const isSubsetOf = a => b => {
 // isSuffixOf :: Eq a => [a] -> [a] -> Bool
 // isSuffixOf :: String -> String -> Bool
 const isSuffixOf = needle =>
-    haystack => "string" !== typeof haystack ? (
-        bindMay(
+    haystack => "string" !== typeof haystack
+        ? bindMay(
             dropLengthMaybe(needle)(haystack)
         )(
             delta => eq(needle)(
                 dropLength(delta)(haystack)
             )
         )
-    ) : haystack.endsWith(needle);
+        : haystack.endsWith(needle);
 
 // isUpper :: Char -> Bool
 const isUpper = c =>
@@ -2629,9 +2642,9 @@ const iterateUntil = p =>
     // -> [1, 2, 4, 8]
     f => x => {
         const
-            go = v => p(v) ? (
-                [v]
-            ) : [v, ...go(f(v))];
+            go = v => p(v)
+                ? [v]
+                : [v, ...go(f(v))];
 
         return go(x);
     };
@@ -2689,17 +2702,17 @@ const jsonParseLR = s => {
 const justifyLeft = n =>
     // The string s, followed by enough padding (with
     // the character c) to reach the string length n.
-    c => s => n > s.length ? (
-        s.padEnd(n, c)
-    ) : s;
+    c => s => n > s.length
+        ? s.padEnd(n, c)
+        : s;
 
 // justifyRight :: Int -> Char -> String -> String
 const justifyRight = n =>
     // The string s, preceded by enough padding (with
     // the character c) to reach the string length n.
-    c => s => n > s.length ? (
-        s.padStart(n, c)
-    ) : s;
+    c => s => n > s.length
+        ? s.padStart(n, c)
+        : s;
 
 // kCompose (>=>) :: Monad m =>
 // [(a -> m a)] -> (a -> m a)
@@ -2707,12 +2720,12 @@ const kCompose = (...fs) =>
     // Left Right composition of a sequence
     // of functions which lift a raw value
     // of the same type into the same monad.
-    x => Boolean(fs.length) ? (
-        fs.slice(1).reduce(
+    x => Boolean(fs.length)
+        ? fs.slice(1).reduce(
             (m, f) => bind(m)(f),
             fs[0](x)
         )
-    ) : x;
+        : x;
 
 // keys :: Dict -> [String]
 const keys = Object.keys;
@@ -2733,9 +2746,11 @@ const last = xs =>
 
 // lastMay :: [a] -> Maybe a
 const lastMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(-1)[0])
-    ) : Nothing();
+    // Nothing if xs is empty, otherwise
+    // Just the last item of xs.
+    0 < xs.length
+        ? Just(xs.slice(-1)[0])
+        : Nothing();
 
 // lazyList :: [a] -> Gen [a]
 const lazyList = xs => {
@@ -2756,9 +2771,9 @@ const lazyList = xs => {
 const lcm = x =>
     // The smallest positive integer divisible
     // without remainder by both x and y.
-    y => (x === 0 || y === 0) ? (
-        0
-    ) : Math.abs(Math.floor(x / gcd(x)(y)) * y);
+    y => (x === 0 || y === 0)
+        ? 0
+        : Math.abs(Math.floor(x / gcd(x)(y)) * y);
 
 // le :: Ord a => a -> a -> a
 const le = x =>
@@ -2768,9 +2783,9 @@ const le = x =>
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
     xs.flatMap(
-        x => ("Left" in x) ? [
-            x.Left
-        ] : []
+        x => ("Left" in x)
+            ? [x.Left]
+            : []
     );
 
 // length :: [a] -> Int
@@ -2779,21 +2794,22 @@ const length = xs =>
     // length. This enables zip and zipWith to choose
     // the shorter argument when one is non-finite,
     // like cycle, repeat etc
-    "Node" !== xs.type ? (
-        "GeneratorFunction" !== xs.constructor
-        .constructor.name ? (
-                xs.length
-            ) : Infinity
-    ) : lengthTree(xs);
+    "Node" !== xs.type
+        ? "GeneratorFunction" !== (
+            xs.constructor.constructor.name
+        )
+            ? xs.length
+            : Infinity
+        : lengthTree(xs);
 
 // lengthTree :: Tree a -> Int
-const lengthTree = tree =>
-    // The count of nodes in a given tree.
-    foldTree(
-        () => xs => xs.reduce(
-            (a, x) => a + x, 1
-        )
-    )(tree);
+const lengthTree = tree => {
+    // The number of nodes in the tree.
+    const go = (n, t) =>
+        n + nest(t).reduce(go, 1);
+
+    return go(0, tree);
+};
 
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>

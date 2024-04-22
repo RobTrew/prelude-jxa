@@ -3,7 +3,7 @@
 const headMay = xs =>
     // Just the first item of xs, or
     // Nothing if xs is an empty list.
-    Boolean(xs.length) ? (
-        Just(xs[0])
-    ) : Nothing();
+    0 < xs.length
+        ? Just(xs[0])
+        : Nothing();
 ```

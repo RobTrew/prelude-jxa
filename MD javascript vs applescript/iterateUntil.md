@@ -8,9 +8,9 @@ const iterateUntil = p =>
     // -> [1, 2, 4, 8]
     f => x => {
         const
-            go = v => p(v) ? (
-                [v]
-            ) : [v, ...go(f(v))];
+            go = v => p(v)
+                ? [v]
+                : [v, ...go(f(v))];
 
         return go(x);
     };

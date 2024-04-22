@@ -6,11 +6,15 @@ const index = xs =>
     i => {
         const s = xs.constructor.constructor.name;
 
-        return "GeneratorFunction" !== s ? (() => {
-            const v = xs[i];
+        return "GeneratorFunction" !== s
+            ? (() => {
+                const v = xs[i];
 
-            return undefined !== v ? Just(v) : Nothing();
-        })() : (take(i)(xs), xs.next().value);
+                return undefined !== v
+                    ? Just(v)
+                    : Nothing();
+            })()
+            : (take(i)(xs), xs.next().value);
     };
 ```
 

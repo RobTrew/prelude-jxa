@@ -7,7 +7,7 @@ const insertBy = cmp =>
     // to x and the following value, returns LT or EQ.
     x => xs => {
         const go = (y, ys) =>
-            Boolean(ys.length)
+            0 < ys.length
                 ? 0 < cmp(y)(ys[0])
                     ? [ys[0], ...go(y, ys.slice(1))]
                     : [y, ...ys]
