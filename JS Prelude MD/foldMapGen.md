@@ -7,7 +7,7 @@ const foldMapGen = f =>
         function* () {
             const ys = [...xs];
 
-            while (Boolean(ys.length)) {
+            while (0 < ys.length) {
                 yield f(ys.shift());
             }
         }(xs)

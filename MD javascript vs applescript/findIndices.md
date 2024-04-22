@@ -6,9 +6,9 @@ const findIndices = p =>
         const ys = [...xs];
 
         return ys.flatMap(
-            (y, i) => p(y, i, ys) ? (
-                [i]
-            ) : []
+            (y, i) => p(y, i, ys)
+                ? [i]
+                : []
         );
     };
 ```

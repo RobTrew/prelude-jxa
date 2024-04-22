@@ -745,27 +745,27 @@
     ]
   },
   "elem": {
-    "code": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = x =>\n    // True if xs contains an instance of x.\n    xs => {\n        const t = xs.constructor.name;\n\n        return \"Array\" !== t ? (\n            xs[\"Set\" !== t ? \"includes\" : \"has\"](x)\n        ) : xs.some(eq(x));\n    };",
+    "code": "// elem :: Eq a => a -> [a] -> Bool\nconst elem = x =>\n    // True if xs contains an instance of x.\n    xs => {\n        const t = xs.constructor.name;\n\n        return \"Array\" !== t\n            ? xs[\"Set\" !== t\n                ? \"includes\"\n                : \"has\"](x)\n            : xs.some(eq(x));\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "elemAtMay": {
-    "code": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = i =>\n    // Just the item at the indexed position in an array,\n    // or in the lexically sorted key-values of a dict,\n    // or Nothing, if the index is out of range.\n    obj => {\n        const\n            vs = Array.isArray(obj) ? (\n                obj\n            ) : Object.entries(obj).sort(\n                (a, b) => b[0].localeCompare(a[0])\n            );\n\n        return (0 <= i) && (i < vs.length) ? (\n            Just(vs[i])\n        ) : Nothing();\n    };",
+    "code": "// elemAtMay :: Int -> Dict -> Maybe (String, a)\n// elemAtMay :: Int -> [a] -> Maybe a\nconst elemAtMay = i =>\n    // Just the item at the indexed position in an array,\n    // or in the lexically sorted key-values of a dict,\n    // or Nothing, if the index is out of range.\n    obj => {\n        const\n            vs = Array.isArray(obj)\n                ? obj\n                : Object.entries(obj).sort(\n                    (a, b) => b[0].localeCompare(a[0])\n                );\n\n        return (0 <= i) && (i < vs.length)\n            ? Just(vs[i])\n            : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "elemIndex": {
-    "code": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = x =>\n    // Just the index of x in xs, if it is found,\n    // or Nothing, if xs does not contain x.\n    xs => {\n        const i = xs.indexOf(x);\n\n        return -1 === i ? (\n            Nothing()\n        ) : Just(i);\n    };",
+    "code": "// elemIndex :: Eq a => a -> [a] -> Maybe Int\nconst elemIndex = x =>\n    // Just the index of x in xs, if it is found,\n    // or Nothing, if xs does not contain x.\n    xs => {\n        const i = xs.indexOf(x);\n\n        return -1 === i\n            ? Nothing()\n            : Just(i);\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "elemIndices": {
-    "code": "// elemIndices :: Eq a => a -> [a] -> [Int]\nconst elemIndices = x =>\n    // The indices at which x occurs in xs.\n    xs => [...xs].flatMap(\n        (y, i) => y === x ? (\n            [i]\n        ) : []\n    );",
+    "code": "// elemIndices :: Eq a => a -> [a] -> [Int]\nconst elemIndices = x =>\n    // The indices at which x occurs in xs.\n    xs => [...xs].flatMap(\n        (y, i) => y === x\n            ? [i]\n            : []\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -777,7 +777,7 @@
     ]
   },
   "elems": {
-    "code": "// elems :: Map k a -> [a]\n// elems :: Set a -> [a]\nconst elems = x =>\n    \"Set\" !== x.constructor.name ? (\n        Object.values(x)\n    ) : Array.from(x.values());",
+    "code": "// elems :: Map k a -> [a]\n// elems :: Set a -> [a]\nconst elems = x =>\n    \"Set\" !== x.constructor.name\n        ? Object.values(x)\n        : Array.from(x.values());",
     "tags": [
       "JS Prelude"
     ]
@@ -814,7 +814,7 @@
     ]
   },
   "enumFromThenToChar": {
-    "code": "// enumFromThenToChar :: Char -> Char -> Char -> [Char]\nconst enumFromThenToChar = x1 =>\n    x2 => y => {\n        const [i1, i2, iY] = Array.from([x1, x2, y])\n            .map(x => x.codePointAt(0)),\n            d = i2 - i1;\n\n        return Array.from({\n            length: (Math.floor(iY - i2) / d) + 2\n        }, (_, i) => String.fromCodePoint(i1 + (d * i)));\n    };",
+    "code": "// enumFromThenToChar :: Char -> Char -> Char -> [Char]\nconst enumFromThenToChar = x1 =>\n    x2 => y => {\n        const\n            [i1, i2, iY] = [x1, x2, y].map(\n                x => x.codePointAt(0)\n            ),\n            d = i2 - i1;\n\n        return Array.from({\n            length: (Math.floor(iY - i2) / d) + 2\n        },\n        (_, i) => String.fromCodePoint(\n            i1 + (d * i)\n        ));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -827,19 +827,19 @@
     ]
   },
   "enumFromToChar": {
-    "code": "// enumFromToChar :: Char -> Char -> [Char]\nconst enumFromToChar = m => n => {\n    const [intM, intN] = [m, n].map(\n        x => x.codePointAt(0)\n    );\n\n    return Array.from({\n        length: Math.floor(intN - intM) + 1\n    }, (_, i) => String.fromCodePoint(intM + i));\n};",
+    "code": "// enumFromToChar :: Char -> Char -> [Char]\nconst enumFromToChar = m => n => {\n    const\n        [intM, intN] = [m, n].map(\n            x => x.codePointAt(0)\n        );\n\n    return Array.from({\n        length: Math.floor(intN - intM) + 1\n    }, (_, i) => String.fromCodePoint(intM + i));\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "enumFromTo_": {
-    "code": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = m => n => {\n    const [x, y] = [m, n].map(fromEnum),\n        b = x + (isNaN(m) ? 0 : m - x);\n\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};",
+    "code": "// enumFromTo_ :: Enum a => a -> a -> [a]\nconst enumFromTo_ = m => n => {\n    const\n        [x, y] = [m, n].map(fromEnum),\n        b = x + (\n            isNaN(m)\n                ? 0\n                : m - x\n        );\n\n    return Array.from({\n        length: 1 + (y - x)\n    }, (_, i) => toEnum(m)(b + i));\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "eq (==)": {
-    "code": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = a =>\n    // True when a and b are equivalent in the terms\n    // defined below for their shared data type.\n    b => {\n        const t = typeof a;\n\n        return t !== typeof b ? (\n            false\n        ) : \"object\" !== t ? (\n            \"function\" !== t ? (\n                a === b\n            ) : a.toString() === b.toString()\n        ) : (() => {\n            const kvs = Object.entries(a);\n\n            return kvs.length !== Object.keys(b).length ? (\n                false\n            ) : kvs.every(([k, v]) => eq(v)(b[k]));\n        })();\n    };",
+    "code": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = a =>\n    // True when a and b are equivalent in the terms\n    // defined below for their shared data type.\n    b => {\n        const t = typeof a;\n\n        return t === typeof b && (\n            \"object\" !== t\n                ? \"function\" !== t\n                    ? a === b\n                    : a.toString() === b.toString()\n                : (() => {\n                    const kvs = Object.entries(a);\n\n                    return kvs.length !== Object.keys(b).length\n                        ? false\n                        : kvs.every(([k, v]) => eq(v)(b[k]));\n                })()\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -928,21 +928,21 @@
     ]
   },
   "fileStatus": {
-    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(\n            $(fp).stringByStandardizingPath,\n            e\n        );\n\n    return dct.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.deepUnwrap(dct));\n};",
+    "code": "// fileStatus :: FilePath -> Either String Dict\nconst fileStatus = fp => {\n    const\n        e = $(),\n        dct = $.NSFileManager.defaultManager\n        .attributesOfItemAtPathError(\n            $(fp).stringByStandardizingPath,\n            e\n        );\n\n    return dct.isNil()\n        ? Left(ObjC.unwrap(e.localizedDescription))\n        : Right(ObjC.deepUnwrap(dct));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "fileUTI": {
-    "code": "// fileUTI :: FilePath -> Either String String\nconst fileUTI = fp => {\n    // ObjC.import(\"AppKit\")\n    const\n        e = $(),\n        uti = $.NSWorkspace.sharedWorkspace\n        .typeOfFileError(fp, e);\n\n    return uti.isNil() ? (\n        Left(ObjC.unwrap(e.localizedDescription))\n    ) : Right(ObjC.unwrap(uti));\n};",
+    "code": "// fileUTI :: FilePath -> Either String String\nconst fileUTI = fp => {\n    // ObjC.import(\"AppKit\")\n    const\n        e = $(),\n        uti = $.NSWorkspace.sharedWorkspace\n        .typeOfFileError(fp, e);\n\n    return uti.isNil()\n        ? Left(ObjC.unwrap(e.localizedDescription))\n        : Right(ObjC.unwrap(uti));\n};",
     "tags": [
       "JS Prelude",
       "jxa"
     ]
   },
   "filesCopiedLR": {
-    "code": "// filesCopiedLR :: FilePath -> [FilePath] ->\n// FilePath -> IO Either String [FilePath]\nconst filesCopiedLR = fpSourceFolder =>\n    // Either a message, or a list of the files\n    // successfully copied from the source folder\n    // to the target folder, or already found in place.\n    fileNames => fpTargetFolder => {\n        const\n            lrs = fileNames.map(k => {\n                const tgt = combine(fpTargetFolder)(k);\n\n                return doesFileExist(tgt) ? (\n                    Right(tgt)\n                ) : copyFileLR(\n                    combine(fpSourceFolder)(k)\n                )(tgt);\n            }),\n            ls = lefts(lrs);\n\n        return Boolean(ls.length) ? (\n            Left(ls[0])\n        ) : Right(rights(lrs));\n    };",
+    "code": "// filesCopiedLR :: FilePath -> [FilePath] ->\n// FilePath -> IO Either String [FilePath]\nconst filesCopiedLR = fpSourceFolder =>\n    // Either a message, or a list of the files\n    // successfully copied from the source folder\n    // to the target folder, or already found in place.\n    fileNames => fpTargetFolder => {\n        const\n            lrs = fileNames.map(k => {\n                const tgt = combine(fpTargetFolder)(k);\n\n                return doesFileExist(tgt)\n                    ? Right(tgt)\n                    : copyFileLR(\n                        combine(fpSourceFolder)(k)\n                    )(tgt);\n            }),\n            ls = lefts(lrs);\n\n        return 0 < ls.length\n            ?  Left(ls[0])\n            : Right(rights(lrs));\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -968,7 +968,7 @@
     ]
   },
   "filteredSubTrees": {
-    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    const go = tree => (\n        p(tree.root) ? (\n            [tree]\n        ) : []\n    ).concat(tree.nest.flatMap(go));\n\n    return go;\n};",
+    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    const go = tree => (\n        p(tree.root)\n            ? [tree]\n            : []\n    )\n    .concat(tree.nest.flatMap(go));\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -989,26 +989,26 @@
     ]
   },
   "findGen": {
-    "code": "// findGen :: (a -> Bool) -> Gen [a] -> Maybe a\nconst findGen = p =>\n    // Just the first match for the predicate p\n    // in the generator stream xs, or Nothing\n    // if no match is found.\n    xs => {\n        const\n            mb = until(\n                ([nxt]) => nxt.done || p(nxt.value)\n            )(\n                ([, b]) => Tuple(b.next())(\n                    b\n                )\n            )(Tuple(xs.next())(xs))[0];\n\n        return mb.done ? (\n            Nothing()\n        ) : Just(mb.value);\n    };",
+    "code": "// findGen :: (a -> Bool) -> Gen [a] -> Maybe a\nconst findGen = p =>\n    // Just the first match for the predicate p\n    // in the generator stream xs, or Nothing\n    // if no match is found.\n    xs => {\n        const\n            mb = until(\n                ([nxt]) => nxt.done || p(nxt.value)\n            )(\n                ([, b]) => Tuple(b.next())(\n                    b\n                )\n            )(\n                Tuple(xs.next())(xs)\n            )[0];\n\n        return mb.done\n            ? Nothing()\n            : Just(mb.value);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "findIndex": {
-    "code": "// findIndex :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndex = p =>\n    //  Just the index of the first element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = [...xs].findIndex(p);\n\n        return -1 !== i ? (\n            Just(i)\n        ) : Nothing();\n    };",
+    "code": "// findIndex :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndex = p =>\n    //  Just the index of the first element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = [...xs].findIndex(p);\n\n        return -1 !== i\n            ? Just(i)\n            : Nothing();\n    };",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "findIndexR": {
-    "code": "// findIndexR :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndexR = p =>\n    //  Just the index of the last element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = reverse([...xs]).findIndex(p);\n\n        return -1 !== i ? (\n            Just(xs.length - (1 + i))\n        ) : Nothing();\n    };",
+    "code": "// findIndexR :: (a -> Bool) -> [a] -> Maybe Int\nconst findIndexR = p =>\n    //  Just the index of the last element in\n    //  xs for which p(x) is true, or\n    //  Nothing if there is no such element.\n    xs => {\n        const i = reverse([...xs]).findIndex(p);\n\n        return -1 !== i\n            ? Just(xs.length - (1 + i))\n            : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "findIndices": {
-    "code": "// findIndices :: (a -> Bool) -> [a] -> [Int]\n// findIndices :: (String -> Bool) -> String -> [Int]\nconst findIndices = p =>\n    xs => {\n        const ys = [...xs];\n\n        return ys.flatMap(\n            (y, i) => p(y, i, ys) ? (\n                [i]\n            ) : []\n        );\n    };",
+    "code": "// findIndices :: (a -> Bool) -> [a] -> [Int]\n// findIndices :: (String -> Bool) -> String -> [Int]\nconst findIndices = p =>\n    xs => {\n        const ys = [...xs];\n\n        return ys.flatMap(\n            (y, i) => p(y, i, ys)\n                ? [i]\n                : []\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1048,7 +1048,7 @@
     ]
   },
   "floor": {
-    "code": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            \"Ratio\" !== x.type ? (\n                properFraction\n            ) : properFracRatio\n        )(x),\n        n = nr[0];\n\n    return 0 > nr[1] ? n - 1 : n;\n};",
+    "code": "// floor :: Num -> Int\nconst floor = x => {\n    const\n        nr = (\n            \"Ratio\" !== x.type\n                ? properFraction\n                : properFracRatio\n        )(x),\n        n = nr[0];\n\n    return 0 > nr[1]\n        ? n - 1\n        : n;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1115,13 +1115,13 @@
     ]
   },
   "foldMapGen": {
-    "code": "// foldMapGen :: (a -> [b]) -> [a] -> Gen [b]\nconst foldMapGen = f =>\n    // A lazy list of concatenated values\n    // obtained by mapping f over xs\n    xs => concatGen(\n        function* () {\n            const ys = [...xs];\n\n            while (Boolean(ys.length)) {\n                yield f(ys.shift());\n            }\n        }(xs)\n    );",
+    "code": "// foldMapGen :: (a -> [b]) -> [a] -> Gen [b]\nconst foldMapGen = f =>\n    // A lazy list of concatenated values\n    // obtained by mapping f over xs\n    xs => concatGen(\n        function* () {\n            const ys = [...xs];\n\n            while (0 < ys.length) {\n                yield f(ys.shift());\n            }\n        }(xs)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "foldMapList": {
-    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over the combined values of a structure.\n    xs => 1 < xs.length ? (\n        xs.slice(1).reduce(\n            (a, x) => mappend(a)(f(x)),\n            xs[0]\n        )\n    ) : xs.map(f);",
+    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n// f mapped over the combined values of a structure.\n    xs => 1 < xs.length\n        ? xs.slice(1).reduce(\n            (a, x) => mappend(a)(f(x)),\n            xs[0]\n        )\n        : xs.map(f);",
     "tags": [
       "JS Prelude"
     ]
@@ -1148,7 +1148,7 @@
     ]
   },
   "foldl1": {
-    "code": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f =>\n    // Left to right reduction of the non-empty list xs,\n    // using the binary operator f, with the head of xs\n    // as the initial acccumulator value.\n    xs => 1 < xs.length ? (\n        xs.slice(1)\n        .reduce(uncurry(f), xs[0])\n    ) : xs[0];",
+    "code": "// foldl1 :: (a -> a -> a) -> [a] -> a\nconst foldl1 = f =>\n    // Left to right reduction of the non-empty list xs,\n    // using the binary operator f, with the head of xs\n    // as the initial acccumulator value.\n    xs => 1 < xs.length\n        ? xs.slice(1).reduce(\n            uncurry(f),\n            xs[0]\n        )\n        : xs[0];",
     "tags": [
       "JS Prelude"
     ]
@@ -1174,13 +1174,13 @@
     ]
   },
   "foldr1": {
-    "code": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = f =>\n    xs => Boolean(xs.length) ? (\n        xs.slice(0, -1).reduceRight(\n            uncurry(f),\n            xs.slice(-1)[0]\n        )\n    ) : [];",
+    "code": "// foldr1 :: (a -> a -> a) -> [a] -> a\nconst foldr1 = f =>\n    xs => 0 < xs.length\n        ? xs.slice(0, -1).reduceRight(\n            uncurry(f),\n            xs.slice(-1)[0]\n        )\n        : [];",
     "tags": [
       "JS Prelude"
     ]
   },
   "foldr1May": {
-    "code": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = f =>\n    // Nothing if xs is empty, or Just a right\n    // fold of f over the list using the last\n    // item of xs as the initial accumulator value.\n    xs => Boolean(xs.length) ? (\n        Just(\n            xs.slice(0, -1).reduceRight(\n                uncurry(f),\n                xs.slice(-1)[0])\n        )\n    ) : Nothing();",
+    "code": "// foldr1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldr1May = f =>\n    // Nothing if xs is empty, or Just a right\n    // fold of f over the list using the last\n    // item of xs as the initial accumulator value.\n    xs => Boolean(xs.length)\n        ? Just(\n            xs.slice(0, -1).reduceRight(\n                uncurry(f),\n                xs.slice(-1)[0])\n        )\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1211,19 +1211,19 @@
     ]
   },
   "fromEnum": {
-    "code": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x =>\n    typeof x !== \"string\" ? (\n        x.constructor === Object ? (\n            x.value\n        ) : parseInt(Number(x), 10)\n    ) : x.codePointAt(0);",
+    "code": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x =>\n    typeof x !== \"string\"\n        ? x.constructor === Object\n            ? x.value\n            : parseInt(Number(x), 10)\n        : x.codePointAt(0);",
     "tags": [
       "JS Prelude"
     ]
   },
   "fromLeft": {
-    "code": "// fromLeft :: a -> Either a b -> a\nconst fromLeft = def =>\n    // The contents of a 'Left' value, or otherwise a default value.\n    lr => isLeft(lr) ? lr.Left : def;",
+    "code": "// fromLeft :: a -> Either a b -> a\nconst fromLeft = def =>\n    // The contents of a 'Left' value,\n    // or otherwise a default value.\n    lr => isLeft(lr)\n        ? lr.Left\n        : def;",
     "tags": [
       "JS Prelude"
     ]
   },
   "fromMaybe": {
-    "code": "// fromMaybe :: a -> Maybe a -> a\nconst fromMaybe = v =>\n    mb => \"Nothing\" in mb ? (\n        v\n    ) : mb.Just;",
+    "code": "// fromMaybe :: a -> Maybe a -> a\nconst fromMaybe = v =>\n    mb => \"Nothing\" in mb\n        ? v\n        : mb.Just;",
     "tags": [
       "JS Prelude"
     ]

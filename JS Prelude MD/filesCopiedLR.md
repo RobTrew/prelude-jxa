@@ -10,16 +10,16 @@ const filesCopiedLR = fpSourceFolder =>
             lrs = fileNames.map(k => {
                 const tgt = combine(fpTargetFolder)(k);
 
-                return doesFileExist(tgt) ? (
-                    Right(tgt)
-                ) : copyFileLR(
-                    combine(fpSourceFolder)(k)
-                )(tgt);
+                return doesFileExist(tgt)
+                    ? Right(tgt)
+                    : copyFileLR(
+                        combine(fpSourceFolder)(k)
+                    )(tgt);
             }),
             ls = lefts(lrs);
 
-        return Boolean(ls.length) ? (
-            Left(ls[0])
-        ) : Right(rights(lrs));
+        return 0 < ls.length
+            ?  Left(ls[0])
+            : Right(rights(lrs));
     };
 ```

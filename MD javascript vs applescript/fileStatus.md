@@ -9,9 +9,9 @@ const fileStatus = fp => {
             e
         );
 
-    return dct.isNil() ? (
-        Left(ObjC.unwrap(e.localizedDescription))
-    ) : Right(ObjC.deepUnwrap(dct));
+    return dct.isNil()
+        ? Left(ObjC.unwrap(e.localizedDescription))
+        : Right(ObjC.deepUnwrap(dct));
 };
 ```
 

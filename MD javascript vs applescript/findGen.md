@@ -12,11 +12,13 @@ const findGen = p =>
                 ([, b]) => Tuple(b.next())(
                     b
                 )
-            )(Tuple(xs.next())(xs))[0];
+            )(
+                Tuple(xs.next())(xs)
+            )[0];
 
-        return mb.done ? (
-            Nothing()
-        ) : Just(mb.value);
+        return mb.done
+            ? Nothing()
+            : Just(mb.value);
     };
 ```
 

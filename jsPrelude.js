@@ -1243,9 +1243,11 @@ const elem = x =>
     xs => {
         const t = xs.constructor.name;
 
-        return "Array" !== t ? (
-            xs["Set" !== t ? "includes" : "has"](x)
-        ) : xs.some(eq(x));
+        return "Array" !== t
+            ? xs["Set" !== t
+                ? "includes"
+                : "has"](x)
+            : xs.some(eq(x));
     };
 
 // elemAtMay :: Int -> Dict -> Maybe (String, a)
@@ -1256,15 +1258,15 @@ const elemAtMay = i =>
     // or Nothing, if the index is out of range.
     obj => {
         const
-            vs = Array.isArray(obj) ? (
-                obj
-            ) : Object.entries(obj).sort(
-                (a, b) => b[0].localeCompare(a[0])
-            );
+            vs = Array.isArray(obj)
+                ? obj
+                : Object.entries(obj).sort(
+                    (a, b) => b[0].localeCompare(a[0])
+                );
 
-        return (0 <= i) && (i < vs.length) ? (
-            Just(vs[i])
-        ) : Nothing();
+        return (0 <= i) && (i < vs.length)
+            ? Just(vs[i])
+            : Nothing();
     };
 
 // elemIndex :: Eq a => a -> [a] -> Maybe Int
@@ -1274,18 +1276,18 @@ const elemIndex = x =>
     xs => {
         const i = xs.indexOf(x);
 
-        return -1 === i ? (
-            Nothing()
-        ) : Just(i);
+        return -1 === i
+            ? Nothing()
+            : Just(i);
     };
 
 // elemIndices :: Eq a => a -> [a] -> [Int]
 const elemIndices = x =>
     // The indices at which x occurs in xs.
     xs => [...xs].flatMap(
-        (y, i) => y === x ? (
-            [i]
-        ) : []
+        (y, i) => y === x
+            ? [i]
+            : []
     );
 
 // elemTree :: a -> Tree a -> Bool
@@ -1302,9 +1304,9 @@ const elemTree = x =>
 // elems :: Map k a -> [a]
 // elems :: Set a -> [a]
 const elems = x =>
-    "Set" !== x.constructor.name ? (
-        Object.values(x)
-    ) : Array.from(x.values());
+    "Set" !== x.constructor.name
+        ? Object.values(x)
+        : Array.from(x.values());
 
 // encodedPath :: FilePath -> Percent Encoded String
 const encodedPath = encodeURI;
@@ -1377,13 +1379,18 @@ const enumFromThenTo = m =>
 // enumFromThenToChar :: Char -> Char -> Char -> [Char]
 const enumFromThenToChar = x1 =>
     x2 => y => {
-        const [i1, i2, iY] = Array.from([x1, x2, y])
-            .map(x => x.codePointAt(0)),
+        const
+            [i1, i2, iY] = [x1, x2, y].map(
+                x => x.codePointAt(0)
+            ),
             d = i2 - i1;
 
         return Array.from({
             length: (Math.floor(iY - i2) / d) + 2
-        }, (_, i) => String.fromCodePoint(i1 + (d * i)));
+        },
+        (_, i) => String.fromCodePoint(
+            i1 + (d * i)
+        ));
     };
 
 // enumFromTo :: Int -> Int -> [Int]
@@ -1396,9 +1403,10 @@ const enumFromTo = m =>
 
 // enumFromToChar :: Char -> Char -> [Char]
 const enumFromToChar = m => n => {
-    const [intM, intN] = [m, n].map(
-        x => x.codePointAt(0)
-    );
+    const
+        [intM, intN] = [m, n].map(
+            x => x.codePointAt(0)
+        );
 
     return Array.from({
         length: Math.floor(intN - intM) + 1
@@ -1407,8 +1415,13 @@ const enumFromToChar = m => n => {
 
 // enumFromTo_ :: Enum a => a -> a -> [a]
 const enumFromTo_ = m => n => {
-    const [x, y] = [m, n].map(fromEnum),
-        b = x + (isNaN(m) ? 0 : m - x);
+    const
+        [x, y] = [m, n].map(fromEnum),
+        b = x + (
+            isNaN(m)
+                ? 0
+                : m - x
+        );
 
     return Array.from({
         length: 1 + (y - x)
@@ -1422,19 +1435,19 @@ const eq = a =>
     b => {
         const t = typeof a;
 
-        return t !== typeof b ? (
-            false
-        ) : "object" !== t ? (
-            "function" !== t ? (
-                a === b
-            ) : a.toString() === b.toString()
-        ) : (() => {
-            const kvs = Object.entries(a);
+        return t === typeof b && (
+            "object" !== t
+                ? "function" !== t
+                    ? a === b
+                    : a.toString() === b.toString()
+                : (() => {
+                    const kvs = Object.entries(a);
 
-            return kvs.length !== Object.keys(b).length ? (
-                false
-            ) : kvs.every(([k, v]) => eq(v)(b[k]));
-        })();
+                    return kvs.length !== Object.keys(b).length
+                        ? false
+                        : kvs.every(([k, v]) => eq(v)(b[k]));
+                })()
+        );
     };
 
 // eqDate :: Date -> Date -> Bool
@@ -1566,17 +1579,17 @@ const filesCopiedLR = fpSourceFolder =>
             lrs = fileNames.map(k => {
                 const tgt = combine(fpTargetFolder)(k);
 
-                return doesFileExist(tgt) ? (
-                    Right(tgt)
-                ) : copyFileLR(
-                    combine(fpSourceFolder)(k)
-                )(tgt);
+                return doesFileExist(tgt)
+                    ? Right(tgt)
+                    : copyFileLR(
+                        combine(fpSourceFolder)(k)
+                    )(tgt);
             }),
             ls = lefts(lrs);
 
-        return Boolean(ls.length) ? (
-            Left(ls[0])
-        ) : Right(rights(lrs));
+        return 0 < ls.length
+            ?  Left(ls[0])
+            : Right(rights(lrs));
     };
 
 // filter :: (a -> Bool) -> [a] -> [a]
@@ -1619,10 +1632,11 @@ const filterTree = p =>
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 const filteredSubTrees = p => {
     const go = tree => (
-        p(tree.root) ? (
-            [tree]
-        ) : []
-    ).concat(tree.nest.flatMap(go));
+        p(tree.root)
+            ? [tree]
+            : []
+    )
+    .concat(tree.nest.flatMap(go));
 
     return go;
 };
@@ -1670,11 +1684,13 @@ const findGen = p =>
                 ([, b]) => Tuple(b.next())(
                     b
                 )
-            )(Tuple(xs.next())(xs))[0];
+            )(
+                Tuple(xs.next())(xs)
+            )[0];
 
-        return mb.done ? (
-            Nothing()
-        ) : Just(mb.value);
+        return mb.done
+            ? Nothing()
+            : Just(mb.value);
     };
 
 // findIndex :: (a -> Bool) -> [a] -> Maybe Int
@@ -1685,9 +1701,9 @@ const findIndex = p =>
     xs => {
         const i = [...xs].findIndex(p);
 
-        return -1 !== i ? (
-            Just(i)
-        ) : Nothing();
+        return -1 !== i
+            ? Just(i)
+            : Nothing();
     };
 
 // findIndexR :: (a -> Bool) -> [a] -> Maybe Int
@@ -1698,9 +1714,9 @@ const findIndexR = p =>
     xs => {
         const i = reverse([...xs]).findIndex(p);
 
-        return -1 !== i ? (
-            Just(xs.length - (1 + i))
-        ) : Nothing();
+        return -1 !== i
+            ? Just(xs.length - (1 + i))
+            : Nothing();
     };
 
 // findIndices :: (a -> Bool) -> [a] -> [Int]
@@ -1710,9 +1726,9 @@ const findIndices = p =>
         const ys = [...xs];
 
         return ys.flatMap(
-            (y, i) => p(y, i, ys) ? (
-                [i]
-            ) : []
+            (y, i) => p(y, i, ys)
+                ? [i]
+                : []
         );
     };
 
@@ -1778,13 +1794,15 @@ const flip = op =>
 const floor = x => {
     const
         nr = (
-            "Ratio" !== x.type ? (
-                properFraction
-            ) : properFracRatio
+            "Ratio" !== x.type
+                ? properFraction
+                : properFracRatio
         )(x),
         n = nr[0];
 
-    return 0 > nr[1] ? n - 1 : n;
+    return 0 > nr[1]
+        ? n - 1
+        : n;
 };
 
 // fmap (<$>) :: Functor f => (a -> b) -> f a -> f b
@@ -1893,7 +1911,7 @@ const foldMapGen = f =>
         function* () {
             const ys = [...xs];
 
-            while (Boolean(ys.length)) {
+            while (0 < ys.length) {
                 yield f(ys.shift());
             }
         }(xs)
@@ -1901,13 +1919,13 @@ const foldMapGen = f =>
 
 // foldMapList :: Monoid m => (a -> m) -> t a -> m
 const foldMapList = f =>
-    // f mapped over the combined values of a structure.
-    xs => 1 < xs.length ? (
-        xs.slice(1).reduce(
+// f mapped over the combined values of a structure.
+    xs => 1 < xs.length
+        ? xs.slice(1).reduce(
             (a, x) => mappend(a)(f(x)),
             xs[0]
         )
-    ) : xs.map(f);
+        : xs.map(f);
 
 // foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 const foldMapTree = f => {
@@ -1951,10 +1969,12 @@ const foldl1 = f =>
     // Left to right reduction of the non-empty list xs,
     // using the binary operator f, with the head of xs
     // as the initial acccumulator value.
-    xs => 1 < xs.length ? (
-        xs.slice(1)
-        .reduce(uncurry(f), xs[0])
-    ) : xs[0];
+    xs => 1 < xs.length
+        ? xs.slice(1).reduce(
+            uncurry(f),
+            xs[0]
+        )
+        : xs[0];
 
 // foldl1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldl1May = f =>
@@ -1988,25 +2008,25 @@ const foldr = f =>
 
 // foldr1 :: (a -> a -> a) -> [a] -> a
 const foldr1 = f =>
-    xs => Boolean(xs.length) ? (
-        xs.slice(0, -1).reduceRight(
+    xs => 0 < xs.length
+        ? xs.slice(0, -1).reduceRight(
             uncurry(f),
             xs.slice(-1)[0]
         )
-    ) : [];
+        : [];
 
 // foldr1May :: (a -> a -> a) -> [a] -> Maybe a
 const foldr1May = f =>
     // Nothing if xs is empty, or Just a right
     // fold of f over the list using the last
     // item of xs as the initial accumulator value.
-    xs => Boolean(xs.length) ? (
-        Just(
+    xs => Boolean(xs.length)
+        ? Just(
             xs.slice(0, -1).reduceRight(
                 uncurry(f),
                 xs.slice(-1)[0])
         )
-    ) : Nothing();
+        : Nothing();
 
 // foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 const foldrTree = f =>
@@ -2061,22 +2081,25 @@ const forestFromJSONLR = json => {
 
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
-    typeof x !== "string" ? (
-        x.constructor === Object ? (
-            x.value
-        ) : parseInt(Number(x), 10)
-    ) : x.codePointAt(0);
+    typeof x !== "string"
+        ? x.constructor === Object
+            ? x.value
+            : parseInt(Number(x), 10)
+        : x.codePointAt(0);
 
 // fromLeft :: a -> Either a b -> a
 const fromLeft = def =>
-    // The contents of a 'Left' value, or otherwise a default value.
-    lr => isLeft(lr) ? lr.Left : def;
+    // The contents of a 'Left' value,
+    // or otherwise a default value.
+    lr => isLeft(lr)
+        ? lr.Left
+        : def;
 
 // fromMaybe :: a -> Maybe a -> a
 const fromMaybe = v =>
-    mb => "Nothing" in mb ? (
-        v
-    ) : mb.Just;
+    mb => "Nothing" in mb
+        ? v
+        : mb.Just;
 
 // fromRight :: b -> Either a b -> b
 const fromRight = def =>

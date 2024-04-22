@@ -201,9 +201,9 @@ const fileStatus = fp => {
             e
         );
 
-    return dct.isNil() ? (
-        Left(ObjC.unwrap(e.localizedDescription))
-    ) : Right(ObjC.deepUnwrap(dct));
+    return dct.isNil()
+        ? Left(ObjC.unwrap(e.localizedDescription))
+        : Right(ObjC.deepUnwrap(dct));
 };
 
 // fileUTI :: FilePath -> Either String String
@@ -214,9 +214,9 @@ const fileUTI = fp => {
         uti = $.NSWorkspace.sharedWorkspace
         .typeOfFileError(fp, e);
 
-    return uti.isNil() ? (
-        Left(ObjC.unwrap(e.localizedDescription))
-    ) : Right(ObjC.unwrap(uti));
+    return uti.isNil()
+        ? Left(ObjC.unwrap(e.localizedDescription))
+        : Right(ObjC.unwrap(uti));
 };
 
 // getCurrentDirectory :: IO FilePath

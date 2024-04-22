@@ -7,8 +7,8 @@ const findIndex = p =>
     xs => {
         const i = [...xs].findIndex(p);
 
-        return -1 !== i ? (
-            Just(i)
-        ) : Nothing();
+        return -1 !== i
+            ? Just(i)
+            : Nothing();
     };
 ```
