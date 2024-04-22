@@ -5,13 +5,15 @@ const levels = tree => {
     // values of each level of the tree.
     const go = (layers, t) => {
         const
-            [
-                topLayer, ...lowerLayers
-            ] = 0 < layers.length ? layers : [[]];
+            [x, ...xs] = (
+                0 < layers.length
+            )
+                ? layers
+                : [[]];
 
         return [
-            topLayer.concat(t.root),
-            ...t.nest.reduce(go, lowerLayers)
+            x.concat(root(t)),
+            ...nest(t).reduce(go, xs)
         ];
     };
 

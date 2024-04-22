@@ -6,8 +6,8 @@ const mapMaybe = mf =>
     xs => xs.flatMap(x => {
         const mb = mf(x);
 
-        return "Just" in mb ? (
-            [mb.Just]
-        ) : [];
+        return "Just" in mb
+            ? [mb.Just]
+            : [];
     });
 ```

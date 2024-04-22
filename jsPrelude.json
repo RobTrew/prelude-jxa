@@ -1760,7 +1760,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (layers, t) => {\n        const\n            [\n                topLayer, ...lowerLayers\n            ] = 0 < layers.length ? layers : [[]];\n\n        return [\n            topLayer.concat(t.root),\n            ...t.nest.reduce(go, lowerLayers)\n        ];\n    };\n\n    return go([], tree);\n};",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (layers, t) => {\n        const\n            [x, ...xs] = (\n                0 < layers.length\n            )\n                ? layers\n                : [[]];\n\n        return [\n            x.concat(root(t)),\n            ...nest(t).reduce(go, xs)\n        ];\n    };\n\n    return go([], tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1791,13 +1791,13 @@
     ]
   },
   "liftA2May": {
-    "code": "// liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c\nconst liftA2May = f =>\n    a => b => a.Nothing ? (\n        a\n    ) : b.Nothing ? (\n        b\n    ) : Just(f(a.Just)(b.Just));",
+    "code": "// liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c\nconst liftA2May = f =>\n    a => b => a.Nothing\n        ? a\n        : b.Nothing\n            ? b\n            : Just(f(a.Just)(b.Just));",
     "tags": [
       "JS Prelude"
     ]
   },
   "liftA2Tree": {
-    "code": "// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c\nconst liftA2Tree = f =>\n    tx => ty => {\n        const go = t =>\n            Node(f(t.root)(ty.root))(\n                Boolean(ty.nest) ? (\n                    ty.nest.map(\n                        fmapTree(f(t.root))\n                    )\n                    .concat(t.nest.map(go))\n                ) : []\n            );\n\n        return go(tx);\n    };",
+    "code": "// liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c\nconst liftA2Tree = f =>\n    tx => ty => {\n        const go = t =>\n            Node(f(t.root)(ty.root))(\n                Boolean(ty.nest)\n                    ? ty.nest.map(\n                        fmapTree(f(t.root))\n                    )\n                    .concat(t.nest.map(go))\n                    : []\n            );\n\n        return go(tx);\n    };",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1836,20 +1836,20 @@
     ]
   },
   "listFromMaybe": {
-    "code": "// listFromMaybe :: Maybe a -> [a]\nconst listFromMaybe = mb =>\n    // A singleton list derived from a Just value,\n    // or an empty list derived from Nothing.\n    mb.Nothing ? [] : [mb.Just];",
+    "code": "// listFromMaybe :: Maybe a -> [a]\nconst listFromMaybe = mb =>\n    // A singleton list derived from a Just value,\n    // or an empty list derived from Nothing.\n    mb.Nothing\n        ? []\n        : [mb.Just];",
     "tags": [
       "JS Prelude"
     ]
   },
   "listFromTree": {
-    "code": "// listFromTree :: Tree a -> [a]\nconst listFromTree = tree => {\n    const go = x => [\n        x.root,\n        ...[].concat(...x.nest.map(go))\n    ];\n\n    return go(tree);\n};",
+    "code": "// listFromTree :: Tree a -> [a]\nconst listFromTree = tree => {\n    const go = x => [\n        root(x),\n        ...[].concat(...nest(x).map(go))\n    ];\n\n    return go(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
   "listToMaybe": {
-    "code": "// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    // Nothing if xs is empty, or Just the head of xs.\n    Boolean(xs.length) ? (\n        Just(xs[0])\n    ) : Nothing();",
+    "code": "// listToMaybe :: [a] -> Maybe a\nconst listToMaybe = xs =>\n    // Nothing if xs is empty, or Just the head of xs.\n    0 < xs.length\n        ? Just(xs[0])\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1867,13 +1867,13 @@
     ]
   },
   "lookupDict": {
-    "code": "// lookupDict :: a -> Dict -> Maybe b\nconst lookupDict = k =>\n    dct => {\n        const v = dct[k];\n\n        return undefined !== v ? (\n            Just(v)\n        ) : Nothing();\n    };",
+    "code": "// lookupDict :: a -> Dict -> Maybe b\nconst lookupDict = k =>\n    dct => {\n        const v = dct[k];\n\n        return undefined !== v\n            ? Just(v)\n            : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "lookupTuples": {
-    "code": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = k =>\n    kvs => {\n        const i = kvs.findIndex(kv => k === kv[0]);\n\n        return -1 !== i ? (\n            Just(kvs[i][1])\n        ) : Nothing();\n    };",
+    "code": "// lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b\nconst lookupTuples = k =>\n    kvs => {\n        const i = kvs.findIndex(kv => k === kv[0]);\n\n        return -1 !== i\n            ? Just(kvs[i][1])\n            : Nothing();\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1931,7 +1931,7 @@
     ]
   },
   "mapMaybe": {
-    "code": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = mf =>\n    // A filtered map, retaining only the contents\n    // of Just values. (Nothing values discarded).\n    xs => xs.flatMap(x => {\n        const mb = mf(x);\n\n        return \"Just\" in mb ? (\n            [mb.Just]\n        ) : [];\n    });",
+    "code": "// mapMaybe :: (a -> Maybe b) -> [a] -> [b]\nconst mapMaybe = mf =>\n    // A filtered map, retaining only the contents\n    // of Just values. (Nothing values discarded).\n    xs => xs.flatMap(x => {\n        const mb = mf(x);\n\n        return \"Just\" in mb\n            ? [mb.Just]\n            : [];\n    });",
     "tags": [
       "JS Prelude"
     ]
@@ -1955,7 +1955,7 @@
     ]
   },
   "mappendComparing (<>)": {
-    "code": "// mappendComparing (<>) :: (a -> a -> Bool)\n// (a -> a -> Bool) -> (a -> a -> Bool)\nconst mappendComparing = cmp =>\n    cmp1 => a => b => {\n        const x = cmp(a)(b);\n\n        return 0 !== x ? (\n            x\n        ) : cmp1(a)(b);\n    };",
+    "code": "// mappendComparing (<>) :: (a -> a -> Bool)\n// (a -> a -> Bool) -> (a -> a -> Bool)\nconst mappendComparing = cmp =>\n    cmp1 => a => b => {\n        const x = cmp(a)(b);\n\n        return 0 !== x\n            ? x\n            : cmp1(a)(b);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1973,7 +1973,7 @@
     ]
   },
   "mappendOrd (<>)": {
-    "code": "// mappendOrd (<>) :: Ordering -> Ordering -> Ordering\nconst mappendOrd = x =>\n    y => 0 !== x ? (\n        x\n    ) : y;",
+    "code": "// mappendOrd (<>) :: Ordering -> Ordering -> Ordering\nconst mappendOrd = x =>\n    y => 0 !== x\n        ? x\n        : y;",
     "tags": [
       "JS Prelude"
     ]
@@ -1985,77 +1985,77 @@
     ]
   },
   "mappendTupleN (<>)": {
-    "code": "// mappendTupleN (<>) ::\n// (a, b, ...) -> (a, b, ...) -> (a, b, ...)\nconst mappendTupleN = t => t1 => {\n    const lng = t.length;\n\n    return lng === t1.length ? (\n        TupleN(\n            [...t].map(\n                (x, i) => mappend(x)(t1[i])\n            )\n        )\n    ) : undefined;\n};",
+    "code": "// mappendTupleN (<>) ::\n// (a, b, ...) -> (a, b, ...) -> (a, b, ...)\nconst mappendTupleN = t => t1 => {\n    const n = t.length;\n\n    return n === t1.length\n        ? TupleN(\n            [...t].map(\n                (x, i) => mappend(x)(t1[i])\n            )\n        )\n        : undefined;\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "matching": {
-    "code": "// matching :: [a] -> (a -> Int -> [a] -> Bool)\nconst matching = pat => {\n    // A sequence-matching function for findIndices etc\n    // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])\n    // -> [1, 4]\n    const\n        lng = pat.length,\n        bln = 0 < lng,\n        h = bln ? pat[0] : undefined;\n\n    return x => i => src =>\n        bln && h === x && eq(pat)(\n            src.slice(i, lng + i)\n        );\n};",
+    "code": "// matching :: [a] -> (a -> Int -> [a] -> Bool)\nconst matching = pat => {\n    // A sequence-matching function for findIndices etc\n    // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])\n    // -> [1, 4]\n    const\n        n = pat.length,\n        bln = 0 < n,\n        h = bln\n            ? pat[0]\n            : undefined;\n\n    return x => i => src =>\n        bln && h === x && eq(pat)(\n            src.slice(i, n + i)\n        );\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "matrix": {
-    "code": "// matrix Int -> Int -> (Int -> Int -> a) -> [[a]]\nconst matrix = nRows => nCols =>\n    // A matrix of a given number of columns and rows,\n    // in which each value is a given function of its\n    // (zero-based) column and row indices.\n    f => Array.from({\n        length: nRows\n    }, (_, iRow) => Array.from({\n        length: nCols\n    }, (__, iCol) => f(iRow)(iCol)));",
+    "code": "// matrix Int -> Int -> (Int -> Int -> a) -> [[a]]\nconst matrix = nRows => nCols =>\n    // A matrix of a given number of columns and rows,\n    // in which each value is a given function of its\n    // (zero-based) column and row indices.\n    f => Array.from(\n        {length: nRows}, (_, iRow) =>\n            Array.from(\n                {length: nCols},\n                (__, iCol) => f(iRow)(iCol)\n            )\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "max": {
-    "code": "// max :: Ord a => a -> a -> a\nconst max = a =>\n    // b if its greater than a,\n    // otherwise a.\n    b => gt(b)(a) ? (\n        b\n    ) : a;",
+    "code": "// max :: Ord a => a -> a -> a\nconst max = a =>\n    // b if greater than a,\n    // otherwise a.\n    b => gt(b)(a)\n        ? b\n        : a;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "maxBound": {
-    "code": "// maxBound :: a -> a\nconst maxBound = x => {\n    const e = x.enum;\n\n    return Boolean(e) ? (\n        e[e[x.max]]\n    ) : {\n        \"number\": Number.MAX_SAFE_INTEGER,\n        \"string\": String.fromCodePoint(0x10FFFF),\n        \"boolean\": true\n    }[typeof x];\n};",
+    "code": "// maxBound :: a -> a\nconst maxBound = x => {\n    const e = x.enum;\n\n    return Boolean(e)\n        ? e[e[x.max]]\n        : {\n            \"number\": Number.MAX_SAFE_INTEGER,\n            \"string\": String.fromCodePoint(0x10FFFF),\n            \"boolean\": true\n        }[typeof x];\n};",
     "tags": [
       "JS Prelude"
     ]
   },
   "maximum": {
-    "code": "// maximum :: Ord a => [a] -> a\nconst maximum = xs =>\n    // The largest value in a non-empty list.\n    Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
+    "code": "// maximum :: Ord a => [a] -> a\nconst maximum = xs =>\n    // The largest value in a non-empty list.\n    0 < xs.length\n        ? xs.slice(1).reduce(\n            (a, x) => x > a\n                ? x\n                : a,\n            xs[0]\n        )\n        : undefined;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "maximumBy": {
-    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (a, x) => 0 < f(x)(a) ? (\n                x\n            ) : a,\n            xs[0]\n        )\n    ) : undefined;",
+    "code": "// maximumBy :: (a -> a -> Ordering) -> [a] -> a\nconst maximumBy = f =>\n    xs => 0 < xs.length\n        ? xs.slice(1).reduce(\n            (a, x) => 0 < f(x)(a)\n                ? x\n                : a,\n            xs[0]\n        )\n        : undefined;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "maximumByMay": {
-    "code": "// maximumByMay :: (a -> a -> Ordering) ->\n// [a] -> Maybe a\nconst maximumByMay = f =>\n    // Nothing, if the list is empty,\n    // or just the maximum value when compared\n    // in terms of f.\n    xs => Boolean(xs.length) ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => 0 < f(a)(x) ? (\n                a\n            ) : x,\n            xs[0]\n        ))\n    ) : Nothing();",
+    "code": "// maximumByMay :: (a -> a -> Ordering) ->\n// [a] -> Maybe a\nconst maximumByMay = f =>\n    // Nothing, if the list is empty,\n    // or just the maximum value when compared\n    // in terms of f.\n    xs => 0 < xs.length\n        ? Just(xs.slice(1).reduce(\n            (a, x) => 0 < f(a)(x)\n                ? a\n                : x,\n            xs[0]\n        ))\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "maximumMay": {
-    "code": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(1).reduce(\n            (a, x) => x > a ? (\n                x\n            ) : a,\n            xs[0]\n        ))\n    ) : Nothing();",
+    "code": "// maximumMay :: Ord a => [a] -> Maybe a\nconst maximumMay = xs =>\n    0 < xs.length\n        ? Just(xs.slice(1).reduce(\n            (a, x) => x > a\n                ? x\n                : a,\n            xs[0]\n        ))\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
   },
   "maximumOn": {
-    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => Boolean(xs.length) ? (\n        xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v > tpl[1] ? (\n                    Tuple(x)(v)\n                ) : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n    ) : undefined;",
+    "code": "// maximumOn :: (Ord b) => (a -> b) -> [a] -> a\nconst maximumOn = f =>\n    // The item in xs for which f\n    // returns the highest value.\n    xs => 0 < xs.length\n        ? xs.slice(1).reduce(\n            (tpl, x) => {\n                const v = f(x);\n\n                return v > tpl[1]\n                    ? Tuple(x)(v)\n                    : tpl;\n            },\n            (h => Tuple(h)(f(h)))(xs[0])\n        )[0]\n        : undefined;",
     "tags": [
       "JS Prelude"
     ]
   },
   "maybe": {
-    "code": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = v =>\n    // Default value (v) if m is Nothing, or f(m.Just)\n    f => m => \"Just\" in m ? (\n        f(m.Just)\n    ) : v;",
+    "code": "// maybe :: b -> (a -> b) -> Maybe a -> b\nconst maybe = v =>\n    // Default value (v) if m is Nothing, or f(m.Just)\n    f => m => \"Just\" in m\n        ? f(m.Just)\n        : v;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "mconcatOrd": {
-    "code": "// mconcatOrd :: [Ordering] -> Ordering\nconst mconcatOrd = cmps =>\n    // A sort compare function derived from\n    // a list of such functions, providing\n    // for composition of n-ary sorts.\n    Boolean(cmps.length) ? (\n        foldl(\n            mappendOrd\n        )(cmps[0])(cmps.slice(1))\n    ) : compare;",
+    "code": "// mconcatOrd :: [Ordering] -> Ordering\nconst mconcatOrd = cmps =>\n    // A sort compare function derived from\n    // a list of such functions, providing\n    // for composition of n-ary sorts.\n    0 < cmps.length\n        ? foldl(\n            mappendOrd\n        )(cmps[0])(cmps.slice(1))\n        : compare;",
     "tags": [
       "JS Prelude"
     ]
@@ -2067,7 +2067,7 @@
     ]
   },
   "measuredTree": {
-    "code": "// measuredTree :: Tree a ->\n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (w, h, n, i) => ({\n        leafSum: w,\n        layerSum: h,\n        nodeSum: n,\n        index: i\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n            // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    Boolean(xs.length) ? (() => {\n                        const dct = xs.reduce(\n                            (a, node) => {\n                                const dimns = node.root[1];\n\n                                return whni(\n                                    a.leafSum + dimns.leafSum,\n                                    max(a.layerSum)(\n                                        dimns.layerSum\n                                    ),\n                                    a.nodeSum + dimns.nodeSum,\n                                    topDown\n                                );\n                            }, whni(0, 0, 0, topDown)\n                        );\n\n                        return whni(\n                            dct.leafSum,\n                            1 + dct.layerSum,\n                            1 + dct.nodeSum,\n                            topDown\n                        );\n                    })() : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
+    "code": "// measuredTree :: Tree a ->\n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\n// eslint-disable-next-line max-lines-per-function\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (leafSum, layerSum, nodeSum, index) => ({\n        leafSum,\n        layerSum,\n        nodeSum,\n        index\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n        // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length\n                        ? (() => {\n                            const dct = xs.reduce(\n                                (a, node) => {\n                                    const dimns = node.root[1];\n\n                                    return whni(\n                                        a.leafSum + dimns.leafSum,\n                                        Math.max(a.layerSum)(\n                                            dimns.layerSum\n                                        ),\n                                        a.nodeSum + dimns.nodeSum,\n                                        topDown\n                                    );\n                                }, whni(0, 0, 0, topDown)\n                            );\n\n                            return whni(\n                                dct.leafSum,\n                                1 + dct.layerSum,\n                                1 + dct.nodeSum,\n                                topDown\n                            );\n                        })()\n                        : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2092,20 +2092,20 @@
     ]
   },
   "mergeBy": {
-    "code": "// mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]\nconst mergeBy = f =>\n    // A single list defined by the ordered\n    // merging of xs and ys in terms of the\n    // given comparator function.\n    xs => ys => {\n        const go = (as, bs) =>\n            Boolean(bs.length) ? (\n                Boolean(as.length) ? (\n                    1 !== f(as[0])(bs[0]) ? (\n                        [as[0]].concat(\n                            go(as.slice(1), bs)\n                        )\n                    ) : [bs[0]].concat(\n                        go(as, bs.slice(1))\n                    )\n                ) : bs\n            ) : as;\n\n        return [].concat(...go(xs, ys));\n    };",
+    "code": "// mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]\nconst mergeBy = f =>\n// A single list defined by the ordered\n// merging of xs and ys in terms of the\n// given comparator function.\n    xs => ys => {\n        const go = (as, bs) =>\n            0 < bs.length\n                ? 0 < as.length\n                    ? 1 !== f(as[0])(bs[0])\n                        ? [as[0]].concat(\n                            go(as.slice(1), bs)\n                        )\n                        : [bs[0]].concat(\n                            go(as, bs.slice(1))\n                        )\n                    : bs\n                : as;\n\n        return [].concat(...go(xs, ys));\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "min": {
-    "code": "// min :: Ord a => a -> a -> a\nconst min = a =>\n    b => b < a ? b : a;",
+    "code": "// min :: Ord a => a -> a -> a\nconst min = a =>\n    b => b < a\n        ? b\n        : a;",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "minBound": {
-    "code": "// minBound :: a -> a\nconst minBound = x => {\n    const e = x.enum;\n\n    return Boolean(e) ? (\n        e[e[0]]\n    ) : {\n        \"number\": Number.MIN_SAFE_INTEGER,\n        \"string\": String.fromCodePoint(0),\n        \"boolean\": false\n    }[typeof x];\n};",
+    "code": "// minBound :: a -> a\nconst minBound = x => {\n    const e = x.enum;\n\n    return Boolean(e)\n        ? e[e[0]]\n        : {\n            \"number\": Number.MIN_SAFE_INTEGER,\n            \"string\": String.fromCodePoint(0),\n            \"boolean\": false\n        }[typeof x];\n};",
     "tags": [
       "JS Prelude"
     ]

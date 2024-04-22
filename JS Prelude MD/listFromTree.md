@@ -2,8 +2,8 @@
 // listFromTree :: Tree a -> [a]
 const listFromTree = tree => {
     const go = x => [
-        x.root,
-        ...[].concat(...x.nest.map(go))
+        root(x),
+        ...[].concat(...nest(x).map(go))
     ];
 
     return go(tree);

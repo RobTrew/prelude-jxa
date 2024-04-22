@@ -2823,13 +2823,15 @@ const levels = tree => {
     // values of each level of the tree.
     const go = (layers, t) => {
         const
-            [
-                topLayer, ...lowerLayers
-            ] = 0 < layers.length ? layers : [[]];
+            [x, ...xs] = (
+                0 < layers.length
+            )
+                ? layers
+                : [[]];
 
         return [
-            topLayer.concat(t.root),
-            ...t.nest.reduce(go, lowerLayers)
+            x.concat(root(t)),
+            ...nest(t).reduce(go, xs)
         ];
     };
 
@@ -2880,23 +2882,23 @@ const liftA2List = op =>
 
 // liftA2May :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 const liftA2May = f =>
-    a => b => a.Nothing ? (
-        a
-    ) : b.Nothing ? (
-        b
-    ) : Just(f(a.Just)(b.Just));
+    a => b => a.Nothing
+        ? a
+        : b.Nothing
+            ? b
+            : Just(f(a.Just)(b.Just));
 
 // liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 const liftA2Tree = f =>
     tx => ty => {
         const go = t =>
             Node(f(t.root)(ty.root))(
-                Boolean(ty.nest) ? (
-                    ty.nest.map(
+                Boolean(ty.nest)
+                    ? ty.nest.map(
                         fmapTree(f(t.root))
                     )
                     .concat(t.nest.map(go))
-                ) : []
+                    : []
             );
 
         return go(tx);
@@ -2945,13 +2947,15 @@ const list = xs =>
 const listFromMaybe = mb =>
     // A singleton list derived from a Just value,
     // or an empty list derived from Nothing.
-    mb.Nothing ? [] : [mb.Just];
+    mb.Nothing
+        ? []
+        : [mb.Just];
 
 // listFromTree :: Tree a -> [a]
 const listFromTree = tree => {
     const go = x => [
-        x.root,
-        ...[].concat(...x.nest.map(go))
+        root(x),
+        ...[].concat(...nest(x).map(go))
     ];
 
     return go(tree);
@@ -2960,9 +2964,9 @@ const listFromTree = tree => {
 // listToMaybe :: [a] -> Maybe a
 const listToMaybe = xs =>
     // Nothing if xs is empty, or Just the head of xs.
-    Boolean(xs.length) ? (
-        Just(xs[0])
-    ) : Nothing();
+    0 < xs.length
+        ? Just(xs[0])
+        : Nothing();
 
 // log :: Float -> Float
 const log = Math.log;
@@ -2980,9 +2984,9 @@ const lookupDict = k =>
     dct => {
         const v = dct[k];
 
-        return undefined !== v ? (
-            Just(v)
-        ) : Nothing();
+        return undefined !== v
+            ? Just(v)
+            : Nothing();
     };
 
 // lookupTuples :: Eq a => a -> [(a, b)] -> Maybe b
@@ -2990,9 +2994,9 @@ const lookupTuples = k =>
     kvs => {
         const i = kvs.findIndex(kv => k === kv[0]);
 
-        return -1 !== i ? (
-            Just(kvs[i][1])
-        ) : Nothing();
+        return -1 !== i
+            ? Just(kvs[i][1])
+            : Nothing();
     };
 
 // lt (<) :: Ord a => a -> a -> Bool
@@ -3083,9 +3087,9 @@ const mapMaybe = mf =>
     xs => xs.flatMap(x => {
         const mb = mf(x);
 
-        return "Just" in mb ? (
-            [mb.Just]
-        ) : [];
+        return "Just" in mb
+            ? [mb.Just]
+            : [];
     });
 
 // mapMaybeGen :: (a -> Maybe b) -> Gen [a] -> Gen [b]
@@ -3132,9 +3136,9 @@ const mappendComparing = cmp =>
     cmp1 => a => b => {
         const x = cmp(a)(b);
 
-        return 0 !== x ? (
-            x
-        ) : cmp1(a)(b);
+        return 0 !== x
+            ? x
+            : cmp1(a)(b);
     };
 
 // mappendFn (<>) :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)
@@ -3155,9 +3159,9 @@ const mappendMaybe = a =>
 
 // mappendOrd (<>) :: Ordering -> Ordering -> Ordering
 const mappendOrd = x =>
-    y => 0 !== x ? (
-        x
-    ) : y;
+    y => 0 !== x
+        ? x
+        : y;
 
 // mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)
 const mappendTuple = ([a, b]) =>
@@ -3170,15 +3174,15 @@ const mappendTuple = ([a, b]) =>
 // mappendTupleN (<>) ::
 // (a, b, ...) -> (a, b, ...) -> (a, b, ...)
 const mappendTupleN = t => t1 => {
-    const lng = t.length;
+    const n = t.length;
 
-    return lng === t1.length ? (
-        TupleN(
+    return n === t1.length
+        ? TupleN(
             [...t].map(
                 (x, i) => mappend(x)(t1[i])
             )
         )
-    ) : undefined;
+        : undefined;
 };
 
 // matching :: [a] -> (a -> Int -> [a] -> Bool)
@@ -3187,13 +3191,15 @@ const matching = pat => {
     // findIndices(matching([2, 3]), [1, 2, 3, 1, 2, 3])
     // -> [1, 4]
     const
-        lng = pat.length,
-        bln = 0 < lng,
-        h = bln ? pat[0] : undefined;
+        n = pat.length,
+        bln = 0 < n,
+        h = bln
+            ? pat[0]
+            : undefined;
 
     return x => i => src =>
         bln && h === x && eq(pat)(
-            src.slice(i, lng + i)
+            src.slice(i, n + i)
         );
 };
 
@@ -3202,55 +3208,57 @@ const matrix = nRows => nCols =>
     // A matrix of a given number of columns and rows,
     // in which each value is a given function of its
     // (zero-based) column and row indices.
-    f => Array.from({
-        length: nRows
-    }, (_, iRow) => Array.from({
-        length: nCols
-    }, (__, iCol) => f(iRow)(iCol)));
+    f => Array.from(
+        {length: nRows}, (_, iRow) =>
+            Array.from(
+                {length: nCols},
+                (__, iCol) => f(iRow)(iCol)
+            )
+    );
 
 // max :: Ord a => a -> a -> a
 const max = a =>
-    // b if its greater than a,
+    // b if greater than a,
     // otherwise a.
-    b => gt(b)(a) ? (
-        b
-    ) : a;
+    b => gt(b)(a)
+        ? b
+        : a;
 
 // maxBound :: a -> a
 const maxBound = x => {
     const e = x.enum;
 
-    return Boolean(e) ? (
-        e[e[x.max]]
-    ) : {
-        "number": Number.MAX_SAFE_INTEGER,
-        "string": String.fromCodePoint(0x10FFFF),
-        "boolean": true
-    }[typeof x];
+    return Boolean(e)
+        ? e[e[x.max]]
+        : {
+            "number": Number.MAX_SAFE_INTEGER,
+            "string": String.fromCodePoint(0x10FFFF),
+            "boolean": true
+        }[typeof x];
 };
 
 // maximum :: Ord a => [a] -> a
 const maximum = xs =>
     // The largest value in a non-empty list.
-    Boolean(xs.length) ? (
-        xs.slice(1).reduce(
-            (a, x) => x > a ? (
-                x
-            ) : a,
+    0 < xs.length
+        ? xs.slice(1).reduce(
+            (a, x) => x > a
+                ? x
+                : a,
             xs[0]
         )
-    ) : undefined;
+        : undefined;
 
 // maximumBy :: (a -> a -> Ordering) -> [a] -> a
 const maximumBy = f =>
-    xs => Boolean(xs.length) ? (
-        xs.slice(1).reduce(
-            (a, x) => 0 < f(x)(a) ? (
-                x
-            ) : a,
+    xs => 0 < xs.length
+        ? xs.slice(1).reduce(
+            (a, x) => 0 < f(x)(a)
+                ? x
+                : a,
             xs[0]
         )
-    ) : undefined;
+        : undefined;
 
 // maximumByMay :: (a -> a -> Ordering) ->
 // [a] -> Maybe a
@@ -3258,60 +3266,60 @@ const maximumByMay = f =>
     // Nothing, if the list is empty,
     // or just the maximum value when compared
     // in terms of f.
-    xs => Boolean(xs.length) ? (
-        Just(xs.slice(1).reduce(
-            (a, x) => 0 < f(a)(x) ? (
-                a
-            ) : x,
+    xs => 0 < xs.length
+        ? Just(xs.slice(1).reduce(
+            (a, x) => 0 < f(a)(x)
+                ? a
+                : x,
             xs[0]
         ))
-    ) : Nothing();
+        : Nothing();
 
 // maximumMay :: Ord a => [a] -> Maybe a
 const maximumMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(1).reduce(
-            (a, x) => x > a ? (
-                x
-            ) : a,
+    0 < xs.length
+        ? Just(xs.slice(1).reduce(
+            (a, x) => x > a
+                ? x
+                : a,
             xs[0]
         ))
-    ) : Nothing();
+        : Nothing();
 
 // maximumOn :: (Ord b) => (a -> b) -> [a] -> a
 const maximumOn = f =>
     // The item in xs for which f
     // returns the highest value.
-    xs => Boolean(xs.length) ? (
-        xs.slice(1).reduce(
+    xs => 0 < xs.length
+        ? xs.slice(1).reduce(
             (tpl, x) => {
                 const v = f(x);
 
-                return v > tpl[1] ? (
-                    Tuple(x)(v)
-                ) : tpl;
+                return v > tpl[1]
+                    ? Tuple(x)(v)
+                    : tpl;
             },
             (h => Tuple(h)(f(h)))(xs[0])
         )[0]
-    ) : undefined;
+        : undefined;
 
 // maybe :: b -> (a -> b) -> Maybe a -> b
 const maybe = v =>
     // Default value (v) if m is Nothing, or f(m.Just)
-    f => m => "Just" in m ? (
-        f(m.Just)
-    ) : v;
+    f => m => "Just" in m
+        ? f(m.Just)
+        : v;
 
 // mconcatOrd :: [Ordering] -> Ordering
 const mconcatOrd = cmps =>
     // A sort compare function derived from
     // a list of such functions, providing
     // for composition of n-ary sorts.
-    Boolean(cmps.length) ? (
-        foldl(
+    0 < cmps.length
+        ? foldl(
             mappendOrd
         )(cmps[0])(cmps.slice(1))
-    ) : compare;
+        : compare;
 
 // mean :: [Num] -> Num
 const mean = xs =>
@@ -3323,6 +3331,7 @@ const mean = xs =>
 // measuredTree :: Tree a ->
 // Tree (a, {leafSum::Int, layerSum::Int,
 //           nodeSum::Int, index::Int})
+// eslint-disable-next-line max-lines-per-function
 const measuredTree = tree => {
     // A tree in which each node is tupled with
     // a (leafSum, layerSum, nodeSum) measure of its sub-tree,
@@ -3332,44 +3341,46 @@ const measuredTree = tree => {
     // Index is a position in a zero-based top-down
     // left to right series.
     // For additional parent indices, see parentIndexedTree.
-    const whni = (w, h, n, i) => ({
-        leafSum: w,
-        layerSum: h,
-        nodeSum: n,
-        index: i
+    const whni = (leafSum, layerSum, nodeSum, index) => ({
+        leafSum,
+        layerSum,
+        nodeSum,
+        index
     });
     let i = 0;
 
     return foldTree(
         x => {
-            // eslint-disable-next-line no-plusplus
+        // eslint-disable-next-line no-plusplus
             const topDown = i++;
 
             return xs => Node(
                 Tuple(x)(
-                    Boolean(xs.length) ? (() => {
-                        const dct = xs.reduce(
-                            (a, node) => {
-                                const dimns = node.root[1];
+                    0 < xs.length
+                        ? (() => {
+                            const dct = xs.reduce(
+                                (a, node) => {
+                                    const dimns = node.root[1];
 
-                                return whni(
-                                    a.leafSum + dimns.leafSum,
-                                    max(a.layerSum)(
-                                        dimns.layerSum
-                                    ),
-                                    a.nodeSum + dimns.nodeSum,
-                                    topDown
-                                );
-                            }, whni(0, 0, 0, topDown)
-                        );
+                                    return whni(
+                                        a.leafSum + dimns.leafSum,
+                                        Math.max(a.layerSum)(
+                                            dimns.layerSum
+                                        ),
+                                        a.nodeSum + dimns.nodeSum,
+                                        topDown
+                                    );
+                                }, whni(0, 0, 0, topDown)
+                            );
 
-                        return whni(
-                            dct.leafSum,
-                            1 + dct.layerSum,
-                            1 + dct.nodeSum,
-                            topDown
-                        );
-                    })() : whni(1, 0, 1, topDown)
+                            return whni(
+                                dct.leafSum,
+                                1 + dct.layerSum,
+                                1 + dct.nodeSum,
+                                topDown
+                            );
+                        })()
+                        : whni(1, 0, 1, topDown)
                 )
             )(xs);
         }
@@ -3407,41 +3418,43 @@ const merge = xs =>
 
 // mergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 const mergeBy = f =>
-    // A single list defined by the ordered
-    // merging of xs and ys in terms of the
-    // given comparator function.
+// A single list defined by the ordered
+// merging of xs and ys in terms of the
+// given comparator function.
     xs => ys => {
         const go = (as, bs) =>
-            Boolean(bs.length) ? (
-                Boolean(as.length) ? (
-                    1 !== f(as[0])(bs[0]) ? (
-                        [as[0]].concat(
+            0 < bs.length
+                ? 0 < as.length
+                    ? 1 !== f(as[0])(bs[0])
+                        ? [as[0]].concat(
                             go(as.slice(1), bs)
                         )
-                    ) : [bs[0]].concat(
-                        go(as, bs.slice(1))
-                    )
-                ) : bs
-            ) : as;
+                        : [bs[0]].concat(
+                            go(as, bs.slice(1))
+                        )
+                    : bs
+                : as;
 
         return [].concat(...go(xs, ys));
     };
 
 // min :: Ord a => a -> a -> a
 const min = a =>
-    b => b < a ? b : a;
+    b => b < a
+        ? b
+        : a;
 
 // minBound :: a -> a
 const minBound = x => {
     const e = x.enum;
 
-    return Boolean(e) ? (
-        e[e[0]]
-    ) : {
-        "number": Number.MIN_SAFE_INTEGER,
-        "string": String.fromCodePoint(0),
-        "boolean": false
-    }[typeof x];
+    return Boolean(e)
+        ? e[e[0]]
+        : {
+            "number": Number.MIN_SAFE_INTEGER,
+            "string": String.fromCodePoint(0),
+            "boolean": false
+        }[typeof x];
 };
 
 // minimum :: Ord a => [a] -> a
