@@ -60,7 +60,7 @@
     ]
   },
   "TupleN": {
-    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nconst TupleN = (...args) => {\n// A Tuple of an arbitrary number of items.\n    const n = args.length;\n\n    return Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 2 !== n ? `Tuple${n}` : \"Tuple\",\n            length: n,\n            *[Symbol.iterator]() {\n                for (const k in this) {\n                    if (!isNaN(k)) {\n                        yield this[k];\n                    }\n                }\n            }\n        })\n    );\n};",
+    "code": "// TupleN :: a -> b ...  -> (a, b ... )\nconst TupleN = (...args) => {\n    // A Tuple of an arbitrary number of items.\n    const n = args.length;\n\n    return Object.assign(\n        args.reduce((a, x, i) => Object.assign(a, {\n            [i]: x\n        }), {\n            type: 2 !== n\n                ? `Tuple${n}`\n                : \"Tuple\",\n            length: n,\n            *[Symbol.iterator]() {\n                for (const k in this) {\n                    if (!isNaN(k)) {\n                        yield this[k];\n                    }\n                }\n            }\n        })\n    );\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -1366,7 +1366,7 @@
     ]
   },
   "if_": {
-    "code": "// if_ :: Bool -> a -> a -> a\nconst if_ = bool =>\n    x => y => bool\n        ? x\n        : y;",
+    "code": "// if_ :: Bool -> a -> a -> a\nconst if_ = bln =>\n    x => y => bln\n        ? x\n        : y;",
     "tags": [
       "JS Prelude"
     ]
@@ -2067,7 +2067,7 @@
     ]
   },
   "measuredTree": {
-    "code": "// measuredTree :: Tree a ->\n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\n// eslint-disable-next-line max-lines-per-function\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (leafSum, layerSum, nodeSum, index) => ({\n        leafSum,\n        layerSum,\n        nodeSum,\n        index\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n        // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length\n                        ? (() => {\n                            const dct = xs.reduce(\n                                (a, node) => {\n                                    const dimns = node.root[1];\n\n                                    return whni(\n                                        a.leafSum + dimns.leafSum,\n                                        Math.max(a.layerSum)(\n                                            dimns.layerSum\n                                        ),\n                                        a.nodeSum + dimns.nodeSum,\n                                        topDown\n                                    );\n                                }, whni(0, 0, 0, topDown)\n                            );\n\n                            return whni(\n                                dct.leafSum,\n                                1 + dct.layerSum,\n                                1 + dct.nodeSum,\n                                topDown\n                            );\n                        })()\n                        : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
+    "code": "// measuredTree :: Tree a ->\n// Tree (a, {leafSum::Int, layerSum::Int,\n//           nodeSum::Int, index::Int})\n// eslint-disable-next-line max-lines-per-function\nconst measuredTree = tree => {\n    // A tree in which each node is tupled with\n    // a (leafSum, layerSum, nodeSum) measure of its sub-tree,\n    // where leafSum is the number of descendant leaves,\n    // and layerSum is the number of descendant levels,\n    // and nodeSum counts all nodes, including the root.\n    // Index is a position in a zero-based top-down\n    // left to right series.\n    // For additional parent indices, see parentIndexedTree.\n    const whni = (leafSum, layerSum, nodeSum, ndx) => ({\n        leafSum,\n        layerSum,\n        nodeSum,\n        index : ndx\n    });\n    let i = 0;\n\n    return foldTree(\n        x => {\n        // eslint-disable-next-line no-plusplus\n            const topDown = i++;\n\n            return xs => Node(\n                Tuple(x)(\n                    0 < xs.length\n                        ? (() => {\n                            const dct = xs.reduce(\n                                (a, node) => {\n                                    const dimns = node.root[1];\n\n                                    return whni(\n                                        a.leafSum + dimns.leafSum,\n                                        Math.max(a.layerSum)(\n                                            dimns.layerSum\n                                        ),\n                                        a.nodeSum + dimns.nodeSum,\n                                        topDown\n                                    );\n                                }, whni(0, 0, 0, topDown)\n                            );\n\n                            return whni(\n                                dct.leafSum,\n                                1 + dct.layerSum,\n                                1 + dct.nodeSum,\n                                topDown\n                            );\n                        })()\n                        : whni(1, 0, 1, topDown)\n                )\n            )(xs);\n        }\n    )(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2310,12 +2310,6 @@
   },
   "prependToAll": {
     "code": "// prependToAll :: a -> [a] -> [a]\nconst prependToAll = sep =>\n    // prependToAll(0)([1,2,3]) -> [0, 1, 0, 2, 0, 3]\n    xs => 0 < xs.length ? [\n        sep, xs[0],\n        ...prependToAll(sep)(xs.slice(1))\n    ] : [];",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
-  "print": {
-    "code": "// print :: a -> IO ()\nconst print = x => {\n    const s = show(x);\n\n    return (\n        typeof document !== \"undefined\" ? (\n            document.writeln(s)\n        ) : typeof draft !== \"undefined\" ? (\n            editor.setText(\n                `${editor.getText()}\\n${s}`\n            )\n        ) : (\n            // eslint-disable-next-line no-console\n            console.log(s),\n            s\n        )\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -2982,7 +2976,7 @@
     ]
   },
   "str": {
-    "code": "// str :: a -> String\nconst str = x =>\n    Array.isArray(x) && x.every(\n        v => (\"string\" === typeof v) && (1 === v.length)\n    ) ? (\n        // [Char] -> String\n        x.join(\"\")\n    ) : null === x ? (\n        \"null\"\n    ) : x.toString();",
+    "code": "// str :: a -> String\nconst str = x =>\n    Array.isArray(x) && x.every(\n        v => (\"string\" === typeof v) && (1 === v.length)\n    )\n        ? x.join(\"\")\n        : null === x\n            ? \"null\"\n            : x.toString();",
     "tags": [
       "JS Prelude"
     ]
@@ -3367,7 +3361,7 @@
     ]
   },
   "uncons": {
-    "code": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    // Just a tuple of the head of xs and its tail,\n    // Or Nothing if xs is an empty list.\n    const n = length(xs);\n\n    return Boolean(n) ? (\n        Infinity > n ? (\n            // Finite list\n            Just(Tuple(xs[0])(xs.slice(1)))\n        ) : (() => {\n            // Lazy generator\n            const nxt = take(1)(xs);\n\n            return Boolean(nxt.length) ? (\n                Just(Tuple(nxt[0])(xs))\n            ) : Nothing();\n        })()\n    ) : Nothing();\n};",
+    "code": "// uncons :: [a] -> Maybe (a, [a])\nconst uncons = xs => {\n    // Just a tuple of the head of xs and its tail,\n    // Or Nothing if xs is an empty list.\n    const n = length(xs);\n\n    return 0 < n\n        ? Infinity > n\n            // Finite list\n            ? Just(Tuple(xs[0])(xs.slice(1)))\n\n            // Lazy generator\n            : (() => {\n                const nxt = take(1)(xs);\n\n                return 0 < nxt.length\n                    ? Just(Tuple(nxt[0])(xs))\n                    : Nothing();\n            })()\n        : Nothing();\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3625,7 +3619,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    const\n        rows = args.slice(1).map(xs => Array.from(xs)),\n        n = Math.min(...rows.map(x => x.length)),\n        f = uncurryN(args[0]);\n\n    return 0 < n ? (\n        take(n)\n    )(rows[0]).map(\n        (x, i) => f(\n            TupleN(...rows.flatMap(v => v[i]))\n        )\n\n    ) : [];\n};",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const rows = args.slice(1);\n\n    return 0 < rows.length\n        ? (() => {\n            const\n                n = Math.min(...rows.map(x => x.length)),\n                // Uncurried reduction of zipWith(identity)\n                apZL = (fs, ys) => fs.map(\n                    (f, i) => (f)(ys[i])\n                )\n                .slice(0, n);\n\n            return rows.slice(1).reduce(\n                apZL,\n                rows[0].map(args[0])\n            );\n        })()\n        : [];\n};",
     "tags": [
       "JS Prelude"
     ]

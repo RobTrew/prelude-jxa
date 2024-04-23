@@ -1,19 +1,26 @@
 ```javascript
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 const zipWithN = (...args) => {
-    const
-        rows = args.slice(1).map(xs => Array.from(xs)),
-        n = Math.min(...rows.map(x => x.length)),
-        f = uncurryN(args[0]);
+    // Uncurried function of which the first argument is
+    // a function, and all remaining arguments are lists.
+    const rows = args.slice(1);
 
-    return 0 < n ? (
-        take(n)
-    )(rows[0]).map(
-        (x, i) => f(
-            TupleN(...rows.flatMap(v => v[i]))
-        )
+    return 0 < rows.length
+        ? (() => {
+            const
+                n = Math.min(...rows.map(x => x.length)),
+                // Uncurried reduction of zipWith(identity)
+                apZL = (fs, ys) => fs.map(
+                    (f, i) => (f)(ys[i])
+                )
+                .slice(0, n);
 
-    ) : [];
+            return rows.slice(1).reduce(
+                apZL,
+                rows[0].map(args[0])
+            );
+        })()
+        : [];
 };
 ```
 

@@ -12,11 +12,11 @@ const measuredTree = tree => {
     // Index is a position in a zero-based top-down
     // left to right series.
     // For additional parent indices, see parentIndexedTree.
-    const whni = (leafSum, layerSum, nodeSum, index) => ({
+    const whni = (leafSum, layerSum, nodeSum, ndx) => ({
         leafSum,
         layerSum,
         nodeSum,
-        index
+        index : ndx
     });
     let i = 0;
 

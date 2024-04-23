@@ -5,19 +5,20 @@ const uncons = xs => {
     // Or Nothing if xs is an empty list.
     const n = length(xs);
 
-    return Boolean(n) ? (
-        Infinity > n ? (
+    return 0 < n
+        ? Infinity > n
             // Finite list
-            Just(Tuple(xs[0])(xs.slice(1)))
-        ) : (() => {
-            // Lazy generator
-            const nxt = take(1)(xs);
+            ? Just(Tuple(xs[0])(xs.slice(1)))
 
-            return Boolean(nxt.length) ? (
-                Just(Tuple(nxt[0])(xs))
-            ) : Nothing();
-        })()
-    ) : Nothing();
+            // Lazy generator
+            : (() => {
+                const nxt = take(1)(xs);
+
+                return 0 < nxt.length
+                    ? Just(Tuple(nxt[0])(xs))
+                    : Nothing();
+            })()
+        : Nothing();
 };
 ```
 

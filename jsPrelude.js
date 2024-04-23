@@ -104,14 +104,16 @@ const Tuple3 = a => b => c => ({
 
 // TupleN :: a -> b ...  -> (a, b ... )
 const TupleN = (...args) => {
-// A Tuple of an arbitrary number of items.
+    // A Tuple of an arbitrary number of items.
     const n = args.length;
 
     return Object.assign(
         args.reduce((a, x, i) => Object.assign(a, {
             [i]: x
         }), {
-            type: 2 !== n ? `Tuple${n}` : "Tuple",
+            type: 2 !== n
+                ? `Tuple${n}`
+                : "Tuple",
             length: n,
             *[Symbol.iterator]() {
                 for (const k in this) {
@@ -2245,8 +2247,8 @@ const identity = x =>
     x;
 
 // if_ :: Bool -> a -> a -> a
-const if_ = bool =>
-    x => y => bool
+const if_ = bln =>
+    x => y => bln
         ? x
         : y;
 
@@ -3341,11 +3343,11 @@ const measuredTree = tree => {
     // Index is a position in a zero-based top-down
     // left to right series.
     // For additional parent indices, see parentIndexedTree.
-    const whni = (leafSum, layerSum, nodeSum, index) => ({
+    const whni = (leafSum, layerSum, nodeSum, ndx) => ({
         leafSum,
         layerSum,
         nodeSum,
-        index
+        index : ndx
     });
     let i = 0;
 
@@ -3752,25 +3754,6 @@ const prependToAll = sep =>
         sep, xs[0],
         ...prependToAll(sep)(xs.slice(1))
     ] : [];
-
-// print :: a -> IO ()
-const print = x => {
-    const s = show(x);
-
-    return (
-        typeof document !== "undefined" ? (
-            document.writeln(s)
-        ) : typeof draft !== "undefined" ? (
-            editor.setText(
-                `${editor.getText()}\n${s}`
-            )
-        ) : (
-            // eslint-disable-next-line no-console
-            console.log(s),
-            s
-        )
-    );
-};
 
 // product :: [Num] -> Num
 const product = xs =>
@@ -4749,12 +4732,11 @@ const sqrtMay = n =>
 const str = x =>
     Array.isArray(x) && x.every(
         v => ("string" === typeof v) && (1 === v.length)
-    ) ? (
-        // [Char] -> String
-        x.join("")
-    ) : null === x ? (
-        "null"
-    ) : x.toString();
+    )
+        ? x.join("")
+        : null === x
+            ? "null"
+            : x.toString();
 
 // strip :: String -> String
 const strip = s =>
@@ -5603,19 +5585,20 @@ const uncons = xs => {
     // Or Nothing if xs is an empty list.
     const n = length(xs);
 
-    return Boolean(n) ? (
-        Infinity > n ? (
+    return 0 < n
+        ? Infinity > n
             // Finite list
-            Just(Tuple(xs[0])(xs.slice(1)))
-        ) : (() => {
-            // Lazy generator
-            const nxt = take(1)(xs);
+            ? Just(Tuple(xs[0])(xs.slice(1)))
 
-            return Boolean(nxt.length) ? (
-                Just(Tuple(nxt[0])(xs))
-            ) : Nothing();
-        })()
-    ) : Nothing();
+            // Lazy generator
+            : (() => {
+                const nxt = take(1)(xs);
+
+                return 0 < nxt.length
+                    ? Just(Tuple(nxt[0])(xs))
+                    : Nothing();
+            })()
+        : Nothing();
 };
 
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
@@ -6039,19 +6022,26 @@ const zipWithM = f =>
 
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 const zipWithN = (...args) => {
-    const
-        rows = args.slice(1).map(xs => Array.from(xs)),
-        n = Math.min(...rows.map(x => x.length)),
-        f = uncurryN(args[0]);
+    // Uncurried function of which the first argument is
+    // a function, and all remaining arguments are lists.
+    const rows = args.slice(1);
 
-    return 0 < n ? (
-        take(n)
-    )(rows[0]).map(
-        (x, i) => f(
-            TupleN(...rows.flatMap(v => v[i]))
-        )
+    return 0 < rows.length
+        ? (() => {
+            const
+                n = Math.min(...rows.map(x => x.length)),
+                // Uncurried reduction of zipWith(identity)
+                apZL = (fs, ys) => fs.map(
+                    (f, i) => (f)(ys[i])
+                )
+                .slice(0, n);
 
-    ) : [];
+            return rows.slice(1).reduce(
+                apZL,
+                rows[0].map(args[0])
+            );
+        })()
+        : [];
 };
 
 // zipWith_ :: (a -> a -> b) -> [a] -> [b]

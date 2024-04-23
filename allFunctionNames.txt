@@ -363,7 +363,6 @@ postorder :: Tree a -> [a]
 pred :: Enum a => a -> a
 predMay :: Enum a => a -> Maybe a
 prependToAll :: a -> [a] -> [a]
-print :: a -> IO ()
 product :: [Num] -> Num
 properFracRatio :: Ratio -> (Int, Ratio)
 properFraction :: Real -> (Int, Real)
