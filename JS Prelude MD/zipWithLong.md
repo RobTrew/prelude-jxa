@@ -11,7 +11,11 @@ const zipWithLong = f => {
         ys => 0 < xs.length
             ? 0 < ys.length
                 ? [f(xs[0], ys[0])].concat(
-                    go(xs.slice(1))(ys.slice(1))
+                    go(
+                        xs.slice(1)
+                    )(
+                        ys.slice(1)
+                    )
                 )
                 : xs
             : ys;

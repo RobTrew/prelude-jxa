@@ -317,22 +317,10 @@ const approxRatio = epsilon =>
             )(1, n);
 
         return Ratio(
-            Math.floor(n / c),
+            Math.floor(n / c)
+        )(
             Math.floor(1 / c)
         );
-    };
-
-
-// gcdApprox :: Real -> (Real, Real) -> Real
-const gcdApprox = epsilon =>
-    (x, y) => {
-        const _gcd = (a, b) => (
-            b < epsilon
-                ? a
-                : _gcd(b, a % b)
-        );
-
-        return _gcd(Math.abs(x), Math.abs(y));
     };
 
 // argvLength :: Function -> Int
@@ -1921,7 +1909,7 @@ const foldMapGen = f =>
 
 // foldMapList :: Monoid m => (a -> m) -> t a -> m
 const foldMapList = f =>
-// f mapped over the combined values of a structure.
+    // f mapped over the combined values of a structure.
     xs => 1 < xs.length
         ? xs.slice(1).reduce(
             (a, x) => mappend(a)(f(x)),
@@ -4489,13 +4477,13 @@ const showPrecision = n => x => {
 
 // showRatio :: Ratio -> String
 const showRatio = r =>
-    "Ratio" !== r.type ? (
-        r.toString()
-    ) : r.n.toString() + (
-        1 !== r.d ? (
-            `/${r.d}`
-        ) : ""
-    );
+    "Ratio" !== r.type
+        ? r.toString()
+        : r.n.toString() + (
+            1 !== r.d
+                ? `/${r.d}`
+                : ""
+        );
 
 // showSet :: Set a -> String
 const showSet = oSet => {
@@ -4529,13 +4517,13 @@ const showUndefined = () =>
 
 // signum :: Num -> Num
 const signum = n =>
-    // | Sign of a number.
+    // Sign of a number.
     n.constructor(
-        0 > n ? (
-            -1
-        ) : (
-            0 < n ? 1 : 0
-        )
+        0 > n
+            ? -1
+            : 0 < n
+                ? 1
+                : 0
     );
 
 // sj :: a -> String
@@ -5798,16 +5786,18 @@ const unzip4 = wxyzs =>
 
 // unzipN :: [(a,b,...)] -> ([a],[b],...)
 const unzipN = tpls =>
-    TupleN(...tpls.reduce(
-        (a, tpl) => a.map(
-            (x, i) => x.concat(tpl[i])
-        ),
-        replicate(
-            Boolean(tpls.length) ? (
-                tpls[0].length
-            ) : 0, []
+    TupleN(
+        ...tpls.reduce(
+            (a, tpl) => a.map(
+                (x, i) => x.concat(tpl[i])
+            ),
+            replicate(
+                0 < tpls.length
+                    ? tpls[0].length
+                    : 0, []
+            )
         )
-    ));
+    );
 
 // variance :: [Num] -> Num
 const variance = xs => {
@@ -5910,17 +5900,17 @@ const zipWith = f =>
     // custom function, rather than with the
     // default tuple constructor.
     xs => ys => {
-        const n = Math.min(length(xs), length(ys));
+        const n = Math.min(...[xs, ys].map(length));
 
-        return Infinity > n ? (
-            (([as, bs]) => Array.from({
+        return Infinity > n
+            ? (([as, bs]) => Array.from({
                 length: n
             }, (_, i) => f(as[i])(
                 bs[i]
             )))([xs, ys].map(
                 take(n)
             ))
-        ) : zipWithGen(f)(xs)(ys);
+            : zipWithGen(f)(xs)(ys);
     };
 
 // zipWith3 :: (a -> b -> c -> d) ->
@@ -6002,7 +5992,11 @@ const zipWithLong = f => {
         ys => 0 < xs.length
             ? 0 < ys.length
                 ? [f(xs[0], ys[0])].concat(
-                    go(xs.slice(1))(ys.slice(1))
+                    go(
+                        xs.slice(1)
+                    )(
+                        ys.slice(1)
+                    )
                 )
                 : xs
             : ys;

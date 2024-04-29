@@ -1,13 +1,13 @@
 ```javascript
 // listDirectory :: FilePath -> [FilePath]
 const listDirectory = fp =>
-    ObjC.unwrap(
+    ObjC.deepUnwrap(
         $.NSFileManager.defaultManager
         .contentsOfDirectoryAtPathError(
             $(fp).stringByStandardizingPath,
             null
-        ))
-    .map(ObjC.unwrap);
+        )
+    );
 ```
 
 

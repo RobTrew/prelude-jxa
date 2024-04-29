@@ -6,17 +6,17 @@ const zipWith = f =>
     // custom function, rather than with the
     // default tuple constructor.
     xs => ys => {
-        const n = Math.min(length(xs), length(ys));
+        const n = Math.min(...[xs, ys].map(length));
 
-        return Infinity > n ? (
-            (([as, bs]) => Array.from({
+        return Infinity > n
+            ? (([as, bs]) => Array.from({
                 length: n
             }, (_, i) => f(as[i])(
                 bs[i]
             )))([xs, ys].map(
                 take(n)
             ))
-        ) : zipWithGen(f)(xs)(ys);
+            : zipWithGen(f)(xs)(ys);
     };
 ```
 

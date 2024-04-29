@@ -262,13 +262,13 @@ const getTemporaryDirectory = () =>
 
 // listDirectory :: FilePath -> [FilePath]
 const listDirectory = fp =>
-    ObjC.unwrap(
+    ObjC.deepUnwrap(
         $.NSFileManager.defaultManager
         .contentsOfDirectoryAtPathError(
             $(fp).stringByStandardizingPath,
             null
-        ))
-    .map(ObjC.unwrap);
+        )
+    );
 
 // modificationTime :: FilePath -> Either String Date
 const modificationTime = fp =>
@@ -423,15 +423,14 @@ const writeFileLR = fp =>
             e = $(),
             efp = $(fp).stringByStandardizingPath;
 
-        return $.NSString.alloc.initWithUTF8String(s)
-            .writeToFileAtomicallyEncodingError(
-                efp, false,
-                $.NSUTF8StringEncoding, e
-            ) ? (
-                Right(ObjC.unwrap(efp))
-            ) : Left(ObjC.unwrap(
-                e.localizedDescription
-            ));
+        return $.NSString.alloc
+        .initWithUTF8String(s)
+        .writeToFileAtomicallyEncodingError(
+            efp, false,
+            $.NSUTF8StringEncoding, e
+        )
+            ? Right(ObjC.unwrap(efp))
+            : Left(ObjC.unwrap(e.localizedDescription));
     };
 
 // writeTempFile :: String -> String -> IO FilePath

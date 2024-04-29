@@ -227,7 +227,7 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Real -> Real -> Ratio\nconst approxRatio = epsilon =>\n    n => {\n        const\n            c = gcdApprox(\n                Boolean(epsilon)\n                    ? epsilon\n                    : (1 / 10000)\n            )(1, n);\n\n        return Ratio(\n            Math.floor(n / c),\n            Math.floor(1 / c)\n        );\n    };\n\n\n// gcdApprox :: Real -> (Real, Real) -> Real\nconst gcdApprox = epsilon =>\n    (x, y) => {\n        const _gcd = (a, b) => (\n            b < epsilon\n                ? a\n                : _gcd(b, a % b)\n        );\n\n        return _gcd(Math.abs(x), Math.abs(y));\n    };",
+    "code": "// approxRatio :: Real -> Real -> Ratio\nconst approxRatio = epsilon =>\n    n => {\n        const\n            c = gcdApprox(\n                Boolean(epsilon)\n                    ? epsilon\n                    : (1 / 10000)\n            )(1, n);\n\n        return Ratio(\n            Math.floor(n / c)\n        )(\n            Math.floor(1 / c)\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1121,7 +1121,7 @@
     ]
   },
   "foldMapList": {
-    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n// f mapped over the combined values of a structure.\n    xs => 1 < xs.length\n        ? xs.slice(1).reduce(\n            (a, x) => mappend(a)(f(x)),\n            xs[0]\n        )\n        : xs.map(f);",
+    "code": "// foldMapList :: Monoid m => (a -> m) -> t a -> m\nconst foldMapList = f =>\n    // f mapped over the combined values of a structure.\n    xs => 1 < xs.length\n        ? xs.slice(1).reduce(\n            (a, x) => mappend(a)(f(x)),\n            xs[0]\n        )\n        : xs.map(f);",
     "tags": [
       "JS Prelude"
     ]
@@ -1829,7 +1829,7 @@
     ]
   },
   "listDirectory": {
-    "code": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = fp =>\n    ObjC.unwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp).stringByStandardizingPath,\n            null\n        ))\n    .map(ObjC.unwrap);",
+    "code": "// listDirectory :: FilePath -> [FilePath]\nconst listDirectory = fp =>\n    ObjC.deepUnwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp).stringByStandardizingPath,\n            null\n        )\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2831,7 +2831,7 @@
     ]
   },
   "showRatio": {
-    "code": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    \"Ratio\" !== r.type ? (\n        r.toString()\n    ) : r.n.toString() + (\n        1 !== r.d ? (\n            `/${r.d}`\n        ) : \"\"\n    );",
+    "code": "// showRatio :: Ratio -> String\nconst showRatio = r =>\n    \"Ratio\" !== r.type\n        ? r.toString()\n        : r.n.toString() + (\n            1 !== r.d\n                ? `/${r.d}`\n                : \"\"\n        );",
     "tags": [
       "JS Prelude"
     ]
@@ -2862,7 +2862,7 @@
     ]
   },
   "signum": {
-    "code": "// signum :: Num -> Num\nconst signum = n =>\n    // | Sign of a number.\n    n.constructor(\n        0 > n ? (\n            -1\n        ) : (\n            0 < n ? 1 : 0\n        )\n    );",
+    "code": "// signum :: Num -> Num\nconst signum = n =>\n    // Sign of a number.\n    n.constructor(\n        0 > n\n            ? -1\n            : 0 < n\n                ? 1\n                : 0\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3479,7 +3479,7 @@
     ]
   },
   "unzipN": {
-    "code": "// unzipN :: [(a,b,...)] -> ([a],[b],...)\nconst unzipN = tpls =>\n    TupleN(...tpls.reduce(\n        (a, tpl) => a.map(\n            (x, i) => x.concat(tpl[i])\n        ),\n        replicate(\n            Boolean(tpls.length) ? (\n                tpls[0].length\n            ) : 0, []\n        )\n    ));",
+    "code": "// unzipN :: [(a,b,...)] -> ([a],[b],...)\nconst unzipN = tpls =>\n    TupleN(\n        ...tpls.reduce(\n            (a, tpl) => a.map(\n                (x, i) => x.concat(tpl[i])\n            ),\n            replicate(\n                0 < tpls.length\n                    ? tpls[0].length\n                    : 0, []\n            )\n        )\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3512,7 +3512,7 @@
     ]
   },
   "writeFileLR": {
-    "code": "// writeFileLR :: FilePath ->\n// String -> Either String IO FilePath\nconst writeFileLR = fp =>\n    // Either a message or the filepath\n    // to which the string has been written.\n    s => {\n        const\n            e = $(),\n            efp = $(fp).stringByStandardizingPath;\n\n        return $.NSString.alloc.initWithUTF8String(s)\n            .writeToFileAtomicallyEncodingError(\n                efp, false,\n                $.NSUTF8StringEncoding, e\n            ) ? (\n                Right(ObjC.unwrap(efp))\n            ) : Left(ObjC.unwrap(\n                e.localizedDescription\n            ));\n    };",
+    "code": "// writeFileLR :: FilePath ->\n// String -> Either String IO FilePath\nconst writeFileLR = fp =>\n    // Either a message or the filepath\n    // to which the string has been written.\n    s => {\n        const\n            e = $(),\n            efp = $(fp).stringByStandardizingPath;\n\n        return $.NSString.alloc\n        .initWithUTF8String(s)\n        .writeToFileAtomicallyEncodingError(\n            efp, false,\n            $.NSUTF8StringEncoding, e\n        )\n            ? Right(ObjC.unwrap(efp))\n            : Left(ObjC.unwrap(e.localizedDescription));\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -3570,7 +3570,7 @@
     ]
   },
   "zipWith": {
-    "code": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = f =>\n    // A list with the length of the shorter of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => {\n        const n = Math.min(length(xs), length(ys));\n\n        return Infinity > n ? (\n            (([as, bs]) => Array.from({\n                length: n\n            }, (_, i) => f(as[i])(\n                bs[i]\n            )))([xs, ys].map(\n                take(n)\n            ))\n        ) : zipWithGen(f)(xs)(ys);\n    };",
+    "code": "// zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWith = f =>\n    // A list with the length of the shorter of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => {\n        const n = Math.min(...[xs, ys].map(length));\n\n        return Infinity > n\n            ? (([as, bs]) => Array.from({\n                length: n\n            }, (_, i) => f(as[i])(\n                bs[i]\n            )))([xs, ys].map(\n                take(n)\n            ))\n            : zipWithGen(f)(xs)(ys);\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -3607,7 +3607,7 @@
     ]
   },
   "zipWithLong": {
-    "code": "// zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]\nconst zipWithLong = f => {\n    // A list with the length of the *longer* of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    // Any unpaired values, where list lengths differ,\n    // are simply appended.\n    const go = xs =>\n        ys => 0 < xs.length\n            ? 0 < ys.length\n                ? [f(xs[0], ys[0])].concat(\n                    go(xs.slice(1))(ys.slice(1))\n                )\n                : xs\n            : ys;\n\n    return go;\n};",
+    "code": "// zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]\nconst zipWithLong = f => {\n    // A list with the length of the *longer* of\n    // xs and ys, defined by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    // Any unpaired values, where list lengths differ,\n    // are simply appended.\n    const go = xs =>\n        ys => 0 < xs.length\n            ? 0 < ys.length\n                ? [f(xs[0], ys[0])].concat(\n                    go(\n                        xs.slice(1)\n                    )(\n                        ys.slice(1)\n                    )\n                )\n                : xs\n            : ys;\n\n    return go;\n};",
     "tags": [
       "JS Prelude"
     ]
