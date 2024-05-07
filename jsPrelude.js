@@ -2501,7 +2501,7 @@ const isLeft = lr =>
 // isLower :: Char -> Bool
 const isLower = c =>
     // True if c is a lower case character.
-    (/[a-z]/u).test(c);
+    (/\p{Ll}/u).test(c);
 
 // isMaybe :: a -> Bool
 const isMaybe = x =>
@@ -2603,7 +2603,7 @@ const isSuffixOf = needle =>
 // isUpper :: Char -> Bool
 const isUpper = c =>
     // True if c is an upper case character.
-    (/[A-Z]/u).test(c);
+    (/\p{Lu}/u).test(c);
 
 // iso8601Local :: Date -> String
 const iso8601Local = dte =>
@@ -4621,7 +4621,7 @@ const splitBy = p =>
     // Splitting not on a delimiter, but wherever the
     // relationship between consecutive terms matches
     // a binary predicate.
-    xs => (xs.length < 2)
+    xs => 2 > xs.length
         ? [xs]
         : (() => {
             const
@@ -4943,12 +4943,15 @@ const takeCycle = n =>
         const lng = xs.length;
 
         return (
-            n <= lng ? (
-                xs
-            ) : replicate(
-                Math.ceil(n / lng)
-            )(xs).flat(1)
-        ).slice(0, n);
+            n <= lng
+                ? xs
+                : Array.from(
+                    {length: n},
+                    () => xs
+                )
+                .flat(1)
+        )
+        .slice(0, n);
     };
 
 // takeDirectory :: FilePath -> FilePath

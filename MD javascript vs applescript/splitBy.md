@@ -6,7 +6,7 @@ const splitBy = p =>
     // Splitting not on a delimiter, but wherever the
     // relationship between consecutive terms matches
     // a binary predicate.
-    xs => (xs.length < 2)
+    xs => 2 > xs.length
         ? [xs]
         : (() => {
             const

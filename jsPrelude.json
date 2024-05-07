@@ -1553,7 +1553,7 @@
     ]
   },
   "isLower": {
-    "code": "// isLower :: Char -> Bool\nconst isLower = c =>\n    // True if c is a lower case character.\n    (/[a-z]/u).test(c);",
+    "code": "// isLower :: Char -> Bool\nconst isLower = c =>\n    // True if c is a lower case character.\n    (/\\p{Ll}/u).test(c);",
     "tags": [
       "JS Prelude"
     ]
@@ -1614,7 +1614,7 @@
     ]
   },
   "isUpper": {
-    "code": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    // True if c is an upper case character.\n    (/[A-Z]/u).test(c);",
+    "code": "// isUpper :: Char -> Bool\nconst isUpper = c =>\n    // True if c is an upper case character.\n    (/\\p{Lu}/u).test(c);",
     "tags": [
       "JS Prelude"
     ]
@@ -2927,7 +2927,7 @@
     ]
   },
   "splitBy": {
-    "code": "// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) ->\n// String -> [String]\nconst splitBy = p =>\n    // Splitting not on a delimiter, but wherever the\n    // relationship between consecutive terms matches\n    // a binary predicate.\n    xs => (xs.length < 2)\n        ? [xs]\n        : (() => {\n            const\n                [h, ...t] = xs,\n                ab = t.reduce(\n                    ([acc, active, prev], x) =>\n                        p(prev)(x)\n                            ? [acc.concat([active]), [x], x]\n                            : [acc, active.concat(x), x],\n                    [[], [h], h]\n                );\n\n            return ab[0].concat([ab[1]]);\n        })();",
+    "code": "// splitBy :: (a -> a -> Bool) -> [a] -> [[a]]\n// splitBy :: (String -> String -> Bool) ->\n// String -> [String]\nconst splitBy = p =>\n    // Splitting not on a delimiter, but wherever the\n    // relationship between consecutive terms matches\n    // a binary predicate.\n    xs => 2 > xs.length\n        ? [xs]\n        : (() => {\n            const\n                [h, ...t] = xs,\n                ab = t.reduce(\n                    ([acc, active, prev], x) =>\n                        p(prev)(x)\n                            ? [acc.concat([active]), [x], x]\n                            : [acc, active.concat(x), x],\n                    [[], [h], h]\n                );\n\n            return ab[0].concat([ab[1]]);\n        })();",
     "tags": [
       "JS Prelude"
     ]
@@ -3096,7 +3096,7 @@
     ]
   },
   "takeCycle": {
-    "code": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = n =>\n    // First n elements of a non-finite cycle of xs.\n    xs => {\n        const lng = xs.length;\n\n        return (\n            n <= lng ? (\n                xs\n            ) : replicate(\n                Math.ceil(n / lng)\n            )(xs).flat(1)\n        ).slice(0, n);\n    };",
+    "code": "// takeCycle :: Int -> [a] -> [a]\nconst takeCycle = n =>\n    // First n elements of a non-finite cycle of xs.\n    xs => {\n        const lng = xs.length;\n\n        return (\n            n <= lng\n                ? xs\n                : Array.from(\n                    {length: n},\n                    () => xs\n                )\n                .flat(1)\n        )\n        .slice(0, n);\n    };",
     "tags": [
       "JS Prelude"
     ]

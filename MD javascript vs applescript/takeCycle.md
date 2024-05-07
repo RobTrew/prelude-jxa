@@ -6,12 +6,15 @@ const takeCycle = n =>
         const lng = xs.length;
 
         return (
-            n <= lng ? (
-                xs
-            ) : replicate(
-                Math.ceil(n / lng)
-            )(xs).flat(1)
-        ).slice(0, n);
+            n <= lng
+                ? xs
+                : Array.from(
+                    {length: n},
+                    () => xs
+                )
+                .flat(1)
+        )
+        .slice(0, n);
     };
 ```
 
