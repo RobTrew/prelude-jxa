@@ -7,15 +7,14 @@ const take = n =>
     xs => "GeneratorFunction" !== xs
     .constructor.constructor.name
         ? xs.slice(0, n)
-        : Array.from({
-            length: n
-        }, () => {
-            const x = xs.next();
+        : Array.from({length: n},
+            () => {
+                const x = xs.next();
 
-            return x.done
-                ? []
-                : [x.value];
-        })
+                return x.done
+                    ? []
+                    : [x.value];
+            })
         .flat();
 ```
 

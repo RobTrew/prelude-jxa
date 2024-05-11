@@ -4873,17 +4873,17 @@ const tail = xs =>
     // A new list consisting of all
     // items of xs except the first.
     "GeneratorFunction" !== xs.constructor
-    .constructor.name ? (
-        Boolean(xs.length) ? (
-            xs.slice(1)
-        ) : undefined
-    ) : (take(1)(xs), xs);
+    .constructor.name
+        ? 0 < xs.length
+            ? xs.slice(1)
+            : undefined
+        : (take(1)(xs), xs);
 
 // tailMay :: [a] -> Maybe [a]
 const tailMay = xs =>
-    Boolean(xs.length) ? (
-        Just(xs.slice(1))
-    ) : Nothing();
+    Boolean(xs.length)
+        ? Just(xs.slice(1))
+        : Nothing();
 
 // tails :: [a] -> [[a]]
 const tails = xs =>
@@ -4900,24 +4900,23 @@ const take = n =>
     xs => "GeneratorFunction" !== xs
     .constructor.constructor.name
         ? xs.slice(0, n)
-        : Array.from({
-            length: n
-        }, () => {
-            const x = xs.next();
+        : Array.from({length: n},
+            () => {
+                const x = xs.next();
 
-            return x.done
-                ? []
-                : [x.value];
-        })
+                return x.done
+                    ? []
+                    : [x.value];
+            })
         .flat();
 
 // takeAround :: (a -> Bool) -> [a] -> [a]
 const takeAround = p => xs => {
     const ys = takeWhile(p)(xs);
 
-    return ys.length < xs.length ? (
-        ys.concat(takeWhileR(p)(xs))
-    ) : ys;
+    return ys.length < xs.length
+        ? ys.concat(takeWhileR(p)(xs))
+        : ys;
 };
 
 // takeBaseName :: FilePath -> String
@@ -4993,24 +4992,27 @@ const takeFileName = fp =>
         : "";
 
 // takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]
-const takeFromThenTo = a => b => z => xs => {
-    const ixs = enumFromThenTo(a)(b)(z);
+const takeFromThenTo = a =>
+    b => z => xs => {
+        const ixs = enumFromThenTo(a)(b)(z);
 
-    return "GeneratorFunction" !== xs.constructor
-        .constructor.name ? (
-            ixs.map(i => xs[i])
-        ) : (() => {
-            const g = zipGen(enumFrom(0))(
-                take(z)(xs)
-            );
+        return "GeneratorFunction" !== xs.constructor
+        .constructor.name
+            ? ixs.map(i => xs[i])
+            : (() => {
+                const g = zipGen(enumFrom(0))(
+                    take(z)(xs)
+                );
 
-            return ixs.flatMap(i => {
-                const mb = index(g)(i);
+                return ixs.flatMap(i => {
+                    const mb = index(g)(i);
 
-                return mb.Nothing ? [] : [mb.Just];
-            });
-        })();
-};
+                    return mb.Nothing
+                        ? []
+                        : [mb.Just];
+                });
+            })();
+    };
 
 // takeIterate n f x == [x, f x, f (f x), ...]
 // takeIterate :: Int -> (a -> a) -> a -> [a]

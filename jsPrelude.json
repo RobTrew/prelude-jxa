@@ -3058,14 +3058,14 @@
     ]
   },
   "tail": {
-    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name ? (\n        Boolean(xs.length) ? (\n            xs.slice(1)\n        ) : undefined\n    ) : (take(1)(xs), xs);",
+    "code": "// tail :: [a] -> [a]\nconst tail = xs =>\n    // A new list consisting of all\n    // items of xs except the first.\n    \"GeneratorFunction\" !== xs.constructor\n    .constructor.name\n        ? 0 < xs.length\n            ? xs.slice(1)\n            : undefined\n        : (take(1)(xs), xs);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "tailMay": {
-    "code": "// tailMay :: [a] -> Maybe [a]\nconst tailMay = xs =>\n    Boolean(xs.length) ? (\n        Just(xs.slice(1))\n    ) : Nothing();",
+    "code": "// tailMay :: [a] -> Maybe [a]\nconst tailMay = xs =>\n    Boolean(xs.length)\n        ? Just(xs.slice(1))\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -3077,14 +3077,14 @@
     ]
   },
   "take": {
-    "code": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = n =>\n    // The first n elements of a list,\n    // string of characters, or stream.\n    xs => \"GeneratorFunction\" !== xs\n    .constructor.constructor.name\n        ? xs.slice(0, n)\n        : Array.from({\n            length: n\n        }, () => {\n            const x = xs.next();\n\n            return x.done\n                ? []\n                : [x.value];\n        })\n        .flat();",
+    "code": "// take :: Int -> [a] -> [a]\n// take :: Int -> String -> String\nconst take = n =>\n    // The first n elements of a list,\n    // string of characters, or stream.\n    xs => \"GeneratorFunction\" !== xs\n    .constructor.constructor.name\n        ? xs.slice(0, n)\n        : Array.from({length: n},\n            () => {\n                const x = xs.next();\n\n                return x.done\n                    ? []\n                    : [x.value];\n            })\n        .flat();",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "takeAround": {
-    "code": "// takeAround :: (a -> Bool) -> [a] -> [a]\nconst takeAround = p => xs => {\n    const ys = takeWhile(p)(xs);\n\n    return ys.length < xs.length ? (\n        ys.concat(takeWhileR(p)(xs))\n    ) : ys;\n};",
+    "code": "// takeAround :: (a -> Bool) -> [a] -> [a]\nconst takeAround = p => xs => {\n    const ys = takeWhile(p)(xs);\n\n    return ys.length < xs.length\n        ? ys.concat(takeWhileR(p)(xs))\n        : ys;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3126,7 +3126,7 @@
     ]
   },
   "takeFromThenTo": {
-    "code": "// takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]\nconst takeFromThenTo = a => b => z => xs => {\n    const ixs = enumFromThenTo(a)(b)(z);\n\n    return \"GeneratorFunction\" !== xs.constructor\n        .constructor.name ? (\n            ixs.map(i => xs[i])\n        ) : (() => {\n            const g = zipGen(enumFrom(0))(\n                take(z)(xs)\n            );\n\n            return ixs.flatMap(i => {\n                const mb = index(g)(i);\n\n                return mb.Nothing ? [] : [mb.Just];\n            });\n        })();\n};",
+    "code": "// takeFromThenTo :: Int -> Int -> Int -> [a] -> [a]\nconst takeFromThenTo = a =>\n    b => z => xs => {\n        const ixs = enumFromThenTo(a)(b)(z);\n\n        return \"GeneratorFunction\" !== xs.constructor\n        .constructor.name\n            ? ixs.map(i => xs[i])\n            : (() => {\n                const g = zipGen(enumFrom(0))(\n                    take(z)(xs)\n                );\n\n                return ixs.flatMap(i => {\n                    const mb = index(g)(i);\n\n                    return mb.Nothing\n                        ? []\n                        : [mb.Just];\n                });\n            })();\n    };",
     "tags": [
       "JS Prelude"
     ]
