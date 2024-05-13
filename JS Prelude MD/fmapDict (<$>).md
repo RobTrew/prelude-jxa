@@ -4,7 +4,7 @@
 const fmapDict = f =>
     // A map of f over every value
     // in the given dictionary.
-    dict => Object.entries(dict).reduce(
+    dict => Object.entries(dict).reduceRight(
         (a, [k, v]) => Object.assign(
             {[k]: f(v)},
             a

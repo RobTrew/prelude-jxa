@@ -1060,7 +1060,7 @@
     ]
   },
   "fmapDict (<$>)": {
-    "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict).reduce(\n        (a, [k, v]) => Object.assign(\n            {[k]: f(v)},\n            a\n        ),\n        {}\n    );",
+    "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict).reduceRight(\n        (a, [k, v]) => Object.assign(\n            {[k]: f(v)},\n            a\n        ),\n        {}\n    );",
     "tags": [
       "JS Prelude"
     ]
