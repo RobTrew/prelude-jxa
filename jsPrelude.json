@@ -90,6 +90,13 @@
       "JS Prelude"
     ]
   },
+  "alert": {
+    "code": "// alert :: String => String -> IO String\nconst alert = title =>\n    // Display of a given title and message.\n    s => {\n        const sa = Object.assign(\n            Application(\"System Events\"), {\n                includeStandardAdditions: true\n            });\n\n        return (\n            sa.activate(),\n            sa.displayDialog(s, {\n                withTitle: title,\n                buttons: [\"OK\"],\n                defaultButton: \"OK\"\n            }),\n            s\n        );\n    };",
+    "tags": [
+      "JS Prelude",
+      "jxa"
+    ]
+  },
   "all": {
     "code": "// all :: (a -> Bool) -> [a] -> Bool\nconst all = p =>\n    // True if p(x) holds for every x in xs.\n    xs => [...xs].every(p);",
     "tags": [

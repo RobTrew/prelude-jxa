@@ -3,6 +3,26 @@
 /* eslint-disable strict */
 /* eslint-disable no-unused-vars */
 
+// alert :: String => String -> IO String
+const alert = title =>
+    // Display of a given title and message.
+    s => {
+        const sa = Object.assign(
+            Application("System Events"), {
+                includeStandardAdditions: true
+            });
+
+        return (
+            sa.activate(),
+            sa.displayDialog(s, {
+                withTitle: title,
+                buttons: ["OK"],
+                defaultButton: "OK"
+            }),
+            s
+        );
+    };
+
 // appendFile :: FilePath -> String -> IO Bool
 const appendFile = fp =>
     // The file at fp updated with a new string

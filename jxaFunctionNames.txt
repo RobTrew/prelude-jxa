@@ -1,3 +1,4 @@
+alert :: String => String -> IO String
 appendFile :: FilePath -> String -> IO Bool
 appendFileMay :: FilePath -> String -> Maybe IO FilePath
 base64decode :: String -> String

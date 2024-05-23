@@ -12,6 +12,7 @@ ZipList :: a -> {getZipList :: [a]}
 abs :: Num -> Num
 add (+) :: Num a => a -> a -> a
 adjust :: (a -> a) -> Key -> Dict Key a -> Dict Key a
+alert :: String => String -> IO String
 all :: (a -> Bool) -> [a] -> Bool
 allSame :: [a] -> Bool
 allTree :: (a -> Bool) -> Tree a -> Bool
