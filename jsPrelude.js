@@ -4698,7 +4698,9 @@ const splitRegex = needle =>
 
 // sqrt :: Num -> Num
 const sqrt = n =>
-    (0 <= n) ? Math.sqrt(n) : undefined;
+    0 <= n
+        ? Math.sqrt(n)
+        : undefined;
 
 // sqrtLR :: Num -> Either String Num
 const sqrtLR = n =>
@@ -5492,15 +5494,15 @@ const treeMenuBy = fNodeKey => {
                                 firstChosen => Just(
                                     isNull(
                                         nest(firstChosen)
-                                    ) ? (
-                                        ks.map(
+                                    )
+                                        ? ks.map(
                                             k => find(
                                                 x => k === fNodeKey(
                                                     x.root
                                                 )
                                             )(subTrees).Just
                                         )
-                                    ) : go(firstChosen)
+                                        : go(firstChosen)
                                 )
                             )
                         );
@@ -5527,29 +5529,32 @@ const tupleFromList = xs =>
 const typeName = v => {
     const t = typeof v;
 
-    return "object" === t ? (
-        null !== v ? (
-            Array.isArray(v) ? (
-                "List"
-            ) : "Date" === v.constructor.name ? (
-                "Date"
-            ) : null !== v ? (() => {
-                const ct = v.type;
+    return "object" === t
+        ? null !== v
+            ? Array.isArray(v)
+                ? "List"
+                : "Date" === v.constructor.name
+                    ? "Date"
+                    : null !== v
+                        ? (() => {
+                            const ct = v.type;
 
-                return Boolean(ct) ? (
-                    (/Tuple\d+/u).test(ct) ? (
-                        "TupleN"
-                    ) : ct
-                ) : "Dict";
-            })() : "Bottom"
-        ) : "Bottom"
-    ) : {
-        "boolean": "Bool",
-        "date": "Date",
-        "number": "Num",
-        "string": "String",
-        "function": "(a -> b)"
-    } [t] || "Bottom";
+                            return Boolean(ct)
+                                ? (/Tuple\d+/u).test(ct)
+                                    ? "TupleN"
+                                    : ct
+                                : "Dict";
+                        })()
+                        : "Bottom"
+            : "Bottom"
+
+        : {
+            "boolean": "Bool",
+            "date": "Date",
+            "number": "Num",
+            "string": "String",
+            "function": "(a -> b)"
+        } [t] || "Bottom";
 };
 
 // unDigits :: [Int] -> Int
@@ -6026,13 +6031,13 @@ const zipWithN = (...args) => {
             const
                 n = Math.min(...rows.map(x => x.length)),
                 // Uncurried reduction of zipWith(identity)
-                apZL = (fs, ys) => fs.map(
+                apZL_ = (fs, ys) => fs.map(
                     (f, i) => (f)(ys[i])
                 )
                 .slice(0, n);
 
             return rows.slice(1).reduce(
-                apZL,
+                apZL_,
                 rows[0].map(args[0])
             );
         })()

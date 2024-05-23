@@ -273,7 +273,7 @@ const listDirectory = fp =>
 // modificationTime :: FilePath -> Either String Date
 const modificationTime = fp =>
     bindLR(fileStatus(fp))(
-       dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
+        dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
     );
 
 // newUUID :: () -> IO UUID String
@@ -369,11 +369,11 @@ const renamedFile = fp =>
         const error = $();
 
         return $.NSFileManager.defaultManager
-            .moveItemAtPathToPathError(fp, fp1, error) ? (
-                Right(fp1)
-            ) : Left(ObjC.unwrap(
-                error.localizedDescription
-            ));
+        .moveItemAtPathToPathError(fp, fp1, error)
+            ? Right(fp1)
+            : Left(
+                ObjC.unwrap(error.localizedDescription)
+            );
     };
 
 // setCurrentDirectory :: FilePath -> IO ()

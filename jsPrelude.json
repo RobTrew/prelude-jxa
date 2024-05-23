@@ -2150,7 +2150,7 @@
     ]
   },
   "modificationTime": {
-    "code": "// modificationTime :: FilePath -> Either String Date\nconst modificationTime = fp =>\n    bindLR(fileStatus(fp))(\n       dct => Right(ObjC.unwrap(dct.NSFileModificationDate))\n    );",
+    "code": "// modificationTime :: FilePath -> Either String Date\nconst modificationTime = fp =>\n    bindLR(fileStatus(fp))(\n        dct => Right(ObjC.unwrap(dct.NSFileModificationDate))\n    );",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2552,7 +2552,7 @@
     ]
   },
   "renamedFile": {
-    "code": "// renamedFile :: FilePath -> FilePath ->\n// Either IO String IO String\nconst renamedFile = fp =>\n    // Either a message detailing a problem, or\n    // confirmation of a filename change in the OS.\n    fp1 => {\n        const error = $();\n\n        return $.NSFileManager.defaultManager\n            .moveItemAtPathToPathError(fp, fp1, error) ? (\n                Right(fp1)\n            ) : Left(ObjC.unwrap(\n                error.localizedDescription\n            ));\n    };",
+    "code": "// renamedFile :: FilePath -> FilePath ->\n// Either IO String IO String\nconst renamedFile = fp =>\n    // Either a message detailing a problem, or\n    // confirmation of a filename change in the OS.\n    fp1 => {\n        const error = $();\n\n        return $.NSFileManager.defaultManager\n        .moveItemAtPathToPathError(fp, fp1, error)\n            ? Right(fp1)\n            : Left(\n                ObjC.unwrap(error.localizedDescription)\n            );\n    };",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -2958,7 +2958,7 @@
     ]
   },
   "sqrt": {
-    "code": "// sqrt :: Num -> Num\nconst sqrt = n =>\n    (0 <= n) ? Math.sqrt(n) : undefined;",
+    "code": "// sqrt :: Num -> Num\nconst sqrt = n =>\n    0 <= n\n        ? Math.sqrt(n)\n        : undefined;",
     "tags": [
       "JS Prelude"
     ]
@@ -3324,7 +3324,7 @@
     ]
   },
   "treeMenuBy": {
-    "code": "// treeMenuBy :: (a -> String) Tree a -> IO [a]\nconst treeMenuBy = fNodeKey => {\n    const go = tree => {\n        const\n            strTitle = fNodeKey(tree.root),\n            subTrees = nest(tree),\n            menu = subTrees.map(\n                compose(fNodeKey, root)\n            ).sort();\n\n        return until(\n            ([a, b]) => !a || !isNull(b)\n        )(\n            () => either(\n                x => Tuple(false)([])\n            )(\n                Tuple(true)\n            )(\n                bindLR(\n                    showMenuLR(true)(strTitle)(menu)\n                )(\n                    ks => {\n                        const\n                            k0 = ks[0],\n                            msg = `${k0}: not found in ${ks}`;\n\n                        return maybe(\n                            Left(msg)\n                        )(Right)(\n                            bindMay(\n                                find(\n                                    x => k0 === fNodeKey(\n                                        x.root\n                                    )\n                                )(subTrees)\n                            )(\n                                firstChosen => Just(\n                                    isNull(\n                                        nest(firstChosen)\n                                    ) ? (\n                                        ks.map(\n                                            k => find(\n                                                x => k === fNodeKey(\n                                                    x.root\n                                                )\n                                            )(subTrees).Just\n                                        )\n                                    ) : go(firstChosen)\n                                )\n                            )\n                        );\n                    }\n                )\n            )\n        )(Tuple(true)([]))[1];\n    };\n\n    return go;\n};",
+    "code": "// treeMenuBy :: (a -> String) Tree a -> IO [a]\nconst treeMenuBy = fNodeKey => {\n    const go = tree => {\n        const\n            strTitle = fNodeKey(tree.root),\n            subTrees = nest(tree),\n            menu = subTrees.map(\n                compose(fNodeKey, root)\n            ).sort();\n\n        return until(\n            ([a, b]) => !a || !isNull(b)\n        )(\n            () => either(\n                x => Tuple(false)([])\n            )(\n                Tuple(true)\n            )(\n                bindLR(\n                    showMenuLR(true)(strTitle)(menu)\n                )(\n                    ks => {\n                        const\n                            k0 = ks[0],\n                            msg = `${k0}: not found in ${ks}`;\n\n                        return maybe(\n                            Left(msg)\n                        )(Right)(\n                            bindMay(\n                                find(\n                                    x => k0 === fNodeKey(\n                                        x.root\n                                    )\n                                )(subTrees)\n                            )(\n                                firstChosen => Just(\n                                    isNull(\n                                        nest(firstChosen)\n                                    )\n                                        ? ks.map(\n                                            k => find(\n                                                x => k === fNodeKey(\n                                                    x.root\n                                                )\n                                            )(subTrees).Just\n                                        )\n                                        : go(firstChosen)\n                                )\n                            )\n                        );\n                    }\n                )\n            )\n        )(Tuple(true)([]))[1];\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3343,7 +3343,7 @@
     ]
   },
   "typeName": {
-    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t ? (\n        null !== v ? (\n            Array.isArray(v) ? (\n                \"List\"\n            ) : \"Date\" === v.constructor.name ? (\n                \"Date\"\n            ) : null !== v ? (() => {\n                const ct = v.type;\n\n                return Boolean(ct) ? (\n                    (/Tuple\\d+/u).test(ct) ? (\n                        \"TupleN\"\n                    ) : ct\n                ) : \"Dict\";\n            })() : \"Bottom\"\n        ) : \"Bottom\"\n    ) : {\n        \"boolean\": \"Bool\",\n        \"date\": \"Date\",\n        \"number\": \"Num\",\n        \"string\": \"String\",\n        \"function\": \"(a -> b)\"\n    } [t] || \"Bottom\";\n};",
+    "code": "// typeName :: a -> String\nconst typeName = v => {\n    const t = typeof v;\n\n    return \"object\" === t\n        ? null !== v\n            ? Array.isArray(v)\n                ? \"List\"\n                : \"Date\" === v.constructor.name\n                    ? \"Date\"\n                    : null !== v\n                        ? (() => {\n                            const ct = v.type;\n\n                            return Boolean(ct)\n                                ? (/Tuple\\d+/u).test(ct)\n                                    ? \"TupleN\"\n                                    : ct\n                                : \"Dict\";\n                        })()\n                        : \"Bottom\"\n            : \"Bottom\"\n\n        : {\n            \"boolean\": \"Bool\",\n            \"date\": \"Date\",\n            \"number\": \"Num\",\n            \"string\": \"String\",\n            \"function\": \"(a -> b)\"\n        } [t] || \"Bottom\";\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3619,7 +3619,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const rows = args.slice(1);\n\n    return 0 < rows.length\n        ? (() => {\n            const\n                n = Math.min(...rows.map(x => x.length)),\n                // Uncurried reduction of zipWith(identity)\n                apZL = (fs, ys) => fs.map(\n                    (f, i) => (f)(ys[i])\n                )\n                .slice(0, n);\n\n            return rows.slice(1).reduce(\n                apZL,\n                rows[0].map(args[0])\n            );\n        })()\n        : [];\n};",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const rows = args.slice(1);\n\n    return 0 < rows.length\n        ? (() => {\n            const\n                n = Math.min(...rows.map(x => x.length)),\n                // Uncurried reduction of zipWith(identity)\n                apZL_ = (fs, ys) => fs.map(\n                    (f, i) => (f)(ys[i])\n                )\n                .slice(0, n);\n\n            return rows.slice(1).reduce(\n                apZL_,\n                rows[0].map(args[0])\n            );\n        })()\n        : [];\n};",
     "tags": [
       "JS Prelude"
     ]

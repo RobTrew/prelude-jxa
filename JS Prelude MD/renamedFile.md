@@ -8,10 +8,10 @@ const renamedFile = fp =>
         const error = $();
 
         return $.NSFileManager.defaultManager
-            .moveItemAtPathToPathError(fp, fp1, error) ? (
-                Right(fp1)
-            ) : Left(ObjC.unwrap(
-                error.localizedDescription
-            ));
+        .moveItemAtPathToPathError(fp, fp1, error)
+            ? Right(fp1)
+            : Left(
+                ObjC.unwrap(error.localizedDescription)
+            );
     };
 ```

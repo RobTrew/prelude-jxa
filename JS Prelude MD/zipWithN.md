@@ -10,13 +10,13 @@ const zipWithN = (...args) => {
             const
                 n = Math.min(...rows.map(x => x.length)),
                 // Uncurried reduction of zipWith(identity)
-                apZL = (fs, ys) => fs.map(
+                apZL_ = (fs, ys) => fs.map(
                     (f, i) => (f)(ys[i])
                 )
                 .slice(0, n);
 
             return rows.slice(1).reduce(
-                apZL,
+                apZL_,
                 rows[0].map(args[0])
             );
         })()

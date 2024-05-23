@@ -38,15 +38,15 @@ const treeMenuBy = fNodeKey => {
                                 firstChosen => Just(
                                     isNull(
                                         nest(firstChosen)
-                                    ) ? (
-                                        ks.map(
+                                    )
+                                        ? ks.map(
                                             k => find(
                                                 x => k === fNodeKey(
                                                     x.root
                                                 )
                                             )(subTrees).Just
                                         )
-                                    ) : go(firstChosen)
+                                        : go(firstChosen)
                                 )
                             )
                         );
