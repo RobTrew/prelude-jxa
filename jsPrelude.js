@@ -3681,13 +3681,13 @@ const permutations = xs =>
 // pi :: Float
 const pi = Math.PI;
 
-// plural :: String -> Int -> String
-const plural = k =>
+// plural :: Int -> String -> String
+const plural = n =>
     // Singular or plural EN inflection
-    // of a given word.
-    n => 1 !== n ? (
-        `${k}s`
-    ) : k;
+    // of a given word, preceded by digits.
+    k => 1 === n
+        ? `${k}`
+        : `${k}s`;
 
 // plus :: Num -> Num -> Num
 const plus = a =>
@@ -4089,6 +4089,13 @@ const replicateM = n =>
 // replicateString :: Int -> String -> String
 const replicateString = n =>
     s => s.repeat(n);
+
+// importedFrom :: FilePath -> IO Dict
+const require = fp =>
+    // eslint-disable-next-line no-new-func
+    Function(
+        readFile(fp)
+    )();
 
 // reverse :: [a] -> [a]
 const reverse = xs =>
