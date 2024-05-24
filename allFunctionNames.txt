@@ -214,6 +214,7 @@ headDef :: a -> [a] -> a
 headMay :: [a] -> Maybe a
 identity :: a -> a
 if_ :: Bool -> a -> a -> a
+importedFrom :: CSV String -> FilePath -> IO Dict
 indented :: String -> String -> String
 index (!!) :: [a] -> Int -> Maybe a
 indexForest :: [Tree (a,  { nodeSum :: Int })] -> Int -> Maybe Tree (a, { nodeSum :: Int })

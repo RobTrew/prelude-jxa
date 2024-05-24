@@ -2240,6 +2240,17 @@ const if_ = bln =>
         ? x
         : y;
 
+// importedFrom :: CSV String -> FilePath -> IO Dict
+const importedFrom = fNames =>
+    // eslint-disable-next-line no-new-func
+    fp => Function(
+        [
+            readFile(fp),
+            `return { ${fNames} };`
+        ]
+        .join("\n")
+    )();
+
 // indented :: String -> String -> String
 const indented = indent =>
     s => lines(s).map(

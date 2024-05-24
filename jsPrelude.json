@@ -1378,6 +1378,12 @@
       "JS Prelude"
     ]
   },
+  "importedFrom": {
+    "code": "// importedFrom :: CSV String -> FilePath -> IO Dict\nconst importedFrom = fNames =>\n    // eslint-disable-next-line no-new-func\n    fp => Function(\n        [\n            readFile(fp),\n            `return { ${fNames} };`\n        ]\n        .join(\"\\n\")\n    )();",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "indented": {
     "code": "// indented :: String -> String -> String\nconst indented = indent =>\n    s => lines(s).map(\n        x => 0 < x.length\n            ? indent + x\n            : x\n    )\n    .join(\"\\n\");",
     "tags": [
