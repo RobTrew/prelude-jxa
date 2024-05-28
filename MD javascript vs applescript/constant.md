@@ -1,10 +1,3 @@
-```javascript
-// constant :: a -> b -> a
-const constant = k =>
-    () => k;
-```
-
-
 ```applescript
 -- constant :: a -> b -> a
 on |constant|(k)
@@ -14,4 +7,11 @@ on |constant|(k)
         end |λ|
     end script
 end |constant|
+```
+
+
+```javascript
+// constant :: a -> b -> a
+const constant = k =>
+    () => k;
 ```

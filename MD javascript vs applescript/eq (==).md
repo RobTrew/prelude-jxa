@@ -1,3 +1,11 @@
+```applescript
+-- eq (==) :: Eq a => a -> a -> Bool
+on eq(a, b)
+    a = b
+end eq
+```
+
+
 ```javascript
 // eq (==) :: Eq a => a -> a -> Bool
 const eq = a =>
@@ -20,12 +28,4 @@ const eq = a =>
                 })()
         );
     };
-```
-
-
-```applescript
--- eq (==) :: Eq a => a -> a -> Bool
-on eq(a, b)
-    a = b
-end eq
 ```

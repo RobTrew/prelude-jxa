@@ -1,14 +1,3 @@
-```javascript
-// assocs :: Map k a -> [(k, a)]
-const assocs = m =>
-    // A list of (key, value) tuples derived from
-    // the given dictionary.
-    Object.entries(m).map(
-        ([k, v]) => Tuple(k)(v)
-    );
-```
-
-
 ```applescript
 -- assocs :: Map k a -> [(k, a)]
 on assocs(m)
@@ -24,4 +13,15 @@ on assocs(m)
     end script
     concatMap(go, keys(m))
 end assocs
+```
+
+
+```javascript
+// assocs :: Map k a -> [(k, a)]
+const assocs = m =>
+    // A list of (key, value) tuples derived from
+    // the given dictionary.
+    Object.entries(m).map(
+        ([k, v]) => Tuple(k)(v)
+    );
 ```

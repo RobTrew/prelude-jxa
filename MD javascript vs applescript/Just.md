@@ -1,12 +1,3 @@
-```javascript
-// Just :: a -> Maybe a
-const Just = x => ({
-    type: "Maybe",
-    Just: x
-});
-```
-
-
 ```applescript
 -- Just :: a -> Maybe a
 on Just(x)
@@ -14,4 +5,13 @@ on Just(x)
     -- Wrapper containing the result of a computation.
     {type:"Maybe", Nothing:false, Just:x}
 end Just
+```
+
+
+```javascript
+// Just :: a -> Maybe a
+const Just = x => ({
+    type: "Maybe",
+    Just: x
+});
 ```

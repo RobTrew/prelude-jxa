@@ -1,18 +1,3 @@
-```javascript
-// intersperse :: a -> [a] -> [a]
-const intersperse = sep =>
-    // intersperse(0)([1,2,3]) -> [1, 0, 2, 0, 3]
-    xs => 0 < xs.length
-        ? [
-            xs[0],
-            ...xs.slice(1).flatMap(
-                x => [sep, x]
-            )
-        ]
-        : [];
-```
-
-
 ```applescript
 -- intersperse :: a -> [a] -> [a]
 -- intersperse :: Char -> String -> String
@@ -33,4 +18,16 @@ on intersperse(sep, xs)
         xs
     end if
 end intersperse
+```
+
+
+```javascript
+// intersperse :: a -> [a] -> [a]
+const intersperse = sep =>
+    // intersperse(0)([1,2,3]) -> [1, 0, 2, 0, 3]
+    xs => 0 < xs.length
+        ? [xs[0]].concat(
+            xs.slice(1).flatMap(x => [sep, x])
+        )
+        : [];
 ```

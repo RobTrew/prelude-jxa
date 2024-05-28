@@ -1,14 +1,3 @@
-```javascript
-// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
-const zip3 = xs =>
-    ys => zs => xs.slice(
-        0,
-        Math.min(...[xs, ys, zs].map(x => x.length))
-    )
-    .map((x, i) => [x, ys[i], zs[i]]);
-```
-
-
 ```applescript
 -- zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 on zip3(xs, ys, zs)
@@ -20,4 +9,15 @@ on zip3(xs, ys, zs)
     map(result, items 1 thru ¬
         minimum({length of xs, length of ys, length of zs}) of xs)
 end zip3
+```
+
+
+```javascript
+// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+const zip3 = xs =>
+    ys => zs => xs.slice(
+        0,
+        Math.min(...[xs, ys, zs].map(x => x.length))
+    )
+    .map((x, i) => [x, ys[i], zs[i]]);
 ```

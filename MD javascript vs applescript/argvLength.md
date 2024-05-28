@@ -1,11 +1,3 @@
-```javascript
-// argvLength :: Function -> Int
-const argvLength = f =>
-    // The number of arguments defined for the given function.
-    f.length;
-```
-
-
 ```applescript
 -- argvLength :: Function -> Int
 on argvLength(h)
@@ -19,4 +11,12 @@ on argvLength(h)
         length of xs
     end try
 end argvLength
+```
+
+
+```javascript
+// argvLength :: Function -> Int
+const argvLength = f =>
+    // The number of arguments defined for the given function.
+    f.length;
 ```

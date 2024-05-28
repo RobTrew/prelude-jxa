@@ -1,14 +1,3 @@
-```javascript
-// rational :: Num a => a -> Rational
-const rational = x =>
-    isNaN(x)
-        ? x
-        : Number.isInteger(x)
-            ? Ratio(x)(1)
-            : approxRatio(undefined)(x);
-```
-
-
 ```applescript
 -- rational :: Num a => a -> Rational
 on rational(x)
@@ -21,4 +10,15 @@ on rational(x)
         x
     end if
 end rational
+```
+
+
+```javascript
+// rational :: Num a => a -> Rational
+const rational = x =>
+    isNaN(x)
+        ? x
+        : Number.isInteger(x)
+            ? Ratio(x)(1)
+            : approxRatio(undefined)(x);
 ```

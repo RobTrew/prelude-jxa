@@ -237,7 +237,7 @@
   "intersectListsBy": "// intersectListsBy :: (a -> a -> Bool) -> [[a]] -> [a]\nconst intersectListsBy = eqFn =>\n    foldr1(intersectBy(eqFn));",
   "intersectSet": "// intersectSet :: Set -> Set -> Set\nconst intersectSet = a =>\n    // The intersection of two sets.\n    b => new Set([...a].filter(i => b.has(i)));",
   "intersection": "// intersection :: Ord a => Set a -> Set a -> Set a\nconst intersection = s => s1 =>\n    new Set([...s].filter(x => s1.has(x)));",
-  "intersperse": "// intersperse :: a -> [a] -> [a]\nconst intersperse = sep =>\n    // intersperse(0)([1,2,3]) -> [1, 0, 2, 0, 3]\n    xs => 0 < xs.length\n        ? [\n            xs[0],\n            ...xs.slice(1).flatMap(\n                x => [sep, x]\n            )\n        ]\n        : [];",
+  "intersperse": "// intersperse :: a -> [a] -> [a]\nconst intersperse = sep =>\n    // intersperse(0)([1,2,3]) -> [1, 0, 2, 0, 3]\n    xs => 0 < xs.length\n        ? [xs[0]].concat(\n            xs.slice(1).flatMap(x => [sep, x])\n        )\n        : [];",
   "isAlpha": "// isAlpha :: Char -> Bool\nconst isAlpha = c =>\n    (/[A-Za-z\\u00C0-\\u00FF]/u).test(c);",
   "isAlphaNum": "// isAlphaNum :: Char -> Bool\nconst isAlphaNum = c => {\n    const n = c.codePointAt(0);\n\n    return (48 <= n && 57 >= n) || (\n        (/[A-Za-z\\u00C0-\\u00FF]/u).test(c)\n    );\n};",
   "isBigInt": "// isBigInt :: Num -> Bool\nconst isBigInt = n =>\n    (\"undefined\" !== typeof BigInt) && (\n        \"bigint\" === typeof n\n    );",
