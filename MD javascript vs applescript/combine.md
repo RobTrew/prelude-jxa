@@ -1,3 +1,18 @@
+```javascript
+// combine (</>) :: FilePath -> FilePath -> FilePath
+const combine = fp =>
+    // The concatenation of two filePath segments,
+    // without omission or duplication of "/".
+    fp1 => Boolean(fp) && Boolean(fp1)
+        ? "/" === fp1.slice(0, 1)
+            ? fp1
+            : "/" === fp.slice(-1)
+                ? fp + fp1
+                : `${fp}/${fp1}`
+        : (fp + fp1);
+```
+
+
 ```applescript
 -- combine (</>) :: FilePath -> FilePath -> FilePath
 on combine(fp, fp1)
@@ -13,19 +28,4 @@ on combine(fp, fp1)
         fp & "/" & fp1
     end if
 end combine
-```
-
-
-```javascript
-// combine (</>) :: FilePath -> FilePath -> FilePath
-const combine = fp =>
-    // The concatenation of two filePath segments,
-    // without omission or duplication of "/".
-    fp1 => Boolean(fp) && Boolean(fp1)
-        ? "/" === fp1.slice(0, 1)
-            ? fp1
-            : "/" === fp.slice(-1)
-                ? fp + fp1
-                : `${fp}/${fp1}`
-        : (fp + fp1);
 ```

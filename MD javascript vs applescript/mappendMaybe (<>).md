@@ -1,3 +1,16 @@
+```javascript
+// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
+const mappendMaybe = a =>
+    b => a.Nothing
+        ? b
+        : b.Nothing
+            ? a
+            : Just(
+                mappend(a.Just)(b.Just)
+            );
+```
+
+
 ```applescript
 -- mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
 on mappendMaybe(a, b)
@@ -9,17 +22,4 @@ on mappendMaybe(a, b)
         Just(mappend(Just of a, Just of b))
     end if
 end mappendMaybe
-```
-
-
-```javascript
-// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a
-const mappendMaybe = a =>
-    b => a.Nothing
-        ? b
-        : b.Nothing
-            ? a
-            : Just(
-                mappend(a.Just)(b.Just)
-            );
 ```

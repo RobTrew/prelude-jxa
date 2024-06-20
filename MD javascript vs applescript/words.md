@@ -1,3 +1,12 @@
+```javascript
+// words :: String -> [String]
+const words = s =>
+    // List of space-delimited sub-strings.
+    // Leading and trailling space ignored.
+    s.split(/\s+/u).filter(Boolean);
+```
+
+
 ```applescript
 -- words :: String -> [String]
 on |words|(s)
@@ -8,13 +17,4 @@ on |words|(s)
         filteredArrayUsingPredicate:(ca's ¬
             NSPredicate's predicateWithFormat:"0 < length")) as list
 end |words|
-```
-
-
-```javascript
-// words :: String -> [String]
-const words = s =>
-    // List of space-delimited sub-strings.
-    // Leading and trailling space ignored.
-    s.split(/\s+/u).filter(Boolean);
 ```

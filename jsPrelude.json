@@ -1678,7 +1678,7 @@
     ]
   },
   "jsonParseLR": {
-    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            [\n                e.message,\n                `(line:${e.line} col:${e.column})`\n            ].join(\"\\n\")\n        );\n    }\n};",
+    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            unlines([\n                e.message,\n                `(line:${e.line} col:${e.column})`\n            ])\n        );\n    }\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -1717,7 +1717,7 @@
     ]
   },
   "last": {
-    "code": "// last :: [a] -> a\nconst last = xs =>\n    // The last item of a list.\n    0 < xs.length\n        ? xs.slice(-1)[0]\n        : null;",
+    "code": "// last :: [a] -> a\nconst last = xs => {\n    // The last item of a list.\n    const n = xs.length;\n\n    return 0 < n\n        ? xs[n - 1]\n        : null;\n};",
     "tags": [
       "JS Prelude"
     ]
@@ -3183,7 +3183,7 @@
     ]
   },
   "taskPaperDateString": {
-    "code": "// taskPaperDateString :: Date -> String\nconst taskPaperDateString = dte =>\n    second(t => t.slice(0, 5))(\n        iso8601Local(dte).split(\"T\")\n    )\n    .join(\" \");",
+    "code": "// taskPaperDateString :: Date -> String\nconst taskPaperDateString = dte =>\n    [...second(t => t.slice(0, 5))(\n        iso8601Local(dte).split(\"T\")\n    )].join(\" \");",
     "tags": [
       "JS Prelude"
     ]

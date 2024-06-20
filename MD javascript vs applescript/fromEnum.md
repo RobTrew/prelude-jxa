@@ -1,3 +1,14 @@
+```javascript
+// fromEnum :: Enum a => a -> Int
+const fromEnum = x =>
+    typeof x !== "string"
+        ? x.constructor === Object
+            ? x.value
+            : parseInt(Number(x), 10)
+        : x.codePointAt(0);
+```
+
+
 ```applescript
 -- fromEnum :: Enum a => a -> Int
 on fromEnum(x)
@@ -18,15 +29,4 @@ on fromEnum(x)
         x as integer
     end if
 end fromEnum
-```
-
-
-```javascript
-// fromEnum :: Enum a => a -> Int
-const fromEnum = x =>
-    typeof x !== "string"
-        ? x.constructor === Object
-            ? x.value
-            : parseInt(Number(x), 10)
-        : x.codePointAt(0);
 ```

@@ -1,3 +1,13 @@
+```javascript
+// setCurrentDirectory :: FilePath -> IO ()
+const setCurrentDirectory = fp =>
+    $.NSFileManager.defaultManager
+    .changeCurrentDirectoryPath(
+        $(fp).stringByStandardizingPath
+    );
+```
+
+
 ```applescript
 -- setCurrentDirectory :: String -> IO ()
 on setCurrentDirectory(strPath)
@@ -9,14 +19,4 @@ on setCurrentDirectory(strPath)
             changeCurrentDirectoryPath:oPath
     end if
 end setCurrentDirectory
-```
-
-
-```javascript
-// setCurrentDirectory :: FilePath -> IO ()
-const setCurrentDirectory = fp =>
-    $.NSFileManager.defaultManager
-    .changeCurrentDirectoryPath(
-        $(fp).stringByStandardizingPath
-    );
 ```

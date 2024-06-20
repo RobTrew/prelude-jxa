@@ -1,8 +1,11 @@
 ```javascript
 // last :: [a] -> a
-const last = xs =>
+const last = xs => {
     // The last item of a list.
-    0 < xs.length
-        ? xs.slice(-1)[0]
+    const n = xs.length;
+
+    return 0 < n
+        ? xs[n - 1]
         : null;
+};
 ```

@@ -1,3 +1,16 @@
+```javascript
+// cartesianProduct :: [a] -> [b] -> [[a, b]]
+const cartesianProduct = xs =>
+    // Every tuple in the cartesian product
+    // of xs and ys.
+    ys => [...xs].flatMap(
+        x => [...ys].flatMap(
+            y => [Tuple(x)(y)]
+        )
+    );
+```
+
+
 ```applescript
 -- cartesianProduct :: [a] -> [b] -> [[a, b]]
 on cartesianProduct(xs, ys)
@@ -13,17 +26,4 @@ on cartesianProduct(xs, ys)
     end script
     concatMap(result, xs)
 end cartesianProduct
-```
-
-
-```javascript
-// cartesianProduct :: [a] -> [b] -> [[a, b]]
-const cartesianProduct = xs =>
-    // Every tuple in the cartesian product
-    // of xs and ys.
-    ys => [...xs].flatMap(
-        x => [...ys].flatMap(
-            y => [Tuple(x)(y)]
-        )
-    );
 ```

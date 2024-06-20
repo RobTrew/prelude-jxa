@@ -1,3 +1,16 @@
+```javascript
+// removeFile :: FilePath -> Either String String
+const removeFile = fp => {
+    const error = $();
+
+    return $.NSFileManager.defaultManager
+    .removeItemAtPathError(fp, error)
+        ? Right(`Removed: ${fp}`)
+        : Left(ObjC.unwrap(error.localizedDescription));
+};
+```
+
+
 ```applescript
 -- removeFile :: FilePath -> Either String String
 on removeFile(fp)
@@ -10,17 +23,4 @@ on removeFile(fp)
         |Left|(obj's localizedDescription as string)
     end if
 end removeFile
-```
-
-
-```javascript
-// removeFile :: FilePath -> Either String String
-const removeFile = fp => {
-    const error = $();
-
-    return $.NSFileManager.defaultManager
-    .removeItemAtPathError(fp, error)
-        ? Right(`Removed: ${fp}`)
-        : Left(ObjC.unwrap(error.localizedDescription));
-};
 ```

@@ -1,3 +1,16 @@
+```javascript
+// filterTree (a -> Bool) -> Tree a -> [a]
+const filterTree = p =>
+    // List of all values in the tree
+    // which match the predicate p.
+    foldTree(x => xs =>
+        p(x)
+            ? [x, ...xs.flat()]
+            : xs.flat()
+    );
+```
+
+
 ```applescript
 -- filterTree (a -> Bool) -> Tree a -> [a]
 on filterTree(p, tree)
@@ -17,17 +30,4 @@ on filterTree(p, tree)
     
     foldTree(go, tree)
 end filterTree
-```
-
-
-```javascript
-// filterTree (a -> Bool) -> Tree a -> [a]
-const filterTree = p =>
-    // List of all values in the tree
-    // which match the predicate p.
-    foldTree(x => xs =>
-        p(x)
-            ? [x, ...xs.flat()]
-            : xs.flat()
-    );
 ```

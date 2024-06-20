@@ -159,6 +159,26 @@ const adjust = f =>
         })
         : dict;
 
+// alert :: String => String -> IO String
+const alert = title =>
+    // Display of a given title and message.
+    s => {
+        const sa = Object.assign(
+            Application("System Events"), {
+                includeStandardAdditions: true
+            });
+
+        return (
+            sa.activate(),
+            sa.displayDialog(s, {
+                withTitle: title,
+                buttons: ["OK"],
+                defaultButton: "OK"
+            }),
+            s
+        );
+    };
+
 // all :: (a -> Bool) -> [a] -> Bool
 const all = p =>
     // True if p(x) holds for every x in xs.
@@ -277,6 +297,76 @@ const append = xs =>
     // Two lists joined into one.
     ys => xs.concat(ys);
 
+// appendFile :: FilePath -> String -> IO Bool
+const appendFile = fp =>
+    // The file at fp updated with a new string
+    // appended to its existing contents.
+    txt => {
+        const fpFull = filePath(fp);
+
+        return doesFileExist(fpFull)
+            ? (() => {
+                const
+                    h = $.NSFileHandle
+                    .fileHandleForWritingAtPath(
+                        $(fpFull)
+                    );
+
+                return (
+                    h.seekToEndOfFile,
+                    h.writeData(
+                        $(txt)
+                        .dataUsingEncoding(
+                            $.NSUTF8StringEncoding
+                        )
+                    ),
+                    h.closeFile,
+                    true
+                );
+            })()
+            : doesDirectoryExist(takeDirectory(fpFull))
+                ? (writeFile(fpFull)(txt), true)
+                : false;
+    };
+
+// appendFileMay :: FilePath -> String -> Maybe IO FilePath
+const appendFileMay = fp =>
+    // Just the fully-expanded file path of
+    // any file at found strPath, after it has been
+    // updated by appending the given string, or
+    // Nothing if no file is found at that path,
+    // or the file is found but can not be updated.
+    txt => {
+        const fpFull = filePath(fp);
+
+        return doesFileExist(fpFull)
+            ? (() => {
+                const
+                    h = $.NSFileHandle
+                    .fileHandleForWritingAtPath(
+                        $(fpFull)
+                    );
+
+                return (
+                    h.seekToEndOfFile,
+                    h.writeData(
+                        $(txt)
+                        .dataUsingEncoding(
+                            $.NSUTF8StringEncoding
+                        )
+                    ),
+                    h.closeFile,
+                    Just(fpFull)
+                );
+            })()
+            : doesDirectoryExist(takeDirectory(fpFull))
+                ? (
+                    writeFile(fpFull)(txt),
+                    Just(fpFull)
+                )
+                : Nothing();
+    };
+
 // appendGen (++) :: Gen [a] -> Gen [a] -> Gen [a]
 const appendGen = xs =>
     // A new generator composed from the
@@ -334,6 +424,29 @@ const assocs = m =>
     // the given dictionary.
     Object.entries(m).map(
         ([k, v]) => Tuple(k)(v)
+    );
+
+// base64decode :: String -> String
+const base64decode = s =>
+    // Base64 decoding of the given string.
+    ObjC.unwrap(
+        $.NSString.alloc.initWithDataEncoding(
+            $.NSData.alloc.initWithBase64EncodedStringOptions(
+                s, $.NSDataBase64DecodingIgnoreUnknownCharacters
+            ),
+            $.NSUTF8StringEncoding
+        )
+    );
+
+// base64encode :: String -> String
+const base64encode = s =>
+    // Base64 encoding of the given string.
+    ObjC.unwrap(
+        $.NSString.stringWithString(s)
+        .dataUsingEncoding(
+            $.NSUTF8StringEncoding
+        )
+        .base64EncodedStringWithOptions(0)
     );
 
 // biList :: (a, a) -> [a]
@@ -791,6 +904,57 @@ const cons = x =>
 const constant = k =>
     () => k;
 
+// copyFileLR :: FilePath -> FilePath -> Either String IO ()
+const copyFileLR = fpFrom =>
+    fpTo => {
+        const fpTargetFolder = takeDirectory(fpTo);
+
+        return doesFileExist(fpFrom)
+            ? doesDirectoryExist(fpTargetFolder)
+                ? (() => {
+                    const
+                        e = $(),
+                        fpTarget = $(fpTo).stringByStandardizingPath;
+
+                    return (
+                        $.NSFileManager.defaultManager
+                        .copyItemAtPathToPathError(
+                            $(fpFrom).stringByStandardizingPath,
+                            fpTarget,
+                            e
+                        )
+                            ? Right(ObjC.unwrap(fpTarget))
+                            : Left(ObjC.unwrap(e.localizedDescription))
+                    );
+                })()
+                : Left(`Target folder not found: ${fpTargetFolder}`)
+            : Left(`Source file not found: ${fpFrom}`);
+    };
+
+// createDirectoryIfMissingLR :: Bool -> FilePath
+// -> Either String FilePath
+const createDirectoryIfMissingLR = blnParents =>
+    dirPath => {
+        const fp = filePath(dirPath);
+
+        return doesPathExist(fp)
+            ? Right(fp)
+            : (() => {
+                const
+                    e = $(),
+                    blnOK = $.NSFileManager
+                    .defaultManager[
+                    "createDirectoryAtPath" + (
+                        "WithIntermediateDirectories"
+                    ) + "AttributesError"
+                    ](fp, blnParents, void 0, e);
+
+                return blnOK
+                    ? Right(fp)
+                    : Left(e.localizedDescription);
+            })();
+    };
+
 // curry :: ((a, b) -> c) -> a -> b -> c
 const curry = f =>
     a => b => 1 < f.length
@@ -968,6 +1132,36 @@ const divMod = n => d => {
         ? Tuple(q - 1)(r + d)
         : Tuple(q)(r);
 };
+
+// doesDirectoryExist :: FilePath -> IO Bool
+const doesDirectoryExist = fp => {
+    const ref = Ref();
+
+    return $.NSFileManager.defaultManager
+    .fileExistsAtPathIsDirectory(
+        $(fp)
+        .stringByStandardizingPath, ref
+    ) && ref[0];
+};
+
+// doesFileExist :: FilePath -> IO Bool
+const doesFileExist = fp => {
+    const ref = Ref();
+
+    return $.NSFileManager
+    .defaultManager
+    .fileExistsAtPathIsDirectory(
+        $(fp).stringByStandardizingPath,
+        ref
+    ) && !ref[0];
+};
+
+// doesPathExist :: FilePath -> IO Bool
+const doesPathExist = fp =>
+    $.NSFileManager.defaultManager
+    .fileExistsAtPath(
+        $(fp).stringByStandardizingPath
+    );
 
 // dot (.) :: (b -> c) -> (a -> b) -> a -> c
 const dot = f =>
@@ -1542,6 +1736,14 @@ const fanArrow = f =>
         g(x)
     );
 
+// filePath :: String -> FilePath
+const filePath = s =>
+    // The given file path with any tilde expanded
+    // to the full user directory path.
+    ObjC.unwrap(
+        $(s).stringByStandardizingPath
+    );
+
 // filePathTree :: filePath -> [Tree String] -> Tree FilePath
 const filePathTree = fpAnchor =>
     trees => {
@@ -1557,6 +1759,40 @@ const filePathTree = fpAnchor =>
             trees.map(go(fpAnchor))
         );
     };
+
+// fileSize :: FilePath -> Either String Int
+const fileSize = fp =>
+    bindLR(fileStatus(fp))(
+        dct => Right(ObjC.unwrap(dct.NSFileSize))
+    );
+
+// fileStatus :: FilePath -> Either String Dict
+const fileStatus = fp => {
+    const
+        e = $(),
+        dct = $.NSFileManager.defaultManager
+        .attributesOfItemAtPathError(
+            $(fp).stringByStandardizingPath,
+            e
+        );
+
+    return dct.isNil()
+        ? Left(ObjC.unwrap(e.localizedDescription))
+        : Right(ObjC.deepUnwrap(dct));
+};
+
+// fileUTI :: FilePath -> Either String String
+const fileUTI = fp => {
+    // ObjC.import("AppKit")
+    const
+        e = $(),
+        uti = $.NSWorkspace.sharedWorkspace
+        .typeOfFileError(fp, e);
+
+    return uti.isNil()
+        ? Left(ObjC.unwrap(e.localizedDescription))
+        : Right(ObjC.unwrap(uti));
+};
 
 // filesCopiedLR :: FilePath -> [FilePath] ->
 // FilePath -> IO Either String [FilePath]
@@ -2128,6 +2364,47 @@ const genericIndexMay = xs =>
     i => (i < xs.length && 0 <= i)
         ? Just(xs[i])
         : Nothing();
+
+// getCurrentDirectory :: IO FilePath
+const getCurrentDirectory = () =>
+    ObjC.unwrap(
+        $.NSFileManager.defaultManager
+        .currentDirectoryPath
+    );
+
+// getDirectoryContents :: FilePath -> IO [FilePath]
+const getDirectoryContents = fp =>
+    ObjC.deepUnwrap(
+        $.NSFileManager.defaultManager
+        .contentsOfDirectoryAtPathError(
+            $(fp)
+            .stringByStandardizingPath, null
+        )
+    );
+
+// getDirectoryContentsLR :: FilePath ->
+// Either String IO [FilePath]
+const getDirectoryContentsLR = fp => {
+    const
+        error = $(),
+        xs = $.NSFileManager.defaultManager
+        .contentsOfDirectoryAtPathError(
+            $(fp).stringByStandardizingPath,
+            error
+        );
+
+    return xs.isNil()
+        ? Left(ObjC.unwrap(error.localizedDescription))
+        : Right(ObjC.deepUnwrap(xs));
+};
+
+// getHomeDirectory :: IO FilePath
+const getHomeDirectory = () =>
+    ObjC.unwrap($.NSHomeDirectory());
+
+// getTemporaryDirectory :: IO FilePath
+const getTemporaryDirectory = () =>
+    ObjC.unwrap($.NSTemporaryDirectory());
 
 // group :: [a] -> [[a]]
 const group = xs =>
@@ -2944,6 +3221,16 @@ const list = xs =>
         ? xs
         : Array.from(xs || []);
 
+// listDirectory :: FilePath -> [FilePath]
+const listDirectory = fp =>
+    ObjC.deepUnwrap(
+        $.NSFileManager.defaultManager
+        .contentsOfDirectoryAtPathError(
+            $(fp).stringByStandardizingPath,
+            null
+        )
+    );
+
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
     // A singleton list derived from a Just value,
@@ -3531,6 +3818,12 @@ const mod = n =>
             : 0
     );
 
+// modificationTime :: FilePath -> Either String Date
+const modificationTime = fp =>
+    bindLR(fileStatus(fp))(
+        dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
+    );
+
 // mul (*) :: Num a => a -> a -> a
 const mul = a =>
     b => a * b;
@@ -3555,6 +3848,10 @@ const nest = tree => {
         ? xs
         : xs(root(tree));
 };
+
+// newUUID :: () -> IO UUID String
+const newUUID = () =>
+    ObjC.unwrap($.NSUUID.UUID.UUIDString);
 
 // not :: Bool -> Bool
 const not = b =>
@@ -4001,6 +4298,45 @@ const rational = x =>
 // read :: Read a => String -> a
 const read = JSON.parse;
 
+// readFile :: FilePath -> IO String
+const readFile = fp => {
+    // The contents of a text file at the
+    // given file path.
+    const
+        e = $(),
+        ns = $.NSString
+        .stringWithContentsOfFileEncodingError(
+            $(fp).stringByStandardizingPath,
+            $.NSUTF8StringEncoding,
+            e
+        );
+
+    return ObjC.unwrap(
+        ns.isNil()
+            ? e.localizedDescription
+            : ns
+    );
+};
+
+// readFileLR :: FilePath -> Either String IO String
+const readFileLR = fp => {
+    // Either a message or the contents of any
+    // text file at the given filepath.
+    const
+        uw = ObjC.unwrap,
+        e = $(),
+        ns = $.NSString
+        .stringWithContentsOfFileEncodingError(
+            $(fp).stringByStandardizingPath,
+            $.NSUTF8StringEncoding,
+            e
+        );
+
+    return ns.isNil()
+        ? Left(uw(e.localizedDescription))
+        : Right(uw(ns));
+};
+
 // readHex :: String -> Int
 const readHex = s =>
     // Integer value of hexadecimal expression.
@@ -4014,6 +4350,37 @@ const readLR = s => {
         return Left(e.message);
     }
 };
+
+// readPlistFileLR :: FilePath -> Either String Dict
+const readPlistFileLR = fp =>
+    // Either a message or a dictionary of key-value
+    // pairs read from the given file path.
+    bindLR(
+        doesFileExist(fp)
+            ? Right(filePath(fp))
+            : Left(`No file found at path:\n\t${fp}`)
+    )(
+        fpFull => {
+            const
+                e = $(),
+                maybeDict = $.NSDictionary
+                .dictionaryWithContentsOfURLError(
+                    $.NSURL.fileURLWithPath(fpFull),
+                    e
+                );
+
+            return maybeDict.isNil()
+                ? (() => {
+                    const
+                        msg = ObjC.unwrap(
+                            e.localizedDescription
+                        );
+
+                    return Left(`readPlistFileLR:\n\t${msg}`);
+                })()
+                : Right(ObjC.deepUnwrap(maybeDict));
+        }
+    );
 
 // recip :: Num -> Num
 const recip = n =>
@@ -4059,6 +4426,32 @@ const remQuot = m =>
     )(
         Math.trunc(m / n)
     );
+
+// removeFile :: FilePath -> Either String String
+const removeFile = fp => {
+    const error = $();
+
+    return $.NSFileManager.defaultManager
+    .removeItemAtPathError(fp, error)
+        ? Right(`Removed: ${fp}`)
+        : Left(ObjC.unwrap(error.localizedDescription));
+};
+
+// renamedFile :: FilePath -> FilePath ->
+// Either IO String IO String
+const renamedFile = fp =>
+    // Either a message detailing a problem, or
+    // confirmation of a filename change in the OS.
+    fp1 => {
+        const error = $();
+
+        return $.NSFileManager.defaultManager
+        .moveItemAtPathToPathError(fp, fp1, error)
+            ? Right(fp1)
+            : Left(
+                ObjC.unwrap(error.localizedDescription)
+            );
+    };
 
 // repeat :: a -> Generator [a]
 const repeat = function* (x) {
@@ -4253,6 +4646,13 @@ const second = f =>
 const sequenceA = tfa =>
     traverse(x => x)(
         tfa
+    );
+
+// setCurrentDirectory :: FilePath -> IO ()
+const setCurrentDirectory = fp =>
+    $.NSFileManager.defaultManager
+    .changeCurrentDirectoryPath(
+        $(fp).stringByStandardizingPath
     );
 
 // setFromList :: Ord a => [a] -> Set a
@@ -5107,6 +5507,21 @@ const taskPaperDateString = dte =>
 const taskPaperDayString = dte =>
     taskPaperDateString(dte).slice(0, 10);
 
+// tempFilePath :: String -> IO FilePath
+const tempFilePath = template => {
+    // File name template to temporary path
+    // Random digit sequence inserted between
+    // template base and extension
+    const
+        fldr = ObjC.unwrap($.NSTemporaryDirectory()),
+        name = takeBaseName(template),
+        xtn = takeExtension(template),
+        rnd = Math.random().toString()
+        .substring(3);
+
+    return `${fldr}${name}${rnd}${xtn}`;
+};
+
 // toEnum :: a -> Int -> a
 const toEnum = e =>
     // The first argument is a sample of the type
@@ -5773,6 +6188,9 @@ const unwords = xs =>
     // from a list of words.
     xs.join(" ");
 
+// unwrap :: NSObject -> a
+const unwrap = ObjC.unwrap;
+
 // unzip :: [(a,b)] -> ([a],[b])
 const unzip = xys =>
     // A list of the first items in each pair
@@ -5839,6 +6257,51 @@ const words = s =>
     // List of space-delimited sub-strings.
     // Leading and trailling space ignored.
     s.split(/\s+/u).filter(Boolean);
+
+// wrap :: a -> NSObject
+const wrap = ObjC.wrap;
+
+// writeFile :: FilePath -> String -> IO ()
+const writeFile = fp => s =>
+    $.NSString.alloc.initWithUTF8String(s)
+    .writeToFileAtomicallyEncodingError(
+        $(fp)
+        .stringByStandardizingPath, false,
+        $.NSUTF8StringEncoding, null
+    );
+
+// writeFileLR :: FilePath ->
+// String -> Either String IO FilePath
+const writeFileLR = fp =>
+    // Either a message or the filepath
+    // to which the string has been written.
+    s => {
+        const
+            e = $(),
+            efp = $(fp).stringByStandardizingPath;
+
+        return $.NSString.alloc
+        .initWithUTF8String(s)
+        .writeToFileAtomicallyEncodingError(
+            efp, false,
+            $.NSUTF8StringEncoding, e
+        )
+            ? Right(ObjC.unwrap(efp))
+            : Left(ObjC.unwrap(e.localizedDescription));
+    };
+
+// writeTempFile :: String -> String -> IO FilePath
+const writeTempFile = template =>
+    // File name template -> string data -> IO temporary path
+    txt => {
+        const
+            fp = ObjC.unwrap($.NSTemporaryDirectory()) +
+            takeBaseName(template) + Math.random()
+            .toString()
+            .substring(3) + takeExtension(template);
+
+        return (writeFile(fp)(txt), fp);
+    };
 
 // zeroPadded :: Int -> Int -> String
 const zeroPadded = w =>

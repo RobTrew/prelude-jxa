@@ -1,3 +1,12 @@
+```javascript
+// fromMaybe :: a -> Maybe a -> a
+const fromMaybe = v =>
+    mb => "Nothing" in mb
+        ? v
+        : mb.Just;
+```
+
+
 ```applescript
 -- fromMaybe :: a -> Maybe a -> a
 on fromMaybe(default, mb)
@@ -7,13 +16,4 @@ on fromMaybe(default, mb)
         Just of mb
     end if
 end fromMaybe
-```
-
-
-```javascript
-// fromMaybe :: a -> Maybe a -> a
-const fromMaybe = v =>
-    mb => "Nothing" in mb
-        ? v
-        : mb.Just;
 ```

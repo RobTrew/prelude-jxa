@@ -5,10 +5,10 @@ const jsonParseLR = s => {
         return Right(JSON.parse(s));
     } catch (e) {
         return Left(
-            [
+            unlines([
                 e.message,
                 `(line:${e.line} col:${e.column})`
-            ].join("\n")
+            ])
         );
     }
 };

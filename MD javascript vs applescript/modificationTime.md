@@ -1,3 +1,12 @@
+```javascript
+// modificationTime :: FilePath -> Either String Date
+const modificationTime = fp =>
+    bindLR(fileStatus(fp))(
+        dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
+    );
+```
+
+
 ```applescript
 -- modificationTime :: FilePath -> Either String Date
 on modificationTime(fp)
@@ -8,13 +17,4 @@ on modificationTime(fp)
     end script
     bindLR(my fileStatus(fp), fs)
 end modificationTime
-```
-
-
-```javascript
-// modificationTime :: FilePath -> Either String Date
-const modificationTime = fp =>
-    bindLR(fileStatus(fp))(
-        dct => Right(ObjC.unwrap(dct.NSFileModificationDate))
-    );
 ```

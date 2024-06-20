@@ -1,3 +1,18 @@
+```javascript
+// enumFromToChar :: Char -> Char -> [Char]
+const enumFromToChar = m => n => {
+    const
+        [intM, intN] = [m, n].map(
+            x => x.codePointAt(0)
+        );
+
+    return Array.from({
+        length: Math.floor(intN - intM) + 1
+    }, (_, i) => String.fromCodePoint(intM + i));
+};
+```
+
+
 ```applescript
 -- enumFromToChar :: Char -> Char -> [Char]
 on enumFromToChar(m, n)
@@ -12,19 +27,4 @@ on enumFromToChar(m, n)
         {}
     end if
 end enumFromToChar
-```
-
-
-```javascript
-// enumFromToChar :: Char -> Char -> [Char]
-const enumFromToChar = m => n => {
-    const
-        [intM, intN] = [m, n].map(
-            x => x.codePointAt(0)
-        );
-
-    return Array.from({
-        length: Math.floor(intN - intM) + 1
-    }, (_, i) => String.fromCodePoint(intM + i));
-};
 ```

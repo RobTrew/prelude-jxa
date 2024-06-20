@@ -1,13 +1,3 @@
-```applescript
--- filePath :: String -> FilePath
-on filePath(s)
-    ((current application's ¬
-        NSString's stringWithString:s)'s ¬
-        stringByStandardizingPath()) as string
-end filePath
-```
-
-
 ```javascript
 // filePath :: String -> FilePath
 const filePath = s =>
@@ -16,4 +6,14 @@ const filePath = s =>
     ObjC.unwrap(
         $(s).stringByStandardizingPath
     );
+```
+
+
+```applescript
+-- filePath :: String -> FilePath
+on filePath(s)
+    ((current application's ¬
+        NSString's stringWithString:s)'s ¬
+        stringByStandardizingPath()) as string
+end filePath
 ```

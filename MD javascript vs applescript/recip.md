@@ -1,3 +1,12 @@
+```javascript
+// recip :: Num -> Num
+const recip = n =>
+    0 !== n
+        ? (1 / n)
+        : undefined;
+```
+
+
 ```applescript
 -- recip :: Num -> Num
 on recip(n)
@@ -7,13 +16,4 @@ on recip(n)
         missing value
     end if
 end recip
-```
-
-
-```javascript
-// recip :: Num -> Num
-const recip = n =>
-    0 !== n
-        ? (1 / n)
-        : undefined;
 ```

@@ -1,3 +1,13 @@
+```javascript
+// dropWhile :: (a -> Bool) -> [a] -> [a]
+const dropWhile = p =>
+    // The suffix remaining after takeWhile p xs.
+    xs => xs.slice(
+        xs.findIndex(x => !p(x))
+    );
+```
+
+
 ```applescript
 -- dropWhile :: (a -> Bool) -> [a] -> [a]
 -- dropWhile :: (Char -> Bool) -> String -> String
@@ -15,14 +25,4 @@ on dropWhile(p, xs)
         xs
     end if
 end dropWhile
-```
-
-
-```javascript
-// dropWhile :: (a -> Bool) -> [a] -> [a]
-const dropWhile = p =>
-    // The suffix remaining after takeWhile p xs.
-    xs => xs.slice(
-        xs.findIndex(x => !p(x))
-    );
 ```

@@ -1,3 +1,22 @@
+```javascript
+// filePathTree :: filePath -> [Tree String] -> Tree FilePath
+const filePathTree = fpAnchor =>
+    trees => {
+        const go = fp => tree => {
+            const path = `${fp}/${tree.root.text}`;
+
+            return Node(path)(
+                tree.nest.map(go(path))
+            );
+        };
+
+        return Node(fpAnchor)(
+            trees.map(go(fpAnchor))
+        );
+    };
+```
+
+
 ```applescript
 -- filePathTree :: filePath -> [Tree String] -> Tree FilePath
 on filePathTree(fpAnchor, trees)
@@ -15,23 +34,4 @@ on filePathTree(fpAnchor, trees)
     
     Node(fpAnchor, map(go's |λ|(fpAnchor), trees))
 end filePathTree
-```
-
-
-```javascript
-// filePathTree :: filePath -> [Tree String] -> Tree FilePath
-const filePathTree = fpAnchor =>
-    trees => {
-        const go = fp => tree => {
-            const path = `${fp}/${tree.root.text}`;
-
-            return Node(path)(
-                tree.nest.map(go(path))
-            );
-        };
-
-        return Node(fpAnchor)(
-            trees.map(go(fpAnchor))
-        );
-    };
 ```

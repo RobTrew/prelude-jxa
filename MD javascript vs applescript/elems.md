@@ -1,3 +1,13 @@
+```javascript
+// elems :: Map k a -> [a]
+// elems :: Set a -> [a]
+const elems = x =>
+    "Set" !== x.constructor.name
+        ? Object.values(x)
+        : Array.from(x.values());
+```
+
+
 ```applescript
 -- elems :: Map k a -> [a]
 -- elems :: Set a -> [a]
@@ -10,14 +20,4 @@ on elems(x)
         (allObjects() of x) as list
     end if
 end elems
-```
-
-
-```javascript
-// elems :: Map k a -> [a]
-// elems :: Set a -> [a]
-const elems = x =>
-    "Set" !== x.constructor.name
-        ? Object.values(x)
-        : Array.from(x.values());
 ```

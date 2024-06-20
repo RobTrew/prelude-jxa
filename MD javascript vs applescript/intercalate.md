@@ -1,3 +1,12 @@
+```javascript
+// intercalate :: [a] -> [[a]] -> [a]
+const intercalate = sep =>
+    // Flattened interspersal of a list between
+    // the elements of a list of lists.
+    xs => intersperse(sep)(xs).flat();
+```
+
+
 ```applescript
 -- intercalate :: [a] -> [[a]] -> [a]
 -- intercalate :: String -> [String] -> String
@@ -11,13 +20,4 @@ on intercalate(sep, xs)
         concat(intersperse(sep, xs))
     end if
 end intercalate
-```
-
-
-```javascript
-// intercalate :: [a] -> [[a]] -> [a]
-const intercalate = sep =>
-    // Flattened interspersal of a list between
-    // the elements of a list of lists.
-    xs => intersperse(sep)(xs).flat();
 ```
