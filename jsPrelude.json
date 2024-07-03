@@ -3638,7 +3638,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const go = ([f0, ...vs]) => {\n        const\n            n = Math.min(\n                ...vs.map(x => x.length)\n            );\n\n        return vs.slice(1).reduce(\n            (fs, xs) => fs.map(\n                (f, i) => f(xs[i])\n            )\n            .slice(0, n),\n            vs[0].map(f0)\n        );\n    };\n\n    return 1 < args.length\n        ? go(args)\n        : [];\n};",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const go = ([f0, ...rows]) => {\n        const\n            n = Math.min(\n                ...rows.map(x => x.length)\n            );\n\n        return rows.slice(1).reduce(\n            (fs, xs) => fs.map(\n                (f, i) => f(xs[i])\n            )\n            .slice(0, n),\n            rows[0].map(f0)\n        );\n    };\n\n    return 1 < args.length\n        ? go(args)\n        : [];\n};",
     "tags": [
       "JS Prelude"
     ]
