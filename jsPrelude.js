@@ -1836,7 +1836,7 @@ const fmapGen = f =>
 // fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c
 const fmapLR = f =>
     // Either f mapped into the contents of any Right
-    // value in e, or e unchanged if is a Left value.
+    // value in e, or e unchanged if it is a Left value.
     e => "Left" in e
         ? e
         : Right(f(e.Right));
@@ -6049,7 +6049,7 @@ const zipWithN = (...args) => {
                 n = Math.min(...rows.map(x => x.length)),
                 // Uncurried reduction of zipWith(identity)
                 apZL_ = (fs, ys) => fs.map(
-                    (f, i) => (f)(ys[i])
+                    (f, i) => f(ys[i])
                 )
                 .slice(0, n);
 

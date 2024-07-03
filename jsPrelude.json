@@ -1079,7 +1079,7 @@
     ]
   },
   "fmapLR (<$>)": {
-    "code": "// fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c\nconst fmapLR = f =>\n    // Either f mapped into the contents of any Right\n    // value in e, or e unchanged if is a Left value.\n    e => \"Left\" in e\n        ? e\n        : Right(f(e.Right));",
+    "code": "// fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c\nconst fmapLR = f =>\n    // Either f mapped into the contents of any Right\n    // value in e, or e unchanged if it is a Left value.\n    e => \"Left\" in e\n        ? e\n        : Right(f(e.Right));",
     "tags": [
       "JS Prelude"
     ]
@@ -3638,7 +3638,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const rows = args.slice(1);\n\n    return 0 < rows.length\n        ? (() => {\n            const\n                n = Math.min(...rows.map(x => x.length)),\n                // Uncurried reduction of zipWith(identity)\n                apZL_ = (fs, ys) => fs.map(\n                    (f, i) => (f)(ys[i])\n                )\n                .slice(0, n);\n\n            return rows.slice(1).reduce(\n                apZL_,\n                rows[0].map(args[0])\n            );\n        })()\n        : [];\n};",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const rows = args.slice(1);\n\n    return 0 < rows.length\n        ? (() => {\n            const\n                n = Math.min(...rows.map(x => x.length)),\n                // Uncurried reduction of zipWith(identity)\n                apZL_ = (fs, ys) => fs.map(\n                    (f, i) => f(ys[i])\n                )\n                .slice(0, n);\n\n            return rows.slice(1).reduce(\n                apZL_,\n                rows[0].map(args[0])\n            );\n        })()\n        : [];\n};",
     "tags": [
       "JS Prelude"
     ]

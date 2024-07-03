@@ -11,7 +11,7 @@ const zipWithN = (...args) => {
                 n = Math.min(...rows.map(x => x.length)),
                 // Uncurried reduction of zipWith(identity)
                 apZL_ = (fs, ys) => fs.map(
-                    (f, i) => (f)(ys[i])
+                    (f, i) => f(ys[i])
                 )
                 .slice(0, n);
 
