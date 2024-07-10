@@ -951,7 +951,8 @@
   "filesCopiedLR": {
     "code": "// filesCopiedLR :: FilePath -> [FilePath] ->\n// FilePath -> IO Either String [FilePath]\nconst filesCopiedLR = fpSourceFolder =>\n    // Either a message, or a list of the files\n    // successfully copied from the source folder\n    // to the target folder, or already found in place.\n    fileNames => fpTargetFolder => {\n        const\n            lrs = fileNames.map(k => {\n                const tgt = combine(fpTargetFolder)(k);\n\n                return doesFileExist(tgt)\n                    ? Right(tgt)\n                    : copyFileLR(\n                        combine(fpSourceFolder)(k)\n                    )(tgt);\n            }),\n            ls = lefts(lrs);\n\n        return 0 < ls.length\n            ?  Left(ls[0])\n            : Right(rights(lrs));\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "jxa"
     ]
   },
   "filter": {
@@ -2610,7 +2611,7 @@
     ]
   },
   "reverse": {
-    "code": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    \"string\" === typeof xs ? (\n        xs.split(\"\").reverse()\n        .join(\"\")\n    ) : xs.slice(0).reverse();",
+    "code": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    \"string\" === typeof xs\n        ? xs.split(\"\").reverse()\n        .join(\"\")\n        : xs.slice(0).reverse();",
     "tags": [
       "JS Prelude",
       "core"
@@ -3638,7 +3639,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is\n    // a function, and all remaining arguments are lists.\n    const go = ([f0, ...rows]) => {\n        const\n            n = Math.min(\n                ...rows.map(x => x.length)\n            );\n\n        return rows.slice(1).reduce(\n            (fs, xs) => fs.map(\n                (f, i) => f(xs[i])\n            )\n            .slice(0, n),\n            rows[0].map(f0)\n        );\n    };\n\n    return 1 < args.length\n        ? go(args)\n        : [];\n};",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is a\n    // curried function, and all remaining arguments are lists.\n    const go = ([f, ...rows]) => {\n        const\n            n = Math.min(\n                ...rows.map(x => x.length)\n            );\n\n        return rows.slice(1).reduce(\n            (gs, row) => gs.map(\n                (g, iCol) => g(row[iCol])\n            )\n            .slice(0, n),\n            rows[0].map(f)\n        );\n    };\n\n    return 1 < args.length\n        ? go(args)\n        : [];\n};",
     "tags": [
       "JS Prelude"
     ]

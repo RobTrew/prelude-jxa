@@ -12,6 +12,7 @@ filePath :: String -> FilePath
 fileSize :: FilePath -> Either String Int
 fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
+filesCopiedLR :: FilePath -> [FilePath] -> FilePath -> IO Either String [FilePath]
 getCurrentDirectory :: IO FilePath
 getDirectoryContents :: FilePath -> IO [FilePath]
 getDirectoryContentsLR :: FilePath ->

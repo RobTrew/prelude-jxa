@@ -1558,30 +1558,6 @@ const filePathTree = fpAnchor =>
         );
     };
 
-// filesCopiedLR :: FilePath -> [FilePath] ->
-// FilePath -> IO Either String [FilePath]
-const filesCopiedLR = fpSourceFolder =>
-    // Either a message, or a list of the files
-    // successfully copied from the source folder
-    // to the target folder, or already found in place.
-    fileNames => fpTargetFolder => {
-        const
-            lrs = fileNames.map(k => {
-                const tgt = combine(fpTargetFolder)(k);
-
-                return doesFileExist(tgt)
-                    ? Right(tgt)
-                    : copyFileLR(
-                        combine(fpSourceFolder)(k)
-                    )(tgt);
-            }),
-            ls = lefts(lrs);
-
-        return 0 < ls.length
-            ?  Left(ls[0])
-            : Right(rights(lrs));
-    };
-
 // filter :: (a -> Bool) -> [a] -> [a]
 const filter = p =>
     // The elements of xs which match
@@ -4110,10 +4086,10 @@ const require = fp =>
 
 // reverse :: [a] -> [a]
 const reverse = xs =>
-    "string" === typeof xs ? (
-        xs.split("").reverse()
+    "string" === typeof xs
+        ? xs.split("").reverse()
         .join("")
-    ) : xs.slice(0).reverse();
+        : xs.slice(0).reverse();
 
 // rights :: [Either a b] -> [b]
 const rights = xs =>
@@ -6039,20 +6015,20 @@ const zipWithM = f =>
 
 // zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]
 const zipWithN = (...args) => {
-    // Uncurried function of which the first argument is
-    // a function, and all remaining arguments are lists.
-    const go = ([f0, ...rows]) => {
+    // Uncurried function of which the first argument is a
+    // curried function, and all remaining arguments are lists.
+    const go = ([f, ...rows]) => {
         const
             n = Math.min(
                 ...rows.map(x => x.length)
             );
 
         return rows.slice(1).reduce(
-            (fs, xs) => fs.map(
-                (f, i) => f(xs[i])
+            (gs, row) => gs.map(
+                (g, iCol) => g(row[iCol])
             )
             .slice(0, n),
-            rows[0].map(f0)
+            rows[0].map(f)
         );
     };
 
