@@ -138,7 +138,7 @@
       "tree"
     ]
   },
-  "ap (<*>)": {
+  "ap": {
     "code": "// ap (<*>) :: Monad m => m (a -> b) -> m a -> m b\nconst ap = mf =>\n    // Applies wrapped functions to wrapped values,\n    // for example applying a list of functions to a list\n    // of values or applying:\n    // Just(f) to Just(x),  Right(f) to Right(x),\n    // f(x) to g(x) etc.\n    mx => ({\n        \"Either\": () => apLR,\n        \"Maybe\": () => apMay,\n        \"Node\": () => apTree,\n        \"Tuple\": () => apTuple,\n        \"List\": () => apList,\n        \"(a -> b)\": () => apFn\n    })[typeName(mx) || \"List\"]()(mf)(mx);",
     "tags": [
       "JS Prelude"
@@ -150,33 +150,33 @@
       "JS Prelude"
     ]
   },
-  "apLR (<*>)": {
+  "apLR": {
     "code": "// apLR (<*>) :: Either e (a -> b) -> Either e a -> Either e b\nconst apLR = flr =>\n    // Either a Left value, or the application of a\n    // function in Either to a value in Either.\n    liftA2LR(x => x)(flr);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "apList (<*>)": {
+  "apList": {
     "code": "// apList (<*>) :: [(a -> b)] -> [a] -> [b]\nconst apList = fs =>\n    // The sequential application of each of a list\n    // of functions to each of a list of values.\n    // apList([x => 2 * x, x => 20 + x])([1, 2, 3])\n    //     -> [2, 4, 6, 21, 22, 23]\n    xs => fs.flatMap(f => xs.map(f));",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
-  "apMay (<*>)": {
+  "apMay": {
     "code": "// apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b\nconst apMay = mf =>\n    // Just an application of Maybe a function to\n    // to Maybe a value, or Nothing.\n    liftA2May(x => x)(mf);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "apTree (<*>)": {
+  "apTree": {
     "code": "// apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b\nconst apTree = tf =>\n    // A new tree derived by applying each of a tree\n    // of functions to each node value in another tree.\n    liftA2Tree(\n        x => x\n    )(tf);",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
-  "apTuple (<*>)": {
+  "apTuple": {
     "code": "// apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)\nconst apTuple = ab =>\n    // A tuple obtained by applying the function in the second\n    // value of ab to the second value in an existing tuple,\n    // and concatenating the first values of each tuple.\n    liftA2Tuple(x => x)(ab);",
     "tags": [
       "JS Prelude"
@@ -194,7 +194,7 @@
       "JS Prelude"
     ]
   },
-  "append (<>)": {
+  "append": {
     "code": "// append (<>) :: [a] -> [a] -> [a]\nconst append = xs =>\n    // Two lists joined into one.\n    ys => xs.concat(ys);",
     "tags": [
       "JS Prelude",
@@ -221,7 +221,7 @@
       "JS Prelude"
     ]
   },
-  "apply ($)": {
+  "apply": {
     "code": "// apply ($) :: (a -> b) -> a -> b\nconst apply = f =>\n    // Application operator.\n    x => f(x);",
     "tags": [
       "JS Prelude"
@@ -289,39 +289,39 @@
       "JS Prelude"
     ]
   },
-  "bind (>>=)": {
+  "bind": {
     "code": "// bind (>>=) :: Monad m => m a -> (a -> m b) -> m b\nconst bind = m =>\n    // Two computations sequentially composed,\n    // with any value produced by the first\n    // passed as an argument to the second.\n    mf => Array.isArray(m)\n        ? bindList(m)(mf)\n        : ({\n            \"Either\": () => bindLR,\n            \"Maybe\": () => bindMay,\n            \"Tuple\": () => bindTuple,\n            \"function\": () => bindFn\n        })[m.type || typeof m]()(m)(mf);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "bindFn (>>=)": {
+  "bindFn": {
     "code": "// bindFn (>>=) :: (a -> b) -> (b -> a -> c) -> a -> c\nconst bindFn = f =>\n    // Binary operator applied over f x and x.\n    op => x => op(f(x))(x);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "bindLR (>>=)": {
+  "bindLR": {
     "code": "// bindLR (>>=) :: Either a ->\n// (a -> Either b) -> Either b\nconst bindLR = lr =>\n    // Bind operator for the Either option type.\n    // If lr has a Left value then lr unchanged,\n    // otherwise the function mf applied to the\n    // Right value in lr.\n    mf => \"Left\" in lr\n        ? lr\n        : mf(lr.Right);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
-  "bindList (>>=)": {
+  "bindList": {
     "code": "// bindList (>>=) :: [a] -> (a -> [b]) -> [b]\nconst bindList = xs =>\n    // The bind operator for Arrays.\n    mf => [...xs].flatMap(mf);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "bindMay (>>=)": {
+  "bindMay": {
     "code": "// bindMay (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b\nconst bindMay = mb =>\n    // Nothing if mb is Nothing, or the application of the\n    // (a -> Maybe b) function mf to the contents of mb.\n    mf => mb.Nothing\n        ? mb\n        : mf(mb.Just);",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
-  "bindTuple (>>=)": {
+  "bindTuple": {
     "code": "// bindTuple (>>=) :: Monoid a => (a, a) -> (a -> (a, b)) -> (a, b)\nconst bindTuple = ([a, b]) =>\n    // The bind operator for Tuples\n    f => first(mappend(a))(\n        f(b)\n    );",
     "tags": [
       "JS Prelude"
@@ -457,7 +457,7 @@
       "core"
     ]
   },
-  "compose (<<<)": {
+  "compose": {
     "code": "// compose (<<<) :: (b -> c) -> (a -> b) -> a -> c\nconst compose = (...fs) =>\n    // A function defined by the right-to-left\n    // composition of all the functions in fs.\n    fs.reduce(\n        (f, g) => x => f(g(x)),\n        x => x\n    );",
     "tags": [
       "JS Prelude",
@@ -476,7 +476,7 @@
       "JS Prelude"
     ]
   },
-  "composeR (>>>)": {
+  "composeR": {
     "code": "// composeR (>>>) :: (a -> b) -> (b -> c) -> a -> c\nconst composeR = f =>\n    g => x => f(g(x));",
     "tags": [
       "JS Prelude"
@@ -845,7 +845,7 @@
       "JS Prelude"
     ]
   },
-  "eq (==)": {
+  "eq": {
     "code": "// eq (==) :: Eq a => a -> a -> Bool\nconst eq = a =>\n    // True when a and b are equivalent in the terms\n    // defined below for their shared data type.\n    b => {\n        const t = typeof a;\n\n        return t === typeof b && (\n            \"object\" !== t\n                ? \"function\" !== t\n                    ? a === b\n                    : a.toString() === b.toString()\n                : (() => {\n                    const kvs = Object.entries(a);\n\n                    return kvs.length !== Object.keys(b).length\n                        ? false\n                        : kvs.every(([k, v]) => eq(v)(b[k]));\n                })()\n        );\n    };",
     "tags": [
       "JS Prelude"
@@ -907,7 +907,7 @@
       "JS Prelude"
     ]
   },
-  "fanArrow (&&&)": {
+  "fanArrow": {
     "code": "// fanArrow (&&&) ::\n// (a -> b) -> (a -> c) -> (a -> (b, c))\nconst fanArrow = f =>\n    // A combined function, given f and g,\n    // from x to a tuple of (f(x), g(x))\n    // ((,) . f <*> g)\n    g => x => Tuple(f(x))(\n        g(x)\n    );",
     "tags": [
       "JS Prelude"
@@ -1061,50 +1061,50 @@
       "JS Prelude"
     ]
   },
-  "fmap (<$>)": {
+  "fmap": {
     "code": "// fmap (<$>) :: Functor f => (a -> b) -> f a -> f b\nconst fmap = f =>\n    // f mapped over the given functor.\n    x => ({\n        \"Either\": () => fmapLR,\n        \"(a -> b)\": () => dot,\n        \"List\": () => map,\n        \"Maybe\": () => fmapMay,\n        \"Node\": () => fmapTree,\n        \"String\": () => map,\n        \"Tuple\": () => fmapTuple\n    })[typeName(x)]()(f)(x);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "fmapDict (<$>)": {
+  "fmapDict": {
     "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict).reduceRight(\n        (a, [k, v]) => Object.assign(\n            {[k]: f(v)},\n            a\n        ),\n        {}\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
-  "fmapGen (<$>)": {
+  "fmapGen": {
     "code": "// fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]\nconst fmapGen = f =>\n    // The map of f over a stream of generator values.\n    function* (gen) {\n        let v = gen.next();\n\n        while (!v.done) {\n            yield f(v.value);\n            v = gen.next();\n        }\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
-  "fmapLR (<$>)": {
+  "fmapLR": {
     "code": "// fmapLR (<$>) :: (b -> c) -> Either a b -> Either a c\nconst fmapLR = f =>\n    // Either f mapped into the contents of any Right\n    // value in e, or e unchanged if it is a Left value.\n    e => \"Left\" in e\n        ? e\n        : Right(f(e.Right));",
     "tags": [
       "JS Prelude"
     ]
   },
-  "fmapMay (<$>)": {
+  "fmapMay": {
     "code": "// fmapMay (<$>) :: (a -> b) -> Maybe a -> Maybe b\nconst fmapMay = f =>\n    mb => mb.Nothing\n        ? mb\n        : Just(f(mb.Just));",
     "tags": [
       "JS Prelude"
     ]
   },
-  "fmapTree (<$>)": {
+  "fmapTree": {
     "code": "// fmapTree :: (a -> b) -> Tree a -> Tree b\nconst fmapTree = f => {\n    // A new tree. The result of a\n    // structure-preserving application of f\n    // to each root in the existing tree.\n    const go = t => Node(\n        f(root(t))\n    )(\n        nest(t).map(go)\n    );\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
     ]
   },
-  "fmapTuple (<$>)": {
+  "fmapTuple": {
     "code": "// fmapTuple (<$>) :: (a -> b) -> (a, a) -> (a, b)\nconst fmapTuple = f =>\n    second(f);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "fmapZL (<$>)": {
+  "fmapZL": {
     "code": "// fmapZL (<$>) :: (a -> b) -> ZipList a -> ZipList b\nconst fmapZL = f =>\n    // f mapped over the contents of a ZipList\n    // of finite or infinite length.\n    zl => ZipList(\n        (() => {\n            const xs = zl.getZipList;\n\n            return Infinity > xs.length\n                ? xs.map(f)\n                : fmapGen(f)(xs);\n        })()\n    );",
     "tags": [
       "JS Prelude"
@@ -1711,7 +1711,7 @@
       "core"
     ]
   },
-  "kleisliCompose (>=>)": {
+  "kleisliCompose": {
     "code": "// kleisliCompose (>=>) :: Monad m => (a -> m b) ->\n// (b -> m c) -> (a -> m c)\nconst kleisliCompose = f =>\n    // Kleisli composition of two functions which\n    // each lift their values into the same monad.\n    g => x => bind(f(x))(g);",
     "tags": [
       "JS Prelude"
@@ -1962,43 +1962,43 @@
       "JS Prelude"
     ]
   },
-  "mappend (<>)": {
+  "mappend": {
     "code": "// mappend (<>) :: Monoid a => a -> a -> a\nconst mappend = a =>\n    // Associative operation\n    // defined for various monoids.\n    ({\n        \"(a -> b)\": () => mappendFn,\n        \"Endo\": () => mappEndo,\n        \"List\": () => append,\n        \"Maybe\": () => mappendMaybe,\n        \"Num\": () => mappendOrd,\n        \"String\": () => append,\n        \"Tuple\": () => mappendTupleN,\n        \"TupleN\": () => mappendTupleN\n    })[typeName(a)]()(a);",
     "tags": [
       "JS Prelude"
     ]
   },
-  "mappendComparing (<>)": {
+  "mappendComparing": {
     "code": "// mappendComparing (<>) :: (a -> a -> Bool)\n// (a -> a -> Bool) -> (a -> a -> Bool)\nconst mappendComparing = cmp =>\n    cmp1 => a => b => {\n        const x = cmp(a)(b);\n\n        return 0 !== x\n            ? x\n            : cmp1(a)(b);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
-  "mappendFn (<>)": {
+  "mappendFn": {
     "code": "// mappendFn (<>) :: Monoid b => (a -> b) -> (a -> b) -> (a -> b)\nconst mappendFn = f =>\n    g => x => mappend(f(x))(\n        g(x)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
-  "mappendMaybe (<>)": {
+  "mappendMaybe": {
     "code": "// mappendMaybe (<>) :: Maybe a -> Maybe a -> Maybe a\nconst mappendMaybe = a =>\n    b => a.Nothing\n        ? b\n        : b.Nothing\n            ? a\n            : Just(\n                mappend(a.Just)(b.Just)\n            );",
     "tags": [
       "JS Prelude"
     ]
   },
-  "mappendOrd (<>)": {
+  "mappendOrd": {
     "code": "// mappendOrd (<>) :: Ordering -> Ordering -> Ordering\nconst mappendOrd = x =>\n    y => 0 !== x\n        ? x\n        : y;",
     "tags": [
       "JS Prelude"
     ]
   },
-  "mappendTuple (<>)": {
+  "mappendTuple": {
     "code": "// mappendTuple (<>) :: (a, b) -> (a, b) -> (a, b)\nconst mappendTuple = ([a, b]) =>\n    ([c, d]) => Tuple(\n        mappend(a)(c)\n    )(\n        mappend(b)(d)\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
-  "mappendTupleN (<>)": {
+  "mappendTupleN": {
     "code": "// mappendTupleN (<>) ::\n// (a, b, ...) -> (a, b, ...) -> (a, b, ...)\nconst mappendTupleN = t => t1 => {\n    const n = t.length;\n\n    return n === t1.length\n        ? TupleN(\n            [...t].map(\n                (x, i) => mappend(x)(t1[i])\n            )\n        )\n        : undefined;\n};",
     "tags": [
       "JS Prelude"
@@ -2934,7 +2934,7 @@
       "core"
     ]
   },
-  "splitArrow (***)": {
+  "splitArrow": {
     "code": "// splitArrow (***) :: (a -> b) -> (c -> d) -> ((a, c) -> (b, d))\nconst splitArrow = f =>\n    // The functions f and g combined in a single function\n    // from a tuple (x, y) to a tuple of (f(x), g(y))\n    // (see bimap)\n    g => ([a, b]) => Tuple(\n        f(a)\n    )(\n        g(b)\n    );",
     "tags": [
       "JS Prelude"
