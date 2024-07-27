@@ -1261,6 +1261,12 @@
       "JS Prelude"
     ]
   },
+  "gcdApprox": {
+    "code": "// gcdApprox :: Real -> (Real, Real) -> Real\nconst gcdApprox = epsilon =>\n    (x, y) => {\n        const _gcd = (a, b) => (\n            b < epsilon\n                ? a\n                : _gcd(b, a % b)\n        );\n\n        return _gcd(Math.abs(x), Math.abs(y));\n    };",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "genericIndexMay": {
     "code": "// genericIndexMay :: [a] -> Int -> Maybe a\nconst genericIndexMay = xs =>\n    i => (i < xs.length && 0 <= i)\n        ? Just(xs[i])\n        : Nothing();",
     "tags": [
@@ -2274,6 +2280,12 @@
   },
   "partitionEithers": {
     "code": "// partitionEithers :: [Either a b] -> ([a],[b])\nconst partitionEithers = xs =>\n    // A tuple of two lists:\n    // first all the Left values in xs,\n    // and then all the Right values in xs.\n    xs.reduce(\n        (a, x) => (\n            \"Left\" in x\n                ? first(ys => [...ys, x.Left])\n                : second(ys => [...ys, x.Right])\n        )(a),\n        Tuple([])([])\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "pathAccessor": {
+    "code": "// pathAccessor :: String -> Dict -> (null | Any)\nconst pathAccessor = path =>\n    obj => path.split(\".\").reduce(\n        (result, k) => result\n            ? k in result\n                ? result[k]\n                : null\n            : result,\n        obj\n    );",
     "tags": [
       "JS Prelude"
     ]

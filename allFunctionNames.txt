@@ -196,6 +196,7 @@ fromRight :: b -> Either a b -> b
 fst :: (a, b) -> a
 ft :: Int -> Int -> [Int]
 gcd :: Integral a => a -> a -> a
+gcdApprox :: Real -> (Real, Real) -> Real
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
 getDirectoryContents :: FilePath -> IO [FilePath]
@@ -357,6 +358,7 @@ outdented :: String -> String
 parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
+pathAccessor :: String -> Dict -> (null | Any)
 permutations :: [a] -> [[a]]
 pi :: Float
 plural :: Int -> String -> String

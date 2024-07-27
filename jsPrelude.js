@@ -2099,6 +2099,18 @@ const gcd = x =>
         return go(abs(x), abs(y));
     };
 
+// gcdApprox :: Real -> (Real, Real) -> Real
+const gcdApprox = epsilon =>
+    (x, y) => {
+        const _gcd = (a, b) => (
+            b < epsilon
+                ? a
+                : _gcd(b, a % b)
+        );
+
+        return _gcd(Math.abs(x), Math.abs(y));
+    };
+
 // genericIndexMay :: [a] -> Int -> Maybe a
 const genericIndexMay = xs =>
     i => (i < xs.length && 0 <= i)
@@ -3641,6 +3653,17 @@ const partitionEithers = xs =>
                 : second(ys => [...ys, x.Right])
         )(a),
         Tuple([])([])
+    );
+
+// pathAccessor :: String -> Dict -> (null | Any)
+const pathAccessor = path =>
+    obj => path.split(".").reduce(
+        (result, k) => result
+            ? k in result
+                ? result[k]
+                : null
+            : result,
+        obj
     );
 
 // permutations :: [a] -> [[a]]
