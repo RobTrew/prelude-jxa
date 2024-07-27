@@ -1,12 +1,14 @@
 ```javascript
 // pathAccessor :: String -> Dict -> (null | Any)
 const pathAccessor = path =>
+    // Value if any, at supplied dot path in object.
+    // Null if no such path is found.
     obj => path.split(".").reduce(
-        (result, k) => result
-            ? k in result
-                ? result[k]
+        (v, k) => v
+            ? k in v
+                ? v[k]
                 : null
-            : result,
+            : v,
         obj
     );
 ```
