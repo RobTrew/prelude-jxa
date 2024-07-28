@@ -2285,7 +2285,7 @@
     ]
   },
   "pathAccessor": {
-    "code": "// pathAccessor :: String -> Dict -> (null | Any)\nconst pathAccessor = path =>\n    // Value if any, at supplied dot path in object.\n    // Null if no such path is found.\n    obj => path.split(\".\").reduce(\n        (v, k) => v instanceof Object\n            ? k in v\n                ? v[k]\n                : undefined\n            : v,\n        obj\n    );",
+    "code": "// pathAccessor :: String -> Dict -> a\nconst pathAccessor = path =>\n    // Value if any, at supplied dot path in object.\n    // Null if no such path is found.\n    obj => path.split(\".\").reduce(\n        (v, k) => v instanceof Object\n            ? k in v\n                ? v[k]\n                : undefined\n            : v,\n        obj\n    );",
     "tags": [
       "JS Prelude"
     ]

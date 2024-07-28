@@ -3976,7 +3976,7 @@ const partitionEithers = xs =>
         Tuple([])([])
     );
 
-// pathAccessor :: String -> Dict -> (null | Any)
+// pathAccessor :: String -> Dict -> a
 const pathAccessor = path =>
     // Value if any, at supplied dot path in object.
     // Null if no such path is found.
