@@ -1189,9 +1189,13 @@ const dropLengthMaybe = xs =>
 // dropWhile :: (a -> Bool) -> [a] -> [a]
 const dropWhile = p =>
     // The suffix remaining after takeWhile p xs.
-    xs => xs.slice(
-        xs.findIndex(x => !p(x))
-    );
+    xs => {
+        const i = xs.findIndex(x => !p(x));
+
+        return -1 !== i
+            ? xs.slice(i)
+            : [];
+    };
 
 // dropWhileEnd :: (a -> Bool) -> [a] -> [a]
 const dropWhileEnd = p =>
@@ -2227,17 +2231,6 @@ const if_ = bln =>
     x => y => bln
         ? x
         : y;
-
-// importedFrom :: CSV String -> FilePath -> IO Dict
-const importedFrom = fNames =>
-    // eslint-disable-next-line no-new-func
-    fp => Function(
-        [
-            readFile(fp),
-            `return { ${fNames} };`
-        ]
-        .join("\n")
-    )();
 
 // indented :: String -> String -> String
 const indented = indent =>

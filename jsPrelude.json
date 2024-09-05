@@ -726,7 +726,7 @@
     ]
   },
   "dropWhile": {
-    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\nconst dropWhile = p =>\n    // The suffix remaining after takeWhile p xs.\n    xs => xs.slice(\n        xs.findIndex(x => !p(x))\n    );",
+    "code": "// dropWhile :: (a -> Bool) -> [a] -> [a]\nconst dropWhile = p =>\n    // The suffix remaining after takeWhile p xs.\n    xs => {\n        const i = xs.findIndex(x => !p(x));\n\n        return -1 !== i\n            ? xs.slice(i)\n            : [];\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -1381,12 +1381,6 @@
   },
   "if_": {
     "code": "// if_ :: Bool -> a -> a -> a\nconst if_ = bln =>\n    x => y => bln\n        ? x\n        : y;",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
-  "importedFrom": {
-    "code": "// importedFrom :: CSV String -> FilePath -> IO Dict\nconst importedFrom = fNames =>\n    // eslint-disable-next-line no-new-func\n    fp => Function(\n        [\n            readFile(fp),\n            `return { ${fNames} };`\n        ]\n        .join(\"\\n\")\n    )();",
     "tags": [
       "JS Prelude"
     ]
