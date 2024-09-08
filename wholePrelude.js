@@ -555,21 +555,6 @@ const both = f =>
         f(b)
     );
 
-// break :: (a -> Bool) -> [a] -> ([a], [a])
-const break_ = p =>
-    // The longest prefix of xs in which
-    // all values return false for p,
-    // tupled with the rest.
-    xs => {
-        const i = xs.findIndex(p);
-
-        return -1 !== i
-            ? Tuple(xs.slice(0, i))(
-                xs.slice(i)
-            )
-            : Tuple(xs)([]);
-    };
-
 // breakOn :: Eq a => [a] -> [a] -> ([a], [a])
 // breakOn :: String -> String -> ([Char], [Char])
 const breakOn = needle =>
@@ -628,6 +613,21 @@ const breakOnMay = needle =>
                 : Tuple(haystack)(""));
         })()
         : Nothing();
+
+// break_ :: (a -> Bool) -> [a] -> ([a], [a])
+const break_ = p =>
+    // The longest prefix of xs in which
+    // all values return false for p,
+    // tupled with the rest.
+    xs => {
+        const i = xs.findIndex(p);
+
+        return -1 !== i
+            ? Tuple(xs.slice(0, i))(
+                xs.slice(i)
+            )
+            : Tuple(xs)([]);
+    };
 
 // bulleted :: String -> String -> String
 const bulleted = strTab =>
