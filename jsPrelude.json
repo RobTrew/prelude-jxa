@@ -802,7 +802,7 @@
     ]
   },
   "enumFromPairs": {
-    "code": "// enumFromPairs :: String -> [(String, Int)] -> Dict\nconst enumFromPairs = enumName =>\n    kvs => {\n        const\n            iMax = kvs[kvs.length - 1][1],\n            iMin = kvs[0][1];\n\n        return kvs.reduce(\n            (a, kv) => Object.assign(\n                a, {\n                    [kv[0]]: {\n                        \"type\": \"enum\",\n                        \"name\": enumName,\n                        \"key\": kv[0],\n                        \"max\": iMax,\n                        \"min\": iMin,\n                        \"value\": kv[1]\n                    },\n                    [kv[1]]: kv[0]\n                }\n            ), {}\n        );\n    };",
+    "code": "// enumFromPairs :: String -> [(String, Int)] -> Dict\nconst enumFromPairs = enumName =>\n    kvs => {\n        const\n            iMax = kvs[kvs.length - 1][1],\n            iMin = kvs[0][1];\n\n        return kvs.reduce(\n            (a, kv) => ({\n                ...a,\n                [kv[0]]: {\n                    \"type\": \"enum\",\n                    \"name\": enumName,\n                    \"key\": kv[0],\n                    \"max\": iMax,\n                    \"min\": iMin,\n                    \"value\": kv[1]\n                },\n                [kv[1]]: kv[0]\n            }), {}\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]

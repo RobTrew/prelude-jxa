@@ -7,19 +7,18 @@ const enumFromPairs = enumName =>
             iMin = kvs[0][1];
 
         return kvs.reduce(
-            (a, kv) => Object.assign(
-                a, {
-                    [kv[0]]: {
-                        "type": "enum",
-                        "name": enumName,
-                        "key": kv[0],
-                        "max": iMax,
-                        "min": iMin,
-                        "value": kv[1]
-                    },
-                    [kv[1]]: kv[0]
-                }
-            ), {}
+            (a, kv) => ({
+                ...a,
+                [kv[0]]: {
+                    "type": "enum",
+                    "name": enumName,
+                    "key": kv[0],
+                    "max": iMax,
+                    "min": iMin,
+                    "value": kv[1]
+                },
+                [kv[1]]: kv[0]
+            }), {}
         );
     };
 ```
