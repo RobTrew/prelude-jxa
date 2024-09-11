@@ -1,7 +1,8 @@
 ```javascript
 // insertDict :: String -> a -> Dict -> Dict
 const insertDict = k =>
-    v => dct => Object.assign({}, dct, {
+    v => dict => ({
+        ...dict,
         [k]: v
     });
 ```

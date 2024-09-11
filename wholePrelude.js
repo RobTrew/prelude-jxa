@@ -154,9 +154,10 @@ const adjust = f =>
     // Otherwise, a new copy in which the existing
     // value of k is updated by application of f.
     k => dict => k in dict
-        ? Object.assign({}, dict, {
+        ? {
+            ...dict,
             [k]: f(dict[k])
-        })
+        }
         : dict;
 
 // alert :: String => String -> IO String
@@ -1053,10 +1054,10 @@ const deleteFirstsBy = fEq =>
 // deleteKey :: String -> Dict -> Dict
 const deleteKey = k =>
     // A new dictionary, without the key k.
-    dct => {
-        const dct2 = Object.assign({}, dct);
+    dict => {
+        const d = { ...dict };
 
-        return (delete dct2[k], dct2);
+        return (delete d[k], d);
     };
 
 // dictFromList :: [(k, v)] -> Dict
@@ -2053,13 +2054,14 @@ const fmap = f =>
 const fmapDict = f =>
     // A map of f over every value
     // in the given dictionary.
-    dict => Object.entries(dict).reduceRight(
-        (a, [k, v]) => Object.assign(
-            {[k]: f(v)},
-            a
-        ),
-        {}
-    );
+    dict => Object.entries(dict)
+        .reduceRight(
+            (a, [k, v]) => ({
+                ...a,
+                [k]: f(v)
+            }),
+            {}
+        );
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
@@ -2669,7 +2671,8 @@ const insertBy = cmp =>
 
 // insertDict :: String -> a -> Dict -> Dict
 const insertDict = k =>
-    v => dct => Object.assign({}, dct, {
+    v => dict => ({
+        ...dict,
         [k]: v
     });
 
@@ -2679,12 +2682,12 @@ const insertWith = f =>
     // A new dictionary updated with a (k, f(v)(x)) pair.
     // Where there is no existing v for k, the supplied
     // x is used directly.
-    k => x => dict => Object.assign({},
-        dict, {
-            [k]: k in dict
-                ? f(dict[k])(x)
-                : x
-        });
+    k => x => dict => ({
+        ...dict,
+        [k]: k in dict
+            ? f(dict[k])(x)
+            : x
+    });
 
 // intToDigit :: Int -> Char
 const intToDigit = n =>

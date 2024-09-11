@@ -2,9 +2,9 @@
 // deleteKey :: String -> Dict -> Dict
 const deleteKey = k =>
     // A new dictionary, without the key k.
-    dct => {
-        const dct2 = Object.assign({}, dct);
+    dict => {
+        const d = { ...dict };
 
-        return (delete dct2[k], dct2);
+        return (delete d[k], d);
     };
 ```

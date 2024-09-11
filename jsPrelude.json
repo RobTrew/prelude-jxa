@@ -85,7 +85,7 @@
     ]
   },
   "adjust": {
-    "code": "// adjust :: (a -> a) -> Key ->\n// Dict Key a -> Dict Key a\nconst adjust = f =>\n    // The orginal dictionary, unmodified, if k is\n    // not an existing key.\n    // Otherwise, a new copy in which the existing\n    // value of k is updated by application of f.\n    k => dict => k in dict\n        ? Object.assign({}, dict, {\n            [k]: f(dict[k])\n        })\n        : dict;",
+    "code": "// adjust :: (a -> a) -> Key ->\n// Dict Key a -> Dict Key a\nconst adjust = f =>\n    // The orginal dictionary, unmodified, if k is\n    // not an existing key.\n    // Otherwise, a new copy in which the existing\n    // value of k is updated by application of f.\n    k => dict => k in dict\n        ? {\n            ...dict,\n            [k]: f(dict[k])\n        }\n        : dict;",
     "tags": [
       "JS Prelude"
     ]
@@ -597,7 +597,7 @@
     ]
   },
   "deleteKey": {
-    "code": "// deleteKey :: String -> Dict -> Dict\nconst deleteKey = k =>\n    // A new dictionary, without the key k.\n    dct => {\n        const dct2 = Object.assign({}, dct);\n\n        return (delete dct2[k], dct2);\n    };",
+    "code": "// deleteKey :: String -> Dict -> Dict\nconst deleteKey = k =>\n    // A new dictionary, without the key k.\n    dict => {\n        const d = { ...dict };\n\n        return (delete d[k], d);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1068,7 +1068,7 @@
     ]
   },
   "fmapDict": {
-    "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict).reduceRight(\n        (a, [k, v]) => Object.assign(\n            {[k]: f(v)},\n            a\n        ),\n        {}\n    );",
+    "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict)\n        .reduceRight(\n            (a, [k, v]) => ({\n                ...a,\n                [k]: f(v)\n            }),\n            {}\n        );",
     "tags": [
       "JS Prelude"
     ]
@@ -1456,13 +1456,13 @@
     ]
   },
   "insertDict": {
-    "code": "// insertDict :: String -> a -> Dict -> Dict\nconst insertDict = k =>\n    v => dct => Object.assign({}, dct, {\n        [k]: v\n    });",
+    "code": "// insertDict :: String -> a -> Dict -> Dict\nconst insertDict = k =>\n    v => dict => ({\n        ...dict,\n        [k]: v\n    });",
     "tags": [
       "JS Prelude"
     ]
   },
   "insertWith": {
-    "code": "// insertWith :: Ord k => (a -> a -> a) ->\n// k -> a -> Map k a -> Map k a\nconst insertWith = f =>\n    // A new dictionary updated with a (k, f(v)(x)) pair.\n    // Where there is no existing v for k, the supplied\n    // x is used directly.\n    k => x => dict => Object.assign({},\n        dict, {\n            [k]: k in dict\n                ? f(dict[k])(x)\n                : x\n        });",
+    "code": "// insertWith :: Ord k => (a -> a -> a) ->\n// k -> a -> Map k a -> Map k a\nconst insertWith = f =>\n    // A new dictionary updated with a (k, f(v)(x)) pair.\n    // Where there is no existing v for k, the supplied\n    // x is used directly.\n    k => x => dict => ({\n        ...dict,\n        [k]: k in dict\n            ? f(dict[k])(x)\n            : x\n    });",
     "tags": [
       "JS Prelude"
     ]

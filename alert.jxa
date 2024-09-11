@@ -1,0 +1,116 @@
+(() => {
+    "use strict";
+
+    const main = () => {
+        const dict = {
+            alpha: 1,
+            beta: 2,
+            gamma: 3
+        };
+
+        return charCounts("tianxia dashi, fenjiu bihe, hejiu bifen");
+    }
+
+    // --------------------- GENERIC ---------------------
+
+    const add = a =>
+        b => a + b;
+
+
+    // charCounts :: String -> Dict Char Int
+    const charCounts = cs =>
+        // Dictionary of chars, with the
+        // frequency of each in cs.
+        [...cs].reduce(
+            (a, c) => insertWith(add)(c)(
+                1
+            )(a), {}
+        );
+
+    // insertWith :: Ord k => (a -> a -> a) ->
+    // k -> a -> Map k a -> Map k a
+    const insertWith = f =>
+        // A new dictionary updated with a (k, f(v)(x)) pair.
+        // Where there is no existing v for k, the supplied
+        // x is used directly.
+        k => x => dict => ({
+            ...dict,
+            [k]: k in dict
+                ? f(dict[k])(x)
+                : x
+        });
+
+
+    // insertDict :: String -> a -> Dict -> Dict
+    const insertDict = k =>
+        v => dict => ({
+            ...dict,
+            [k]: v
+        });
+
+
+    // fmapDict :: (a -> b) ->
+    // {String :: a} -> {String :: b}
+    const fmapDict = f =>
+        // A map of f over every value
+        // in the given dictionary.
+        dict => Object.entries(dict)
+            .reduceRight(
+                (a, [k, v]) => ({
+                    ...a,
+                    [k]: f(v)
+                }),
+                {}
+            );
+
+    // deleteKey :: String -> Dict -> Dict
+    const deleteKey = k =>
+        // A new dictionary, without the key k.
+        dict => {
+            const d = { ...dict };
+
+            return (delete d[k], d);
+        };
+
+    // adjust :: (a -> a) -> Key ->
+    // Dict Key a -> Dict Key a
+    const adjust = f =>
+        // The orginal dictionary, unmodified, if k is
+        // not an existing key.
+        // Otherwise, a new copy in which the existing
+        // value of k is updated by application of f.
+        k => dict => k in dict
+            ? {
+                ...dict,
+                [k]: f(dict[k])
+            }
+            : dict;
+
+
+    // --------------------- LOGGING ---------------------
+
+
+    // showLog :: a -> IO ()
+    const showLog = (...args) =>
+        // eslint-disable-next-line no-console
+        console.log(
+            args
+                .map(JSON.stringify)
+                .join(" -> ")
+        );
+
+    // sj :: a -> String
+    const sj = (...args) =>
+        // Abbreviation of showJSON for quick testing.
+        // Default indent size is two, which can be
+        // overriden by any integer supplied as the
+        // first argument of more than one.
+        JSON.stringify.apply(
+            null,
+            1 < args.length && !isNaN(args[0])
+                ? [args[1], null, args[0]]
+                : [args[0], null, 2]
+        );
+
+    return sj(main());
+})();
