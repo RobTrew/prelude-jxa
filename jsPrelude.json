@@ -2259,7 +2259,7 @@
     ]
   },
   "parentIndexedTree": {
-    "code": "// parentIndexedTree :: Tree (a, {...index :: Int}) ->\n// Tree (a, {...index :: Int, parent :: Maybe Int})\nconst parentIndexedTree = tree => {\n    // A tree additionally decorated with parent indices,\n    // derived from a measured tree already decorated with\n    // node indices. (See measuredTree).\n    const go = mb => node => {\n        const\n            x = root(node),\n            measures = x[1];\n\n        return Node(\n            Tuple(x[0])(\n                Object.assign(measures, {\n                    parent: mb\n                })\n            )\n        )(nest(node).map(go(Just(measures.index))));\n    };\n\n    return go(Nothing())(tree);\n};",
+    "code": "// parentIndexedTree :: Tree (a, {...index :: Int}) ->\n// Tree (a, {...index :: Int, parent :: Maybe Int})\nconst parentIndexedTree = tree => {\n    // A tree additionally decorated with parent indices,\n    // derived from a measured tree already decorated with\n    // node indices. (See measuredTree).\n    const go = mb => node => {\n        const\n            x = root(node),\n            measures = x[1];\n\n        return Node(\n            Tuple(x[0])({\n                ...measures,\n                parent: mb\n            })\n        )(nest(node).map(go(Just(measures.index))));\n    };\n\n    return go(Nothing())(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"

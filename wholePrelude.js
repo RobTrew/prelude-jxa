@@ -3934,11 +3934,10 @@ const parentIndexedTree = tree => {
             measures = x[1];
 
         return Node(
-            Tuple(x[0])(
-                Object.assign(measures, {
-                    parent: mb
-                })
-            )
+            Tuple(x[0])({
+                ...measures,
+                parent: mb
+            })
         )(nest(node).map(go(Just(measures.index))));
     };
 
