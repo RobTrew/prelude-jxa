@@ -8,10 +8,37 @@
             gamma: 3
         };
 
-        return charCounts("tianxia dashi, fenjiu bihe, hejiu bifen");
+        return TupleN("Alpha", 2, 5, "Beta", 4)
     }
 
     // --------------------- GENERIC ---------------------
+
+    // TupleN :: a -> b ...  -> (a, b ... )
+    const TupleN = (...args) => {
+        // A Tuple of an arbitrary number of items.
+        const n = args.length;
+
+        return {
+            ...args.reduce(
+                (a, x, i) => ({
+                    ...a,
+                    [i]: x
+                }),
+                {
+                    type: 2 !== n
+                        ? `Tuple${n}`
+                        : "Tuple",
+                    length: n,
+                    *[Symbol.iterator]() {
+                        for (const k in this) {
+                            if (!isNaN(k)) {
+                                yield this[k];
+                            }
+                        }
+                    }
+                })
+        };
+    };
 
     const add = a =>
         b => a + b;

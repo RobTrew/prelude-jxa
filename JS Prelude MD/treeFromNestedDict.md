@@ -30,15 +30,10 @@ const treeFromNestedDict = dict => {
 
                 return bindLR(traverseList(go)(xs))(
                     vs => Right(
-                        Node(
-                            Object.assign(
-                                deleteKey(nestName)(
-                                    dct
-                                ), {
-                                    "List title": nestName
-                                }
-                            )
-                        )(vs)
+                        Node({
+                            ...deleteKey(nestName)(dct),
+                            "List title": nestName
+                        })(vs)
                     )
                 );
             })()
