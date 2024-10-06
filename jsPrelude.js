@@ -2157,10 +2157,12 @@ const groupOn = f =>
     // which return equal values for f,
     // such that the concatenation of these lists is xs.
     xs => 0 < xs.length
-        ? groupBy(a => b => a[0] === b[0])(
+        ? groupBy(
+            a => b => eq(a[0])(b[0])
+        )(
             xs.map(x => [f(x), x])
         )
-        .map(gp => gp.map(ab => ab[1]))
+            .map(gp => gp.map(ab => ab[1]))
         : [];
 
 // groupOnKey :: Eq k => (a -> k) -> [a] -> [(k, [a])]

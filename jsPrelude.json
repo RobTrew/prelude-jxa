@@ -1322,7 +1322,7 @@
     ]
   },
   "groupOn": {
-    "code": "// groupOn :: (a -> b) -> [a] -> [[a]]\nconst groupOn = f =>\n    // A list of lists, each containing only elements\n    // which return equal values for f,\n    // such that the concatenation of these lists is xs.\n    xs => 0 < xs.length\n        ? groupBy(a => b => a[0] === b[0])(\n            xs.map(x => [f(x), x])\n        )\n        .map(gp => gp.map(ab => ab[1]))\n        : [];",
+    "code": "// groupOn :: (a -> b) -> [a] -> [[a]]\nconst groupOn = f =>\n    // A list of lists, each containing only elements\n    // which return equal values for f,\n    // such that the concatenation of these lists is xs.\n    xs => 0 < xs.length\n        ? groupBy(\n            a => b => eq(a[0])(b[0])\n        )(\n            xs.map(x => [f(x), x])\n        )\n            .map(gp => gp.map(ab => ab[1]))\n        : [];",
     "tags": [
       "JS Prelude"
     ]
