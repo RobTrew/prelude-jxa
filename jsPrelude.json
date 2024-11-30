@@ -189,7 +189,7 @@
     ]
   },
   "apZip": {
-    "code": "// apZip :: [(a -> b)] -> [a] -> [b]\nconst apZip = fs =>\n    // Zip applicative.\n    // Each function in fs applied to the value\n    // in the corresponding position in xs.\n    xs => fs.map(\n        (f, i) => f(xs[i])\n    )\n    .slice(\n        0, Math.min(fs.length, xs.length)\n    );",
+    "code": "// apZip :: [(a -> b)] -> [a] -> [b]\nconst apZip = fs =>\n    // Zip applicative.\n    // Each function in fs applied to the value\n    // in the corresponding position in xs.\n    xs => fs.slice(\n        0, Math.min(fs.length, xs.length)\n    )\n        .map((f, i) => f(xs[i]));",
     "tags": [
       "JS Prelude"
     ]
