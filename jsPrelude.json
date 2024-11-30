@@ -188,6 +188,12 @@
       "JS Prelude"
     ]
   },
+  "apZip": {
+    "code": "// apZip :: [(a -> b)] -> [a] -> [b]\nconst apZip = fs =>\n    // Zip applicative.\n    // Each function in fs applied to the value\n    // in the corresponding position in xs.\n    xs => fs.map(\n        (f, i) => f(xs[i])\n    )\n    .slice(\n        0, Math.min(fs.length, xs.length)\n    );",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "appEndo": {
     "code": "// appEndo :: Endo a -> (a -> a)\nconst appEndo = endo =>\n    // Accessor for the function in an Endo type.\n    endo.appEndo;",
     "tags": [
@@ -3645,7 +3651,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is a\n    // curried function, and all remaining arguments are lists.\n    const go = ([f, ...rows]) => {\n        const\n            n = Math.min(\n                ...rows.map(x => x.length)\n            );\n\n        return rows.slice(1).reduce(\n            (gs, row) => gs.map(\n                (g, iCol) => g(row[iCol])\n            )\n            .slice(0, n),\n            rows[0].map(f)\n        );\n    };\n\n    return 1 < args.length\n        ? go(args)\n        : [];\n};",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> ([a], [b] ...) -> [c]\nconst zipWithN = (...args) => {\n    // Uncurried function of which the first argument is a\n    // curried function, and all remaining arguments are lists.\n\n    // uncurry apZip\n    const az = (fs, vs) =>\n        fs.map((f, i) => f(vs[i]))\n            .slice(0, Math.min(fs.length, vs.length));\n\n    return 1 < args.length\n        ? (\n            ([f, ...xs]) => xs.slice(1).reduce(\n                az,\n                xs[0].map(f)\n            )\n        )(args)\n        : [];\n};",
     "tags": [
       "JS Prelude"
     ]

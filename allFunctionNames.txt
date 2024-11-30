@@ -27,6 +27,7 @@ apMay (<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
 apTree (<*>) :: Tree (a -> b) -> Tree a -> Tree b
 apTuple (<*>) :: Monoid m => (m, (a -> b)) -> (m, a) -> (m, b)
 apZL (<*>) :: ZipList (a -> b) -> ZipList a -> ZipList b
+apZip :: [(a -> b)] -> [a] -> [b]
 appEndo :: Endo a -> (a -> a)
 append (<>) :: [a] -> [a] -> [a]
 appendFile :: FilePath -> String -> IO Bool
