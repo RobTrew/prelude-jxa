@@ -6002,10 +6002,9 @@ const zipWithList_ = f =>
     // A list constructed by zipping with a
     // custom function, rather than with the
     // default tuple constructor.
-    xs => ys => xs.map(
-        (x, i) => f(x)(ys[i])
-    ).slice(
-        0, Math.min(xs.length, ys.length)
+    xs => ys => Array.from(
+        { length: Math.min(xs.length, ys.length) },
+        (_, i) => f(xs[i])(ys[i])
     );
 
 // zipWithLong :: (a -> a -> a) -> [a] -> [a] -> [a]
@@ -6047,12 +6046,20 @@ const zipWithN = f =>
     // Generalisation of ZipWith, ZipWith3 etc.
     // f is a curried function absorbing N arguments,
     // where N is the length of lists.
-    lists => 0 < lists.length
-        ? lists.slice(1).reduce(
-            (gs, vs) => gs.map((g, i) => g(vs[i])),
-            lists[0].map(f)
-        )
-        : [];
+    // Defines a new list with the length of 
+    // the shortest member of lists.
+    lists => {
+        const m = Math.min(...lists.map(x => x.length));
+
+        return 0 < m
+            ? lists.slice(1).reduce(
+                (gs, vs) => gs.slice(0, m).map(
+                    (g, i) => g(vs[i])
+                ),
+                lists[0].slice(0, m).map(f)
+            )
+            : [];
+    };
 
 // zipWith_ :: (a -> a -> b) -> [a] -> [b]
 const zipWith_ = f =>

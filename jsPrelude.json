@@ -3633,7 +3633,7 @@
     ]
   },
   "zipWithList_": {
-    "code": "// zipWithList_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWithList_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => xs.map(\n        (x, i) => f(x)(ys[i])\n    ).slice(\n        0, Math.min(xs.length, ys.length)\n    );",
+    "code": "// zipWithList_ :: (a -> b -> c) -> [a] -> [b] -> [c]\nconst zipWithList_ = f =>\n    // A list constructed by zipping with a\n    // custom function, rather than with the\n    // default tuple constructor.\n    xs => ys => Array.from(\n        { length: Math.min(xs.length, ys.length) },\n        (_, i) => f(xs[i])(ys[i])\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3651,7 +3651,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> [[a], [b] ...] -> [c]\nconst zipWithN = f =>\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is a curried function absorbing N arguments,\n    // where N is the length of lists.\n    lists => 0 < lists.length\n        ? lists.slice(1).reduce(\n            (gs, vs) => gs.map((g, i) => g(vs[i])),\n            lists[0].map(f)\n        )\n        : [];",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> [[a], [b] ...] -> [c]\nconst zipWithN = f =>\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is a curried function absorbing N arguments,\n    // where N is the length of lists.\n    // Defines a new list with the length of \n    // the shortest member of lists.\n    lists => {\n        const m = Math.min(...lists.map(x => x.length));\n\n        return 0 < m\n            ? lists.slice(1).reduce(\n                (gs, vs) => gs.slice(0, m).map(\n                    (g, i) => g(vs[i])\n                ),\n                lists[0].slice(0, m).map(f)\n            )\n            : [];\n    };",
     "tags": [
       "JS Prelude"
     ]
