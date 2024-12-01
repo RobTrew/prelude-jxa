@@ -6046,12 +6046,10 @@ const zipWithN = f =>
     // Generalisation of ZipWith, ZipWith3 etc.
     // f is a curried function absorbing N arguments,
     // where N is the length of lists.
-    // Defines a new list with the length of 
-    // the shortest member of lists.
     lists => {
         const m = Math.min(...lists.map(x => x.length));
 
-        return 0 < m
+        return 0 < lists.length
             ? lists.slice(1).reduce(
                 (gs, vs) => gs.slice(0, m).map(
                     (g, i) => g(vs[i])
