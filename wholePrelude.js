@@ -6535,10 +6535,10 @@ const zipWithN = (...args) =>
     // curried function, and all remaining arguments are lists.
     1 < args.length
         ? (
-            ([f, ...xs]) => xs.slice(1).reduce(
+            ([f, xs, ...rest]) => rest.reduce(
                 // apZip
                 (gs, vs) => gs.map((g, i) => g(vs[i])),
-                xs[0].map(f)
+                xs.map(f)
             )
         )(args)
         : [];
