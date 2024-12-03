@@ -2926,7 +2926,7 @@
     ]
   },
   "sortBy": {
-    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    // A copy of xs sorted by the comparator function f.\n    xs => xs.slice()\n    .sort((a, b) => f(a)(b));",
+    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    // A copy of xs sorted by the comparator function f.\n    xs => [...xs].sort(\n        (a, b) => f(a)(b)\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -3651,7 +3651,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> [[a], [b] ...] -> [c]\nconst zipWithN = f =>\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is a curried function absorbing N arguments,\n    // where N is the length of lists.\n    lists => {\n        const m = Math.min(...lists.map(x => x.length));\n\n        return 0 < lists.length\n            ? lists.slice(1).reduce(\n                (gs, vs) => gs.slice(0, m).map(\n                    (g, i) => g(vs[i])\n                ),\n                lists[0].slice(0, m).map(f)\n            )\n            : [];\n    };",
+    "code": "// zipWithN :: (a -> b -> ... -> c) -> [[a], [b] ...] -> [c]\nconst zipWithN = f =>\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is a curried function absorbing at least \n    // N arguments, where N is the length of xss.\n    xss => {\n        const m = 0 < xss.length\n            ? Math.min(...xss.map(x => x.length))\n            : 0;\n\n        return xss.reduce(\n            (gs, vs) => gs.map((g, i) => g(vs[i])),\n            Array.from({ length: m }, () => f)\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]

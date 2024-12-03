@@ -4595,8 +4595,9 @@ const sort = xs =>
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
     // A copy of xs sorted by the comparator function f.
-    xs => xs.slice()
-    .sort((a, b) => f(a)(b));
+    xs => [...xs].sort(
+        (a, b) => f(a)(b)
+    );
 
 // sortOn :: Ord b => (a -> b) -> [a] -> [a]
 const sortOn = f =>
@@ -6044,19 +6045,17 @@ const zipWithM = f =>
 // zipWithN :: (a -> b -> ... -> c) -> [[a], [b] ...] -> [c]
 const zipWithN = f =>
     // Generalisation of ZipWith, ZipWith3 etc.
-    // f is a curried function absorbing N arguments,
-    // where N is the length of lists.
-    lists => {
-        const m = Math.min(...lists.map(x => x.length));
+    // f is a curried function absorbing at least 
+    // N arguments, where N is the length of xss.
+    xss => {
+        const m = 0 < xss.length
+            ? Math.min(...xss.map(x => x.length))
+            : 0;
 
-        return 0 < lists.length
-            ? lists.slice(1).reduce(
-                (gs, vs) => gs.slice(0, m).map(
-                    (g, i) => g(vs[i])
-                ),
-                lists[0].slice(0, m).map(f)
-            )
-            : [];
+        return xss.reduce(
+            (gs, vs) => gs.map((g, i) => g(vs[i])),
+            Array.from({ length: m }, () => f)
+        );
     };
 
 // zipWith_ :: (a -> a -> b) -> [a] -> [b]
