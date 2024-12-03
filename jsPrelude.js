@@ -6046,7 +6046,7 @@ const zipWithM = f =>
 const zipWithN = (f, ...xss) => {
     // Generalisation of ZipWith, ZipWith3 etc.
     // f is a curried function absorbing at least 
-    // N arguments, where is the length of xss.
+    // N arguments, where N is the length of xss.
     const m = 0 < xss.length
         ? Math.min(...xss.map(x => x.length))
         : 0;
