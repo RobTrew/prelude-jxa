@@ -537,7 +537,7 @@ unDigits :: [Int] -> Int
 unQuoted :: String -> String
 uncons :: [a] -> Maybe (a, [a])
 uncurry :: (a -> b -> c) -> ((a, b) -> c)
-uncurryN :: Curry a b => b -> a
+uncurryN :: (a -> b ... -> e) -> (a, b ...) -> e
 unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 unfoldTree :: (b -> (a, [b])) -> b -> Tree a
 unfoldl :: (b -> Maybe (b, a)) -> b -> [a]

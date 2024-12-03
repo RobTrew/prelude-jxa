@@ -3399,13 +3399,13 @@
     ]
   },
   "uncurry": {
-    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a pair, derived\n    // from a curried function.\n    (...args) => {\n        const\n            [x, y] = Boolean(args.length % 2)\n                ? args[0]\n                : args;\n\n        return f(x)(y);\n    };",
+    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a Tuple or argument pair, \n    // derived from a curried function.\n    (...args) => {\n        const [x, y] = 2 === args.length\n            ? args\n            : args[0]\n\n        return f(x)(y);\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "uncurryN": {
-    "code": "// uncurryN :: Curry a b => b -> a\nconst uncurryN = f =>\n    // A function over a tuple of values, derived from\n    // a curried function of any number of arguments.\n    (...args) => (\n        xs => xs.slice(1).reduce(\n            (a, x) => a(x),\n            f(xs[0])\n        )\n    )([...(\n        1 < args.length \n            ? args\n            : args[0]\n    )]);",
+    "code": "// uncurryN :: (a -> b ... -> e) -> (a, b ...) -> e\nconst uncurryN = f =>\n    // A function over a tuple of values, \n    // derived from a curried function absorbing \n    // any number of arguments.\n    (...args) => args.reduce(\n        (g, x) => g(x),\n        f\n    );",
     "tags": [
       "JS Prelude"
     ]

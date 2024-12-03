@@ -5614,31 +5614,25 @@ const uncons = xs => {
 
 // uncurry :: (a -> b -> c) -> ((a, b) -> c)
 const uncurry = f =>
-    // A function over a pair, derived
-    // from a curried function.
+    // A function over a Tuple or argument pair, 
+    // derived from a curried function.
     (...args) => {
-        const
-            [x, y] = Boolean(args.length % 2)
-                ? args[0]
-                : args;
+        const [x, y] = 2 === args.length
+            ? args
+            : args[0]
 
         return f(x)(y);
     };
 
-// uncurryN :: Curry a b => b -> a
+// uncurryN :: (a -> b ... -> e) -> (a, b ...) -> e
 const uncurryN = f =>
-    // A function over a tuple of values, derived from
-    // a curried function of any number of arguments.
-    (...args) => (
-        xs => xs.slice(1).reduce(
-            (a, x) => a(x),
-            f(xs[0])
-        )
-    )([...(
-        1 < args.length 
-            ? args
-            : args[0]
-    )]);
+    // A function over a tuple of values, 
+    // derived from a curried function absorbing 
+    // any number of arguments.
+    (...args) => args.reduce(
+        (g, x) => g(x),
+        f
+    );
 
 // unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree]
 const unfoldForest = f =>
