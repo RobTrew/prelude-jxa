@@ -3651,7 +3651,7 @@
     ]
   },
   "zipWithN": {
-    "code": "// zipWithN :: (a -> b -> ... -> c) -> [[a], [b] ...] -> [c]\nconst zipWithN = f =>\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is a curried function absorbing at least \n    // N arguments, where N is the length of xss.\n    xss => {\n        const m = 0 < xss.length\n            ? Math.min(...xss.map(x => x.length))\n            : 0;\n\n        return xss.reduce(\n            (gs, vs) => gs.map((g, i) => g(vs[i])),\n            Array.from({ length: m }, () => f)\n        );\n    };",
+    "code": "// zipWithN :: (a -> b -> ... -> d) -> [a], [b] ... -> [d]\nconst zipWithN = (f, ...xss) => {\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is a curried function absorbing at least \n    // N arguments, where is the length of xss.\n    // xss => {\n    const m = 0 < xss.length\n        ? Math.min(...xss.map(x => x.length))\n        : 0;\n\n    return xss.reduce(\n        (gs, vs) => gs.map((g, i) => g(vs[i])),\n        Array.from({ length: m }, () => f)\n    );\n};",
     "tags": [
       "JS Prelude"
     ]
