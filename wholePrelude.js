@@ -5627,7 +5627,7 @@ const transpose_ = rows =>
     //     == [[10, 30], [11, 31]]
     rows.reduce(
         (cols, row) => cols.map(
-            (col, i) => [...col, row[i]]
+            (col, i) => col.concat(row[i])
         ),
         Array.from({
             length: 0 < rows.length
@@ -6537,6 +6537,22 @@ const zipWithN = (f, ...xss) => {
         Array.from({ length: m }, () => f)
     );
 };
+
+// zipWithN_ :: ((a, b ...) -> d) -> [a], [b] ... -> [d]
+const zipWithN_ = (f, ...xss) =>
+    // Generalisation of ZipWith, ZipWith3 etc.
+    // f is an uncurried function with arity
+    // equal to the length of xss.
+    Array.from(
+        {
+            length: 0 < xss.length
+                ? Math.min(...xss.map(x => x.length))
+                : 0
+        },
+        (_, i) => f(
+            ...xss.map(xs => xs[i])
+        )
+    );
 
 // zipWith_ :: (a -> a -> b) -> [a] -> [b]
 const zipWith_ = f =>

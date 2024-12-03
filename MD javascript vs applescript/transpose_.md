@@ -7,7 +7,7 @@ const transpose_ = rows =>
     //     == [[10, 30], [11, 31]]
     rows.reduce(
         (cols, row) => cols.map(
-            (col, i) => [...col, row[i]]
+            (col, i) => col.concat(row[i])
         ),
         Array.from({
             length: 0 < rows.length

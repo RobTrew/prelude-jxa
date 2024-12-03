@@ -3259,7 +3259,7 @@
     ]
   },
   "transpose_": {
-    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // Minimal transpose – the shortest row\n    // limits the number of ouput columns.\n    // transpose_([[10, 11], [30, 31, 32]])\n    //     == [[10, 30], [11, 31]]\n    rows.reduce(\n        (cols, row) => cols.map(\n            (col, i) => [...col, row[i]]\n        ),\n        Array.from({\n            length: 0 < rows.length\n                ? Math.min(...rows.map(x => x.length))\n                : 0\n        }, () => [])\n    );",
+    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // Minimal transpose – the shortest row\n    // limits the number of ouput columns.\n    // transpose_([[10, 11], [30, 31, 32]])\n    //     == [[10, 30], [11, 31]]\n    rows.reduce(\n        (cols, row) => cols.map(\n            (col, i) => col.concat(row[i])\n        ),\n        Array.from({\n            length: 0 < rows.length\n                ? Math.min(...rows.map(x => x.length))\n                : 0\n        }, () => [])\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3652,6 +3652,12 @@
   },
   "zipWithN": {
     "code": "// zipWithN :: (a -> b -> ... -> d) -> [a], [b] ... -> [d]\nconst zipWithN = (f, ...xss) => {\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is a curried function absorbing at least \n    // N arguments, where N is the length of xss.\n    const m = 0 < xss.length\n        ? Math.min(...xss.map(x => x.length))\n        : 0;\n\n    return xss.reduce(\n        (gs, vs) => gs.map((g, i) => g(vs[i])),\n        Array.from({ length: m }, () => f)\n    );\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "zipWithN_": {
+    "code": "// zipWithN_ :: ((a, b ...) -> d) -> [a], [b] ... -> [d]\nconst zipWithN_ = (f, ...xss) =>\n    // Generalisation of ZipWith, ZipWith3 etc.\n    // f is an uncurried function with arity\n    // equal to the length of xss.\n    Array.from(\n        {\n            length: 0 < xss.length\n                ? Math.min(...xss.map(x => x.length))\n                : 0\n        },\n        (_, i) => f(\n            ...xss.map(xs => xs[i])\n        )\n    );",
     "tags": [
       "JS Prelude"
     ]
