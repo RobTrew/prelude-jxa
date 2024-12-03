@@ -5159,16 +5159,18 @@ const toUpper = s =>
 
 // transpose :: [[a]] -> [[a]]
 const transpose = rows =>
+    // Maximal transpose – the longest row determines
+    // the number of columns.
     // If any rows are shorter than those that follow,
     // their elements are skipped:
-    // > transpose [[10,11],[20],[],[30,31,32]]
-    //             == [[10,20,30],[11,31],[32]]
+    // transpose [[10,11],[20],[],[30,31,32]]
+    //     == [[10,20,30],[11,31],[32]]
     rows.reduce(
         (cols, row) => cols.map((col, i) => {
             const v = row[i];
 
             return undefined !== v
-                ? [...col, v]
+                ? col.concat(v)
                 : col;
         }),
         Array.from({
@@ -5180,10 +5182,10 @@ const transpose = rows =>
 
 // transpose_ :: [[a]] -> [[a]]
 const transpose_ = rows =>
-    // The columns of the input rows.
-    // Simpler version of transpose.
-    // The shortest row limits the number of
-    // ouput columns.
+    // Minimal transpose – the shortest row
+    // limits the number of ouput columns.
+    // transpose_([[10, 11], [30, 31, 32]])
+    //     == [[10, 30], [11, 31]]
     rows.reduce(
         (cols, row) => cols.map(
             (col, i) => [...col, row[i]]
