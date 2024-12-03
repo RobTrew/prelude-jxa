@@ -3259,7 +3259,7 @@
     ]
   },
   "transpose_": {
-    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input transposed\n    // into new rows.\n    // Simpler version of transpose, assuming input\n    // rows of even length.\n    0 < rows.length\n        ? rows[0].map(\n            (_, i) => rows.flatMap(\n                v => v[i]\n            )\n        )\n        : [];",
+    "code": "// transpose_ :: [[a]] -> [[a]]\nconst transpose_ = rows =>\n    // The columns of the input rows.\n    // Simpler version of transpose.\n    // The shortest row limits the number of\n    // ouput columns.\n    rows.reduce(\n        (cols, row) => cols.map(\n            (col, i) => [...col, row[i]]\n        ),\n        Array.from({\n            length: 0 < rows.length\n                ? Math.min(...rows.map(x => x.length))\n                : 0\n        }, () => [])\n    );",
     "tags": [
       "JS Prelude"
     ]
