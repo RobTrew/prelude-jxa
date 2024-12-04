@@ -3571,14 +3571,14 @@
     ]
   },
   "zip3": {
-    "code": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = xs =>\n    ys => zs => xs.slice(\n        0,\n        Math.min(...[xs, ys, zs].map(x => x.length))\n    )\n    .map((x, i) => [x, ys[i], zs[i]]);",
+    "code": "// zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]\nconst zip3 = xs =>\n    // Triples of the values at each position of\n    // xs,ys,zs up to the length of the shortest.\n    ys => zs => Array.from(\n        {\n            length: Math.min(\n                ...[xs, ys, zs].map(x => x.length)\n            )\n        },\n        (_, i) => [xs[i], ys[i], zs[i]]\n    );",
     "tags": [
       "JS Prelude",
       "core"
     ]
   },
   "zip4": {
-    "code": "// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]\nconst zip4 = ws =>\n    xs => ys => zs => ws\n    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))\n    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));",
+    "code": "// zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]\nconst zip4 = ws =>\n    // List of triples of the values at each position\n    // of xs,ys,zs up to the length of the shortest.\n    xs => ys => zs => Array.from(\n        {\n            length: Math.min(\n                ...[ws, xs, ys, zs].map(x => x.length)\n            )\n        },\n        (_, i) => [ws[i], xs[i], ys[i], zs[i]]\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3596,7 +3596,7 @@
     ]
   },
   "zipN": {
-    "code": "// zipN :: [a] -> [b] -> ... -> [(a, b ...)]\nconst zipN = (...argv) => {\n    const args = argv.map(xs => Array.from(xs));\n\n    return 1 < args.length ? (\n        take(\n            Math.min(...args.map(length))\n        )(args[0]).map(\n            (x, i) => TupleN(...args.map(y => y[i]))\n        )\n    ) : args;\n};",
+    "code": "// zipN :: [a] -> [b] -> ... -> [(a, b ...)]\nconst zipN = (...xss) =>\n    0 < xss.length\n        ? Array.from(\n            { length: Math.min(...xss.map(xs => xs.length)) },\n            (_, i) => TupleN(...xss.map(xs => xs[i]))\n        )\n        : [];",
     "tags": [
       "JS Prelude"
     ]

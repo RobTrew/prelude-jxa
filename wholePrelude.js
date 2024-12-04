@@ -6337,17 +6337,29 @@ const zip = xs =>
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>
-    ys => zs => xs.slice(
-        0,
-        Math.min(...[xs, ys, zs].map(x => x.length))
-    )
-    .map((x, i) => [x, ys[i], zs[i]]);
+    // Triples of the values at each position of
+    // xs,ys,zs up to the length of the shortest.
+    ys => zs => Array.from(
+        {
+            length: Math.min(
+                ...[xs, ys, zs].map(x => x.length)
+            )
+        },
+        (_, i) => [xs[i], ys[i], zs[i]]
+    );
 
 // zip4 :: [a] -> [b] -> [c] -> [d] -> [(a, b, c, d)]
 const zip4 = ws =>
-    xs => ys => zs => ws
-    .slice(0, Math.min(...[ws, xs, ys, zs].map(length)))
-    .map((w, i) => TupleN(w, xs[i], ys[i], zs[i]));
+    // List of triples of the values at each position
+    // of xs,ys,zs up to the length of the shortest.
+    xs => ys => zs => Array.from(
+        {
+            length: Math.min(
+                ...[ws, xs, ys, zs].map(x => x.length)
+            )
+        },
+        (_, i) => [ws[i], xs[i], ys[i], zs[i]]
+    );
 
 // zipGen :: (a -> b -> c) ->
 // Gen [a] -> Gen [b] -> Gen [c]
@@ -6385,17 +6397,13 @@ const zipList = xs => ys => {
 };
 
 // zipN :: [a] -> [b] -> ... -> [(a, b ...)]
-const zipN = (...argv) => {
-    const args = argv.map(xs => Array.from(xs));
-
-    return 1 < args.length ? (
-        take(
-            Math.min(...args.map(length))
-        )(args[0]).map(
-            (x, i) => TupleN(...args.map(y => y[i]))
+const zipN = (...xss) =>
+    0 < xss.length
+        ? Array.from(
+            { length: Math.min(...xss.map(xs => xs.length)) },
+            (_, i) => TupleN(...xss.map(xs => xs[i]))
         )
-    ) : args;
-};
+        : [];
 
 // zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 const zipWith = f =>
