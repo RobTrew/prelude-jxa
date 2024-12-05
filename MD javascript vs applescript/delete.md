@@ -1,18 +1,16 @@
 ```javascript
 // delete :: Eq a => a -> [a] -> [a]
-const delete_ = x => {
+const delete_ = x =>
     // xs with first instance of x (if any) removed.
-    const go = xs =>
-        0 < xs.length
-            ? x === xs[0]
-                ? xs.slice(1)
-                : [xs[0]].concat(
-                    go(xs.slice(1))
-                )
-            : [];
+    xs => {
+        const i = xs.findIndex(v => x === v);
 
-    return go;
-};
+        return -1 === i
+            ? xs.slice(0)
+            : xs.slice(0, i).concat(
+                xs.slice(1 + i)
+            );
+    };
 ```
 
 

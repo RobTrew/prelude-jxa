@@ -573,19 +573,19 @@
     ]
   },
   "delete": {
-    "code": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = x => {\n    // xs with first instance of x (if any) removed.\n    const go = xs =>\n        0 < xs.length\n            ? x === xs[0]\n                ? xs.slice(1)\n                : [xs[0]].concat(\n                    go(xs.slice(1))\n                )\n            : [];\n\n    return go;\n};",
+    "code": "// delete :: Eq a => a -> [a] -> [a]\nconst delete_ = x =>\n    // xs with first instance of x (if any) removed.\n    xs => {\n        const i = xs.findIndex(v => x === v);\n\n        return -1 === i\n            ? xs.slice(0)\n            : xs.slice(0, i).concat(\n                xs.slice(1 + i)\n            );\n    };",
     "tags": [
       "JS Prelude"
     ]
   },
   "deleteAt": {
-    "code": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = i =>\n    xs => i <= xs.length ? (() => {\n        const lr = splitAt(i)(xs);\n\n        return lr[0].concat(lr[1].slice(1));\n    })() : xs;",
+    "code": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = i =>\n    // A copy of xs without any element at i, \n    // if i is a valid index.\n    xs => xs.filter(\n        (_, j) => i !== j\n    );",
     "tags": [
       "JS Prelude"
     ]
   },
   "deleteBy": {
-    "code": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = fEq =>\n    // A copy of the given list excluding the first\n    // item which matches x in terms of the supplied\n    // fEq equality operator.\n    x => {\n        const go = xs => 0 < xs.length\n            ? fEq(x)(xs[0])\n                ? xs.slice(1)\n                : [xs[0], ...go(xs.slice(1))]\n            : [];\n\n        return go;\n    };",
+    "code": "// deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]\nconst deleteBy = fEq =>\n    // A copy of the given list excluding the first\n    // item which matches x in terms of the supplied\n    // fEq equality operator.\n    x => xs => {\n        const i = xs.findIndex(fEq(x));\n\n        return -1 === i\n            ? xs.slice(0)\n            : xs.slice(0, i).concat(\n                xs.slice(1 + i)\n            );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1616,7 +1616,7 @@
     ]
   },
   "isSubsequenceOf": {
-    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = (a, b) =>\n            Boolean(a.length)\n                ? Boolean(b.length)\n                    ? go(\n                        a[0] === b[0]\n                            ? a.slice(1)\n                            : a,\n                        b.slice(1)\n                    )\n                    : false\n                : true;\n\n        return go(xs, ys);\n    };",
+    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = (a, b) =>\n            0 < a.length\n                ? 0 b.length\n                    ? go(\n                        a[0] === b[0]\n                            ? a.slice(1)\n                            : a,\n                        b.slice(1)\n                    )\n                    : false\n                : true;\n\n        return go(xs, ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2017,7 +2017,7 @@
     ]
   },
   "matrix": {
-    "code": "// matrix Int -> Int -> (Int -> Int -> a) -> [[a]]\nconst matrix = nRows => nCols =>\n    // A matrix of a given number of columns and rows,\n    // in which each value is a given function of its\n    // (zero-based) column and row indices.\n    f => Array.from(\n        {length: nRows}, (_, iRow) =>\n            Array.from(\n                {length: nCols},\n                (__, iCol) => f(iRow)(iCol)\n            )\n    );",
+    "code": "// matrix Int -> Int -> (Int -> Int -> a) -> [[a]]\nconst matrix = nRows =>\n    // A matrix of a given number of columns and rows,\n    // in which each value is a given function of its\n    // (zero-based) column and row indices.\n    nCols => f => Array.from(\n        {length: nRows}, (_, iRow) =>\n            Array.from(\n                {length: nCols},\n                (__, iCol) => f(iRow)(iCol)\n            )\n    );",
     "tags": [
       "JS Prelude"
     ]

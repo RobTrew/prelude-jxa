@@ -1010,41 +1010,39 @@ const degrees = r =>
     (180 / Math.PI) * r;
 
 // delete :: Eq a => a -> [a] -> [a]
-const delete_ = x => {
+const delete_ = x =>
     // xs with first instance of x (if any) removed.
-    const go = xs =>
-        0 < xs.length
-            ? x === xs[0]
-                ? xs.slice(1)
-                : [xs[0]].concat(
-                    go(xs.slice(1))
-                )
-            : [];
+    xs => {
+        const i = xs.findIndex(v => x === v);
 
-    return go;
-};
+        return -1 === i
+            ? xs.slice(0)
+            : xs.slice(0, i).concat(
+                xs.slice(1 + i)
+            );
+    };
 
 // deleteAt :: Int -> [a] -> [a]
 const deleteAt = i =>
-    xs => i <= xs.length ? (() => {
-        const lr = splitAt(i)(xs);
-
-        return lr[0].concat(lr[1].slice(1));
-    })() : xs;
+    // A copy of xs without any element at i, 
+    // if i is a valid index.
+    xs => xs.filter(
+        (_, j) => i !== j
+    );
 
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
 const deleteBy = fEq =>
     // A copy of the given list excluding the first
     // item which matches x in terms of the supplied
     // fEq equality operator.
-    x => {
-        const go = xs => 0 < xs.length
-            ? fEq(x)(xs[0])
-                ? xs.slice(1)
-                : [xs[0], ...go(xs.slice(1))]
-            : [];
+    x => xs => {
+        const i = xs.findIndex(fEq(x));
 
-        return go;
+        return -1 === i
+            ? xs.slice(0)
+            : xs.slice(0, i).concat(
+                xs.slice(1 + i)
+            );
     };
 
 // deleteFirst :: a -> [a] -> [a]
@@ -2869,8 +2867,8 @@ const isSubsequenceOf = xs =>
     // True if xs is a sub-sequence of ys.
     ys => {
         const go = (a, b) =>
-            Boolean(a.length)
-                ? Boolean(b.length)
+            0 < a.length
+                ? 0 b.length
                     ? go(
                         a[0] === b[0]
                             ? a.slice(1)
@@ -3514,11 +3512,11 @@ const matching = pat => {
 };
 
 // matrix Int -> Int -> (Int -> Int -> a) -> [[a]]
-const matrix = nRows => nCols =>
+const matrix = nRows =>
     // A matrix of a given number of columns and rows,
     // in which each value is a given function of its
     // (zero-based) column and row indices.
-    f => Array.from(
+    nCols => f => Array.from(
         {length: nRows}, (_, iRow) =>
             Array.from(
                 {length: nCols},
