@@ -24,7 +24,7 @@ newUUID :: () -> IO UUID String
 readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String IO String
 readPlistFileLR :: FilePath -> Either String Dict
-removeFile :: FilePath -> Either String String
+removeFileLR :: FilePath -> Either String String
 renamedFile :: FilePath -> FilePath ->
 setCurrentDirectory :: FilePath -> IO ()
 tempFilePath :: String -> IO FilePath

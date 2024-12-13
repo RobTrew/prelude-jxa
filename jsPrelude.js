@@ -862,8 +862,8 @@ const delete_ = x =>
 const deleteAt = i =>
     // A copy of xs without any element at i, 
     // if i is a valid index.
-    xs => xs.filter(
-        (_, j) => i !== j
+    xs => xs.slice(0, i).concat(
+        xs.slice(1 + i)
     );
 
 // deleteBy :: (a -> a -> Bool) -> a -> [a] -> [a]
@@ -896,7 +896,14 @@ const deleteFirst = x => {
 const deleteFirstsBy = fEq =>
     // The first list purged of the first instance of
     // each predicate-matching element in the second list.
-    foldl(flip(deleteBy(fEq)));
+    xs => targets => {
+        const d = deleteBy(fEq);
+
+        return targets.reduce(
+            (a, t) => d(t)(a),
+            xs
+        );
+    };
 
 // deleteKey :: String -> Dict -> Dict
 const deleteKey = k =>
@@ -2567,7 +2574,7 @@ const isSubsequenceOf = xs =>
     ys => {
         const go = (a, b) =>
             0 < a.length
-                ? 0 b.length
+                ? 0 < b.length
                     ? go(
                         a[0] === b[0]
                             ? a.slice(1)

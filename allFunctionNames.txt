@@ -404,7 +404,7 @@ regexIndexedMatches :: Regex -> String -> [(Int, String)]
 regexMatches :: Regex String -> String -> [[String]]
 rem :: Integral a => a -> a -> a
 remQuot :: Integral a => a -> a -> (a, a)
-removeFile :: FilePath -> Either String String
+removeFileLR :: FilePath -> Either String String
 renamedFile :: FilePath -> FilePath ->
 repeat :: a -> Generator [a]
 replace :: String -> String -> String -> String

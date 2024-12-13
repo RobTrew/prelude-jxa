@@ -579,7 +579,7 @@
     ]
   },
   "deleteAt": {
-    "code": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = i =>\n    // A copy of xs without any element at i, \n    // if i is a valid index.\n    xs => xs.filter(\n        (_, j) => i !== j\n    );",
+    "code": "// deleteAt :: Int -> [a] -> [a]\nconst deleteAt = i =>\n    // A copy of xs without any element at i, \n    // if i is a valid index.\n    xs => xs.slice(0, i).concat(\n        xs.slice(1 + i)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -597,7 +597,7 @@
     ]
   },
   "deleteFirstsBy": {
-    "code": "// deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst deleteFirstsBy = fEq =>\n    // The first list purged of the first instance of\n    // each predicate-matching element in the second list.\n    foldl(flip(deleteBy(fEq)));",
+    "code": "// deleteFirstsBy :: (a -> a -> Bool) -> [a] -> [a] -> [a]\nconst deleteFirstsBy = fEq =>\n    // The first list purged of the first instance of\n    // each predicate-matching element in the second list.\n    xs => targets => {\n        const d = deleteBy(fEq);\n\n        return targets.reduce(\n            (a, t) => d(t)(a),\n            xs\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1616,7 +1616,7 @@
     ]
   },
   "isSubsequenceOf": {
-    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = (a, b) =>\n            0 < a.length\n                ? 0 b.length\n                    ? go(\n                        a[0] === b[0]\n                            ? a.slice(1)\n                            : a,\n                        b.slice(1)\n                    )\n                    : false\n                : true;\n\n        return go(xs, ys);\n    };",
+    "code": "// isSubsequenceOf :: Eq a => [a] -> [a] -> Bool\n// isSubsequenceOf :: String -> String -> Bool\nconst isSubsequenceOf = xs =>\n    // True if xs is a sub-sequence of ys.\n    ys => {\n        const go = (a, b) =>\n            0 < a.length\n                ? 0 < b.length\n                    ? go(\n                        a[0] === b[0]\n                            ? a.slice(1)\n                            : a,\n                        b.slice(1)\n                    )\n                    : false\n                : true;\n\n        return go(xs, ys);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2570,8 +2570,8 @@
       "JS Prelude"
     ]
   },
-  "removeFile": {
-    "code": "// removeFile :: FilePath -> Either String String\nconst removeFile = fp => {\n    const error = $();\n\n    return $.NSFileManager.defaultManager\n    .removeItemAtPathError(fp, error)\n        ? Right(`Removed: ${fp}`)\n        : Left(ObjC.unwrap(error.localizedDescription));\n};",
+  "removeFileLR": {
+    "code": "// removeFileLR :: FilePath -> Either String String\nconst removeFileLR = fp => {\n    const error = $();\n\n    return $.NSFileManager.defaultManager\n    .removeItemAtPathError(fp, error)\n        ? Right(`Removed: ${fp}`)\n        : Left(ObjC.unwrap(error.localizedDescription));\n};",
     "tags": [
       "JS Prelude",
       "jxa"

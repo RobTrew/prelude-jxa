@@ -394,8 +394,8 @@ const readPlistFileLR = fp =>
         }
     );
 
-// removeFile :: FilePath -> Either String String
-const removeFile = fp => {
+// removeFileLR :: FilePath -> Either String String
+const removeFileLR = fp => {
     const error = $();
 
     return $.NSFileManager.defaultManager

@@ -3,7 +3,14 @@
 const deleteFirstsBy = fEq =>
     // The first list purged of the first instance of
     // each predicate-matching element in the second list.
-    foldl(flip(deleteBy(fEq)));
+    xs => targets => {
+        const d = deleteBy(fEq);
+
+        return targets.reduce(
+            (a, t) => d(t)(a),
+            xs
+        );
+    };
 ```
 
 
