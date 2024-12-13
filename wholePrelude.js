@@ -2407,16 +2407,6 @@ const getCurrentDirectory = () =>
         .currentDirectoryPath
     );
 
-// getDirectoryContents :: FilePath -> IO [FilePath]
-const getDirectoryContents = fp =>
-    ObjC.deepUnwrap(
-        $.NSFileManager.defaultManager
-        .contentsOfDirectoryAtPathError(
-            $(fp)
-            .stringByStandardizingPath, null
-        )
-    );
-
 // getDirectoryContentsLR :: FilePath ->
 // Either String IO [FilePath]
 const getDirectoryContentsLR = fp => {

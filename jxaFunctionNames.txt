@@ -14,7 +14,6 @@ fileStatus :: FilePath -> Either String Dict
 fileUTI :: FilePath -> Either String String
 filesCopiedLR :: FilePath -> [FilePath] -> FilePath -> IO Either String [FilePath]
 getCurrentDirectory :: IO FilePath
-getDirectoryContents :: FilePath -> IO [FilePath]
 getDirectoryContentsLR :: FilePath ->
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath

@@ -200,7 +200,6 @@ gcd :: Integral a => a -> a -> a
 gcdApprox :: Real -> (Real, Real) -> Real
 genericIndexMay :: [a] -> Int -> Maybe a
 getCurrentDirectory :: IO FilePath
-getDirectoryContents :: FilePath -> IO [FilePath]
 getDirectoryContentsLR :: FilePath ->
 getHomeDirectory :: IO FilePath
 getTemporaryDirectory :: IO FilePath

@@ -1286,13 +1286,6 @@
       "jxa"
     ]
   },
-  "getDirectoryContents": {
-    "code": "// getDirectoryContents :: FilePath -> IO [FilePath]\nconst getDirectoryContents = fp =>\n    ObjC.deepUnwrap(\n        $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp)\n            .stringByStandardizingPath, null\n        )\n    );",
-    "tags": [
-      "JS Prelude",
-      "jxa"
-    ]
-  },
   "getDirectoryContentsLR": {
     "code": "// getDirectoryContentsLR :: FilePath ->\n// Either String IO [FilePath]\nconst getDirectoryContentsLR = fp => {\n    const\n        error = $(),\n        xs = $.NSFileManager.defaultManager\n        .contentsOfDirectoryAtPathError(\n            $(fp).stringByStandardizingPath,\n            error\n        );\n\n    return xs.isNil()\n        ? Left(ObjC.unwrap(error.localizedDescription))\n        : Right(ObjC.deepUnwrap(xs));\n};",
     "tags": [
