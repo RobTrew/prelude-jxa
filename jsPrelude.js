@@ -3673,7 +3673,7 @@ const partitionEithers = xs =>
 // partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])
 const partitionTree = p =>
     // A list of matching subtrees, tupled with a list which
-    // contains the remains, if any, of the input tree.
+    // contains the unmatched residue, if any, of the input tree.
     foldTree(x => vs => {
         const
             [matches, residues] = unzip(vs).map(
