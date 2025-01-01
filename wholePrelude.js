@@ -3989,7 +3989,7 @@ const partitionTree = p =>
     // of the input tree.
     foldTree(x => vs => {
         const
-            [matches, residues] = unzip(vs).map(
+            [matches, residues] = [...unzip(vs)].map(
                 v => v.flat()
             );
 
@@ -6238,16 +6238,12 @@ const unzip = xys =>
     // A list of the first items in each pair
     // of the zip, tupled with a list of all
     // the second items.
-    xys.reduceRight(
-        ([a, b], [x, y]) => [
-            [x, ...a],
-            [y, ...b]
-        ],
-        [
-            [],
-            []
-        ]
+    Tuple(
+        xys.map(xy => xy[0])
+    )(
+        xys.map(xy => xy[1])
     );
+
 
 // unzip3 :: [(a,b,c)] -> ([a],[b],[c])
 const unzip3 = xyzs =>

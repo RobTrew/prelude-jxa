@@ -2278,7 +2278,7 @@
     ]
   },
   "partitionTree": {
-    "code": "// partitionTree :: (a -> Bool) -> \n// Tree a -> ([Tree a], [Tree a])\nconst partitionTree = p =>\n    // A list of matching subtrees, tupled with a list \n    // which contains the unmatched residue, if any, \n    // of the input tree.\n    foldTree(x => vs => {\n        const\n            [matches, residues] = unzip(vs).map(\n                v => v.flat()\n            );\n\n        return p(x)\n            // x is the new head of the matches, and\n            // the parent of the accumulated residues.\n            ? Tuple([\n                Node(x)(residues), ...matches\n            ])([])\n\n            // Match list is unchanged, and x is\n            // the parent of the residue accumulation.\n            : Tuple(matches)([\n                Node(x)(residues)\n            ]);\n    });",
+    "code": "// partitionTree :: (a -> Bool) -> \n// Tree a -> ([Tree a], [Tree a])\nconst partitionTree = p =>\n    // A list of matching subtrees, tupled with a list \n    // which contains the unmatched residue, if any, \n    // of the input tree.\n    foldTree(x => vs => {\n        const\n            [matches, residues] = [...unzip(vs)].map(\n                v => v.flat()\n            );\n\n        return p(x)\n            // x is the new head of the matches, and\n            // the parent of the accumulated residues.\n            ? Tuple([\n                Node(x)(residues), ...matches\n            ])([])\n\n            // Match list is unchanged, and x is\n            // the parent of the residue accumulation.\n            : Tuple(matches)([\n                Node(x)(residues)\n            ]);\n    });",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3491,7 +3491,7 @@
     ]
   },
   "unzip": {
-    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    // A list of the first items in each pair\n    // of the zip, tupled with a list of all\n    // the second items.\n    xys.reduceRight(\n        ([a, b], [x, y]) => [\n            [x, ...a],\n            [y, ...b]\n        ],\n        [\n            [],\n            []\n        ]\n    );",
+    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    // A list of the first items in each pair\n    // of the zip, tupled with a list of all\n    // the second items.\n    Tuple(\n        xys.map(xy => xy[0])\n    )(\n        xys.map(xy => xy[1])\n    );\n",
     "tags": [
       "JS Prelude",
       "core"

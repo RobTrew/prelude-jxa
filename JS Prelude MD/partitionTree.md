@@ -7,7 +7,7 @@ const partitionTree = p =>
     // of the input tree.
     foldTree(x => vs => {
         const
-            [matches, residues] = unzip(vs).map(
+            [matches, residues] = [...unzip(vs)].map(
                 v => v.flat()
             );
 
