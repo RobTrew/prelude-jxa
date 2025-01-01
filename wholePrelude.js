@@ -3992,11 +3992,12 @@ const partitionTree = p =>
             );
 
         return p(x)
-            // x is the parent of the accumulated residues,
-            // and is prepended, with them, to matches.
+            // x is both the new head of matches, and
+            // the parent of the accumulated residues.
             ? Tuple([
                 Node(x)(residues), ...matches
             ])([])
+
             // Match list is unchanged, and x is
             // the parent of the residue accumulation.
             : Tuple(matches)([

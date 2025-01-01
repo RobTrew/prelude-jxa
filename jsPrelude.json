@@ -2278,7 +2278,7 @@
     ]
   },
   "partitionTree": {
-    "code": "// partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])\nconst partitionTree = p =>\n    // A list of matching subtrees, tupled with a list which\n    // contains the remains, if any, of the input tree.\n    foldTree(x => vs => {\n        const\n            [matches, residues] = unzip(vs).map(\n                v => v.flat()\n            );\n\n        return p(x)\n            // x is the parent of the accumulated residues,\n            // and is prepended, with them, to matches.\n            ? Tuple([\n                Node(x)(residues), ...matches\n            ])([])\n            // Match list is unchanged, and x is\n            // the parent of the residue accumulation.\n            : Tuple(matches)([\n                Node(x)(residues)\n            ]);\n    });",
+    "code": "// partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])\nconst partitionTree = p =>\n    // A list of matching subtrees, tupled with a list which\n    // contains the remains, if any, of the input tree.\n    foldTree(x => vs => {\n        const\n            [matches, residues] = unzip(vs).map(\n                v => v.flat()\n            );\n\n        return p(x)\n            // x is both the new head of matches, and\n            // the parent of the accumulated residues.\n            ? Tuple([\n                Node(x)(residues), ...matches\n            ])([])\n\n            // Match list is unchanged, and x is\n            // the parent of the residue accumulation.\n            : Tuple(matches)([\n                Node(x)(residues)\n            ]);\n    });",
     "tags": [
       "JS Prelude",
       "tree"
