@@ -29,6 +29,7 @@ mapAccumLTree :: (s -> a -> (s, b)) -> s -> Tree a -> (s, Tree b)
 measuredTree :: Tree a -> Tree (a, {leafSum::Int, layerSum::Int, nodeSum::Int, index::Int})
 nest :: Tree a -> [a]
 parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})
+partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])
 postorder :: Tree a -> [a]
 pureTree :: a -> Tree a
 root :: Tree a -> a

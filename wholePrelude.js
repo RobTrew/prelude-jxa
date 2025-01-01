@@ -1879,12 +1879,13 @@ const filterTree = p =>
 
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 const filteredSubTrees = p => {
+    // SubTrees (within the given tree) which match p.
     const go = tree => (
-        p(tree.root)
+        p(root(tree))
             ? [tree]
             : []
     )
-    .concat(tree.nest.flatMap(go));
+        .concat(nest(tree).flatMap(go));
 
     return go;
 };
@@ -3980,6 +3981,29 @@ const partitionEithers = xs =>
         Tuple([])([])
     );
 
+// partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])
+const partitionTree = p =>
+    // A list of matching subtrees, tupled with a list which
+    // contains the remains, if any, of the input tree.
+    foldTree(x => vs => {
+        const
+            [matches, residues] = unzip(vs).map(
+                v => v.flat()
+            );
+
+        return p(x)
+            // x is the parent of the accumulated residues,
+            // and is prepended, with them, to matches.
+            ? Tuple([
+                Node(x)(residues), ...matches
+            ])([])
+            // Match list is unchanged, and x is
+            // the parent of the residue accumulation.
+            : Tuple(matches)([
+                Node(x)(residues)
+            ]);
+    });
+
 // pathAccessor :: String -> Dict -> a
 const pathAccessor = path =>
     // Value if any, at supplied dot path in object.
@@ -5664,16 +5688,18 @@ const traverseList = f =>
     // Collected results of mapping each element
     // of a structure to an action, and evaluating
     // these actions from left to right.
-    xs => Boolean(xs.length) ? (() => {
-        const
-            vLast = f(xs.slice(-1)[0]),
-            t = typeName(vLast);
+    xs => 0 < xs.length
+        ? (() => {
+            const
+                vLast = f(xs.slice(-1)[0]),
+                t = typeName(vLast);
 
-        return xs.slice(0, -1).reduceRight(
-            (ys, x) => liftA2(cons)(f(x))(ys),
-            liftA2(cons)(vLast)(pureT(t)([]))
-        );
-    })() : fType(f)([]);
+            return xs.slice(0, -1).reduceRight(
+                (ys, x) => liftA2(cons)(f(x))(ys),
+                liftA2(cons)(vLast)(pureT(t)([]))
+            );
+        })() 
+        : fType(f)([]);
 
 // traverseListLR (a -> Either b c) ->
 // [a] -> Either b [c]

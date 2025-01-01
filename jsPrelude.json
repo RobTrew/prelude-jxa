@@ -982,7 +982,7 @@
     ]
   },
   "filteredSubTrees": {
-    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    const go = tree => (\n        p(tree.root)\n            ? [tree]\n            : []\n    )\n    .concat(tree.nest.flatMap(go));\n\n    return go;\n};",
+    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    // SubTrees (within the given tree) which match p.\n    const go = tree => (\n        p(root(tree))\n            ? [tree]\n            : []\n    )\n        .concat(nest(tree).flatMap(go));\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2277,6 +2277,13 @@
       "JS Prelude"
     ]
   },
+  "partitionTree": {
+    "code": "// partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])\nconst partitionTree = p =>\n    // A list of matching subtrees, tupled with a list which\n    // contains the remains, if any, of the input tree.\n    foldTree(x => vs => {\n        const\n            [matches, residues] = unzip(vs).map(\n                v => v.flat()\n            );\n\n        return p(x)\n            // x is the parent of the accumulated residues,\n            // and is prepended, with them, to matches.\n            ? Tuple([\n                Node(x)(residues), ...matches\n            ])([])\n            // Match list is unchanged, and x is\n            // the parent of the residue accumulation.\n            : Tuple(matches)([\n                Node(x)(residues)\n            ]);\n    });",
+    "tags": [
+      "JS Prelude",
+      "tree"
+    ]
+  },
   "pathAccessor": {
     "code": "// pathAccessor :: String -> Dict -> a\nconst pathAccessor = path =>\n    // Value if any, at supplied dot path in object.\n    // Null if no such path is found.\n    obj => path.split(\".\").reduce(\n        (v, k) => v instanceof Object\n            ? k in v\n                ? v[k]\n                : undefined\n            : v,\n        obj\n    );",
     "tags": [
@@ -3270,7 +3277,7 @@
     ]
   },
   "traverseList": {
-    "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => Boolean(xs.length) ? (() => {\n        const\n            vLast = f(xs.slice(-1)[0]),\n            t = typeName(vLast);\n\n        return xs.slice(0, -1).reduceRight(\n            (ys, x) => liftA2(cons)(f(x))(ys),\n            liftA2(cons)(vLast)(pureT(t)([]))\n        );\n    })() : fType(f)([]);",
+    "code": "// traverseList :: (Applicative f) => (a -> f b) ->\n// [a] -> f [b]\nconst traverseList = f =>\n    // Collected results of mapping each element\n    // of a structure to an action, and evaluating\n    // these actions from left to right.\n    xs => 0 < xs.length\n        ? (() => {\n            const\n                vLast = f(xs.slice(-1)[0]),\n                t = typeName(vLast);\n\n            return xs.slice(0, -1).reduceRight(\n                (ys, x) => liftA2(cons)(f(x))(ys),\n                liftA2(cons)(vLast)(pureT(t)([]))\n            );\n        })() \n        : fType(f)([]);",
     "tags": [
       "JS Prelude"
     ]

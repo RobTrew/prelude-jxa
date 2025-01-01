@@ -1,12 +1,13 @@
 ```javascript
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 const filteredSubTrees = p => {
+    // SubTrees (within the given tree) which match p.
     const go = tree => (
-        p(tree.root)
+        p(root(tree))
             ? [tree]
             : []
     )
-    .concat(tree.nest.flatMap(go));
+        .concat(nest(tree).flatMap(go));
 
     return go;
 };

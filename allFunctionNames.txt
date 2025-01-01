@@ -357,6 +357,7 @@ outdented :: String -> String
 parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})
 partition :: (a -> Bool) -> [a] -> ([a], [a])
 partitionEithers :: [Either a b] -> ([a],[b])
+partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])
 pathAccessor :: String -> Dict -> a
 permutations :: [a] -> [[a]]
 pi :: Float
