@@ -3681,7 +3681,7 @@ const partitionTree = p =>
             );
 
         return p(x)
-            // x is both the new head of matches, and
+            // x is both the new head of the matches, and
             // the parent of the accumulated residues.
             ? Tuple([
                 Node(x)(residues), ...matches
