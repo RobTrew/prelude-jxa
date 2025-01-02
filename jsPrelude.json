@@ -2278,7 +2278,7 @@
     ]
   },
   "partitionTree": {
-    "code": "// partitionTree :: (a -> Bool) -> \n// Tree a -> ([Tree a], [Tree a])\nconst partitionTree = p =>\n    // A list of matching subtrees, tupled with a list \n    // which contains the unmatched residue, if any, \n    // of the input tree.\n    foldTree(x => vs => {\n        const\n            [matches, residues] = [...unzip(vs)].map(\n                v => v.flat()\n            );\n\n        return p(x)\n            // x is the new head of the matches, and\n            // the parent of the accumulated residues.\n            ? Tuple([\n                Node(x)(residues), ...matches\n            ])([])\n\n            // Match list is unchanged, and x is\n            // the parent of the residue accumulation.\n            : Tuple(matches)([\n                Node(x)(residues)\n            ]);\n    });",
+    "code": "// partitionTree :: (a -> Bool) -> \n// Tree a -> ([Tree a], [Tree a])\nconst partitionTree = p =>\n    // A list of matching subtrees, tupled with a list \n    // which contains the unmatched residue, if any, \n    // of the input tree.\n    foldTree(x => vs => {\n        const\n            [matches, subTree] = second(\n                Node(x)\n            )(\n                [...unzip(vs)].map(\n                    v => v.flat()\n                )\n            );\n\n        return p(x)\n            ? Tuple([subTree, ...matches])([])\n            : Tuple(matches)([subTree]);\n    });",
     "tags": [
       "JS Prelude",
       "tree"
