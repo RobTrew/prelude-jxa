@@ -3678,13 +3678,10 @@ const partitionTree = p =>
     // of the input tree.
     foldTree(x => vs => {
         const
-            [matches, subTree] = second(
-                Node(x)
-            )(
-                [...unzip(vs)].map(
-                    v => v.flat()
-                )
-            );
+            [matches, residues] = [...unzip(vs)].map(
+                v => v.flat()
+            ),
+            subTree = Node(x)(residues);
 
         return p(x)
             ? Tuple([subTree, ...matches])([])
