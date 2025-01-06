@@ -40,7 +40,7 @@ traverseTree :: Applicative f => (a -> f b) -> Tree a -> f (Tree b)
 treeFromDict :: String -> Dict -> Tree String
 treeFromJSON :: JSON String -> Tree a
 treeFromNestedDict -> Dict -> Either String Tree Dict
-treeLeaves :: Tree -> [Tree]
+treeLeaves :: Tree a -> [Tree a]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]
 treeMenuBy :: (a -> String) Tree a -> IO [a]

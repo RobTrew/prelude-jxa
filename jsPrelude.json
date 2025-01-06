@@ -3329,7 +3329,7 @@
     ]
   },
   "treeLeaves": {
-    "code": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n    const go = t => {\n        const xs = nest(t);\n\n        return 0 < xs.length\n            ? xs.flatMap(go)\n            : [t];\n    };\n\n    return go(tree);\n};",
+    "code": "// treeLeaves :: Tree a -> [Tree a]\nconst treeLeaves = tree => {\n    const go = t => {\n        const xs = nest(t);\n\n        return 0 < xs.length\n            ? xs.flatMap(go)\n            : [t];\n    };\n\n    return go(tree);\n};",
     "tags": [
       "JS Prelude",
       "tree"

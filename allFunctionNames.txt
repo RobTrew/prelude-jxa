@@ -525,7 +525,7 @@ traverseTuple :: Functor f => (t -> f b) -> (a, t) -> f (a, b)
 treeFromDict :: String -> Dict -> Tree String
 treeFromJSON :: JSON String -> Tree a
 treeFromNestedDict -> Dict -> Either String Tree Dict
-treeLeaves :: Tree -> [Tree]
+treeLeaves :: Tree a -> [Tree a]
 treeMatch :: (a -> Bool) -> Tree a -> [Tree a]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]

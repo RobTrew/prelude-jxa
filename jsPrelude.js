@@ -5404,7 +5404,7 @@ const treeFromNestedDict = dict => {
     return go(dict);
 };
 
-// treeLeaves :: Tree -> [Tree]
+// treeLeaves :: Tree a -> [Tree a]
 const treeLeaves = tree => {
     const go = t => {
         const xs = nest(t);
