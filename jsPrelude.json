@@ -3329,7 +3329,7 @@
     ]
   },
   "treeLeaves": {
-    "code": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n    const subNest = tree.nest;\n\n    return Boolean(subNest.length) ? (\n        subNest.flatMap(treeLeaves)\n    ) : [tree];\n};",
+    "code": "// treeLeaves :: Tree -> [Tree]\nconst treeLeaves = tree => {\n    const xs = nest(tree);\n\n    return 0 < xs.length\n        ? xs.flatMap(treeLeaves)\n        : [tree];\n};",
     "tags": [
       "JS Prelude",
       "tree"

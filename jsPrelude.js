@@ -5406,11 +5406,11 @@ const treeFromNestedDict = dict => {
 
 // treeLeaves :: Tree -> [Tree]
 const treeLeaves = tree => {
-    const subNest = tree.nest;
+    const xs = nest(tree);
 
-    return Boolean(subNest.length) ? (
-        subNest.flatMap(treeLeaves)
-    ) : [tree];
+    return 0 < xs.length
+        ? xs.flatMap(treeLeaves)
+        : [tree];
 };
 
 // treeMatch :: (a -> Bool) -> Tree a -> [Tree a]
