@@ -1617,6 +1617,25 @@ const filterTree = p =>
             : xs.flat()
     );
 
+// filteredForest :: (a -> Bool) -> [Tree a] -> [Tree a]
+const filteredForest = p =>
+    // Nothing, if the root does not match the predicate,
+    // or a tree containing only elements that do match
+    // the predicate.
+    trees => {
+        const go = t => {
+            const v = root(t);
+
+            return p(v)
+                ? Node(v)(
+                    nest(t).flatMap(go)
+                )
+                : [];
+        };
+
+        return trees.flatMap(go);
+    };
+
 // filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 const filteredSubTrees = p => {
     // SubTrees (within the given tree) which match p.
@@ -1629,19 +1648,6 @@ const filteredSubTrees = p => {
 
     return go;
 };
-
-// filteredTree (a -> Bool) -> Tree a -> Tree a
-const filteredTree = p =>
-    // A tree including only those children
-    // which either match the predicate p, or have
-    // descendants which match the predicate p.
-    foldTree(x => xs =>
-        Node(x)(xs.filter(
-            tree => (0 < tree.nest.length) || (
-                p(tree.root)
-            )
-        ))
-    );
 
 // find :: (a -> Bool) -> [a] -> Maybe a
 const find = p =>

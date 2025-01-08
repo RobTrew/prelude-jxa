@@ -981,15 +981,14 @@
       "tree"
     ]
   },
-  "filteredSubTrees": {
-    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    // SubTrees (within the given tree) which match p.\n    const go = tree => (\n        p(root(tree))\n            ? [tree]\n            : []\n    )\n        .concat(nest(tree).flatMap(go));\n\n    return go;\n};",
+  "filteredForest": {
+    "code": "// filteredForest :: (a -> Bool) -> [Tree a] -> [Tree a]\nconst filteredForest = p =>\n    // Nothing, if the root does not match the predicate,\n    // or a tree containing only elements that do match\n    // the predicate.\n    trees => {\n        const go = t => {\n            const v = root(t);\n\n            return p(v)\n                ? Node(v)(\n                    nest(t).flatMap(go)\n                )\n                : [];\n        };\n\n        return trees.flatMap(go);\n    };",
     "tags": [
-      "JS Prelude",
-      "tree"
+      "JS Prelude"
     ]
   },
-  "filteredTree": {
-    "code": "// filteredTree (a -> Bool) -> Tree a -> Tree a\nconst filteredTree = p =>\n    // A tree including only those children\n    // which either match the predicate p, or have\n    // descendants which match the predicate p.\n    foldTree(x => xs =>\n        Node(x)(xs.filter(\n            tree => (0 < tree.nest.length) || (\n                p(tree.root)\n            )\n        ))\n    );",
+  "filteredSubTrees": {
+    "code": "// filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]\nconst filteredSubTrees = p => {\n    // SubTrees (within the given tree) which match p.\n    const go = tree => (\n        p(root(tree))\n            ? [tree]\n            : []\n    )\n        .concat(nest(tree).flatMap(go));\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "tree"

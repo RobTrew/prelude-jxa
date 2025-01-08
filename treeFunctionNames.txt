@@ -9,7 +9,6 @@ drawTree2 :: Bool -> Bool -> Tree String -> String
 filePathTree :: filePath -> [Tree String] -> Tree FilePath
 filterTree (a -> Bool) -> Tree a -> [a]
 filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
-filteredTree (a -> Bool) -> Tree a -> Tree a
 findTree :: (a -> Bool) -> Tree a -> Maybe a
 flattenTree :: Tree a -> [a]
 fmapTree :: (a -> b) -> Tree a -> Tree b
