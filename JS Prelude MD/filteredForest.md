@@ -7,9 +7,11 @@ const filteredForest = p =>
             const v = root(t);
 
             return p(v)
-                ? Node(v)(
-                    nest(t).flatMap(go)
-                )
+                ? [
+                    Node(v)(
+                        nest(t).flatMap(go)
+                    )
+                ]
                 : [];
         };
 
