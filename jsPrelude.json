@@ -982,7 +982,7 @@
     ]
   },
   "filteredForest": {
-    "code": "// filteredForest :: (a -> Bool) -> [Tree a] -> [Tree a]\nconst filteredForest = p =>\n    // Nothing, if the root does not match the predicate,\n    // or a tree containing only elements that do match\n    // the predicate.\n    trees => {\n        const go = t => {\n            const v = root(t);\n\n            return p(v)\n                ? Node(v)(\n                    nest(t).flatMap(go)\n                )\n                : [];\n        };\n\n        return trees.flatMap(go);\n    };",
+    "code": "// filteredForest :: (a -> Bool) -> [Tree a] -> [Tree a]\nconst filteredForest = p =>\n    // A forest of trees which all subtrees match the predicate.\n    trees => {\n        const go = t => {\n            const v = root(t);\n\n            return p(v)\n                ? Node(v)(\n                    nest(t).flatMap(go)\n                )\n                : [];\n        };\n\n        return trees.flatMap(go);\n    };",
     "tags": [
       "JS Prelude"
     ]
