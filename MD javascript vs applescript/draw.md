@@ -2,31 +2,24 @@
 // draw :: Tree String -> [String]
 const draw = node => {
     // shifted :: String -> String -> [String] -> [String]
-    const shifted = (first, other, xs) => (
-        [first].concat(
-            Array.from({
-                length: xs.length - 1
-            }, () => other)
-        )
-        .map((y, i) => y.concat(xs[i]))
-    );
+    const shifted = (first, other, xs) =>
+        xs.map((x, i) =>
+            (0 < i ? other : first) + x
+        );
+
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
-        const lng = xs.length;
+        const n = xs.length;
 
-        return 0 < lng
-            ? 1 < lng
-                ? ["│"]
-                .concat(
-                    shifted("├─ ", "│  ", draw(xs[0]))
-                )
-                .concat(
-                    drawSubTrees(xs.slice(1))
-                )
-                : ["│"]
-                .concat(
-                    shifted("└─ ", "   ", draw(xs[0]))
-                )
+        return 0 < n
+            ? ["│"].concat(
+                1 < n
+                    ? shifted("├─ ", "│  ", draw(xs[0]))
+                        .concat(
+                            drawSubTrees(xs.slice(1))
+                        )
+                    : shifted("└─ ", "   ", draw(xs[0]))
+            )
             : [];
     };
 
