@@ -646,7 +646,7 @@
     ]
   },
   "doesDirectoryExist": {
-    "code": "// doesDirectoryExist :: FilePath -> IO Bool\nconst doesDirectoryExist = fp => {\n    const ref = Ref();\n\n    return $.NSFileManager.defaultManager\n    .fileExistsAtPathIsDirectory(\n        $(fp)\n        .stringByStandardizingPath, ref\n    ) && ref[0];\n};",
+    "code": "// doesDirectoryExist :: FilePath -> IO Bool\nconst doesDirectoryExist = fp => {\n    const ref = Ref();\n\n    return $.NSFileManager.defaultManager\n    .fileExistsAtPathIsDirectory(\n        $(fp).stringByStandardizingPath, \n        ref\n    ) && ref[0];\n};",
     "tags": [
       "JS Prelude",
       "jxa"
@@ -673,7 +673,7 @@
     ]
   },
   "draw": {
-    "code": "// draw :: Tree String -> [String]\nconst draw = node => {\n    // shifted :: String -> String -> [String] -> [String]\n    const shifted = (first, other, xs) =>\n        xs.map((x, i) =>\n            (0 < i ? other : first) + x\n        );\n\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const n = xs.length;\n\n        return 0 < n\n            ? [\"│\"].concat(\n                1 < n\n                    ? shifted(\"├─ \", \"│  \", draw(xs[0]))\n                        .concat(\n                            drawSubTrees(xs.slice(1))\n                        )\n                    : shifted(\"└─ \", \"   \", draw(xs[0]))\n            )\n            : [];\n    };\n\n    return node.root.split(\"\\n\").concat(\n        drawSubTrees(node.nest)\n    );\n};",
+    "code": "// draw :: Tree String -> [String]\nconst draw = node => {\n    \n    // shifted :: String -> String -> [String] -> [String]\n    const shifted = (first, other, xs) =>\n        xs.map((x, i) =>\n            (0 < i ? other : first) + x\n        );\n\n\n    // drawSubTrees :: [Tree String] -> [String]\n    const drawSubTrees = xs => {\n        const n = xs.length;\n\n        return 0 < n\n            ? [\"│\"].concat(\n                1 < n\n                    ? shifted(\"├─ \", \"│  \", draw(xs[0]))\n                        .concat(\n                            drawSubTrees(xs.slice(1))\n                        )\n                    : shifted(\"└─ \", \"   \", draw(xs[0]))\n            )\n            : [];\n    };\n\n\n    return node.root.split(\"\\n\").concat(\n        drawSubTrees(node.nest)\n    );\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1728,7 +1728,7 @@
     ]
   },
   "lazyList": {
-    "code": "// lazyList :: [a] -> Gen [a]\nconst lazyList = xs => {\n    // The values of a given array\n    // lazily yielded one by one.\n    const go = function* () {\n        const vs = Array.from(xs);\n\n        while (0 < vs.length) {\n            yield vs.shift();\n        }\n    };\n\n    return go();\n};",
+    "code": "// lazyList :: [a] -> Gen [a]\nconst lazyList = xs =>\n    // The values of a given array\n    // lazily yielded one by one.\n    (function* () {\n        const vs = Array.from(xs);\n\n        while (0 < vs.length) {\n            yield vs.shift();\n        }\n    })();",
     "tags": [
       "JS Prelude"
     ]

@@ -995,11 +995,13 @@ const dot = f =>
 
 // draw :: Tree String -> [String]
 const draw = node => {
+    
     // shifted :: String -> String -> [String] -> [String]
     const shifted = (first, other, xs) =>
         xs.map((x, i) =>
             (0 < i ? other : first) + x
         );
+
 
     // drawSubTrees :: [Tree String] -> [String]
     const drawSubTrees = xs => {
@@ -1016,6 +1018,7 @@ const draw = node => {
             )
             : [];
     };
+
 
     return node.root.split("\n").concat(
         drawSubTrees(node.nest)
@@ -2757,19 +2760,16 @@ const lastMay = xs =>
         : Nothing();
 
 // lazyList :: [a] -> Gen [a]
-const lazyList = xs => {
+const lazyList = xs =>
     // The values of a given array
     // lazily yielded one by one.
-    const go = function* () {
+    (function* () {
         const vs = Array.from(xs);
 
         while (0 < vs.length) {
             yield vs.shift();
         }
-    };
-
-    return go();
-};
+    })();
 
 // lcm :: Int -> Int -> Int
 const lcm = x =>

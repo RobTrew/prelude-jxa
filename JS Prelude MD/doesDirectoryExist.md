@@ -5,8 +5,8 @@ const doesDirectoryExist = fp => {
 
     return $.NSFileManager.defaultManager
     .fileExistsAtPathIsDirectory(
-        $(fp)
-        .stringByStandardizingPath, ref
+        $(fp).stringByStandardizingPath, 
+        ref
     ) && ref[0];
 };
 ```
