@@ -858,7 +858,7 @@
     ]
   },
   "eqArray": {
-    "code": "// eqArray :: [a] -> [a] -> Bool\n    const eqArray = xs =>\n        ys => xs.length === ys.length\n            ? xs.every((x, i) => x === ys[i])\n            : false;",
+    "code": "// eqArray :: [a] -> [a] -> Bool\nconst eqArray = xs =>\n    ys => xs.length === ys.length\n        ? xs.every((x, i) => x === ys[i])\n        : false;",
     "tags": [
       "JS Prelude"
     ]
