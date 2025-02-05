@@ -857,6 +857,12 @@
       "JS Prelude"
     ]
   },
+  "eqArray": {
+    "code": "// eqArray :: [a] -> [a] -> Bool\n    const eqArray = xs =>\n        ys => xs.length === ys.length\n            ? xs.every((x, i) => x === ys[i])\n            : false;",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "eqDate": {
     "code": "// eqDate :: Date -> Date -> Bool\nconst eqDate = dte =>\n    // True if the date parts of two date-time objects\n    // (ignoring the time parts) are the same.\n    dte1 => {\n        const dayOnly = dateTime =>\n            new Date(dateTime).setUTCHours(0, 0, 0, 0);\n\n        return dayOnly(dte) === dayOnly(dte1);\n    };",
     "tags": [

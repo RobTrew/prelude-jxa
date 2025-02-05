@@ -1458,6 +1458,12 @@ const eq = a =>
         );
     };
 
+// eqArray :: [a] -> [a] -> Bool
+    const eqArray = xs =>
+        ys => xs.length === ys.length
+            ? xs.every((x, i) => x === ys[i])
+            : false;
+
 // eqDate :: Date -> Date -> Bool
 const eqDate = dte =>
     // True if the date parts of two date-time objects

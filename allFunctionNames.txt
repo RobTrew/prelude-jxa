@@ -133,6 +133,7 @@ enumFromTo :: Int -> Int -> [Int]
 enumFromToChar :: Char -> Char -> [Char]
 enumFromTo_ :: Enum a => a -> a -> [a]
 eq (==) :: Eq a => a -> a -> Bool
+eqArray :: [a] -> [a] -> Bool
 eqDate :: Date -> Date -> Bool
 eqDateTime :: Int -> Date -> Date -> Bool
 eqSet :: Set a -> Set a -> Bool
