@@ -4,8 +4,8 @@ const cartesianProduct = xs =>
     // Every tuple in the cartesian product
     // of xs and ys.
     ys => [...xs].flatMap(
-        x => [...ys].flatMap(
-            y => [Tuple(x)(y)]
+        x => [...ys].map(
+            Tuple(x)
         )
     );
 ```

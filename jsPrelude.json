@@ -376,7 +376,7 @@
     ]
   },
   "cartesianProduct": {
-    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    // Every tuple in the cartesian product\n    // of xs and ys.\n    ys => [...xs].flatMap(\n        x => [...ys].flatMap(\n            y => [Tuple(x)(y)]\n        )\n    );",
+    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    // Every tuple in the cartesian product\n    // of xs and ys.\n    ys => [...xs].flatMap(\n        x => [...ys].map(\n            Tuple(x)\n        )\n    );",
     "tags": [
       "JS Prelude",
       "core"
