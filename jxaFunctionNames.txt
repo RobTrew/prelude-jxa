@@ -24,7 +24,7 @@ readFile :: FilePath -> IO String
 readFileLR :: FilePath -> Either String IO String
 readPlistFileLR :: FilePath -> Either String Dict
 removeFileLR :: FilePath -> Either String String
-renamedFile :: FilePath -> FilePath ->
+renamedFileLR :: FilePath -> FilePath ->
 setCurrentDirectory :: FilePath -> IO ()
 tempFilePath :: String -> IO FilePath
 unwrap :: NSObject -> a

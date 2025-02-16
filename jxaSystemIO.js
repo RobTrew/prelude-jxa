@@ -394,9 +394,9 @@ const removeFileLR = fp => {
         : Left(ObjC.unwrap(error.localizedDescription));
 };
 
-// renamedFile :: FilePath -> FilePath ->
+// renamedFileLR :: FilePath -> FilePath ->
 // Either IO String IO String
-const renamedFile = fp =>
+const renamedFileLR = fp =>
     // Either a message detailing a problem, or
     // confirmation of a filename change in the OS.
     fp1 => {

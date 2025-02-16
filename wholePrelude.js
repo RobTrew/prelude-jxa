@@ -4490,9 +4490,9 @@ const removeFileLR = fp => {
         : Left(ObjC.unwrap(error.localizedDescription));
 };
 
-// renamedFile :: FilePath -> FilePath ->
+// renamedFileLR :: FilePath -> FilePath ->
 // Either IO String IO String
-const renamedFile = fp =>
+const renamedFileLR = fp =>
     // Either a message detailing a problem, or
     // confirmation of a filename change in the OS.
     fp1 => {
@@ -6354,7 +6354,7 @@ const zip = xs =>
     // the length of the shorter of the two lists.
     ys => Array.from({
         length: Math.min(xs.length, ys.length)
-    }, (_, i) => [xs[i], ys[i]]);
+    }, (_, i) => Tuple(xs[i])(ys[i]));
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>

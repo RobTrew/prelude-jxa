@@ -406,7 +406,7 @@ regexMatches :: Regex String -> String -> [[String]]
 rem :: Integral a => a -> a -> a
 remQuot :: Integral a => a -> a -> (a, a)
 removeFileLR :: FilePath -> Either String String
-renamedFile :: FilePath -> FilePath ->
+renamedFileLR :: FilePath -> FilePath ->
 repeat :: a -> Generator [a]
 replace :: String -> String -> String -> String
 replicate :: Int -> a -> [a]
