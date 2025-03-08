@@ -757,7 +757,9 @@ const chunksOf = n => {
         const chunk = xs.slice(0, n);
 
         return 0 < chunk.length
-            ? [chunk, ...go(xs.slice(n))]
+            ? [chunk].concat(
+                go(xs.slice(n))
+            )
             : [];
     };
 
@@ -1873,9 +1875,11 @@ const filterGen = p =>
 const filterTree = p =>
     // List of all values in the tree
     // which match the predicate p.
-    foldTree(x => xs =>
-        p(x)
-            ? [x, ...xs.flat()]
+    foldTree(
+        x => xs => p(x)
+            ? [x].concat(
+                xs.flat()
+            )
             : xs.flat()
     );
 
@@ -2650,12 +2654,14 @@ const initMay = xs =>
         : Nothing();
 
 // inits :: [a] -> [[a]]
-// inits :: String -> [String]
 const inits = xs =>
     // All prefixes of the argument,
     // shortest first.
-    [[], ...xs].map(
-        (_, i, ys) => ys.slice(0, 1 + i)
+    xs.reduce(
+        (a, x) => a.concat(
+            [a.slice(-1)[0].concat(x)]
+        ),
+        [[]]
     );
 
 // insert :: Ord a => a -> [a] -> [a]

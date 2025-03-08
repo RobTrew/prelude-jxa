@@ -8,7 +8,9 @@ const chunksOf = n => {
         const chunk = xs.slice(0, n);
 
         return 0 < chunk.length
-            ? [chunk, ...go(xs.slice(n))]
+            ? [chunk].concat(
+                go(xs.slice(n))
+            )
             : [];
     };
 

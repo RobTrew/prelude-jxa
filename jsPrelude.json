@@ -425,7 +425,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return 0 < chunk.length\n            ? [chunk, ...go(xs.slice(n))]\n            : [];\n    };\n\n    return go;\n};",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return 0 < chunk.length\n            ? [chunk].concat(\n                go(xs.slice(n))\n            )\n            : [];\n    };\n\n    return go;\n};",
     "tags": [
       "JS Prelude",
       "core"
@@ -981,7 +981,7 @@
     ]
   },
   "filterTree": {
-    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all values in the tree\n    // which match the predicate p.\n    foldTree(x => xs =>\n        p(x)\n            ? [x, ...xs.flat()]\n            : xs.flat()\n    );",
+    "code": "// filterTree (a -> Bool) -> Tree a -> [a]\nconst filterTree = p =>\n    // List of all values in the tree\n    // which match the predicate p.\n    foldTree(\n        x => xs => p(x)\n            ? [x].concat(\n                xs.flat()\n            )\n            : xs.flat()\n    );",
     "tags": [
       "JS Prelude",
       "tree"
@@ -1442,7 +1442,7 @@
     ]
   },
   "inits": {
-    "code": "// inits :: [a] -> [[a]]\n// inits :: String -> [String]\nconst inits = xs =>\n    // All prefixes of the argument,\n    // shortest first.\n    [[], ...xs].map(\n        (_, i, ys) => ys.slice(0, 1 + i)\n    );",
+    "code": "// inits :: [a] -> [[a]]\nconst inits = xs =>\n    // All prefixes of the argument,\n    // shortest first.\n    xs.reduce(\n        (a, x) => a.concat(\n            [a.slice(-1)[0].concat(x)]\n        ),\n        [[]]\n    );",
     "tags": [
       "JS Prelude"
     ]
