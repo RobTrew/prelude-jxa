@@ -8,7 +8,7 @@ const iterateUntil = p =>
     f => x => {
         let v = x;
 
-        const xs = [];
+        const xs = [v];
 
         while (!p(v)) {
             v = f(v);

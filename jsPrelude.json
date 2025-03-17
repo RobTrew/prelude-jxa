@@ -1652,7 +1652,7 @@
     ]
   },
   "iterateUntil": {
-    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p =>\n    // The value resulting from successive applications\n    // of f to f(x), starting with a seed value x,\n    // and terminating when the result returns true\n    // for the predicate p.\n    f => x => {\n        let v = x;\n\n        const xs = [];\n\n        while (!p(v)) {\n            v = f(v);\n            xs.push(v);\n        }\n\n        return xs;\n    };",
+    "code": "// iterateUntil :: (a -> Bool) -> (a -> a) -> a -> [a]\nconst iterateUntil = p =>\n    // The value resulting from successive applications\n    // of f to f(x), starting with a seed value x,\n    // and terminating when the result returns true\n    // for the predicate p.\n    f => x => {\n        let v = x;\n\n        const xs = [v];\n\n        while (!p(v)) {\n            v = f(v);\n            xs.push(v);\n        }\n\n        return xs;\n    };",
     "tags": [
       "JS Prelude"
     ]
