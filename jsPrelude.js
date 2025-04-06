@@ -325,9 +325,7 @@ const approxRatio = epsilon =>
     n => {
         const
             c = gcdApprox(
-                Boolean(epsilon)
-                    ? epsilon
-                    : (1 / 10000)
+               epsilon || (1 / 10000)
             )(1, n);
 
         return Ratio(
@@ -1955,6 +1953,19 @@ const foldTree = f => {
 
     return go;
 };
+
+// folderFilesWithExtensionLR :: FilePath -> 
+// String -> Either String [FilePath]
+const folderFilesWithExtensionLR = fpFolder =>
+    extension => fmapLR(
+        xs => xs.flatMap(
+            fp => fp.endsWith(extension)
+                ? combine(fpFolder)(fp)
+                : []
+        )
+    )(
+        getDirectoryContentsLR(fpFolder)
+    );
 
 // foldl :: (a -> b -> a) -> a -> [b] -> a
 const foldl = f =>
@@ -4165,10 +4176,11 @@ const reverse = xs =>
 
 // rights :: [Either a b] -> [b]
 const rights = xs =>
+    // Contents of all Right elements in xs.
     xs.flatMap(
-        x => ("Right" in x) ? [
-            x.Right
-        ] : []
+        x => "Right" in x
+            ? [x.Right]
+            : []
     );
 
 // root :: Tree a -> a
@@ -5661,7 +5673,7 @@ const uncurry = f =>
     // A function over a Tuple or argument pair, 
     // derived from a curried function.
     (...args) => {
-        const [x, y] = 2 === args.length
+        const [x, y] = 2 <= args.length
             ? args
             : args[0]
 

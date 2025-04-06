@@ -180,6 +180,7 @@ foldMapGen :: (a -> [b]) -> [a] -> Gen [b]
 foldMapList :: Monoid m => (a -> m) -> t a -> m
 foldMapTree :: Monoid m => (a -> m) -> Tree a -> m
 foldTree :: (a -> [b] -> b) -> Tree a -> b
+folderFilesWithExtensionLR :: FilePath -> String -> Either String [FilePath]
 foldl :: (a -> b -> a) -> a -> [b] -> a
 foldl1 :: (a -> a -> a) -> [a] -> a
 foldl1May :: (a -> a -> a) -> [a] -> Maybe a

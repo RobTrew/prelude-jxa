@@ -240,7 +240,7 @@
     ]
   },
   "approxRatio": {
-    "code": "// approxRatio :: Real -> Real -> Ratio\nconst approxRatio = epsilon =>\n    n => {\n        const\n            c = gcdApprox(\n                Boolean(epsilon)\n                    ? epsilon\n                    : (1 / 10000)\n            )(1, n);\n\n        return Ratio(\n            Math.floor(n / c)\n        )(\n            Math.floor(1 / c)\n        );\n    };",
+    "code": "// approxRatio :: Real -> Real -> Ratio\nconst approxRatio = epsilon =>\n    n => {\n        const\n            c = gcdApprox(\n               epsilon || (1 / 10000)\n            )(1, n);\n\n        return Ratio(\n            Math.floor(n / c)\n        )(\n            Math.floor(1 / c)\n        );\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1157,6 +1157,12 @@
     "tags": [
       "JS Prelude",
       "tree"
+    ]
+  },
+  "folderFilesWithExtensionLR": {
+    "code": "// folderFilesWithExtensionLR :: FilePath -> \n// String -> Either String [FilePath]\nconst folderFilesWithExtensionLR = fpFolder =>\n    extension => fmapLR(\n        xs => xs.flatMap(\n            fp => fp.endsWith(extension)\n                ? combine(fpFolder)(fp)\n                : []\n        )\n    )(\n        getDirectoryContentsLR(fpFolder)\n    );",
+    "tags": [
+      "JS Prelude"
     ]
   },
   "foldl": {
@@ -2635,7 +2641,7 @@
     ]
   },
   "rights": {
-    "code": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    xs.flatMap(\n        x => (\"Right\" in x) ? [\n            x.Right\n        ] : []\n    );",
+    "code": "// rights :: [Either a b] -> [b]\nconst rights = xs =>\n    // Contents of all Right elements in xs.\n    xs.flatMap(\n        x => \"Right\" in x\n            ? [x.Right]\n            : []\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3404,7 +3410,7 @@
     ]
   },
   "uncurry": {
-    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a Tuple or argument pair, \n    // derived from a curried function.\n    (...args) => {\n        const [x, y] = 2 === args.length\n            ? args\n            : args[0]\n\n        return f(x)(y);\n    };",
+    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a Tuple or argument pair, \n    // derived from a curried function.\n    (...args) => {\n        const [x, y] = 2 <= args.length\n            ? args\n            : args[0]\n\n        return f(x)(y);\n    };",
     "tags": [
       "JS Prelude"
     ]

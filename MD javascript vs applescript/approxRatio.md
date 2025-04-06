@@ -4,9 +4,7 @@ const approxRatio = epsilon =>
     n => {
         const
             c = gcdApprox(
-                Boolean(epsilon)
-                    ? epsilon
-                    : (1 / 10000)
+               epsilon || (1 / 10000)
             )(1, n);
 
         return Ratio(
