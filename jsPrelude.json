@@ -3410,7 +3410,7 @@
     ]
   },
   "uncurry": {
-    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a Tuple or argument pair, \n    // derived from a curried function.\n    (...args) => {\n        const [x, y] = 2 <= args.length\n            ? args\n            : args[0]\n\n        return f(x)(y);\n    };",
+    "code": "// uncurry :: (a -> b -> c) -> ((a, b) -> c)\nconst uncurry = f =>\n    // A function over a Tuple or argument pair, \n    // derived from a curried function.\n    (...args) => {\n        const h = args[0];\n        const [x, y] = Array.isArray(h) || (\n            \"Tuple\" === h?.type\n        )\n            ? h\n            : args;\n\n        return f(x)(y);\n    };",
     "tags": [
       "JS Prelude"
     ]

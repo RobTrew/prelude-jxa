@@ -5673,9 +5673,12 @@ const uncurry = f =>
     // A function over a Tuple or argument pair, 
     // derived from a curried function.
     (...args) => {
-        const [x, y] = 2 <= args.length
-            ? args
-            : args[0]
+        const h = args[0];
+        const [x, y] = Array.isArray(h) || (
+            "Tuple" === h?.type
+        )
+            ? h
+            : args;
 
         return f(x)(y);
     };
