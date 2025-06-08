@@ -66,6 +66,12 @@
       "core"
     ]
   },
+  "Untitled": {
+    "code": "",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "ZipList": {
     "code": "// ZipList :: a -> {getZipList :: [a]}\nconst ZipList = x => ({\n    // Constructor for an applicative ZipList\n    type: \"ZipList\",\n    getZipList: x\n});",
     "tags": [
@@ -234,7 +240,13 @@
     ]
   },
   "applyN": {
-    "code": "// applyN :: Int -> (a -> a) -> a -> a\nconst applyN = n =>\n    // The value of n applications of f to x.\n    // (Church numeral n)\n    f => x => Array.from({\n        length: n\n    }, () => f)\n    .reduce((a, g) => g(a), x);",
+    "code": "// applyN :: Int -> (a -> a) -> a -> a\nconst applyN = n =>\n    // The value of n applications of f to x.\n    // (Church numeral n)\n    f => x => Array.from({ length: n })\n    .reduce(f, x)",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "applyN_": {
+    "code": "// applyN_ :: Int -> (a -> a) -> a -> a\nconst applyN_ = n =>\n    // The value of n applications of f to x.\n    // (Church numeral n)\n    // Equivalent to:  Array.from({ length: n }).reduce(f, x)\n    f => x => {\n        let\n            v = x,\n            i = 0;\n\n        while (i < n) v = f(v), i = 1 + i;\n\n        return v;\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -2838,7 +2850,7 @@
     ]
   },
   "showMatrix": {
-    "code": "// showMatrix :: (a -> String) -> [[a]] -> String\nconst showMatrix = fShow =>\n    rows => Boolean(rows.length) ? (() => {\n        const w = fShow(Math.max(...rows.flat())).length;\n\n        return rows.map(\n            cells => cells.map(\n                x => fShow(x).padStart(w, \" \")\n            ).join(\" \")\n        ).join(\"\\n\");\n    })() : \"\";",
+    "code": "// showMatrix :: (a -> String) -> [[a]] -> String\nconst showMatrix = fShow =>\n    rows => 0 < rows.length\n        ? (() => {\n            const w = fShow(Math.max(...rows.flat())).length;\n\n            return rows.map(\n                cells => cells.map(\n                    x => fShow(x).padStart(w, \" \")\n                )\n             .join(\" \")\n            )\n            .join(\"\\n\");\n        })() \n        : \"\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3264,7 +3276,7 @@
     ]
   },
   "transpose": {
-    "code": "// transpose :: [[a]] -> [[a]]\nconst transpose = rows =>\n    // Maximal transpose – the longest row determines\n    // the number of columns.\n    // If any rows are shorter than those that follow,\n    // their elements are skipped:\n    // transpose [[10,11],[20],[],[30,31,32]]\n    //     == [[10,20,30],[11,31],[32]]\n    rows.reduce(\n        (cols, row) => cols.map((col, i) => {\n            const v = row[i];\n\n            return undefined !== v\n                ? col.concat(v)\n                : col;\n        }),\n        Array.from({\n            length: 0 < rows.length\n                ? Math.max(...rows.map(x => x.length))\n                : 0\n        }, () => [])\n    );",
+    "code": "// transpose :: [[a]] -> [[a]]\nconst transpose = rows =>\n    // Maximal transpose – the longest row determines\n    // the number of columns.\n    // If any rows are shorter than those that follow,\n    // their elements are skipped:\n    // transpose [[10,11],[20],[],[30,31,32]]\n    //     == [[10,20,30],[11,31],[32]]\n    rows.reduce(\n        (cols, row) => cols.map(\n            (col, i) => col.concat(row[i] || [])\n        ),\n        Array.from({\n            length: 0 < rows.length\n                ? Math.max(...rows.map(x => x.length))\n                : 0\n        }, () => [])\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -3481,7 +3493,7 @@
     ]
   },
   "until": {
-    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    // The value resulting from successive applications\n    // of f to f(x), starting with a seed value x,\n    // and terminating when the result returns true\n    // for the predicate p.\n    f => x => {\n        let v = x;\n\n        while (!p(v)) {\n            v = f(v);\n        }\n\n        return v;\n    };",
+    "code": "// until :: (a -> Bool) -> (a -> a) -> a -> a\nconst until = p =>\n    // The value resulting from successive applications\n    // of f to f(x), starting with a seed value x,\n    // and terminating when the result returns true\n    // for the predicate p.\n    f => x => {\n        let v = x;\n\n        while (!p(v)) v = f(v);\n\n        return v;\n    };",
     "tags": [
       "JS Prelude",
       "core"

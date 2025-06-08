@@ -8,9 +8,7 @@ const until = p =>
     f => x => {
         let v = x;
 
-        while (!p(v)) {
-            v = f(v);
-        }
+        while (!p(v)) v = f(v);
 
         return v;
     };

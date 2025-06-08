@@ -129,6 +129,8 @@ const TupleN = (...args) => {
     };
 };
 
+
+
 // ZipList :: a -> {getZipList :: [a]}
 const ZipList = x => ({
     // Constructor for an applicative ZipList
@@ -315,10 +317,23 @@ const apply = f =>
 const applyN = n =>
     // The value of n applications of f to x.
     // (Church numeral n)
-    f => x => Array.from({
-        length: n
-    }, () => f)
-    .reduce((a, g) => g(a), x);
+    f => x => Array.from({ length: n })
+    .reduce(f, x)
+
+// applyN_ :: Int -> (a -> a) -> a -> a
+const applyN_ = n =>
+    // The value of n applications of f to x.
+    // (Church numeral n)
+    // Equivalent to:  Array.from({ length: n }).reduce(f, x)
+    f => x => {
+        let
+            v = x,
+            i = 0;
+
+        while (i < n) v = f(v), i = 1 + i;
+
+        return v;
+    };
 
 // approxRatio :: Real -> Real -> Ratio
 const approxRatio = epsilon =>
@@ -4474,15 +4489,19 @@ const showLog = (...args) =>
 
 // showMatrix :: (a -> String) -> [[a]] -> String
 const showMatrix = fShow =>
-    rows => Boolean(rows.length) ? (() => {
-        const w = fShow(Math.max(...rows.flat())).length;
+    rows => 0 < rows.length
+        ? (() => {
+            const w = fShow(Math.max(...rows.flat())).length;
 
-        return rows.map(
-            cells => cells.map(
-                x => fShow(x).padStart(w, " ")
-            ).join(" ")
-        ).join("\n");
-    })() : "";
+            return rows.map(
+                cells => cells.map(
+                    x => fShow(x).padStart(w, " ")
+                )
+             .join(" ")
+            )
+            .join("\n");
+        })() 
+        : "";
 
 // showMaybe :: Maybe a -> String
 const showMaybe = mb =>
@@ -5216,13 +5235,9 @@ const transpose = rows =>
     // transpose [[10,11],[20],[],[30,31,32]]
     //     == [[10,20,30],[11,31],[32]]
     rows.reduce(
-        (cols, row) => cols.map((col, i) => {
-            const v = row[i];
-
-            return undefined !== v
-                ? col.concat(v)
-                : col;
-        }),
+        (cols, row) => cols.map(
+            (col, i) => col.concat(row[i] || [])
+        ),
         Array.from({
             length: 0 < rows.length
                 ? Math.max(...rows.map(x => x.length))
@@ -5813,9 +5828,7 @@ const until = p =>
     f => x => {
         let v = x;
 
-        while (!p(v)) {
-            v = f(v);
-        }
+        while (!p(v)) v = f(v);
 
         return v;
     };

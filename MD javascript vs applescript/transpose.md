@@ -8,13 +8,9 @@ const transpose = rows =>
     // transpose [[10,11],[20],[],[30,31,32]]
     //     == [[10,20,30],[11,31],[32]]
     rows.reduce(
-        (cols, row) => cols.map((col, i) => {
-            const v = row[i];
-
-            return undefined !== v
-                ? col.concat(v)
-                : col;
-        }),
+        (cols, row) => cols.map(
+            (col, i) => col.concat(row[i] || [])
+        ),
         Array.from({
             length: 0 < rows.length
                 ? Math.max(...rows.map(x => x.length))
