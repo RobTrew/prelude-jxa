@@ -129,8 +129,6 @@ const TupleN = (...args) => {
     };
 };
 
-
-
 // ZipList :: a -> {getZipList :: [a]}
 const ZipList = x => ({
     // Constructor for an applicative ZipList
@@ -495,7 +493,7 @@ const bimapLR = f =>
     // Instance of bimap for Either values.
     // Either the application of f to a Left value,
     // or the application of g to a Right value.
-    g => lr => lr.Left
+    g => lr => "Left" in lr
         ? Left(f(lr.Left))
         : Right(g(lr.Right));
 
@@ -670,8 +668,8 @@ const bulleted = strTab =>
 
 // cartesianProduct :: [a] -> [b] -> [[a, b]]
 const cartesianProduct = xs =>
-    // Every tuple in the cartesian product
-    // of xs and ys.
+    // Every tuple in the cartesian
+    // product of xs and ys.
     ys => [...xs].flatMap(
         x => [...ys].map(
             Tuple(x)
@@ -1378,7 +1376,7 @@ const dropFileName = fp =>
                 xs = (fp.split("/"))
                 .slice(0, -1);
 
-            return Boolean(xs.length)
+            return 0 < xs.length
                 ? `${xs.join("/")}/`
                 : "./";
         })()
@@ -2095,16 +2093,26 @@ const fmap = f =>
 // fmapDict :: (a -> b) ->
 // {String :: a} -> {String :: b}
 const fmapDict = f =>
-    // A map of f over every value
-    // in the given dictionary.
-    dict => Object.entries(dict)
-        .reduceRight(
-            (a, [k, v]) => ({
-                ...a,
-                [k]: f(v)
-            }),
-            {}
-        );
+    // A map of f over every value, 
+    // (at any depth) in the given dictionary.
+    dict => {
+        const go = v =>
+            v instanceof Array
+                ? v.map(go)
+                : v instanceof Object && !(
+                    v instanceof Date
+                )
+                    ? Object.keys(v).reduce(
+                        (a, k) => ({
+                            ...a,
+                            [k]: go(v[k])
+                        }),
+                        {}
+                    )
+                    : f(v);
+
+        return go(dict);
+    };
 
 // fmapGen <$> :: (a -> b) -> Gen [a] -> Gen [b]
 const fmapGen = f =>
@@ -2268,8 +2276,10 @@ const foldl1 = f =>
 const foldl1May = f =>
     xs => 0 < xs.length
         ? Just(
-            xs.slice(1)
-            .reduce(uncurry(f), xs[0])
+            xs.slice(1).reduce(
+                (a, x) => f(a)(x),
+                xs[0]
+            )
         )
         : Nothing();
 
@@ -3026,10 +3036,10 @@ const jsonParseLR = s => {
         return Right(JSON.parse(s));
     } catch (e) {
         return Left(
-            unlines([
+            [
                 e.message,
                 `(line:${e.line} col:${e.column})`
-            ])
+            ].join("\n")
         );
     }
 };
@@ -3154,25 +3164,16 @@ const levelNodes = tree =>
     )([tree]);
 
 // levels :: Tree a -> [[a]]
-const levels = tree => {
-    // A list of lists, grouping the root
-    // values of each level of the tree.
-    const go = (layers, t) => {
-        const
-            [x, ...xs] = (
-                0 < layers.length
-            )
-                ? layers
-                : [[]];
-
-        return [
-            x.concat(root(t)),
-            ...nest(t).reduce(go, xs)
-        ];
-    };
-
-    return go([], tree);
-};
+const levels = tree =>
+    iterateUntil(
+        xs => 0 === xs.length
+    )(
+        xs => xs.flatMap(nest)
+    )(
+        [tree]
+    )
+        .map(xs => xs.map(root))
+        .slice(0, -1);
 
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
 const liftA2 = f =>
@@ -6273,9 +6274,8 @@ const unwrap = ObjC.unwrap;
 
 // unzip :: [(a,b)] -> ([a],[b])
 const unzip = xys =>
-    // A list of the first items in each pair
-    // of the zip, tupled with a list of all
-    // the second items.
+    // A list of pairs transposed 
+    // to a pair of lists.
     Tuple(
         xys.map(xy => xy[0])
     )(
@@ -6391,7 +6391,7 @@ const zip = xs =>
     // the length of the shorter of the two lists.
     ys => Array.from({
         length: Math.min(xs.length, ys.length)
-    }, (_, i) => Tuple(xs[i])(ys[i]));
+    }, (_, i) => [xs[i], ys[i]]);
 
 // zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
 const zip3 = xs =>

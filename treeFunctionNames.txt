@@ -8,6 +8,7 @@ drawTree :: Tree String -> String
 drawTree2 :: Bool -> Bool -> Tree String -> String
 filePathTree :: filePath -> [Tree String] -> Tree FilePath
 filterTree (a -> Bool) -> Tree a -> [a]
+filteredForest :: (a -> Bool) -> [Tree a] -> [Tree a]
 filteredSubTrees :: (Tree a -> Bool) -> Tree a -> [Tree a]
 findTree :: (a -> Bool) -> Tree a -> Maybe a
 flattenTree :: Tree a -> [a]
@@ -40,6 +41,7 @@ treeFromDict :: String -> Dict -> Tree String
 treeFromJSON :: JSON String -> Tree a
 treeFromNestedDict -> Dict -> Either String Tree Dict
 treeLeaves :: Tree a -> [Tree a]
+treeMatch :: (a -> Bool) -> Tree a -> [Tree a]
 treeMatches :: (a -> Bool) -> Tree a -> [Tree a]
 treeMenu :: Tree String -> IO [String]
 treeMenuBy :: (a -> String) Tree a -> IO [a]

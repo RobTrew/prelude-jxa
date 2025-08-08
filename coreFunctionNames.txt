@@ -50,6 +50,7 @@ intersect :: (Eq a) => [a] -> [a] -> [a]
 isPrefixOf :: [a] -> [a] -> Bool
 iso8601Local :: Date -> String
 iterate :: (a -> a) -> a -> Gen [a]
+jsonParseLR :: String -> Either String a
 justifyLeft :: Int -> Char -> String -> String
 justifyRight :: Int -> Char -> String -> String
 keys :: Dict -> [String]

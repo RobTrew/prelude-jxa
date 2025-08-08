@@ -8,7 +8,6 @@ Right :: b -> Either a b
 Tuple (,) :: a -> b -> (a, b)
 Tuple3 (,,) :: a -> b -> c -> (a, b, c)
 TupleN :: a -> b ...  -> (a, b ... )
-
 ZipList :: a -> {getZipList :: [a]}
 abs :: Num -> Num
 add (+) :: Num a => a -> a -> a

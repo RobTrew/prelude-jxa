@@ -7,7 +7,7 @@ const dropFileName = fp =>
                 xs = (fp.split("/"))
                 .slice(0, -1);
 
-            return Boolean(xs.length)
+            return 0 < xs.length
                 ? `${xs.join("/")}/`
                 : "./";
         })()

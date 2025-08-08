@@ -66,12 +66,6 @@
       "core"
     ]
   },
-  "Untitled": {
-    "code": "",
-    "tags": [
-      "JS Prelude"
-    ]
-  },
   "ZipList": {
     "code": "// ZipList :: a -> {getZipList :: [a]}\nconst ZipList = x => ({\n    // Constructor for an applicative ZipList\n    type: \"ZipList\",\n    getZipList: x\n});",
     "tags": [
@@ -296,7 +290,7 @@
     ]
   },
   "bimapLR": {
-    "code": "// bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d\nconst bimapLR = f =>\n    // Instance of bimap for Either values.\n    // Either the application of f to a Left value,\n    // or the application of g to a Right value.\n    g => lr => lr.Left\n        ? Left(f(lr.Left))\n        : Right(g(lr.Right));",
+    "code": "// bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d\nconst bimapLR = f =>\n    // Instance of bimap for Either values.\n    // Either the application of f to a Left value,\n    // or the application of g to a Right value.\n    g => lr => \"Left\" in lr\n        ? Left(f(lr.Left))\n        : Right(g(lr.Right));",
     "tags": [
       "JS Prelude"
     ]
@@ -388,7 +382,7 @@
     ]
   },
   "cartesianProduct": {
-    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    // Every tuple in the cartesian product\n    // of xs and ys.\n    ys => [...xs].flatMap(\n        x => [...ys].map(\n            Tuple(x)\n        )\n    );",
+    "code": "// cartesianProduct :: [a] -> [b] -> [[a, b]]\nconst cartesianProduct = xs =>\n    // Every tuple in the cartesian\n    // product of xs and ys.\n    ys => [...xs].flatMap(\n        x => [...ys].map(\n            Tuple(x)\n        )\n    );",
     "tags": [
       "JS Prelude",
       "core"
@@ -726,7 +720,7 @@
     ]
   },
   "dropFileName": {
-    "code": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = fp =>\n    \"\" !== fp\n        ? (() => {\n            const\n                xs = (fp.split(\"/\"))\n                .slice(0, -1);\n\n            return Boolean(xs.length)\n                ? `${xs.join(\"/\")}/`\n                : \"./\";\n        })()\n        : \"./\";",
+    "code": "// dropFileName :: FilePath -> FilePath\nconst dropFileName = fp =>\n    \"\" !== fp\n        ? (() => {\n            const\n                xs = (fp.split(\"/\"))\n                .slice(0, -1);\n\n            return 0 < xs.length\n                ? `${xs.join(\"/\")}/`\n                : \"./\";\n        })()\n        : \"./\";",
     "tags": [
       "JS Prelude"
     ]
@@ -1002,7 +996,8 @@
   "filteredForest": {
     "code": "// filteredForest :: (a -> Bool) -> [Tree a] -> [Tree a]\nconst filteredForest = p =>\n    // A forest of trees which all subtrees match the predicate.\n    trees => {\n        const go = t => {\n            const v = root(t);\n\n            return p(v)\n                ? [\n                    Node(v)(\n                        nest(t).flatMap(go)\n                    )\n                ]\n                : [];\n        };\n\n        return trees.flatMap(go);\n    };",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "tree"
     ]
   },
   "filteredSubTrees": {
@@ -1091,7 +1086,7 @@
     ]
   },
   "fmapDict": {
-    "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value\n    // in the given dictionary.\n    dict => Object.entries(dict)\n        .reduceRight(\n            (a, [k, v]) => ({\n                ...a,\n                [k]: f(v)\n            }),\n            {}\n        );",
+    "code": "// fmapDict :: (a -> b) ->\n// {String :: a} -> {String :: b}\nconst fmapDict = f =>\n    // A map of f over every value, \n    // (at any depth) in the given dictionary.\n    dict => {\n        const go = v =>\n            v instanceof Array\n                ? v.map(go)\n                : v instanceof Object && !(\n                    v instanceof Date\n                )\n                    ? Object.keys(v).reduce(\n                        (a, k) => ({\n                            ...a,\n                            [k]: go(v[k])\n                        }),\n                        {}\n                    )\n                    : f(v);\n\n        return go(dict);\n    };",
     "tags": [
       "JS Prelude"
     ]
@@ -1191,7 +1186,7 @@
     ]
   },
   "foldl1May": {
-    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => 0 < xs.length\n        ? Just(\n            xs.slice(1)\n            .reduce(uncurry(f), xs[0])\n        )\n        : Nothing();",
+    "code": "// foldl1May :: (a -> a -> a) -> [a] -> Maybe a\nconst foldl1May = f =>\n    xs => 0 < xs.length\n        ? Just(\n            xs.slice(1).reduce(\n                (a, x) => f(a)(x),\n                xs[0]\n            )\n        )\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
@@ -1701,9 +1696,10 @@
     ]
   },
   "jsonParseLR": {
-    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            unlines([\n                e.message,\n                `(line:${e.line} col:${e.column})`\n            ])\n        );\n    }\n};",
+    "code": "// jsonParseLR :: String -> Either String a\nconst jsonParseLR = s => {\n    try {\n        return Right(JSON.parse(s));\n    } catch (e) {\n        return Left(\n            [\n                e.message,\n                `(line:${e.line} col:${e.column})`\n            ].join(\"\\n\")\n        );\n    }\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "core"
     ]
   },
   "justifyLeft": {
@@ -1796,7 +1792,7 @@
     ]
   },
   "levels": {
-    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree => {\n    // A list of lists, grouping the root\n    // values of each level of the tree.\n    const go = (layers, t) => {\n        const\n            [x, ...xs] = (\n                0 < layers.length\n            )\n                ? layers\n                : [[]];\n\n        return [\n            x.concat(root(t)),\n            ...nest(t).reduce(go, xs)\n        ];\n    };\n\n    return go([], tree);\n};",
+    "code": "// levels :: Tree a -> [[a]]\nconst levels = tree =>\n    iterateUntil(\n        xs => 0 === xs.length\n    )(\n        xs => xs.flatMap(nest)\n    )(\n        [tree]\n    )\n        .map(xs => xs.map(root))\n        .slice(0, -1);",
     "tags": [
       "JS Prelude",
       "tree"
@@ -3361,7 +3357,8 @@
   "treeMatch": {
     "code": "// treeMatch :: (a -> Bool) -> Tree a -> [Tree a]\nconst treeMatch = p => {\n    // Either a list containing the the first node\n    // in the tree which matches the predicate p,\n    // or an empty list if no match is found.\n    const go = tree =>\n        p(tree.root)\n            ? [tree]\n            : f(tree.nest);\n\n    const f = xs => {\n        const n = xs.length;\n\n        return until(\n            ([i, ms]) => (n === i) || (0 < ms.length)\n        )(\n            ([i]) => [1 + i, go(xs[i])]\n        )(\n            [0, []]\n        )[1];\n    };\n\n    return go;\n};",
     "tags": [
-      "JS Prelude"
+      "JS Prelude",
+      "tree"
     ]
   },
   "treeMatches": {
@@ -3514,7 +3511,7 @@
     ]
   },
   "unzip": {
-    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    // A list of the first items in each pair\n    // of the zip, tupled with a list of all\n    // the second items.\n    Tuple(\n        xys.map(xy => xy[0])\n    )(\n        xys.map(xy => xy[1])\n    );\n",
+    "code": "// unzip :: [(a,b)] -> ([a],[b])\nconst unzip = xys =>\n    // A list of pairs transposed \n    // to a pair of lists.\n    Tuple(\n        xys.map(xy => xy[0])\n    )(\n        xys.map(xy => xy[1])\n    );\n",
     "tags": [
       "JS Prelude",
       "core"
@@ -3587,7 +3584,7 @@
     ]
   },
   "zip": {
-    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    ys => Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => Tuple(xs[i])(ys[i]));",
+    "code": "// zip :: [a] -> [b] -> [(a, b)]\nconst zip = xs =>\n    // The paired members of xs and ys, up to\n    // the length of the shorter of the two lists.\n    ys => Array.from({\n        length: Math.min(xs.length, ys.length)\n    }, (_, i) => [xs[i], ys[i]]);",
     "tags": [
       "JS Prelude",
       "core"
