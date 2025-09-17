@@ -1,21 +1,20 @@
 ```javascript
 // chunksOf :: Int -> [a] -> [[a]]
-const chunksOf = n => {
+const chunksOf = n =>
     // xs split into sublists of length n.
     // The last sublist will be short if n
     // does not evenly divide the length of xs .
-    const go = xs => {
-        const chunk = xs.slice(0, n);
+    xs => {
+        const pair = xs.reduce(
+            ([chunks, ks], x, i) =>
+                0 < i && 0 === i % n
+                    ? [chunks.concat([ks]), [x]]
+                    : [chunks, ks.concat(x)],
+            [[], []]
+        );
 
-        return 0 < chunk.length
-            ? [chunk].concat(
-                go(xs.slice(n))
-            )
-            : [];
+        return pair[0].concat([pair[1]])
     };
-
-    return go;
-};
 ```
 
 

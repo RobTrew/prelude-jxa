@@ -403,7 +403,7 @@ const apply = f =>
 
 // applyN :: Int -> (a -> a) -> a -> a
 const applyN = n =>
-    // The value of n applications of f to x.
+    // The value of n nested applications of f to x.
     // (Church numeral n)
     f => x => Array.from({ length: n })
     .reduce(f, x)
@@ -760,22 +760,21 @@ const chr = x =>
     String.fromCodePoint(x);
 
 // chunksOf :: Int -> [a] -> [[a]]
-const chunksOf = n => {
+const chunksOf = n =>
     // xs split into sublists of length n.
     // The last sublist will be short if n
     // does not evenly divide the length of xs .
-    const go = xs => {
-        const chunk = xs.slice(0, n);
+    xs => {
+        const pair = xs.reduce(
+            ([chunks, ks], x, i) =>
+                0 < i && 0 === i % n
+                    ? [chunks.concat([ks]), [x]]
+                    : [chunks, ks.concat(x)],
+            [[], []]
+        );
 
-        return 0 < chunk.length
-            ? [chunk].concat(
-                go(xs.slice(n))
-            )
-            : [];
+        return pair[0].concat([pair[1]])
     };
-
-    return go;
-};
 
 // combinations :: Int -> [a] -> [[a]]
 const combinations = n =>
@@ -3066,7 +3065,7 @@ const kCompose = (...fs) =>
     // Left Right composition of a sequence
     // of functions which lift a raw value
     // of the same type into the same monad.
-    x => Boolean(fs.length)
+    x => 0 < fs.length
         ? fs.slice(1).reduce(
             (m, f) => bind(m)(f),
             fs[0](x)
@@ -4592,10 +4591,10 @@ const require = fp =>
 
 // reverse :: [a] -> [a]
 const reverse = xs =>
+    // A reversed copy of xs
     "string" === typeof xs
-        ? xs.split("").reverse()
-        .join("")
-        : xs.slice(0).reverse();
+        ? xs.split("").reverse().join("")
+        : xs.toReversed();
 
 // rights :: [Either a b] -> [b]
 const rights = xs =>
@@ -5079,7 +5078,7 @@ const sort = xs =>
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
     // A copy of xs sorted by the comparator function f.
-    xs => [...xs].sort(
+    xs => xs.toSorted(
         (a, b) => f(a)(b)
     );
 

@@ -234,7 +234,7 @@
     ]
   },
   "applyN": {
-    "code": "// applyN :: Int -> (a -> a) -> a -> a\nconst applyN = n =>\n    // The value of n applications of f to x.\n    // (Church numeral n)\n    f => x => Array.from({ length: n })\n    .reduce(f, x)",
+    "code": "// applyN :: Int -> (a -> a) -> a -> a\nconst applyN = n =>\n    // The value of n nested applications of f to x.\n    // (Church numeral n)\n    f => x => Array.from({ length: n })\n    .reduce(f, x)",
     "tags": [
       "JS Prelude"
     ]
@@ -431,7 +431,7 @@
     ]
   },
   "chunksOf": {
-    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n => {\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    const go = xs => {\n        const chunk = xs.slice(0, n);\n\n        return 0 < chunk.length\n            ? [chunk].concat(\n                go(xs.slice(n))\n            )\n            : [];\n    };\n\n    return go;\n};",
+    "code": "// chunksOf :: Int -> [a] -> [[a]]\nconst chunksOf = n =>\n    // xs split into sublists of length n.\n    // The last sublist will be short if n\n    // does not evenly divide the length of xs .\n    xs => {\n        const pair = xs.reduce(\n            ([chunks, ks], x, i) =>\n                0 < i && 0 === i % n\n                    ? [chunks.concat([ks]), [x]]\n                    : [chunks, ks.concat(x)],\n            [[], []]\n        );\n\n        return pair[0].concat([pair[1]])\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -1717,7 +1717,7 @@
     ]
   },
   "kCompose": {
-    "code": "// kCompose (>=>) :: Monad m =>\n// [(a -> m a)] -> (a -> m a)\nconst kCompose = (...fs) =>\n    // Left Right composition of a sequence\n    // of functions which lift a raw value\n    // of the same type into the same monad.\n    x => Boolean(fs.length)\n        ? fs.slice(1).reduce(\n            (m, f) => bind(m)(f),\n            fs[0](x)\n        )\n        : x;",
+    "code": "// kCompose (>=>) :: Monad m =>\n// [(a -> m a)] -> (a -> m a)\nconst kCompose = (...fs) =>\n    // Left Right composition of a sequence\n    // of functions which lift a raw value\n    // of the same type into the same monad.\n    x => 0 < fs.length\n        ? fs.slice(1).reduce(\n            (m, f) => bind(m)(f),\n            fs[0](x)\n        )\n        : x;",
     "tags": [
       "JS Prelude"
     ]
@@ -2642,7 +2642,7 @@
     ]
   },
   "reverse": {
-    "code": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    \"string\" === typeof xs\n        ? xs.split(\"\").reverse()\n        .join(\"\")\n        : xs.slice(0).reverse();",
+    "code": "// reverse :: [a] -> [a]\nconst reverse = xs =>\n    // A reversed copy of xs\n    \"string\" === typeof xs\n        ? xs.split(\"\").reverse().join(\"\")\n        : xs.toReversed();",
     "tags": [
       "JS Prelude",
       "core"
@@ -2945,7 +2945,7 @@
     ]
   },
   "sortBy": {
-    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    // A copy of xs sorted by the comparator function f.\n    xs => [...xs].sort(\n        (a, b) => f(a)(b)\n    );",
+    "code": "// sortBy :: (a -> a -> Ordering) -> [a] -> [a]\nconst sortBy = f =>\n    // A copy of xs sorted by the comparator function f.\n    xs => xs.toSorted(\n        (a, b) => f(a)(b)\n    );",
     "tags": [
       "JS Prelude",
       "core"
