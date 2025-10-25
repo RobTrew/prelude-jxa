@@ -2,7 +2,7 @@
 // takeDirectory :: FilePath -> FilePath
 const takeDirectory = fp =>
     // The directory component of a filepath.
-    "" !== fp
+    0 < fp.length
         ? (() => {
             const xs = fp.split("/").slice(0, -1);
 

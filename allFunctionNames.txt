@@ -276,6 +276,7 @@ lastMay :: [a] -> Maybe a
 lazyList :: [a] -> Gen [a]
 lcm :: Int -> Int -> Int
 le :: Ord a => a -> a -> a
+leaves :: Tree a -> [a]
 lefts :: [Either a b] -> [a]
 length :: [a] -> Int
 lengthTree :: Tree a -> Int
@@ -292,6 +293,8 @@ liftA2ZL :: (a -> b -> c) -> ZipList a -> ZipList b -> ZipList c
 lines :: String -> [String]
 list :: StringOrArrayLike b => b -> [a]
 listDirectory :: FilePath -> [FilePath]
+listFilesInside :: (FilePath -> IO Bool) -> FilePath -> IO [FilePath]
+listFilesRecursive :: FilePath -> IO [FilePath]
 listFromMaybe :: Maybe a -> [a]
 listFromTree :: Tree a -> [a]
 listToMaybe :: [a] -> Maybe a

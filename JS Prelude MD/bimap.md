@@ -4,7 +4,9 @@ const bimap = f =>
     // Tuple instance of bimap.
     // A tuple of the application of f and g to the
     // first and second values respectively.
-    g => tpl => Tuple(f(tpl[0]))(
-        g(tpl[1])
+    g => ([a, b]) => Tuple(
+        f(a)
+    )(
+        g(b)
     );
 ```

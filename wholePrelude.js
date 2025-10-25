@@ -484,8 +484,10 @@ const bimap = f =>
     // Tuple instance of bimap.
     // A tuple of the application of f and g to the
     // first and second values respectively.
-    g => tpl => Tuple(f(tpl[0]))(
-        g(tpl[1])
+    g => ([a, b]) => Tuple(
+        f(a)
+    )(
+        g(b)
     );
 
 // bimapLR :: (a -> b) -> (c -> d) -> ֵEither ֵֵa c -> Either b d
@@ -2035,8 +2037,10 @@ const findTree = p => {
 
 // first :: (a -> b) -> ((a, c) -> (b, c))
 const first = f =>
-    // A simple function lifted to one which applies
-    // to a tuple, transforming only its first item.
+    // A function over a simple value lifted
+    // to a function over a tuple, with f
+    // applied to the first term.
+    // f (a, b) -> (f(a), b)
     ([x, y]) => Tuple(f(x))(y);
 
 // flatten :: NestedList a -> [a]
@@ -3125,6 +3129,20 @@ const le = x =>
     // True if x <= y;
     y => x <= y;
 
+// leaves :: Tree a -> [a]
+const leaves = tree => {
+    // Ordered leaf values of a given tree
+    const go = (vs, t) => {
+        const ts = nest(t);
+
+        return 0 < ts.length
+            ? ts.reduce(go, vs)
+            : vs.concat(root(t));
+    };
+
+    return go([], tree);
+};
+
 // lefts :: [Either a b] -> [a]
 const lefts = xs =>
     xs.flatMap(
@@ -3288,6 +3306,43 @@ const listDirectory = fp =>
             null
         )
     );
+
+// listFilesInside :: (FilePath -> IO Bool) -> FilePath -> IO [FilePath]
+const listFilesInside = p => {
+    // Recursive listing of all predicate-matching dependents
+    // of the given filepathe.
+    const go = fp =>
+        doesDirectoryExist(fp)
+            ? bindLR(
+                getDirectoryContentsLR(fp)
+            )(
+                fps => [
+                    ...bimap(
+                        xs => xs.flatMap(go)
+                    )(
+                        xs => xs.filter(p)
+                    )(
+                        partition(
+                            doesDirectoryExist
+                        )(
+                            fps.map(combine(fp))
+                        )
+                    )
+                ]
+                    .flat()
+                    .toSorted()
+            )
+            : p(fp)
+                ? [fp]
+                : [];
+
+    return go;
+};
+
+// listFilesRecursive :: FilePath -> IO [FilePath]
+const listFilesRecursive = fp =>
+    // Recursive list of all files descending from FilePath
+    listFilesInside(() => true)(fp);
 
 // listFromMaybe :: Maybe a -> [a]
 const listFromMaybe = mb =>
@@ -4717,19 +4772,18 @@ const scanr1 = f =>
     xs => xs.length > 0 ? (
         scanr(f)(
             xs.slice(-1)[0]
-        )(xs.slice(0, -1))
+        )(
+            xs.slice(0, -1)
+        )
     ) : [];
 
 // second :: (a -> b) -> ((c, a) -> (c, b))
 const second = f =>
     // A function over a simple value lifted
-    // to a function over a tuple.
+    // to a function over a tuple, with f
+    // applied to the second term.
     // f (a, b) -> (a, f(b))
-    xy => Tuple(
-        xy[0]
-    )(
-        f(xy[1])
-    );
+    ([x, y]) => Tuple(x)(f(y));
 
 // sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)
 const sequenceA = tfa =>
@@ -5065,15 +5119,7 @@ const snoc = xs =>
 // sort :: Ord a => [a] -> [a]
 const sort = xs =>
     // An A-Z sorted copy of xs.
-    xs.slice().sort(
-        (a, b) => a < b ? (
-            -1
-        ) : (
-            a > b ? (
-                1
-            ) : 0
-        )
-    );
+    xs.toSorted();
 
 // sortBy :: (a -> a -> Ordering) -> [a] -> [a]
 const sortBy = f =>
@@ -5470,7 +5516,7 @@ const takeCycle = n =>
 // takeDirectory :: FilePath -> FilePath
 const takeDirectory = fp =>
     // The directory component of a filepath.
-    "" !== fp
+    0 < fp.length
         ? (() => {
             const xs = fp.split("/").slice(0, -1);
 
@@ -6244,9 +6290,15 @@ const unlines = xs =>
 const unsnoc = xs =>
     // Nothing if the list is empty, otherwise
     // Just the init and the last.
-    Boolean(xs.length) ? (
-        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))
-    ) : Nothing();
+    0 < xs.length
+        ? Just(
+            Tuple(
+                xs.slice(0, -1)
+            )(
+                xs.slice(-1)[0]
+            )
+        )
+        : Nothing();
 
 // until :: (a -> Bool) -> (a -> a) -> a -> a
 const until = p =>

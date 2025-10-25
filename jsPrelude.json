@@ -284,7 +284,7 @@
     ]
   },
   "bimap": {
-    "code": "// bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)\nconst bimap = f =>\n    // Tuple instance of bimap.\n    // A tuple of the application of f and g to the\n    // first and second values respectively.\n    g => tpl => Tuple(f(tpl[0]))(\n        g(tpl[1])\n    );",
+    "code": "// bimap :: (a -> b) -> (c -> d) -> (a, c) -> (b, d)\nconst bimap = f =>\n    // Tuple instance of bimap.\n    // A tuple of the application of f and g to the\n    // first and second values respectively.\n    g => ([a, b]) => Tuple(\n        f(a)\n    )(\n        g(b)\n    );",
     "tags": [
       "JS Prelude"
     ]
@@ -1047,7 +1047,7 @@
     ]
   },
   "first": {
-    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A simple function lifted to one which applies\n    // to a tuple, transforming only its first item.\n    ([x, y]) => Tuple(f(x))(y);",
+    "code": "// first :: (a -> b) -> ((a, c) -> (b, c))\nconst first = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple, with f\n    // applied to the first term.\n    // f (a, b) -> (f(a), b)\n    ([x, y]) => Tuple(f(x))(y);",
     "tags": [
       "JS Prelude"
     ]
@@ -1765,6 +1765,12 @@
       "JS Prelude"
     ]
   },
+  "leaves": {
+    "code": "// leaves :: Tree a -> [a]\nconst leaves = tree => {\n    // Ordered leaf values of a given tree\n    const go = (vs, t) => {\n        const ts = nest(t);\n\n        return 0 < ts.length\n            ? ts.reduce(go, vs)\n            : vs.concat(root(t));\n    };\n\n    return go([], tree);\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "lefts": {
     "code": "// lefts :: [Either a b] -> [a]\nconst lefts = xs =>\n    xs.flatMap(\n        x => (\"Left\" in x)\n            ? [x.Left]\n            : []\n    );",
     "tags": [
@@ -1865,6 +1871,18 @@
     "tags": [
       "JS Prelude",
       "jxa"
+    ]
+  },
+  "listFilesInside": {
+    "code": "// listFilesInside :: (FilePath -> IO Bool) -> FilePath -> IO [FilePath]\nconst listFilesInside = p => {\n    // Recursive listing of all predicate-matching dependents\n    // of the given filepathe.\n    const go = fp =>\n        doesDirectoryExist(fp)\n            ? bindLR(\n                getDirectoryContentsLR(fp)\n            )(\n                fps => [\n                    ...bimap(\n                        xs => xs.flatMap(go)\n                    )(\n                        xs => xs.filter(p)\n                    )(\n                        partition(\n                            doesDirectoryExist\n                        )(\n                            fps.map(combine(fp))\n                        )\n                    )\n                ]\n                    .flat()\n                    .toSorted()\n            )\n            : p(fp)\n                ? [fp]\n                : [];\n\n    return go;\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
+  "listFilesRecursive": {
+    "code": "// listFilesRecursive :: FilePath -> IO [FilePath]\nconst listFilesRecursive = fp =>\n    // Recursive list of all files descending from FilePath\n    listFilesInside(() => true)(fp);",
+    "tags": [
+      "JS Prelude"
     ]
   },
   "listFromMaybe": {
@@ -2718,13 +2736,13 @@
     ]
   },
   "scanr1": {
-    "code": "// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = f =>\n    // scanr1 is a variant of scanr that has no\n    // seed-value argument, and assumes that\n    // xs is not empty.\n    xs => xs.length > 0 ? (\n        scanr(f)(\n            xs.slice(-1)[0]\n        )(xs.slice(0, -1))\n    ) : [];",
+    "code": "// scanr1 :: (a -> a -> a) -> [a] -> [a]\nconst scanr1 = f =>\n    // scanr1 is a variant of scanr that has no\n    // seed-value argument, and assumes that\n    // xs is not empty.\n    xs => xs.length > 0 ? (\n        scanr(f)(\n            xs.slice(-1)[0]\n        )(\n            xs.slice(0, -1)\n        )\n    ) : [];",
     "tags": [
       "JS Prelude"
     ]
   },
   "second": {
-    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple.\n    // f (a, b) -> (a, f(b))\n    xy => Tuple(\n        xy[0]\n    )(\n        f(xy[1])\n    );",
+    "code": "// second :: (a -> b) -> ((c, a) -> (c, b))\nconst second = f =>\n    // A function over a simple value lifted\n    // to a function over a tuple, with f\n    // applied to the second term.\n    // f (a, b) -> (a, f(b))\n    ([x, y]) => Tuple(x)(f(y));",
     "tags": [
       "JS Prelude"
     ]
@@ -2938,7 +2956,7 @@
     ]
   },
   "sort": {
-    "code": "// sort :: Ord a => [a] -> [a]\nconst sort = xs =>\n    // An A-Z sorted copy of xs.\n    xs.slice().sort(\n        (a, b) => a < b ? (\n            -1\n        ) : (\n            a > b ? (\n                1\n            ) : 0\n        )\n    );",
+    "code": "// sort :: Ord a => [a] -> [a]\nconst sort = xs =>\n    // An A-Z sorted copy of xs.\n    xs.toSorted();",
     "tags": [
       "JS Prelude",
       "core"
@@ -3153,7 +3171,7 @@
     ]
   },
   "takeDirectory": {
-    "code": "// takeDirectory :: FilePath -> FilePath\nconst takeDirectory = fp =>\n    // The directory component of a filepath.\n    \"\" !== fp\n        ? (() => {\n            const xs = fp.split(\"/\").slice(0, -1);\n\n            return 0 < xs.length\n                ? xs.join(\"/\")\n                : \".\";\n        })()\n        : \".\";",
+    "code": "// takeDirectory :: FilePath -> FilePath\nconst takeDirectory = fp =>\n    // The directory component of a filepath.\n    0 < fp.length\n        ? (() => {\n            const xs = fp.split(\"/\").slice(0, -1);\n\n            return 0 < xs.length\n                ? xs.join(\"/\")\n                : \".\";\n        })()\n        : \".\";",
     "tags": [
       "JS Prelude"
     ]
@@ -3484,7 +3502,7 @@
     ]
   },
   "unsnoc": {
-    "code": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    // Nothing if the list is empty, otherwise\n    // Just the init and the last.\n    Boolean(xs.length) ? (\n        Just(Tuple(xs.slice(0, -1))(xs.slice(-1)[0]))\n    ) : Nothing();",
+    "code": "// unsnoc :: [a] -> Maybe ([a], a)\nconst unsnoc = xs =>\n    // Nothing if the list is empty, otherwise\n    // Just the init and the last.\n    0 < xs.length\n        ? Just(\n            Tuple(\n                xs.slice(0, -1)\n            )(\n                xs.slice(-1)[0]\n            )\n        )\n        : Nothing();",
     "tags": [
       "JS Prelude"
     ]
