@@ -117,6 +117,7 @@ dropLengthMaybe :: [a] -> [b] -> Maybe [b]
 dropWhile :: (a -> Bool) -> [a] -> [a]
 dropWhileEnd :: (a -> Bool) -> [a] -> [a]
 dropWhileGen :: (a -> Bool) -> Gen [a] -> [a]
+edges :: Tree a -> [(a, a)]
 either :: (a -> c) -> (b -> c) -> Either a b -> c
 elem :: Eq a => a -> [a] -> Bool
 elemAtMay :: Int -> Dict -> Maybe (String, a)

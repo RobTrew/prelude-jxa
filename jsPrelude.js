@@ -1251,6 +1251,25 @@ const dropWhileGen = p =>
         return cons(v)(xs);
     };
 
+// edges :: Tree a -> [(a, a)]
+const edges = tree => {
+    // The edges of the tree as parent-child pairs in pre-order.
+    const go = (sofar, parentValue, subTrees) =>
+        subTrees.reduceRight(
+            (a, t) => {
+                const v = root(t);
+
+                return [
+                    Tuple(parentValue)(v),
+                    ...go(a, v, nest(t))
+                ];
+            },
+            sofar
+        );
+
+    return go([], root(tree), nest(tree));
+};
+
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = fl =>
     // Application of the function fl to the

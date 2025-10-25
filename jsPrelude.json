@@ -756,6 +756,12 @@
       "JS Prelude"
     ]
   },
+  "edges": {
+    "code": "// edges :: Tree a -> [(a, a)]\nconst edges = tree => {\n    // The edges of the tree as parent-child pairs in pre-order.\n    const go = (sofar, parentValue, subTrees) =>\n        subTrees.reduceRight(\n            (a, t) => {\n                const v = root(t);\n\n                return [\n                    Tuple(parentValue)(v),\n                    ...go(a, v, nest(t))\n                ];\n            },\n            sofar\n        );\n\n    return go([], root(tree), nest(tree));\n};",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "either": {
     "code": "// either :: (a -> c) -> (b -> c) -> Either a b -> c\nconst either = fl =>\n    // Application of the function fl to the\n    // contents of any Left value in e, or\n    // the application of fr to its Right value.\n    fr => e => \"Left\" in e\n        ? fl(e.Left)\n        : fr(e.Right);",
     "tags": [
