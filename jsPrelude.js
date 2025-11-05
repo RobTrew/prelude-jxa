@@ -1009,7 +1009,7 @@ const dot = f =>
 
 // draw :: Tree String -> [String]
 const draw = node => {
-    
+
     // shifted :: String -> String -> [String] -> [String]
     const shifted = (first, other, xs) =>
         xs.map((x, i) =>
@@ -1034,8 +1034,8 @@ const draw = node => {
     };
 
 
-    return node.root.split("\n").concat(
-        drawSubTrees(node.nest)
+    return root(node).split("\n").concat(
+        drawSubTrees(nest(node))
     );
 };
 
