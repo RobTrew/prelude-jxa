@@ -1791,7 +1791,7 @@
     ]
   },
   "lengthTree": {
-    "code": "// lengthTree :: Tree a -> Int\nconst lengthTree = tree => {\n    // The number of nodes in the tree.\n    const go = (n, t) =>\n        n + nest(t).reduce(go, 1);\n\n    return go(0, tree);\n};",
+    "code": "// lengthTree :: Tree a -> Int\nconst lengthTree = tree => {\n    // The number of nodes in the tree.\n    const go = (n, t) => {\n        const xs = nest(t);\n\n        return n + (\n            0 < xs.length\n                ? xs.reduce(go, 1)\n                : 1\n        );\n    };\n\n    return go(0, tree);\n};",
     "tags": [
       "JS Prelude"
     ]
