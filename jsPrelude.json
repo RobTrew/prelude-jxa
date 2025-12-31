@@ -2314,7 +2314,7 @@
     ]
   },
   "partition": {
-    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => {\n        const\n            notP = x => !p(x),\n            vs = [...xs];\n\n        return Tuple(\n            vs.filter(p)\n        )(\n            vs.filter(notP)\n        );\n    };",
+    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => {\n        const\n            notP = x => !p(x),\n            vs = [...xs];\n\n        return Tuple(\n            vs.filter(p)\n        )(\n            vs.filter(notP)\n        );\n    };\n    \n// Faster implementation (mutating local state)\n    \n// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition_ = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => {\n        const\n            matches = [],\n            nons = [];\n\n        xs.forEach(x => {\n            if (p(x)) {\n                matches.push(x)\n            } else {\n                nons.push(x)\n            }\n        });\n\n        return Tuple(matches)(nons);\n    };",
     "tags": [
       "JS Prelude",
       "core"
