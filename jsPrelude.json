@@ -1248,6 +1248,12 @@
       "JS Prelude"
     ]
   },
+  "fromEither": {
+    "code": "// fromEither :: Either a a -> a\nconst fromEither = lr =>\n    \"Left\" in lr\n        ? lr.Left\n        : lr.Right;",
+    "tags": [
+      "JS Prelude"
+    ]
+  },
   "fromEnum": {
     "code": "// fromEnum :: Enum a => a -> Int\nconst fromEnum = x =>\n    typeof x !== \"string\"\n        ? x.constructor === Object\n            ? x.value\n            : parseInt(Number(x), 10)\n        : x.codePointAt(0);",
     "tags": [
@@ -1797,7 +1803,7 @@
     ]
   },
   "levelNodes": {
-    "code": "// levelNodes :: Tree a -> [[Tree a]]\nconst levelNodes = tree =>\n    iterateUntil(xs => 1 > xs.length)(\n        xs => xs.flatMap(x => x.nest)\n    )([tree]);",
+    "code": "// levelNodes :: Tree a -> [[Tree a]]\nconst levelNodes = tree =>\n    iterateUntil(xs => 1 > xs.length)(\n        xs => xs.flatMap(nest)\n    )([tree]);",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2231,7 +2237,7 @@
     ]
   },
   "nest": {
-    "code": "// nest :: Tree a -> [a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs\n        ? xs\n        : xs(root(tree));\n};",
+    "code": "// nest :: Tree a -> [Tree a]\nconst nest = tree => {\n    // Allowing for lazy (on-demand) evaluation.\n    // If the nest turns out to be a function –\n    // rather than a list – that function is applied\n    // here to the root, and returns a list.\n    const xs = tree.nest;\n\n    return \"function\" !== typeof xs\n        ? xs\n        : xs(root(tree));\n};",
     "tags": [
       "JS Prelude",
       "tree"
@@ -2308,7 +2314,7 @@
     ]
   },
   "partition": {
-    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => [...xs].reduce(\n        (a, x) => (\n            p(x)\n                ? first\n                : second\n        )(ys => [...ys, x])(a),\n        Tuple([])([])\n    );",
+    "code": "// partition :: (a -> Bool) -> [a] -> ([a], [a])\nconst partition = p =>\n    // A tuple of two lists - those elements in\n    // xs which match p, and those which do not.\n    xs => {\n        const\n            notP = x => !p(x),\n            vs = [...xs];\n\n        return Tuple(\n            vs.filter(p)\n        )(\n            vs.filter(notP)\n        );\n    };",
     "tags": [
       "JS Prelude",
       "core"
@@ -3581,7 +3587,7 @@
     ]
   },
   "writeFile": {
-    "code": "// writeFile :: FilePath -> String -> IO ()\nconst writeFile = fp => s =>\n    $.NSString.alloc.initWithUTF8String(s)\n    .writeToFileAtomicallyEncodingError(\n        $(fp)\n        .stringByStandardizingPath, false,\n        $.NSUTF8StringEncoding, null\n    );",
+    "code": "// writeFile :: FilePath -> String -> IO ()\nconst writeFile = fp =>\n    s => $.NSString.alloc.initWithUTF8String(s)\n        .writeToFileAtomicallyEncodingError(\n            $(fp).stringByStandardizingPath,\n            false,\n            $.NSUTF8StringEncoding, null\n        );",
     "tags": [
       "JS Prelude",
       "jxa"

@@ -2139,6 +2139,12 @@ const forestFromJSONLR = json => {
     );
 };
 
+// fromEither :: Either a a -> a
+const fromEither = lr =>
+    "Left" in lr
+        ? lr.Left
+        : lr.Right;
+
 // fromEnum :: Enum a => a -> Int
 const fromEnum = x =>
     typeof x !== "string"
@@ -2912,7 +2918,7 @@ const lengthTree = tree => {
 // levelNodes :: Tree a -> [[Tree a]]
 const levelNodes = tree =>
     iterateUntil(xs => 1 > xs.length)(
-        xs => xs.flatMap(x => x.nest)
+        xs => xs.flatMap(nest)
     )([tree]);
 
 // levels :: Tree a -> [[a]]
@@ -3668,7 +3674,7 @@ const ne = a =>
 const negate = n =>
     -n;
 
-// nest :: Tree a -> [a]
+// nest :: Tree a -> [Tree a]
 const nest = tree => {
     // Allowing for lazy (on-demand) evaluation.
     // If the nest turns out to be a function –
@@ -3768,14 +3774,17 @@ const parentIndexedTree = tree => {
 const partition = p =>
     // A tuple of two lists - those elements in
     // xs which match p, and those which do not.
-    xs => [...xs].reduce(
-        (a, x) => (
-            p(x)
-                ? first
-                : second
-        )(ys => [...ys, x])(a),
-        Tuple([])([])
-    );
+    xs => {
+        const
+            notP = x => !p(x),
+            vs = [...xs];
+
+        return Tuple(
+            vs.filter(p)
+        )(
+            vs.filter(notP)
+        );
+    };
 
 // partitionEithers :: [Either a b] -> ([a],[b])
 const partitionEithers = xs =>

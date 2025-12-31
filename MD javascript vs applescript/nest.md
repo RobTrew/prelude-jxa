@@ -1,5 +1,5 @@
 ```javascript
-// nest :: Tree a -> [a]
+// nest :: Tree a -> [Tree a]
 const nest = tree => {
     // Allowing for lazy (on-demand) evaluation.
     // If the nest turns out to be a function –

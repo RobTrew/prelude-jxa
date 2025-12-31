@@ -194,6 +194,7 @@ foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 foldrTree2 :: (a -> b -> b) -> b -> t a -> b
 foldr_ :: (a -> b -> b) -> b -> t a -> b
 forestFromJSONLR :: JSON String -> Either String Forest a
+fromEither :: Either a a -> a
 fromEnum :: Enum a => a -> Int
 fromLeft :: a -> Either a b -> a
 fromMaybe :: a -> Maybe a -> a
@@ -350,7 +351,7 @@ modificationTime :: FilePath -> Either String Date
 mul (*) :: Num a => a -> a -> a
 ne :: a -> a -> Bool
 negate :: Num -> Num
-nest :: Tree a -> [a]
+nest :: Tree a -> [Tree a]
 newUUID :: () -> IO UUID String
 not :: Bool -> Bool
 notElem :: Eq a => a -> [a] -> Bool

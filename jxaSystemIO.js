@@ -439,13 +439,13 @@ const unwrap = ObjC.unwrap;
 const wrap = ObjC.wrap;
 
 // writeFile :: FilePath -> String -> IO ()
-const writeFile = fp => s =>
-    $.NSString.alloc.initWithUTF8String(s)
-    .writeToFileAtomicallyEncodingError(
-        $(fp)
-        .stringByStandardizingPath, false,
-        $.NSUTF8StringEncoding, null
-    );
+const writeFile = fp =>
+    s => $.NSString.alloc.initWithUTF8String(s)
+        .writeToFileAtomicallyEncodingError(
+            $(fp).stringByStandardizingPath,
+            false,
+            $.NSUTF8StringEncoding, null
+        );
 
 // writeFileLR :: FilePath ->
 // String -> Either String IO FilePath

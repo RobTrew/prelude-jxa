@@ -27,7 +27,7 @@ liftA2Tree :: (a -> b -> c) -> Tree a -> Tree b -> Tree c
 listFromTree :: Tree a -> [a]
 mapAccumLTree :: (s -> a -> (s, b)) -> s -> Tree a -> (s, Tree b)
 measuredTree :: Tree a -> Tree (a, {leafSum::Int, layerSum::Int, nodeSum::Int, index::Int})
-nest :: Tree a -> [a]
+nest :: Tree a -> [Tree a]
 parentIndexedTree :: Tree (a, {...index :: Int}) -> Tree (a, {...index :: Int, parent :: Maybe Int})
 partitionTree :: (a -> Bool) -> Tree a -> ([Tree a], [Tree a])
 postorder :: Tree a -> [a]
