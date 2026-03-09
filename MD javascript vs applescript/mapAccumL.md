@@ -6,10 +6,10 @@ const mapAccumL = f =>
     // obtained by a combined map and fold,
     // with accumulation from left to right.
     acc => xs => [...xs].reduce(
-        ([a, bs], x) => second(
+        ([a, bs], x, i) => second(
             v => [...bs, v]
         )(
-            f(a)(x)
+            f(a)(x, i)
         ),
         [acc, []]
     );
