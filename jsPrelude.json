@@ -1344,10 +1344,16 @@
     ]
   },
   "groupBy": {
-    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator, such\n    // that the concatenation of these lists is xs.\n    xs => 0 < xs.length\n        ? (() => {\n            const [h, ...t] = xs;\n            const [groups, g] = t.reduce(\n                ([gs, a], x) => eqOp(a[0])(x)\n                    ? [gs, [...a, x]]\n                    : [[...gs, a], [x]],\n                [[], [h]]\n            );\n\n            return [...groups, g];\n        })()\n        : [];",
+    "code": "// groupBy :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator, such\n    // that the concatenation of these lists is xs.\n    xs => 0 < xs.length\n        ? (() => {\n            const\n                h = xs[0],\n                t = xs.slice(1),\n                [groups, g] = t.reduce(\n                    ([gs, a], x) => eqOp(a[0])(x)\n                        ? [gs, a.concat(x)]\n                        : [gs.concat([a]), [x]],\n                    [[], [h]]\n                );\n\n            return groups.concat([g]);\n        })()\n        : [];",
     "tags": [
       "JS Prelude",
       "core"
+    ]
+  },
+  "groupBy_": {
+    "code": "// groupBy_ :: (a -> a -> Bool) -> [a] -> [[a]]\nconst groupBy_ = eqOp =>\n    // A list of lists, each containing only elements\n    // equal under the given equality operator, such\n    // that the concatenation of these lists is xs.\n    // (Alternative – imperative – implementation)\n    xs => {\n        if (0 === xs.length) return [];\n\n        const acc = [];\n        let grp = [xs[0]];\n\n        for (let i = 1; i < xs.length; i++) {\n            const x = xs[i];\n\n            // Compared against head of current group.\n            if (eqOp(grp[0])(x)) {\n                grp.push(x);\n            } else {\n                // One group completed, another started.\n                acc.push(grp);\n                grp = [x];\n            }\n        }\n\n        acc.push(grp);\n        return acc;\n    };",
+    "tags": [
+      "JS Prelude"
     ]
   },
   "groupOn": {

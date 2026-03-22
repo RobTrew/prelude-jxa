@@ -2522,17 +2522,48 @@ const groupBy = eqOp =>
     // that the concatenation of these lists is xs.
     xs => 0 < xs.length
         ? (() => {
-            const [h, ...t] = xs;
-            const [groups, g] = t.reduce(
-                ([gs, a], x) => eqOp(a[0])(x)
-                    ? [gs, [...a, x]]
-                    : [[...gs, a], [x]],
-                [[], [h]]
-            );
+            const
+                h = xs[0],
+                t = xs.slice(1),
+                [groups, g] = t.reduce(
+                    ([gs, a], x) => eqOp(a[0])(x)
+                        ? [gs, a.concat(x)]
+                        : [gs.concat([a]), [x]],
+                    [[], [h]]
+                );
 
-            return [...groups, g];
+            return groups.concat([g]);
         })()
         : [];
+
+// groupBy_ :: (a -> a -> Bool) -> [a] -> [[a]]
+const groupBy_ = eqOp =>
+    // A list of lists, each containing only elements
+    // equal under the given equality operator, such
+    // that the concatenation of these lists is xs.
+    // (Alternative – imperative – implementation)
+    xs => {
+        if (0 === xs.length) return [];
+
+        const acc = [];
+        let grp = [xs[0]];
+
+        for (let i = 1; i < xs.length; i++) {
+            const x = xs[i];
+
+            // Compared against head of current group.
+            if (eqOp(grp[0])(x)) {
+                grp.push(x);
+            } else {
+                // One group completed, another started.
+                acc.push(grp);
+                grp = [x];
+            }
+        }
+
+        acc.push(grp);
+        return acc;
+    };
 
 // groupOn :: (a -> b) -> [a] -> [[a]]
 const groupOn = f =>
